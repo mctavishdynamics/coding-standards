@@ -1,0 +1,194 @@
+use @piton/belay
+
+from ../CodingStandards import CodingStandards
+from ../airbnb-javascript/AirbnbJavaScript import AirbnbJavaScript
+from ../airbnb-react/AirbnbReact import AirbnbReact
+from ../cert-c/CertC import CertC
+from ../cert-cpp/CertCpp import CertCpp
+from ../cert-java/CertJava import CertJava
+from ../clean-code/CleanCode import CleanCode
+from ../cpp-core-guidelines/CppCoreGuidelines import CppCoreGuidelines
+from ../effective-go/EffectiveGo import EffectiveGo
+from ../go-code-review-comments/GoCodeReviewComments import GoCodeReviewComments
+from ../google-cpp/GoogleCpp import GoogleCpp
+from ../google-csharp/GoogleCSharp import GoogleCSharp
+from ../google-go/GoogleGo import GoogleGo
+from ../google-html-css/GoogleHtmlCss import GoogleHtmlCss
+from ../google-java/GoogleJava import GoogleJava
+from ../google-javascript/GoogleJavaScript import GoogleJavaScript
+from ../google-objc/GoogleObjC import GoogleObjC
+from ../google-python/GooglePython import GooglePython
+from ../google-r/GoogleR import GoogleR
+from ../google-shell/GoogleShell import GoogleShell
+from ../google-swift/GoogleSwift import GoogleSwift
+from ../google-typescript/GoogleTypeScript import GoogleTypeScript
+from ../owasp-scp/OwaspScp import OwaspScp
+from ../pep257/Pep257 import Pep257
+from ../pep8/Pep8 import Pep8
+from ../rust-api-guidelines/RustApiGuidelines import RustApiGuidelines
+from ../solid/Solid import Solid
+from ../twelve-factor/TwelveFactor import TwelveFactor
+
+// Audits code against the rules in this package. It ships with the
+// package, so every project that tethers coding-standards builds it.
+// It links to each standard's reference document rather than copying
+// rules, so the agent reads only the rules the audit needs.
+export skill CodingStandardsAudit:
+    description:
+        Audits code against published coding standards, such as PEP 8,
+        the Google style guides, SEI CERT, OWASP and the C++ Core
+        Guidelines, and reports each violation with the rule it breaks
+        and a link to the rule's source.
+    useWhen:
+        the user asks to audit, check or review code, a folder, a file
+        or a diff against a coding standard, a style guide or secure
+        coding rules, or asks which coding standard rules some code
+        breaks
+    prompt:
+        You audit code against coding standards. Each standard is a
+        reference document that lists its rules, and each rule is a
+        document of its own. You decide what code to check and which
+        standards apply, read the rules that matter for that code, check
+        the code against them, and report what breaks them. You only
+        read and report. Never change code unless the user asks you to
+        fix what you found.
+
+        Every finding must come from a rule you have read in this
+        session. Never report a rule from memory, and never invent a
+        rule a standard does not contain. When the code and a rule
+        disagree only in a way the rule's exceptions allow, it is not a
+        finding.
+
+    rules:
+        Each rule document has the same fields. Read them in this order.
+
+        - Title and Statement say what the code must do.
+        - Exceptions say when the rule does not apply. Always read them before reporting.
+        - Noncompliant and Compliant show the mistake and the fix in code. They are examples, not the whole rule.
+        - Rationale says why the rule exists, and for CERT rules ends with CERT's risk ratings.
+        - Severity is given only by the CERT standards. It is null for the rest.
+        - Languages and Tags say what code the rule is about. Use tags to find the rules that matter for the code in front of you.
+        - Source links to the rule in the original standard. Every finding cites it.
+
+        The overview in @{CodingStandards} says what the package covers
+        and how the rules were written.
+
+    choosingTheCode:
+        Audit what the user names, such as a path, a file, a pull
+        request or the current changes. If they name nothing, audit the
+        uncommitted and branch changes in the repository. If there are
+        none, or the directory is not a repository, ask one short
+        question about what to audit. Skip generated, vendored and
+        third-party code, such as build output, lock files and
+        dependency folders, and say that you skipped it.
+
+    choosingStandards:
+        Use the standards the user names. Otherwise use what the
+        project says it follows, in its instructions such as CLAUDE.md
+        or AGENTS.md, its contributing guide, or its tool settings: an
+        ESLint config that extends airbnb points at the Airbnb guide,
+        and a .clang-format based on Google points at the Google C++
+        guide. Otherwise use the defaults for each language in the code,
+        from standardsByLanguage.
+
+        Use at most one style guide per language, because style guides
+        disagree with each other, for example on line length. Safety
+        and security standards can be added to a style guide, because
+        they rarely conflict. Add the OWASP rules when the code handles
+        user input, authentication, sessions, access control,
+        cryptography, files, databases or logging. Use SOLID and the
+        Twelve-Factor App only when the user asks for a design or
+        deployment review, because they judge structure rather than
+        lines of code. Use Clean Code only when the user asks for it,
+        because it overlaps the style guides on names, functions and
+        comments, and its heuristics call for judgement.
+
+        State the standards you chose in the first line of the report,
+        so the user can ask for different ones.
+
+    standardsByLanguage:
+        The first standard under each language is the default. The rest
+        are used when the user or the project asks for them.
+
+        python:
+            - @{Pep8} and @{Pep257} together
+            - @{GooglePython}
+        c:
+            - @{CertC}
+        cpp:
+            - @{CppCoreGuidelines} with @{CertCpp}
+            - @{GoogleCpp}
+        java:
+            - @{GoogleJava} with @{CertJava}
+        javascript:
+            - @{AirbnbJavaScript}, adding @{AirbnbReact} for React and JSX code
+            - @{GoogleJavaScript}
+        typescript:
+            - @{GoogleTypeScript}
+        go:
+            - @{EffectiveGo} with @{GoCodeReviewComments}
+            - @{GoogleGo}
+        rust:
+            - @{RustApiGuidelines}, for the public API of a library
+        shell:
+            - @{GoogleShell}
+        htmlAndCss:
+            - @{GoogleHtmlCss}
+        r:
+            - @{GoogleR}
+        objectiveC:
+            - @{GoogleObjC}
+        csharp:
+            - @{GoogleCSharp}
+        swift:
+            - @{GoogleSwift}
+        anyLanguage:
+            - @{OwaspScp}, for code that handles untrusted input or sensitive data
+            - @{CleanCode}, on request, for names, functions, comments and tests
+            - @{Solid}, on request, for object-oriented design
+            - @{TwelveFactor}, on request, for how a service is configured and deployed
+
+    checking:
+        Work one standard at a time. Open its document and read its list
+        of rules. Pick the rules whose title and tags touch what the
+        code does, then read each picked rule in full. For a small
+        change, read every rule that could apply to the changed lines.
+        For a large codebase, start with rules that have a severity or
+        that are about correctness, security, memory, concurrency and
+        error handling, then naming, formatting and documentation.
+
+        Report a finding only when you can point at the line that
+        breaks the rule. When a finding depends on something you cannot
+        see in the code, such as runtime input, configuration or how a
+        function is called elsewhere, mark it as possible and say what
+        would confirm it. When a formatter or linter the project already
+        runs enforces a rule, say so once rather than listing every
+        line.
+
+        Some rules cannot be checked from the code alone, such as rules
+        about process, deployment or review habits. Do not guess at
+        them. List them under what was not checked if the user asked
+        for that standard.
+
+    reporting:
+        Start with one line: how many findings, in how many files,
+        against which standards. Then list the findings, most serious
+        first: security and correctness, then robustness, then style.
+        Within that order, CERT severity high comes before medium and
+        low.
+
+        Give each finding
+
+        - its place as file_path:line_number
+        - the standard and rule id, such as CERT C STR31-C, and the rule title
+        - what in the code breaks the rule, in one or two plain sentences
+        - the fix, as a short code change when one is clear
+        - a link to the rule document and the rule's source URL
+
+        When one rule is broken many times, give it once with a count
+        and the first few places. Keep the report to the findings that
+        matter most. When there are more than about twenty, show the
+        most serious and a count per rule for the rest.
+
+        End with what was not checked, such as skipped files and rules
+        that need more than the code, and offer to fix the findings.
