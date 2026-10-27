@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG14:
+    standard: @{CleanCode}
+    ruleId: G14
+    title: Avoid feature envy
+    statement:
+        A method should mostly use the data and methods of its own class.
+        When it keeps reaching into another object's getters to do its work,
+        move the logic to that object.
+    rationale:
+        Envious methods expose the internals of other classes and spread
+        their behavior across the code base.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class ReportPrinter {
+            Money total(Order order) {
+                Money sum = Money.ZERO;
+                for (Line l : order.getLines()) sum = sum.plus(l.getPrice().times(l.getQty()));
+                return sum.minus(order.getDiscount());
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Order {
+            Money total() {
+                Money sum = Money.ZERO;
+                for (Line l : lines) sum = sum.plus(l.subtotal());
+                return sum.minus(discount);
+            }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [coupling, cohesion, design]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

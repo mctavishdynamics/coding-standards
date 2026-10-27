@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelSpaceAfterKeywords:
+    standard: @{LinuxKernelStyle}
+    ruleId: 3.1a
+    title: Put a space after control keywords
+    statement:
+        Put one space after the keywords if, switch, case, for, do and
+        while.
+    rationale:
+        The space separates keywords visually from function calls.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        while(retries--) {
+                if(try_lock(l))
+                        break;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        while (retries--) {
+                if (try_lock(l))
+                        break;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, whitespace]
+    source: https://docs.kernel.org/process/coding-style.html#spaces

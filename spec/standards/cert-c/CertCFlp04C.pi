@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp04C:
+    standard: @{CertC}
+    ruleId: FLP04-C
+    title: Check floating-point inputs for exceptional values
+    statement:
+        Check floating-point values that come from input for infinity and
+        NaN with isinf, isnan or isfinite before using them.
+    rationale:
+        NaN compares false with everything, so range checks pass silently
+        and exceptional values spread into results or cause undefined
+        behavior. CERT rates likelihood probable, detectable no, repairable
+        yes, priority P4, level L3.
+    exceptions:
+        If NaN or infinity are acceptable inputs, explicit checks may be
+        unnecessary, but the program must still handle those values
+        sensibly.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        double rate;
+        if (scanf("%lf", &rate) == 1 && rate <= 100.0) {   /* NaN passes */
+            apply_rate(rate);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <math.h>
+
+        double rate;
+        if (scanf("%lf", &rate) == 1 && isfinite(rate) && rate <= 100.0) {
+            apply_rate(rate);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, floating-point, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/floating-point-flp/flp04-c

@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl58J:
+    standard: @{CertJava}
+    ruleId: DCL58-J
+    title: Enable compile-time type checking of variable arity parameter types
+    statement:
+        Give a varargs parameter the most specific type possible. Avoid
+        Object... or an unbounded generic varargs type when the method
+        expects a narrower type.
+    rationale:
+        With Object or loose generic parameters the compiler cannot check
+        the arguments, so type errors surface only at run time through
+        casts.
+    exceptions:
+        Object or imprecise generic varargs are acceptable when the method
+        body has no casts or autoboxing and compiles without error, for
+        example a method that only prints its arguments.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        double sum(Object... values) {
+            double total = 0;
+            for (Object v : values) {
+                total += ((Number) v).doubleValue();
+            }
+            return total;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        double sum(Number... values) {
+            double total = 0;
+            for (Number v : values) {
+                total += v.doubleValue();
+            }
+            return total;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, varargs, type-safety]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/declarations-and-initialization-dcl/dcl58-j/

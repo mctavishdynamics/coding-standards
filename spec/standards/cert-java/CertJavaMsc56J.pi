@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc56J:
+    standard: @{CertJava}
+    ruleId: MSC56-J
+    title: Detect and remove superfluous code and values
+    statement:
+        Find and remove dead code, statements with no effect and values that
+        are computed but never used, after understanding why they are there.
+    rationale:
+        Superfluous code often signals a logic error and makes programs
+        harder to read and maintain.
+    exceptions:
+        Dead code may occasionally be kept to make software resilient to
+        future changes, when that choice is deliberate.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        int parse(String s) {
+            int result = 0;
+            result = Integer.parseInt(s);
+            return result;
+            log("parsed");
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int parse(String s) {
+            return Integer.parseInt(s);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, dead-code, maintainability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/miscellaneous-msc/msc56-j/

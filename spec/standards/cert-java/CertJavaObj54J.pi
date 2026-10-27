@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj54J:
+    standard: @{CertJava}
+    ruleId: OBJ54-J
+    title: Do not attempt to help the garbage collector by setting local reference variables to null
+    statement:
+        Do not assign null to local reference variables just to free memory.
+        Keep the variable's scope small instead.
+    rationale:
+        The JIT compiler already knows when a local is no longer live, so
+        the extra assignment only clutters the code and makes it harder to
+        maintain.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void report() {
+            int[] data = loadData();
+            print(summarize(data));
+            data = null;
+            sendEmail();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void report() {
+            printSummary();
+            sendEmail();
+        }
+
+        private void printSummary() {
+            int[] data = loadData();
+            print(summarize(data));
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, garbage-collection, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/object-orientation-obj/obj54-j/

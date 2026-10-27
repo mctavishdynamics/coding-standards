@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt04C:
+    standard: @{CertC}
+    ruleId: INT04-C
+    title:
+        Enforce limits on integer values originating from tainted sources
+    statement:
+        Find the valid upper and lower bounds for integers that come from
+        untrusted sources and reject values outside them at the interface.
+    rationale:
+        Excessive values from input lead to overflow, truncation and huge
+        allocations, and bad input is easier to catch at the boundary than
+        to trace later. CERT rates likelihood probable, detectable yes,
+        repairable no, priority P12, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        size_t rows = read_u32(request);
+        int *grid = malloc(rows * sizeof(int));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum { MAX_ROWS = 4096 };
+
+        size_t rows = read_u32(request);
+        if (rows == 0 || rows > MAX_ROWS) {
+            return reject(request);
+        }
+        int *grid = malloc(rows * sizeof(int));
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, input-validation, security]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int04-c

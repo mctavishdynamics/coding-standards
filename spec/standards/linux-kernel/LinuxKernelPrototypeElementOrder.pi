@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelPrototypeElementOrder:
+    standard: @{LinuxKernelStyle}
+    ruleId: 6.1c
+    title: Keep the parts of a function prototype in the standard order
+    statement:
+        Order a prototype as storage class, storage class attributes, return
+        type, return type attributes, function name, parameters, parameter
+        attributes and behaviour attributes. In a definition, move parameter
+        attributes such as __printf to just after the storage class
+        attributes, since the compiler does not accept them after the
+        parameters there.
+    rationale:
+        A regular order makes prototypes predictable to read and search.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void * __must_check __init static log_alloc(size_t size, const char *fmt, ...)
+                __malloc __printf(2, 3);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static __init void * __must_check log_alloc(size_t size, const char *fmt,
+                                                    ...) __printf(2, 3) __malloc;
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, declarations, attributes]
+    source: https://docs.kernel.org/process/coding-style.html#function-prototypes

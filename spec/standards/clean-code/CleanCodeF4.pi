@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeF4:
+    standard: @{CleanCode}
+    ruleId: F4
+    title: Delete functions that are never called
+    statement:
+        Remove methods that nothing calls. Version control keeps them if
+        they are ever needed again.
+    rationale:
+        Unused functions still cost reading and maintenance time and suggest
+        that behavior is in use when it is not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class PriceList {
+            Money priceOf(Sku sku) { return prices.get(sku); }
+
+            // No caller anywhere in the code base.
+            Money legacyPriceInCents(Sku sku) { return prices.get(sku).times(100); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class PriceList {
+            Money priceOf(Sku sku) { return prices.get(sku); }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [functions, dead-code]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

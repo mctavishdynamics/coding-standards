@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem10C:
+    standard: @{CertC}
+    ruleId: MEM10-C
+    title: Define and use a pointer validation function
+    statement:
+        Write a function that checks whether a pointer is plausibly valid,
+        at least that it is not null and lies in a sensible address range,
+        and call it before dereferencing pointer arguments.
+    rationale:
+        Dereferencing an invalid pointer is undefined behavior and may
+        corrupt memory without crashing, which makes the defect hard to
+        find. CERT rates likelihood unlikely, detectable no, repairable no,
+        priority P3, level L3.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        void increment(int *counter) {
+            (*counter)++;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int pointer_is_valid(const void *p);   /* platform-specific checks */
+
+        void increment(int *counter) {
+            if (!pointer_is_valid(counter)) {
+                return;
+            }
+            (*counter)++;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, memory, pointers, validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/memory-management-mem/mem10-c

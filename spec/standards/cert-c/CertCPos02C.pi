@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos02C:
+    standard: @{CertC}
+    ruleId: POS02-C
+    title: Follow the principle of least privilege
+    statement:
+        Run with the smallest set of privileges the job needs. Raise
+        privileges only for the operation that requires them, and drop them
+        permanently as soon as they are no longer needed.
+    rationale:
+        If a vulnerability is exploited, the attacker gains only the
+        privileges the program held at that moment. CERT rates likelihood
+        likely, detectable no, repairable no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        int main(void) {
+            int fd = bind_privileged_port(80);
+            serve_forever(fd);   /* still running as root */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int main(void) {
+            int fd = bind_privileged_port(80);
+            if (setgid(app_gid) != 0 || setuid(app_uid) != 0) {
+                return EXIT_FAILURE;
+            }
+            serve_forever(fd);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, posix, privileges]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/posix-pos/pos02-c

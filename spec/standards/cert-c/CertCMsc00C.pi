@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc00C:
+    standard: @{CertC}
+    ruleId: MSC00-C
+    title: Compile cleanly at high warning levels
+    statement:
+        Build with the highest warning level the compiler offers and fix the
+        code until it compiles without warnings. Do not silence a warning
+        without understanding it.
+    rationale:
+        Many warnings point at real defects, and a build that is normally
+        clean makes new warnings stand out. CERT rates likelihood probable,
+        detectable no, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        /* built with: cc -c parse.c */
+        int parse(const char *s) {
+            int n;
+            if (s) n = atoi(s);
+            return n;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* built with: cc -Wall -Wextra -Werror -c parse.c */
+        int parse(const char *s) {
+            int n = 0;
+            if (s) n = atoi(s);
+            return n;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, tooling, warnings]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc00-c

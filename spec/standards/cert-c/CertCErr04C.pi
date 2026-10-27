@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCErr04C:
+    standard: @{CertC}
+    ruleId: ERR04-C
+    title: Choose an appropriate termination strategy
+    statement:
+        When an error is serious enough to stop the program, choose how to
+        stop on purpose. Return from main or call exit for an orderly
+        shutdown that flushes and closes files, and use _Exit or abort only
+        when cleanup would be unsafe.
+    rationale:
+        The termination functions differ in whether they flush buffers,
+        remove temporary files and run atexit handlers, so the wrong choice
+        can lose data or leave the system in a bad state. CERT rates
+        likelihood probable, detectable no, repairable no, priority P4,
+        level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        if (config == NULL) {
+            fputs("no configuration\n", stderr);
+            abort();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (config == NULL) {
+            fputs("no configuration\n", stderr);
+            exit(EXIT_FAILURE);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, error-handling, termination]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/error-handling-err/err04-c

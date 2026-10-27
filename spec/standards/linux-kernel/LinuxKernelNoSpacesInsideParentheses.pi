@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoSpacesInsideParentheses:
+    standard: @{LinuxKernelStyle}
+    ruleId: 3.1c
+    title: Do not put spaces just inside parentheses
+    statement:
+        Do not add spaces after an opening parenthesis or before a closing
+        one.
+    rationale:
+        Padding inside parentheses is noise and departs from the common
+        style.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if ( count > limit )
+                count = clamp_count( count );
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (count > limit)
+                count = clamp_count(count);
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, whitespace]
+    source: https://docs.kernel.org/process/coding-style.html#spaces

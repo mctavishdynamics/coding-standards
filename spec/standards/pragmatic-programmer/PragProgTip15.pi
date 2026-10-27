@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip15:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-15
+    title: Give each piece of knowledge one authoritative home
+    statement:
+        Express every piece of knowledge in exactly one place in the system,
+        whether in code, data, configuration or documentation.
+    rationale:
+        Duplicated knowledge drifts apart when only some copies are updated.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def is_adult(user):
+            return user.age >= 18
+
+        def can_vote(user):
+            return user.age >= 18
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        ADULT_AGE = 18
+
+        def is_adult(user):
+            return user.age >= ADULT_AGE
+
+        def can_vote(user):
+            return is_adult(user)
+        \\\
+        ```
+    languages: [any]
+    tags: [duplication, dry]
+    source: https://pragprog.com/tips/

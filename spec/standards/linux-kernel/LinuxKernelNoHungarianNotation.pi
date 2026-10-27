@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoHungarianNotation:
+    standard: @{LinuxKernelStyle}
+    ruleId: 4b
+    title: Do not encode types in names
+    statement:
+        Do not use Hungarian notation or other prefixes that encode a
+        variable's or function's type in its name.
+    rationale:
+        The compiler already knows and checks the types, and the prefixes
+        only confuse the reader.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        unsigned long ulTimeout;
+        char *pszLabel;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        unsigned long timeout;
+        char *label;
+        \\\
+        ```
+    languages: [c]
+    tags: [naming]
+    source: https://docs.kernel.org/process/coding-style.html#naming

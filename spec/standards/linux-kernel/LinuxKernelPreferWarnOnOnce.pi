@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelPreferWarnOnOnce:
+    standard: @{LinuxKernelStyle}
+    ruleId: 22c
+    title: Prefer WARN_ON_ONCE to WARN and WARN_ON
+    statement:
+        Use WARN_ON_ONCE in preference to WARN or WARN_ON.
+    rationale:
+        A warning condition that happens once tends to happen many times,
+        which can flood and wrap the kernel log and slow the system into a
+        new problem of its own.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        WARN_ON(!skb->dev);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        WARN_ON_ONCE(!skb->dev);
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, logging, assertions]
+    source: https://docs.kernel.org/process/coding-style.html#use-warn-on-once-rather-than-warn-or-warn-on

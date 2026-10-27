@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj51J:
+    standard: @{CertJava}
+    ruleId: OBJ51-J
+    title: Minimize the accessibility of classes and their members
+    statement:
+        Give each class, interface, method and field the most restrictive
+        access level that still lets the program work. Make members private
+        or package-private unless they are part of a deliberate API.
+    rationale:
+        Excess access breaks encapsulation and gives untrusted code more
+        ways to call or change internals, which weakens security.
+    exceptions:
+        A system whose API is meant to be used or extended by third-party
+        code must expose that API publicly, and those needs override this
+        guideline.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class TokenStore {
+            public Map<String, String> tokens = new HashMap<>();
+
+            public void purgeAll() {
+                tokens.clear();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        final class TokenStore {
+            private final Map<String, String> tokens = new HashMap<>();
+
+            void purgeAll() {
+                tokens.clear();
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, access-control, encapsulation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/object-orientation-obj/obj51-j/

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl03C:
+    standard: @{CertC}
+    ruleId: DCL03-C
+    title:
+        Use a static assertion to test the value of a constant expression
+    statement:
+        Check assumptions about constant expressions, such as type sizes or
+        structure layout, with static_assert at compile time instead of
+        assert at run time.
+    rationale:
+        A static assertion costs nothing at run time, cannot abort a running
+        program, and catches the wrong assumption as soon as the code is
+        built. CERT rates likelihood unlikely, detectable yes, repairable
+        yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include <assert.h>
+
+        void check_layout(void) {
+            assert(sizeof(struct packet) == 32);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <assert.h>
+
+        static_assert(sizeof(struct packet) == 32,
+                      "struct packet must be 32 bytes");
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, assertions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl03-c

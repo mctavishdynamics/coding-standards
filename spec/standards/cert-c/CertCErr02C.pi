@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCErr02C:
+    standard: @{CertC}
+    ruleId: ERR02-C
+    title: Avoid in-band error indicators
+    statement:
+        When designing a function, report errors separately from the result,
+        for example by returning a status code and passing the result back
+        through a pointer argument. Do not reserve one value of the result
+        type to mean failure.
+    rationale:
+        A value that doubles as an error marker is easily mistaken for a
+        valid result or forgotten by callers, as happens with EOF and with a
+        negative size returned in a signed type. CERT rates likelihood
+        unlikely, detectable no, repairable no, priority P1, level L3.
+    exceptions:
+        Null pointers may still signal failure because the language supports
+        them. A function may also use an in-band indicator when the program
+        is guaranteed not to keep processing after an error.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        /* Returns the port, or -1 on error. */
+        int parse_port(const char *s);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* Returns 0 on success and stores the port in *port. */
+        int parse_port(const char *s, unsigned short *port);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, error-handling, api-design]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/error-handling-err/err02-c

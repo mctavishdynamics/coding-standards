@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellDeadCode:
+    standard: @{RefactoringGuruSmells}
+    ruleId: dead-code
+    title: Delete code that is no longer used
+    statement:
+        Remove unused variables, parameters, fields, methods, classes,
+        files and unreachable branches instead of leaving them in place.
+        Usual fixes: delete the code, Inline Class, Collapse Hierarchy,
+        Remove Parameter.
+    rationale:
+        Old code left behind after requirements change still has to be read
+        and understood, and it misleads readers about what the program does.
+        Version control keeps it if it is ever needed again.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        double price(Order order, boolean legacyMode) {
+            if (false && legacyMode) {
+                return order.base() * 1.1;
+            }
+            return order.base();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        double price(Order order) {
+            return order.base();
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [dispensables, dead-code, simplicity]
+    source: https://refactoring.guru/smells/dead-code

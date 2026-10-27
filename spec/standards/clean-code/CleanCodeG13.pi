@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG13:
+    standard: @{CleanCode}
+    ruleId: G13
+    title: Avoid artificial coupling
+    statement:
+        Do not couple things that do not depend on each other. Put general
+        enums, constants and utility functions where they belong instead of
+        inside an unrelated class that happened to be convenient.
+    rationale:
+        Placing code in the wrong home creates dependencies that have no
+        purpose and make modules harder to reuse or change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class InvoicePdfExporter {
+            static String formatIsoDate(LocalDate d) { return d.toString(); }
+        }
+
+        class AuditLog {
+            String stamp(LocalDate d) { return InvoicePdfExporter.formatIsoDate(d); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        final class Dates {
+            static String formatIso(LocalDate d) { return d.toString(); }
+        }
+
+        class AuditLog {
+            String stamp(LocalDate d) { return Dates.formatIso(d); }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [coupling, design]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

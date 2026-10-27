@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj57J:
+    standard: @{CertJava}
+    ruleId: OBJ57-J
+    title: Do not rely on methods that can be overridden by untrusted code
+    statement:
+        When trusted code calls methods such as equals(), hashCode() or
+        run() on objects that untrusted code can subclass, protect against
+        overridden behavior. Make the class final, or use mechanisms that do
+        not depend on those methods, such as IdentityHashMap.
+    rationale:
+        An attacker who overrides these methods can leak information, run
+        arbitrary code or cause a denial of service when the trusted code
+        calls them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        private final Map<Credential, Session> sessions = new HashMap<>();
+
+        void login(Credential c) {
+            sessions.put(c, new Session());  // relies on c.hashCode()
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private final Map<Credential, Session> sessions = new IdentityHashMap<>();
+
+        void login(Credential c) {
+            sessions.put(c, new Session());
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, inheritance, untrusted-code]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/object-orientation-obj/obj57-j/

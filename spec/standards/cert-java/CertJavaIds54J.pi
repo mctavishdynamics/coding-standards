@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds54J:
+    standard: @{CertJava}
+    ruleId: IDS54-J
+    title: Prevent LDAP injection
+    statement:
+        Sanitize untrusted data before it is used in an LDAP search filter.
+        Restrict it to an allowlist of safe characters, or escape LDAP and
+        JNDI metacharacters such as the asterisk, parentheses and backslash.
+    rationale:
+        Unsanitized input can change the structure of an LDAP filter,
+        letting an attacker list restricted entries or bypass authentication
+        checks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String filter = "(&(uid=" + userId + ")(objectClass=person))";
+        NamingEnumeration<SearchResult> r = ctx.search("ou=people", filter, controls);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (!userId.matches("[A-Za-z0-9._-]{1,32}")) {
+            throw new IllegalArgumentException("Invalid user id");
+        }
+        String filter = "(&(uid=" + userId + ")(objectClass=person))";
+        NamingEnumeration<SearchResult> r = ctx.search("ou=people", filter, controls);
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, injection, ldap]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/input-validation-and-data-sanitization-ids/ids54-j/

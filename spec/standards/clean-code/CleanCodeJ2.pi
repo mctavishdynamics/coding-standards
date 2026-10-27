@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeJ2:
+    standard: @{CleanCode}
+    ruleId: J2
+    title: Do not inherit constants
+    statement:
+        Do not put constants in an interface and implement it, or inherit
+        them through a base class, just to use them without a prefix. Use a
+        static import instead.
+    rationale:
+        Inherited constants are hard to trace, because the reader has to
+        search up the hierarchy to find where a name comes from.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        interface PayrollConstants {
+            int WORK_DAYS_PER_WEEK = 5;
+        }
+
+        class Payroll implements PayrollConstants {
+            int days() { return WORK_DAYS_PER_WEEK; }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        import static com.example.payroll.PayrollConstants.WORK_DAYS_PER_WEEK;
+
+        class Payroll {
+            int days() { return WORK_DAYS_PER_WEEK; }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [constants, inheritance]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

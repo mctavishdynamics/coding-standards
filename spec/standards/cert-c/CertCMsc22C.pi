@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc22C:
+    standard: @{CertC}
+    ruleId: MSC22-C
+    title: Use the setjmp(), longjmp() facility securely
+    statement:
+        Call setjmp only in the contexts the standard allows, such as the
+        whole controlling expression of an if or switch. After longjmp, do
+        not read local variables changed since setjmp unless they are
+        volatile, and never jump into a function that has already returned.
+    rationale:
+        Misusing setjmp and longjmp is undefined behavior and can corrupt
+        local state or the stack. CERT rates likelihood probable, detectable
+        no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        jmp_buf env;
+        int attempts = 0;
+        int rc = setjmp(env);
+        attempts++;
+        if (attempts < 3) {
+            risky();   /* may longjmp(env, 1) */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        jmp_buf env;
+        volatile int attempts = 0;
+        if (setjmp(env) != 0) {
+            /* returned through longjmp */
+        }
+        attempts++;
+        if (attempts < 3) {
+            risky();   /* may longjmp(env, 1) */
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, control-flow, undefined-behavior]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc22-c

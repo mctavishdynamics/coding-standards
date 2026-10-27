@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds52J:
+    standard: @{CertJava}
+    ruleId: IDS52-J
+    title: Prevent code injection
+    statement:
+        Never pass untrusted input into code that is built and run
+        dynamically, such as scripts evaluated through javax.script.
+        Validate input against a strict allowlist, or bind it as data and
+        run the script in a restricted sandbox.
+    rationale:
+        A script engine runs whatever code it is given with the program's
+        privileges. Concatenating attacker input into a script lets the
+        attacker execute arbitrary code on the system.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        ScriptEngine js = new ScriptEngineManager().getEngineByName("javascript");
+        js.eval("print('Hello, " + userName + "')");
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (!userName.matches("[A-Za-z0-9 ]{1,40}")) {
+            throw new IllegalArgumentException("Invalid name");
+        }
+        ScriptEngine js = new ScriptEngineManager().getEngineByName("javascript");
+        Bindings vars = js.createBindings();
+        vars.put("name", userName);
+        js.eval("print('Hello, ' + name)", vars);
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, injection, scripting]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/input-validation-and-data-sanitization-ids/ids52-j/

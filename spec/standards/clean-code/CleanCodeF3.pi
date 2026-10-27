@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeF3:
+    standard: @{CleanCode}
+    ruleId: F3
+    title: Do not pass boolean flags to functions
+    statement:
+        Replace a boolean argument that switches behavior with separate
+        functions, each named for what it does.
+    rationale:
+        A flag argument shows that the function does more than one thing,
+        and a bare true or false at the call site says nothing to the
+        reader.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void render(Page page, boolean draft) {
+            if (draft) {
+                renderWithWatermark(page);
+            } else {
+                renderFinal(page);
+            }
+        }
+
+        render(page, true);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void renderDraft(Page page) {
+            renderWithWatermark(page);
+        }
+
+        void renderFinal(Page page) {
+            // ...
+        }
+
+        renderDraft(page);
+        \\\
+        ```
+    languages: [any]
+    tags: [functions, arguments]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

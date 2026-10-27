@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj55J:
+    standard: @{CertJava}
+    ruleId: OBJ55-J
+    title: Remove short-lived objects from long-lived container objects
+    statement:
+        When a task finishes, remove the objects it put into long-lived
+        containers, or clear the slot, for example by nulling an array
+        element or using a null object.
+    rationale:
+        A container that outlives its entries keeps them reachable, so the
+        memory is never reclaimed and the program can run out of memory.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Registry {
+            private final List<Session> active = new ArrayList<>();
+
+            void open(Session s) {
+                active.add(s);
+            }
+
+            void close(Session s) {
+                s.release();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Registry {
+            private final List<Session> active = new ArrayList<>();
+
+            void open(Session s) {
+                active.add(s);
+            }
+
+            void close(Session s) {
+                s.release();
+                active.remove(s);
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, memory, collections, denial-of-service]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/object-orientation-obj/obj55-j/

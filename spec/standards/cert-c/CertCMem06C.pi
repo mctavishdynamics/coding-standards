@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem06C:
+    standard: @{CertC}
+    ruleId: MEM06-C
+    title: Ensure that sensitive data is not written out to disk
+    statement:
+        Keep secrets such as passwords and keys from being written to disk
+        through swapping or core dumps, for example by locking their pages
+        in memory and disabling core dumps.
+    rationale:
+        Swap files and core dumps can persist secrets on disk where other
+        users or attackers may read them. CERT rates likelihood unlikely,
+        detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        char *secret = malloc(SECRET_SIZE);
+        read_secret(secret);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <sys/mman.h>
+        #include <sys/resource.h>
+
+        struct rlimit none = { 0, 0 };
+        setrlimit(RLIMIT_CORE, &none);
+
+        char *secret = malloc(SECRET_SIZE);
+        if (secret == NULL || mlock(secret, SECRET_SIZE) != 0) {
+            abort();
+        }
+        read_secret(secret);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, memory, security, sensitive-data]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/memory-management-mem/mem06-c

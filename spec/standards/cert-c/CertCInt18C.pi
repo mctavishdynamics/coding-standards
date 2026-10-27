@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt18C:
+    standard: @{CertC}
+    ruleId: INT18-C
+    title:
+        Evaluate integer expressions in a larger size before comparing or
+        assigning to that size
+    statement:
+        When an expression is compared with or assigned to a wider type,
+        cast one operand to the wider type first so the arithmetic happens
+        at that width.
+    rationale:
+        Otherwise the operation is done in the narrower type and may
+        overflow or wrap before the result is widened. CERT rates likelihood
+        likely, detectable no, repairable yes, priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        unsigned int width = 70000;
+        unsigned int height = 70000;
+        unsigned long long pixels = width * height;   /* wraps */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        unsigned int width = 70000;
+        unsigned int height = 70000;
+        unsigned long long pixels = (unsigned long long)width * height;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, overflow, conversions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int18-c

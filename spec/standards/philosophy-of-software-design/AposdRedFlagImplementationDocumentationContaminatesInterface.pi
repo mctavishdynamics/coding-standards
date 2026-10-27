@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdRedFlagImplementationDocumentationContaminatesInterface:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: red-flag-implementation-documentation-contaminates-interface
+    title: Avoid implementation details in interface documentation
+    statement:
+        Avoid describing how a method or class works inside its interface
+        comment. Document what callers need to use it, and put
+        implementation notes in the body.
+    rationale:
+        Implementation details in interface documentation make the
+        abstraction seem more complicated and tie callers to things that may
+        change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        /** Looks up the key in a HashMap, then falls back to a
+         *  linear scan of the overflow ArrayList. */
+        Item find(String key);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        /** Returns the item stored under key, or null if none. */
+        Item find(String key);
+        \\\
+        ```
+    languages: [any]
+    tags: [red-flag, comments, documentation, interfaces]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoMagicLocalNamesInMacros:
+    standard: @{LinuxKernelStyle}
+    ruleId: 12g
+    title: Do not write macros that rely on a local variable with a fixed name
+    statement:
+        Pass everything a macro uses as an argument rather than relying on a
+        local variable that happens to exist at the call site.
+    rationale:
+        Such macros are confusing to read and break with harmless-looking
+        changes such as renaming the local.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define REG_WRITE(off, val) writel(val, priv->base + (off))
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define REG_WRITE(p, off, val) writel(val, (p)->base + (off))
+        \\\
+        ```
+    languages: [c]
+    tags: [macros]
+    source: https://docs.kernel.org/process/coding-style.html#macros-enums-and-rtl

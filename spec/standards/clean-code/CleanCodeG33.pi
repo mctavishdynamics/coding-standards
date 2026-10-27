@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG33:
+    standard: @{CleanCode}
+    ruleId: G33
+    title: Encapsulate boundary conditions
+    statement:
+        Keep the handling of a boundary, such as an off-by-one adjustment,
+        in one place instead of scattering the plus one and minus one
+        through the code.
+    rationale:
+        Boundary arithmetic is hard to track, and repeated copies of it
+        drift apart.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String page = text.substring(start, Math.min(start + pageSize, text.length()));
+        boolean hasMore = start + pageSize < text.length();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int end = Math.min(start + pageSize, text.length());
+        String page = text.substring(start, end);
+        boolean hasMore = end < text.length();
+        \\\
+        ```
+    languages: [any]
+    tags: [edge-cases, readability]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

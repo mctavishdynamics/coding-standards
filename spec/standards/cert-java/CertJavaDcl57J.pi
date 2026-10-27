@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl57J:
+    standard: @{CertJava}
+    ruleId: DCL57-J
+    title: Avoid ambiguous overloading of variable arity methods
+    statement:
+        Do not overload a variable arity method in a way that makes it
+        unclear which overload a call selects. Give the methods distinct
+        names instead.
+    rationale:
+        Overloads that differ only in varargs or boxed parameter types
+        confuse callers about which method runs and reduce readability.
+    exceptions:
+        Fixed-arity overloads may sit beside a varargs method for
+        performance, to avoid creating an array on common calls, provided
+        every overload has the same behavior.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void display(boolean... flags) { }
+        void display(boolean a, Boolean... rest) { }
+
+        display(true, false);  // ambiguous
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void displayAll(boolean... flags) { }
+        void displayFirstAndRest(boolean a, Boolean... rest) { }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, overloading, varargs, api-design]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/declarations-and-initialization-dcl/dcl57-j/

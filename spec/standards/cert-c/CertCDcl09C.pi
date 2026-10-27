@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl09C:
+    standard: @{CertC}
+    ruleId: DCL09-C
+    title:
+        Declare functions that return errno with a return type of errno_t
+    statement:
+        In new code, declare functions that return an errno value as
+        returning errno_t rather than int.
+    rationale:
+        An int return does not say whether it carries an error code or a
+        result, while errno_t makes clear that the value is an error status.
+        CERT rates likelihood unlikely, detectable no, repairable yes,
+        priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include <errno.h>
+
+        int open_config(const char *path);   /* returns errno value */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define __STDC_WANT_LIB_EXT1__ 1
+        #include <errno.h>
+
+        errno_t open_config(const char *path);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl09-c

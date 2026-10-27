@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc52J:
+    standard: @{CertJava}
+    ruleId: MSC52-J
+    title: Finish every set of statements associated with a case label with a break statement
+    statement:
+        End the statements under each case label of a switch with a break,
+        or another statement that leaves the switch, unless fall-through is
+        intended and commented.
+    rationale:
+        A missing break silently runs the next case, and the compiler gives
+        no warning.
+    exceptions:
+        The break after the final case, usually default, may be omitted.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        switch (level) {
+            case 1:
+                grantRead();
+            case 2:
+                grantWrite();
+                break;
+            default:
+                deny();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        switch (level) {
+            case 1:
+                grantRead();
+                break;
+            case 2:
+                grantWrite();
+                break;
+            default:
+                deny();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, control-flow, switch]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/miscellaneous-msc/msc52-j/

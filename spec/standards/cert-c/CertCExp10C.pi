@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp10C:
+    standard: @{CertC}
+    ruleId: EXP10-C
+    title:
+        Do not depend on the order of evaluation of subexpressions or the
+        order in which side effects take place
+    statement:
+        Write expressions so their result does not depend on which operand
+        or function argument is evaluated first or when side effects happen.
+    rationale:
+        The order is mostly unspecified, so different compilers or
+        optimization levels may produce different results from the same
+        code. CERT rates likelihood probable, detectable no, repairable yes,
+        priority P8, level L2.
+    exceptions:
+        The order is defined for the operands of && and ||, the first
+        operand of the conditional operator, the arguments before a function
+        call and the left operand of the comma operator.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int total = read_byte(stream) - read_byte(stream);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int first = read_byte(stream);
+        int second = read_byte(stream);
+        int total = first - second;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, side-effects, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp10-c

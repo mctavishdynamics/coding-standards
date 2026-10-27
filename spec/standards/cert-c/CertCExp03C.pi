@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp03C:
+    standard: @{CertC}
+    ruleId: EXP03-C
+    title:
+        Do not assume the size of a structure is the sum of the sizes of its
+        members
+    statement:
+        Use sizeof on the structure itself whenever its size is needed.
+        Never add up the sizes of its members.
+    rationale:
+        Compilers insert padding between and after members for alignment, so
+        the sum of member sizes is often too small and leads to buffer
+        overflows. CERT rates likelihood unlikely, detectable no, repairable
+        no, priority P3, level L3.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        struct record {
+            char tag;
+            int value;
+        };
+
+        void *p = malloc(sizeof(char) + sizeof(int));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct record {
+            char tag;
+            int value;
+        };
+
+        void *p = malloc(sizeof(struct record));
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, structures, sizeof]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp03-c

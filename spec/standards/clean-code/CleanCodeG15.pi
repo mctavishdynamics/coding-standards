@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG15:
+    standard: @{CleanCode}
+    ruleId: G15
+    title: Avoid selector arguments
+    statement:
+        Do not pass a boolean, enum or integer whose only job is to pick
+        which behavior a function runs. Split it into several functions
+        instead.
+    rationale:
+        Selector arguments bundle many functions into one and hide their
+        purpose behind an opaque value at the call site.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Money pay(Employee e, boolean overtime) {
+            return overtime ? e.rate().times(1.5) : e.rate();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Money straightPay(Employee e) { return e.rate(); }
+        Money overtimePay(Employee e) { return e.rate().times(1.5); }
+        \\\
+        ```
+    languages: [any]
+    tags: [functions, arguments]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

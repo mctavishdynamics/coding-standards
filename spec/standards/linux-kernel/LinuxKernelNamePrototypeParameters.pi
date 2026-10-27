@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNamePrototypeParameters:
+    standard: @{LinuxKernelStyle}
+    ruleId: 6.1a
+    title: Include parameter names in function prototypes
+    statement:
+        Give every parameter in a function prototype its name as well as its
+        type.
+    rationale:
+        C does not require the names, but they tell the reader what each
+        argument is for at little cost.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int copy_block(struct device *, void *, size_t);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int copy_block(struct device *dev, void *dst, size_t len);
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, declarations]
+    source: https://docs.kernel.org/process/coding-style.html#function-prototypes

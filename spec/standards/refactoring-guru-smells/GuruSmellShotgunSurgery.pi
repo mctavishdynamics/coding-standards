@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellShotgunSurgery:
+    standard: @{RefactoringGuruSmells}
+    ruleId: shotgun-surgery
+    title: Avoid changes that need small edits in many classes
+    statement:
+        When a single change means touching many classes a little each,
+        gather the scattered responsibility into one class. Usual fixes:
+        Move Method, Move Field, Inline Class.
+    rationale:
+        A responsibility spread thinly across the code makes every change
+        slow and error prone, because missing one of the many edit sites
+        leaves a bug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Invoice  { BigDecimal tax() { return net.multiply(new BigDecimal("0.2")); } }
+        class Quote    { BigDecimal tax() { return net.multiply(new BigDecimal("0.2")); } }
+        class Receipt  { BigDecimal tax() { return net.multiply(new BigDecimal("0.2")); } }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class TaxPolicy {
+            static final BigDecimal RATE = new BigDecimal("0.2");
+            static BigDecimal taxOn(BigDecimal net) { return net.multiply(RATE); }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [change-preventers, cohesion, coupling]
+    source: https://refactoring.guru/smells/shotgun-surgery

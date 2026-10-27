@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl54J:
+    standard: @{CertJava}
+    ruleId: DCL54-J
+    title: Use meaningful symbolic constants to represent literal values in program logic
+    statement:
+        Replace literals whose meaning is unclear, or which are used in
+        several places, with named constants such as static final fields or
+        enums. Use predefined constants like Math.PI where they exist.
+    rationale:
+        Bare literals hide their meaning, and changing one means finding
+        every copy and telling apart the uses that share a value only by
+        coincidence.
+    exceptions:
+        Do not introduce a symbolic constant when the literal's meaning is
+        obvious or the value is unlikely to change, because it would make
+        the code harder to read.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        if (password.length() < 12) {
+            reject();
+        }
+        double area = 3.14 * r * r;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private static final int MIN_PASSWORD_LENGTH = 12;
+
+        if (password.length() < MIN_PASSWORD_LENGTH) {
+            reject();
+        }
+        double area = Math.PI * r * r;
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, constants, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/declarations-and-initialization-dcl/dcl54-j/

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellLazyElement:
+    standard: @{FowlerRefactoring}
+    ruleId: lazy-element
+    title: Remove program elements that add no value
+    statement:
+        Avoid functions, classes and hierarchies that add structure
+        without adding meaning, for example a function whose body reads
+        just like its name or a class with one simple method. Inline them.
+        Usual fixes: Inline Function, Inline Class, Collapse Hierarchy.
+    rationale:
+        Structure is worth having only when it pays for itself. Elements
+        kept for growth that never came, or left after their work moved,
+        just add indirection.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function isAdult(person) {
+          return isEighteenOrOver(person);
+        }
+        function isEighteenOrOver(person) {
+          return person.age >= 18;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function isAdult(person) {
+          return person.age >= 18;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [simplicity, indirection]
+    source: https://martinfowler.com/books/refactoring.html

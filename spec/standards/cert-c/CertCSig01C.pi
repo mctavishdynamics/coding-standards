@@ -1,0 +1,55 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCSig01C:
+    standard: @{CertC}
+    ruleId: SIG01-C
+    title:
+        Understand implementation-specific details regarding signal handler
+        persistence
+    statement:
+        Do not assume that a handler installed with signal stays installed
+        after it runs. Use sigaction, which keeps the handler unless told
+        otherwise, or decide explicitly what the default should be after the
+        first signal.
+    rationale:
+        Some systems reset the disposition to the default when a handler is
+        called and others keep it, so a second signal may kill the program
+        on one platform and be caught on another. CERT rates likelihood
+        unlikely, detectable no, repairable no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        volatile sig_atomic_t hangups = 0;
+
+        void on_hup(int sig) {
+            hangups++;
+        }
+
+        /* in main */
+        signal(SIGHUP, on_hup);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        volatile sig_atomic_t hangups = 0;
+
+        void on_hup(int sig) {
+            hangups++;
+        }
+
+        /* in main */
+        struct sigaction sa;
+        memset(&sa, 0, sizeof sa);
+        sa.sa_handler = on_hup;
+        sigemptyset(&sa.sa_mask);
+        sigaction(SIGHUP, &sa, NULL);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, signals, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/signals-sig/sig01-c

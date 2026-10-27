@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelLinuxStandardIntegerTypes:
+    standard: @{LinuxKernelStyle}
+    ruleId: 5e
+    title: Use u8 to u64 or the C99 types, and follow the existing code
+    statement:
+        The Linux integer types u8, u16, u32 and u64 and their signed forms
+        are allowed even though they equal standard C99 types, but they are
+        not required in new code. When editing existing code, keep to
+        whichever set it already uses.
+    rationale:
+        Both sets are acceptable, and mixing them within one piece of code
+        is needlessly inconsistent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* in a file that uses u32 throughout */
+        uint32_t new_flags;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* in a file that uses u32 throughout */
+        u32 new_flags;
+        \\\
+        ```
+    languages: [c]
+    tags: [typedefs, types, consistency]
+    source: https://docs.kernel.org/process/coding-style.html#typedefs

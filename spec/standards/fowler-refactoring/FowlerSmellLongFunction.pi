@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellLongFunction:
+    standard: @{FowlerRefactoring}
+    ruleId: long-function
+    title: Break long functions into small well-named ones
+    statement:
+        Avoid long functions. Whenever you feel a block needs a comment, or
+        a conditional or loop does a distinct piece of work, pull it into a
+        function named for its intent, even if the body is a single line.
+        Usual fixes: Extract Function, Replace Temp with Query, Introduce
+        Parameter Object, Preserve Whole Object, Replace Function with
+        Command, Decompose Conditional, Replace Conditional with
+        Polymorphism, Split Loop.
+    rationale:
+        Short functions with good names explain the code through their
+        names, and the gap between what a function does and how it does it
+        becomes easy to bridge. Modern environments make the cost of the
+        extra calls negligible.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function printStatement(account) {
+          let balance = 0;
+          for (const tx of account.transactions) {
+            balance += tx.type === "debit" ? -tx.amount : tx.amount;
+          }
+          // overdraft warning
+          if (balance < 0 && !account.overdraftAgreed) {
+            console.log("WARNING: account is overdrawn");
+          }
+          console.log(`${account.owner}: ${balance.toFixed(2)}`);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function printStatement(account) {
+          const balance = balanceOf(account);
+          if (isUnarrangedOverdraft(account, balance)) warnOverdrawn();
+          console.log(`${account.owner}: ${balance.toFixed(2)}`);
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [functions, readability]
+    source: https://martinfowler.com/bliki/FunctionLength.html

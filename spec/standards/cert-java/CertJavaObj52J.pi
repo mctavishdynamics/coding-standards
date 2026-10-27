@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj52J:
+    standard: @{CertJava}
+    ruleId: OBJ52-J
+    title: Write garbage-collection-friendly code
+    statement:
+        Work with the garbage collector rather than against it. Prefer
+        short-lived immutable objects, avoid very large objects and do not
+        call System.gc() explicitly.
+    rationale:
+        Abnormal allocation, prolonged retention or forced collections hurt
+        performance, and an attacker who can trigger them may cause a denial
+        of service.
+    exceptions:
+        System.gc() may be called between application phases, such as after
+        initialization, when a quiet period allows a heap compaction.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void handle(Request r) {
+            process(r);
+            System.gc();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void handle(Request r) {
+            process(r);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, garbage-collection, performance, denial-of-service]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/object-orientation-obj/obj52-j/

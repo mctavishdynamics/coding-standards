@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCStr03C:
+    standard: @{CertC}
+    ruleId: STR03-C
+    title: Do not inadvertently truncate a string
+    statement:
+        When using bounded functions such as strncpy, snprintf or fgets,
+        check whether the data was truncated and handle it, or size the
+        destination to fit.
+    rationale:
+        Silent truncation loses data and can change meaning, for example
+        turning a path or a command into a different one. CERT rates
+        likelihood probable, detectable no, repairable no, priority P4,
+        level L3.
+    exceptions:
+        Truncation is acceptable when it is the programmer's deliberate
+        intent.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        char path[64];
+        snprintf(path, sizeof(path), "%s/%s", dir, file);
+        open_file(path);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char path[64];
+        int n = snprintf(path, sizeof(path), "%s/%s", dir, file);
+        if (n < 0 || (size_t)n >= sizeof(path)) {
+            return -1;
+        }
+        open_file(path);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, strings, truncation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/characters-and-strings-str/str03-c

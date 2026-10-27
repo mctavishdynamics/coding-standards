@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt16C:
+    standard: @{CertC}
+    ruleId: INT16-C
+    title:
+        Do not make assumptions about representation of signed integers
+    statement:
+        Do not rely on a particular signed integer representation, for
+        example by using bitwise operations to test the sign or compute
+        absolute values. Use ordinary comparisons and arithmetic.
+    rationale:
+        Older C standards allow sign and magnitude, ones' complement and
+        two's complement, so bit tricks that work on one representation fail
+        on another. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int is_negative(int x) {
+            return (x & 0x80000000) != 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int is_negative(int x) {
+            return x < 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int16-c

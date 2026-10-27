@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeT4:
+    standard: @{CleanCode}
+    ruleId: T4
+    title: Treat an ignored test as a question about ambiguity
+    statement:
+        When requirements are unclear, write the test anyway and mark it
+        ignored or disabled. Its presence records the open question until
+        someone answers it.
+    rationale:
+        A disabled test makes an unresolved requirement visible instead of
+        letting it be forgotten.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        // Not sure what should happen for negative amounts, skipping for now.
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Disabled("Ask product: should a negative refund be rejected or reversed?")
+        @Test
+        void negativeRefund() {
+            assertThrows(IllegalArgumentException.class, () -> refunds.issue(-5));
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, requirements]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

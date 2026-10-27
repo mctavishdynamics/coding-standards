@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp01C:
+    standard: @{CertC}
+    ruleId: FLP01-C
+    title: Take care in rearranging floating-point expressions
+    statement:
+        Do not rearrange a floating-point expression as if the associative
+        and distributive laws held, and choose the order of operations that
+        keeps the result most accurate.
+    rationale:
+        Rounding makes algebraically equal forms produce different results,
+        so a rewrite can change the program's output. CERT rates likelihood
+        probable, detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        /* rewritten from (big + small) - big */
+        double d = small + (big - big);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* keep the order that was analysed for accuracy */
+        double d = (big + small) - big;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, floating-point, precision, expressions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/floating-point-flp/flp01-c

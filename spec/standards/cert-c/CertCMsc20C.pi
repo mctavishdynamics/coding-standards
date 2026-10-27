@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc20C:
+    standard: @{CertC}
+    ruleId: MSC20-C
+    title:
+        Do not use a switch statement to transfer control into a complex
+        block
+    statement:
+        Do not place case labels inside loops or other blocks so that a
+        switch jumps into the middle of them, as in Duff's device. Keep each
+        case label at the top level of the switch body.
+    rationale:
+        Jumping into a block is hard to read and can skip initialization,
+        which is undefined behavior for variably modified types. CERT rates
+        likelihood probable, detectable yes, repairable no, priority P8,
+        level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        switch (n % 4) {
+        case 0:
+            do {
+                *dst++ = *src++;
+        case 3: *dst++ = *src++;
+        case 2: *dst++ = *src++;
+        case 1: *dst++ = *src++;
+            } while ((n -= 4) > 0);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (size_t i = 0; i < n; i++) {
+            dst[i] = src[i];
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, control-flow, switch, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc20-c

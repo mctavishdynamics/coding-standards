@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCSig00C:
+    standard: @{CertC}
+    ruleId: SIG00-C
+    title: Mask signals handled by noninterruptible signal handlers
+    statement:
+        When a signal handler must not be interrupted, block the other
+        signals it could race with while it runs, for example with the
+        sa_mask field of POSIX sigaction.
+    rationale:
+        A second signal arriving during a handler can interrupt it midway
+        and leave shared state inconsistent or run code that is not
+        async-signal-safe. CERT rates likelihood likely, detectable no,
+        repairable no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        void on_term(int sig);
+
+        void install(void) {
+            signal(SIGTERM, on_term);
+            signal(SIGINT, on_term);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void on_term(int sig);
+
+        void install(void) {
+            struct sigaction sa;
+            memset(&sa, 0, sizeof sa);
+            sa.sa_handler = on_term;
+            sigemptyset(&sa.sa_mask);
+            sigaddset(&sa.sa_mask, SIGTERM);
+            sigaddset(&sa.sa_mask, SIGINT);
+            sigaction(SIGTERM, &sa, NULL);
+            sigaction(SIGINT, &sa, NULL);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, signals, concurrency]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/signals-sig/sig00-c

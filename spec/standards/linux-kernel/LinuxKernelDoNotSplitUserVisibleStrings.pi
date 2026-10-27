@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelDoNotSplitUserVisibleStrings:
+    standard: @{LinuxKernelStyle}
+    ruleId: 2c
+    title: Never break user-visible strings across lines
+    statement:
+        Keep messages such as printk strings on one line, even if the line
+        goes past 80 columns.
+    rationale:
+        A split message cannot be found by searching the source for the text
+        a user saw in the log.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        pr_err("failed to allocate DMA buffer "
+               "for channel %d\n", ch);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        pr_err("failed to allocate DMA buffer for channel %d\n", ch);
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, line-length, logging]
+    source: https://docs.kernel.org/process/coding-style.html#breaking-long-lines-and-strings

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp07C:
+    standard: @{CertC}
+    ruleId: FLP07-C
+    title:
+        Cast the return value of a function that returns a floating-point
+        type
+    statement:
+        Cast the value in a floating-point return statement, or the result
+        at the call site, to the declared floating type.
+    rationale:
+        An implementation may compute and return floating values with more
+        range and precision than the type, and only a cast or assignment
+        forces the declared precision. CERT rates likelihood probable,
+        detectable no, repairable yes, priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        float percent(float part, float whole) {
+            return part / whole * 100.0f;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        float percent(float part, float whole) {
+            return (float)(part / whole * 100.0f);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, floating-point, precision, functions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/floating-point-flp/flp07-c

@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellIncompleteLibraryClass:
+    standard: @{RefactoringGuruSmells}
+    ruleId: incomplete-library-class
+    title: Extend a library class you cannot change in one place
+    statement:
+        When a read-only library lacks features you need, do not scatter
+        workarounds through the code; add the missing operations in one
+        foreign method or a local extension class. Usual fixes: Introduce
+        Foreign Method, Introduce Local Extension.
+    rationale:
+        Library authors may never add the feature you need. Gathering the
+        extra behavior in one place avoids copies of the same workaround and
+        keeps the gap visible.
+    exceptions:
+        Extending the library can cost more than it saves when the extension
+        forces changes to existing code.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        LocalDate due = issued.plusDays(30);
+        while (due.getDayOfWeek() == SATURDAY || due.getDayOfWeek() == SUNDAY) {
+            due = due.plusDays(1);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        final class BusinessDays {
+            static LocalDate nextWorkingDay(LocalDate date) {
+                LocalDate d = date;
+                while (d.getDayOfWeek() == SATURDAY || d.getDayOfWeek() == SUNDAY) {
+                    d = d.plusDays(1);
+                }
+                return d;
+            }
+        }
+        LocalDate due = BusinessDays.nextWorkingDay(issued.plusDays(30));
+        \\\
+        ```
+    languages: [any]
+    tags: [couplers, libraries, extension]
+    source: https://refactoring.guru/smells/incomplete-library-class

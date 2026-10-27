@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc61J:
+    standard: @{CertJava}
+    ruleId: MSC61-J
+    title: Do not use insecure or weak cryptographic algorithms
+    statement:
+        Do not protect sensitive data with broken or weak algorithms such as
+        DES, RC4, MD5 or SHA-1. Use current algorithms and modes such as AES
+        with GCM.
+    rationale:
+        Weak cryptography can be broken by brute force or known attacks,
+        exposing the protected information.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        cipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(128, iv));
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, cryptography]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/miscellaneous-msc/msc61-j/

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl16C:
+    standard: @{CertC}
+    ruleId: DCL16-C
+    title: Use "L," not "l," to indicate a long value
+    statement:
+        Write integer suffixes with an uppercase L, and LL for long long,
+        never a lowercase l as the first suffix letter.
+    rationale:
+        A lowercase l looks like the digit 1, so 10l is easily read as 101.
+        CERT rates likelihood unlikely, detectable yes, repairable yes,
+        priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        long timeout = 1000l;
+        long long big = 30ll;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        long timeout = 1000L;
+        long long big = 30LL;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, readability, constants]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl16-c

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp05C:
+    standard: @{CertC}
+    ruleId: EXP05-C
+    title: Do not cast away a const qualification
+    statement:
+        Do not cast a pointer to const into a pointer to non-const, because
+        it allows the referenced object to be modified.
+    rationale:
+        Modifying an object defined as const is undefined behavior, and such
+        objects may live in read-only memory. CERT rates likelihood
+        probable, detectable no, repairable no, priority P4, level L3.
+    exceptions:
+        Casting away const is acceptable to call a legacy API that does not
+        modify the data, for some standard library functions that return
+        non-const pointers into const arguments, and inside the functions
+        that maintain a type whose members are const to everyone else.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        void trim(const char *s) {
+            char *p = (char *)s;
+            p[strcspn(p, "\n")] = '\0';
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void trim(char *s) {
+            s[strcspn(s, "\n")] = '\0';
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, const, casts]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp05-c

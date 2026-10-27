@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc21C:
+    standard: @{CertC}
+    ruleId: MSC21-C
+    title: Use robust loop termination conditions
+    statement:
+        End counting loops with a relational test such as less than, rather
+        than an equality test, so that a counter that skips past the limit
+        still stops the loop.
+    rationale:
+        With an equality test, a counter that steps over the end value or
+        starts beyond it runs past the end and the loop may never terminate.
+        CERT rates likelihood unlikely, detectable no, repairable no,
+        priority P1, level L3.
+    exceptions:
+        An equality test is fine when the counter moves by one each time and
+        its start is known to be on the correct side of the end value.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        for (size_t i = start; i != end; i += 2) {
+            process(buf[i]);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (size_t i = start; i < end; i += 2) {
+            process(buf[i]);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, control-flow, loops]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc21-c

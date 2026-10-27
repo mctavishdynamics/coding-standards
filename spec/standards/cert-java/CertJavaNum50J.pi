@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum50J:
+    standard: @{CertJava}
+    ruleId: NUM50-J
+    title: Convert integers to floating point for floating-point operations
+    statement:
+        When an expression mixes integers and its result is stored in a
+        floating-point variable, convert an operand to floating point before
+        the operation, not after.
+    rationale:
+        Integer arithmetic discards fractions and may overflow before the
+        result is converted, so the floating-point variable receives a wrong
+        value.
+    exceptions:
+        Mixed integer and floating-point arithmetic is acceptable when the
+        integer behavior, such as truncating division, is wanted
+        deliberately before the conversion.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        int total = 7;
+        int count = 2;
+        double average = total / count;  // 3.0
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int total = 7;
+        int count = 2;
+        double average = (double) total / count;  // 3.5
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, floating-point, arithmetic, type-conversion]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/numeric-types-and-operations-num/num50-j/

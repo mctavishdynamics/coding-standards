@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellRefusedBequest:
+    standard: @{RefactoringGuruSmells}
+    ruleId: refused-bequest
+    title: Do not inherit from a class whose behavior the subclass does not want
+    statement:
+        Avoid subclasses that use only a few of the members they inherit and
+        leave the rest idle or override them to throw. Use delegation when
+        the classes are not truly related, or extract a smaller superclass
+        that holds only the shared part. Usual fixes: Replace Inheritance
+        with Delegation, Extract Superclass.
+    rationale:
+        Inheritance chosen just to reuse code produces a hierarchy that lies
+        about what the subclass can do, and callers that trust the parent
+        type get surprised.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class ReadOnlyList<T> extends ArrayList<T> {
+            @Override
+            public boolean add(T item) {
+                throw new UnsupportedOperationException();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class ReadOnlyList<T> implements Iterable<T> {
+            private final List<T> items;
+
+            ReadOnlyList(List<T> items) { this.items = List.copyOf(items); }
+
+            public T get(int i) { return items.get(i); }
+            public Iterator<T> iterator() { return items.iterator(); }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [oo-abusers, inheritance, delegation]
+    source: https://refactoring.guru/smells/refused-bequest

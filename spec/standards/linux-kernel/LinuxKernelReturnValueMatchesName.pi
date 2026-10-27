@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelReturnValueMatchesName:
+    standard: @{LinuxKernelStyle}
+    ruleId: 16
+    title: Match the success return convention to the function name
+    statement:
+        If a function's name is an action or command, return an error code:
+        0 on success and a negative errno on failure. If the name is a
+        predicate, return a boolean that is nonzero when it holds. Exported
+        functions must follow this, and public ones should.
+    rationale:
+        Mixing the two conventions is a common source of hard-to-find bugs,
+        and C's types will not catch it.
+    exceptions:
+        Static functions are only recommended to follow it. Functions that
+        return a computed result, such as a pointer, are exempt and usually
+        report failure with an out-of-range value, NULL or ERR_PTR.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* returns 1 on success, 0 on failure */
+        int start_engine(struct engine *e);
+
+        /* returns 0 if the link is up */
+        int link_is_up(struct port *p);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* returns 0 on success or -EBUSY */
+        int start_engine(struct engine *e);
+
+        /* returns true if the link is up */
+        bool link_is_up(struct port *p);
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, error-handling, naming]
+    source: https://docs.kernel.org/process/coding-style.html#function-return-values-and-names

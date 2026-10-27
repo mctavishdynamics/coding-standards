@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip71:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-71
+    title: Use property-based tests to check assumptions
+    statement:
+        Write tests that check general properties over many generated
+        inputs, not only hand-picked examples.
+    rationale:
+        Generated inputs expose cases you did not think of.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def test_sort():
+            assert my_sort([3, 1, 2]) == [1, 2, 3]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        @given(st.lists(st.integers()))
+        def test_sort_orders_and_keeps_items(xs):
+            out = my_sort(xs)
+            assert out == sorted(xs)
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, property-based-testing]
+    source: https://pragprog.com/tips/

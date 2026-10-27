@@ -1,0 +1,63 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelGotoForCommonCleanup:
+    standard: @{LinuxKernelStyle}
+    ruleId: 7a
+    title: Use goto to a shared exit path when cleanup is needed
+    statement:
+        When a function exits from several places and must do common
+        cleanup, jump to labels at the end that undo the work in reverse
+        order. If no cleanup is needed, return directly.
+    rationale:
+        A single exit path reduces nesting, keeps the flow easy to follow
+        and avoids forgetting to update one of several exit points when the
+        function changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        buf = kmalloc(len, GFP_KERNEL);
+        if (!buf)
+                return -ENOMEM;
+        map = map_region(dev);
+        if (!map) {
+                kfree(buf);
+                return -EIO;
+        }
+        if (start_dma(dev, buf, map)) {
+                unmap_region(map);
+                kfree(buf);
+                return -EBUSY;
+        }
+        return 0;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        buf = kmalloc(len, GFP_KERNEL);
+        if (!buf)
+                return -ENOMEM;
+        map = map_region(dev);
+        if (!map) {
+                ret = -EIO;
+                goto out_free_buf;
+        }
+        ret = start_dma(dev, buf, map);
+        if (ret)
+                goto out_unmap;
+        return 0;
+
+        out_unmap:
+                unmap_region(map);
+        out_free_buf:
+                kfree(buf);
+                return ret;
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, control-flow, goto]
+    source: https://docs.kernel.org/process/coding-style.html#centralized-exiting-of-functions

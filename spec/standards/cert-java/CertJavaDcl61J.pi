@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl61J:
+    standard: @{CertJava}
+    ruleId: DCL61-J
+    title: Do not use raw types
+    statement:
+        Always give type arguments to generic types. Do not use raw types
+        such as List or Map in new code.
+    rationale:
+        Mixing raw and generic types produces heap pollution. Unchecked
+        warnings are easy to ignore, and the resulting ClassCastException
+        appears far from the cause.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        List names = new ArrayList();
+        names.add(42);
+        String first = (String) names.get(0);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        List<String> names = new ArrayList<>();
+        names.add("Ada");
+        String first = names.get(0);
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, generics, type-safety]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/declarations-and-initialization-dcl/dcl61-j/

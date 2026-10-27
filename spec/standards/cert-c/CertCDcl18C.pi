@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl18C:
+    standard: @{CertC}
+    ruleId: DCL18-C
+    title:
+        Do not begin integer constants with 0 when specifying a decimal
+        value
+    statement:
+        Do not write a leading zero on a decimal integer constant, for
+        example to line up columns, because a leading zero makes it octal.
+    rationale:
+        A value such as 010 is eight, not ten, so the program silently uses
+        a different number. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int codes[] = {
+            100,
+            042,   /* 34 */
+            007,
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int codes[] = {
+            100,
+             42,
+              7,
+        };
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, constants]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl18-c

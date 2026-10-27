@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl04C:
+    standard: @{CertC}
+    ruleId: DCL04-C
+    title: Do not declare more than one variable per declaration
+    statement:
+        Declare each variable in its own declaration on its own line,
+        ideally with a comment about its role.
+    rationale:
+        Several declarators in one declaration make it easy to misread which
+        ones are pointers and which ones are initialized. CERT rates
+        likelihood unlikely, detectable yes, repairable yes, priority P3,
+        level L3.
+    exceptions:
+        Several loop control variables may share a for statement, and
+        several simple variables that are neither pointers nor arrays may
+        share a line when none is initialized.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        char *name, alias;      /* alias is a char, not a pointer */
+        int width, height = 0;  /* width is not initialized */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *name;      /* full user name */
+        char *alias;     /* short display name */
+        int width = 0;
+        int height = 0;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl04-c

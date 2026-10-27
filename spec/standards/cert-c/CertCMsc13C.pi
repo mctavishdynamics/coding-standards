@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc13C:
+    standard: @{CertC}
+    ruleId: MSC13-C
+    title: Detect and remove unused values
+    statement:
+        Find values that are computed or assigned but never used, and remove
+        them or fix the logic that should have used them.
+    rationale:
+        An unused value often means the code uses the wrong variable or
+        skipped a step, so it can hide a significant logic error. CERT rates
+        likelihood unlikely, detectable yes, repairable yes, priority P3,
+        level L3.
+    exceptions:
+        Initializing a variable with a default that is later overwritten is
+        acceptable, because it is safer than reading an uninitialized value.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int total_price(const struct item *it) {
+            int tax = compute_tax(it);
+            int total = it->price;
+            return total;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int total_price(const struct item *it) {
+            int tax = compute_tax(it);
+            return it->price + tax;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, dead-code, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc13-c

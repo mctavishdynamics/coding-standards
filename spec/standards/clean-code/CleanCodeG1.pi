@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG1:
+    standard: @{CleanCode}
+    ruleId: G1
+    title: Keep to one language per source file
+    statement:
+        Limit how many languages appear in a single source file. Ideally a
+        file holds one language; when mixing cannot be avoided, keep the
+        extra languages small and contained.
+    rationale:
+        Files that mix Java, HTML, SQL, scripts and markup are confusing to
+        read and hard to edit safely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String page(User user) {
+            return "<html><body><script>var id='" + user.id() + "';</script>"
+                + "<h1>" + user.name() + "</h1></body></html>";
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String page(User user) {
+            return templates.render("user-page", Map.of("user", user));
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [structure, readability]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

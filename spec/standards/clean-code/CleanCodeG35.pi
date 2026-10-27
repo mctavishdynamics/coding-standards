@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG35:
+    standard: @{CleanCode}
+    ruleId: G35
+    title: Keep configurable data at high levels
+    statement:
+        Define defaults and configuration values near the top of the system,
+        for example in the entry point or a configuration class, and pass
+        them down instead of burying them inside low-level functions.
+    rationale:
+        Configuration buried deep in the code is hard to find and change,
+        and the low-level code should not need to know where its settings
+        come from.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Connection {
+            void open() {
+                socket.connect(address, 5000); // timeout chosen down here
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public static void main(String[] args) {
+            Config config = Config.fromArgs(args, Defaults.TIMEOUT_MILLIS);
+            new Server(config.timeoutMillis()).start();
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [configuration, design]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

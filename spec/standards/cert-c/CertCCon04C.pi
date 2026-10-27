@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon04C:
+    standard: @{CertC}
+    ruleId: CON04-C
+    title:
+        Join or detach threads even if their exit status is unimportant
+    statement:
+        Every thread that is created should eventually be joined with
+        thrd_join or detached with thrd_detach. Detach a thread whose result
+        no other thread needs.
+    rationale:
+        A thread that is neither joined nor detached keeps some of its
+        resources after it ends, and repeated leaks can exhaust them. CERT
+        rates likelihood unlikely, detectable yes, repairable no, priority
+        P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        thrd_t t;
+        if (thrd_create(&t, send_heartbeat, NULL) != thrd_success) {
+            /* handle error */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        thrd_t t;
+        if (thrd_create(&t, send_heartbeat, NULL) != thrd_success ||
+            thrd_detach(t) != thrd_success) {
+            /* handle error */
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, concurrency, threads, resource-management]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/concurrency-con/con04-c

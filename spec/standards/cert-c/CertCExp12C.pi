@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp12C:
+    standard: @{CertC}
+    ruleId: EXP12-C
+    title: Do not ignore values returned by functions
+    statement:
+        Use or check the value a function returns, particularly when it
+        reports success or failure.
+    rationale:
+        An ignored return value often hides an error, so the program carries
+        on with bad data or in an unexpected state. CERT rates likelihood
+        unlikely, detectable yes, repairable no, priority P4, level L3.
+    exceptions:
+        If the value really does not matter, cast the call to void to show
+        the choice was deliberate. Functions that cannot fail or cannot
+        report an error may be called without using their value.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        fclose(out);
+        remove(temp_path);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (fclose(out) == EOF) {
+            report_write_error();
+        }
+        (void)remove(temp_path);   /* best effort cleanup */
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp12-c

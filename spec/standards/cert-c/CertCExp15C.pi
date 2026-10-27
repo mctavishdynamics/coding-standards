@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp15C:
+    standard: @{CertC}
+    ruleId: EXP15-C
+    title:
+        Do not place a semicolon on the same line as an if, for, or while
+        statement
+    statement:
+        Do not end an if, for or while line with a semicolon. When an empty
+        body is truly intended, make it visible on its own line.
+    rationale:
+        A stray semicolon becomes the whole body of the statement, so the
+        following block always runs once and the condition is ignored. CERT
+        rates likelihood likely, detectable yes, repairable yes, priority
+        P27, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        if (user_is_admin(user));
+        {
+            grant_access(user);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (user_is_admin(user)) {
+            grant_access(user);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, control-flow]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp15-c

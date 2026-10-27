@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc24C:
+    standard: @{CertC}
+    ruleId: MSC24-C
+    title: Do not use deprecated or obsolescent functions
+    statement:
+        Do not call functions that the C standard has deprecated, such as
+        gets, or that CERT lists as obsolescent, such as asctime, atoi,
+        rewind, setbuf, strtok and tmpnam, when a safer equivalent exists.
+    rationale:
+        These functions lack bounds checking or error reporting, or are not
+        thread safe, and they are a frequent source of vulnerabilities. CERT
+        rates likelihood probable, detectable yes, repairable no, priority
+        P12, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        char line[80];
+        gets(line);
+        int n = atoi(line);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char line[80];
+        long n = 0;
+        if (fgets(line, sizeof line, stdin) != NULL) {
+            n = strtol(line, NULL, 10);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, library-functions, deprecated]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc24-c

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelDoNotWarnLightly:
+    standard: @{LinuxKernelStyle}
+    ruleId: 22d
+    title: Use WARN only for conditions that should never happen
+    statement:
+        Reserve the WARN macros for unexpected situations that should never
+        happen. Do not use them for anything expected in normal operation,
+        as general assertions, or for conditions user space can easily
+        trigger; use pr_warn_once to tell the user about a problem instead.
+    rationale:
+        A WARN dumps a backtrace and, on systems with panic_on_warn, crashes
+        the machine.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (WARN_ON(args.len > MAX_LEN))   /* len comes from an ioctl */
+                return -EINVAL;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (args.len > MAX_LEN)
+                return -EINVAL;
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, logging, assertions]
+    source: https://docs.kernel.org/process/coding-style.html#do-not-warn-lightly

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellSpeculativeGenerality:
+    standard: @{FowlerRefactoring}
+    ruleId: speculative-generality
+    title: Remove generality added for imagined future needs
+    statement:
+        Avoid hooks, abstract classes, extra parameters and special cases
+        that exist only because they might be needed someday. Remove
+        whatever is not in use; a sign is code whose only users are tests.
+        Usual fixes: Collapse Hierarchy, Inline Function, Inline Class,
+        Change Function Declaration, Remove Dead Code.
+    rationale:
+        Flexibility nobody uses makes the code harder to understand and
+        maintain. It can be added back when a real need appears.
+    exceptions:
+        Generality that is actually used, or about to be used for a known
+        requirement, is worth keeping.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function loadConfig(path, { parser = JSON.parse, cache = null, hooks = [] } = {}) {
+          const text = readFile(path);
+          hooks.forEach(h => h.beforeParse?.(text));
+          return parser(text);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function loadConfig(path) {
+          return JSON.parse(readFile(path));
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [yagni, simplicity]
+    source: https://martinfowler.com/books/refactoring.html

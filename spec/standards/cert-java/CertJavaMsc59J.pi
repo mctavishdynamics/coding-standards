@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc59J:
+    standard: @{CertJava}
+    ruleId: MSC59-J
+    title: Limit the lifetime of sensitive data
+    statement:
+        Hold sensitive data in memory for as short a time as possible. Keep
+        it in mutable arrays such as char arrays that can be cleared after
+        use, rather than in immutable strings.
+    rationale:
+        Data left in memory can be read by other code on the system, swapped
+        to disk or kept in buffers, which leaks it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String password = console.readLine("Password: ");
+        authenticate(user, password);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        char[] password = console.readPassword("Password: ");
+        try {
+            authenticate(user, password);
+        } finally {
+            Arrays.fill(password, ' ');
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, sensitive-data, memory]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/miscellaneous-msc/msc59-j/

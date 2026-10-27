@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelOneStatementPerLine:
+    standard: @{LinuxKernelStyle}
+    ruleId: 1c
+    title: Put only one statement on a line
+    statement:
+        Do not place several statements on one line, such as an if and its
+        body.
+    rationale:
+        Statements packed onto one line are easy to misread, and the shape
+        of the code no longer shows which statements are conditional.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (!dev) return -ENODEV;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (!dev)
+                return -ENODEV;
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, statements]
+    source: https://docs.kernel.org/process/coding-style.html#indentation

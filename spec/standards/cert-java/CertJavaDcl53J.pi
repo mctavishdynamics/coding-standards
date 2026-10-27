@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl53J:
+    standard: @{CertJava}
+    ruleId: DCL53-J
+    title: Minimize the scope of variables
+    statement:
+        Declare each variable in the smallest scope that covers its use, as
+        close to its first use as possible. Prefer for loops that declare
+        their own index over loops that reuse a variable declared outside.
+    rationale:
+        Narrow scopes link a variable to its use, make unused variables
+        easier to spot, help the garbage collector and prevent accidental
+        reuse or shadowing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        int i;
+        for (i = 0; i < orders.size(); i++) {
+            ship(orders.get(i));
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        for (int i = 0; i < orders.size(); i++) {
+            ship(orders.get(i));
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, scope, declarations]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/declarations-and-initialization-dcl/dcl53-j/

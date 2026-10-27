@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellAlternativeClassesWithDifferentInterfaces:
+    standard: @{FowlerRefactoring}
+    ruleId: alternative-classes-with-different-interfaces
+    title: Make substitutable classes share one interface
+    statement:
+        Avoid classes that could stand in for one another but expose
+        different function names and signatures. Rename and move functions
+        until their interfaces match, and extract a shared superclass if
+        they duplicate code. Usual fixes: Change Function Declaration, Move
+        Function, Extract Superclass.
+    rationale:
+        Being able to swap one class for another is a key benefit of using
+        classes, and it only works when their interfaces agree.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class FileStore { read(key) { /* ... */ } }
+        class S3Store { fetchObject(bucketKey) { /* ... */ } }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class FileStore { get(key) { /* ... */ } }
+        class S3Store { get(key) { /* ... */ } }
+        \\\
+        ```
+    languages: [any]
+    tags: [interfaces, classes, polymorphism]
+    source: https://martinfowler.com/books/refactoring.html

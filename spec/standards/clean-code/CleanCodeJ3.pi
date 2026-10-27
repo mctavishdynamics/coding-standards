@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeJ3:
+    standard: @{CleanCode}
+    ruleId: J3
+    title: Prefer enums to integer constants
+    statement:
+        Use an enum instead of a set of public static final int constants.
+        Enums can carry fields and methods, so behavior that depends on the
+        value can live in the enum itself.
+    rationale:
+        Integer constants have no type safety and no meaning of their own,
+        while enums are checked by the compiler and can express behavior.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        static final int PLAN_FREE = 0;
+        static final int PLAN_PRO = 1;
+
+        int monthlyPrice(int plan) {
+            return plan == PLAN_PRO ? 12 : 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        enum Plan {
+            FREE(0), PRO(12);
+
+            private final int monthlyPrice;
+
+            Plan(int monthlyPrice) { this.monthlyPrice = monthlyPrice; }
+
+            int monthlyPrice() { return monthlyPrice; }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [enums, constants, type-safety]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip48:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-48
+    title: Wrap unavoidable global resources behind an interface
+    statement:
+        If something must be global, expose it through a well-defined API
+        rather than as raw shared data.
+    rationale:
+        An API hides the representation and lets you change it later without
+        touching every user.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        CONFIG = {}
+        CONFIG["timeout"] = 5
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Config:
+            def timeout(self): ...
+
+        config = Config.load()
+        \\\
+        ```
+    languages: [any]
+    tags: [global-state, encapsulation]
+    source: https://pragprog.com/tips/

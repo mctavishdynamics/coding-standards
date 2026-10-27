@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG17:
+    standard: @{CleanCode}
+    ruleId: G17
+    title: Put each responsibility where readers expect it
+    statement:
+        Place code where a reader would naturally look for it. Decide where
+        a calculation or constant belongs by how it will be found, not by
+        what is convenient for the current change.
+    rationale:
+        Code in an unexpected place is hard to find and easy to duplicate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class ReportFormatter {
+            // Tax rules hidden in a formatting class.
+            Money withTax(Money net) { return net.times(1.2); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class TaxPolicy {
+            Money withTax(Money net) { return net.times(1.2); }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [responsibility, design, cohesion]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

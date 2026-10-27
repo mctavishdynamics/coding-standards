@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp02C:
+    standard: @{CertC}
+    ruleId: FLP02-C
+    title:
+        Avoid using floating-point numbers when precise computation is
+        needed
+    statement:
+        Use integers, scaled integers or a decimal representation instead of
+        binary floating point when results must be exact, such as for money.
+    rationale:
+        Binary floating point cannot represent values like one tenth
+        exactly, so repeated arithmetic accumulates error. CERT rates
+        likelihood probable, detectable no, repairable no, priority P2,
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        double balance = 0.0;
+        for (int i = 0; i < 100; i++) {
+            balance += 0.10;   /* not exactly 10.00 */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        long balance_cents = 0;
+        for (int i = 0; i < 100; i++) {
+            balance_cents += 10;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, floating-point, precision]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/floating-point-flp/flp02-c

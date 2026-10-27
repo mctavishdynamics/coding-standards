@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio51J:
+    standard: @{CertJava}
+    ruleId: FIO51-J
+    title: Identify files using multiple file attributes
+    statement:
+        Do not rely on a file name alone to identify a file between
+        operations. Compare several attributes, such as the file key,
+        creation time and size, or keep the file open and work through the
+        open handle.
+    rationale:
+        A name is bound to a file object anew on every use, so the file can
+        be replaced between a check and a later use. This time-of-check,
+        time-of-use race can make the program operate on the wrong file.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Path p = Paths.get(name);
+        if (isTrusted(p)) {
+            Files.write(p, data);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Path p = Paths.get(name);
+        BasicFileAttributes before = Files.readAttributes(p, BasicFileAttributes.class);
+        if (isTrusted(p)) {
+            BasicFileAttributes now = Files.readAttributes(p, BasicFileAttributes.class);
+            if (!Objects.equals(before.fileKey(), now.fileKey())
+                    || !before.creationTime().equals(now.creationTime())) {
+                throw new IOException("File changed");
+            }
+            Files.write(p, data);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, files, race-conditions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/input-output-fio/fio51-j/

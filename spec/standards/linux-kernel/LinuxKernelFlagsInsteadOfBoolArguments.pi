@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelFlagsInsteadOfBoolArguments:
+    standard: @{LinuxKernelStyle}
+    ruleId: 17c
+    title: Combine several boolean arguments into one flags argument
+    statement:
+        When a function takes many true or false arguments, consider
+        replacing them with a single bitwise flags argument.
+    rationale:
+        Call sites full of bare true and false constants are hard to read,
+        while named flags say what each option means.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        open_channel(ch, true, false, true);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        open_channel(ch, CHAN_NONBLOCK | CHAN_EXCLUSIVE);
+        \\\
+        ```
+    languages: [c]
+    tags: [types, bool, functions]
+    source: https://docs.kernel.org/process/coding-style.html#using-bool

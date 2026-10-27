@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG11:
+    standard: @{CleanCode}
+    ruleId: G11
+    title: Do similar things in the same way
+    statement:
+        Once you pick a way of doing something, use it everywhere similar
+        things happen, including names, argument order and patterns.
+    rationale:
+        Consistent code is predictable, so readers can carry what they
+        learned in one place to the next.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void deleteUser(String userId) { /* ... */ }
+        void removeOrder(long id) { /* ... */ }
+        void eraseInvoice(Invoice target) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void deleteUser(UserId id) { /* ... */ }
+        void deleteOrder(OrderId id) { /* ... */ }
+        void deleteInvoice(InvoiceId id) { /* ... */ }
+        \\\
+        ```
+    languages: [any]
+    tags: [consistency, naming]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

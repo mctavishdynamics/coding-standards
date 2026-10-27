@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCArr00C:
+    standard: @{CertC}
+    ruleId: ARR00-C
+    title: Understand how arrays work
+    statement:
+        Learn how C arrays behave: subscripts are not bounds checked, an
+        array usually decays to a pointer to its first element, and a
+        pointer does not carry the array's size.
+    rationale:
+        Misunderstanding arrays leads to out-of-bounds writes, which
+        attackers use to overwrite data or redirect control flow. CERT rates
+        likelihood probable, detectable no, repairable no, priority P6,
+        level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        void store(int pos, int value) {
+            static int slots[10];
+            slots[pos] = value;   /* pos is not checked */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void store(size_t pos, int value) {
+            static int slots[10];
+            if (pos < sizeof(slots) / sizeof(slots[0])) {
+                slots[pos] = value;
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, arrays, bounds, pointers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/arrays-arr/arr00-c

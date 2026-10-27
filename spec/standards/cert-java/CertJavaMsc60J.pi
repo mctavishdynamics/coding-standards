@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc60J:
+    standard: @{CertJava}
+    ruleId: MSC60-J
+    title: Do not use assertions to verify the absence of runtime errors
+    statement:
+        Use assert only to check programmer assumptions. Check user input,
+        resource availability and other runtime errors with ordinary code
+        that always runs.
+    rationale:
+        Assertions are usually disabled in production, so the checks
+        disappear and the errors go unhandled.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void setAge(int age) {
+            assert age >= 0 : "negative age";
+            this.age = age;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void setAge(int age) {
+            if (age < 0) {
+                throw new IllegalArgumentException("negative age");
+            }
+            this.age = age;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, assertions, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/miscellaneous-msc/msc60-j/

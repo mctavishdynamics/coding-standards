@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos05C:
+    standard: @{CertC}
+    ruleId: POS05-C
+    title: Limit access to files by creating a jail
+    statement:
+        Confine a program that does not need the whole file system to a
+        jail, for example with chroot followed by chdir to the new root and
+        a permanent drop of root privileges.
+    rationale:
+        A jail limits what an attacker can reach if the program is
+        compromised, as a layer of defense in depth. CERT rates likelihood
+        probable, detectable no, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        if (chroot("/srv/jail") != 0) {
+            return -1;
+        }
+        /* still in the old working directory and still root */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (chroot("/srv/jail") != 0 || chdir("/") != 0) {
+            return -1;
+        }
+        if (setgid(jail_gid) != 0 || setuid(jail_uid) != 0) {
+            return -1;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, posix, sandboxing, privileges]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/posix-pos/pos05-c

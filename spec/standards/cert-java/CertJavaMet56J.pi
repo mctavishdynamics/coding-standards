@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet56J:
+    standard: @{CertJava}
+    ruleId: MET56-J
+    title: Do not use Object.equals() to compare cryptographic keys
+    statement:
+        Do not compare cryptographic keys with equals(), because many Key
+        classes do not override it. Compare their encoded forms, or the key
+        components, instead.
+    rationale:
+        The inherited equals() checks identity, so equal keys held in
+        different objects compare unequal and the comparison gives wrong
+        results.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        boolean sameKey(Key a, Key b) {
+            return a.equals(b);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        boolean sameKey(Key a, Key b) {
+            return a.getAlgorithm().equals(b.getAlgorithm())
+                    && MessageDigest.isEqual(a.getEncoded(), b.getEncoded());
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, cryptography, equality]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/methods-met/met56-j/

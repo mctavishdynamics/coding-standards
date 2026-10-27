@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip52:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-52
+    title: Use interfaces to express polymorphism
+    statement:
+        Express shared behaviour through interfaces or protocols rather than
+        through a class hierarchy.
+    rationale:
+        Interfaces give polymorphism without inheriting implementation and
+        the coupling that comes with it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        abstract class Shape { abstract double area(); void log() { ... } }
+        class Circle extends Shape { double area() { ... } }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        interface HasArea { double area(); }
+        class Circle implements HasArea { public double area() { ... } }
+        \\\
+        ```
+    languages: [any]
+    tags: [polymorphism, interfaces]
+    source: https://pragprog.com/tips/

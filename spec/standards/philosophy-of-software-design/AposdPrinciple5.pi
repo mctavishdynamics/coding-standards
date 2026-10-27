@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdPrinciple5:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: principle-5
+    title: Make the most common use of an interface the simplest
+    statement:
+        Shape an interface so that the usual case needs the least code and
+        the fewest decisions from the caller. Rare needs may take extra
+        effort.
+    rationale:
+        Callers who only want the common behaviour should not have to learn
+        about or configure options they will never need.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        reader = open_reader(path, encoding="utf-8", buffered=True,
+                             newline=None, errors="strict")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        reader = open_reader(path)            # sensible defaults
+        reader = open_reader(path, errors="replace")  # only when needed
+        \\\
+        ```
+    languages: [any]
+    tags: [principle, interfaces, defaults]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

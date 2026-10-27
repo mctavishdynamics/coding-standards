@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl56J:
+    standard: @{CertJava}
+    ruleId: DCL56-J
+    title: Do not attach significance to the ordinal associated with an enum
+    statement:
+        Do not derive values from an enum constant's ordinal(). If a
+        constant needs an associated number, store it in an instance field
+        set by the constructor.
+    rationale:
+        Ordinals change whenever constants are reordered, added or removed,
+        so code that depends on them breaks silently and is hard to
+        maintain.
+    exceptions:
+        Ordinals may be used when the order of the constants is fixed by a
+        standard and no constants can be added.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        enum Plan { FREE, BASIC, PRO }
+
+        int seats(Plan p) {
+            return p.ordinal() * 5;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        enum Plan {
+            FREE(0), BASIC(5), PRO(10);
+
+            private final int seats;
+            Plan(int seats) { this.seats = seats; }
+            int seats() { return seats; }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, enums, maintainability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/declarations-and-initialization-dcl/dcl56-j/

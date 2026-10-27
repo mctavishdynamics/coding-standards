@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre09C:
+    standard: @{CertC}
+    ruleId: PRE09-C
+    title:
+        Do not replace secure functions with deprecated or obsolescent
+        functions
+    statement:
+        Do not use macros to swap a safe library function for a deprecated
+        or obsolescent one, for example to make code compile on a platform
+        that lacks the safer function.
+    rationale:
+        A global macro replacement silently reintroduces the weaknesses the
+        safer function was chosen to avoid, such as unbounded copies,
+        everywhere it is used. CERT rates likelihood likely, detectable yes,
+        repairable no, priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        #define strcpy_s(dst, size, src) strcpy(dst, src)
+
+        strcpy_s(buf, sizeof(buf), input);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdio.h>
+
+        if (snprintf(buf, sizeof(buf), "%s", input) >= (int)sizeof(buf)) {
+            handle_truncation();
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, security, library]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre09-c

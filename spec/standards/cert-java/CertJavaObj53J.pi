@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj53J:
+    standard: @{CertJava}
+    ruleId: OBJ53-J
+    title: Do not use direct buffers for short-lived, infrequently used objects
+    statement:
+        Allocate direct NIO buffers only for long-lived buffers that are
+        reused for repeated I/O. Use ordinary heap buffers for one-off or
+        rarely used data.
+    rationale:
+        Direct buffers are costly to create and free and live outside the
+        Java heap, so careless use wastes resources and can leak native
+        memory.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String readHeader(FileChannel ch) throws IOException {
+            ByteBuffer buf = ByteBuffer.allocateDirect(64);
+            ch.read(buf);
+            return new String(buf.array(), StandardCharsets.US_ASCII);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String readHeader(FileChannel ch) throws IOException {
+            ByteBuffer buf = ByteBuffer.allocate(64);
+            ch.read(buf);
+            return new String(buf.array(), StandardCharsets.US_ASCII);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, memory, nio, performance]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/object-orientation-obj/obj53-j/

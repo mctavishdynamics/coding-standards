@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp16C:
+    standard: @{CertC}
+    ruleId: EXP16-C
+    title: Do not compare function pointers to constant values
+    statement:
+        Compare a function pointer only with a null pointer of the same type
+        or with another function pointer, and call the function when its
+        result is wanted.
+    rationale:
+        Comparing a function name to a constant usually means a forgotten
+        call, so the test checks the function's address and is always true
+        or false. CERT rates likelihood likely, detectable yes, repairable
+        no, priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        if (is_root != 0) {   /* tests the function's address */
+            allow_admin();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (is_root() != 0) {
+            allow_admin();
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, function-pointers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp16-c

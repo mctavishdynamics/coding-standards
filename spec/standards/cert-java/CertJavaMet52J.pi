@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet52J:
+    standard: @{CertJava}
+    ruleId: MET52-J
+    title: Do not use the clone() method to copy untrusted method parameters
+    statement:
+        Do not call clone() to make defensive copies of arguments from
+        untrusted code. Copy them with a constructor or factory of a class
+        you trust.
+    rationale:
+        An attacker can pass a subclass whose clone() returns a shared or
+        malicious object, so the copy may change after validation and bypass
+        security checks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void schedule(Date start) {
+            Date copy = (Date) start.clone();
+            validate(copy);
+            store(copy);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void schedule(Date start) {
+            Date copy = new Date(start.getTime());
+            validate(copy);
+            store(copy);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, defensive-copy, untrusted-code, cloning]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/methods-met/met52-j/

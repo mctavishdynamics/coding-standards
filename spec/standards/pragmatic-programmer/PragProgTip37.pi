@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip37:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-37
+    title: Specify and check contracts
+    statement:
+        State clearly what each routine requires, guarantees and preserves,
+        and check those conditions where practical.
+    rationale:
+        Explicit contracts make expectations clear and expose misuse at the
+        boundary.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def withdraw(account, amount):
+            account.balance -= amount
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def withdraw(account, amount):
+            if amount <= 0 or amount > account.balance:
+                raise ValueError("amount must be positive and covered")
+            account.balance -= amount
+            assert account.balance >= 0
+        \\\
+        ```
+    languages: [any]
+    tags: [design-by-contract, defensive-programming]
+    source: https://pragprog.com/tips/

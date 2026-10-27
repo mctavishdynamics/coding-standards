@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./GoogleEngPractices import GoogleEngPractices
+
+export coding-rule GoogleEngCommentsLabelSeverity:
+    standard: @{GoogleEngPractices}
+    ruleId: reviewer/comments/label-comment-severity
+    title: Label how important each comment is
+    statement:
+        Mark comments to separate required changes from optional ones, for
+        example with Nit for minor points, Optional or Consider for
+        suggestions, and FYI for ideas not expected in this CL.
+    rationale:
+        Without labels, authors may treat every comment as mandatory. Labels
+        make intent explicit and help authors prioritize.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```text
+        \\\
+        Nit: trailing whitespace on line 42.
+        Optional: a dict lookup might read better than this if/elif chain.
+        FYI: the retry helper in net/retry may be useful for future work.
+        \\\
+        ```
+    languages: [any]
+    tags: [reviewer, comments, communication]
+    source: https://google.github.io/eng-practices/review/reviewer/comments.html#label-comment-severity

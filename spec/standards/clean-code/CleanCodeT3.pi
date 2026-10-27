@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeT3:
+    standard: @{CleanCode}
+    ruleId: T3
+    title: Do not skip trivial tests
+    statement:
+        Write the easy tests too. They cost little and document the
+        behavior.
+    rationale:
+        Trivial tests are cheap and their documentary value outweighs the
+        small cost of writing them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        // No test for the empty name, it is obvious.
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Test
+        void emptyNameIsInvalid() {
+            assertFalse(Name.isValid(""));
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [testing]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

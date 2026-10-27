@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG36:
+    standard: @{CleanCode}
+    ruleId: G36
+    title: Avoid transitive navigation
+    statement:
+        Let a module know only its direct collaborators. Do not walk through
+        a chain of objects to reach something far away; ask a direct
+        collaborator to provide what you need.
+    rationale:
+        Chains of calls tie a module to the structure of distant objects, so
+        changing that structure breaks callers across the system. This is
+        the Law of Demeter.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String city = order.getCustomer().getAddress().getCity();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String city = order.shippingCity();
+        \\\
+        ```
+    languages: [any]
+    tags: [coupling, law-of-demeter]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

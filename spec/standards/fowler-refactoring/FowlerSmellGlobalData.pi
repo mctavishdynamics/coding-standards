@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellGlobalData:
+    standard: @{FowlerRefactoring}
+    ruleId: global-data
+    title: Encapsulate global data
+    statement:
+        Avoid data that any part of the program can read and change
+        directly, such as module-level variables, class variables and
+        singletons. Wrap it in functions so that every access goes through
+        one place, and narrow its scope as far as you can. Usual fixes:
+        Encapsulate Variable.
+    rationale:
+        When anything can change shared data, nothing tells you which code
+        changed it, so bugs caused by it are hard to trace. Encapsulation
+        shows who touches the data and lets you control or restrict access.
+    exceptions:
+        A small amount of global data, or data that never changes after
+        start-up, is far less risky and can be acceptable.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        export let currentUser = null;
+
+        // elsewhere
+        currentUser = { id: 7, role: "admin" };
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        let currentUser = null;
+
+        export function getCurrentUser() { return currentUser; }
+        export function signIn(user) { currentUser = Object.freeze({ ...user }); }
+        \\\
+        ```
+    languages: [any]
+    tags: [global-state, encapsulation]
+    source: https://martinfowler.com/books/refactoring.html

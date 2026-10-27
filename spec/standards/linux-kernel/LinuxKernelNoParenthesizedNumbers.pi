@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoParenthesizedNumbers:
+    standard: @{LinuxKernelStyle}
+    ruleId: 13b
+    title: Do not print numbers in parentheses
+    statement:
+        Do not wrap numbers in parentheses in kernel messages.
+    rationale:
+        The parentheses add nothing to the message.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        dev_err(dev, "reset failed (%d)\n", ret);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        dev_err(dev, "reset failed: %d\n", ret);
+        \\\
+        ```
+    languages: [c]
+    tags: [logging, messages]
+    source: https://docs.kernel.org/process/coding-style.html#printing-kernel-messages

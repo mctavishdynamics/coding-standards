@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCStr02C:
+    standard: @{CertC}
+    ruleId: STR02-C
+    title: Sanitize data passed to complex subsystems
+    statement:
+        Sanitize string data before passing it to a command processor,
+        database, external program or other subsystem that interprets
+        special characters, preferably by allowing only known-good
+        characters.
+    rationale:
+        Unsanitized strings can contain characters the subsystem treats as
+        commands, enabling command or SQL injection. CERT rates likelihood
+        likely, detectable no, repairable no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        char cmd[256];
+        snprintf(cmd, sizeof(cmd), "lpr %s", filename);
+        system(cmd);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static const char ok_chars[] =
+            "abcdefghijklmnopqrstuvwxyz0123456789._-";
+
+        if (strspn(filename, ok_chars) != strlen(filename)) {
+            return -1;
+        }
+        char cmd[256];
+        snprintf(cmd, sizeof(cmd), "lpr %s", filename);
+        system(cmd);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, strings, input-validation, security]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/characters-and-strings-str/str02-c

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt14C:
+    standard: @{CertC}
+    ruleId: INT14-C
+    title:
+        Avoid performing bitwise and arithmetic operations on the same data
+    statement:
+        Treat a variable either as a number or as a set of bits, not both.
+        Use arithmetic for numbers and bitwise operators for bit sets.
+    rationale:
+        Shifting numbers as a micro-optimization hides intent and is
+        error-prone, and modern compilers already make such optimizations.
+        CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P4, level L3.
+    exceptions:
+        Integers may be treated as bit vectors when reading or writing them
+        to files, sockets or tightly packed data structures.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        unsigned int area = (width << 2) + width;   /* width * 5 */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        unsigned int area = width * 5;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, bitwise, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int14-c

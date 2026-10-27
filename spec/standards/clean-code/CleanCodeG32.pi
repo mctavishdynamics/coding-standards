@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG32:
+    standard: @{CleanCode}
+    ruleId: G32
+    title: Do not structure code arbitrarily
+    statement:
+        Have a reason for the way you structure the code and make that
+        reason visible in the structure. Do not put a class or function
+        somewhere for no clear purpose.
+    rationale:
+        Arbitrary structure invites others to change it freely, while a
+        consistent, reasoned structure is respected and kept.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class Report {
+            // A public helper nested here only by accident.
+            public static class Tokenizer { /* used by many modules */ }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class Tokenizer {
+            // Top-level, because it is used well beyond Report.
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design, structure, consistency]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

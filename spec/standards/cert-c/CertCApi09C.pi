@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCApi09C:
+    standard: @{CertC}
+    ruleId: API09-C
+    title: Compatible values should have the same type
+    statement:
+        Give values that are meant to be used together the same type. When
+        one function's result is passed to another, declare both with the
+        same type so no conversion is needed.
+    rationale:
+        Mismatched types force conversions that can truncate values or
+        change their sign. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int name_length(const char *s);
+        void *copy_name(const char *s, size_t len);
+
+        /* caller */
+        void *p = copy_name(s, name_length(s));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        size_t name_length(const char *s);
+        void *copy_name(const char *s, size_t len);
+
+        /* caller */
+        void *p = copy_name(s, name_length(s));
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, api-design, type-safety, integers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/application-programming-interfaces-api/api09-c

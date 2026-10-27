@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem03C:
+    standard: @{CertC}
+    ruleId: MEM03-C
+    title: Clear sensitive information stored in reusable resources
+    statement:
+        Overwrite passwords, keys and other secrets in memory, caches or
+        files before the resource is released or reused, using a clearing
+        method the compiler cannot optimize away.
+    rationale:
+        Released resources may be handed to another part of the program or
+        another user, who can then read the leftover secrets. CERT rates
+        likelihood unlikely, detectable no, repairable yes, priority P4,
+        level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        char *key = load_key();
+        use_key(key);
+        free(key);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *key = load_key();
+        use_key(key);
+        memset_s(key, KEY_SIZE, 0, KEY_SIZE);
+        free(key);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, memory, security, sensitive-data]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/memory-management-mem/mem03-c

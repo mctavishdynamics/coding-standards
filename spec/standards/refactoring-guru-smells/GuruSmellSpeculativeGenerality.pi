@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellSpeculativeGenerality:
+    standard: @{RefactoringGuruSmells}
+    ruleId: speculative-generality
+    title: Do not build for needs that do not exist yet
+    statement:
+        Avoid unused classes, methods, fields and parameters added just in
+        case a future feature needs them; remove them until the need is
+        real. Usual fixes: Collapse Hierarchy, Inline Class, Inline Method,
+        Remove Parameter, delete unused fields.
+    rationale:
+        Code written for imagined needs is rarely used as planned, yet it
+        still makes the system harder to understand and support.
+    exceptions:
+        In a framework, features unused inside the code may serve outside
+        users. Check whether tests rely on a member before deleting it.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        abstract class AbstractExporterFactory<T, O extends ExportOptions> {
+            abstract Exporter<T> create(O options, Locale locale, Plugin... plugins);
+        }
+        class CsvExporterFactory extends AbstractExporterFactory<Row, ExportOptions> { ... }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class CsvExporter {
+            String export(List<Row> rows) { ... }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [dispensables, yagni, simplicity]
+    source: https://refactoring.guru/smells/speculative-generality

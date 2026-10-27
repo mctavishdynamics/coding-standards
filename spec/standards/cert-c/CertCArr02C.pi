@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCArr02C:
+    standard: @{CertC}
+    ruleId: ARR02-C
+    title:
+        Explicitly specify array bounds, even if implicitly defined by an
+        initializer
+    statement:
+        Give an array an explicit bound even when an initializer would imply
+        one, so the compiler can warn when the initializer and the intended
+        size disagree.
+    rationale:
+        An implicit bound grows or shrinks silently with the initializer,
+        and designated initializers can set an unexpected size. CERT rates
+        likelihood unlikely, detectable yes, repairable yes, priority P6,
+        level L2.
+    exceptions:
+        Character arrays initialized with a string literal follow STR11-C
+        instead and leave the bound unspecified.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int weights[] = { 1, 2, 4, 8 };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum { WEIGHT_COUNT = 4 };
+        int weights[WEIGHT_COUNT] = { 1, 2, 4, 8 };
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, arrays, declarations]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/arrays-arr/arr02-c

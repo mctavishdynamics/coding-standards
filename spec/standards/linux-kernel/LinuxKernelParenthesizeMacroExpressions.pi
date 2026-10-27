@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelParenthesizeMacroExpressions:
+    standard: @{LinuxKernelStyle}
+    ruleId: 12i
+    title: Put parentheses around macro expressions and parameters
+    statement:
+        Enclose a constant macro defined by an expression in parentheses,
+        and take the same care with macro parameters.
+    rationale:
+        Without parentheses, operator precedence at the call site can change
+        the meaning of the expansion.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define PAGE_MASK_BITS PAGE_BITS | 3
+        #define DOUBLE(x) x * 2
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define PAGE_MASK_BITS (PAGE_BITS | 3)
+        #define DOUBLE(x) ((x) * 2)
+        \\\
+        ```
+    languages: [c]
+    tags: [macros, operators]
+    source: https://docs.kernel.org/process/coding-style.html#macros-enums-and-rtl

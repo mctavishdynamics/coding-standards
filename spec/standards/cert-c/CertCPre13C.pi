@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre13C:
+    standard: @{CertC}
+    ruleId: PRE13-C
+    title:
+        Use the Standard predefined macros to test for versions and features
+    statement:
+        Check the standard predefined macros, such as __STDC__,
+        __STDC_VERSION__ and the optional feature macros, to decide which
+        language version and features are available. Test that a macro is
+        defined before testing its value.
+    rationale:
+        Guessing the language level from compiler-specific macros or
+        assuming a feature exists makes code fail or misbehave on other
+        implementations. CERT rates likelihood probable, detectable no,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #if __STDC_VERSION__ >= 201112L   /* undefined in C90 */
+        #define HAVE_C11 1
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+        #define HAVE_C11 1
+        #else
+        #define HAVE_C11 0
+        #endif
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre13-c

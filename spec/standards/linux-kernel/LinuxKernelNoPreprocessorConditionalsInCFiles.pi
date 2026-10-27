@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoPreprocessorConditionalsInCFiles:
+    standard: @{LinuxKernelStyle}
+    ruleId: 21a
+    title: Keep preprocessor conditionals out of .c files
+    statement:
+        Where possible, do not use preprocessor conditionals in .c files.
+        Put them in a header that defines the functions, with no-op stubs in
+        the else branch, and call the functions unconditionally.
+    rationale:
+        Conditionals scattered through code make the logic hard to follow,
+        while empty stubs compile to nothing and give the same result.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* driver.c */
+        #ifdef CONFIG_PM
+                save_context(dev);
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* driver.h */
+        #ifdef CONFIG_PM
+        void save_context(struct device *dev);
+        #else
+        static inline void save_context(struct device *dev) { }
+        #endif
+
+        /* driver.c */
+                save_context(dev);
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, conditional-compilation]
+    source: https://docs.kernel.org/process/coding-style.html#conditional-compilation

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeN5:
+    standard: @{CleanCode}
+    ruleId: N5
+    title: Use longer names for longer scopes
+    statement:
+        Let the length of a name grow with the size of its scope. A
+        one-letter name is fine for a tiny loop; a field or a variable used
+        across many lines needs a full descriptive name.
+    rationale:
+        Short names lose their meaning as the distance between declaration
+        and use grows.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Scheduler {
+            private int n; // number of retries, used throughout the class
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Scheduler {
+            private int maxRetries;
+        }
+
+        for (int i = 0; i < 3; i++) roll(i);
+        \\\
+        ```
+    languages: [any]
+    tags: [naming, scope]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

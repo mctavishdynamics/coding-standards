@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelUniqueMacroLocalNames:
+    standard: @{LinuxKernelStyle}
+    ruleId: 12j
+    title: Give local variables in macros names that will not collide
+    statement:
+        When a function-like macro declares local variables, give them
+        unusual names, such as a prefix with double underscores and the
+        macro name, rather than common names like ret.
+    rationale:
+        A common name can shadow a variable of the same name passed in by
+        the caller and silently produce wrong results.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define READ_TWICE(x)                   \
+        ({                                      \
+                typeof(x) val = (x);            \
+                val + (x);                      \
+        })
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define READ_TWICE(x)                   \
+        ({                                      \
+                typeof(x) __rt_val = (x);       \
+                __rt_val + (x);                 \
+        })
+        \\\
+        ```
+    languages: [c]
+    tags: [macros, naming]
+    source: https://docs.kernel.org/process/coding-style.html#macros-enums-and-rtl

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip49:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-49
+    title: Think of programs as transformations of data
+    statement:
+        Design code as a sequence of transformations that turn input data
+        into output data.
+    rationale:
+        A pipeline of clear transformations is easier to understand, test
+        and recombine than tangled state changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        result = []
+        for line in open(path):
+            if line.strip():
+                w = line.split()
+                result.append((w[0], len(w)))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        lines = read_lines(path)
+        non_blank = (l for l in lines if l.strip())
+        counts = [(first_word(l), word_count(l)) for l in non_blank]
+        \\\
+        ```
+    languages: [any]
+    tags: [data-flow, design]
+    source: https://pragprog.com/tips/

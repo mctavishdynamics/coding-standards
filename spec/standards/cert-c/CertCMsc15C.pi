@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc15C:
+    standard: @{CertC}
+    ruleId: MSC15-C
+    title: Do not depend on undefined behavior
+    statement:
+        Do not write code whose meaning depends on behavior the C standard
+        leaves undefined, such as signed overflow, out-of-bounds access or
+        unsequenced modifications, even when it seems to work with the
+        current compiler.
+    rationale:
+        Compilers assume undefined behavior never happens and may optimize
+        the code in surprising ways, so results change between compilers,
+        versions and optimization levels. CERT rates likelihood likely,
+        detectable no, repairable no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        int will_overflow(int a) {
+            return a + 1 < a;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int will_overflow(int a) {
+            return a == INT_MAX;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, undefined-behavior, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc15-c

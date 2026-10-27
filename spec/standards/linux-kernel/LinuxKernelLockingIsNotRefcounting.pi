@@ -1,0 +1,23 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelLockingIsNotRefcounting:
+    standard: @{LinuxKernelStyle}
+    ruleId: 11b
+    title: Do not use locking as a substitute for reference counting
+    statement:
+        Use locks to keep a structure coherent and reference counts to
+        manage its lifetime; usually both are needed. When users fall into
+        different classes, consider a second level of counting, where the
+        subclass count drops one global reference when it reaches zero.
+    rationale:
+        Locking and reference counting solve different problems, and
+        confusing them leads to use-after-free or inconsistent data.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [c]
+    tags: [concurrency, memory, reference-counting, locking]
+    source: https://docs.kernel.org/process/coding-style.html#data-structures

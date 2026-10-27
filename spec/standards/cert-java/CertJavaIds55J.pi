@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds55J:
+    standard: @{CertJava}
+    ruleId: IDS55-J
+    title: Understand how escape characters are interpreted when strings are loaded
+    statement:
+        Know that escape sequences in a string can be interpreted twice,
+        once by the Java compiler and again by the class that consumes the
+        string, such as Pattern. Write literals and property values so that
+        each layer sees the escapes it expects.
+    rationale:
+        An escape consumed by the wrong layer changes the string's meaning,
+        so a regular expression or query may match something other than what
+        was intended and data may be corrupted.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        // Intended to split on a literal period
+        String[] parts = version.split(".");
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        // "\\." reaches Pattern as \. which matches a literal period
+        String[] parts = version.split("\\.");
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, strings, regex]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/input-validation-and-data-sanitization-ids/ids55-j/

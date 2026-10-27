@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip46:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-46
+    title: Avoid long chains of method calls
+    statement:
+        Do not reach through several objects in one expression to get what
+        you need; ask the nearest object instead.
+    rationale:
+        Each link in the chain couples your code to another object's
+        internal structure.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        city = order.customer.address.city.name
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        city = order.shipping_city()
+        \\\
+        ```
+    languages: [any]
+    tags: [coupling, law-of-demeter]
+    source: https://pragprog.com/tips/

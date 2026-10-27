@@ -9,9 +9,11 @@ from ../cert-java/CertJava import CertJava
 from ../clean-code/CleanCode import CleanCode
 from ../cpp-core-guidelines/CppCoreGuidelines import CppCoreGuidelines
 from ../effective-go/EffectiveGo import EffectiveGo
+from ../fowler-refactoring/FowlerRefactoring import FowlerRefactoring
 from ../go-code-review-comments/GoCodeReviewComments import GoCodeReviewComments
 from ../google-cpp/GoogleCpp import GoogleCpp
 from ../google-csharp/GoogleCSharp import GoogleCSharp
+from ../google-eng-practices/GoogleEngPractices import GoogleEngPractices
 from ../google-go/GoogleGo import GoogleGo
 from ../google-html-css/GoogleHtmlCss import GoogleHtmlCss
 from ../google-java/GoogleJava import GoogleJava
@@ -22,9 +24,15 @@ from ../google-r/GoogleR import GoogleR
 from ../google-shell/GoogleShell import GoogleShell
 from ../google-swift/GoogleSwift import GoogleSwift
 from ../google-typescript/GoogleTypeScript import GoogleTypeScript
+from ../linux-kernel/LinuxKernelStyle import LinuxKernelStyle
 from ../owasp-scp/OwaspScp import OwaspScp
 from ../pep257/Pep257 import Pep257
 from ../pep8/Pep8 import Pep8
+from ../philosophy-of-software-design/PhilosophyOfSoftwareDesign import
+    PhilosophyOfSoftwareDesign
+from ../pragmatic-programmer/PragmaticProgrammer import PragmaticProgrammer
+from ../refactoring-guru-smells/RefactoringGuruSmells import
+    RefactoringGuruSmells
 from ../rust-api-guidelines/RustApiGuidelines import RustApiGuidelines
 from ../solid/Solid import Solid
 from ../twelve-factor/TwelveFactor import TwelveFactor
@@ -67,6 +75,8 @@ export skill CodingStandardsAudit:
         - Noncompliant and Compliant show the mistake and the fix in code. They are examples, not the whole rule.
         - Rationale says why the rule exists, and for CERT rules ends with CERT's risk ratings.
         - Severity is given only by the CERT standards. It is null for the rest.
+        - A first tag of recommendation marks a CERT recommendation, which is softer guidance than a CERT rule. Label it as a recommendation in the report.
+        - A first tag of practice marks advice about career, teams or process rather than code. Never report it as a finding.
         - Languages and Tags say what code the rule is about. Use tags to find the rules that matter for the code in front of you.
         - Source links to the rule in the original standard. Every finding cites it.
 
@@ -99,9 +109,14 @@ export skill CodingStandardsAudit:
         cryptography, files, databases or logging. Use SOLID and the
         Twelve-Factor App only when the user asks for a design or
         deployment review, because they judge structure rather than
-        lines of code. Use Clean Code only when the user asks for it,
-        because it overlaps the style guides on names, functions and
-        comments, and its heuristics call for judgement.
+        lines of code. Use Clean Code, the code smell catalogues, A
+        Philosophy of Software Design and The Pragmatic Programmer only
+        when the user asks for them, because they overlap the style
+        guides and call for judgement. Use the Google Engineering
+        Practices when the user asks for a review of a change in the
+        way a reviewer would do it, taking the reviewer rules as the
+        checklist and the author rules for the change description and
+        size.
 
         State the standards you chose in the first line of the report,
         so the user can ask for different ones.
@@ -115,6 +130,7 @@ export skill CodingStandardsAudit:
             - @{GooglePython}
         c:
             - @{CertC}
+            - @{LinuxKernelStyle}, for kernel code or projects that follow kernel style
         cpp:
             - @{CppCoreGuidelines} with @{CertCpp}
             - @{GoogleCpp}
@@ -145,6 +161,10 @@ export skill CodingStandardsAudit:
         anyLanguage:
             - @{OwaspScp}, for code that handles untrusted input or sensitive data
             - @{CleanCode}, on request, for names, functions, comments and tests
+            - @{RefactoringGuruSmells} or @{FowlerRefactoring}, on request, for code smells; use one of the two, not both
+            - @{PhilosophyOfSoftwareDesign}, on request, for module depth, interfaces and complexity
+            - @{PragmaticProgrammer}, on request, skipping tips tagged practice
+            - @{GoogleEngPractices}, on request, for a code review of a change
             - @{Solid}, on request, for object-oriented design
             - @{TwelveFactor}, on request, for how a service is configured and deployed
 
@@ -175,7 +195,8 @@ export skill CodingStandardsAudit:
         against which standards. Then list the findings, most serious
         first: security and correctness, then robustness, then style.
         Within that order, CERT severity high comes before medium and
-        low.
+        low, and a CERT rule comes before a CERT recommendation of the
+        same severity.
 
         Give each finding
 

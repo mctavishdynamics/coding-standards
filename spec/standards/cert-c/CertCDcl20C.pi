@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl20C:
+    standard: @{CertC}
+    ruleId: DCL20-C
+    title:
+        Explicitly specify void when a function accepts no arguments
+    statement:
+        Declare and define a function that takes no arguments with void in
+        its parameter list, not with empty parentheses.
+    rationale:
+        Empty parentheses give no parameter information, so calls with
+        arguments compile without a diagnostic and the mistake goes
+        unnoticed. CERT rates likelihood probable, detectable yes,
+        repairable yes, priority P12, level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int current_level();
+
+        int x = current_level(5);   /* accepted silently */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int current_level(void);
+
+        int x = current_level();
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, functions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl20-c

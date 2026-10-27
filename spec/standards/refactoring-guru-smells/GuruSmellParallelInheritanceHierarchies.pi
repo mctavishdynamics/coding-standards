@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellParallelInheritanceHierarchies:
+    standard: @{RefactoringGuruSmells}
+    ruleId: parallel-inheritance-hierarchies
+    title: Avoid hierarchies that must grow in step
+    statement:
+        Do not keep two class hierarchies where adding a subclass to one
+        forces you to add a matching subclass to the other. Make one
+        hierarchy refer to the other, then fold the redundant one away.
+        Usual fixes: Move Method, Move Field.
+    rationale:
+        Paired hierarchies double the work of every extension, and it is
+        easy to forget the twin class, leaving the two out of step.
+    exceptions:
+        Sometimes the paired hierarchies are the lesser evil; if removing
+        them makes the design worse, keep them.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        abstract class Account {}
+        class SavingsAccount extends Account {}
+        class CheckingAccount extends Account {}
+
+        abstract class AccountStatement {}
+        class SavingsStatement extends AccountStatement {}
+        class CheckingStatement extends AccountStatement {}
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        abstract class Account {
+            abstract List<Line> statementLines();
+        }
+        class SavingsAccount extends Account { List<Line> statementLines() { ... } }
+        class CheckingAccount extends Account { List<Line> statementLines() { ... } }
+        \\\
+        ```
+    languages: [any]
+    tags: [change-preventers, inheritance, duplication]
+    source: https://refactoring.guru/smells/parallel-inheritance-hierarchies

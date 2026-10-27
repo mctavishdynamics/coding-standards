@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellComments:
+    standard: @{RefactoringGuruSmells}
+    ruleId: comments
+    title: Make code clear instead of explaining it with comments
+    statement:
+        Do not fill methods with comments that explain what unclear code
+        does. Rename, extract or restructure until the code explains itself,
+        and keep the comments that remain for reasons and hard algorithms.
+        Usual fixes: Extract Variable, Extract Method, Rename Method,
+        Introduce Assertion.
+    rationale:
+        Explanatory comments often hide code that should have been clearer.
+        A good method or variable name says the same thing and cannot drift
+        out of date.
+    exceptions:
+        Comments that say why something is done a particular way, and
+        comments that explain a complex algorithm after simpler ways were
+        tried, are worth keeping.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        // check whether the user may see the report:
+        // must be active and either an admin or the owner
+        if (u.status == 1 && (u.role == 3 || r.ownerId == u.id)) {
+            show(r);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (user.canView(report)) {
+            show(report);
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [dispensables, comments, readability]
+    source: https://refactoring.guru/smells/comments

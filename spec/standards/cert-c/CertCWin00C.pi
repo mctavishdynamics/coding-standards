@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCWin00C:
+    standard: @{CertC}
+    ruleId: WIN00-C
+    title: Be specific when dynamically loading libraries
+    statement:
+        When loading a DLL with LoadLibrary or LoadLibraryEx, give a fully
+        qualified path or restrict the search to trusted directories, for
+        example with LOAD_LIBRARY_SEARCH_SYSTEM32.
+    rationale:
+        The default search order includes locations an attacker can write
+        to, so a planted DLL may be loaded and run in the program's process.
+        CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        HMODULE lib = LoadLibrary(TEXT("crypt32.dll"));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        HMODULE lib = LoadLibraryEx(TEXT("crypt32.dll"), NULL,
+                                    LOAD_LIBRARY_SEARCH_SYSTEM32);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, windows, libraries]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/microsoft-windows-win/win00-c

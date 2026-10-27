@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG27:
+    standard: @{CleanCode}
+    ruleId: G27
+    title: Prefer structure over convention
+    statement:
+        Enforce design decisions with structure the compiler checks, such as
+        abstract methods in a base class, rather than with naming or habits
+        that people must remember to follow.
+    rationale:
+        Conventions are easy to forget, while structure forces each
+        implementation to comply.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        // Every new shape must add a case here by convention.
+        double area(ShapeKind kind, double size) {
+            switch (kind) {
+                case SQUARE: return size * size;
+                default: return 0;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        abstract class Shape {
+            abstract double area();
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design, polymorphism]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

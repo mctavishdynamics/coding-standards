@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleEngPractices import GoogleEngPractices
+
+export coding-rule GoogleEngClDescriptionsFirstLine:
+    standard: @{GoogleEngPractices}
+    ruleId: developer/cl-descriptions/first-line
+    title: Start with a short imperative summary line, then a blank line
+    statement:
+        Make the first line a short, focused summary of specifically what
+        the CL does, written as a complete imperative sentence, followed by
+        a blank line. It should stand on its own in history listings.
+    rationale:
+        History summaries show only the first line, so it must let readers
+        skim history without opening each change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        Removing the legacy session store and migrating to the token cache.
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        Remove the legacy session store and migrate to the token cache.
+
+        The session store held a lock on every request ...
+        \\\
+        ```
+    languages: [any]
+    tags: [author, cl-description]
+    source: https://google.github.io/eng-practices/review/developer/cl-descriptions.html#first-line

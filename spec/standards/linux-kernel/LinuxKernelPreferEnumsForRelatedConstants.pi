@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelPreferEnumsForRelatedConstants:
+    standard: @{LinuxKernelStyle}
+    ruleId: 12b
+    title: Use an enum for a set of related constants
+    statement:
+        When defining several related constants, prefer an enum to a series
+        of macros.
+    rationale:
+        An enum groups the values, gives them a type and makes them visible
+        to debuggers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define PWR_OFF     0
+        #define PWR_SUSPEND 1
+        #define PWR_ON      2
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum pwr_state {
+                PWR_OFF,
+                PWR_SUSPEND,
+                PWR_ON,
+        };
+        \\\
+        ```
+    languages: [c]
+    tags: [macros, enums]
+    source: https://docs.kernel.org/process/coding-style.html#macros-enums-and-rtl

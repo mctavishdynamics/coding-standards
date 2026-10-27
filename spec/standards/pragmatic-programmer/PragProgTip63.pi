@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip63:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-63
+    title: Estimate the complexity of your algorithms
+    statement:
+        Before writing an algorithm, get a rough idea of how its time and
+        memory use grow with input size.
+    rationale:
+        Knowing the order of growth prevents surprises when inputs get
+        large.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def has_duplicates(xs):
+            return any(xs[i] == xs[j] for i in range(len(xs))
+                       for j in range(i + 1, len(xs)))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def has_duplicates(xs):
+            return len(set(xs)) != len(xs)
+        \\\
+        ```
+    languages: [any]
+    tags: [performance, algorithms]
+    source: https://pragprog.com/tips/

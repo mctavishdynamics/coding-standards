@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelWarnRatherThanBug:
+    standard: @{LinuxKernelStyle}
+    ruleId: 22b
+    title: Use WARN rather than BUG
+    statement:
+        Do not add new uses of BUG, BUG_ON, VM_BUG_ON or other BUG variants.
+        Use a WARN variant instead, preferably WARN_ON_ONCE, with recovery
+        code where some recovery is reasonably possible.
+    rationale:
+        BUG brings the machine down, and laziness about error handling does
+        not justify that.
+    exceptions:
+        BUG may still be used for major internal corruption with no way to
+        continue, but it needs a good justification.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        BUG_ON(idx >= q->depth);
+        entry = &q->ring[idx];
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (WARN_ON_ONCE(idx >= q->depth))
+                return -EINVAL;
+        entry = &q->ring[idx];
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, robustness, assertions]
+    source: https://docs.kernel.org/process/coding-style.html#use-warn-rather-than-bug

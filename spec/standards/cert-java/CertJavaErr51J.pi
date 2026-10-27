@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaErr51J:
+    standard: @{CertJava}
+    ruleId: ERR51-J
+    title: Prefer user-defined exceptions over more general exception types
+    statement:
+        Throw exceptions of specific types that describe the problem,
+        defining your own when needed, instead of throwing general types
+        such as Exception or RuntimeException.
+    rationale:
+        Exceptions are caught by type. General types force callers to catch
+        more than they intend or inspect messages, which makes errors easy
+        to handle at the wrong level.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void withdraw(long amount) throws Exception {
+            if (amount > balance) {
+                throw new Exception("Insufficient funds");
+            }
+            balance -= amount;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class InsufficientFundsException extends Exception {
+            InsufficientFundsException(String message) { super(message); }
+        }
+
+        void withdraw(long amount) throws InsufficientFundsException {
+            if (amount > balance) {
+                throw new InsufficientFundsException("Insufficient funds");
+            }
+            balance -= amount;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, exceptions, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/exceptional-behavior-err/err51-j/

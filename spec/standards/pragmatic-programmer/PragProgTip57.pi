@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip57:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-57
+    title: Avoid unsynchronised shared state
+    statement:
+        Do not let several threads or processes read and change the same
+        data without coordination.
+    rationale:
+        Shared mutable state accessed concurrently produces inconsistent
+        results.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        counter = 0
+        def worker():
+            global counter
+            counter += 1
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        counter = 0
+        lock = threading.Lock()
+        def worker():
+            global counter
+            with lock:
+                counter += 1
+        \\\
+        ```
+    languages: [any]
+    tags: [concurrency, state]
+    source: https://pragprog.com/tips/

@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelLargeAsmInSFiles:
+    standard: @{LinuxKernelStyle}
+    ruleId: 20b
+    title: Put large assembly functions in .S files with asmlinkage prototypes
+    statement:
+        Write large, non-trivial assembly functions in .S files and declare
+        their C prototypes in headers using asmlinkage.
+    rationale:
+        Long assembly is clearer as a separate source file, and asmlinkage
+        gives C callers the right calling convention.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        /* in include/asm/crc.h, implemented in crc_fast.S */
+        asmlinkage u32 crc32_fast(u32 seed, const u8 *buf, size_t len);
+        \\\
+        ```
+    languages: [c]
+    tags: [assembly, declarations]
+    source: https://docs.kernel.org/process/coding-style.html#inline-assembly

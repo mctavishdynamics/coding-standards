@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip53:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-53
+    title: Delegate to other objects instead of inheriting from them
+    statement:
+        Give a class a component that provides behaviour and forward to it,
+        rather than making the class a subtype.
+    rationale:
+        Delegation exposes only what you choose and avoids inheriting an API
+        you do not want.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class AuditedList(list):
+            pass
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class AuditLog:
+            def __init__(self):
+                self._entries = []
+            def record(self, entry):
+                self._entries.append(entry)
+        \\\
+        ```
+    languages: [any]
+    tags: [composition, inheritance]
+    source: https://pragprog.com/tips/

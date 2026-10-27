@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellFeatureEnvy:
+    standard: @{RefactoringGuruSmells}
+    ruleId: feature-envy
+    title: Keep methods with the data they use most
+    statement:
+        Avoid methods that use another object's data more than their own;
+        move the method, or the envious part of it, to the class that owns
+        the data. Usual fixes: Move Method, Extract Method.
+    rationale:
+        This often follows moving fields into a data class while leaving the
+        operations behind. Keeping behavior next to its data means a change
+        to that data touches one class.
+    exceptions:
+        Behavior is sometimes kept apart on purpose so it can vary
+        independently, as in the Strategy and Visitor patterns.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class ShippingCalculator {
+            double cost(Parcel p) {
+                return p.weightKg() * p.zone().ratePerKg() + p.zone().baseFee();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Parcel {
+            double shippingCost() {
+                return weightKg * zone.ratePerKg() + zone.baseFee();
+            }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [couplers, coupling, cohesion]
+    source: https://refactoring.guru/smells/feature-envy

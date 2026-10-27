@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelKconfigMarkDangerousOptions:
+    standard: @{LinuxKernelStyle}
+    ruleId: 10b
+    title: Mark seriously dangerous Kconfig options in their prompt
+    statement:
+        For a feature that is seriously dangerous, such as write support for
+        some filesystems, say so clearly in the option's prompt string.
+    rationale:
+        Users choosing configuration options see the prompt first and need
+        the warning before they enable the feature.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kconfig
+        \\\
+        config XYZFS_WRITE
+                bool "XYZFS write support"
+                depends on XYZFS
+        \\\
+        ```
+    compliant:
+        ```kconfig
+        \\\
+        config XYZFS_WRITE
+                bool "XYZFS write support (DANGEROUS)"
+                depends on XYZFS
+        \\\
+        ```
+    languages: [kconfig]
+    tags: [kconfig, configuration]
+    source: https://docs.kernel.org/process/coding-style.html#kconfig-configuration-files

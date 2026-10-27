@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelKernelDocForApiFunctions:
+    standard: @{LinuxKernelStyle}
+    ruleId: 8b
+    title: Document kernel API functions in kernel-doc format
+    statement:
+        Comment kernel API functions using the kernel-doc format, but do not
+        write boilerplate kernel-doc that only repeats what the signature
+        already says.
+    rationale:
+        Kernel-doc comments feed the generated documentation, while empty
+        restatements of the signature add bulk without information.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /**
+         * gpio_line_get - get gpio line
+         * @line: the line
+         *
+         * Return: the value
+         */
+        int gpio_line_get(struct gpio_line *line);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /**
+         * gpio_line_get - read the current level of a GPIO line
+         * @line: line to sample; must have been requested as an input
+         *
+         * Return: 0 or 1 for the line level, or -EIO if the controller is
+         * powered down.
+         */
+        int gpio_line_get(struct gpio_line *line);
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, documentation, api]
+    source: https://docs.kernel.org/process/coding-style.html#commenting

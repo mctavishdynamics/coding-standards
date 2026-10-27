@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl02C:
+    standard: @{CertC}
+    ruleId: DCL02-C
+    title: Use visually distinct identifiers
+    statement:
+        Choose meaningful identifiers that cannot be confused when read,
+        avoiding names that differ only by look-alike characters such as l
+        and 1, O and 0, or rn and m.
+    rationale:
+        Identifiers that look the same are easily misread during development
+        and review, so the wrong variable gets used. CERT rates likelihood
+        unlikely, detectable yes, repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int l1 = 0;
+        int ll = 1;
+        int lI = l1 + ll;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int first_count = 0;
+        int second_count = 1;
+        int sum = first_count + second_count;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, naming, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl02-c

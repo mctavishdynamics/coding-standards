@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip38:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-38
+    title: Stop as soon as something impossible happens
+    statement:
+        When code reaches a state that should not occur, fail immediately
+        instead of continuing.
+    rationale:
+        A program that keeps running in a bad state can corrupt data and
+        hide the original cause.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            config = load_config(path)
+        except Exception:
+            config = None  # carry on anyway
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        config = load_config(path)  # let the error surface
+        \\\
+        ```
+    languages: [any]
+    tags: [error-handling, fail-fast]
+    source: https://pragprog.com/tips/

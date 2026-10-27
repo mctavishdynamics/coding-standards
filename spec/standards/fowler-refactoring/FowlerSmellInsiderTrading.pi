@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellInsiderTrading:
+    standard: @{FowlerRefactoring}
+    ruleId: insider-trading
+    title: Keep modules from trading data behind each other's backs
+    statement:
+        Avoid modules that pass a lot of data back and forth and rely on
+        each other's internals. Move the shared behavior or fields to one
+        side, introduce a third module for the common interest, or hide the
+        delegate. Inheritance is a common case, where subclasses know too
+        much about their parents. Usual fixes: Move Function, Move Field,
+        Hide Delegate, Replace Subclass with Delegate, Replace Superclass
+        with Delegate.
+    rationale:
+        Some exchange between modules is unavoidable, but heavy, hidden
+        exchange couples them so that neither can change on its own.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Order {
+          ship(warehouse) {
+            warehouse._stock[this.sku] -= this.qty;     // edits warehouse internals
+            warehouse._log.push({ sku: this.sku, qty: -this.qty });
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Order {
+          ship(warehouse) {
+            warehouse.release(this.sku, this.qty);
+          }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [coupling, encapsulation, modularity]
+    source: https://martinfowler.com/books/refactoring.html

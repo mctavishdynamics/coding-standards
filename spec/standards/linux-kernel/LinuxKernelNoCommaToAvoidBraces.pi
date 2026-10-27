@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoCommaToAvoidBraces:
+    standard: @{LinuxKernelStyle}
+    ruleId: 1d
+    title: Do not use the comma operator to avoid braces
+    statement:
+        When a conditional body has more than one statement, wrap the
+        statements in braces instead of joining them with commas.
+    rationale:
+        Comma-joined statements hide the fact that the body does several
+        things and break as soon as someone edits the line.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (ready)
+                start_queue(q), notify_waiters(q);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (ready) {
+                start_queue(q);
+                notify_waiters(q);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, braces, statements]
+    source: https://docs.kernel.org/process/coding-style.html#indentation

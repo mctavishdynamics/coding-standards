@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip31:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-31
+    title: Reproduce a bug with a failing test before fixing it
+    statement:
+        Write a test that fails because of the bug, then change the code
+        until it passes.
+    rationale:
+        The test proves the fix works and prevents the bug from returning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # Fixed parse_price for "1,000" (no test)
+        def parse_price(s):
+            return float(s.replace(",", ""))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def test_parse_price_with_thousands_separator():
+            assert parse_price("1,000") == 1000.0
+
+        def parse_price(s):
+            return float(s.replace(",", ""))
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, debugging]
+    source: https://pragprog.com/tips/

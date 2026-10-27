@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos04C:
+    standard: @{CertC}
+    ruleId: POS04-C
+    title: Avoid using PTHREAD_MUTEX_NORMAL type mutex locks
+    statement:
+        Prefer PTHREAD_MUTEX_ERRORCHECK, or a recursive mutex when relocking
+        is intended, over PTHREAD_MUTEX_NORMAL.
+    rationale:
+        A normal mutex does no deadlock detection, and relocking it or
+        unlocking it from the wrong thread is undefined behavior, while an
+        error-checking mutex reports these mistakes. CERT rates likelihood
+        unlikely, detectable yes, repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        pthread_mutexattr_t attr;
+        pthread_mutexattr_init(&attr);
+        pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_NORMAL);
+        pthread_mutex_init(&lock, &attr);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        pthread_mutexattr_t attr;
+        pthread_mutexattr_init(&attr);
+        pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_ERRORCHECK);
+        pthread_mutex_init(&lock, &attr);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, posix, concurrency, locking]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/posix-pos/pos04-c

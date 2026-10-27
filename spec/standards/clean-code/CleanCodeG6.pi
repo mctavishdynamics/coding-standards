@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG6:
+    standard: @{CleanCode}
+    ruleId: G6
+    title: Put code at the right level of abstraction
+    statement:
+        Keep general concepts in base classes and interfaces and put details
+        in derived classes or lower-level modules. Do not let implementation
+        details leak into an abstraction.
+    rationale:
+        Mixing levels of abstraction makes the design hard to extend and
+        forces every implementation to deal with details that only some of
+        them have.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        interface Repository<T> {
+            T find(Id id);
+            void save(T item);
+            void vacuumSqliteFile(); // only one implementation uses SQLite
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        interface Repository<T> {
+            T find(Id id);
+            void save(T item);
+        }
+
+        class SqliteRepository<T> implements Repository<T> {
+            // find and save ...
+            void vacuumSqliteFile() { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [abstraction, design]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

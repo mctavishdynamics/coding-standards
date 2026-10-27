@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl21C:
+    standard: @{CertC}
+    ruleId: DCL21-C
+    title: Understand the storage of compound literals
+    statement:
+        Remember that a compound literal at block scope is one object with
+        automatic storage tied to its enclosing block. It is not created
+        afresh on each loop iteration, and it ends with the block.
+    rationale:
+        Code that stores the address of a compound literal from a loop gets
+        the same object every time, and using it after the block ends reads
+        a dead object. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        struct item { int id; };
+        struct item *list[3];
+
+        for (int i = 0; i < 3; i++) {
+            list[i] = &(struct item){ i };   /* all point to one object */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct item { int id; };
+        struct item items[3];
+
+        for (int i = 0; i < 3; i++) {
+            items[i] = (struct item){ i };
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, lifetime]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl21-c

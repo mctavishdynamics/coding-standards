@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds53J:
+    standard: @{CertJava}
+    ruleId: IDS53-J
+    title: Prevent XPath Injection
+    statement:
+        Do not build XPath queries by concatenating untrusted input. Use a
+        parameterized query, for example XPath variables resolved through an
+        XPathVariableResolver or a precompiled XQuery, or strictly validate
+        the input first.
+    rationale:
+        An attacker can insert XPath syntax that changes the query's
+        meaning, for example to bypass a login check or read data from other
+        parts of the XML document.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String expr = "//user[name='" + login + "' and pass='" + password + "']";
+        Node user = (Node) xpath.evaluate(expr, doc, XPathConstants.NODE);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        xpath.setXPathVariableResolver(v -> switch (v.getLocalPart()) {
+            case "name" -> login;
+            case "pass" -> password;
+            default -> null;
+        });
+        String expr = "//user[name=$name and pass=$pass]";
+        Node user = (Node) xpath.evaluate(expr, doc, XPathConstants.NODE);
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, injection, xml]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/input-validation-and-data-sanitization-ids/ids53-j/

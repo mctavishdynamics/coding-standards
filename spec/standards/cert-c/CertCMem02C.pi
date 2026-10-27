@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem02C:
+    standard: @{CertC}
+    ruleId: MEM02-C
+    title:
+        Immediately cast the result of a memory allocation function call
+        into a pointer to the allocated type
+    statement:
+        Cast the void pointer returned by malloc, calloc, realloc or
+        aligned_alloc to a pointer to the type being allocated, ideally
+        through a macro that also computes the size from that type.
+    rationale:
+        The cast lets the compiler flag an assignment to a pointer of a
+        different type, which would otherwise hide a size mismatch. CERT
+        rates likelihood unlikely, detectable yes, repairable yes, priority
+        P3, level L3.
+    exceptions:
+        Do not add the cast in code built with a C90 compiler, where it can
+        hide a missing declaration of malloc.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        struct node *n = malloc(sizeof(struct entry));   /* wrong type, no diagnostic */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define MALLOC_TYPE(type) ((type *)malloc(sizeof(type)))
+
+        struct node *n = MALLOC_TYPE(struct node);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, memory, casts, allocation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/memory-management-mem/mem02-c

@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon03C:
+    standard: @{CertC}
+    ruleId: CON03-C
+    title: Ensure visibility when accessing shared variables
+    statement:
+        When one thread writes a shared variable and another reads it, make
+        the write happen before the read by using an atomic object or by
+        protecting both accesses with the same lock.
+    rationale:
+        Without synchronization, a thread may keep seeing a stale value
+        indefinitely, for example spinning forever on a flag that was
+        already set. CERT rates likelihood probable, detectable no,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int done = 0;
+
+        int worker(void *arg) {
+            while (!done) {
+                do_work();
+            }
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        atomic_bool done = false;
+
+        int worker(void *arg) {
+            while (!atomic_load(&done)) {
+                do_work();
+            }
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, concurrency, atomics, visibility]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/concurrency-con/con03-c

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon05C:
+    standard: @{CertC}
+    ruleId: CON05-C
+    title:
+        Do not perform operations that can block while holding a lock
+    statement:
+        Release locks before performing operations that may block, such as
+        network, file or console I/O, or waiting on another thread. Copy the
+        data needed under the lock and do the slow work afterwards.
+    rationale:
+        Other threads that need the lock stall while the holder blocks,
+        which hurts performance and can cause deadlock. CERT rates
+        likelihood probable, detectable no, repairable no, priority P2,
+        level L3.
+    exceptions:
+        A blocking operation under a lock may be unavoidable in portable
+        code, for example when the lock protects access to a file.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        mtx_lock(&stats_lock);
+        send(sock, &stats, sizeof stats, 0);
+        mtx_unlock(&stats_lock);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct stats copy;
+        mtx_lock(&stats_lock);
+        copy = stats;
+        mtx_unlock(&stats_lock);
+        send(sock, &copy, sizeof copy, 0);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, concurrency, locking, deadlock]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/concurrency-con/con05-c

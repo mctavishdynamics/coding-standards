@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoMacroLvalues:
+    standard: @{LinuxKernelStyle}
+    ruleId: 12h
+    title: Do not use macro calls as assignment targets
+    statement:
+        Do not write macros whose result is meant to be assigned to, so that
+        a call appears on the left of an assignment.
+    rationale:
+        Code like that breaks as soon as the macro is turned into an inline
+        function.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define DEV_FLAGS(d) ((d)->priv->flags)
+
+        DEV_FLAGS(dev) = 0;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static inline void dev_set_flags(struct device_ctx *d, u32 flags)
+        {
+                d->priv->flags = flags;
+        }
+
+        dev_set_flags(dev, 0);
+        \\\
+        ```
+    languages: [c]
+    tags: [macros]
+    source: https://docs.kernel.org/process/coding-style.html#macros-enums-and-rtl

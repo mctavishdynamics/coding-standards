@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCApi05C:
+    standard: @{CertC}
+    ruleId: API05-C
+    title: Use conformant array parameters
+    statement:
+        When a function takes an array and its length, declare the length
+        parameter first and use it in the array parameter's declaration, as
+        in int a with bound n. This documents the relationship and lets
+        compilers and tools check calls.
+    rationale:
+        A bare pointer parameter says nothing about how many elements are
+        valid. Conformant array syntax makes the bound visible and helps
+        catch out-of-bounds access. CERT rates likelihood probable,
+        detectable yes, repairable no, priority P12, level L1.
+    exceptions:
+        Code that must also build as C++ or on compilers without C99 array
+        syntax, such as MSVC, need not use conformant array parameters. A
+        macro can expand the bound only where it is supported.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        double average(const double *values, size_t count);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        double average(size_t count, const double values[count]);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, api-design, arrays]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/application-programming-interfaces-api/api05-c

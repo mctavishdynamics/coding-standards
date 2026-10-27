@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoTypedefForStructsAndPointers:
+    standard: @{LinuxKernelStyle}
+    ruleId: 5a
+    title: Do not typedef structures or pointers
+    statement:
+        Refer to structures as struct name and to pointers with an explicit
+        asterisk. Never hide a pointer, or a structure whose members can
+        reasonably be accessed directly, behind a typedef.
+    rationale:
+        A typedef hides what the object is, so a reader cannot tell whether
+        a variable is a structure, a pointer or a number.
+    exceptions:
+        A typedef is acceptable only in the cases the guide lists: opaque
+        objects, clear integer types, sparse-checked types, Linux names for
+        standard integer types, and userspace-safe types.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        typedef struct rx_queue *rxq_t;
+
+        rxq_t queue;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct rx_queue *queue;
+        \\\
+        ```
+    languages: [c]
+    tags: [typedefs, types]
+    source: https://docs.kernel.org/process/coding-style.html#typedefs

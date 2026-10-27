@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellLongMethod:
+    standard: @{RefactoringGuruSmells}
+    ruleId: long-method
+    title: Keep methods short
+    statement:
+        Keep methods short; when a method grows past roughly ten lines, ask
+        whether it does more than one thing and split it. Usual fixes:
+        Extract Method, Replace Temp with Query, Introduce Parameter Object,
+        Preserve Whole Object, Replace Method with Method Object, Decompose
+        Conditional.
+    rationale:
+        Code is added to methods far more often than it is taken out, so
+        long methods keep growing until nobody can follow them. Small,
+        well-named methods are easier to read, test and reuse, and the extra
+        calls cost almost nothing at run time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void checkout(Cart cart) {
+            double total = 0;
+            for (Item item : cart.items()) {
+                total += item.price() * item.quantity();
+            }
+            if (cart.customer().isMember()) {
+                total *= 0.95;
+            }
+            total += total * TAX_RATE;
+            receiptPrinter.print(cart.customer().name(), total);
+            mailer.send(cart.customer().email(), "Thanks, you paid " + total);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void checkout(Cart cart) {
+            double total = withTax(memberDiscount(cart, subtotal(cart)));
+            notifyCustomer(cart.customer(), total);
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [bloaters, methods, readability]
+    source: https://refactoring.guru/smells/long-method

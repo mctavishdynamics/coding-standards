@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt09C:
+    standard: @{CertC}
+    ruleId: INT09-C
+    title: Ensure enumeration constants map to unique values
+    statement:
+        Give each enumerator of an enumeration a distinct value, especially
+        when some enumerators have explicit values and others are implicit.
+    rationale:
+        Mixing explicit and implicit values can make two enumerators equal
+        by accident, which breaks switch statements and comparisons. CERT
+        rates likelihood probable, detectable yes, repairable no, priority
+        P4, level L3.
+    exceptions:
+        When duplicates are intended, define the duplicate in terms of the
+        original enumerator rather than repeating its number.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        enum color { RED = 1, GREEN, BLUE = 2, ALPHA };   /* GREEN == BLUE */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum color { RED = 1, GREEN, BLUE, ALPHA };
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, enumerations]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int09-c

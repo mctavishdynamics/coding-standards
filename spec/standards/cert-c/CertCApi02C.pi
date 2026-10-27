@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCApi02C:
+    standard: @{CertC}
+    ruleId: API02-C
+    title:
+        Functions that read or write to or from an array should take an
+        argument to specify the source or target size
+    statement:
+        Give every function that takes an array parameter a companion
+        parameter holding the maximum number of elements the array can hold,
+        and make the function respect it.
+    rationale:
+        Without the size, the function cannot stop at the end of the array
+        and may read or write out of bounds. CERT rates likelihood likely,
+        detectable yes, repairable no, priority P18, level L1.
+    exceptions:
+        A function whose runtime-constraint checks already guarantee that no
+        out-of-bounds access can happen may omit the size for that
+        parameter, as with the source argument of strcat_s.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        void format_id(char *out, unsigned id) {
+            sprintf(out, "ID-%08u", id);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int format_id(char *out, size_t out_size, unsigned id) {
+            int n = snprintf(out, out_size, "ID-%08u", id);
+            return (n < 0 || (size_t)n >= out_size) ? -1 : 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, api-design, arrays, buffer-overflow]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/application-programming-interfaces-api/api02-c

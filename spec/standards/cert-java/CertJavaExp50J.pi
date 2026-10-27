@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaExp50J:
+    standard: @{CertJava}
+    ruleId: EXP50-J
+    title: Do not confuse abstract object equality with reference equality
+    statement:
+        Use equals() to compare the contents of objects, and use == and !=
+        only to test whether two references point to the same object.
+    rationale:
+        Comparing strings or other objects with == checks identity, not
+        value, so equal values held in different objects compare unequal.
+    exceptions:
+        Reference equality may stand in for object equality when the class
+        guarantees at most one instance per value, as with enums or
+        carefully controlled factories.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        if (input == "admin") {
+            grantAccess();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if ("admin".equals(input)) {
+            grantAccess();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, equality, strings]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/expressions-exp/exp50-j/

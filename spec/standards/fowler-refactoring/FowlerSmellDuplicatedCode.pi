@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellDuplicatedCode:
+    standard: @{FowlerRefactoring}
+    ruleId: duplicated-code
+    title: Unify code structures that appear in more than one place
+    statement:
+        When the same shape of code shows up in several places, write
+        it once and call it from each place. Bring near-identical
+        fragments side by side first so the real differences become
+        visible. Usual fixes: Extract Function, Slide Statements, Pull
+        Up Method.
+    rationale:
+        Every copy has to be read closely to spot its small differences, and
+        every change has to be repeated in each copy without missing one.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function invoiceHeader(customer) {
+          const name = `${customer.first} ${customer.last}`.trim().toUpperCase();
+          return `INVOICE FOR ${name}`;
+        }
+        function letterHeader(customer) {
+          const name = `${customer.first} ${customer.last}`.trim().toUpperCase();
+          return `DEAR ${name}`;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const displayName = c => `${c.first} ${c.last}`.trim().toUpperCase();
+
+        const invoiceHeader = c => `INVOICE FOR ${displayName(c)}`;
+        const letterHeader = c => `DEAR ${displayName(c)}`;
+        \\\
+        ```
+    languages: [any]
+    tags: [duplication, functions]
+    source: https://martinfowler.com/books/refactoring.html

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaErr52J:
+    standard: @{CertJava}
+    ruleId: ERR52-J
+    title: Avoid in-band error indicators
+    statement:
+        Do not signal errors with special values that could also be valid
+        results, such as -1 or null. Throw an exception or return a wrapper
+        type, such as Optional, that separates the result from the error.
+    rationale:
+        Callers forget to check for the special value, or use it as real
+        data, which causes unexpected behavior.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        int findPort(String service) {
+            Integer port = ports.get(service);
+            return port == null ? -1 : port;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        OptionalInt findPort(String service) {
+            Integer port = ports.get(service);
+            return port == null ? OptionalInt.empty() : OptionalInt.of(port);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, error-handling, api-design]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/exceptional-behavior-err/err52-j/

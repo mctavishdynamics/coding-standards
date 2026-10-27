@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCWin03C:
+    standard: @{CertC}
+    ruleId: WIN03-C
+    title: Understand HANDLE inheritance
+    statement:
+        Create handles as not inheritable unless a child process truly needs
+        them, and pass FALSE for handle inheritance to CreateProcess when
+        none should be passed on.
+    rationale:
+        Inherited handles give a child process access to files, mutexes and
+        other objects the parent did not mean to share. CERT rates
+        likelihood unlikely, detectable no, repairable no, priority P3,
+        level L3.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        SECURITY_ATTRIBUTES sa = { sizeof sa, NULL, TRUE };
+        HANDLE f = CreateFile(path, GENERIC_READ, 0, &sa, OPEN_EXISTING, 0, NULL);
+        CreateProcess(NULL, cmd, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        HANDLE f = CreateFile(path, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
+        CreateProcess(NULL, cmd, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, windows, handles, processes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/microsoft-windows-win/win03-c

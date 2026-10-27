@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip55:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-55
+    title: Keep environment-specific values in external configuration
+    statement:
+        Put values that vary by deployment, such as credentials, URLs and
+        limits, in configuration outside the code.
+    rationale:
+        External configuration lets the same code run in different
+        environments without changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        DB_URL = "postgres://admin:hunter2@10.0.0.5/prod"
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        DB_URL = os.environ["DATABASE_URL"]
+        \\\
+        ```
+    languages: [any]
+    tags: [configuration]
+    source: https://pragprog.com/tips/

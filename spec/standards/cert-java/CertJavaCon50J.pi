@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaCon50J:
+    standard: @{CertJava}
+    ruleId: CON50-J
+    title: Do not assume that declaring a reference volatile guarantees safe publication of the members of the referenced object
+    statement:
+        A volatile field makes only the reference visible across threads,
+        not the contents of the object it refers to. Use immutable or
+        thread-safe objects, atomic classes or synchronization for the
+        referenced state.
+    rationale:
+        Threads may see stale or inconsistent values in arrays and mutable
+        objects behind a volatile reference.
+    exceptions:
+        A volatile reference is enough when the referenced object is
+        thread-safe by design or strictly immutable.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        private volatile int[] counts = new int[10];
+
+        void increment(int i) {
+            counts[i]++;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private final AtomicIntegerArray counts = new AtomicIntegerArray(10);
+
+        void increment(int i) {
+            counts.incrementAndGet(i);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, concurrency, volatile, visibility]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/concurrency-con/con50-j/

@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio06C:
+    standard: @{CertC}
+    ruleId: FIO06-C
+    title: Create files with appropriate access permissions
+    statement:
+        Give every file the program creates the narrowest permissions it
+        needs. On POSIX, pass an explicit restrictive mode to open, and
+        remember that fopen creates files with a broad default mode limited
+        only by the umask.
+    rationale:
+        A file created with loose permissions can be read or changed by
+        other users before the program gets a chance to tighten them. CERT
+        rates likelihood probable, detectable no, repairable no, priority
+        P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int save_token(const char *path, const char *token) {
+            int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+            if (fd == -1) {
+                return -1;
+            }
+            write(fd, token, strlen(token));
+            return close(fd);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int save_token(const char *path, const char *token) {
+            int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC | O_NOFOLLOW,
+                          S_IRUSR | S_IWUSR);
+            if (fd == -1) {
+                return -1;
+            }
+            write(fd, token, strlen(token));
+            return close(fd);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, files, permissions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio06-c

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelSplitErrorLabels:
+    standard: @{LinuxKernelStyle}
+    ruleId: 7c
+    title: Give each cleanup step its own label to avoid one-err bugs
+    statement:
+        Do not funnel every failure into one error label that frees
+        everything. Use a separate label per cleanup step so each exit path
+        only undoes what was actually set up, and test the exit paths by
+        simulating errors.
+    rationale:
+        A single catch-all label often touches resources that do not exist
+        yet on some paths, such as dereferencing a NULL pointer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        err:
+                kfree(sess->key);
+                kfree(sess);
+                return ret;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        err_free_key:
+                kfree(sess->key);
+        err_free_sess:
+                kfree(sess);
+                return ret;
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, goto, testing]
+    source: https://docs.kernel.org/process/coding-style.html#centralized-exiting-of-functions

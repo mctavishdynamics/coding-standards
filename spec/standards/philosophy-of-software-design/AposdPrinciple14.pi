@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdPrinciple14:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: principle-14
+    title: Optimise code for the reader, not the writer
+    statement:
+        When a choice saves time for the author but makes the code harder to
+        read, choose the readable option.
+    rationale:
+        Code is read far more often than it is written, so ease of reading
+        has the larger effect on the cost of the system.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        r = [x for x in d if d[x][2] and not d[x][0]]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        pending_ids = [order_id for order_id, order in orders.items()
+                       if order.is_paid and not order.is_shipped]
+        \\\
+        ```
+    languages: [any]
+    tags: [principle, readability]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

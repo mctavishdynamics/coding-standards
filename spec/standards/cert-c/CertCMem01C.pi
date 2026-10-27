@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem01C:
+    standard: @{CertC}
+    ruleId: MEM01-C
+    title: Store a new value in pointers immediately after free()
+    statement:
+        Right after freeing memory, set the pointer to NULL or to another
+        valid object.
+    rationale:
+        A dangling pointer can be freed again or dereferenced, while freeing
+        or checking a null pointer is harmless. CERT rates likelihood
+        unlikely, detectable yes, repairable yes, priority P9, level L2.
+    exceptions:
+        A local variable that goes out of scope immediately after the free
+        need not be reset.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        free(conn->buffer);
+        if (error) {
+            free(conn->buffer);   /* double free */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        free(conn->buffer);
+        conn->buffer = NULL;
+        if (error) {
+            free(conn->buffer);   /* no effect */
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, memory, pointers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/memory-management-mem/mem01-c

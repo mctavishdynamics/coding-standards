@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip39:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-39
+    title: Use assertions for conditions that must never be false
+    statement:
+        Add assertions for conditions you are certain cannot happen, and do
+        not use them for normal error handling.
+    rationale:
+        Assertions catch broken assumptions early and document them for
+        readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def middle(items):
+            return items[len(items) // 2]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def middle(items):
+            assert items, "caller must pass a non-empty list"
+            return items[len(items) // 2]
+        \\\
+        ```
+    languages: [any]
+    tags: [assertions, defensive-programming]
+    source: https://pragprog.com/tips/

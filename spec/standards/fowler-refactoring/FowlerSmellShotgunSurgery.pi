@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellShotgunSurgery:
+    standard: @{FowlerRefactoring}
+    ruleId: shotgun-surgery
+    title: Gather code that changes together into one place
+    statement:
+        When one change forces small edits in many modules, pull the
+        scattered pieces together so that the change happens in one place.
+        Merging over-split functions or classes is fine if that brings the
+        pieces together. Usual fixes: Move Function, Move Field, Combine
+        Functions into Class, Combine Functions into Transform, Split Phase,
+        Inline Function, Inline Class.
+    rationale:
+        When the edits are spread around, they are hard to find and one is
+        easily missed, which leaves the system half changed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        // cart.js
+        const shipping = weight => weight * 1.5 + 4;
+        // quote.js
+        const estimateShipping = weight => weight * 1.5 + 4;
+        // invoice.js
+        const shippingLine = weight => `Shipping: ${weight * 1.5 + 4}`;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        // shipping.js
+        export const shippingCost = weight => weight * 1.5 + 4;
+        \\\
+        ```
+    languages: [any]
+    tags: [modularity, cohesion, change]
+    source: https://martinfowler.com/books/refactoring.html

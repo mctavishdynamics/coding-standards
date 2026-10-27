@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio19C:
+    standard: @{CertC}
+    ruleId: FIO19-C
+    title:
+        Do not use fseek() and ftell() to compute the size of a regular file
+    statement:
+        Do not find a file's size by seeking to the end and calling ftell.
+        Use a facility that reports the size directly, such as POSIX fstat
+        or Windows GetFileSizeEx.
+    rationale:
+        Seeking to the end of a binary stream has undefined behavior, ftell
+        on a text stream does not return a byte count, and long can be too
+        small for large files. CERT rates likelihood unlikely, detectable
+        yes, repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        long file_size(FILE *f) {
+            if (fseek(f, 0, SEEK_END) != 0) {
+                return -1;
+            }
+            return ftell(f);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        off_t file_size(int fd) {
+            struct stat st;
+            if (fstat(fd, &st) == -1 || !S_ISREG(st.st_mode)) {
+                return -1;
+            }
+            return st.st_size;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, files, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio19-c

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeT9:
+    standard: @{CleanCode}
+    ruleId: T9
+    title: Keep tests fast
+    statement:
+        Do what it takes to keep the test suite quick to run, such as
+        isolating slow dependencies behind fakes.
+    rationale:
+        Slow tests get run less often, and tests that are not run do not
+        catch problems.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        @Test
+        void sendsReminder() throws Exception {
+            reminders.schedule(user, Duration.ofSeconds(5));
+            Thread.sleep(6000);
+            assertTrue(mailbox.contains(user));
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Test
+        void sendsReminder() {
+            FakeClock clock = new FakeClock();
+            Reminders reminders = new Reminders(clock, mailbox);
+            reminders.schedule(user, Duration.ofSeconds(5));
+            clock.advance(Duration.ofSeconds(6));
+            assertTrue(mailbox.contains(user));
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, performance]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

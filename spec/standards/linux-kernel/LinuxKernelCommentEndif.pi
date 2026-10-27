@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelCommentEndif:
+    standard: @{LinuxKernelStyle}
+    ruleId: 21e
+    title: Name the condition in a comment after a long block's endif
+    statement:
+        At the end of any non-trivial conditional block longer than a few
+        lines, put a comment on the endif line that states the condition.
+    rationale:
+        The comment shows which block is closing without scrolling back to
+        find the opening directive.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #ifdef CONFIG_ACPI
+        /* ... many lines ... */
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #ifdef CONFIG_ACPI
+        /* ... many lines ... */
+        #endif /* CONFIG_ACPI */
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, comments]
+    source: https://docs.kernel.org/process/coding-style.html#conditional-compilation

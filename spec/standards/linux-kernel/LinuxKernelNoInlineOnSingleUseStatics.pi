@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoInlineOnSingleUseStatics:
+    standard: @{LinuxKernelStyle}
+    ruleId: 15b
+    title: Do not add inline to static functions used only once
+    statement:
+        Leave inline off a static function that has a single caller.
+    rationale:
+        The compiler inlines such functions on its own, and the hint has to
+        be removed again when a second caller appears.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static inline void parse_header(struct msg *m)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static void parse_header(struct msg *m)
+        \\\
+        ```
+    languages: [c]
+    tags: [inline, functions]
+    source: https://docs.kernel.org/process/coding-style.html#the-inline-disease

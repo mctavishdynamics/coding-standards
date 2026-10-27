@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaErr50J:
+    standard: @{CertJava}
+    ruleId: ERR50-J
+    title: Use exceptions only for exceptional conditions
+    statement:
+        Use exceptions to signal exceptional conditions, not for ordinary
+        control flow. Test for expected conditions directly.
+    rationale:
+        Using exceptions for control flow makes code harder to analyze and
+        debug, hurts performance and can hide real errors that are caught by
+        the same handler.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        int i = 0;
+        try {
+            while (true) {
+                process(items[i++]);
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            // end of array
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        for (Item item : items) {
+            process(item);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, exceptions, control-flow]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/exceptional-behavior-err/err50-j/

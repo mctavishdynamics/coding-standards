@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp02C:
+    standard: @{CertC}
+    ruleId: EXP02-C
+    title:
+        Be aware of the short-circuit behavior of the logical AND and OR
+        operators
+    statement:
+        Do not put side effects in the right operand of && or ||, because
+        that operand is evaluated only when the left one does not decide the
+        result.
+    rationale:
+        Readers cannot easily tell whether the side effect happened, and
+        code that depends on it may use stale or uninitialized values. CERT
+        rates likelihood unlikely, detectable no, repairable no, priority
+        P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        if (buf != NULL && (len = read_header(buf)) > 0) {
+            parse(buf, len);
+        }
+        use_length(len);   /* len unset when buf is NULL */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        size_t len = 0;
+        if (buf != NULL) {
+            len = read_header(buf);
+        }
+        if (len > 0) {
+            parse(buf, len);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, side-effects]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp02-c

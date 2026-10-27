@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip45:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-45
+    title: Tell objects what to do rather than querying their state
+    statement:
+        Ask an object to perform an action instead of reading its internal
+        state and deciding for it.
+    rationale:
+        Keeping decisions inside the object that owns the data protects its
+        invariants and reduces coupling.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if account.balance >= amount:
+            account.balance -= amount
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        account.withdraw(amount)  # account checks its own balance
+        \\\
+        ```
+    languages: [any]
+    tags: [coupling, encapsulation]
+    source: https://pragprog.com/tips/

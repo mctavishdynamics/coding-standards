@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeF2:
+    standard: @{CleanCode}
+    ruleId: F2
+    title: Avoid output arguments
+    statement:
+        Do not make a function change an argument as its result. If a
+        function must change state, let it change the state of the object it
+        is called on, or return a new value.
+    rationale:
+        Readers expect arguments to be inputs, so a call that modifies one
+        surprises them and must be read twice.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void appendFooter(StringBuilder report) {
+            report.append("-- end --");
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Report {
+            void appendFooter() {
+                body.append("-- end --");
+            }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [functions, arguments, side-effects]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

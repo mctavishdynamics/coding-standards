@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc04C:
+    standard: @{CertC}
+    ruleId: MSC04-C
+    title: Use comments consistently and in a readable fashion
+    statement:
+        Write comments so that their extent is obvious. Do not put the
+        sequence that opens a block comment inside a comment, and disable
+        code with conditional compilation such as an if 0 directive rather
+        than by wrapping it in a comment.
+    rationale:
+        A comment that is missing its end marker swallows the code that
+        follows, and a reader may believe that code still runs. CERT rates
+        likelihood unlikely, detectable yes, repairable no, priority P4,
+        level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        /* Disabled until the audit is finished
+        audit_log(event);
+        /* record the event */
+        store(event);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #if 0  /* Disabled until the audit is finished */
+        audit_log(event);
+        #endif
+        /* record the event */
+        store(event);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, comments, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc04-c

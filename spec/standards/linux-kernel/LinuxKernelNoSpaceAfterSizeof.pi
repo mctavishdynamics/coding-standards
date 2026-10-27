@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoSpaceAfterSizeof:
+    standard: @{LinuxKernelStyle}
+    ruleId: 3.1b
+    title: Do not put a space after function-like keywords
+    statement:
+        Write sizeof, typeof, alignof and __attribute__ like function calls,
+        with the parenthesis directly after the keyword.
+    rationale:
+        These keywords look and are used like functions in kernel code,
+        usually with parentheses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        len = sizeof (struct packet_header);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        len = sizeof(struct packet_header);
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, whitespace]
+    source: https://docs.kernel.org/process/coding-style.html#spaces

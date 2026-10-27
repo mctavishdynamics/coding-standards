@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre04C:
+    standard: @{CertC}
+    ruleId: PRE04-C
+    title: Do not reuse a standard header file name
+    statement:
+        Do not give a project header the name of a standard header, a system
+        header or another library header that may be on the include path.
+    rationale:
+        Placing a file with a standard header's name on the search path is
+        undefined behavior, and the wrong file may be included silently.
+        CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        /* project file named stdlib.h */
+        #include "stdlib.h"
+
+        void *grow(void *p, size_t n);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* project file named app_alloc.h */
+        #include <stdlib.h>
+        #include "app_alloc.h"
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, headers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre04-c

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG34:
+    standard: @{CleanCode}
+    ruleId: G34
+    title: Descend only one level of abstraction per function
+    statement:
+        Keep every statement in a function at the same level of abstraction,
+        one level below the operation the function's name describes.
+    rationale:
+        Mixing high-level steps with low-level details hides the function's
+        purpose and makes the code hard to change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String render(Page page) {
+            StringBuilder html = new StringBuilder();
+            html.append(header(page));
+            html.append("<div class=\"body\">").append(page.text().replace("&", "&amp;")).append("</div>");
+            return html.toString();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String render(Page page) {
+            return header(page) + body(page);
+        }
+
+        private String body(Page page) {
+            return wrapInDiv("body", escapeHtml(page.text()));
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [abstraction, functions]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

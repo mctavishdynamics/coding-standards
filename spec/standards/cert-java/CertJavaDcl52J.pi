@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl52J:
+    standard: @{CertJava}
+    ruleId: DCL52-J
+    title: Do not declare more than one variable per declaration
+    statement:
+        Declare each variable in its own declaration. In particular, never
+        mix types or mix initialized and uninitialized variables in one
+        declaration.
+    rationale:
+        Several variables in one declaration make it unclear which ones are
+        initialized and what type each has, especially with arrays.
+    exceptions:
+        Loop indices may be declared together inside a for statement, and
+        several variables may share a declaration when the type and initial
+        value of each is self-evident.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        int count, total = 0;
+        String[] names, label;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int count = 0;
+        int total = 0;
+        String[] names;
+        String label;
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, declarations, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/declarations-and-initialization-dcl/dcl52-j/

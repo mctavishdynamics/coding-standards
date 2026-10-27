@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelOneAssignmentPerLine:
+    standard: @{LinuxKernelStyle}
+    ruleId: 1e
+    title: Put only one assignment on a line and avoid tricky expressions
+    statement:
+        Write each assignment on its own line and keep expressions simple
+        rather than clever.
+    rationale:
+        Chained or combined assignments and tricky expressions make the code
+        harder to read and review.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        head = tail = count = 0;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        head = 0;
+        tail = 0;
+        count = 0;
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, statements, readability]
+    source: https://docs.kernel.org/process/coding-style.html#indentation

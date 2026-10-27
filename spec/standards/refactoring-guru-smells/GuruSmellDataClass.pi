@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellDataClass:
+    standard: @{RefactoringGuruSmells}
+    ruleId: data-class
+    title: Give data classes behavior that works on their data
+    statement:
+        Avoid classes that hold only fields with getters and setters while
+        other classes do all the work on that data. Encapsulate the data and
+        move the operations that use it into the class. Usual fixes:
+        Encapsulate Field, Encapsulate Collection, Move Method, Extract
+        Method, Remove Setting Method, Hide Method.
+    rationale:
+        An object is useful because it joins data with the behavior that
+        operates on it. When the behavior lives elsewhere, it is copied
+        among the users and the data has no guard.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Rectangle {
+            public double width;
+            public double height;
+        }
+        double area = rect.width * rect.height;   // repeated in callers
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Rectangle {
+            private final double width;
+            private final double height;
+            Rectangle(double width, double height) { this.width = width; this.height = height; }
+            double area() { return width * height; }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [dispensables, classes, encapsulation]
+    source: https://refactoring.guru/smells/data-class

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelMultiLineCommentStyle:
+    standard: @{LinuxKernelStyle}
+    ruleId: 8c
+    title: Format multi-line comments with a column of asterisks
+    statement:
+        Write a long comment with the opening marker on its own line, a
+        leading asterisk on each text line, and the closing marker on its
+        own line.
+    rationale:
+        This is the consistent comment style across the kernel source.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* The watchdog must be pinged at least once a second
+           or the board resets, so keep this path short. */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /*
+         * The watchdog must be pinged at least once a second
+         * or the board resets, so keep this path short.
+         */
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, formatting]
+    source: https://docs.kernel.org/process/coding-style.html#commenting

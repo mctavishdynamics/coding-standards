@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre00C:
+    standard: @{CertC}
+    ruleId: PRE00-C
+    title: Prefer inline or static functions to function-like macros
+    statement:
+        When a function and a function-like macro would do the same job,
+        write an inline or static function. Functions get type checking,
+        evaluate each argument once and obey normal scope rules.
+    rationale:
+        Macros look like calls but follow different semantics, so they can
+        evaluate arguments repeatedly, ignore types and capture names from
+        the caller. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P2, level L3.
+    exceptions:
+        Macros remain acceptable for local helpers that need the caller's
+        automatic variables, for token pasting and stringification, for
+        producing compile-time constants, for type-generic operations and
+        where call-by-name semantics are needed.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        #define CUBE(x) ((x) * (x) * (x))
+
+        int volume(int side) {
+            return CUBE(side);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static inline int cube(int x) {
+            return x * x * x;
+        }
+
+        int volume(int side) {
+            return cube(side);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, macros, functions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre00-c

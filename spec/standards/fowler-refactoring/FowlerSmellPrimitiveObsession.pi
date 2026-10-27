@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellPrimitiveObsession:
+    standard: @{FowlerRefactoring}
+    ruleId: primitive-obsession
+    title: Replace primitives with small domain types
+    statement:
+        Avoid using strings and numbers for things that deserve their own
+        type, such as money, coordinates, ranges or telephone numbers, and
+        avoid type codes that drive conditionals. Create small objects for
+        them. Usual fixes: Replace Primitive with Object, Replace Type Code
+        with Subclasses, Replace Conditional with Polymorphism, Extract
+        Class, Introduce Parameter Object.
+    rationale:
+        Primitives carry no rules, so validation, formatting and unit
+        handling are repeated wherever they are used. A small type gives
+        that behavior one home and prevents mixing up values of different
+        kinds.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function addPrices(a, b) {
+          return a + b;  // are these cents or euros, and the same currency?
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Money {
+          constructor(cents, currency) { this.cents = cents; this.currency = currency; }
+          plus(other) {
+            if (other.currency !== this.currency) throw new Error("currency mismatch");
+            return new Money(this.cents + other.cents, this.currency);
+          }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [types, domain-modeling]
+    source: https://martinfowler.com/books/refactoring.html

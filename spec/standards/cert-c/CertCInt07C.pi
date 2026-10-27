@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt07C:
+    standard: @{CertC}
+    ruleId: INT07-C
+    title:
+        Use only explicitly signed or unsigned char type for numeric values
+    statement:
+        Store small numbers in signed char or unsigned char, never in plain
+        char, whose signedness depends on the implementation.
+    rationale:
+        Plain char may be signed on one platform and unsigned on another, so
+        arithmetic on it gives different results. CERT rates likelihood
+        probable, detectable yes, repairable yes, priority P12, level L1.
+    exceptions:
+        The int returned by character I/O functions such as getc may be
+        stored in a plain char after checking for EOF, because it is a
+        character, not a number.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        char level = 200;
+        int boosted = level + 10;   /* -46 or 210 */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        unsigned char level = 200;
+        int boosted = level + 10;   /* 210 */
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, characters, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int07-c

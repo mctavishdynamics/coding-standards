@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet50J:
+    standard: @{CertJava}
+    ruleId: MET50-J
+    title: Avoid ambiguous or confusing uses of overloading
+    statement:
+        Do not overload methods or constructors with parameter lists that
+        differ only in order or in types related by autoboxing or generics.
+        Use distinct names or static factory methods instead.
+    rationale:
+        Callers can easily invoke the wrong overload, especially when the
+        overloads mean different things, and the compiler gives no warning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Trip {
+            double distance(Point from, Point to) { return traveled(from, to); }
+            double distance(Point to, Point from, boolean remaining) { return left(from, to); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Trip {
+            double distanceTraveled(Point from, Point to) { return traveled(from, to); }
+            double distanceRemaining(Point from, Point to) { return left(from, to); }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, overloading, api-design]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/methods-met/met50-j/

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelClosingBraceOwnLine:
+    standard: @{LinuxKernelStyle}
+    ruleId: 3c
+    title: Put a closing brace alone on its line unless the statement continues
+    statement:
+        A closing brace stands alone on its line, except when the same
+        statement continues: the while of a do loop, or an else or else if
+        after an if block, go on the same line as the brace.
+    rationale:
+        Keeping the continuation on the brace line shows that it belongs to
+        the same statement and saves vertical space.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (len > max) {
+                len = max;
+        }
+        else {
+                pad = max - len;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (len > max) {
+                len = max;
+        } else {
+                pad = max - len;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, braces]
+    source: https://docs.kernel.org/process/coding-style.html#placing-braces-and-spaces

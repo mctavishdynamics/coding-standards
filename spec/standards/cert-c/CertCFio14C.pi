@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio14C:
+    standard: @{CertC}
+    ruleId: FIO14-C
+    title:
+        Understand the difference between text mode and binary mode with
+        file streams
+    statement:
+        Open a stream in binary mode when its bytes must be preserved
+        exactly, and in text mode when it holds lines of text. In text mode,
+        use fseek only with offsets returned by ftell, and do not assume
+        that the bytes read match the bytes stored.
+    rationale:
+        Text streams may translate line endings, drop trailing spaces or add
+        padding, and their file positions are not byte counts, so treating
+        one mode like the other corrupts data or seeks to the wrong place.
+        CERT rates likelihood probable, detectable no, repairable no,
+        priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        FILE *f = fopen("image.png", "r");
+        if (f != NULL) {
+            unsigned char header[8];
+            size_t n = fread(header, 1, sizeof header, f);
+            fclose(f);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        FILE *f = fopen("image.png", "rb");
+        if (f != NULL) {
+            unsigned char header[8];
+            size_t n = fread(header, 1, sizeof header, f);
+            fclose(f);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, streams, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio14-c

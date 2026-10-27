@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoSpacesAroundUnaryOperators:
+    standard: @{LinuxKernelStyle}
+    ruleId: 3.1f
+    title: Do not put spaces next to unary or member operators
+    statement:
+        Write no space after unary operators such as address-of,
+        dereference, negation and logical not, and none between an increment
+        or decrement and its operand. Write no space around the dot and
+        arrow member operators.
+    rationale:
+        Unary and member operators bind tightly, and spacing them out makes
+        them look like binary operators.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (! list_empty(& dev -> queue))
+                dev -> pending ++;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (!list_empty(&dev->queue))
+                dev->pending++;
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, whitespace, operators]
+    source: https://docs.kernel.org/process/coding-style.html#spaces

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelAvoidPanic:
+    standard: @{LinuxKernelStyle}
+    ruleId: 22a
+    title: Use panic only rarely and mainly during boot
+    statement:
+        Call panic with care and mainly during system boot, for example when
+        memory runs out during boot and the system cannot continue.
+    rationale:
+        The choice to crash the kernel belongs to the user, not to the
+        kernel developer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (!dev->fw)
+                panic("widget: firmware missing\n");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (!dev->fw)
+                return dev_err_probe(dev->dev, -ENOENT, "firmware missing\n");
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, robustness]
+    source: https://docs.kernel.org/process/coding-style.html#avoid-panic

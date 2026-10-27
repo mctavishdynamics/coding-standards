@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdRedFlagSpecialGeneralMixture:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: red-flag-special-general-mixture
+    title: Avoid special-case code inside a general mechanism
+    statement:
+        Avoid putting code for one particular use inside a general-purpose
+        mechanism. Move the special case to the code that needs it.
+    rationale:
+        Special-purpose code complicates the general mechanism and leaks
+        knowledge of one use case into it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def send(message):
+            if message.kind == "password_reset":
+                message.priority = HIGH
+            queue.put(message)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def send(message, priority=NORMAL):
+            queue.put(message, priority)
+
+        send(reset_message, priority=HIGH)
+        \\\
+        ```
+    languages: [any]
+    tags: [red-flag, generality, separation-of-concerns]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp06C:
+    standard: @{CertC}
+    ruleId: FLP06-C
+    title:
+        Convert integers to floating point for floating-point operations
+    statement:
+        When an arithmetic result is meant to be floating point, convert at
+        least one integer operand to a floating type before the operation.
+    rationale:
+        If all operands are integers the operation is done in integer
+        arithmetic, so a division truncates before the result is assigned to
+        the floating-point variable. CERT rates likelihood probable,
+        detectable no, repairable no, priority P2, level L3.
+    exceptions:
+        Integer arithmetic before the conversion is acceptable when it is
+        intended, but document the intent for later maintainers.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int done = 7;
+        int total = 9;
+        double fraction = done / total;   /* 0.0 */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int done = 7;
+        int total = 9;
+        double fraction = (double)done / total;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, floating-point, conversions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/floating-point-flp/flp06-c

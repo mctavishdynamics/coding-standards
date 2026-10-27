@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoExternOnFunctionDeclarations:
+    standard: @{LinuxKernelStyle}
+    ruleId: 6.1b
+    title: Do not use extern on function declarations
+    statement:
+        Leave the extern keyword off function declarations.
+    rationale:
+        Function declarations are external by default, so the keyword only
+        makes lines longer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        extern int flush_cache_range(unsigned long start, unsigned long end);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int flush_cache_range(unsigned long start, unsigned long end);
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, declarations]
+    source: https://docs.kernel.org/process/coding-style.html#function-prototypes

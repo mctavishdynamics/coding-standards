@@ -1,0 +1,55 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon08C:
+    standard: @{CertC}
+    ruleId: CON08-C
+    title:
+        Do not assume that a group of calls to independently atomic methods
+        is atomic
+    statement:
+        When several operations must take effect together, protect the whole
+        sequence with one lock. Do not assume that a series of individually
+        atomic calls is atomic as a whole.
+    rationale:
+        Another thread can act between two atomic calls, so a check followed
+        by an update based on it races. CERT rates likelihood probable,
+        detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        atomic_int stock;
+
+        int reserve(void) {
+            if (atomic_load(&stock) > 0) {
+                atomic_fetch_sub(&stock, 1);
+                return 0;
+            }
+            return -1;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int stock;
+        mtx_t stock_lock;
+
+        int reserve(void) {
+            int rc = -1;
+            mtx_lock(&stock_lock);
+            if (stock > 0) {
+                stock--;
+                rc = 0;
+            }
+            mtx_unlock(&stock_lock);
+            return rc;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, concurrency, atomics, race-conditions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/concurrency-con/con08-c

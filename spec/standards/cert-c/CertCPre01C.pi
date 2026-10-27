@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre01C:
+    standard: @{CertC}
+    ruleId: PRE01-C
+    title: Use parentheses within macros around parameter names
+    statement:
+        Wrap every use of a macro parameter in the replacement list in
+        parentheses, so that an argument containing operators is grouped as
+        a single operand.
+    rationale:
+        Without parentheses, operators inside the argument bind to the
+        surrounding replacement text and the expression is computed with the
+        wrong precedence. CERT rates likelihood probable, detectable yes,
+        repairable yes, priority P12, level L1.
+    exceptions:
+        Parameters that appear only between commas, such as arguments passed
+        straight to a function, need no parentheses. Parameters used with
+        the # or ## operators cannot be parenthesized.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        #define DOUBLE(x) (x * 2)
+
+        int total = DOUBLE(a + b);   /* a + b * 2 */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define DOUBLE(x) ((x) * 2)
+
+        int total = DOUBLE(a + b);   /* (a + b) * 2 */
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, macros]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre01-c

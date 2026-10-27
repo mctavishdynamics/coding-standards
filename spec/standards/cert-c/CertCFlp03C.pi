@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp03C:
+    standard: @{CertC}
+    ruleId: FLP03-C
+    title: Detect and handle floating-point errors
+    statement:
+        Check for floating-point errors such as division by zero, overflow
+        and invalid operations, using the floating-point exception flags in
+        fenv.h or errno as the math library documents.
+    rationale:
+        Floating-point errors usually do not stop the program, so infinities
+        and NaNs spread quietly through later calculations. CERT rates
+        likelihood probable, detectable no, repairable no, priority P2,
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        double ratio(double a, double b) {
+            return a / b;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <fenv.h>
+
+        int ratio(double a, double b, double *out) {
+            feclearexcept(FE_ALL_EXCEPT);
+            *out = a / b;
+            if (fetestexcept(FE_DIVBYZERO | FE_OVERFLOW | FE_INVALID)) {
+                return -1;
+            }
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, floating-point, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/floating-point-flp/flp03-c

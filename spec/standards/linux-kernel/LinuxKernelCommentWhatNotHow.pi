@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelCommentWhatNotHow:
+    standard: @{LinuxKernelStyle}
+    ruleId: 8a
+    title: Comment what the code does, not how, at the head of the function
+    statement:
+        Use comments to say what code does and possibly why, not to explain
+        how it works. Put them at the top of the function rather than inside
+        its body, apart from short notes on something clever or ugly.
+    rationale:
+        Code should make its working obvious, and a function that needs
+        comments throughout its body is probably too complex.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int ring_free_slots(const struct ring *r)
+        {
+                /* subtract tail from head */
+                int used = r->head - r->tail;
+                /* subtract used from size */
+                return r->size - used;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* Return how many more entries can be queued before the ring is full. */
+        int ring_free_slots(const struct ring *r)
+        {
+                int used = r->head - r->tail;
+
+                return r->size - used;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, documentation]
+    source: https://docs.kernel.org/process/coding-style.html#commenting

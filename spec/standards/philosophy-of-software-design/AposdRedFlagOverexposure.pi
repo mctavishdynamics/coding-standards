@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdRedFlagOverexposure:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: red-flag-overexposure
+    title: Avoid making callers learn about rarely used features
+    statement:
+        Avoid an API that forces users of the common case to know about
+        options or features they seldom need. Give the common case a path
+        that hides them.
+    rationale:
+        Exposing rare features in the common path raises the learning cost
+        for every caller.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Report r = new Report(data, Locale.US, null, null, false, 0);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Report r = new Report(data);
+        Report custom = new Report(data).withLocale(Locale.FRANCE);
+        \\\
+        ```
+    languages: [any]
+    tags: [red-flag, interfaces, defaults]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

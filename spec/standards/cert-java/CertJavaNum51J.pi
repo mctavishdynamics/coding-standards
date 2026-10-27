@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum51J:
+    standard: @{CertJava}
+    ruleId: NUM51-J
+    title: Do not assume that the remainder operator always returns a nonnegative result for integral operands
+    statement:
+        Remember that the % operator takes the sign of the dividend. When a
+        nonnegative result is needed, adjust it or use Math.floorMod().
+    rationale:
+        A negative remainder used as an array index or bucket number causes
+        an exception or wrong results.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        int bucket = key.hashCode() % buckets.length;
+        buckets[bucket].add(key);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int bucket = Math.floorMod(key.hashCode(), buckets.length);
+        buckets[bucket].add(key);
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, arithmetic, integers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/numeric-types-and-operations-num/num51-j/

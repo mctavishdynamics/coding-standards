@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip44:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-44
+    title: Keep code decoupled
+    statement:
+        Reduce dependencies between components so each can change without
+        forcing changes in others.
+    rationale:
+        Coupled code turns small changes into widespread ones.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Report:
+            def build(self):
+                rows = PostgresClient("prod-db").query("SELECT ...")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Report:
+            def __init__(self, source):
+                self.source = source
+            def build(self):
+                rows = self.source.rows()
+        \\\
+        ```
+    languages: [any]
+    tags: [coupling]
+    source: https://pragprog.com/tips/

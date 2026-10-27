@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeT5:
+    standard: @{CleanCode}
+    ruleId: T5
+    title: Test boundary conditions
+    statement:
+        Pay particular attention to the edges, such as empty input, the
+        first and last elements and the minimum and maximum values.
+    rationale:
+        The middle of an algorithm is usually right; mistakes cluster at the
+        boundaries.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        @Test
+        void paginates() {
+            assertEquals(10, pager.page(items(25), 1).size());
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Test
+        void lastPageHoldsRemainder() {
+            assertEquals(5, pager.page(items(25), 3).size());
+        }
+
+        @Test
+        void emptyListHasNoPages() {
+            assertEquals(0, pager.pageCount(items(0)));
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, edge-cases]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

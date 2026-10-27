@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip51:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-51
+    title: Avoid inheritance as a way to share code
+    statement:
+        Do not use class inheritance just to reuse behaviour; it couples a
+        child to its parent's implementation.
+    rationale:
+        Inheritance creates tight coupling, and changes in a base class can
+        break subclasses in unexpected ways.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Stack extends ArrayList<Integer> {
+            void push(int x) { add(x); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Stack {
+            private final List<Integer> items = new ArrayList<>();
+            void push(int x) { items.add(x); }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [inheritance, coupling]
+    source: https://pragprog.com/tips/

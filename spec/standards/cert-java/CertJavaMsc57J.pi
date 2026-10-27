@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc57J:
+    standard: @{CertJava}
+    ruleId: MSC57-J
+    title: Strive for logical completeness
+    statement:
+        Make every if-else chain and switch handle all possible values, with
+        a final else or default branch for cases not expected.
+    rationale:
+        Unconsidered data states leave the program in a corrupted state,
+        which can disclose information or crash it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        if (status == ACTIVE) {
+            allow();
+        } else if (status == SUSPENDED) {
+            deny();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (status == ACTIVE) {
+            allow();
+        } else if (status == SUSPENDED) {
+            deny();
+        } else {
+            throw new IllegalStateException("Unknown status " + status);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, control-flow, defensive-programming]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/miscellaneous-msc/msc57-j/

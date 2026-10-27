@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellDataClass:
+    standard: @{FowlerRefactoring}
+    ruleId: data-class
+    title: Move behavior into classes that only hold data
+    statement:
+        Avoid classes that are only fields with getters and setters while
+        other code does all the manipulation. Encapsulate the fields, remove
+        setters that should not exist, and move the client logic into the
+        class. Usual fixes: Encapsulate Record, Remove Setting Method, Move
+        Function, Extract Function, Split Phase.
+    rationale:
+        A data class is often a sign that behavior lives in the wrong place.
+        Moving it in lets the class guard its data and removes copies of the
+        same logic from its clients.
+    exceptions:
+        An immutable record that carries results from one phase of a
+        computation to the next is fine without behavior.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Subscription {
+          constructor(start, months) { this.start = start; this.months = months; }
+        }
+        // in several clients
+        const end = addMonths(sub.start, sub.months);
+        const expired = end < new Date();
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Subscription {
+          constructor(start, months) { this._start = start; this._months = months; }
+          get end() { return addMonths(this._start, this._months); }
+          isExpired(now = new Date()) { return this.end < now; }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [classes, encapsulation, objects]
+    source: https://martinfowler.com/books/refactoring.html

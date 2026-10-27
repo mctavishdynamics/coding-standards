@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelBracesOnAllBranches:
+    standard: @{LinuxKernelStyle}
+    ruleId: 3e
+    title: Use braces on every branch when one branch needs them
+    statement:
+        If any branch of an if-else chain has more than one statement and so
+        needs braces, put braces on all branches of that chain.
+    rationale:
+        Mixed braced and unbraced branches look unbalanced and are easy to
+        misread.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (enabled) {
+                clk_enable(clk);
+                state = RUNNING;
+        } else
+                state = IDLE;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (enabled) {
+                clk_enable(clk);
+                state = RUNNING;
+        } else {
+                state = IDLE;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, braces]
+    source: https://docs.kernel.org/process/coding-style.html#placing-braces-and-spaces

@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellLargeClass:
+    standard: @{FowlerRefactoring}
+    ruleId: large-class
+    title: Split classes that try to do too much
+    statement:
+        Avoid classes with too many fields or too much code. Look for groups
+        of fields and methods that belong together, often marked by a shared
+        prefix or used by different clients, and split them into their own
+        classes or subclasses. Usual fixes: Extract Class, Extract
+        Superclass, Replace Type Code with Subclasses.
+    rationale:
+        A class with too many fields hides duplication, and one with too
+        much code breeds it. Smaller classes with one job each are easier to
+        understand and change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Customer {
+          constructor() {
+            this.name = ""; this.email = "";
+            this.billingStreet = ""; this.billingCity = ""; this.billingZip = "";
+            this.loyaltyPoints = 0; this.loyaltyTier = "basic";
+          }
+          billingLabel() { /* ... */ }
+          upgradeTier() { /* ... */ }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Customer {
+          constructor(name, email, billingAddress, loyalty) {
+            Object.assign(this, { name, email, billingAddress, loyalty });
+          }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [classes, responsibility]
+    source: https://martinfowler.com/books/refactoring.html

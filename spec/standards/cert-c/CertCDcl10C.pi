@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl10C:
+    standard: @{CertC}
+    ruleId: DCL10-C
+    title:
+        Maintain the contract between the writer and caller of variadic
+        functions
+    statement:
+        Document how a variadic function learns how many arguments it
+        received, such as a count or a sentinel, and make sure every call
+        follows that convention.
+    rationale:
+        If a caller omits the sentinel or passes the wrong count, va_arg
+        reads past the real arguments, which is undefined behavior. CERT
+        rates likelihood probable, detectable no, repairable no, priority
+        P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        int sum(int first, ...);   /* stops at -1 */
+
+        int total = sum(3, 4, 5);  /* missing -1 sentinel */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int sum(size_t count, ...);
+
+        int total = sum(3, 3, 4, 5);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, variadic-functions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl10-c

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp19C:
+    standard: @{CertC}
+    ruleId: EXP19-C
+    title: Use braces for the body of an if, for, or while statement
+    statement:
+        Always enclose the body of if, else, for and while statements in
+        braces, even when it is a single statement.
+    rationale:
+        Without braces, a statement added later or a multi-statement macro
+        looks like part of the body but runs unconditionally. CERT rates
+        likelihood probable, detectable yes, repairable yes, priority P12,
+        level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        if (len > MAX_LEN)
+            log_error("too long");
+            return -1;   /* always executed */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (len > MAX_LEN) {
+            log_error("too long");
+            return -1;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, control-flow, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp19-c

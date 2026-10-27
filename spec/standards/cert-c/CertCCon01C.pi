@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon01C:
+    standard: @{CertC}
+    ruleId: CON01-C
+    title:
+        Acquire and release synchronization primitives in the same module,
+        at the same level of abstraction
+    statement:
+        Lock and unlock a mutex in the same module and at the same level of
+        abstraction, ideally in the same function. Do not lock in one
+        function and rely on another to unlock.
+    rationale:
+        When the unlock is far from the lock, an early return or error path
+        easily skips it, causing deadlocks, double unlocks or race
+        conditions. CERT rates likelihood probable, detectable yes,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        void begin_update(struct account *a) {
+            mtx_lock(&a->lock);
+        }
+
+        void end_update(struct account *a) {
+            mtx_unlock(&a->lock);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int deposit(struct account *a, long amount) {
+            if (mtx_lock(&a->lock) != thrd_success) {
+                return -1;
+            }
+            a->balance += amount;
+            return mtx_unlock(&a->lock) == thrd_success ? 0 : -1;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, concurrency, locking]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/concurrency-con/con01-c

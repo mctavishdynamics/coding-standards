@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip43:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-43
+    title: Do not design for an imagined future
+    statement:
+        Avoid building for requirements you are only guessing at; keep the
+        code easy to change instead.
+    rationale:
+        Predictions about the future are usually wrong, and speculative code
+        adds cost now.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Exporter:
+            def export(self, data, fmt="csv", compression=None,
+                       encryption=None, cloud_target=None): ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class CsvExporter:
+            def export(self, data, out): ...
+        \\\
+        ```
+    languages: [any]
+    tags: [design, yagni]
+    source: https://pragprog.com/tips/

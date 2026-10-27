@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl13C:
+    standard: @{CertC}
+    ruleId: DCL13-C
+    title:
+        Declare function parameters that are pointers to values not changed
+        by the function as const
+    statement:
+        If a function reads but never modifies the object a pointer
+        parameter refers to, declare the parameter as a pointer to const.
+    rationale:
+        The const qualifier states the promise in the interface, lets the
+        compiler catch accidental writes and lets callers pass read-only
+        data. CERT rates likelihood unlikely, detectable yes, repairable
+        yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        size_t count_spaces(char *s) {
+            size_t n = 0;
+            for (; *s != '\0'; s++) {
+                n += *s == ' ';
+            }
+            return n;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        size_t count_spaces(const char *s) {
+            size_t n = 0;
+            for (; *s != '\0'; s++) {
+                n += *s == ' ';
+            }
+            return n;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, const, functions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl13-c

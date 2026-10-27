@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre05C:
+    standard: @{CertC}
+    ruleId: PRE05-C
+    title:
+        Understand macro replacement when concatenating tokens or performing
+        stringification
+    statement:
+        Remember that arguments next to # or ## are not macro-expanded
+        first. When the expanded value is wanted, pass the argument through
+        a second helper macro.
+    rationale:
+        A programmer who expects expansion gets the macro's name pasted or
+        quoted instead of its value, which produces wrong strings or wrong
+        identifiers. CERT rates likelihood unlikely, detectable no,
+        repairable yes, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #define STR(x) #x
+        #define LIMIT 64
+
+        const char *text = STR(LIMIT);   /* "LIMIT" */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define STR_(x) #x
+        #define STR(x) STR_(x)
+        #define LIMIT 64
+
+        const char *text = STR(LIMIT);   /* "64" */
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, macros]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre05-c

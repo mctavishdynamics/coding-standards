@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdRedFlagInformationLeakage:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: red-flag-information-leakage
+    title: Avoid leaking one design decision into several modules
+    statement:
+        Avoid having the same design decision, such as a file format or
+        protocol detail, known by more than one module. Move that knowledge
+        into a single module.
+    rationale:
+        When a decision is spread across modules, changing it means changing
+        all of them, which creates hidden dependencies.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class ConfigReader:
+            def read(self, f): return f.read().split("|")
+        class ConfigWriter:
+            def write(self, f, fields): f.write("|".join(fields))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class ConfigFile:
+            SEP = "|"
+            def read(self, f): return f.read().split(self.SEP)
+            def write(self, f, fields): f.write(self.SEP.join(fields))
+        \\\
+        ```
+    languages: [any]
+    tags: [red-flag, information-hiding, coupling]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

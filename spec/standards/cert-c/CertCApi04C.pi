@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCApi04C:
+    standard: @{CertC}
+    ruleId: API04-C
+    title: Provide a consistent and usable error-checking mechanism
+    statement:
+        Give a set of functions one simple, uniform way to report errors,
+        such as always returning an error code of the same type with zero
+        meaning success. Avoid mechanisms that callers find awkward and
+        skip.
+    rationale:
+        Callers ignore complicated or inconsistent error reporting, so
+        failures go unchecked and the resulting code is lower quality. CERT
+        rates likelihood unlikely, detectable no, repairable no, priority
+        P2, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        char *cfg_get(const char *key);           /* NULL on error */
+        int cfg_set(const char *key, char *val);  /* -1 on error, sets errno */
+        void cfg_save(void);                      /* sets cfg_failed on error */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        cfg_status cfg_get(const char *key, const char **val);
+        cfg_status cfg_set(const char *key, const char *val);
+        cfg_status cfg_save(void);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, api-design, error-handling, consistency]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/application-programming-interfaces-api/api04-c

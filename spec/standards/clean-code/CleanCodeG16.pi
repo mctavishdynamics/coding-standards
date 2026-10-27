@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG16:
+    standard: @{CleanCode}
+    ruleId: G16
+    title: Make the intent of code obvious
+    statement:
+        Write code whose meaning is clear on reading. Avoid terse
+        expressions, cryptic abbreviations, hungarian prefixes and
+        unexplained literals.
+    rationale:
+        Readers need to understand what the code is for; obscure code may be
+        short, but it hides its purpose.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        boolean chk(Usr u) {
+            return u.a > 17 && (u.f & 4) != 0 && u.cc.length() == 2;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        boolean canBuyAlcohol(User user) {
+            boolean isAdult = user.age() >= ADULT_AGE;
+            return isAdult && user.hasVerifiedId() && user.hasCountryCode();
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [readability, clarity]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

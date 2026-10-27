@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellMysteriousName:
+    standard: @{FowlerRefactoring}
+    ruleId: mysterious-name
+    title: Choose names that say what code does
+    statement:
+        Avoid names for functions, variables, fields and modules that leave
+        the reader guessing. Rename until the name tells what the thing does
+        and how to use it, and treat a name you cannot find as a hint that
+        the design is muddled. Usual fixes: Change Function Declaration,
+        Rename Variable, Rename Field.
+    rationale:
+        Most of the effort in reading code goes into working out what things
+        mean. A clear name removes that effort for every later reader, while
+        an unclear one taxes each of them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function calc(d, f) {
+          return d.filter(x => x.t > f).length;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function countOrdersAbove(orders, minimumTotal) {
+          return orders.filter(order => order.total > minimumTotal).length;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [naming, readability]
+    source: https://martinfowler.com/books/refactoring.html

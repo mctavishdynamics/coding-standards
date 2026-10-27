@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG29:
+    standard: @{CleanCode}
+    ruleId: G29
+    title: Avoid negative conditionals
+    statement:
+        Express conditions positively where you can, both in the expression
+        and in the name of any predicate.
+    rationale:
+        Negatives, especially double negatives, take more effort to
+        understand than positive statements.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        if (!buffer.shouldNotCompact()) {
+            buffer.compact();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (buffer.shouldCompact()) {
+            buffer.compact();
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [conditionals, readability]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

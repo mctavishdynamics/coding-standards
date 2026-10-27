@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip56:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-56
+    title: Find work that can run concurrently
+    statement:
+        Analyse the workflow to see which tasks do not depend on each other,
+        and let those run at the same time.
+    rationale:
+        Unnecessary sequencing wastes time that concurrency could recover.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        user = fetch_user(uid)
+        orders = fetch_orders(uid)
+        prefs = fetch_prefs(uid)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        user, orders, prefs = await asyncio.gather(
+            fetch_user(uid), fetch_orders(uid), fetch_prefs(uid))
+        \\\
+        ```
+    languages: [any]
+    tags: [concurrency, performance]
+    source: https://pragprog.com/tips/

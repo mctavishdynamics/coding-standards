@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelFunctionBraceOnNextLine:
+    standard: @{LinuxKernelStyle}
+    ruleId: 3b
+    title: Put the opening brace of a function on its own line
+    statement:
+        In a function definition, put the opening brace at the start of the
+        line after the function header.
+    rationale:
+        Functions are a special case in C because they cannot be nested, and
+        K&R style marks them this way.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int buffer_used(const struct ring *r) {
+                return r->head - r->tail;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int buffer_used(const struct ring *r)
+        {
+                return r->head - r->tail;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, braces, functions]
+    source: https://docs.kernel.org/process/coding-style.html#placing-braces-and-spaces

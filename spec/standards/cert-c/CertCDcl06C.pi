@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl06C:
+    standard: @{CertC}
+    ruleId: DCL06-C
+    title:
+        Use meaningful symbolic constants to represent literal values
+    statement:
+        Replace magic numbers and literal strings in program logic with
+        named constants, using enumerations, const objects or object-like
+        macros as appropriate.
+    rationale:
+        Named constants explain what a value means and let it be changed in
+        one place, while scattered literals obscure intent and drift out of
+        step. CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P2, level L3.
+    exceptions:
+        Do not overdo it. A literal that is itself the abstraction, such as
+        2 in a formula for a circle's diameter, can stay.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        char line[80];
+
+        if (fgets(line, 80, stdin) != NULL) {
+            process(line);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum { LINE_SIZE = 80 };
+        char line[LINE_SIZE];
+
+        if (fgets(line, sizeof(line), stdin) != NULL) {
+            process(line);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, constants, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl06-c

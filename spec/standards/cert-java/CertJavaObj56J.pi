@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj56J:
+    standard: @{CertJava}
+    ruleId: OBJ56-J
+    title: Provide sensitive mutable classes with unmodifiable wrappers
+    statement:
+        When untrusted code needs read access to a sensitive mutable object,
+        give it an unmodifiable view or wrapper rather than the object
+        itself.
+    rationale:
+        Passing the mutable object lets untrusted code tamper with or
+        corrupt it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Acl {
+            private final List<String> admins = new ArrayList<>();
+
+            public List<String> getAdmins() {
+                return admins;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Acl {
+            private final List<String> admins = new ArrayList<>();
+
+            public List<String> getAdmins() {
+                return Collections.unmodifiableList(admins);
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, immutability, encapsulation, collections]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/object-orientation-obj/obj56-j/

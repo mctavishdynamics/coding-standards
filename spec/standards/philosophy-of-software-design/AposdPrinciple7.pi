@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdPrinciple7:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: principle-7
+    title: Make modules somewhat general-purpose
+    statement:
+        Design a module's interface to serve a range of uses rather than
+        only the exact case in front of you, while keeping the
+        implementation focused on today's needs.
+    rationale:
+        A general-purpose interface is usually simpler and deeper than a set
+        of special-purpose methods, and it hides more information.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Editor {
+            void backspace(Cursor c) { ... }
+            void deleteSelection(Selection s) { ... }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Text {
+            void delete(Position start, Position end) { ... }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [principle, generality, interfaces]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

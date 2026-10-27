@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellRefusedBequest:
+    standard: @{FowlerRefactoring}
+    ruleId: refused-bequest
+    title: Avoid subclasses that reject what they inherit
+    statement:
+        Avoid subclasses that do not want the methods and data their parent
+        gives them. Push unwanted members down into the sibling that uses
+        them, and when a subclass refuses the parent's interface, replace
+        the inheritance with delegation. Usual fixes: Push Down Method, Push
+        Down Field, Replace Subclass with Delegate, Replace Superclass with
+        Delegate.
+    rationale:
+        A subclass that refuses its parent's interface breaks the promise
+        that it can be used wherever the parent is expected, which misleads
+        callers.
+    exceptions:
+        A subclass that reuses behavior but ignores a few inherited
+        implementations is a mild case and often acceptable; refusing the
+        interface is the serious form.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Stack extends Array {
+          shift() { throw new Error("not supported"); }
+          splice() { throw new Error("not supported"); }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Stack {
+          #items = [];
+          push(item) { this.#items.push(item); }
+          pop() { return this.#items.pop(); }
+          get size() { return this.#items.length; }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [inheritance, delegation]
+    source: https://martinfowler.com/books/refactoring.html

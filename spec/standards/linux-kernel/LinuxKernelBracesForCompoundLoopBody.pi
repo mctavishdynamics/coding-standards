@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelBracesForCompoundLoopBody:
+    standard: @{LinuxKernelStyle}
+    ruleId: 3f
+    title: Use braces when a loop body is more than one simple statement
+    statement:
+        Put braces around a loop body that holds anything more than a single
+        simple statement, such as a nested if.
+    rationale:
+        Braces make the extent of a nested body obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        list_for_each_entry(req, &queue, list)
+                if (req->done)
+                        complete_request(req);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        list_for_each_entry(req, &queue, list) {
+                if (req->done)
+                        complete_request(req);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, braces, loops]
+    source: https://docs.kernel.org/process/coding-style.html#placing-braces-and-spaces

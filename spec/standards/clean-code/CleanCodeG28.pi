@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG28:
+    standard: @{CleanCode}
+    ruleId: G28
+    title: Encapsulate conditionals
+    statement:
+        Pull the logic of a boolean condition into a function whose name
+        says what the condition means.
+    rationale:
+        A raw boolean expression must be decoded each time it is read, while
+        a well-named predicate states the intent directly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        if (timer.hasExpired() && !timer.isRecurrent()) {
+            timers.remove(timer);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (shouldBeDeleted(timer)) {
+            timers.remove(timer);
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [conditionals, readability, functions]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

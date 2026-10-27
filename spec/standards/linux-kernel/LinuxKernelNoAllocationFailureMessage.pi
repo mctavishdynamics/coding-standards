@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoAllocationFailureMessage:
+    standard: @{LinuxKernelStyle}
+    ruleId: 14d
+    title: Do not print a message when an allocation fails
+    statement:
+        When a general purpose allocator returns NULL, just handle the
+        failure; do not add your own out-of-memory message.
+    rationale:
+        Unless __GFP_NOWARN is used, the allocators already print a stack
+        dump on failure.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        buf = kmalloc(len, GFP_KERNEL);
+        if (!buf) {
+                pr_err("out of memory\n");
+                return -ENOMEM;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        buf = kmalloc(len, GFP_KERNEL);
+        if (!buf)
+                return -ENOMEM;
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, allocation, logging]
+    source: https://docs.kernel.org/process/coding-style.html#allocating-memory

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCStr04C:
+    standard: @{CertC}
+    ruleId: STR04-C
+    title: Use plain char for characters in the basic character set
+    statement:
+        Store characters from the basic character set, such as letters,
+        digits and punctuation, in plain char, as the standard string
+        functions expect.
+    rationale:
+        Using signed char or unsigned char for text forces casts at every
+        call to a string function and invites type mismatches. CERT rates
+        likelihood unlikely, detectable no, repairable yes, priority P2,
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        signed char greeting[] = "hello";
+        size_t n = strlen((char *)greeting);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char greeting[] = "hello";
+        size_t n = strlen(greeting);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, strings, characters, types]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/characters-and-strings-str/str04-c

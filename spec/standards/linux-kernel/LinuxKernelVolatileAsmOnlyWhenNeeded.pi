@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelVolatileAsmOnlyWhenNeeded:
+    standard: @{LinuxKernelStyle}
+    ruleId: 20c
+    title: Mark asm volatile only when it must not be removed
+    statement:
+        Add volatile to an asm statement when the compiler could otherwise
+        drop it because it sees no side effects, but not by habit.
+    rationale:
+        Unneeded volatile prevents optimisations the compiler could
+        otherwise make.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        asm volatile("rorl $8, %0" : "+r"(x));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        asm("rorl $8, %0" : "+r"(x));
+        asm volatile("wbinvd" : : : "memory");
+        \\\
+        ```
+    languages: [c]
+    tags: [assembly, performance]
+    source: https://docs.kernel.org/process/coding-style.html#inline-assembly

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG31:
+    standard: @{CleanCode}
+    ruleId: G31
+    title: Make temporal coupling explicit
+    statement:
+        When calls must happen in a particular order, structure the code so
+        the order cannot be broken, for example by having each step take the
+        result of the previous step as an argument.
+    rationale:
+        Hidden ordering requirements are easy to break during later changes,
+        and nothing warns the person who breaks them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        importer.openFile(path);
+        importer.parseHeader();
+        importer.readRows();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        CsvFile file = importer.openFile(path);
+        Header header = importer.parseHeader(file);
+        List<Row> rows = importer.readRows(file, header);
+        \\\
+        ```
+    languages: [any]
+    tags: [coupling, ordering, functions]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

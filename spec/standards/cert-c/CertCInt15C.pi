@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt15C:
+    standard: @{CertC}
+    ruleId: INT15-C
+    title:
+        Use intmax_t or uintmax_t for formatted IO on programmer-defined
+        integer types
+    statement:
+        When printing or scanning a value of a programmer-defined integer
+        type, convert it to intmax_t or uintmax_t and use the %jd or %ju
+        conversions.
+    rationale:
+        The underlying type of a typedef may change or be larger than long
+        long, and a mismatched format specifier is undefined behavior. CERT
+        rates likelihood unlikely, detectable no, repairable yes, priority
+        P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        typedef uint64_t file_size;
+        file_size size = query_size();
+
+        printf("%lu bytes\n", size);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <inttypes.h>
+
+        typedef uint64_t file_size;
+        file_size size = query_size();
+
+        printf("%ju bytes\n", (uintmax_t)size);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, formatted-io, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int15-c

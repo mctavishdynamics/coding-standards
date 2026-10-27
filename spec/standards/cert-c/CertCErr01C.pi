@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCErr01C:
+    standard: @{CertC}
+    ruleId: ERR01-C
+    title:
+        Use ferror() rather than errno to check for FILE stream errors
+    statement:
+        To find out whether a stream operation failed, call ferror on the
+        stream. Do not test errno for that purpose, and read errno only
+        after a function has reported an error.
+    rationale:
+        Successful library calls may leave errno set to a nonzero value, so
+        checking errno reports errors that did not happen and misses ones
+        that did. CERT rates likelihood probable, detectable yes, repairable
+        yes, priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        errno = 0;
+        fprintf(out, "%d items\n", count);
+        if (errno != 0) {
+            report_write_failure();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        fprintf(out, "%d items\n", count);
+        if (ferror(out)) {
+            report_write_failure();
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, error-handling, io]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/error-handling-err/err01-c

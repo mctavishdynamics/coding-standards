@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdRedFlagNonobviousCode:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: red-flag-nonobvious-code
+    title: Avoid code whose meaning or behaviour is not obvious
+    statement:
+        Avoid code that a reader cannot understand quickly on a first read.
+        Make it obvious through clear names, consistent patterns or
+        comments.
+    rationale:
+        Code that is not obvious takes longer to understand and is easier to
+        change incorrectly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        flags = (flags | 4) & ~1
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        flags |= FLAG_ARCHIVED
+        flags &= ~FLAG_UNREAD
+        \\\
+        ```
+    languages: [any]
+    tags: [red-flag, readability]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

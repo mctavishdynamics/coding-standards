@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelUseDeviceAndPrMacros:
+    standard: @{LinuxKernelStyle}
+    ruleId: 13c
+    title: Print with the dev_ and pr_ helper macros
+    statement:
+        Use the driver model macros such as dev_err, dev_warn and dev_info
+        for messages tied to a device, and pr_err, pr_warn, pr_info and
+        friends otherwise. A working driver should stay quiet, so prefer the
+        debug levels unless something is wrong.
+    rationale:
+        The helpers attach the right device, driver and log level to each
+        message.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        printk("mydrv: probe ok for %s\n", dev_name(&pdev->dev));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        dev_dbg(&pdev->dev, "probe complete\n");
+        \\\
+        ```
+    languages: [c]
+    tags: [logging, messages]
+    source: https://docs.kernel.org/process/coding-style.html#printing-kernel-messages

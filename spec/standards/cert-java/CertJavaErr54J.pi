@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaErr54J:
+    standard: @{CertJava}
+    ruleId: ERR54-J
+    title: Use a try-with-resources statement to safely handle closeable resources
+    statement:
+        Manage resources that implement AutoCloseable with a
+        try-with-resources statement rather than closing them by hand in a
+        finally block.
+    rationale:
+        Hand-written cleanup easily leaves a resource open when an exception
+        occurs or masks the original exception with one thrown during close.
+        Try-with-resources closes every resource and keeps suppressed
+        exceptions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        BufferedReader in = new BufferedReader(new FileReader(path));
+        String first = in.readLine();
+        in.close();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        try (BufferedReader in = new BufferedReader(new FileReader(path))) {
+            String first = in.readLine();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, resources, exceptions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/exceptional-behavior-err/err54-j/

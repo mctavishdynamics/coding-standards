@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellLongParameterList:
+    standard: @{RefactoringGuruSmells}
+    ruleId: long-parameter-list
+    title: Avoid methods with more than three or four parameters
+    statement:
+        Keep parameter lists short. When a method needs more than three or
+        four arguments, let it fetch values it can obtain itself, pass the
+        object the values come from, or bundle related values into one
+        object. Usual fixes: Replace Parameter with Method Call, Preserve
+        Whole Object, Introduce Parameter Object.
+    rationale:
+        Long lists often mean several algorithms were merged into one method
+        with switches between them. Callers struggle to pass the right
+        values in the right order, and the list tends to grow further.
+    exceptions:
+        Keep a separate parameter when removing it would create a dependency
+        between classes that you do not want.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Invoice createInvoice(String customerName, String street, String city,
+                String postcode, LocalDate issued, LocalDate due, BigDecimal amount) {
+            ...
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Invoice createInvoice(Customer customer, BillingPeriod period, BigDecimal amount) {
+            ...
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [bloaters, parameters, methods]
+    source: https://refactoring.guru/smells/long-parameter-list

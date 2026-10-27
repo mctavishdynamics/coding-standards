@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCEnv02C:
+    standard: @{CertC}
+    ruleId: ENV02-C
+    title:
+        Beware of multiple environment variables with the same effective
+        name
+    statement:
+        Do not assume that the environment holds at most one entry per name.
+        When a program sanitizes or checks a variable, make sure it handles
+        duplicates and, on systems such as Windows, names that differ only
+        in case.
+    rationale:
+        getenv may return one copy while a child process or another library
+        uses a different one, so a value the program checked may not be the
+        value that takes effect. CERT rates likelihood unlikely, detectable
+        yes, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        if (getenv("PATH") != NULL) {
+            setenv("PATH", "/usr/bin:/bin", 1);
+        }
+        execl("/usr/bin/tool", "tool", (char *)NULL);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        while (getenv("PATH") != NULL) {
+            unsetenv("PATH");
+        }
+        setenv("PATH", "/usr/bin:/bin", 1);
+        execl("/usr/bin/tool", "tool", (char *)NULL);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, environment, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/environment-env/env02-c

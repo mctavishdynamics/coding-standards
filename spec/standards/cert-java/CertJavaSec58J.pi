@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec58J:
+    standard: @{CertJava}
+    ruleId: SEC58-J
+    title: Deserialization methods should not perform potentially dangerous operations
+    statement:
+        Keep readObject() and readResolve() free of dangerous operations
+        such as opening files or running commands. A class whose constructor
+        performs such operations should not be Serializable, or its
+        readObject() should always throw.
+    rationale:
+        Attackers control serialized data, so dangerous work done during
+        deserialization can exhaust resources, cause a denial of service or
+        execute code. CERT rates likelihood likely, detectable no,
+        repairable no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        class Report implements Serializable {
+            private String path;
+            private transient Reader reader;
+
+            private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+                in.defaultReadObject();
+                reader = new FileReader(path);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Report implements Serializable {
+            private String path;
+            private transient Reader reader;
+
+            Reader reader() throws IOException {
+                if (reader == null) {
+                    reader = new FileReader(path);
+                }
+                return reader;
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, serialization, deserialization]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/platform-security-sec/sec58-j/

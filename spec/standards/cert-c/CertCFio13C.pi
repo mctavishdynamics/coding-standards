@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio13C:
+    standard: @{CertC}
+    ruleId: FIO13-C
+    title: Never push back anything other than one read character
+    statement:
+        Use ungetc or ungetwc only to push back the single character that
+        was just read from the same stream. Do not push back several
+        characters, or characters that were not read.
+    rationale:
+        The standard guarantees only one character of pushback, and file
+        positioning calls discard it, so code that pushes back more is not
+        portable and may lose data. CERT rates likelihood probable,
+        detectable no, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        void unread_word(FILE *in, const char *word) {
+            for (size_t i = strlen(word); i > 0; --i) {
+                ungetc((unsigned char)word[i - 1], in);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int peek_char(FILE *in) {
+            int c = fgetc(in);
+            if (c != EOF) {
+                ungetc(c, in);
+            }
+            return c;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, streams, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio13-c

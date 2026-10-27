@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoControlFlowInMacros:
+    standard: @{LinuxKernelStyle}
+    ruleId: 12f
+    title: Do not write macros that change control flow
+    statement:
+        Do not hide a return, goto or similar jump inside a macro.
+    rationale:
+        The macro looks like a function call but leaves the calling
+        function, which misleads readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define CHECK_ID(id)                    \
+                do {                            \
+                        if ((id) >= MAX_ID)     \
+                                return -EINVAL; \
+                } while (0)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (id >= MAX_ID)
+                return -EINVAL;
+        \\\
+        ```
+    languages: [c]
+    tags: [macros, control-flow]
+    source: https://docs.kernel.org/process/coding-style.html#macros-enums-and-rtl

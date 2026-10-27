@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre06C:
+    standard: @{CertC}
+    ruleId: PRE06-C
+    title: Enclose header files in an include guard
+    statement:
+        Guard every header with a unique macro so that its contents are
+        processed only once, however many times it is included.
+    rationale:
+        Including a header twice can redefine types and objects, which fails
+        compilation and forces fragile include ordering on every user. CERT
+        rates likelihood unlikely, detectable yes, repairable yes, priority
+        P3, level L3.
+    exceptions:
+        A header holding an X-macro list may be included several times on
+        purpose and needs no guard. Such files should use a .def extension.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        /* point.h */
+        struct point {
+            int x;
+            int y;
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* point.h */
+        #ifndef APP_POINT_H
+        #define APP_POINT_H
+
+        struct point {
+            int x;
+            int y;
+        };
+
+        #endif /* APP_POINT_H */
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, headers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre06-c

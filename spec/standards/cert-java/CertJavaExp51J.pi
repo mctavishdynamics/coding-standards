@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaExp51J:
+    standard: @{CertJava}
+    ruleId: EXP51-J
+    title: Do not perform assignments in conditional expressions
+    statement:
+        Do not use the assignment operator as the controlling expression of
+        if, while, do-while, for or switch, or as an operand of the
+        conditional operators.
+    rationale:
+        An assignment where a comparison is expected usually means = was
+        typed for ==, and it changes the program's flow in a way that is
+        easy to miss.
+    exceptions:
+        An assignment may appear as a subexpression of a condition, as in
+        the common read loop that assigns a line and then compares it with
+        null.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        boolean ready = false;
+        if (ready = isConnected()) {
+            send();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        boolean ready = isConnected();
+        if (ready) {
+            send();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, expressions, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/expressions-exp/exp51-j/

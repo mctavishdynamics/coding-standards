@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl00C:
+    standard: @{CertC}
+    ruleId: DCL00-C
+    title: Const-qualify immutable objects
+    statement:
+        Declare objects that must not change after initialization as const,
+        so the compiler rejects any attempt to modify them.
+    rationale:
+        Const qualification documents intent and turns accidental writes to
+        fixed values into compile-time errors instead of runtime bugs. CERT
+        rates likelihood unlikely, detectable yes, repairable yes, priority
+        P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        double pi = 3.14159265358979;
+
+        double area(double r) {
+            return pi * r * r;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static const double pi = 3.14159265358979;
+
+        double area(double r) {
+            return pi * r * r;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, const]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl00-c

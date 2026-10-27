@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip69:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-69
+    title: Design code so that it can be tested
+    statement:
+        Build in the hooks needed to test components, such as injected
+        dependencies and clear interfaces.
+    rationale:
+        Code designed for testing is easier to verify and usually better
+        decoupled.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def is_expired(token):
+            return token.expires_at < datetime.now()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def is_expired(token, now):
+            return token.expires_at < now
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, testability]
+    source: https://pragprog.com/tips/

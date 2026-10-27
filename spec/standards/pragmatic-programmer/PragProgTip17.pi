@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip17:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-17
+    title: Keep unrelated parts of the system independent
+    statement:
+        Design components so that each has one purpose and changing one does
+        not affect others that are unrelated.
+    rationale:
+        Orthogonal components are easier to change, test and replace, and
+        their failures stay contained.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Invoice:
+            def total(self):
+                t = sum(i.price for i in self.items)
+                print(f"Total: {t}")  # formatting mixed in
+                return t
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Invoice:
+            def total(self):
+                return sum(i.price for i in self.items)
+
+        def show_total(invoice, out):
+            out.write(f"Total: {invoice.total()}")
+        \\\
+        ```
+    languages: [any]
+    tags: [coupling, orthogonality]
+    source: https://pragprog.com/tips/

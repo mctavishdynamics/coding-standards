@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellFeatureEnvy:
+    standard: @{FowlerRefactoring}
+    ruleId: feature-envy
+    title: Move functions toward the data they use
+    statement:
+        Avoid functions that talk to another module's data more than to
+        their own. Move the function, or the part that uses the other data,
+        into the module that holds most of that data. Usual fixes: Move
+        Function, Extract Function.
+    rationale:
+        Modules work best when interaction inside them is high and
+        interaction between them is low. Putting behavior beside its data
+        keeps related changes together.
+    exceptions:
+        Some patterns, such as Strategy and Visitor, split behavior from
+        data on purpose to allow it to vary; there the separation is the
+        point.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function formatAddress(customer) {
+          const a = customer.address;
+          return `${a.line1}, ${a.city} ${a.postcode}, ${a.country}`;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Address {
+          format() {
+            return `${this.line1}, ${this.city} ${this.postcode}, ${this.country}`;
+          }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [coupling, cohesion, functions]
+    source: https://martinfowler.com/books/refactoring.html

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellAlternativeClassesWithDifferentInterfaces:
+    standard: @{RefactoringGuruSmells}
+    ruleId: alternative-classes-with-different-interfaces
+    title: Give classes that do the same job the same interface
+    statement:
+        Avoid two classes that perform the same work under different method
+        names. Align their interfaces, and then remove one if it has become
+        a duplicate. Usual fixes: Rename Method, Move Method, Add Parameter,
+        Parameterize Method, Extract Superclass.
+    rationale:
+        This usually happens when someone writes a class without knowing an
+        equivalent one exists. Two names for one job double the code to
+        maintain and make it unclear which to use.
+    exceptions:
+        Merging may be impossible or pointless, for example when each class
+        comes from a different library with its own version of the feature.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class SmtpMailer { void deliver(String to, String body) { ... } }
+        class SesMailer  { void sendMessage(Message m) { ... } }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        interface Mailer { void send(Message message); }
+
+        class SmtpMailer implements Mailer { public void send(Message m) { ... } }
+        class SesMailer  implements Mailer { public void send(Message m) { ... } }
+        \\\
+        ```
+    languages: [any]
+    tags: [oo-abusers, interfaces, duplication]
+    source: https://refactoring.guru/smells/alternative-classes-with-different-interfaces

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellRepeatedSwitches:
+    standard: @{FowlerRefactoring}
+    ruleId: repeated-switches
+    title: Replace switches repeated on the same condition
+    statement:
+        Avoid the same switch, or the same chain of if and else checks, on
+        one condition appearing in several places. Replace the repeated
+        branching with polymorphism. Usual fixes: Replace Conditional with
+        Polymorphism.
+    rationale:
+        Each time a new case is added, every copy of the switch must be
+        found and updated. A single conditional is fine; the duplication is
+        the problem.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function fare(vehicle) {
+          switch (vehicle.kind) { case "bike": return 1; case "car": return 5; }
+        }
+        function lane(vehicle) {
+          switch (vehicle.kind) { case "bike": return "cycle"; case "car": return "road"; }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Bike { fare() { return 1; } lane() { return "cycle"; } }
+        class Car  { fare() { return 5; } lane() { return "road"; } }
+        \\\
+        ```
+    languages: [any]
+    tags: [conditionals, polymorphism, duplication]
+    source: https://martinfowler.com/books/refactoring.html

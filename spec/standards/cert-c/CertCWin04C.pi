@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCWin04C:
+    standard: @{CertC}
+    ruleId: WIN04-C
+    title: Consider encrypting function pointers
+    statement:
+        Consider storing function pointers that live in writable memory in
+        encoded form, for example with EncodePointer, and decoding them just
+        before the call.
+    rationale:
+        An attacker who can overwrite a stored function pointer can redirect
+        execution. An encoded pointer cannot be forged without knowing the
+        per-process secret. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P3, level L3.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        static void (*on_exit_cb)(void);
+
+        void set_handler(void (*fn)(void)) {
+            on_exit_cb = fn;
+        }
+
+        void run_handler(void) {
+            on_exit_cb();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static PVOID on_exit_cb;
+
+        void set_handler(void (*fn)(void)) {
+            on_exit_cb = EncodePointer((PVOID)fn);
+        }
+
+        void run_handler(void) {
+            ((void (*)(void))DecodePointer(on_exit_cb))();
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, windows, function-pointers, memory]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/microsoft-windows-win/win04-c

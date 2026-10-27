@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon09C:
+    standard: @{CertC}
+    ruleId: CON09-C
+    title: Avoid the ABA problem when using lock-free algorithms
+    statement:
+        In lock-free code, do not assume that a location that still holds
+        the value read earlier was left untouched. Use a technique that
+        detects or prevents reuse, such as hazard pointers, tagged pointers
+        or version counters, or fall back to a mutex.
+    rationale:
+        A compare-and-swap succeeds if the value changed and then changed
+        back, so a lock-free structure can link in freed or reused memory
+        and corrupt itself. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        struct node *pop(_Atomic(struct node *) *head) {
+            struct node *old = atomic_load(head);
+            while (old != NULL &&
+                   !atomic_compare_exchange_weak(head, &old, old->next)) {
+            }
+            return old;   /* old may have been freed and reused meanwhile */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct node *pop(struct stack *s) {
+            mtx_lock(&s->lock);
+            struct node *old = s->head;
+            if (old != NULL) {
+                s->head = old->next;
+            }
+            mtx_unlock(&s->lock);
+            return old;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, concurrency, lock-free, atomics]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/concurrency-con/con09-c

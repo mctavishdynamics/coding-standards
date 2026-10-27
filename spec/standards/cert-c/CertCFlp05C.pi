@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp05C:
+    standard: @{CertC}
+    ruleId: FLP05-C
+    title: Do not use denormalized numbers
+    statement:
+        Avoid computations that produce denormalized, also called subnormal,
+        values. If a float calculation reaches that range, use a wider type
+        such as double.
+    rationale:
+        Denormalized values have reduced precision and can be much slower,
+        so results lose accuracy without warning. CERT rates likelihood
+        probable, detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        float tiny = 1e-40f;           /* subnormal float */
+        float back = tiny * 1e10f;     /* precision already lost */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        double tiny = 1e-40;
+        double back = tiny * 1e10;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, floating-point, precision]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/floating-point-flp/flp05-c

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellMiddleMan:
+    standard: @{FowlerRefactoring}
+    ruleId: middle-man
+    title: Cut out classes that mostly delegate
+    statement:
+        When most of a class's methods simply forward to another object,
+        remove the intermediary and let callers talk to the object that does
+        the work. Usual fixes: Remove Middle Man, Inline Function, Replace
+        Superclass with Delegate, Replace Subclass with Delegate.
+    rationale:
+        Encapsulation through delegation is useful in moderation, but a
+        class that does nothing else adds a layer that callers must step
+        through for no gain.
+    exceptions:
+        Delegation that hides a dependency callers should not know about is
+        encapsulation working as intended.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Person {
+          constructor(department) { this.department = department; }
+          get manager() { return this.department.manager; }
+          get budget() { return this.department.budget; }
+          get location() { return this.department.location; }
+          get headcount() { return this.department.headcount; }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Person {
+          constructor(department) { this.department = department; }
+        }
+        const budget = person.department.budget;
+        \\\
+        ```
+    languages: [any]
+    tags: [delegation, indirection]
+    source: https://martinfowler.com/books/refactoring.html

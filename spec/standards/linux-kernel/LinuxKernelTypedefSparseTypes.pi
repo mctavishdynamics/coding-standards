@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelTypedefSparseTypes:
+    standard: @{LinuxKernelStyle}
+    ruleId: 5d
+    title: Use a typedef to create a new type for sparse checking
+    statement:
+        A typedef is acceptable when it creates a distinct type that the
+        sparse checker uses for type checking.
+    rationale:
+        Sparse can then catch values of one kind being used where another is
+        expected, such as endianness mix-ups.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        typedef unsigned int __bitwise slot_id_t;
+        \\\
+        ```
+    languages: [c]
+    tags: [typedefs, types, static-analysis]
+    source: https://docs.kernel.org/process/coding-style.html#typedefs

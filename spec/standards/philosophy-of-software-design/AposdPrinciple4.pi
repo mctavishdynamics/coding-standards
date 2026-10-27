@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdPrinciple4:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: principle-4
+    title: Make modules deep
+    statement:
+        Design each class, function or module so that a small, simple
+        interface gives access to a lot of useful functionality.
+    rationale:
+        A deep module hides most of its complexity from callers, so the cost
+        of learning its interface is low compared with the benefit it gives.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class FileOpener {
+            FileInputStream open(String path) throws IOException { ... }
+        }
+        class Buffering {
+            BufferedInputStream wrap(FileInputStream in) { ... }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class TextFile {
+            // Opens, buffers, decodes and closes internally.
+            static List<String> readLines(Path path) throws IOException { ... }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [principle, modularity, abstraction]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

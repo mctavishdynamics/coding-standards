@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelDebugMessageMacros:
+    standard: @{LinuxKernelStyle}
+    ruleId: 13d
+    title: Use pr_debug and dev_dbg for debug output
+    statement:
+        Emit debug messages with pr_debug or dev_dbg, which are compiled out
+        unless DEBUG is defined or dynamic debug is enabled, and add verbose
+        ones with dev_vdbg under VERBOSE_DEBUG. Use printk with KERN_DEBUG
+        only when a debug message must always print, such as inside a code
+        section already guarded for debugging.
+    rationale:
+        Debug output then costs nothing in normal builds and can be switched
+        on per subsystem or file when troubleshooting.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        printk(KERN_DEBUG "queue depth %u\n", depth);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        pr_debug("queue depth %u\n", depth);
+        \\\
+        ```
+    languages: [c]
+    tags: [logging, debugging]
+    source: https://docs.kernel.org/process/coding-style.html#printing-kernel-messages

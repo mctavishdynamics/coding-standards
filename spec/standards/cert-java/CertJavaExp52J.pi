@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaExp52J:
+    standard: @{CertJava}
+    ruleId: EXP52-J
+    title: Use braces for the body of an if, for, or while statement
+    statement:
+        Always enclose the body of an if, for or while statement in braces,
+        even when it is a single statement.
+    rationale:
+        Without braces, indentation suggests a structure the compiler does
+        not see, and a statement added later can fall outside the body.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        if (isAdmin(user))
+            log("admin access");
+            grantAccess(user);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (isAdmin(user)) {
+            log("admin access");
+            grantAccess(user);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, formatting, control-flow]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/expressions-exp/exp52-j/

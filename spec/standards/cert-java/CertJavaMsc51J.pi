@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc51J:
+    standard: @{CertJava}
+    ruleId: MSC51-J
+    title: Do not place a semicolon immediately following an if, for, or while condition
+    statement:
+        Never put a semicolon directly after the condition of an if, for or
+        while statement.
+    rationale:
+        The semicolon becomes an empty body, so the following block runs
+        unconditionally or only once, which is almost always a mistake.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        if (user.isAdmin());
+        {
+            deleteAll();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (user.isAdmin()) {
+            deleteAll();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, control-flow, formatting]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/miscellaneous-msc/msc51-j/

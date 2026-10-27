@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelUseBuildBugOn:
+    standard: @{LinuxKernelStyle}
+    ruleId: 22f
+    title: Use BUILD_BUG_ON for compile-time assertions
+    statement:
+        Check conditions that can be decided at build time with
+        BUILD_BUG_ON; its use is encouraged.
+    rationale:
+        It is checked by the compiler and has no runtime effect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        WARN_ON_ONCE(sizeof(struct wire_hdr) != 16);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        BUILD_BUG_ON(sizeof(struct wire_hdr) != 16);
+        \\\
+        ```
+    languages: [c]
+    tags: [assertions, compile-time]
+    source: https://docs.kernel.org/process/coding-style.html#use-build-bug-on-for-compile-time-assertions

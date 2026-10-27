@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc14C:
+    standard: @{CertC}
+    ruleId: MSC14-C
+    title: Do not introduce unnecessary platform dependencies
+    statement:
+        Write portable code unless a platform-specific construct brings a
+        real benefit. When one is needed, isolate it and document it.
+    rationale:
+        Code that depends on unspecified or implementation-defined behavior
+        without need breaks, often silently, when it is ported. CERT rates
+        likelihood unlikely, detectable no, repairable no, priority P1,
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        unsigned int bytes_to_uint(const unsigned char *b) {
+            return *(const unsigned int *)b;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        uint32_t bytes_to_uint32(const unsigned char *b) {
+            return (uint32_t)b[0] | (uint32_t)b[1] << 8 |
+                   (uint32_t)b[2] << 16 | (uint32_t)b[3] << 24;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc14-c

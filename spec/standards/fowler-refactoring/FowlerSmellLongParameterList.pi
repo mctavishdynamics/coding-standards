@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellLongParameterList:
+    standard: @{FowlerRefactoring}
+    ruleId: long-parameter-list
+    title: Shorten long parameter lists
+    statement:
+        Avoid functions that take many arguments. Derive a value the
+        function can get from another argument, pass a whole record instead
+        of its pieces, group related values into one object, drop flag
+        arguments, or make functions that share arguments into methods of a
+        class. Usual fixes: Replace Parameter with Query, Preserve Whole
+        Object, Introduce Parameter Object, Remove Flag Argument, Combine
+        Functions into Class.
+    rationale:
+        Many parameters make a call hard to read and easy to get wrong, and
+        they often mean the function is doing too much or several functions
+        share context that belongs together.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function bookRoom(guestName, guestEmail, checkIn, checkOut, roomType, isVip) {
+          // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function bookRoom(guest, stay) {
+          // guest: { name, email, isVip }, stay: { checkIn, checkOut, roomType }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [parameters, functions]
+    source: https://martinfowler.com/books/refactoring.html

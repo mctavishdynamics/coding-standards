@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG18:
+    standard: @{CleanCode}
+    ruleId: G18
+    title: Make a method static only when it can never be polymorphic
+    statement:
+        Prefer instance methods. Use a static method only when it works
+        purely on its arguments and there is no realistic chance that you
+        will want it to behave differently in a subclass or test.
+    rationale:
+        A static method cannot be overridden or replaced, so choosing one
+        wrongly locks in a single implementation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Payroll {
+            static Money calculatePay(Employee e, PayPolicy policy) {
+                return policy.payFor(e);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Payroll {
+            private final PayPolicy policy;
+
+            Money calculatePay(Employee e) {
+                return policy.payFor(e);
+            }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design, polymorphism]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

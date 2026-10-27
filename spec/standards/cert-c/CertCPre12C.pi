@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre12C:
+    standard: @{CertC}
+    ruleId: PRE12-C
+    title: Do not define unsafe macros
+    statement:
+        Write function-like macros so that each argument is evaluated
+        exactly once. Better still, use an inline function.
+    rationale:
+        A macro that evaluates an argument twice or not at all surprises
+        callers who pass expressions with side effects, causing subtle
+        defects. CERT rates likelihood probable, detectable yes, repairable
+        no, priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #define ABS(x) ((x) < 0 ? -(x) : (x))
+
+        int a = ABS(next_value());   /* next_value may run twice */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static inline int abs_int(int x) {
+            return x < 0 ? -x : x;
+        }
+
+        int a = abs_int(next_value());
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, macros, side-effects]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre12-c

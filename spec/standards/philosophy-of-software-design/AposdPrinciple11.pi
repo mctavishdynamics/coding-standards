@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdPrinciple11:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: principle-11
+    title: Design errors and special cases out of existence
+    statement:
+        Where possible, define operations so that cases which would
+        otherwise be errors or special cases have normal, well-defined
+        behaviour.
+    rationale:
+        Every exception and special case adds code to callers. Removing the
+        need for them simplifies both the module and its users.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def remove(items, key):
+            if key not in items:
+                raise KeyError(key)
+            del items[key]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def remove(items, key):
+            # Ensures key is absent afterwards; missing key is fine.
+            items.pop(key, None)
+        \\\
+        ```
+    languages: [any]
+    tags: [principle, error-handling, special-cases]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

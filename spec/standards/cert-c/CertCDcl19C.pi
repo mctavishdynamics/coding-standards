@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl19C:
+    standard: @{CertC}
+    ruleId: DCL19-C
+    title: Minimize the scope of variables and functions
+    statement:
+        Declare each variable and function in the smallest scope that still
+        covers all of its uses, for example a loop counter inside the for
+        statement.
+    rationale:
+        Wider scope makes code harder to read and maintain and makes it
+        easier to refer to the wrong variable by mistake. CERT rates
+        likelihood unlikely, detectable yes, repairable yes, priority P3,
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        size_t i;
+
+        void clear(int *v, size_t n) {
+            for (i = 0; i < n; i++) {
+                v[i] = 0;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void clear(int *v, size_t n) {
+            for (size_t i = 0; i < n; i++) {
+                v[i] = 0;
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, scope]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl19-c

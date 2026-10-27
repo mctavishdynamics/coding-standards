@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt01C:
+    standard: @{CertC}
+    ruleId: INT01-C
+    title:
+        Use size_t for all integer values representing the size of an object
+    statement:
+        Declare variables that hold object sizes, lengths, indices and loop
+        counters over objects as size_t.
+    rationale:
+        size_t can represent the size of any object, while smaller or signed
+        types can overflow or turn negative for large inputs. CERT rates
+        likelihood probable, detectable no, repairable yes, priority P8,
+        level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        void copy(char *dst, const char *src, int n) {
+            for (int i = 0; i < n; i++) {
+                dst[i] = src[i];
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void copy(char *dst, const char *src, size_t n) {
+            for (size_t i = 0; i < n; i++) {
+                dst[i] = src[i];
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, sizes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int01-c

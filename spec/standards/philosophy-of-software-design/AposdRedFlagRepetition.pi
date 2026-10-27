@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdRedFlagRepetition:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: red-flag-repetition
+    title: Avoid repeating nearly the same code
+    statement:
+        Avoid writing the same or very similar code in several places. Find
+        the abstraction that lets it live in one place.
+    rationale:
+        Repeated code signals a missing abstraction, and each copy must be
+        found and changed separately.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if not user.email or "@" not in user.email:
+            raise ValueError("bad email")
+        # ...elsewhere
+        if not contact.email or "@" not in contact.email:
+            raise ValueError("bad email")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def require_email(address):
+            if not address or "@" not in address:
+                raise ValueError("bad email")
+        \\\
+        ```
+    languages: [any]
+    tags: [red-flag, duplication, abstraction]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

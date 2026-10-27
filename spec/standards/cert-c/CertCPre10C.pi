@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre10C:
+    standard: @{CertC}
+    ruleId: PRE10-C
+    title: Wrap multistatement macros in a do-while loop
+    statement:
+        When a macro expands to several statements, wrap them in a do-while
+        loop with a false condition so the macro behaves as one statement
+        and can be followed by a semicolon.
+    rationale:
+        Bare statements or a plain block break when the macro is used as the
+        body of an if without braces or before an else, running some
+        statements unconditionally. CERT rates likelihood probable,
+        detectable yes, repairable yes, priority P12, level L1.
+    exceptions:
+        The wrapper does not suit statements that use break or continue,
+        because the do-while loop captures them.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        #define SWAP(a, b) tmp = (a); (a) = (b); (b) = tmp
+
+        if (lo > hi)
+            SWAP(lo, hi);   /* only the first assignment is conditional */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define SWAP(a, b) do { tmp = (a); (a) = (b); (b) = tmp; } while (0)
+
+        if (lo > hi)
+            SWAP(lo, hi);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, macros]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre10-c

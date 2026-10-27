@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelClearCorrectMessages:
+    standard: @{LinuxKernelStyle}
+    ruleId: 13a
+    title: Write kernel messages that are correctly spelled and concise
+    statement:
+        Spell kernel messages correctly, avoid wrong contractions such as
+        dont, and make them concise, clear and unambiguous. They do not need
+        a closing period.
+    rationale:
+        Messages are read by users and other developers, and careless text
+        reflects badly on the code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        pr_err("cant find the the firmware, maybe its missing.\n");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        pr_err("firmware %s not found\n", name);
+        \\\
+        ```
+    languages: [c]
+    tags: [logging, messages]
+    source: https://docs.kernel.org/process/coding-style.html#printing-kernel-messages

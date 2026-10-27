@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum52J:
+    standard: @{CertJava}
+    ruleId: NUM52-J
+    title: Be aware of numeric promotion behavior
+    statement:
+        Know how operands are promoted in arithmetic, shifts and compound
+        assignment, and cast explicitly so the operation is done in a type
+        wide enough for the result.
+    rationale:
+        Operations on int overflow before the result is widened to long, and
+        compound assignment hides a narrowing cast, so precision can be lost
+        silently.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        int seconds = 90_000;
+        long millis = seconds * 1000;  // overflows in int arithmetic
+
+        short s = 10;
+        s += 70_000;  // silently narrowed
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int seconds = 90_000;
+        long millis = seconds * 1000L;
+
+        int s = 10;
+        s += 70_000;
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, arithmetic, type-conversion, integers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/numeric-types-and-operations-num/num52-j/

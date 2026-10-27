@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt12C:
+    standard: @{CertC}
+    ruleId: INT12-C
+    title:
+        Do not make assumptions about the type of a plain int bit-field when
+        used in an expression
+    statement:
+        Declare bit-fields explicitly as signed int or unsigned int instead
+        of plain int.
+    rationale:
+        Whether a plain int bit-field is signed is implementation-defined,
+        so the same field may hold different values on different compilers.
+        CERT rates likelihood unlikely, detectable no, repairable no,
+        priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        struct flags {
+            int mode : 2;   /* 0..3 or -2..1 */
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct flags {
+            unsigned int mode : 2;
+        };
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, bit-fields, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int12-c

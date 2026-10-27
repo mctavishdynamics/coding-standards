@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCErr00C:
+    standard: @{CertC}
+    ruleId: ERR00-C
+    title:
+        Adopt and implement a consistent and comprehensive error-handling
+        policy
+    statement:
+        Decide once, for the whole program, how errors are detected,
+        reported, logged and recovered from, and apply that policy
+        everywhere. Every module should report failures in the same way and
+        every caller should act on them.
+    rationale:
+        Ad hoc error handling leaves some failures ignored and others
+        handled inconsistently, which undermines reliability and can expose
+        the system to attack. CERT rates likelihood probable, detectable no,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int load_users(const char *path) {
+            FILE *f = fopen(path, "r");
+            if (f == NULL) {
+                printf("oops\n");
+            }
+            /* continues with f even when it is NULL */
+            return parse_users(f);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int load_users(const char *path) {
+            FILE *f = fopen(path, "r");
+            if (f == NULL) {
+                log_error(ERR_IO, "cannot open %s", path);
+                return ERR_IO;
+            }
+            int rc = parse_users(f);
+            fclose(f);
+            return rc;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, error-handling, design]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/error-handling-err/err00-c

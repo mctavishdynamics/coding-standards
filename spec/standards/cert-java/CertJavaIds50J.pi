@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds50J:
+    standard: @{CertJava}
+    ruleId: IDS50-J
+    title: Use conservative file naming conventions
+    statement:
+        Build file and path names only from a safe subset of characters,
+        such as letters, digits, underscore, hyphen and period. Avoid
+        leading dashes, spaces, control characters and shell or path
+        metacharacters, and reject untrusted names that use them.
+    rationale:
+        Unusual characters in file names are misread by shells, scripts,
+        loggers and other programs. A leading dash can become an option and
+        a newline can split a log entry. CERT rates likelihood unlikely,
+        detectable yes, repairable no, priority P4, level L3.
+    exceptions:
+        A program may accept unsafe characters in a file name when the name
+        never reaches a command interpreter, shell, parser, logger or
+        similar subsystem that gives those characters a special meaning.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        String name = request.getParameter("name");
+        File out = new File(uploadDir, name);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private static final Pattern SAFE = Pattern.compile("[A-Za-z0-9_][A-Za-z0-9._-]*");
+
+        String name = request.getParameter("name");
+        if (!SAFE.matcher(name).matches()) {
+            throw new IllegalArgumentException("Invalid file name");
+        }
+        File out = new File(uploadDir, name);
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, files, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/input-validation-and-data-sanitization-ids/ids50-j/

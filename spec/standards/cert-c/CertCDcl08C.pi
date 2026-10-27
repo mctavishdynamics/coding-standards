@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl08C:
+    standard: @{CertC}
+    ruleId: DCL08-C
+    title: Properly encode relationships in constant definitions
+    statement:
+        When one constant depends on another, define it in terms of the
+        other. Do not tie constants together when the relationship is false
+        or may not last.
+    rationale:
+        Independent definitions let a maintainer change one value and
+        silently break the dependent value. CERT rates likelihood unlikely,
+        detectable no, repairable no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        enum { MAX_ITEMS = 32 };
+        enum { TABLE_BYTES = 128 };   /* meant to be MAX_ITEMS * 4 */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum { MAX_ITEMS = 32 };
+        enum { ITEM_BYTES = 4 };
+        enum { TABLE_BYTES = MAX_ITEMS * ITEM_BYTES };
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, constants]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl08-c

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellMessageChains:
+    standard: @{FowlerRefactoring}
+    ruleId: message-chains
+    title: Avoid navigating long chains of objects
+    statement:
+        Avoid code that asks one object for another, then asks that for
+        another, and so on, before doing its work. Hide the delegate behind
+        the first object, or move the code that uses the final object up the
+        chain. Usual fixes: Hide Delegate, Extract Function, Move Function.
+    rationale:
+        Each step binds the client to the way the objects are linked, so any
+        change in that structure forces changes in the client.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const managerEmail = employee.department.manager.contact.email;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const managerEmail = employee.managerEmail();
+        \\\
+        ```
+    languages: [any]
+    tags: [coupling, law-of-demeter]
+    source: https://martinfowler.com/books/refactoring.html

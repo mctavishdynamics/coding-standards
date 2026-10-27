@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelOpeningBraceEndOfLine:
+    standard: @{LinuxKernelStyle}
+    ruleId: 3a
+    title: Put the opening brace of a block at the end of the line
+    statement:
+        For if, switch, for, while and do blocks, put the opening brace last
+        on the line that starts the block and the closing brace first on its
+        own line, in the Kernighan and Ritchie style.
+    rationale:
+        This is the K&R convention, and it uses fewer nearly empty lines
+        without hurting readability.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (i = 0; i < n; i++)
+        {
+                sum += values[i];
+                count++;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (i = 0; i < n; i++) {
+                sum += values[i];
+                count++;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, braces]
+    source: https://docs.kernel.org/process/coding-style.html#placing-braces-and-spaces

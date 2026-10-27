@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip72:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-72
+    title: Keep code simple and expose as little as possible
+    statement:
+        Keep designs simple and minimise the entry points, data and
+        privileges an attacker could reach.
+    rationale:
+        Complexity and exposure both create openings for attack.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        @app.route("/debug/eval", methods=["POST"])
+        def debug_eval():
+            return str(eval(request.data))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        @app.route("/reports/<int:report_id>")
+        @require_role("analyst")
+        def get_report(report_id):
+            return reports.fetch(report_id).to_json()
+        \\\
+        ```
+    languages: [any]
+    tags: [security, attack-surface]
+    source: https://pragprog.com/tips/

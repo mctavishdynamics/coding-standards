@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeF1:
+    standard: @{CleanCode}
+    ruleId: F1
+    title: Keep the number of function arguments small
+    statement:
+        Prefer functions with no arguments, then one, two and at most three.
+        More than three needs a strong reason; group related values into an
+        object instead.
+    rationale:
+        Every argument makes a function harder to understand, call correctly
+        and test in all combinations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void createUser(String first, String last, String email,
+                        String street, String city, String postcode) {
+            // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void createUser(PersonName name, String email, Address address) {
+            // ...
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [functions, arguments]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCErr06C:
+    standard: @{CertC}
+    ruleId: ERR06-C
+    title: Understand the termination behavior of assert() and abort()
+    statement:
+        Remember that a failed assert calls abort, which ends the program
+        without flushing streams, removing temporary files or running atexit
+        handlers. Use assert only for programming errors, and handle errors
+        that need cleanup with explicit code.
+    rationale:
+        Relying on assert or abort for run-time errors skips cleanup that
+        the program may depend on, and assertions disappear entirely when
+        NDEBUG is defined. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        FILE *f = fopen(path, "r");
+        assert(f != NULL);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        FILE *f = fopen(path, "r");
+        if (f == NULL) {
+            perror(path);
+            exit(EXIT_FAILURE);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, error-handling, assertions, termination]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/error-handling-err/err06-c

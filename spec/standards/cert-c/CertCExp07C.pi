@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp07C:
+    standard: @{CertC}
+    ruleId: EXP07-C
+    title:
+        Do not diminish the benefits of constants by assuming their values
+        in expressions
+    statement:
+        Once a value has a symbolic name, always use the name and never
+        write code that relies on its current value.
+    rationale:
+        Code that silently depends on a constant's value breaks when the
+        constant is changed, which defeats the reason for naming it. CERT
+        rates likelihood unlikely, detectable no, repairable no, priority
+        P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        enum { BLOCK_SIZE = 512 };
+
+        size_t blocks(size_t bytes) {
+            return bytes >> 9;   /* assumes BLOCK_SIZE is 512 */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum { BLOCK_SIZE = 512 };
+
+        size_t blocks(size_t bytes) {
+            return bytes / BLOCK_SIZE;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, constants, maintainability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp07-c

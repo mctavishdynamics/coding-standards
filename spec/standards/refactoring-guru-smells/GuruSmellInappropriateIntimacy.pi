@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellInappropriateIntimacy:
+    standard: @{RefactoringGuruSmells}
+    ruleId: inappropriate-intimacy
+    title: Do not let a class use another class's internals
+    statement:
+        Avoid classes that reach into the private fields and methods of
+        another class. Move the shared parts, hide the delegate or cut the
+        dependency to one direction. Usual fixes: Move Method, Move Field,
+        Extract Class, Hide Delegate, Change Bidirectional Association to
+        Unidirectional, Replace Delegation with Inheritance.
+    rationale:
+        Classes that know each other's internals are tightly coupled:
+        neither can be changed or reused without the other. Classes should
+        know as little as possible about each other.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Report {
+            String summary(Account a) {
+                a.cachedBalance = a.ledger.entries.stream().mapToLong(e -> e.cents).sum();
+                return a.owner.firstName + ": " + a.cachedBalance;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Report {
+            String summary(Account account) {
+                return account.ownerName() + ": " + account.balance();
+            }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [couplers, coupling, encapsulation]
+    source: https://refactoring.guru/smells/inappropriate-intimacy

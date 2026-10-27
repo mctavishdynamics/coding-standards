@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio22C:
+    standard: @{CertC}
+    ruleId: FIO22-C
+    title: Close files before spawning processes
+    statement:
+        Close every file the program no longer needs before it runs another
+        program, or mark the descriptors close-on-exec, for example with
+        O_CLOEXEC on POSIX.
+    rationale:
+        Open files are inherited by child processes, which can then read or
+        write data they were never meant to see, and leaked descriptors can
+        exhaust the system's limit. CERT rates likelihood unlikely,
+        detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int fd = open("/etc/app/secret.key", O_RDONLY);
+        /* ... read the key ... */
+        system("/usr/bin/report-tool");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int fd = open("/etc/app/secret.key", O_RDONLY | O_CLOEXEC);
+        /* ... read the key ... */
+        close(fd);
+        system("/usr/bin/report-tool");
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, files, processes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio22-c

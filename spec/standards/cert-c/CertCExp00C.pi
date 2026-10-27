@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp00C:
+    standard: @{CertC}
+    ruleId: EXP00-C
+    title: Use parentheses for precedence of operation
+    statement:
+        Add parentheses to make the intended grouping explicit, especially
+        around the bitwise and shift operators, whose precedence is lower
+        than many programmers expect.
+    rationale:
+        Precedence mistakes compile cleanly but compute a different value.
+        Defensive parentheses prevent them and, used in moderation, make
+        code easier to read. CERT rates likelihood probable, detectable yes,
+        repairable yes, priority P6, level L2.
+    exceptions:
+        Ordinary arithmetic that follows algebraic order, such as a sum of
+        products, needs no extra parentheses.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        if (flags & MASK == MASK) {   /* flags & (MASK == MASK) */
+            enable();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if ((flags & MASK) == MASK) {
+            enable();
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, operators, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp00-c

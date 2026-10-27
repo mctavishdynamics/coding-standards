@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl51J:
+    standard: @{CertJava}
+    ruleId: DCL51-J
+    title: Do not shadow or obscure identifiers in subscopes
+    statement:
+        Do not reuse the name of a field, variable, type or package in a
+        nested scope where the new declaration hides the outer one.
+    rationale:
+        Although the language resolves which name is meant, readers can
+        easily confuse the two entities. That makes code harder to review
+        and maintain and can hide security weaknesses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Counter {
+            private int count;
+
+            void reset() {
+                int count = 0;
+                log("reset " + count);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Counter {
+            private int count;
+
+            void reset() {
+                count = 0;
+                log("reset " + count);
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, naming, scope, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/declarations-and-initialization-dcl/dcl51-j/

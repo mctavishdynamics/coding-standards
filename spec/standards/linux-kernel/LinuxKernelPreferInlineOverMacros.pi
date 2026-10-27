@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelPreferInlineOverMacros:
+    standard: @{LinuxKernelStyle}
+    ruleId: 12c
+    title: Prefer inline functions to function-like macros
+    statement:
+        Where a macro would act like a function, write a static inline
+        function instead.
+    rationale:
+        Inline functions type-check their arguments, evaluate each argument
+        once and are easier to document.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define clamp_rate(r) ((r) > MAX_RATE ? MAX_RATE : (r))
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static inline unsigned int clamp_rate(unsigned int r)
+        {
+                return r > MAX_RATE ? MAX_RATE : r;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [macros, functions, inline]
+    source: https://docs.kernel.org/process/coding-style.html#macros-enums-and-rtl

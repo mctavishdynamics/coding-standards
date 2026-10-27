@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc05C:
+    standard: @{CertC}
+    ruleId: MSC05-C
+    title: Do not manipulate time_t typed values directly
+    statement:
+        Do not do arithmetic on time_t values or assume they count seconds.
+        Use difftime to compare times and mktime with a struct tm to compute
+        new ones.
+    rationale:
+        The C standard leaves the encoding of time_t unspecified, so direct
+        arithmetic gives wrong results on systems that encode time
+        differently. CERT rates likelihood unlikely, detectable yes,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        time_t start = time(NULL);
+        do_work();
+        if (time(NULL) - start > 60) {
+            puts("slow");
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        time_t start = time(NULL);
+        do_work();
+        if (difftime(time(NULL), start) > 60.0) {
+            puts("slow");
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, time, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc05-c

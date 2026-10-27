@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaStr51J:
+    standard: @{CertJava}
+    ruleId: STR51-J
+    title: Use the charset encoder and decoder classes when more control over the encoding process is required
+    statement:
+        When malformed input or unmappable characters must be detected
+        rather than silently replaced, use CharsetEncoder and CharsetDecoder
+        with an explicit error action instead of String.getBytes() or the
+        String constructors.
+    rationale:
+        The convenience methods replace bad input with a default replacement
+        character, so encoding errors go unnoticed and data is corrupted.
+        CERT rates likelihood unlikely, remediation cost medium, priority
+        P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        String text = new String(bytes, StandardCharsets.UTF_8);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        CharsetDecoder decoder = StandardCharsets.UTF_8.newDecoder()
+                .onMalformedInput(CodingErrorAction.REPORT)
+                .onUnmappableCharacter(CodingErrorAction.REPORT);
+        String text = decoder.decode(ByteBuffer.wrap(bytes)).toString();
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, strings, encoding]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/characters-and-strings-str/str51-j/

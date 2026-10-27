@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeN1:
+    standard: @{CleanCode}
+    ruleId: N1
+    title: Choose descriptive names
+    statement:
+        Pick names that describe what a thing is or does, and revisit them
+        as the code evolves and its meaning shifts. Take the time to get
+        them right.
+    rationale:
+        Names make up most of what a reader sees, so good names do most of
+        the work of making code understandable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        int d; // elapsed time in days
+        List<int[]> get() {
+            List<int[]> l = new ArrayList<>();
+            for (int[] x : list) if (x[0] == 4) l.add(x);
+            return l;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int elapsedDays;
+        List<Cell> flaggedCells() {
+            List<Cell> flagged = new ArrayList<>();
+            for (Cell cell : board) if (cell.isFlagged()) flagged.add(cell);
+            return flagged;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [naming, readability]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

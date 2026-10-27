@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip18:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-18
+    title: Keep decisions reversible
+    statement:
+        Avoid locking the design to a particular vendor, platform or
+        architecture; hide such choices behind abstractions so they can be
+        changed later.
+    rationale:
+        Decisions that seemed final often need to change, and irreversible
+        ones make that very expensive.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def save(order):
+            boto3.client("s3").put_object(Bucket="orders", Key=order.id,
+                                          Body=order.to_json())
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def save(order, store):
+            store.put(order.id, order.to_json())  # any storage backend
+        \\\
+        ```
+    languages: [any]
+    tags: [design, flexibility]
+    source: https://pragprog.com/tips/

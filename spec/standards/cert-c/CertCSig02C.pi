@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCSig02C:
+    standard: @{CertC}
+    ruleId: SIG02-C
+    title: Avoid using signals to implement normal functionality
+    statement:
+        Reserve signals for abnormal events that need little more than
+        setting a flag or logging. Implement ordinary control flow, timing
+        and communication between parts of a program with other mechanisms
+        such as threads, condition variables or event loops.
+    rationale:
+        Handlers may perform very few operations safely, so building normal
+        behavior on signals invites races and undefined behavior. CERT rates
+        likelihood probable, detectable no, repairable no, priority P6,
+        level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        void on_alarm(int sig) {
+            refresh_screen();
+            alarm(1);
+        }
+
+        /* in main */
+        signal(SIGALRM, on_alarm);
+        alarm(1);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (;;) {
+            refresh_screen();
+            sleep(1);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, signals, design]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/signals-sig/sig02-c

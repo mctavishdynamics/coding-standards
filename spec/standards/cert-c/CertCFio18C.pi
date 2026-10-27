@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio18C:
+    standard: @{CertC}
+    ruleId: FIO18-C
+    title:
+        Never expect fwrite() to terminate the writing process at a null
+        character
+    statement:
+        fwrite writes exactly the number of elements it is told to, null
+        characters included. When writing a string, pass its length rather
+        than the size of the buffer that holds it.
+    rationale:
+        Passing the buffer size writes whatever follows the terminator,
+        which can leak stale or sensitive memory into the output. CERT rates
+        likelihood probable, detectable no, repairable no, priority P4,
+        level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        char msg[256];
+        snprintf(msg, sizeof msg, "user %s logged in\n", user);
+        fwrite(msg, 1, sizeof msg, logf);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char msg[256];
+        snprintf(msg, sizeof msg, "user %s logged in\n", user);
+        fwrite(msg, 1, strlen(msg), logf);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, strings, information-leak]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio18-c

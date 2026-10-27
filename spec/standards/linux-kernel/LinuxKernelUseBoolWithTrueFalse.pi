@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelUseBoolWithTrueFalse:
+    standard: @{LinuxKernelStyle}
+    ruleId: 17a
+    title: Use bool with true and false for boolean values
+    statement:
+        Use bool for function return values and local variables that hold
+        yes or no answers, and assign true and false rather than 1 and 0.
+    rationale:
+        bool reads more clearly than int, and conversion to bool always
+        yields 0 or 1, so double negation tricks are not needed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int found = 0;
+
+        if (match(entry))
+                found = 1;
+        return !!found;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        bool found = false;
+
+        if (match(entry))
+                found = true;
+        return found;
+        \\\
+        ```
+    languages: [c]
+    tags: [types, bool, readability]
+    source: https://docs.kernel.org/process/coding-style.html#using-bool

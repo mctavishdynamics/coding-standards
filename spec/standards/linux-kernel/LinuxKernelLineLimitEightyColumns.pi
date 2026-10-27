@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelLineLimitEightyColumns:
+    standard: @{LinuxKernelStyle}
+    ruleId: 2a
+    title: Keep lines within 80 columns
+    statement:
+        Treat 80 columns as the preferred line length and break longer
+        statements into sensible pieces.
+    rationale:
+        Short lines stay readable and maintainable with common tools and
+        terminals.
+    exceptions:
+        A line may go past 80 columns when that clearly improves readability
+        and does not hide information.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        ret = regmap_update_bits(priv->regmap, CTRL_REG, CTRL_ENABLE | CTRL_RESET, CTRL_ENABLE);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        ret = regmap_update_bits(priv->regmap, CTRL_REG,
+                                 CTRL_ENABLE | CTRL_RESET, CTRL_ENABLE);
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, line-length]
+    source: https://docs.kernel.org/process/coding-style.html#breaking-long-lines-and-strings

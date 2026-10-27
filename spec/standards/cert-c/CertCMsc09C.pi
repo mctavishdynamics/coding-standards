@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc09C:
+    standard: @{CertC}
+    ruleId: MSC09-C
+    title: Use a safe subset of ASCII in character encoding
+    statement:
+        Restrict identifiers, and especially file names, to a safe subset of
+        ASCII such as letters, digits, period, hyphen and underscore. Do not
+        start file names with a hyphen, and reject other characters in names
+        that come from users.
+    rationale:
+        Spaces, control characters, shell metacharacters and non-ASCII
+        characters are interpreted differently by shells, file systems and
+        tools, which causes bugs and injection vulnerabilities. CERT rates
+        likelihood unlikely, detectable yes, repairable no, priority P4,
+        level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        FILE *f = fopen("-report\n.txt", "w");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        FILE *f = fopen("report.txt", "w");
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, character-encoding, files, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc09-c

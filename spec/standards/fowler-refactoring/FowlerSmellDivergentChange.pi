@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellDivergentChange:
+    standard: @{FowlerRefactoring}
+    ruleId: divergent-change
+    title: Separate a module that changes for different reasons
+    statement:
+        When you keep editing one module in different places for unrelated
+        kinds of change, split it so that each kind of change touches only
+        one part. Usual fixes: Split Phase, Move Function, Extract Function,
+        Extract Class.
+    rationale:
+        Changes are easier when you only need to understand one context at a
+        time. Mixing contexts in one module means each change drags you
+        through code that does not concern it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function exportReport(rows, format) {
+          const filtered = rows.filter(r => r.active && r.region === "EU");
+          if (format === "csv") return filtered.map(r => `${r.id},${r.sales}`).join("\n");
+          return `<table>${filtered.map(r => `<tr><td>${r.id}</td></tr>`).join("")}</table>`;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function exportReport(rows, format) {
+          const data = summarise(rows);          // business rules change here
+          return renderers[format](data);        // output formats change here
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [modularity, cohesion, change]
+    source: https://martinfowler.com/books/refactoring.html

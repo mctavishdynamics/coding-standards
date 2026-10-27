@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeT1:
+    standard: @{CleanCode}
+    ruleId: T1
+    title: Write enough tests
+    statement:
+        Test everything that could break. A suite is not sufficient while
+        any condition or calculation remains unchecked.
+    rationale:
+        Untested code paths are where defects hide, and a thin suite gives
+        false confidence.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        @Test
+        void addsItem() {
+            cart.add(apple);
+            assertEquals(1, cart.size());
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Test
+        void addsItem() { cart.add(apple); assertEquals(1, cart.size()); }
+
+        @Test
+        void addingSameItemIncreasesQuantity() {
+            cart.add(apple); cart.add(apple);
+            assertEquals(2, cart.quantityOf(apple));
+        }
+
+        @Test
+        void rejectsNullItem() {
+            assertThrows(NullPointerException.class, () -> cart.add(null));
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, coverage]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

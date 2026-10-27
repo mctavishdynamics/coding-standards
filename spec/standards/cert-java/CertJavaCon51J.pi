@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaCon51J:
+    standard: @{CertJava}
+    ruleId: CON51-J
+    title: Do not assume that the sleep(), yield(), or getState() methods provide synchronization semantics
+    statement:
+        Do not use Thread.sleep(), Thread.yield() or Thread.getState() to
+        coordinate threads or to make writes visible. Use volatile fields,
+        interruption or proper synchronization.
+    rationale:
+        These methods have no memory synchronization effects, so the
+        compiler may cache values and a loop may never see another thread's
+        update.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        private boolean done;
+
+        void run() throws InterruptedException {
+            while (!done) {
+                Thread.sleep(100);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private volatile boolean done;
+
+        void run() throws InterruptedException {
+            while (!done) {
+                Thread.sleep(100);
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, concurrency, synchronization]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/concurrency-con/con51-j/

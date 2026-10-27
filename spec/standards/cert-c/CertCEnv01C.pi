@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCEnv01C:
+    standard: @{CertC}
+    ruleId: ENV01-C
+    title:
+        Do not make assumptions about the size of an environment variable
+    statement:
+        Treat the value of an environment variable as having any length. To
+        keep a copy, measure it and allocate enough storage, or use a
+        function that does so, rather than copying it into a fixed-size
+        buffer.
+    rationale:
+        Whoever starts the program controls its environment and can supply a
+        value long enough to overflow a fixed buffer. CERT rates likelihood
+        likely, detectable no, repairable no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        char home[256];
+        const char *h = getenv("HOME");
+        if (h != NULL) {
+            strcpy(home, h);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *home = NULL;
+        const char *h = getenv("HOME");
+        if (h != NULL) {
+            home = malloc(strlen(h) + 1);
+            if (home != NULL) {
+                strcpy(home, h);
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, environment, buffer-overflow, strings]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/environment-env/env01-c

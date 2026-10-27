@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp11C:
+    standard: @{CertC}
+    ruleId: EXP11-C
+    title:
+        Do not make assumptions regarding the layout of structures with
+        bit-fields
+    statement:
+        Do not rely on the bit order, padding or storage boundaries of
+        bit-fields, for example by overlaying them on raw data. Use shifts
+        and masks on unsigned integers for a defined layout.
+    rationale:
+        Bit-field allocation order, alignment and whether a field can
+        straddle storage units are implementation-defined, so such code is
+        not portable. CERT rates likelihood probable, detectable no,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        struct header {
+            unsigned version : 4;
+            unsigned length  : 4;
+        };
+
+        struct header h;
+        memcpy(&h, wire_byte, 1);   /* field order depends on compiler */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        unsigned char b = wire_byte[0];
+        unsigned version = (b >> 4) & 0x0FU;
+        unsigned length = b & 0x0FU;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, bit-fields, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp11-c

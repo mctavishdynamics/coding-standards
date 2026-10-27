@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellDataClumps:
+    standard: @{RefactoringGuruSmells}
+    ruleId: data-clumps
+    title: Group values that always travel together into one object
+    statement:
+        When the same few variables keep appearing together in fields and
+        parameter lists, put them in a class of their own and pass that
+        class instead. Usual fixes: Extract Class, Introduce Parameter
+        Object, Preserve Whole Object.
+    rationale:
+        Repeated groups usually come from copy and paste or weak structure.
+        If one value of the group makes no sense without the others, the
+        group is a missing object, and giving it a home lets behavior move
+        next to the data.
+    exceptions:
+        Passing a whole object instead of its separate values can tie two
+        classes together in a way you do not want; weigh that before
+        changing the signature.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Connection open(String host, int port, String user, String password) { ... }
+        void ping(String host, int port, String user, String password) { ... }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        record DbEndpoint(String host, int port, String user, String password) {}
+
+        Connection open(DbEndpoint endpoint) { ... }
+        void ping(DbEndpoint endpoint) { ... }
+        \\\
+        ```
+    languages: [any]
+    tags: [bloaters, parameters, data]
+    source: https://refactoring.guru/smells/data-clumps

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCWin01C:
+    standard: @{CertC}
+    ruleId: WIN01-C
+    title: Do not forcibly terminate execution
+    statement:
+        Do not end threads or processes with TerminateThread or
+        TerminateProcess. Signal the code to stop, for example with an
+        event, and let it exit normally.
+    rationale:
+        Forced termination skips cleanup and DLL notifications and can leave
+        locks held or memory and handles leaked. CERT rates likelihood
+        likely, detectable yes, repairable no, priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        TerminateThread(worker, 0);
+        CloseHandle(worker);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        SetEvent(stop_event);
+        WaitForSingleObject(worker, INFINITE);
+        CloseHandle(worker);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, windows, threads, termination]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/microsoft-windows-win/win01-c

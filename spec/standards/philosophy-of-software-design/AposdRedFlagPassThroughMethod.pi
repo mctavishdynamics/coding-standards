@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdRedFlagPassThroughMethod:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: red-flag-pass-through-method
+    title: Avoid methods that only forward their arguments
+    statement:
+        Avoid a method that does little except call another method with the
+        same or a very similar signature. Reassign responsibilities so
+        callers reach the right class directly, or give the method real
+        work.
+    rationale:
+        Pass-through methods add interface without adding function and
+        indicate that responsibilities between classes are muddled.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Document {
+            private TextArea area;
+            void insert(int pos, String s) { area.insert(pos, s); }
+            void remove(int a, int b) { area.remove(a, b); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Document {
+            private TextArea area;
+            // Adds undo history and change events on top of the raw text.
+            void insert(int pos, String s) {
+                history.record(pos, s);
+                area.insert(pos, s);
+                listeners.textChanged(pos, s.length());
+            }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [red-flag, layering, abstraction]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

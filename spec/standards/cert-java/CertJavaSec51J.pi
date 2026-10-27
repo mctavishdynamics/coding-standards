@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec51J:
+    standard: @{CertJava}
+    ruleId: SEC51-J
+    title: Minimize privileged code
+    statement:
+        Put only the operations that need elevated privileges inside a
+        privileged block, and do everything else outside it.
+    rationale:
+        All code in a privileged block runs with its privileges, so extra
+        code increases the attack surface and makes privileged code harder
+        to audit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+            String text = Files.readString(path);
+            parseAndStore(text);
+            return null;
+        });
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String text = AccessController.doPrivileged(
+                (PrivilegedExceptionAction<String>) () -> Files.readString(path));
+        parseAndStore(text);
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, privileges, least-privilege]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/platform-security-sec/sec51-j/

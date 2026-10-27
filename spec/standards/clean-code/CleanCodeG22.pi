@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG22:
+    standard: @{CleanCode}
+    ruleId: G22
+    title: Make logical dependencies physical
+    statement:
+        When one module relies on a fact about another, ask the other module
+        for it explicitly instead of assuming it in your own code.
+    rationale:
+        A hidden assumption breaks silently when the other module changes,
+        while an explicit call keeps the dependency visible and correct.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class CsvExporter {
+            // Assumes the reader splits on ';', as configured in CsvReader.
+            String line(List<String> cells) { return String.join(";", cells); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class CsvExporter {
+            private final CsvFormat format;
+
+            String line(List<String> cells) {
+                return String.join(format.separator(), cells);
+            }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [dependencies, coupling]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

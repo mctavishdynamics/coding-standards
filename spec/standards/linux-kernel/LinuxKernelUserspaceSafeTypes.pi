@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelUserspaceSafeTypes:
+    standard: @{LinuxKernelStyle}
+    ruleId: 5f
+    title: Use the double-underscore types in structures shared with userspace
+    statement:
+        In structures that are visible to userspace, use __u32 and the
+        similar double-underscore types rather than u32 or C99 types.
+    rationale:
+        Userspace headers cannot rely on C99 types or on the kernel's own
+        u32 names.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct widget_ioctl_args {
+                u32 flags;
+                uint64_t addr;
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct widget_ioctl_args {
+                __u32 flags;
+                __u64 addr;
+        };
+        \\\
+        ```
+    languages: [c]
+    tags: [typedefs, types, uapi]
+    source: https://docs.kernel.org/process/coding-style.html#typedefs

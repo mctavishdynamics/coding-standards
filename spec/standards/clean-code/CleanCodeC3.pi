@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeC3:
+    standard: @{CleanCode}
+    ruleId: C3
+    title: Do not write comments that repeat the code
+    statement:
+        Delete comments that say only what the code already says plainly,
+        including Javadoc that restates a method signature without adding
+        anything.
+    rationale:
+        A redundant comment costs reading time, adds nothing and must be
+        kept in step with the code for no benefit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        /**
+         * Sets the name.
+         * @param name the name
+         */
+        void setName(String name) {
+            this.name = name; // assign name
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void setName(String name) {
+            this.name = name;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [comments, redundancy]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

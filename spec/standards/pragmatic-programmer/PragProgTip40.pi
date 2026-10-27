@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip40:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-40
+    title: Release a resource in the routine that acquired it
+    statement:
+        Make the code that allocates a resource also responsible for
+        releasing it, ideally in a structure that guarantees release.
+    rationale:
+        Clear ownership prevents leaks and double releases.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def read_header(path):
+            f = open(path)
+            return f.readline()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def read_header(path):
+            with open(path) as f:
+                return f.readline()
+        \\\
+        ```
+    languages: [any]
+    tags: [resource-management]
+    source: https://pragprog.com/tips/

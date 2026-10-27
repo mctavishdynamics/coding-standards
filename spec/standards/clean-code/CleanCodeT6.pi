@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeT6:
+    standard: @{CleanCode}
+    ruleId: T6
+    title: Test exhaustively near bugs
+    statement:
+        When you find a bug in a function, test that function thoroughly,
+        because defects tend to cluster.
+    rationale:
+        Where one bug is found, others are often nearby.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        @Test
+        void fixedTimezoneBug() {
+            assertEquals(10, schedule.hourOf(meetingInBerlin));
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @ParameterizedTest
+        @ValueSource(strings = {"Europe/Berlin", "Asia/Kolkata", "America/St_Johns", "UTC"})
+        void hourIsCorrectInEveryZone(String zone) {
+            assertEquals(10, schedule.hourOf(meetingAt(10, ZoneId.of(zone))));
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, bugs]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

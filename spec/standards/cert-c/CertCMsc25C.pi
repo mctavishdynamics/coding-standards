@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc25C:
+    standard: @{CertC}
+    ruleId: MSC25-C
+    title: Do not use insecure or weak cryptographic algorithms
+    statement:
+        Do not use broken or weak cryptographic algorithms such as DES, RC4,
+        MD5 or SHA-1 for security purposes. Use current, vetted algorithms
+        from a maintained cryptographic library.
+    rationale:
+        Weak algorithms can be broken with practical effort, exposing the
+        data or credentials they were meant to protect. CERT rates
+        likelihood probable, detectable no, repairable no, priority P4,
+        level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        unsigned char digest[MD5_DIGEST_LENGTH];
+        MD5((const unsigned char *)password, strlen(password), digest);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        unsigned char key[32];
+        PKCS5_PBKDF2_HMAC(password, strlen(password), salt, sizeof salt,
+                          600000, EVP_sha256(), sizeof key, key);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, cryptography]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc25-c

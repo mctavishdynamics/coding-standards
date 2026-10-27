@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec55J:
+    standard: @{CertJava}
+    ruleId: SEC55-J
+    title: Ensure that security-sensitive methods are called with validated arguments
+    statement:
+        Validate the arguments you pass to security-sensitive methods. In
+        particular, do not pass a null value that the method may treat as a
+        request for default or full privileges.
+    rationale:
+        Some sensitive methods interpret null or unusual values as
+        permissive, so unchecked arguments can lead to privilege escalation
+        or arbitrary code execution.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        <T> T runAs(PrivilegedAction<T> action, AccessControlContext acc) {
+            return AccessController.doPrivileged(action, acc);  // acc may be null
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        <T> T runAs(PrivilegedAction<T> action, AccessControlContext acc) {
+            Objects.requireNonNull(acc, "context");
+            return AccessController.doPrivileged(action, acc);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, input-validation, privileges]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/platform-security-sec/sec55-j/

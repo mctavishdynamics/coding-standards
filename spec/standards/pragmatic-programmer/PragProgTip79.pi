@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip79:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-79
+    title: Keep business policy out of hard-coded logic
+    statement:
+        Treat business rules that may change as data or configuration the
+        code reads, not as fixed logic.
+    rationale:
+        Policies change more often than the underlying requirement, and data
+        is easier to change than code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def needs_approval(expense):
+            return expense.amount > 500
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def needs_approval(expense, policy):
+            return expense.amount > policy.approval_limit
+        \\\
+        ```
+    languages: [any]
+    tags: [configuration, business-rules]
+    source: https://pragprog.com/tips/

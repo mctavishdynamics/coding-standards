@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCApi07C:
+    standard: @{CertC}
+    ruleId: API07-C
+    title: Enforce type safety
+    statement:
+        Make sure every object a function returns, and every object it
+        modifies through a pointer, is a valid value of its type when the
+        function returns. For example, a function that produces a string
+        must always leave it null-terminated.
+    rationale:
+        A value that violates its type's invariants, such as an unterminated
+        string, leads later code to read past the object or process data it
+        should reject. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        void copy_label(char *dst, size_t n, const char *src) {
+            strncpy(dst, src, n);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void copy_label(char *dst, size_t n, const char *src) {
+            if (n == 0) {
+                return;
+            }
+            strncpy(dst, src, n - 1);
+            dst[n - 1] = '\0';
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, api-design, type-safety, strings]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/application-programming-interfaces-api/api07-c

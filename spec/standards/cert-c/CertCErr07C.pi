@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCErr07C:
+    standard: @{CertC}
+    ruleId: ERR07-C
+    title:
+        Prefer functions that support error checking over equivalent
+        functions that don't
+    statement:
+        When two library functions do the same job, use the one that reports
+        errors. For example, use strtol instead of atoi, strtod instead of
+        atof, and setvbuf instead of setbuf.
+    rationale:
+        Functions without error reporting cannot tell the caller about bad
+        input, and some of them have undefined behavior when the input is
+        out of range. CERT rates likelihood probable, detectable yes,
+        repairable yes, priority P12, level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int parse_count(const char *s) {
+            return atoi(s);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int parse_count(const char *s, long *out) {
+            char *end;
+            errno = 0;
+            long v = strtol(s, &end, 10);
+            if (end == s || *end != '\0' || errno == ERANGE) {
+                return -1;
+            }
+            *out = v;
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, error-handling, library-functions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/error-handling-err/err07-c

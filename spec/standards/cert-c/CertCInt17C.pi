@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt17C:
+    standard: @{CertC}
+    ruleId: INT17-C
+    title:
+        Define integer constants in an implementation-independent manner
+    statement:
+        Write mask and bit constants so they adapt to the width of their
+        type, for example using -1 or the limits macros, rather than
+        hexadecimal literals that assume a particular size.
+    rationale:
+        A literal such as 0xFFFFFFFF sets all bits only when the type is 32
+        bits wide, so the mask is wrong on platforms with wider types. CERT
+        rates likelihood probable, detectable no, repairable no, priority
+        P6, level L3.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        const unsigned long all_bits = 0xFFFFFFFF;
+        const unsigned long top_bit = 0x80000000;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <limits.h>
+
+        const unsigned long all_bits = ULONG_MAX;
+        const unsigned long top_bit = ~(ULONG_MAX >> 1);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, constants, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int17-c

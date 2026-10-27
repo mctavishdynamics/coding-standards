@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelPlaceContinuationLinesRight:
+    standard: @{LinuxKernelStyle}
+    ruleId: 2b
+    title: Indent continuation lines well to the right
+    statement:
+        When a statement or a function header with a long parameter list is
+        split, make each continuation line clearly shorter than the first
+        and place it well to the right. A common choice is to align it with
+        the opening parenthesis of the call.
+    rationale:
+        Continuation lines that sit at the same indent as the next statement
+        look like separate statements.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static int setup_channel(struct device *dev, unsigned int index,
+        unsigned long flags);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int setup_channel(struct device *dev, unsigned int index,
+                                 unsigned long flags);
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, line-length]
+    source: https://docs.kernel.org/process/coding-style.html#breaking-long-lines-and-strings

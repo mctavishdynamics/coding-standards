@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCStr10C:
+    standard: @{CertC}
+    ruleId: STR10-C
+    title: Do not concatenate different type of string literals
+    statement:
+        Do not place string literals with different encoding prefixes, such
+        as a narrow and a wide literal, next to each other for
+        concatenation.
+    rationale:
+        Older standards made mixing narrow and wide literals undefined, and
+        combining different prefixes is implementation-defined, so the
+        result is not portable. CERT rates likelihood probable, detectable
+        yes, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        const wchar_t *title = L"Report " "2024";
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        const wchar_t *title = L"Report " L"2024";
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, strings, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/characters-and-strings-str/str10-c

@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellLargeClass:
+    standard: @{RefactoringGuruSmells}
+    ruleId: large-class
+    title: Keep classes small and focused
+    statement:
+        Avoid classes that pile up many fields, methods and lines; when a
+        class takes on several jobs, move each job into a class of its own.
+        Usual fixes: Extract Class, Extract Subclass, Extract Interface,
+        Duplicate Observed Data.
+    rationale:
+        Classes start small and swell because adding to an existing class
+        feels cheaper than creating one. A swollen class is hard to
+        understand, and its parts are hard to change without disturbing each
+        other.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Employee {
+            String name;
+            String street;
+            String city;
+            String postcode;
+            BigDecimal salary;
+            BigDecimal taxCode;
+            String formatAddress() { ... }
+            BigDecimal netPay() { ... }
+            void printPayslip() { ... }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Employee {
+            String name;
+            Address address;
+            Payroll payroll;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [bloaters, classes, responsibility]
+    source: https://refactoring.guru/smells/large-class

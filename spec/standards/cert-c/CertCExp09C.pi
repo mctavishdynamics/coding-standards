@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp09C:
+    standard: @{CertC}
+    ruleId: EXP09-C
+    title: Use sizeof to determine the size of a type or variable
+    statement:
+        Compute sizes with sizeof instead of hard-coding numbers, because
+        type sizes vary between compilers, platforms and versions.
+    rationale:
+        A hard-coded size that is wrong on one platform allocates too little
+        memory or copies the wrong number of bytes. CERT rates likelihood
+        unlikely, detectable no, repairable yes, priority P6, level L2.
+    exceptions:
+        The size of char is always 1, so sizes counted in characters may be
+        used without sizeof. This does not apply to char pointers or other
+        types.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        long *table = malloc(count * 4);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        long *table = malloc(count * sizeof(*table));
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, sizeof, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp09-c

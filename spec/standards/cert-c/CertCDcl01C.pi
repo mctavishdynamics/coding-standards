@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl01C:
+    standard: @{CertC}
+    ruleId: DCL01-C
+    title: Do not reuse variable names in subscopes
+    statement:
+        Do not declare a variable with the same name as one in an enclosing
+        scope, including file-scope variables.
+    rationale:
+        Shadowing makes readers and writers unsure which variable is being
+        changed, and it often hints that the names are too generic. CERT
+        rates likelihood unlikely, detectable yes, repairable yes, priority
+        P3, level L3.
+    exceptions:
+        A parameter name in a function declaration may match an outer name
+        if the definition uses a distinct name. A temporary inside a macro's
+        own new scope may shadow an outer name, but not the macro's
+        arguments.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        static size_t count;
+
+        void tally(const int *v, size_t n) {
+            size_t count = 0;   /* hides the file-scope count */
+            for (size_t i = 0; i < n; i++) {
+                count += v[i] > 0;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static size_t total_positive;
+
+        void tally(const int *v, size_t n) {
+            size_t positive = 0;
+            for (size_t i = 0; i < n; i++) {
+                positive += v[i] > 0;
+            }
+            total_positive += positive;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, naming, scope]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl01-c

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoBracesForSingleStatement:
+    standard: @{LinuxKernelStyle}
+    ruleId: 3d
+    title: Do not use braces around a single statement
+    statement:
+        When an if, else or loop body is one simple statement, leave out the
+        braces.
+    rationale:
+        Unneeded braces add lines without adding clarity.
+    exceptions:
+        Use braces when another branch of the same conditional needs them,
+        or when a loop body is more than one simple statement.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (!buf) {
+                return -ENOMEM;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (!buf)
+                return -ENOMEM;
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, braces]
+    source: https://docs.kernel.org/process/coding-style.html#placing-braces-and-spaces

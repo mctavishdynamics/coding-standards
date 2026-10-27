@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelDescriptiveGotoLabels:
+    standard: @{LinuxKernelStyle}
+    ruleId: 7b
+    title: Name goto labels after what they do
+    statement:
+        Choose label names that say what the jump does or why it exists,
+        such as out_free_buffer. Do not number labels like err1 and err2.
+    rationale:
+        Numbered labels must be renumbered whenever exit paths change and
+        make it hard to check that the cleanup is correct.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        err2:
+                release_irq(irq);
+        err1:
+                kfree(ctx);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        out_release_irq:
+                release_irq(irq);
+        out_free_ctx:
+                kfree(ctx);
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, naming, goto]
+    source: https://docs.kernel.org/process/coding-style.html#centralized-exiting-of-functions

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum53J:
+    standard: @{CertJava}
+    ruleId: NUM53-J
+    title: Use the strictfp modifier for floating-point calculation consistency across platforms
+    statement:
+        Declare classes or methods that must produce the same floating-point
+        results on every platform as strictfp.
+    rationale:
+        Without strictfp, intermediate results may use extended precision on
+        some hardware, so the same calculation can give different results on
+        different platforms. Since Java 17 all floating-point arithmetic is
+        strict. CERT rates likelihood unlikely, detectable no, repairable
+        no, priority P1, level L3.
+    exceptions:
+        The rule applies only to calculations that need consistent results
+        on all platforms. Applications without that requirement need not
+        comply.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        class Physics {
+            static double energy(double mass, double velocity) {
+                return 0.5 * mass * velocity * velocity;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        strictfp class Physics {
+            static double energy(double mass, double velocity) {
+                return 0.5 * mass * velocity * velocity;
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, floating-point, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/numeric-types-and-operations-num/num53-j/

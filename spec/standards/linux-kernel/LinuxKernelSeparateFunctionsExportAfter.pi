@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelSeparateFunctionsExportAfter:
+    standard: @{LinuxKernelStyle}
+    ruleId: 6c
+    title: Separate functions with a blank line and export right after the body
+    statement:
+        Put one blank line between function definitions. For an exported
+        function, place the EXPORT_SYMBOL line directly after the line with
+        the closing brace.
+    rationale:
+        Keeping the export next to the function makes it obvious which
+        functions are exported.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        bool device_is_ready(void)
+        {
+                return dev_state == DEV_READY;
+        }
+
+        EXPORT_SYMBOL(device_is_ready);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        bool device_is_ready(void)
+        {
+                return dev_state == DEV_READY;
+        }
+        EXPORT_SYMBOL(device_is_ready);
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, formatting]
+    source: https://docs.kernel.org/process/coding-style.html#functions

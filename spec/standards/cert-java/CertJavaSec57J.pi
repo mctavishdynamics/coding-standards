@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec57J:
+    standard: @{CertJava}
+    ruleId: SEC57-J
+    title: Do not let untrusted code misuse privileges of callback methods
+    statement:
+        Do not run untrusted callbacks inside a privileged context. Keep the
+        doPrivileged block inside trusted callback code, or make trusted
+        callback classes final so they cannot be replaced.
+    rationale:
+        A callback invoked with elevated privileges lets untrusted code
+        perform privileged operations and possibly execute arbitrary code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void fire(Listener l) {
+            AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+                l.onEvent();
+                return null;
+            });
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void fire(Listener l) {
+            l.onEvent();
+        }
+
+        final class AuditListener implements Listener {
+            public void onEvent() {
+                AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+                    appendAuditLog();
+                    return null;
+                });
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, privileges, callbacks, untrusted-code]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/platform-security-sec/sec57-j/

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellMessageChains:
+    standard: @{RefactoringGuruSmells}
+    ruleId: message-chains
+    title: Avoid long chains of calls through linked objects
+    statement:
+        Do not make clients walk a series of objects such as
+        a.getB().getC().getD() to reach what they need. Have the first
+        object offer what the client wants. Usual fixes: Hide Delegate,
+        Extract Method, Move Method.
+    rationale:
+        A chain ties the client to the structure of every object along the
+        way, so a change to any link breaks the client.
+    exceptions:
+        Hiding delegates too eagerly creates the Middle Man smell and makes
+        it hard to see where work is done; balance the two.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String city = order.getCustomer().getProfile().getAddress().getCity();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String city = order.deliveryCity();
+        \\\
+        ```
+    languages: [any]
+    tags: [couplers, coupling, law-of-demeter]
+    source: https://refactoring.guru/smells/message-chains

@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio05C:
+    standard: @{CertC}
+    ruleId: FIO05-C
+    title: Identify files using multiple file attributes
+    statement:
+        When a program must reopen a file it worked with earlier, record
+        attributes such as the device and inode numbers, the owner or the
+        creation time, and compare them after reopening. Better still, keep
+        the file open and avoid the second open altogether.
+    rationale:
+        A file name alone does not prove that the file reopened is the one
+        created earlier. Comparing several attributes makes it far more
+        likely that a substituted file is detected. CERT rates likelihood
+        probable, detectable no, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int reopen_log(const char *path) {
+            int fd = open(path, O_RDONLY);
+            if (fd == -1) {
+                return -1;
+            }
+            return fd;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int reopen_log(const char *path, dev_t dev, ino_t ino) {
+            struct stat st;
+            int fd = open(path, O_RDONLY);
+            if (fd == -1) {
+                return -1;
+            }
+            if (fstat(fd, &st) == -1 || st.st_dev != dev || st.st_ino != ino) {
+                close(fd);
+                return -1;
+            }
+            return fd;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, files, race-conditions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio05-c

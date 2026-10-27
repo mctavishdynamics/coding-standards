@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdRedFlagCommentRepeatsCode:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: red-flag-comment-repeats-code
+    title: Avoid comments that restate the code
+    statement:
+        Avoid comments whose information is already obvious from the code
+        next to them. Replace them with comments that add something the code
+        does not say.
+    rationale:
+        A comment that echoes the code costs reading time and gives no new
+        information.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # increment retries by one
+        retries += 1
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        # Counts only network failures; validation errors are not retried.
+        retries += 1
+        \\\
+        ```
+    languages: [any]
+    tags: [red-flag, comments]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

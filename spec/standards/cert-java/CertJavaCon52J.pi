@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaCon52J:
+    standard: @{CertJava}
+    ruleId: CON52-J
+    title: Document thread-safety and use annotations where applicable
+    statement:
+        Document each class's thread-safety and locking policy, and use
+        annotations such as ThreadSafe, NotThreadSafe and GuardedBy where
+        they are available.
+    rationale:
+        Annotations record design intent for maintainers and let tools
+        detect race conditions and data races.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Inventory {
+            private final Object lock = new Object();
+            private int stock;
+
+            void add(int n) {
+                synchronized (lock) { stock += n; }
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @ThreadSafe
+        class Inventory {
+            private final Object lock = new Object();
+            @GuardedBy("lock")
+            private int stock;
+
+            void add(int n) {
+                synchronized (lock) { stock += n; }
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, concurrency, documentation, annotations]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/concurrency-con/con52-j/

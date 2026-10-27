@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio02C:
+    standard: @{CertC}
+    ruleId: FIO02-C
+    title: Canonicalize path names originating from tainted sources
+    statement:
+        Before validating a path that comes from an untrusted source,
+        convert it to canonical form with an operating system facility such
+        as realpath on POSIX or GetFullPathName on Windows. Then check the
+        canonical result, for example that it lies inside the permitted
+        directory.
+    rationale:
+        Paths can contain dot segments, repeated separators and symbolic
+        links, so a string check on the raw name is easy to bypass and the
+        program may open a file outside the intended directory. CERT rates
+        likelihood probable, detectable no, repairable no, priority P4,
+        level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        FILE *open_report(const char *name) {
+            char path[PATH_MAX];
+            snprintf(path, sizeof path, "/srv/reports/%s", name);
+            if (strncmp(path, "/srv/reports/", 13) != 0) {
+                return NULL;
+            }
+            return fopen(path, "r");
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        FILE *open_report(const char *name) {
+            char path[PATH_MAX];
+            char real[PATH_MAX];
+            snprintf(path, sizeof path, "/srv/reports/%s", name);
+            if (realpath(path, real) == NULL ||
+                strncmp(real, "/srv/reports/", 13) != 0) {
+                return NULL;
+            }
+            return fopen(real, "r");
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, input-validation, files, paths]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio02-c

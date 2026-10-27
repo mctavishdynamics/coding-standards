@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj58J:
+    standard: @{CertJava}
+    ruleId: OBJ58-J
+    title: Limit the extensibility of classes and methods with invariants
+    statement:
+        Declare classes and methods final when they have invariants that
+        subclasses could break, or give them private constructors and static
+        factory methods.
+    rationale:
+        A malicious subclass can override methods to violate the invariants
+        that security or correctness depend on, as happened with mutable
+        subclasses of BigInteger.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class Money {
+            private final long cents;
+
+            public Money(long cents) {
+                this.cents = cents;
+            }
+
+            public long getCents() {
+                return cents;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public final class Money {
+            private final long cents;
+
+            public Money(long cents) {
+                this.cents = cents;
+            }
+
+            public long getCents() {
+                return cents;
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, inheritance, invariants, untrusted-code]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/object-orientation-obj/obj58-j/

@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio01C:
+    standard: @{CertC}
+    ruleId: FIO01-C
+    title:
+        Be careful using functions that use file names for identification
+    statement:
+        Prefer operating on an open FILE pointer or file descriptor over
+        repeating a file name. Functions such as remove, rename, fopen,
+        freopen and POSIX chmod or chown look the name up again on every
+        call, so use fchmod, fchown and similar descriptor-based calls where
+        they exist.
+    rationale:
+        A name is bound to a file object anew on each use, so between two
+        calls an attacker can swap the file for a link or a different file.
+        A descriptor stays bound to the object that was opened. CERT rates
+        likelihood likely, detectable yes, repairable no, priority P12,
+        level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int make_private(const char *path) {
+            FILE *f = fopen(path, "w");
+            if (f == NULL) {
+                return -1;
+            }
+            fclose(f);
+            return chmod(path, S_IRUSR | S_IWUSR);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int make_private(const char *path) {
+            int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+            if (fd == -1) {
+                return -1;
+            }
+            int rc = fchmod(fd, S_IRUSR | S_IWUSR);
+            close(fd);
+            return rc;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, files, race-conditions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio01-c

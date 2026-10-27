@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCEnv03C:
+    standard: @{CertC}
+    ruleId: ENV03-C
+    title: Sanitize the environment when invoking external programs
+    statement:
+        Before running another program, especially from a privileged
+        process, give it a clean environment containing only the variables
+        it needs with known-safe values, such as a trusted PATH. Prefer exec
+        functions that take an explicit environment.
+    rationale:
+        Variables such as PATH, IFS and LD_PRELOAD change how commands and
+        libraries are located, so an inherited environment lets the caller
+        hijack the child process. CERT rates likelihood likely, detectable
+        no, repairable no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        if (system("lpr report.txt") == -1) {
+            /* handle error */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *const env[] = { "PATH=/usr/bin:/bin", "LANG=C", NULL };
+        char *const argv[] = { "lpr", "report.txt", NULL };
+        pid_t pid = fork();
+        if (pid == 0) {
+            execve("/usr/bin/lpr", argv, env);
+            _exit(127);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, environment, processes, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/environment-env/env03-c

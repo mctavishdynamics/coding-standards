@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG26:
+    standard: @{CleanCode}
+    ruleId: G26
+    title: Be precise
+    statement:
+        Make deliberate decisions instead of vague guesses. Handle the
+        possibility of no result or many results, use exact types for money,
+        deal with concurrent updates when they can happen and check for
+        missing values.
+    rationale:
+        Ambiguity and imprecision in code are a sign of laziness or
+        disagreement and they cause defects.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        double balance = 0.1 + 0.2;
+        Customer c = repo.findByName(name).get(0);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        BigDecimal balance = new BigDecimal("0.1").add(new BigDecimal("0.2"));
+        Customer c = repo.findUniqueByName(name)
+            .orElseThrow(() -> new NoSuchCustomerException(name));
+        \\\
+        ```
+    languages: [any]
+    tags: [correctness, precision]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

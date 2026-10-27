@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCApi01C:
+    standard: @{CertC}
+    ruleId: API01-C
+    title:
+        Avoid laying out strings in memory directly before sensitive data
+    statement:
+        In structures and other memory layouts, do not place a character
+        array immediately before data such as pointers, lengths or flags
+        whose corruption would be dangerous. Put the sensitive members
+        first.
+    rationale:
+        A string overflow writes into whatever comes right after the string,
+        so arranging memory this way limits the damage an overflow can do.
+        CERT rates likelihood likely, detectable yes, repairable no,
+        priority P18, level L1.
+    exceptions:
+        A string may precede sensitive data when separating the two is not
+        practical, for example in an array of nodes where every string is
+        followed by the next node's pointer.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        struct session {
+            char user[32];
+            int (*on_close)(struct session *);
+            int is_admin;
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct session {
+            int (*on_close)(struct session *);
+            int is_admin;
+            char user[32];
+        };
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, api-design, buffer-overflow, memory]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/application-programming-interfaces-api/api01-c

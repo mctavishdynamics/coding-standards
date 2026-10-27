@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre11C:
+    standard: @{CertC}
+    ruleId: PRE11-C
+    title: Do not conclude macro definitions with a semicolon
+    statement:
+        End a macro definition without a semicolon and let the caller supply
+        it after the macro use.
+    rationale:
+        A trailing semicolon in the definition adds an empty statement at
+        each use, which can detach an else or end a loop body early and
+        change control flow. CERT rates likelihood probable, detectable yes,
+        repairable no, priority P8, level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        #define RESET(p) ((p)->count = 0);
+
+        if (ready)
+            RESET(stats);
+        else            /* error: else without if */
+            log_skip();
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define RESET(p) ((p)->count = 0)
+
+        if (ready)
+            RESET(stats);
+        else
+            log_skip();
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, macros]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre11-c

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl50J:
+    standard: @{CertJava}
+    ruleId: DCL50-J
+    title: Use visually distinct identifiers
+    statement:
+        Choose identifiers that cannot be confused with each other when
+        read. Avoid names that differ only by look-alike characters such as
+        l and 1 or O and 0, and use an uppercase L for long literals.
+    rationale:
+        Visually similar names are easily misread during development and
+        review, which can lead to the wrong variable being used or to a
+        wrong value such as 1111l being read as 11111.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        int total = 0;
+        int tota1 = 0;
+        long limit = 1000l;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int total = 0;
+        int pendingTotal = 0;
+        long limit = 1000L;
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, naming, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/declarations-and-initialization-dcl/dcl50-j/

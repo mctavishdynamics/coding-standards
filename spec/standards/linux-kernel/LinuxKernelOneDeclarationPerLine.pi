@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelOneDeclarationPerLine:
+    standard: @{LinuxKernelStyle}
+    ruleId: 8d
+    title: Declare one variable per line so each can be commented
+    statement:
+        Comment data as well as code, and declare only one item per line
+        rather than listing several with commas.
+    rationale:
+        One declaration per line leaves room for a short comment on what
+        each item is for.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        unsigned int head, tail, size;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        unsigned int head;      /* next slot to write */
+        unsigned int tail;      /* next slot to read */
+        unsigned int size;      /* number of slots, a power of two */
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, declarations]
+    source: https://docs.kernel.org/process/coding-style.html#commenting

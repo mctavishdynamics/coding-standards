@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellSwitchStatements:
+    standard: @{RefactoringGuruSmells}
+    ruleId: switch-statements
+    title: Avoid complex switch statements and long if chains on type
+    statement:
+        Do not branch on a type code with a large switch or a long chain of
+        if checks, especially when the same branching appears in several
+        places; consider polymorphism instead. Usual fixes: Extract Method,
+        Move Method, Replace Type Code with Subclasses, Replace Type Code
+        with State/Strategy, Replace Conditional with Polymorphism, Replace
+        Parameter with Explicit Methods, Introduce Null Object.
+    rationale:
+        The same switch tends to be copied across the program, so adding a
+        new case means hunting down and editing every copy. Polymorphism
+        keeps the variation in one place per type.
+    exceptions:
+        A switch that performs simple actions may not be worth replacing,
+        and a switch that picks which class to create in a factory is an
+        accepted use.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        double area(Shape s) {
+            switch (s.kind()) {
+                case CIRCLE: return Math.PI * s.radius() * s.radius();
+                case SQUARE: return s.side() * s.side();
+                default: throw new IllegalArgumentException();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        interface Shape { double area(); }
+
+        record Circle(double radius) implements Shape {
+            public double area() { return Math.PI * radius * radius; }
+        }
+
+        record Square(double side) implements Shape {
+            public double area() { return side * side; }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [oo-abusers, conditionals, polymorphism]
+    source: https://refactoring.guru/smells/switch-statements

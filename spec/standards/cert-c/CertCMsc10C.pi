@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc10C:
+    standard: @{CertC}
+    ruleId: MSC10-C
+    title: Handle UTF-8 related issues in character encoding
+    statement:
+        When handling UTF-8, validate input and reject malformed sequences,
+        including overlong forms and invalid code points, before any other
+        check. Do not assume one byte per character when measuring or
+        truncating text.
+    rationale:
+        Invalid or overlong sequences can smuggle characters such as a slash
+        past filters, and careless truncation splits characters, causing
+        data corruption or denial of service. CERT rates likelihood
+        unlikely, detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int is_safe_name(const char *s) {
+            return strchr(s, '/') == NULL;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int is_safe_name(const char *s) {
+            if (!utf8_is_valid_shortest_form(s)) {
+                return 0;
+            }
+            return strchr(s, '/') == NULL;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, character-encoding, unicode, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc10-c

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl12C:
+    standard: @{CertC}
+    ruleId: DCL12-C
+    title: Implement abstract data types using opaque types
+    statement:
+        Expose an abstract data type to callers only as an incomplete struct
+        type and a set of functions, keeping the structure definition in the
+        implementation file.
+    rationale:
+        Information hiding stops callers from depending on or corrupting the
+        internal layout, so the implementation can change without breaking
+        them. CERT rates likelihood unlikely, detectable no, repairable no,
+        priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        /* stack.h */
+        struct stack {
+            int *items;
+            size_t top;
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* stack.h */
+        typedef struct stack stack;
+
+        stack *stack_create(size_t capacity);
+        int stack_push(stack *s, int value);
+        void stack_destroy(stack *s);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, encapsulation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl12-c

@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc18C:
+    standard: @{CertC}
+    ruleId: MSC18-C
+    title:
+        Be careful while handling sensitive data, such as passwords, in
+        program code
+    statement:
+        Keep sensitive data such as passwords and keys out of source code,
+        logs and swap. Hold it in memory only as long as needed, keep it
+        from being paged out where possible, and clear it securely when
+        done.
+    rationale:
+        Sensitive data that lingers in memory, files or binaries can be
+        recovered by an attacker, and users reuse passwords across systems.
+        CERT rates likelihood probable, detectable no, repairable no,
+        priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        static const char db_password[] = "hunter2";
+
+        int connect_db(void) {
+            return db_connect("prod", "admin", db_password);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int connect_db(void) {
+            char pw[128];
+            if (read_secret("/run/secrets/db", pw, sizeof pw) != 0) {
+                return -1;
+            }
+            int rc = db_connect("prod", "admin", pw);
+            memset_s(pw, sizeof pw, 0, sizeof pw);
+            return rc;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, sensitive-data, secrets]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc18-c

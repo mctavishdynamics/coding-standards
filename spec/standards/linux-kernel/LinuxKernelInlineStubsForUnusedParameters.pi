@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelInlineStubsForUnusedParameters:
+    standard: @{LinuxKernelStyle}
+    ruleId: 12e
+    title: Use empty static inline stubs instead of macros with unused parameters
+    statement:
+        Replace a function-like macro whose parameters go unused, such as a
+        disabled stub, with an empty static inline function. Do not use the
+        cast-to-void idiom to evaluate parameters.
+    rationale:
+        Inline stubs avoid unused-variable warnings, evaluate arguments once
+        and still type-check the callers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define trace_rx(pkt) do { (void)(pkt); } while (0)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static inline void trace_rx(struct sk_buff *pkt)
+        {
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [macros, inline, stubs]
+    source: https://docs.kernel.org/process/coding-style.html#macros-enums-and-rtl

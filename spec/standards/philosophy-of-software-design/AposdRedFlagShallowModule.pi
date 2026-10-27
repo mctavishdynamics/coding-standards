@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdRedFlagShallowModule:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: red-flag-shallow-module
+    title: Avoid shallow modules
+    statement:
+        Avoid a class or method whose interface is nearly as complicated as
+        what it does. Merge it into a larger unit or give it more work to
+        hide.
+    rationale:
+        A shallow module makes callers learn an interface without hiding
+        much complexity in return.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Counter {
+            private int value;
+            int getValue() { return value; }
+            void setValue(int v) { value = v; }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class RateLimiter {
+            // Hides the window, clock and bookkeeping.
+            boolean tryAcquire() { ... }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [red-flag, modularity, abstraction]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

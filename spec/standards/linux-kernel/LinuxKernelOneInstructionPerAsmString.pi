@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelOneInstructionPerAsmString:
+    standard: @{LinuxKernelStyle}
+    ruleId: 20d
+    title: Put each instruction of an asm statement in its own string
+    statement:
+        In an asm statement with several instructions, put each instruction
+        in a separate quoted string on its own line, and end every string
+        but the last with a newline and tab escape.
+    rationale:
+        This keeps the source readable and the generated assembly output
+        properly indented.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        asm("mov %1, %0; add $1, %0" : "=r"(out) : "r"(in));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        asm("mov %1, %0\n\t"
+            "add $1, %0"
+            : "=r"(out) : "r"(in));
+        \\\
+        ```
+    languages: [c]
+    tags: [assembly, formatting]
+    source: https://docs.kernel.org/process/coding-style.html#inline-assembly

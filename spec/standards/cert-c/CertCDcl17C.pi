@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl17C:
+    standard: @{CertC}
+    ruleId: DCL17-C
+    title: Beware of miscompiled volatile-qualified variables
+    statement:
+        Know how your compiler treats volatile accesses. Where it is known
+        to miscompile them, route each volatile read and write through a
+        small non-inlined function.
+    rationale:
+        Studies found that tested compilers sometimes produced wrong code
+        for volatile accesses, so code relying on strict volatile semantics
+        may not get them. CERT rates likelihood probable, detectable no,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        volatile int ready;
+
+        void wait_ready(void) {
+            while (ready == 0) {
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        volatile int ready;
+
+        int read_volatile_int(volatile int *p);   /* defined elsewhere, not inlined */
+
+        void wait_ready(void) {
+            while (read_volatile_int(&ready) == 0) {
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, volatile, compilers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl17-c

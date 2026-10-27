@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl07C:
+    standard: @{CertC}
+    ruleId: DCL07-C
+    title:
+        Include the appropriate type information in function declarators
+    statement:
+        Declare every function with its return type and a full prototype of
+        its parameter types, and include the standard headers for library
+        functions instead of declaring them yourself.
+    rationale:
+        Without type information the compiler cannot check calls, so wrong
+        argument types or counts pass silently and cause undefined behavior.
+        CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int scale();               /* no parameter types */
+
+        int result = scale(2.5);   /* not checked */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int scale(int factor);
+
+        int result = scale(2);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, functions, types]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl07-c

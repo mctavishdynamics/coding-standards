@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl11C:
+    standard: @{CertC}
+    ruleId: DCL11-C
+    title:
+        Understand the type issues associated with variadic functions
+    statement:
+        Make each argument to a variadic function match the type the
+        function will read with va_arg, after default argument promotions.
+        Cast arguments where needed, for example when passing a null pointer
+        or a size_t to a format.
+    rationale:
+        Variadic arguments are not type checked, so a mismatch makes the
+        callee read the wrong number of bytes or the wrong representation,
+        which is undefined behavior. CERT rates likelihood probable,
+        detectable yes, repairable no, priority P12, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        #include <stdio.h>
+
+        size_t len = strlen(name);
+        printf("%d\n", len);   /* size_t passed for int */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdio.h>
+
+        size_t len = strlen(name);
+        printf("%zu\n", len);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, variadic-functions, types]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl11-c

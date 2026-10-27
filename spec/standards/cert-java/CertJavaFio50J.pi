@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio50J:
+    standard: @{CertJava}
+    ruleId: FIO50-J
+    title: Do not make assumptions about file creation
+    statement:
+        When creating a file, use an API that reports whether a new file was
+        created or an existing one was opened, such as Files.newOutputStream
+        with CREATE_NEW, and handle each outcome.
+    rationale:
+        Checking for existence and then creating the file is a race, and
+        older APIs silently open or overwrite an existing file, which may
+        not be the intended one.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        File f = new File(path);
+        if (!f.exists()) {
+            try (OutputStream out = new FileOutputStream(f)) {
+                out.write(data);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        try (OutputStream out = Files.newOutputStream(Paths.get(path),
+                StandardOpenOption.CREATE_NEW)) {
+            out.write(data);
+        } catch (FileAlreadyExistsException e) {
+            log.warn("File already exists");
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, files, race-conditions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/input-output-fio/fio50-j/

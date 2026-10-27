@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG10:
+    standard: @{CleanCode}
+    ruleId: G10
+    title: Keep definitions close to where they are used
+    statement:
+        Declare local variables just above their first use and place private
+        helper functions just below the function that first calls them.
+    rationale:
+        Vertical closeness lets the reader understand a piece of code
+        without scrolling through unrelated lines to find its parts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void printInvoice(Invoice inv) {
+            String footer = legal.footerText();
+            printHeader(inv);
+            for (Line line : inv.lines()) printLine(line);
+            // ... 30 more lines ...
+            print(footer);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void printInvoice(Invoice inv) {
+            printHeader(inv);
+            for (Line line : inv.lines()) printLine(line);
+            // ... 30 more lines ...
+            String footer = legal.footerText();
+            print(footer);
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [formatting, readability, structure]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

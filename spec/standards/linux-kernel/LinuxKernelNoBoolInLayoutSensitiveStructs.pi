@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoBoolInLayoutSensitiveStructs:
+    standard: @{LinuxKernelStyle}
+    ruleId: 17b
+    title: Avoid bool members where structure size or layout matters
+    statement:
+        Do not use bool in structures whose cache line layout or size is
+        important. When a structure has many true or false fields, combine
+        them into one-bit bitfields or a fixed-width type such as u8.
+    rationale:
+        The size and alignment of bool vary between architectures, which
+        defeats careful packing.
+    exceptions:
+        A few bool members in ordinary structures are fine and can help
+        readability.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct pkt_desc {
+                bool has_csum;
+                bool is_frag;
+                bool is_last;
+                bool needs_ts;
+                u16 len;
+        } ____cacheline_aligned;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct pkt_desc {
+                u8 has_csum:1;
+                u8 is_frag:1;
+                u8 is_last:1;
+                u8 needs_ts:1;
+                u16 len;
+        } ____cacheline_aligned;
+        \\\
+        ```
+    languages: [c]
+    tags: [types, bool, data-layout]
+    source: https://docs.kernel.org/process/coding-style.html#using-bool

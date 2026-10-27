@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl59J:
+    standard: @{CertJava}
+    ruleId: DCL59-J
+    title: Do not apply public final to constants whose value might change in later releases
+    statement:
+        Declare a value public static final only if it is truly constant
+        forever. For a value that may change between releases, expose it
+        through a method or a non-constant field instead.
+    rationale:
+        The compiler may copy a public final constant into every class that
+        reads it. After the defining class changes, those classes keep the
+        old value until they are recompiled.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class Library {
+            public static final String VERSION = "2.3";
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class Library {
+            private static final String VERSION = "2.3";
+
+            public static String getVersion() {
+                return VERSION;
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, constants, api-design, versioning]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/declarations-and-initialization-dcl/dcl59-j/

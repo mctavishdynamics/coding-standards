@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip50:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-50
+    title: Pass state along instead of holding onto it
+    statement:
+        Rather than keeping data inside objects and mutating it, pass values
+        from one function to the next.
+    rationale:
+        Passing state explicitly reduces hidden dependencies and makes data
+        flow visible.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Pipeline:
+            def run(self):
+                self.load(); self.clean(); self.save()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def run(path):
+            save(clean(load(path)))
+        \\\
+        ```
+    languages: [any]
+    tags: [data-flow, state]
+    source: https://pragprog.com/tips/

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelDescriptiveGlobalNames:
+    standard: @{LinuxKernelStyle}
+    ruleId: 4a
+    title: Give global variables and functions descriptive names
+    statement:
+        Name global functions and variables so their purpose is clear, for
+        example count_active_users rather than cntusr. Use globals only when
+        you really need them, and avoid mixed-case names.
+    rationale:
+        A global name is seen far from its definition, so it must explain
+        itself.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int cntusr(void);
+        extern int gNumDevs;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int count_active_users(void);
+        extern int registered_device_count;
+        \\\
+        ```
+    languages: [c]
+    tags: [naming]
+    source: https://docs.kernel.org/process/coding-style.html#naming

@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCErr05C:
+    standard: @{CertC}
+    ruleId: ERR05-C
+    title:
+        Application-independent code should provide error detection without
+        dictating error handling
+    statement:
+        Library code that does not know its caller should detect errors and
+        report them, for example with a return code, and leave the decision
+        of how to respond to the application. It should not print messages,
+        exit or abort on the caller's behalf.
+    rationale:
+        Only the application knows whether an error should be retried,
+        logged or fatal. A library that decides for it cannot be reused
+        safely. CERT rates likelihood probable, detectable yes, repairable
+        no, priority P8, level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        void *buf_grow(struct buf *b, size_t n) {
+            void *p = realloc(b->data, n);
+            if (p == NULL) {
+                fputs("out of memory\n", stderr);
+                exit(1);
+            }
+            b->data = p;
+            return p;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int buf_grow(struct buf *b, size_t n) {
+            void *p = realloc(b->data, n);
+            if (p == NULL) {
+                return ENOMEM;
+            }
+            b->data = p;
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, error-handling, api-design]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/error-handling-err/err05-c

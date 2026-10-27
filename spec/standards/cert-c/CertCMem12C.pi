@@ -1,0 +1,63 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem12C:
+    standard: @{CertC}
+    ruleId: MEM12-C
+    title:
+        Consider using a goto chain when leaving a function on error when
+        using and releasing resources
+    statement:
+        When a function acquires several resources, consider handling errors
+        with a chain of goto labels at the end that release the resources in
+        reverse order.
+    rationale:
+        Early returns in the middle of such a function easily forget to free
+        something, while one exit chain keeps cleanup complete and in the
+        right order. CERT rates likelihood probable, detectable no,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int load(const char *path) {
+            FILE *f = fopen(path, "r");
+            char *buf = malloc(4096);
+            if (f == NULL || buf == NULL) {
+                return -1;   /* leaks whichever succeeded */
+            }
+            parse(f, buf);
+            free(buf);
+            fclose(f);
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int load(const char *path) {
+            int rc = -1;
+            char *buf = NULL;
+            FILE *f = fopen(path, "r");
+            if (f == NULL) {
+                goto done;
+            }
+            buf = malloc(4096);
+            if (buf == NULL) {
+                goto close_file;
+            }
+            rc = parse(f, buf);
+            free(buf);
+        close_file:
+            fclose(f);
+        done:
+            return rc;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, memory, error-handling, resources]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/memory-management-mem/mem12-c

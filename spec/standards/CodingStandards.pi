@@ -9,9 +9,12 @@ export anchor CodingStandards:
         - Language style guides, such as PEP 8, the Google style guides, the Airbnb JavaScript guide, Effective Go and the Rust API Guidelines
         - Safety and security standards, such as SEI CERT C, C++ and Java, and the OWASP Secure Coding Practices
         - Language-neutral principles, such as SOLID, the Twelve-Factor App and the Clean Code heuristics, and the C++ Core Guidelines
+        - Design and review guidance, such as A Philosophy of Software Design, The Pragmatic Programmer, the code smells of Refactoring.Guru and Martin Fowler, and Google's code review practices
+        - The Linux kernel coding style
     nonGoals:
         - Linter rule sets, such as ESLint, Ruff, Pylint or Clippy
         - Paid standards, such as MISRA
+        - Code Complete's chapter checklists, which are large, dated and no longer published
         - Merging rules that several standards share into one rule
         - Links between matching rules in different standards
     decisions:
@@ -20,15 +23,16 @@ export anchor CodingStandards:
         - Rules from different standards stay separate, even when they say the same thing.
         - Rules are written in our own words, and code examples are written fresh. Each rule links to its source, so the original wording is one click away.
         - Severity is filled only when the source gives one. The CERT standards give one; most style guides do not.
-        - For the CERT standards, only the rules are extracted, not the recommendations. They come from the SEI site at cmu-sei.github.io, which replaced the old wiki. Deprecated rules are left out.
+        - For the CERT standards, both the rules and the recommendations are extracted. A recommendation is a coding-rule whose first tag is recommendation. They come from the SEI site at cmu-sei.github.io, which replaced the old wiki. Deprecated rules are left out.
         - Where a source has no rule ids, the id is the section number, the section's HTML id or a slug of its heading. OWASP items are numbered from 1 within each section.
         - Sections that only introduce, describe or link elsewhere are not rules. Placeholder rules whose body is only "???" are left out.
         - Each standard lists its rules in source order in its own rules property.
+        - Rules from books, such as Clean Code, A Philosophy of Software Design, The Pragmatic Programmer and Fowler's Refactoring, come from each book's own numbered list. Their item lists were checked against public summaries, not the books. Each rule links to the book's page.
+        - Advice in a book that is about career, teams or process rather than code has practice as its first tag.
         - Clean Code is taken from the numbered heuristics in chapter 17 of the 1st edition, the book's own rule list. The book is not public, so every rule links to that chapter on O'Reilly.
         - The package ships the coding-standards-audit skill, which checks code against chosen standards and reports each violation with its rule.
         - Anchor names start with the standard's prefix, such as CertC or Pep8, so names never collide across standards.
     openQuestions:
-        - Whether the CERT recommendations should be added after the rules.
         - Whether consumers want a shared tag vocabulary across standards. Tags are free-form, lowercase and kebab-case today.
         - Whether the OWASP rules should move to the OWASP Developer Guide, which replaced the archived Secure Coding Practices project.
         - How code examples should show a literal tab. piton format turned leading tabs in escape blocks into spaces, so tab-indentation examples use spaces or are null.

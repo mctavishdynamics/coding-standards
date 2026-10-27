@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip47:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-47
+    title: Avoid global data
+    statement:
+        Do not use global variables or similar shared mutable state; pass
+        what a routine needs explicitly.
+    rationale:
+        Global data couples every piece of code that touches it and makes
+        behaviour hard to reason about and test.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        current_user = None
+
+        def audit(action):
+            log.write(f"{current_user.id} {action}")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def audit(user, action):
+            log.write(f"{user.id} {action}")
+        \\\
+        ```
+    languages: [any]
+    tags: [global-state, coupling]
+    source: https://pragprog.com/tips/

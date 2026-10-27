@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem11C:
+    standard: @{CertC}
+    ruleId: MEM11-C
+    title: Do not assume infinite heap space
+    statement:
+        Plan for allocations to fail. Bound how much memory the program
+        requests and check the result of every allocation.
+    rationale:
+        Memory is finite and shared with other processes, so unchecked or
+        unbounded allocation leads to crashes or denial of service. CERT
+        rates likelihood probable, detectable no, repairable no, priority
+        P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        for (;;) {
+            struct msg *m = malloc(sizeof(*m));
+            m->next = queue;   /* no check, no bound */
+            queue = m;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum { MAX_QUEUE = 1000 };
+
+        while (queued < MAX_QUEUE) {
+            struct msg *m = malloc(sizeof(*m));
+            if (m == NULL) {
+                break;
+            }
+            m->next = queue;
+            queue = m;
+            queued++;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, memory, allocation, denial-of-service]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/memory-management-mem/mem11-c

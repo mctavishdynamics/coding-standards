@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG12:
+    standard: @{CleanCode}
+    ruleId: G12
+    title: Remove clutter
+    statement:
+        Delete anything that adds no value, such as empty default
+        constructors, unused variables and functions, and comments that
+        carry no information.
+    rationale:
+        Clutter hides the code that matters and makes every file longer to
+        read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Parser {
+            private int unusedCounter;
+
+            public Parser() {
+            }
+
+            /** Default constructor. */
+            // TODO nothing
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Parser {
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [clutter, dead-code, readability]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

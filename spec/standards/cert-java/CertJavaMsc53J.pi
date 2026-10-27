@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc53J:
+    standard: @{CertJava}
+    ruleId: MSC53-J
+    title: Carefully design interfaces before releasing them
+    statement:
+        Design public interfaces carefully before release, because adding or
+        changing methods later breaks implementers. Keep interfaces small
+        and modular, and use default methods or separate interfaces to
+        evolve them.
+    rationale:
+        A flawed released interface is hard to fix; changes, including
+        security fixes, break implementing classes or pollute the API and
+        can introduce weaknesses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public interface User {
+            void authenticate();
+            void subscribe();
+            void freeService();  // added later, every implementer must change
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public interface User {
+            void authenticate();
+            void subscribe();
+
+            default void freeService() {
+                throw new UnsupportedOperationException();
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, api-design, interfaces]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/miscellaneous-msc/msc53-j/

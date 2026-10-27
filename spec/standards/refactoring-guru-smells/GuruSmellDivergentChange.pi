@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellDivergentChange:
+    standard: @{RefactoringGuruSmells}
+    ruleId: divergent-change
+    title: Avoid classes that must be edited for many unrelated reasons
+    statement:
+        When one class has to change in many unrelated methods every time a
+        different kind of requirement changes, split it so each kind of
+        change lands in one place. Usual fixes: Extract Class, Extract
+        Superclass, Extract Subclass.
+    rationale:
+        A class that mixes several concerns forces every change to wade
+        through code it has nothing to do with, which slows work and invites
+        accidental breakage.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class ProductService {
+            Product find(String sku) { ... }      // touched for each new product type
+            String renderHtml(Product p) { ... }  // touched for each new product type
+            void placeOrder(Product p) { ... }    // touched for each new product type
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class ProductRepository { Product find(String sku) { ... } }
+        class ProductView       { String renderHtml(Product p) { ... } }
+        class OrderDesk         { void placeOrder(Product p) { ... } }
+        \\\
+        ```
+    languages: [any]
+    tags: [change-preventers, responsibility, cohesion]
+    source: https://refactoring.guru/smells/divergent-change

@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG7:
+    standard: @{CleanCode}
+    ruleId: G7
+    title: Keep base classes independent of their subclasses
+    statement:
+        A base class should know nothing about the classes derived from it.
+        Do not mention subclass names or switch on their types in the base
+        class.
+    rationale:
+        When a base class depends on its derivatives, they can no longer be
+        built and deployed separately and adding a subclass means editing
+        the base.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        abstract class Shape {
+            double area() {
+                if (this instanceof Circle c) return Math.PI * c.r * c.r;
+                if (this instanceof Square s) return s.side * s.side;
+                throw new IllegalStateException();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        abstract class Shape {
+            abstract double area();
+        }
+
+        class Square extends Shape {
+            double side;
+            double area() { return side * side; }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [inheritance, dependencies, design]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

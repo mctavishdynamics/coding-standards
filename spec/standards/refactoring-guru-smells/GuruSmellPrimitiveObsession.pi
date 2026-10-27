@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellPrimitiveObsession:
+    standard: @{RefactoringGuruSmells}
+    ruleId: primitive-obsession
+    title: Model small domain concepts as objects rather than primitives
+    statement:
+        Do not use bare numbers and strings for concepts such as money,
+        ranges, phone numbers or roles, and do not use constants or string
+        keys to fake types and fields. Give each concept a small class.
+        Usual fixes: Replace Data Value with Object, Introduce Parameter
+        Object, Preserve Whole Object, Replace Type Code with Class, Replace
+        Type Code with Subclasses, Replace Type Code with State/Strategy,
+        Replace Array with Object.
+    rationale:
+        A primitive field is quicker to add than a class, so they multiply.
+        The rules that belong to the concept, such as validation or
+        formatting, end up scattered and copied wherever the primitive is
+        used.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Order {
+            long priceInCents;
+            String currency;
+            int status; // 0 = new, 1 = paid, 2 = shipped
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Order {
+            Money price;
+            OrderStatus status;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [bloaters, types, domain-modeling]
+    source: https://refactoring.guru/smells/primitive-obsession

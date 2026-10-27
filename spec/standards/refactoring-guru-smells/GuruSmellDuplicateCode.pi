@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellDuplicateCode:
+    standard: @{RefactoringGuruSmells}
+    ruleId: duplicate-code
+    title: Do not keep two copies of the same logic
+    statement:
+        Avoid fragments that look nearly the same, or that look
+        different but do the same job; move the shared logic into one
+        place. Usual fixes: Extract Method, Pull Up Field, Pull Up
+        Constructor Body, Form Template Method, Substitute Algorithm,
+        Extract Superclass, Extract Class, Consolidate Conditional
+        Expression, Consolidate Duplicate Conditional Fragments.
+    rationale:
+        Duplication arises from parallel work, deadlines and copying code
+        that is almost right. Every copy must be found and fixed when the
+        logic changes, and copies quietly diverge.
+    exceptions:
+        Very rarely, merging two identical fragments makes the code less
+        obvious; then leaving them apart is acceptable.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        double cartTotal(List<Item> items) {
+            double sum = 0;
+            for (Item i : items) sum += i.price() * i.qty();
+            return sum;
+        }
+        double wishlistTotal(List<Item> items) {
+            double sum = 0;
+            for (Item i : items) sum += i.price() * i.qty();
+            return sum;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        double total(List<Item> items) {
+            return items.stream().mapToDouble(i -> i.price() * i.qty()).sum();
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [dispensables, duplication]
+    source: https://refactoring.guru/smells/duplicate-code

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellLoops:
+    standard: @{FowlerRefactoring}
+    ruleId: loops
+    title: Prefer collection pipelines to loops
+    statement:
+        Avoid hand-written loops for filtering, mapping and summarising
+        collections when a pipeline of operations such as filter and map
+        says the same thing more directly. Usual fixes: Replace Loop with
+        Pipeline.
+    rationale:
+        A pipeline shows which items are kept and what is done to them step
+        by step, so the intent is easier to read than the bookkeeping of a
+        loop.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const emails = [];
+        for (let i = 0; i < users.length; i++) {
+          if (users[i].subscribed) {
+            emails.push(users[i].email.toLowerCase());
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const emails = users
+          .filter(user => user.subscribed)
+          .map(user => user.email.toLowerCase());
+        \\\
+        ```
+    languages: [any]
+    tags: [loops, readability, collections]
+    source: https://martinfowler.com/books/refactoring.html

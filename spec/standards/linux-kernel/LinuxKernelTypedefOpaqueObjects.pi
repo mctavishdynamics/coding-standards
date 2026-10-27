@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelTypedefOpaqueObjects:
+    standard: @{LinuxKernelStyle}
+    ruleId: 5b
+    title: Use a typedef only to hide a truly opaque object
+    statement:
+        A typedef may be used for an object that is deliberately opaque and
+        is only reached through accessor functions, as with pte_t.
+    rationale:
+        Here the typedef actively hides contents that have no portable
+        meaning. Opaqueness and accessors are not good in themselves, so
+        this applies only when there really is nothing portable to expose.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        typedef struct ring_state ring_state_t;   /* fields used directly */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        typedef struct { unsigned long val; } hwpte_t;
+
+        static inline unsigned long hwpte_val(hwpte_t p) { return p.val; }
+        \\\
+        ```
+    languages: [c]
+    tags: [typedefs, types, encapsulation]
+    source: https://docs.kernel.org/process/coding-style.html#typedefs

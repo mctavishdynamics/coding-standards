@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelTypedefClearIntegerTypes:
+    standard: @{LinuxKernelStyle}
+    ruleId: 5c
+    title: Use an integer typedef only when the underlying type varies
+    statement:
+        A typedef for an integer type is fine when it removes confusion
+        about whether the value is int or long, for example because the real
+        type depends on the configuration. Do not add one for a type that is
+        always the same.
+    rationale:
+        Without a reason, a new integer name only hides an ordinary type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        typedef unsigned long irqmask_t;   /* always unsigned long */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #ifdef CONFIG_WIDE_COUNTERS
+        typedef u64 stat_counter_t;
+        #else
+        typedef u32 stat_counter_t;
+        #endif
+        \\\
+        ```
+    languages: [c]
+    tags: [typedefs, types]
+    source: https://docs.kernel.org/process/coding-style.html#typedefs

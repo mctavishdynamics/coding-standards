@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon06C:
+    standard: @{CertC}
+    ruleId: CON06-C
+    title: Ensure that every mutex outlives the data it protects
+    statement:
+        Give a mutex a lifetime and scope at least as long as the data it
+        guards. Shared data with static storage needs a mutex that is shared
+        just as widely, not one created per caller or per object.
+    rationale:
+        If each user locks its own mutex, or the mutex is destroyed while
+        the data is still in use, the data is left unprotected against
+        concurrent access. CERT rates likelihood probable, detectable no,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        static long counter;
+
+        void increment(void) {
+            mtx_t m;
+            mtx_init(&m, mtx_plain);
+            mtx_lock(&m);
+            counter++;
+            mtx_unlock(&m);
+            mtx_destroy(&m);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static long counter;
+        static mtx_t counter_lock;   /* initialized once at startup */
+
+        void increment(void) {
+            mtx_lock(&counter_lock);
+            counter++;
+            mtx_unlock(&counter_lock);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, concurrency, locking, lifetime]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/concurrency-con/con06-c

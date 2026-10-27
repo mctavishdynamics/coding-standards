@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelInlineOnlySmallFunctions:
+    standard: @{LinuxKernelStyle}
+    ruleId: 15a
+    title: Do not mark functions longer than about three lines inline
+    statement:
+        As a rule of thumb, use inline only on functions with at most about
+        three lines of code. Inline is not a general speed-up.
+    rationale:
+        Overusing inline makes the kernel bigger, which costs instruction
+        cache and page cache space and slows the whole system.
+    exceptions:
+        A larger function may be inline when a parameter is known to be a
+        compile-time constant and the compiler can then optimise most of the
+        body away, as with kmalloc.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static inline int setup_queue(struct queue *q, unsigned int depth)
+        {
+                q->ring = kmalloc_objs(*q->ring, depth, GFP_KERNEL);
+                if (!q->ring)
+                        return -ENOMEM;
+                q->depth = depth;
+                spin_lock_init(&q->lock);
+                init_waitqueue_head(&q->wait);
+                return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int setup_queue(struct queue *q, unsigned int depth)
+        {
+                q->ring = kmalloc_objs(*q->ring, depth, GFP_KERNEL);
+                if (!q->ring)
+                        return -ENOMEM;
+                q->depth = depth;
+                spin_lock_init(&q->lock);
+                init_waitqueue_head(&q->wait);
+                return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [inline, performance, functions]
+    source: https://docs.kernel.org/process/coding-style.html#the-inline-disease

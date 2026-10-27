@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc17C:
+    standard: @{CertC}
+    ruleId: MSC17-C
+    title:
+        Finish every set of statements associated with a case label with a
+        break statement
+    statement:
+        End the statements under each case label with break, unless falling
+        through is intended.
+    rationale:
+        A missing break is a common cause of control unexpectedly running
+        into the next case. CERT rates likelihood likely, detectable yes,
+        repairable yes, priority P18, level L1.
+    exceptions:
+        The last label in a switch needs no break. Intentional fall through
+        is allowed when it is clearly marked, for example with the C23
+        fallthrough attribute or a comment.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        switch (level) {
+        case LOG_WARN:
+            warnings++;
+        case LOG_ERROR:
+            errors++;
+            break;
+        default:
+            break;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        switch (level) {
+        case LOG_WARN:
+            warnings++;
+            break;
+        case LOG_ERROR:
+            errors++;
+            break;
+        default:
+            break;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, control-flow, switch]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc17-c

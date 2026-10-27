@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelMaybeUnusedOverConditionals:
+    standard: @{LinuxKernelStyle}
+    ruleId: 21c
+    title: Mark sometimes-unused definitions __maybe_unused
+    statement:
+        If a function or variable goes unused only in some configurations
+        and the compiler would warn, mark it __maybe_unused instead of
+        wrapping it in a conditional. Delete it if it is never used.
+    rationale:
+        The definition stays visible to the compiler in every configuration,
+        so it keeps being checked.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #ifdef CONFIG_PM_SLEEP
+        static int widget_suspend(struct device *dev)
+        {
+                return widget_power_off(dev);
+        }
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int __maybe_unused widget_suspend(struct device *dev)
+        {
+                return widget_power_off(dev);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, conditional-compilation, attributes]
+    source: https://docs.kernel.org/process/coding-style.html#conditional-compilation

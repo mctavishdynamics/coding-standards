@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellTemporaryField:
+    standard: @{FowlerRefactoring}
+    ruleId: temporary-field
+    title: Avoid fields that are set only in certain situations
+    statement:
+        Do not keep fields on an object that hold a value only under some
+        circumstances. Move such fields and the code that uses them into
+        their own class, and use a special case object for the situation
+        when they are empty. Usual fixes: Extract Class, Move Function,
+        Introduce Special Case.
+    rationale:
+        Readers expect an object to need all of its fields. Working out why
+        a field is usually unset, and when it matters, wastes time and
+        invites mistakes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Checkout {
+          start(cart) { this.cart = cart; }
+          applyVoucher(code) {
+            this.voucherCode = code;        // undefined for most checkouts
+            this.voucherDiscount = lookup(code);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Checkout {
+          start(cart) { this.cart = cart; this.voucher = Voucher.none(); }
+          applyVoucher(code) { this.voucher = Voucher.fromCode(code); }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [fields, state, objects]
+    source: https://martinfowler.com/books/refactoring.html

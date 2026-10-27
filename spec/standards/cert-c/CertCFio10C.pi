@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio10C:
+    standard: @{CertC}
+    ruleId: FIO10-C
+    title: Take care when using the rename() function
+    statement:
+        Decide what should happen when the destination of rename already
+        exists and code for it. To keep an existing file, check for it first
+        or use a platform call that refuses to overwrite. To replace it
+        portably, remove it before calling rename.
+    rationale:
+        The C standard leaves the case of an existing destination
+        implementation-defined. POSIX replaces the file and Windows fails,
+        so code that ignores the difference loses data on one platform or
+        breaks on the other. CERT rates likelihood probable, detectable no,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int publish(const char *tmp, const char *final) {
+            return rename(tmp, final);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int publish(const char *tmp, const char *final) {
+            if (remove(final) != 0 && errno != ENOENT) {
+                return -1;
+            }
+            return rename(tmp, final);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, files, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio10-c

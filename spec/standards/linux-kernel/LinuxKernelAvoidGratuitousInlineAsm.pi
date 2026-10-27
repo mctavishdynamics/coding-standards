@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelAvoidGratuitousInlineAsm:
+    standard: @{LinuxKernelStyle}
+    ruleId: 20a
+    title: Use inline assembly only when C cannot do the job
+    statement:
+        Use inline assembly where architecture code really needs it, but
+        access hardware from C whenever possible. Wrap common snippets of
+        inline assembly in small helper functions instead of repeating
+        variants of them.
+    rationale:
+        C is easier to read and maintain, and helpers keep the assembly in
+        one place. Inline assembly can take C parameters, so helpers are
+        easy to write.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        asm volatile("outb %0, %1" : : "a"(val), "Nd"(PORT_A));
+        /* ... */
+        asm volatile("outb %0, %1" : : "a"(cmd), "Nd"(PORT_B));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static inline void port_write8(u8 val, u16 port)
+        {
+                asm volatile("outb %0, %1" : : "a"(val), "Nd"(port));
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [assembly, portability]
+    source: https://docs.kernel.org/process/coding-style.html#inline-assembly

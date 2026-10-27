@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl05C:
+    standard: @{CertC}
+    ruleId: DCL05-C
+    title: Use typedefs of non-pointer types only
+    statement:
+        Do not hide a pointer inside a typedef. Name the underlying type and
+        write the asterisk at each use.
+    rationale:
+        Const applied to a pointer typedef qualifies the pointer, not the
+        pointed-to data, which makes const-correct code hard to write and
+        read. CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P2, level L3.
+    exceptions:
+        Typedefs for function pointer types are allowed.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        typedef struct buffer *buffer_ptr;
+
+        size_t used(const buffer_ptr b);   /* the pointer is const, not *b */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        typedef struct buffer buffer;
+
+        size_t used(const buffer *b);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, typedef, const]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl05-c

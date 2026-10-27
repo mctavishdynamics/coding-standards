@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./PhilosophyOfSoftwareDesign import PhilosophyOfSoftwareDesign
+
+export coding-rule AposdPrinciple10:
+    standard: @{PhilosophyOfSoftwareDesign}
+    ruleId: principle-10
+    title: Pull complexity down into the module
+    statement:
+        When some complexity cannot be avoided, handle it inside the module
+        rather than pushing it onto callers through extra parameters,
+        exceptions or settings.
+    rationale:
+        A module has more callers than developers, so it is better for the
+        module's author to absorb the difficulty once than for every caller
+        to deal with it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def connect(host, retry_interval_ms):
+            ...
+        connect("db.local", retry_interval_ms=250)  # caller must guess
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def connect(host):
+            # picks the retry interval from observed latency
+            ...
+        \\\
+        ```
+    languages: [any]
+    tags: [principle, complexity, interfaces]
+    source: https://web.stanford.edu/~ouster/cgi-bin/book.php

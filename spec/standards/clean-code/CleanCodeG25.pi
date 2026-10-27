@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG25:
+    standard: @{CleanCode}
+    ruleId: G25
+    title: Replace magic numbers with named constants
+    statement:
+        Hide raw values behind well-named constants. This applies to any
+        literal whose meaning is not self-evident, including strings and
+        other tokens, not only numbers.
+    rationale:
+        A named constant explains its meaning, can be searched for and is
+        changed in one place.
+    exceptions:
+        Some values are clear in place, such as 0, 1, or well-known
+        formulas, and need no constant.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        if (elapsedMillis > 86400000) {
+            session.expire();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private static final long MILLIS_PER_DAY = 24L * 60 * 60 * 1000;
+
+        if (elapsedMillis > MILLIS_PER_DAY) {
+            session.expire();
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [constants, readability]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

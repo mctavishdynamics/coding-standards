@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellLazyClass:
+    standard: @{RefactoringGuruSmells}
+    ruleId: lazy-class
+    title: Remove classes that do too little to earn their keep
+    statement:
+        Avoid classes whose small contribution does not justify the effort
+        of understanding and maintaining them; fold them into their users or
+        collapse the hierarchy. Usual fixes: Inline Class, Collapse
+        Hierarchy.
+    rationale:
+        Every class costs reading and upkeep. Classes shrunk by refactoring,
+        or built for plans that never happened, add that cost without
+        benefit.
+    exceptions:
+        A small class kept deliberately to mark planned development can
+        stay, if the gain in clarity outweighs the extra piece.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Greeting {
+            String text(String name) { return "Hello, " + name; }
+        }
+        ...
+        String banner = new Greeting().text(user.name());
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String banner = "Hello, " + user.name();
+        \\\
+        ```
+    languages: [any]
+    tags: [dispensables, classes, simplicity]
+    source: https://refactoring.guru/smells/lazy-class

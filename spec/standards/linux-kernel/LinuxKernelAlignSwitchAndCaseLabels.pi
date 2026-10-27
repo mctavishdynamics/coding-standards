@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelAlignSwitchAndCaseLabels:
+    standard: @{LinuxKernelStyle}
+    ruleId: 1b
+    title: Align case labels with their switch statement
+    statement:
+        Put the case and default labels of a switch in the same column as
+        the switch keyword instead of indenting them one more level. The
+        statements under each label get one level of indentation.
+    rationale:
+        This avoids a double indent inside every switch and keeps the
+        statements from drifting to the right.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        switch (speed) {
+                case SPEED_LOW:
+                        delay = 100;
+                        break;
+                default:
+                        delay = 10;
+                        break;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        switch (speed) {
+        case SPEED_LOW:
+                delay = 100;
+                break;
+        default:
+                delay = 10;
+                break;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, indentation, switch]
+    source: https://docs.kernel.org/process/coding-style.html#indentation

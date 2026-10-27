@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellMiddleMan:
+    standard: @{RefactoringGuruSmells}
+    ruleId: middle-man
+    title: Remove classes that only pass calls along
+    statement:
+        Avoid classes whose methods do nothing but delegate to another
+        class; let clients call the real object directly. Usual fixes:
+        Remove Middle Man.
+    rationale:
+        A pure delegator adds a layer to read and maintain without doing any
+        work. It often appears after over-eager removal of message chains or
+        after the real work has moved elsewhere.
+    exceptions:
+        Keep a middle layer that deliberately reduces dependencies between
+        classes, or one that implements a pattern such as Proxy or
+        Decorator.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class CustomerManager {
+            private final CustomerRepository repo;
+            Customer find(String id) { return repo.find(id); }
+            void save(Customer c) { repo.save(c); }
+            void delete(String id) { repo.delete(id); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Customer customer = customerRepository.find(id);
+        \\\
+        ```
+    languages: [any]
+    tags: [couplers, delegation, simplicity]
+    source: https://refactoring.guru/smells/middle-man

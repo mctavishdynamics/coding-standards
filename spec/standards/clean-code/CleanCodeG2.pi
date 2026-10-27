@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG2:
+    standard: @{CleanCode}
+    ruleId: G2
+    title: Implement the behavior callers will expect
+    statement:
+        Follow the principle of least surprise. A function or class should
+        do everything a reasonable programmer would assume from its name and
+        purpose.
+    rationale:
+        When obvious behavior is missing, users of the code cannot trust
+        their intuition and must read the implementation to find out what it
+        does.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        // Accepts "MONDAY" but rejects "Monday" and "monday".
+        Day parseDay(String text) {
+            return Day.valueOf(text);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Day parseDay(String text) {
+            return Day.valueOf(text.trim().toUpperCase(Locale.ROOT));
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design, least-surprise]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

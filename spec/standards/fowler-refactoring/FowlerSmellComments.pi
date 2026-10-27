@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellComments:
+    standard: @{FowlerRefactoring}
+    ruleId: comments
+    title: Refactor code so it does not need explanatory comments
+    statement:
+        When a comment is there to explain what a piece of code does,
+        refactor the code until the comment is unnecessary: extract and name
+        the block, rename the function, or state an assumption as an
+        assertion. Usual fixes: Extract Function, Change Function
+        Declaration, Introduce Assertion.
+    rationale:
+        Heavy commenting often covers for code that is hard to read. Code
+        that explains itself stays accurate as it changes, while comments
+        can go stale.
+    exceptions:
+        Comments are valuable when they record why something was done, mark
+        areas of uncertainty or point out what you could not resolve.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        // shipping is free if the order is over 50 and the customer is not abroad
+        if (order.total > 50 && order.country === HOME_COUNTRY) {
+          order.shipping = 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        if (qualifiesForFreeShipping(order)) {
+          order.shipping = 0;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [comments, readability]
+    source: https://martinfowler.com/books/refactoring.html

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoEditorModelines:
+    standard: @{LinuxKernelStyle}
+    ruleId: 19
+    title: Do not put editor modelines in source files
+    statement:
+        Leave out emacs mode lines, Local Variables blocks, vim modelines
+        and similar editor configuration markers, including ones that set
+        indentation or mode.
+    rationale:
+        Developers have their own editor settings, and source files should
+        not override them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* -*- mode: c; c-basic-offset: 8 -*- */
+        /* vim: set ts=8 sw=8 noet: */
+        #include <linux/module.h>
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <linux/module.h>
+        \\\
+        ```
+    languages: [c]
+    tags: [tooling, formatting]
+    source: https://docs.kernel.org/process/coding-style.html#editor-modelines-and-other-cruft

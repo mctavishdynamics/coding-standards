@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip62:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-62
+    title: Know why your code works
+    statement:
+        Do not rely on code that works by accident; understand and document
+        the assumptions it depends on.
+    rationale:
+        Code that works by coincidence can break unexpectedly when
+        circumstances change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # Seems to work; sleep fixes the race.
+        start_worker()
+        time.sleep(0.5)
+        read_result()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        worker = start_worker()
+        worker.done.wait()
+        read_result()
+        \\\
+        ```
+    languages: [any]
+    tags: [correctness, assumptions]
+    source: https://pragprog.com/tips/

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp20C:
+    standard: @{CertC}
+    ruleId: EXP20-C
+    title:
+        Perform explicit tests to determine success, true and false, and
+        equality
+    statement:
+        Write conditions as explicit comparisons, such as comparing a status
+        against 0 or a named success value, instead of relying on the
+        implicit test for nonzero.
+    rationale:
+        Explicit tests state what counts as success and keep working if the
+        function's error convention changes, for example from 0 to -1. CERT
+        rates likelihood probable, detectable yes, repairable yes, priority
+        P12, level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        if (connect_server(host)) {
+            send_greeting();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (connect_server(host) != 0) {
+            send_greeting();
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, readability, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp20-c

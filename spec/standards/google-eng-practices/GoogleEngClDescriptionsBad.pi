@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleEngPractices import GoogleEngPractices
+
+export coding-rule GoogleEngClDescriptionsBad:
+    standard: @{GoogleEngPractices}
+    ruleId: developer/cl-descriptions/bad
+    title: Do not write vague descriptions such as Fix bug
+    statement:
+        Avoid short descriptions that leave out what was changed and why,
+        such as fix build, add patch or phase 1.
+    rationale:
+        However brief, such descriptions give future readers nothing to
+        search for or understand.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        Fix tests.
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        Fix flaky OrderServiceTest by using a fake clock.
+
+        The test compared against the real time and failed near midnight.
+        \\\
+        ```
+    languages: [any]
+    tags: [author, cl-description]
+    source: https://google.github.io/eng-practices/review/developer/cl-descriptions.html#bad

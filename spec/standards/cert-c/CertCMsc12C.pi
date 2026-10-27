@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc12C:
+    standard: @{CertC}
+    ruleId: MSC12-C
+    title:
+        Detect and remove code that has no effect or is never executed
+    statement:
+        Find statements that have no effect and code that can never run,
+        work out why they exist, and remove or correct them.
+    rationale:
+        Such code usually signals a logic error, and it hides the intent of
+        the code from reviewers. CERT rates likelihood unlikely, detectable
+        no, repairable yes, priority P2, level L3.
+    exceptions:
+        A default label kept for out-of-range enumeration values is not dead
+        code. Code temporarily disabled for later use, unused functions in
+        an exported library, and code excluded by conditional compilation
+        are also allowed.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int clamp(int v) {
+            if (v > 100) {
+                return 100;
+                v = 100;
+            }
+            v == 0;
+            return v;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int clamp(int v) {
+            if (v > 100) {
+                return 100;
+            }
+            return v;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, dead-code, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc12-c

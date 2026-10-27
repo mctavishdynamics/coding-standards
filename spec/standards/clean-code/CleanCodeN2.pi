@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeN2:
+    standard: @{CleanCode}
+    ruleId: N2
+    title: Choose names at the right level of abstraction
+    statement:
+        Name things for the concept they represent at their level of
+        abstraction, not for how they happen to be implemented.
+    rationale:
+        Implementation names tie an abstraction to one mechanism and become
+        wrong when other implementations appear.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        interface Notifier {
+            void sendSmtpEmail(String recipient, String text);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        interface Notifier {
+            void notify(Recipient recipient, String text);
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [naming, abstraction]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

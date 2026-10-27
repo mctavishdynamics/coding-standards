@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre02C:
+    standard: @{CertC}
+    ruleId: PRE02-C
+    title: Macro replacement lists should be parenthesized
+    statement:
+        Put parentheses around the whole replacement list of a macro that
+        expands to an expression, so operators in the surrounding code
+        cannot split it apart.
+    rationale:
+        An unparenthesized expansion mixes with neighbouring operators of
+        higher precedence and yields a different value from the one
+        intended. CERT rates likelihood probable, detectable yes, repairable
+        yes, priority P12, level L1.
+    exceptions:
+        A macro that expands to a single identifier, a function call, an
+        array subscript or a member access is not affected by surrounding
+        operators and needs no outer parentheses.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        #define HEADER_SIZE 16 + 4
+
+        size_t bytes = count * HEADER_SIZE;   /* count * 16 + 4 */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define HEADER_SIZE (16 + 4)
+
+        size_t bytes = count * HEADER_SIZE;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, macros]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre02-c

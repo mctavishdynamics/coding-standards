@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip41:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-41
+    title: Keep resource and variable scope small
+    statement:
+        Limit the scope of mutable variables and open resources, holding
+        them for as short a time and in as small a region as possible.
+    rationale:
+        Small scopes make lifetimes obvious and reduce the chance of misuse.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        conn = db.connect()
+        report = build_report(load_rows(conn))
+        send(report)
+        conn.close()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        with db.connect() as conn:
+            rows = load_rows(conn)
+        send(build_report(rows))
+        \\\
+        ```
+    languages: [any]
+    tags: [scope, resource-management]
+    source: https://pragprog.com/tips/

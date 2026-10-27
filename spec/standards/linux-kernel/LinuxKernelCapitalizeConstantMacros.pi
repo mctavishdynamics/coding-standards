@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelCapitalizeConstantMacros:
+    standard: @{LinuxKernelStyle}
+    ruleId: 12a
+    title: Write constant macros and enum labels in capitals
+    statement:
+        Use upper-case names for macros that define constants and for enum
+        labels. Function-like macros may use lower-case names.
+    rationale:
+        Capital names mark compile-time constants at a glance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define max_retries 5
+        enum link_state { link_down, link_up };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define MAX_RETRIES 5
+        enum link_state { LINK_DOWN, LINK_UP };
+        \\\
+        ```
+    languages: [c]
+    tags: [macros, naming, enums]
+    source: https://docs.kernel.org/process/coding-style.html#macros-enums-and-rtl

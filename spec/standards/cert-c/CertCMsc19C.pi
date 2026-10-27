@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc19C:
+    standard: @{CertC}
+    ruleId: MSC19-C
+    title:
+        For functions that return an array, prefer returning an empty array
+        over a null value
+    statement:
+        When a function that returns an array has nothing to return, give
+        back an empty array, with its count set to zero, rather than a null
+        pointer.
+    rationale:
+        Callers often forget to check for a null result and dereference it,
+        while an empty array works in their loops without a special case.
+        CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        /* Returns NULL when there are no matches. */
+        int *find_matches(const int *a, size_t n, int key, size_t *count);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* Always returns an array; *count is 0 when there are no matches. */
+        int *find_matches(const int *a, size_t n, int key, size_t *count);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, api-design, arrays, null-pointer]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc19-c

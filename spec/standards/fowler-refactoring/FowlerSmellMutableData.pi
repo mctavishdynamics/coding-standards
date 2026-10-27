@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellMutableData:
+    standard: @{FowlerRefactoring}
+    ruleId: mutable-data
+    title: Limit and control changes to data
+    statement:
+        Avoid updating data in place where other code may be relying on it.
+        Prefer values that do not change, keep each variable to one purpose,
+        separate code that changes state from code that reads it, and
+        compute derived values instead of storing them. Usual fixes:
+        Encapsulate Variable, Split Variable, Slide Statements, Extract
+        Function, Separate Query from Modifier, Remove Setting Method,
+        Replace Derived Variable with Query, Combine Functions into Class,
+        Combine Functions into Transform, Change Reference to Value.
+    rationale:
+        A change in one place can break code elsewhere that assumed the old
+        value, which leads to bugs that are rare and hard to find. The wider
+        the scope of the mutable data, the bigger the risk.
+    exceptions:
+        Mutation of a variable with a very small scope, such as a local
+        accumulator, causes little harm.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function applyDiscount(cart) {
+          cart.total = cart.total * 0.9;   // caller's cart is changed
+          return cart;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function withDiscount(cart) {
+          return { ...cart, total: cart.total * 0.9 };
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [mutability, state]
+    source: https://martinfowler.com/books/refactoring.html

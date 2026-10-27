@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelReferenceCountSharedData:
+    standard: @{LinuxKernelStyle}
+    ruleId: 11a
+    title: Reference count data structures visible outside one thread
+    statement:
+        Give every data structure that can be reached from outside the
+        single-threaded context that creates and destroys it a reference
+        count, and take a reference for each use.
+    rationale:
+        The kernel has no garbage collection. If another thread can find a
+        structure and you hold no reference to it, it can be freed
+        underneath you, which is almost certainly a bug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct session *s = lookup_session(id);
+
+        mutex_unlock(&table_lock);
+        msleep(10);
+        s->last_seen = jiffies;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct session *s = lookup_session(id);
+
+        kref_get(&s->ref);
+        mutex_unlock(&table_lock);
+        msleep(10);
+        s->last_seen = jiffies;
+        kref_put(&s->ref, session_release);
+        \\\
+        ```
+    languages: [c]
+    tags: [concurrency, memory, reference-counting]
+    source: https://docs.kernel.org/process/coding-style.html#data-structures

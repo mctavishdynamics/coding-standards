@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCWin02C:
+    standard: @{CertC}
+    ruleId: WIN02-C
+    title: Restrict privileges when spawning child processes
+    statement:
+        Start a child process with only the privileges it needs, for example
+        by creating it with a restricted token through CreateProcessAsUser,
+        rather than letting it inherit the parent's full rights.
+    rationale:
+        A child that inherits elevated rights gives an attacker who controls
+        it far more power than it needs. CERT rates likelihood likely,
+        detectable yes, repairable no, priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        CreateProcess(NULL, cmd, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        HANDLE restricted;
+        CreateRestrictedToken(token, DISABLE_MAX_PRIVILEGE, 0, NULL, 0, NULL,
+                              0, NULL, &restricted);
+        CreateProcessAsUser(restricted, NULL, cmd, NULL, NULL, FALSE, 0, NULL,
+                            NULL, &si, &pi);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, windows, privileges, processes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/microsoft-windows-win/win02-c

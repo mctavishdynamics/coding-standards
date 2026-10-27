@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelWrapMultiStatementMacros:
+    standard: @{LinuxKernelStyle}
+    ruleId: 12d
+    title: Wrap multi-statement macros in do-while(0)
+    statement:
+        Enclose the body of a macro that contains several statements in a do
+        ... while (0) block.
+    rationale:
+        The wrapper makes the macro behave as one statement, so it works
+        correctly after an unbraced if and before an else.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define reset_stats(s)          \
+                (s)->rx = 0;            \
+                (s)->tx = 0
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define reset_stats(s)                  \
+                do {                            \
+                        (s)->rx = 0;            \
+                        (s)->tx = 0;            \
+                } while (0)
+        \\\
+        ```
+    languages: [c]
+    tags: [macros]
+    source: https://docs.kernel.org/process/coding-style.html#macros-enums-and-rtl

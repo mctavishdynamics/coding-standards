@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec54J:
+    standard: @{CertJava}
+    ruleId: SEC54-J
+    title: Create a secure sandbox using a security manager
+    statement:
+        Run untrusted or partly trusted code under a security manager with a
+        policy that grants only the permissions it needs.
+    rationale:
+        Without a security manager, sensitive actions run without any
+        restriction. The security manager is deprecated for removal since
+        Java 17, so newer applications need other isolation such as separate
+        processes or containers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```shell
+        \\\
+        java -cp plugins.jar app.PluginHost
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        java -Djava.security.manager -Djava.security.policy==plugins.policy -cp plugins.jar app.PluginHost
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, sandbox, security-manager]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/platform-security-sec/sec54-j/

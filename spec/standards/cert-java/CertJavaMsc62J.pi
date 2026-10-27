@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc62J:
+    standard: @{CertJava}
+    ruleId: MSC62-J
+    title: Store passwords using a hash function
+    statement:
+        Never store passwords in cleartext or reversible form. Store a
+        salted hash from a slow password hashing function, such as PBKDF2,
+        and compare hashes when checking a password.
+    rationale:
+        Stored cleartext or weakly hashed passwords are exposed to anyone
+        who reads the store, and are often reused elsewhere.
+    exceptions:
+        Applications such as password managers that must recover the
+        original password may store it in recoverable form.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void saveUser(String name, String password) {
+            db.insert(name, password);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void saveUser(String name, char[] password) throws GeneralSecurityException {
+            byte[] salt = new byte[16];
+            new SecureRandom().nextBytes(salt);
+            PBEKeySpec spec = new PBEKeySpec(password, salt, 210_000, 256);
+            byte[] hash = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
+                    .generateSecret(spec).getEncoded();
+            db.insert(name, salt, hash);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, passwords, cryptography, sensitive-data]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/miscellaneous-msc/msc62-j/

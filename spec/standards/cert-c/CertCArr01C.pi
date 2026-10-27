@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCArr01C:
+    standard: @{CertC}
+    ruleId: ARR01-C
+    title:
+        Do not apply the sizeof operator to a pointer when taking the size
+        of an array
+    statement:
+        Take sizeof of the array itself, not of a pointer or of an array
+        parameter, which is really a pointer. Pass the length to functions
+        as a separate argument.
+    rationale:
+        sizeof applied to a pointer gives the pointer's size, so loops and
+        allocations based on it use the wrong number of elements. CERT rates
+        likelihood probable, detectable no, repairable yes, priority P12,
+        level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        void zero(int values[]) {
+            memset(values, 0, sizeof(values));   /* size of a pointer */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void zero(int values[], size_t count) {
+            memset(values, 0, count * sizeof(values[0]));
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, arrays, sizeof]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/arrays-arr/arr01-c

@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelNoCastOfAllocatorResult:
+    standard: @{LinuxKernelStyle}
+    ruleId: 14b
+    title: Do not cast the void pointer returned by an allocator
+    statement:
+        Assign the result of an allocator directly without a cast.
+    rationale:
+        C converts a void pointer to any object pointer type automatically,
+        so the cast is redundant.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        ctx = (struct parser_ctx *)kzalloc_obj(*ctx, GFP_KERNEL);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        ctx = kzalloc_obj(*ctx, GFP_KERNEL);
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, allocation, casts]
+    source: https://docs.kernel.org/process/coding-style.html#allocating-memory

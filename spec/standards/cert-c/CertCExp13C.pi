@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp13C:
+    standard: @{CertC}
+    ruleId: EXP13-C
+    title:
+        Treat relational and equality operators as if they were
+        nonassociative
+    statement:
+        Do not chain relational or equality operators, as in a < b < c.
+        Combine separate comparisons with && instead.
+    rationale:
+        C compares the first result, 0 or 1, with the next operand, which is
+        almost never what a chained comparison was meant to do. CERT rates
+        likelihood unlikely, detectable yes, repairable yes, priority P3,
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        if (0 <= index < size) {
+            use(index);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (0 <= index && index < size) {
+            use(index);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, operators]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp13-c

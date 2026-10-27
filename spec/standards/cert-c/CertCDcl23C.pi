@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl23C:
+    standard: @{CertC}
+    ruleId: DCL23-C
+    title: Guarantee that mutually visible identifiers are unique
+    statement:
+        Make identifiers that are visible to each other differ within the
+        characters the implementation treats as significant, for example the
+        first 31 characters of an external identifier.
+    rationale:
+        Identifiers that differ only in nonsignificant characters are
+        undefined behavior and may be merged into one object or function.
+        CERT rates likelihood unlikely, detectable yes, repairable yes,
+        priority P6, level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        extern int network_connection_retry_count_primary;
+        extern int network_connection_retry_count_secondary;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        extern int primary_net_retry_count;
+        extern int secondary_net_retry_count;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, naming, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl23-c

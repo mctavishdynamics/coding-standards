@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeJ1:
+    standard: @{CleanCode}
+    ruleId: J1
+    title: Use wildcard imports to avoid long import lists
+    statement:
+        When you use two or more classes from one package, import the whole
+        package with a wildcard instead of listing each class.
+    rationale:
+        Long import lists clutter the top of a file, and a specific import
+        creates a hard dependency on a class that must exist, while a
+        wildcard only adds the package to the search path.
+    exceptions:
+        Wildcards can cause name clashes between packages; in that case
+        import the conflicting class explicitly or use its full name.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        import java.util.ArrayList;
+        import java.util.HashMap;
+        import java.util.List;
+        import java.util.Map;
+        import java.util.Set;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        import java.util.*;
+        \\\
+        ```
+    languages: [java]
+    tags: [imports, dependencies]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

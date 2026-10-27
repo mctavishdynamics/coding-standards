@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem00C:
+    standard: @{CertC}
+    ruleId: MEM00-C
+    title:
+        Allocate and free memory in the same module, at the same level of
+        abstraction
+    statement:
+        Free memory in the same module and at the same level of abstraction
+        where it was allocated, so ownership is clear.
+    rationale:
+        Freeing memory far from where it was allocated makes it hard to know
+        whether a block is still live, leading to leaks, double frees and
+        use after free. CERT rates likelihood probable, detectable yes,
+        repairable no, priority P12, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        int validate(char *msg) {
+            if (msg[0] == '\0') {
+                free(msg);   /* caller also frees */
+                return -1;
+            }
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int validate(const char *msg) {
+            return msg[0] == '\0' ? -1 : 0;
+        }
+
+        void handle(void) {
+            char *msg = read_message();
+            if (validate(msg) == 0) {
+                process(msg);
+            }
+            free(msg);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, memory, ownership]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/memory-management-mem/mem00-c

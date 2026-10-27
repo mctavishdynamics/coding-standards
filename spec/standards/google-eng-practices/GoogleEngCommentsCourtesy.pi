@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleEngPractices import GoogleEngPractices
+
+export coding-rule GoogleEngCommentsCourtesy:
+    standard: @{GoogleEngPractices}
+    ruleId: reviewer/comments/courtesy
+    title: Be courteous, and comment on the code rather than the developer
+    statement:
+        Be respectful while staying clear and helpful. Make comments about
+        the code, not the person, especially when the point could be
+        upsetting or contentious.
+    rationale:
+        Comments aimed at a person feel like attacks and provoke
+        defensiveness, while comments about the code keep the discussion on
+        improving it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        Why did you add a cache here? You clearly didn't measure anything.
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        This cache adds invalidation logic, but I can't see a measured latency
+        problem it solves. Without one, reading straight from the store keeps
+        this path simpler.
+        \\\
+        ```
+    languages: [any]
+    tags: [reviewer, courtesy, communication]
+    source: https://google.github.io/eng-practices/review/reviewer/comments.html#courtesy

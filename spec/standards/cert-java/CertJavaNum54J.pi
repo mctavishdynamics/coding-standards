@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum54J:
+    standard: @{CertJava}
+    ruleId: NUM54-J
+    title: Do not use denormalized numbers
+    statement:
+        Avoid computations that produce denormalized, very small
+        floating-point values. Detect them and scale the data or switch to a
+        representation such as BigDecimal.
+    rationale:
+        Denormalized numbers have less precision than normal values, so
+        results lose accuracy unexpectedly, and some operations on them are
+        slow. CERT rates likelihood probable, detectable no, repairable no,
+        priority P2, level L3.
+    exceptions:
+        Denormalized numbers are acceptable when numerical analysis shows
+        the computed values still meet the application's accuracy and
+        behavior requirements.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        double x = 1e-308;
+        double tiny = x / 1e10;  // denormalized
+        double back = tiny * 1e10;  // no longer equals x
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        BigDecimal x = new BigDecimal("1e-308");
+        BigDecimal tiny = x.divide(new BigDecimal("1e10"));
+        BigDecimal back = tiny.multiply(new BigDecimal("1e10"));
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, floating-point, precision]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/numeric-types-and-operations-num/num54-j/

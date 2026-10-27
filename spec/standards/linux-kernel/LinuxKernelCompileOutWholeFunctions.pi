@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelCompileOutWholeFunctions:
+    standard: @{LinuxKernelStyle}
+    ruleId: 21b
+    title: Compile out whole functions rather than parts of them
+    statement:
+        Apply conditionals to entire functions, not to parts of a function
+        or an expression. Move the conditional part into a helper and make
+        the helper conditional.
+    rationale:
+        Conditionals inside expressions are especially hard to read and to
+        keep correct across configurations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        timeout = base_timeout
+        #ifdef CONFIG_SLOW_LINK
+                + slow_link_extra
+        #endif
+                ;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        timeout = base_timeout + link_extra_timeout();
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, conditional-compilation]
+    source: https://docs.kernel.org/process/coding-style.html#conditional-compilation

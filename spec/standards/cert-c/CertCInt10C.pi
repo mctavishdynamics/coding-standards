@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt10C:
+    standard: @{CertC}
+    ruleId: INT10-C
+    title:
+        Do not assume a positive remainder when using the % operator
+    statement:
+        Expect the result of % to be negative when the dividend is negative,
+        and adjust it explicitly when a non-negative remainder is needed.
+    rationale:
+        Code that uses a remainder as an array index can index before the
+        start of the array when the dividend is negative. CERT rates
+        likelihood unlikely, detectable no, repairable no, priority P3,
+        level L3.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        int bucket(int hash) {
+            return table[hash % TABLE_SIZE];
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int bucket(int hash) {
+            int r = hash % TABLE_SIZE;
+            if (r < 0) {
+                r += TABLE_SIZE;
+            }
+            return table[r];
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, operators]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int10-c

@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio20C:
+    standard: @{CertC}
+    ruleId: FIO20-C
+    title:
+        Avoid unintentional truncation when using fgets() or fgetws()
+    statement:
+        After fgets or fgetws, check whether a whole line was read, for
+        example by looking for the newline. When the line was cut short,
+        reject it, read the rest, or use a function that grows the buffer
+        such as POSIX getline.
+    rationale:
+        A long line is silently split, so the program may act on a partial
+        value and then treat the remainder as the next input. CERT rates
+        likelihood likely, detectable no, repairable yes, priority P12,
+        level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        char line[64];
+        if (fgets(line, sizeof line, stdin) != NULL) {
+            line[strcspn(line, "\n")] = '\0';
+            run_command(line);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char line[64];
+        if (fgets(line, sizeof line, stdin) != NULL) {
+            char *nl = strchr(line, '\n');
+            if (nl == NULL && !feof(stdin)) {
+                fputs("command too long\n", stderr);
+                return;
+            }
+            if (nl != NULL) {
+                *nl = '\0';
+            }
+            run_command(line);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, strings, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio20-c

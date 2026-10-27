@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG5:
+    standard: @{CleanCode}
+    ruleId: G5
+    title: Eliminate duplication
+    statement:
+        Treat every repetition as a missed abstraction. Replace copied code
+        with a function, replace repeated type switches with polymorphism
+        and replace similar algorithms with patterns such as template method
+        or strategy.
+    rationale:
+        Duplication is a main source of waste and bugs, because each copy
+        must be found, understood and changed separately.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        double circleArea(double r) { return 3.14159 * r * r; }
+        double cylinderVolume(double r, double h) { return 3.14159 * r * r * h; }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        double circleArea(double r) { return Math.PI * r * r; }
+        double cylinderVolume(double r, double h) { return circleArea(r) * h; }
+        \\\
+        ```
+    languages: [any]
+    tags: [duplication, dry, abstraction]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

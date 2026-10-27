@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCStr05C:
+    standard: @{CertC}
+    ruleId: STR05-C
+    title: Use pointers to const when referring to string literals
+    statement:
+        Point to string literals only through pointers to const char or
+        const wchar_t.
+    rationale:
+        Modifying a string literal is undefined behavior, and const lets the
+        compiler reject such attempts. CERT rates likelihood unlikely,
+        detectable yes, repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        char *label = "status";
+        label[0] = 'S';   /* undefined behavior */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        const char *label = "status";
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, strings, const]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/characters-and-strings-str/str05-c

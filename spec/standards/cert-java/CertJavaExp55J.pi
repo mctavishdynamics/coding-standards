@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaExp55J:
+    standard: @{CertJava}
+    ruleId: EXP55-J
+    title: Use the same type for the second and third operands in conditional expressions
+    statement:
+        Give the second and third operands of the conditional operator ?:
+        the same type, converting one explicitly if necessary.
+    rationale:
+        With mixed types the result type follows complex rules, so values
+        can be unboxed, widened or narrowed unexpectedly, for example a char
+        printed as a number.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        char letter = 'A';
+        int index = 0;
+        System.out.println(useIndex ? index : letter);  // prints 65, not A
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        char letter = 'A';
+        int index = 0;
+        System.out.println(useIndex ? String.valueOf(index) : String.valueOf(letter));
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, expressions, type-conversion]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/expressions-exp/exp55-j/

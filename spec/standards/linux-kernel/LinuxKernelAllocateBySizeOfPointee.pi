@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelAllocateBySizeOfPointee:
+    standard: @{LinuxKernelStyle}
+    ruleId: 14a
+    title: Size allocations from the pointer, not the type name
+    statement:
+        When allocating a structure, derive the size from the pointer being
+        assigned, using the object allocators such as kmalloc_obj with the
+        dereferenced pointer, rather than spelling out the struct name.
+    rationale:
+        Spelling out the type hurts readability and becomes a bug if the
+        pointer's type changes but the size expression does not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        ctx = kmalloc(sizeof(struct parser_ctx), GFP_KERNEL);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        ctx = kmalloc_obj(*ctx, GFP_KERNEL);
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, allocation]
+    source: https://docs.kernel.org/process/coding-style.html#allocating-memory

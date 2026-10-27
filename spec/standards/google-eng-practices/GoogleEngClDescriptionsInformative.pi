@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleEngPractices import GoogleEngPractices
+
+export coding-rule GoogleEngClDescriptionsInformative:
+    standard: @{GoogleEngPractices}
+    ruleId: developer/cl-descriptions/informative
+    title: Fill the description body with the details a reader needs
+    statement:
+        After the first line, describe the problem being solved, why this
+        approach is best, and any shortcomings. Where relevant, add bug
+        numbers, benchmark results and design document links, plus enough
+        context to stand alone if links become inaccessible. Small CLs need
+        some context too.
+    rationale:
+        Reviewers and future readers need the full picture to understand the
+        change.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```text
+        \\\
+        Cache parsed config files in the loader.
+
+        Startup re-parsed every config file once per worker, which took about
+        4 seconds on large deployments. Parse each file once and share the
+        result. Memory use grows by about 2 MB; this is acceptable because the
+        cache is freed after startup.
+
+        Bug: 41827
+        \\\
+        ```
+    languages: [any]
+    tags: [author, cl-description]
+    source: https://google.github.io/eng-practices/review/developer/cl-descriptions.html#informative

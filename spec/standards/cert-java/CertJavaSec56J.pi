@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec56J:
+    standard: @{CertJava}
+    ruleId: SEC56-J
+    title: Do not serialize direct handles to system resources
+    statement:
+        Do not include file handles, raw paths to system resources or
+        similar direct handles in a class's serialized form. Mark them
+        transient or do not make the class Serializable.
+    rationale:
+        Serialized data can be altered outside the program, so an attacker
+        can point the handle at another resource, such as an arbitrary file,
+        when it is deserialized.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class LogTarget implements Serializable {
+            private File file;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class LogTarget implements Serializable {
+            private transient File file;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, serialization, files]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/platform-security-sec/sec56-j/

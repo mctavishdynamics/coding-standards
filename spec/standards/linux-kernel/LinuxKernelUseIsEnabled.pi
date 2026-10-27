@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelUseIsEnabled:
+    standard: @{LinuxKernelStyle}
+    ruleId: 21d
+    title: Test Kconfig options with IS_ENABLED in ordinary C conditionals
+    statement:
+        Inside code, where possible, use IS_ENABLED to turn a Kconfig symbol
+        into a C expression and test it with a normal if.
+    rationale:
+        The compiler folds the test away just like an ifdef, with no runtime
+        cost, but still checks the code in the block for errors.
+    exceptions:
+        Keep an ifdef when the block refers to symbols that do not exist
+        when the option is off.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #ifdef CONFIG_NET_STATS
+                update_stats(dev, len);
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (IS_ENABLED(CONFIG_NET_STATS))
+                update_stats(dev, len);
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, conditional-compilation, kconfig]
+    source: https://docs.kernel.org/process/coding-style.html#conditional-compilation

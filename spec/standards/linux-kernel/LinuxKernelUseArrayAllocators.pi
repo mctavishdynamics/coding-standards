@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelUseArrayAllocators:
+    standard: @{LinuxKernelStyle}
+    ruleId: 14c
+    title: Allocate arrays with the overflow-checking array helpers
+    statement:
+        Allocate an array with kmalloc_objs, or kzalloc_objs for a zeroed
+        one, passing the dereferenced pointer and the element count.
+    rationale:
+        These helpers check the multiplication of count and element size for
+        overflow and return NULL if it overflows.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        slots = kmalloc(nr * sizeof(*slots), GFP_KERNEL);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        slots = kmalloc_objs(*slots, nr, GFP_KERNEL);
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, allocation, overflow]
+    source: https://docs.kernel.org/process/coding-style.html#allocating-memory

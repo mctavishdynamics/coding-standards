@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp08C:
+    standard: @{CertC}
+    ruleId: EXP08-C
+    title: Ensure pointer arithmetic is used correctly
+    statement:
+        Remember that integers added to a pointer are scaled by the size of
+        the pointed-to type. Add element counts to typed pointers, not byte
+        counts.
+    rationale:
+        Adding a byte count to a typed pointer moves it many times too far
+        and can cause buffer overflows. CERT rates likelihood probable,
+        detectable no, repairable no, priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        int values[16];
+        int *end = values + sizeof(values);   /* 64 elements past start */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int values[16];
+        int *end = values + sizeof(values) / sizeof(values[0]);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, pointers, arrays]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/expressions-exp/exp08-c

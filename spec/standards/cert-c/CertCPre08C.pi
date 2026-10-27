@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre08C:
+    standard: @{CertC}
+    ruleId: PRE08-C
+    title: Guarantee that header file names are unique
+    statement:
+        Choose header names that differ within the first eight characters
+        before the dot, ignoring case, and keep a single letter extension.
+    rationale:
+        The C Standard only guarantees that much of a header name is
+        significant, so two longer names may map to the same file and
+        include the wrong header. CERT rates likelihood unlikely, detectable
+        yes, repairable no, priority P2, level L3.
+    exceptions:
+        Longer distinguishing names are fine when every implementation the
+        code is ported to can tell them apart.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include "config_network.h"
+        #include "config_storage.h"   /* both truncate to config_n? */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include "netconf.h"
+        #include "diskconf.h"
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, headers, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre08-c

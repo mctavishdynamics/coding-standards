@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt13C:
+    standard: @{CertC}
+    ruleId: INT13-C
+    title: Use bitwise operators only on unsigned operands
+    statement:
+        Apply the bitwise and shift operators, including their compound
+        assignment forms, only to unsigned integer operands.
+    rationale:
+        Bitwise results on signed values depend on the representation and
+        are implementation-defined, and some shifts of signed values are
+        undefined. CERT rates likelihood unlikely, detectable yes,
+        repairable no, priority P6, level L2.
+    exceptions:
+        Macros or enumeration constants used as bit flags may be used with &
+        and |. A shift count known at compile time may be a positive signed
+        value.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        int status = read_status();
+        int high = status >> 4;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        unsigned int status = read_status();
+        unsigned int high = status >> 4;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, bitwise]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int13-c

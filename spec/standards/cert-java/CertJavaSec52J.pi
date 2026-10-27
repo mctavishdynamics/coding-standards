@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec52J:
+    standard: @{CertJava}
+    ruleId: SEC52-J
+    title: Do not expose methods that use reduced-security checks to untrusted code
+    statement:
+        Do not let untrusted code invoke, directly or through your code,
+        methods that check only the immediate caller, such as Class.forName,
+        Class.newInstance or MethodHandles lookups, with arguments it
+        controls.
+    rationale:
+        These methods trust the immediate caller's class loader or
+        permissions, so untrusted code calling through trusted code gains
+        the trusted code's privileges.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public Object create(String className) throws Exception {
+            return Class.forName(className).getDeclaredConstructor().newInstance();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private static final Set<String> ALLOWED = Set.of("app.ReportPlugin", "app.CsvPlugin");
+
+        public Object create(String className) throws Exception {
+            if (!ALLOWED.contains(className)) {
+                throw new SecurityException("Class not allowed");
+            }
+            return Class.forName(className).getDeclaredConstructor().newInstance();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, privileges, reflection, untrusted-code]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/platform-security-sec/sec52-j/

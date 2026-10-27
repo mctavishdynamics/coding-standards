@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeN7:
+    standard: @{CleanCode}
+    ruleId: N7
+    title: Make names describe side effects
+    statement:
+        A name should describe everything the function does, including any
+        side effect, not just its main purpose.
+    rationale:
+        A function that quietly does more than its name says surprises
+        callers and causes bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Session getSession() {
+            if (session == null) session = new Session(); // creates as a side effect
+            return session;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Session getOrCreateSession() {
+            if (session == null) session = new Session();
+            return session;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [naming, side-effects]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

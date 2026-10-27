@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon02C:
+    standard: @{CertC}
+    ruleId: CON02-C
+    title: Do not use volatile as a synchronization primitive
+    statement:
+        Do not use volatile to share data between threads or to order their
+        operations. Use atomic types, mutexes or other real synchronization
+        primitives.
+    rationale:
+        volatile prevents some compiler optimizations but provides neither
+        atomicity nor ordering between threads, so data races remain. CERT
+        rates likelihood probable, detectable no, repairable no, priority
+        P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        volatile int ready = 0;
+        int payload;
+
+        void producer(void) {
+            payload = 42;
+            ready = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        atomic_int ready = 0;
+        int payload;
+
+        void producer(void) {
+            payload = 42;
+            atomic_store(&ready, 1);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, concurrency, atomics]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/concurrency-con/con02-c

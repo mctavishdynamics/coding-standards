@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem04C:
+    standard: @{CertC}
+    ruleId: MEM04-C
+    title: Beware of zero-length allocations
+    statement:
+        Avoid calling malloc, calloc or realloc with a size of zero. Check
+        the size first and handle the empty case explicitly.
+    rationale:
+        A zero-size request may return a null pointer or a pointer that must
+        not be dereferenced, and realloc with zero may free the block, so
+        code that assumes otherwise misbehaves. CERT rates likelihood
+        likely, detectable no, repairable yes, priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        char *copy = malloc(len);
+        memcpy(copy, src, len);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (len == 0) {
+            return NULL;
+        }
+        char *copy = malloc(len);
+        if (copy != NULL) {
+            memcpy(copy, src, len);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, memory, allocation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/memory-management-mem/mem04-c

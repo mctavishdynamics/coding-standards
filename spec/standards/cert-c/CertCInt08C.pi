@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt08C:
+    standard: @{CertC}
+    ruleId: INT08-C
+    title: Verify that all integer values are in range
+    statement:
+        Make sure each integer operation produces a value that fits its type
+        and the range the program needs, by design, code review, static
+        analysis or runtime checks.
+    rationale:
+        Signed overflow is undefined behavior, and compilers may optimize
+        away overflow checks written after the fact. CERT rates likelihood
+        probable, detectable no, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int add_score(int total, int points) {
+            return total + points;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <limits.h>
+
+        int add_score(int total, int points, int *out) {
+            if ((points > 0 && total > INT_MAX - points) ||
+                (points < 0 && total < INT_MIN - points)) {
+                return -1;
+            }
+            *out = total + points;
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, overflow]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int08-c

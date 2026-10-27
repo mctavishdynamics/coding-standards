@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt00C:
+    standard: @{CertC}
+    ruleId: INT00-C
+    title: Understand the data model used by your implementation(s)
+    statement:
+        Know the sizes your platforms give the standard integer types and
+        pointers, and protect any assumption the standard does not guarantee
+        with a static assertion.
+    rationale:
+        Assumptions such as int and long having the same size become false
+        when porting, for example from 32-bit to 64-bit, and cause
+        truncation or overflow. CERT rates likelihood unlikely, detectable
+        no, repairable no, priority P3, level L3.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        unsigned int addr = (unsigned int)(uintptr_t)ptr;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdint.h>
+
+        uintptr_t addr = (uintptr_t)ptr;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integers, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/integers-int/int00-c

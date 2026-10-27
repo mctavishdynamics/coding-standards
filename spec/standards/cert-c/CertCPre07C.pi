@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre07C:
+    standard: @{CertC}
+    ruleId: PRE07-C
+    title: Avoid using repeated question marks
+    statement:
+        Do not write two question marks in a row in source code, including
+        in strings and comments. Where repeated question marks are needed in
+        a string, escape one of them.
+    rationale:
+        Two question marks start a trigraph, which older compilers replace
+        with another character, so a string or comment can change meaning or
+        swallow a line. CERT rates likelihood unlikely, detectable yes,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        puts("Are you sure??!");   /* may become "Are you sure|" */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        puts("Are you sure?\?!");
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, portability, strings]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/preprocessor-pre/pre07-c

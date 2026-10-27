@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./FowlerRefactoring import FowlerRefactoring
+
+export coding-rule FowlerSmellDataClumps:
+    standard: @{FowlerRefactoring}
+    ruleId: data-clumps
+    title: Turn recurring groups of data into objects
+    statement:
+        When the same handful of values keeps appearing together in fields
+        and parameter lists, give them their own object and pass that
+        around. A good test is whether the others would still make sense if
+        one were removed. Usual fixes: Extract Class, Introduce Parameter
+        Object, Preserve Whole Object.
+    rationale:
+        Grouping the values shortens parameter lists and gives behavior that
+        works on the group a natural home, which often becomes a useful
+        class in its own right.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function distance(lat1, lng1, lat2, lng2) { /* ... */ }
+        function isInside(lat, lng, minLat, minLng, maxLat, maxLng) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Point {
+          constructor(lat, lng) { this.lat = lat; this.lng = lng; }
+          distanceTo(other) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [data, parameters, objects]
+    source: https://martinfowler.com/bliki/DataClump.html

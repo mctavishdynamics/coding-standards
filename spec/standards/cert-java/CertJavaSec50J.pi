@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec50J:
+    standard: @{CertJava}
+    ruleId: SEC50-J
+    title: Avoid granting excess privileges
+    statement:
+        Grant code only the permissions it needs, in the policy file and in
+        privileged blocks. Pass a restricted access control context or
+        explicit permissions to doPrivileged rather than asserting all of
+        the code's permissions.
+    rationale:
+        Excess privileges let unprivileged or untrusted code perform
+        privileged operations it should not.
+    exceptions:
+        Carefully restricting privileges adds complexity, which must be
+        weighed against the security gained.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+            readConfig("/etc/app/config");
+            return null;
+        });
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Permission read = new FilePermission("/etc/app/config", "read");
+        AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+            readConfig("/etc/app/config");
+            return null;
+        }, null, read);
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, privileges, least-privilege]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/platform-security-sec/sec50-j/

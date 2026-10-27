@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio15C:
+    standard: @{CertC}
+    ruleId: FIO15-C
+    title:
+        Ensure that file operations are performed in a secure directory
+    statement:
+        Create, open and remove sensitive files only in a directory that no
+        other user can modify, and verify that the directory and all of its
+        parents are protected before working in it.
+    rationale:
+        If another user can rename or replace entries in the directory, they
+        can swap the file between operations. A secure directory removes
+        that whole class of file system race. CERT rates likelihood
+        probable, detectable no, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        void write_state(const char *dir) {
+            char path[PATH_MAX];
+            snprintf(path, sizeof path, "%s/state.dat", dir);
+            FILE *f = fopen(path, "w");
+            /* ... */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void write_state(const char *dir) {
+            char path[PATH_MAX];
+            if (!dir_is_secure(dir)) {   /* checks owner and mode up to the root */
+                return;
+            }
+            snprintf(path, sizeof path, "%s/state.dat", dir);
+            FILE *f = fopen(path, "wx");
+            /* ... */
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, files, permissions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio15-c

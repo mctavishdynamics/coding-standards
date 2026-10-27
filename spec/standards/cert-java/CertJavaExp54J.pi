@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaExp54J:
+    standard: @{CertJava}
+    ruleId: EXP54-J
+    title: Understand the differences between bitwise and logical operators
+    statement:
+        Use the short-circuit operators && and || for boolean logic where
+        the second operand depends on the first. Use & and | only when both
+        operands must always be evaluated.
+    rationale:
+        The bitwise operators evaluate both sides, so a guard such as a null
+        or bounds check no longer protects the second operand. Using &&
+        where both sides have needed side effects skips one of them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        if (user != null & user.isActive()) {
+            notify(user);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (user != null && user.isActive()) {
+            notify(user);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, operators, expressions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/expressions-exp/exp54-j/

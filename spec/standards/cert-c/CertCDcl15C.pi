@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl15C:
+    standard: @{CertC}
+    ruleId: DCL15-C
+    title:
+        Declare file-scope objects or functions that do not need external
+        linkage as static
+    statement:
+        Give file-scope objects and functions internal linkage with static
+        unless other translation units need to use them.
+    rationale:
+        Hiding file-local names keeps code modular and avoids clashes and
+        accidental use in the global namespace. CERT rates likelihood
+        unlikely, detectable no, repairable no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int retries;
+
+        int backoff(int attempt) {
+            return attempt * 100;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int retries;
+
+        static int backoff(int attempt) {
+            return attempt * 100;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, linkage, scope]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl15-c

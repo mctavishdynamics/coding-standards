@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCStr11C:
+    standard: @{CertC}
+    ruleId: STR11-C
+    title:
+        Do not specify the bound of a character array initialized with a
+        string literal
+    statement:
+        Leave the bound empty when a character array is initialized with a
+        string literal, so the compiler sizes it to include the terminating
+        null character.
+    rationale:
+        An explicit bound equal to the number of visible characters silently
+        drops the null terminator, and later string calls read past the
+        array. CERT rates likelihood probable, detectable yes, repairable
+        yes, priority P6, level L2.
+    exceptions:
+        An exact bound without the null may be used when the array is not
+        meant to be a string, though separate character constants are
+        preferred. A larger explicit bound is fine when the array must hold
+        more than the literal.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        const char code[3] = "abc";   /* no terminator */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        const char code[] = "abc";
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, strings, arrays]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/characters-and-strings-str/str11-c

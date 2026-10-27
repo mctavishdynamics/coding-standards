@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc06C:
+    standard: @{CertC}
+    ruleId: MSC06-C
+    title: Beware of compiler optimizations
+    statement:
+        Expect the optimizer to remove code whose effect is not visible to
+        the abstract machine, such as clearing a buffer that is never read
+        again. When such code matters, use a facility the compiler must
+        keep, such as memset_s, explicit_bzero or volatile accesses.
+    rationale:
+        Security measures like scrubbing passwords from memory can vanish
+        from the optimized program, leaving sensitive data behind. CERT
+        rates likelihood probable, detectable yes, repairable yes, priority
+        P12, level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        void check_password(void) {
+            char pw[64];
+            read_password(pw, sizeof pw);
+            verify(pw);
+            memset(pw, 0, sizeof pw);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void check_password(void) {
+            char pw[64];
+            read_password(pw, sizeof pw);
+            verify(pw);
+            memset_s(pw, sizeof pw, 0, sizeof pw);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, optimization, sensitive-data]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc06-c

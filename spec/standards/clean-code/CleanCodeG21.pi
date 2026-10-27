@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CleanCode import CleanCode
+
+export coding-rule CleanCodeG21:
+    standard: @{CleanCode}
+    ruleId: G21
+    title: Understand the algorithm before calling the code done
+    statement:
+        Do not stop when the tests happen to pass after much fiddling with
+        flags and special cases. Make sure you understand why the solution
+        is correct, and restructure the code until that is clear.
+    rationale:
+        Code that works only by accident is fragile, and the effort to
+        understand it usually reveals a simpler and cleaner form.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        boolean isLeapYear(int y) {
+            if (y == 1900 || y == 2100) return false;
+            return y % 4 == 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        boolean isLeapYear(int y) {
+            return (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [correctness, design]
+    source: https://www.oreilly.com/library/view/clean-code-a/9780136083238/chapter17.html

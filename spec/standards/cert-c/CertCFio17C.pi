@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio17C:
+    standard: @{CertC}
+    ruleId: FIO17-C
+    title: Do not rely on an ending null character when using fread()
+    statement:
+        fread copies bytes and never adds a terminating null character. When
+        the data read is to be used as a string, terminate it explicitly
+        using the count fread returned.
+    rationale:
+        Treating an unterminated buffer as a string reads past its end,
+        which can leak memory contents or crash the program. CERT rates
+        likelihood likely, detectable no, repairable yes, priority P6, level
+        L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        char name[32];
+        size_t n = fread(name, 1, sizeof name, in);
+        printf("name is %s\n", name);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char name[32];
+        size_t n = fread(name, 1, sizeof name - 1, in);
+        name[n] = '\0';
+        printf("name is %s\n", name);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, strings, buffer-overflow]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio17-c

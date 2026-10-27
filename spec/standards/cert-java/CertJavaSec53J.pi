@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec53J:
+    standard: @{CertJava}
+    ruleId: SEC53-J
+    title: Define custom security permissions for fine-grained security
+    statement:
+        When the default permissions are too coarse for a sensitive action,
+        define a custom permission class and check it with the security
+        manager.
+    rationale:
+        Reusing a broad default permission grants more than intended and
+        leaves the application open to privilege escalation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void exportLedger() {
+            SecurityManager sm = System.getSecurityManager();
+            if (sm != null) {
+                sm.checkPermission(new RuntimePermission("exitVM"));
+            }
+            writeLedger();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        final class LedgerPermission extends BasicPermission {
+            LedgerPermission(String name) { super(name); }
+        }
+
+        void exportLedger() {
+            SecurityManager sm = System.getSecurityManager();
+            if (sm != null) {
+                sm.checkPermission(new LedgerPermission("export"));
+            }
+            writeLedger();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, permissions, security-manager]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/platform-security-sec/sec53-j/

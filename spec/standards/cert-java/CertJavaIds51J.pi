@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds51J:
+    standard: @{CertJava}
+    ruleId: IDS51-J
+    title: Properly encode or escape output
+    statement:
+        Before untrusted data is written to an output subsystem such as an
+        HTML page, encode or escape it for that target. Use an encoder
+        suited to the output context rather than relying on input validation
+        alone.
+    rationale:
+        Data that looks trusted can still carry markup or script. Writing it
+        out unescaped across a trust boundary allows cross-site scripting
+        and can run arbitrary code in the client.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String comment = request.getParameter("comment");
+        out.println("<p>" + comment + "</p>");
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String comment = request.getParameter("comment");
+        out.println("<p>" + Encode.forHtml(comment) + "</p>");
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, output-encoding, injection, xss]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/input-validation-and-data-sanitization-ids/ids51-j/

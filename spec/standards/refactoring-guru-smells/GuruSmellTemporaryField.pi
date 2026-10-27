@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./RefactoringGuruSmells import RefactoringGuruSmells
+
+export coding-rule GuruSmellTemporaryField:
+    standard: @{RefactoringGuruSmells}
+    ruleId: temporary-field
+    title: Avoid fields that hold values only some of the time
+    statement:
+        Do not add fields that are set only during one algorithm or under
+        certain conditions and are empty the rest of the time. Move those
+        fields and the code that uses them into a class of their own.
+        Usual fixes: Extract Class, Introduce Null Object.
+    rationale:
+        Readers expect a field to hold meaningful data for the life of the
+        object. A field that is usually empty is confusing and invites null
+        checks throughout the class.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class RouteFinder {
+            private Graph graph;
+            private Map<Node, Integer> distances;   // used only inside shortestPath
+            private Set<Node> visited;              // used only inside shortestPath
+
+            Path shortestPath(Node from, Node to) { ... }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class RouteFinder {
+            private Graph graph;
+
+            Path shortestPath(Node from, Node to) {
+                return new DijkstraSearch(graph, from).pathTo(to);
+            }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [oo-abusers, fields, state]
+    source: https://refactoring.guru/smells/temporary-field

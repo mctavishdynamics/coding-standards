@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelAvoidNonInclusiveTerms:
+    standard: @{LinuxKernelStyle}
+    ruleId: 4d
+    title: Do not introduce master/slave or blacklist/whitelist terms
+    statement:
+        In new symbol names and documentation, do not add the terms master
+        and slave or blacklist and whitelist. Use replacements such as
+        primary and secondary, controller and device, leader and follower,
+        denylist and allowlist, or blocklist and passlist.
+    rationale:
+        The kernel community has chosen clearer, neutral terminology for new
+        code.
+    exceptions:
+        The old terms may be used to keep a userspace ABI or API, or when
+        updating code for a hardware or protocol specification that existed
+        in 2020 and requires them. For newer specifications, translate the
+        terms where possible.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static const char *ioctl_whitelist[] = { "status", "reset" };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static const char *ioctl_allowlist[] = { "status", "reset" };
+        \\\
+        ```
+    languages: [c]
+    tags: [naming, terminology]
+    source: https://docs.kernel.org/process/coding-style.html#naming

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./LinuxKernelStyle import LinuxKernelStyle
+
+export coding-rule LinuxKernelShortLocalNames:
+    standard: @{LinuxKernelStyle}
+    ruleId: 4c
+    title: Keep local variable names short
+    statement:
+        Give local variables short, plain names: a loop counter can be i and
+        a temporary value tmp, when there is no risk of confusion.
+    rationale:
+        Long names for short-lived locals add typing without adding meaning.
+        If you fear mixing up locals, the function is too large.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (loop_counter = 0; loop_counter < nr; loop_counter++)
+                total += sizes[loop_counter];
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (i = 0; i < nr; i++)
+                total += sizes[i];
+        \\\
+        ```
+    languages: [c]
+    tags: [naming]
+    source: https://docs.kernel.org/process/coding-style.html#naming

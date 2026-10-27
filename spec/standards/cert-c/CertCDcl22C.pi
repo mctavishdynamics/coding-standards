@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl22C:
+    standard: @{CertC}
+    ruleId: DCL22-C
+    title: Use volatile for data that cannot be cached
+    statement:
+        Qualify objects as volatile when they can change outside the normal
+        flow of the program, such as memory-mapped device registers or
+        variables written by a signal handler.
+    rationale:
+        Without volatile the compiler may keep the value in a register or
+        remove reads it thinks are redundant, so the program never sees the
+        change. CERT rates likelihood probable, detectable no, repairable
+        yes, priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include <signal.h>
+
+        sig_atomic_t stop_requested;
+
+        void loop(void) {
+            while (!stop_requested) {
+                do_work();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <signal.h>
+
+        volatile sig_atomic_t stop_requested;
+
+        void loop(void) {
+            while (!stop_requested) {
+                do_work();
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, volatile]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/declarations-and-initialization-dcl/dcl22-c

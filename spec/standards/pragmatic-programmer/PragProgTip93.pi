@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./PragmaticProgrammer import PragmaticProgrammer
+
+export coding-rule PragProgTip93:
+    standard: @{PragmaticProgrammer}
+    ruleId: tip-93
+    title: Cover program states, not just lines of code
+    statement:
+        Design tests around the significant states and inputs the code can
+        see, not only around line coverage.
+    rationale:
+        Executing a line once does not show it handles every state
+        correctly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def test_divide():
+            assert divide(6, 3) == 2  # 100% line coverage
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def test_divide_normal():
+            assert divide(6, 3) == 2
+
+        def test_divide_by_zero():
+            with pytest.raises(ZeroDivisionError):
+                divide(1, 0)
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, coverage]
+    source: https://pragprog.com/tips/

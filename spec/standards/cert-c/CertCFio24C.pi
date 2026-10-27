@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio24C:
+    standard: @{CertC}
+    ruleId: FIO24-C
+    title: Do not open a file that is already open
+    statement:
+        Do not open a file a second time while an earlier stream or
+        descriptor for it is still open. Reuse the open stream, or close it
+        before opening the file again.
+    rationale:
+        Whether the same file may be open more than once is
+        implementation-defined, and a second open by name can reach a
+        different file than the first, creating a time-of-check, time-of-use
+        race. CERT rates likelihood probable, detectable no, repairable no,
+        priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        FILE *log_out = fopen("app.log", "a");
+        FILE *log_in = fopen("app.log", "r");
+        fputs("start\n", log_out);
+        dump(log_in);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        FILE *log_f = fopen("app.log", "a+");
+        fputs("start\n", log_f);
+        rewind(log_f);
+        dump(log_f);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, io, files, race-conditions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/input-output-fio/fio24-c

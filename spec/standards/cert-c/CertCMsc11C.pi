@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc11C:
+    standard: @{CertC}
+    ruleId: MSC11-C
+    title: Incorporate diagnostic tests using assertions
+    statement:
+        Use assert to state assumptions that must hold if the program is
+        correct, such as internal invariants and preconditions on internal
+        functions. Do not use assertions to check user input or run-time
+        errors.
+    rationale:
+        Assertions catch programming errors early during development, but
+        they are removed when NDEBUG is defined, so they cannot replace
+        error handling. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        void *pool_alloc(struct pool *p, size_t n) {
+            void *mem = malloc(n);
+            assert(mem != NULL);
+            return mem;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void *pool_take(struct pool *p) {
+            assert(p->used <= p->capacity);
+            if (p->used == p->capacity) {
+                return NULL;
+            }
+            return p->slots[p->used++];
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, assertions, debugging]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/recommendations/miscellaneous-msc/msc11-c

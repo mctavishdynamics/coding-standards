@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl55J:
+    standard: @{CertJava}
+    ruleId: DCL55-J
+    title: Properly encode relationships in constant definitions
+    statement:
+        When one constant's value depends on another, define it in terms of
+        that constant. Do not relate constants whose values only happen to
+        be connected.
+    rationale:
+        If a related value is written as an independent literal, changing
+        one constant silently leaves the other wrong. Linking unrelated
+        constants causes the opposite problem.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        static final int MAX_USERS = 100;
+        static final int MAX_SESSIONS = 200;  // meant to be two per user
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        static final int MAX_USERS = 100;
+        static final int SESSIONS_PER_USER = 2;
+        static final int MAX_SESSIONS = MAX_USERS * SESSIONS_PER_USER;
+        \\\
+        ```
+    languages: [java]
+    tags: [recommendation, constants, maintainability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/recommendations/declarations-and-initialization-dcl/dcl55-j/
