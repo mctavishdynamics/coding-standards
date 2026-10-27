@@ -7,9 +7,10 @@ export coding-rule CppCoreC127:
     ruleId: C.127
     title: Ensure a polymorphic class cannot be destroyed incorrectly through its base
     statement:
-        Any class with a virtual function needs a destructor that is either
-        public and virtual or protected and non-virtual. Choose protected when
-        callers must not delete through a base pointer.
+        A class that declares any virtual function must also get the right kind
+        of destructor. Make it virtual and public when callers may destroy
+        derived objects through the base, and make it protected and non-virtual
+        when they may not.
     rationale:
         Polymorphic objects are mostly handled through base pointers and often
         deleted that way. Without a virtual destructor, such a delete is

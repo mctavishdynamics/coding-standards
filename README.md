@@ -1,92 +1,67 @@
 # Coding Standards
 
-A Piton package of rules from well-known coding standards, style guides and programming books. Each rule is one Piton spec. It includes a skill that audits code against the rules you choose.
+Rules from 76 published coding standards, style guides and programming books, ready for AI coding agents. Ask your agent to audit code against PEP 8, CERT C, the OWASP ASVS or any of the others, and it reports each problem with the rule it breaks and a link to the original.
 
-- **6,456 rules from 76 standards**, covering more than 20 languages plus security, API design, accessibility, commits and design.
-- **Each rule is its own file**, with a statement, a rationale, exceptions, good and bad code examples, tags and a link to its source.
-- **Every rule is written in our own words**, with new code examples. Nothing is copied from the sources (see [Copyright](#copyright)).
-- **The package ships the `coding-standards-audit` skill**, which checks code against the standards you choose and reports each violation with its rule.
+There are 6,456 rules in all. Each one is a short file: what to do, why, when it doesn't apply, a bad and a good code example, and the source link. The text is our own wording and the examples are new code, with nothing copied from the sources.
 
-## What a rule looks like
+The rules are written in [Piton](https://github.com/piton-lang) and compile to the Markdown files agents read. You don't need to know Piton to use them.
 
-Every rule is a `coding-rule` anchor, defined in [`spec/standards/lib/CodingRule.pi`](spec/standards/lib/CodingRule.pi):
+## Install
 
-```piton
-export coding-rule CertCStr31C:
-    standard: @{CertC}
-    ruleId: STR31-C
-    title: Guarantee that storage for strings has sufficient space for character data and the null terminator
-    statement:
-        Size every string buffer for the longest data it can receive plus the
-        terminating null, and use copy and read functions that respect that size.
-    rationale:
-        Writing past the end of a string buffer is a buffer overflow ...
-    exceptions: null
-    severity: high
-    noncompliant: (fenced code)
-    compliant: (fenced code)
-    languages: [c]
-    tags: [strings, buffer-overflow, memory]
-    source: https://cmu-sei.github.io/secure-coding-standards/...
-```
-
-| Field | Meaning |
-|---|---|
-| `standard` | A link to the standard the rule comes from. |
-| `ruleId` | The source's own ID (`STR31-C`, `C.21`, `item-12`). When the source has none, it is a section number or a slug of the heading. |
-| `title`, `statement`, `rationale` | What to do and why, in plain words. |
-| `exceptions` | When the rule does not apply, or `null`. |
-| `severity` | Only where the source gives one. Today that is the CERT standards (`low`, `medium`, `high`). Otherwise `null`. |
-| `noncompliant`, `compliant` | Short code examples, or `null` when the rule is not about code. |
-| `languages` | `[c]`, `[python]` and so on, or `[any]`. |
-| `tags` | Topic words. The first tag sometimes has a special meaning (see below). |
-| `source` | A link to the rule in the original. |
-
-Some standards use the **first tag** for a special meaning:
-
-| First tag | Meaning |
-|---|---|
-| `recommendation` | A CERT or ANSSI recommendation: softer guidance than a rule. |
-| `practice` | Advice about careers, teams or process rather than code. The audit skill never reports these as findings. |
-| `reviewer`, `author` | Google Engineering Practices: whether the rule is for the code reviewer or for the change author. |
-| `level-1`, `level-2`, `level-3` | OWASP ASVS verification level. |
-| `level-a`, `level-aa`, `level-aaa` | WCAG conformance level. |
-| `must`, `should`, `may` | Zalando API guideline strength. |
-| `do`, `consider`, `avoid`, `do-not`, `prefer`, `dont` | .NET and Dart guideline strength. |
-| `rank-n` | Position in the CWE Top 25 or the OWASP Top 10. |
-
-Each standard is a `coding-standard` anchor ([`spec/standards/lib/CodingStandard.pi`](spec/standards/lib/CodingStandard.pi)). It holds the title, publisher, URL, version and license, and lists its rules in source order.
-
-## Using it in another project
-
-### 1. Install the package
+### In a Piton project
 
 ```sh
-piton tether <git URL of this repository>
+piton tether <repo-url>
 ```
 
-This adds the repository to `dependencies` in your `piton.config.pi` and installs the `coding-standards` package into `tethers/coding-standards`. Nothing is fetched at build time. Run `piton update coding-standards` to pull a newer version.
-
-### 2. Get the audit skill
-
-Re-export the skill from your entry file, usually `spec/index.pi`:
+This installs the package into `tethers/coding-standards` and adds it to the `dependencies` in your `piton.config.pi`. To get the audit skill, add this line to your entry file (usually `spec/index.pi`):
 
 ```piton
 from coding-standards export CodingStandardsAudit
 ```
 
-Then run `piton build`. With the Claude Code adapter, this writes `.claude/skills/coding-standards-audit/SKILL.md`. Ask for an audit in plain words, or run the skill directly:
+Then run `piton build`.
+
+### In a project without Piton
+
+The quickest way is to copy the prebuilt files. This repository already contains the compiled skill and rules for Claude Code, in two folders:
+
+```sh
+mkdir -p your-project/.claude/skills your-project/.claude/reference
+cp -r coding-standards/.claude/skills/coding-standards-audit your-project/.claude/skills/
+cp -r coding-standards/.claude/reference/standards your-project/.claude/reference/
+```
+
+Keep that layout: the skill links to the rules at `../../reference/standards/`. The rules take about 26 MB. To update, copy them again.
+
+To use another agent, or to pick only some of the rules, add Piton to the project instead. Install the `piton` CLI and run this in the project folder:
+
+```sh
+piton init . --template belay/minimal --adapter claude-code
+```
+
+It writes two files, `piton.config.pi` and `spec/index.pi`, and changes nothing else. The entry file holds a sample `Explain` skill that you can delete. Use `--adapter codex` or `--adapter opencode` for those agents. Then follow the steps for a Piton project above.
+
+## Use
+
+Ask your agent for an audit in plain words, or call the skill directly:
 
 ```text
 /coding-standards-audit src/parser
 /coding-standards-audit the current changes, against CERT C and the Power of 10
 ```
 
-The skill links to every standard, so the build also writes the whole rule library into your reference tree (about 6,500 Markdown files under `.claude/reference/tethers/coding-standards/`). The agent reads only the rules it needs, by following links.
+Unless you name standards, the skill picks them for you:
 
-### 3. Or pick rules into your own skills and instructions
+1. It uses what the project already follows: rules in `CLAUDE.md` or `AGENTS.md`, or tool settings such as an ESLint config that extends `airbnb`, a Google- or LLVM-based `.clang-format`, or a `.rubocop.yml`.
+2. Otherwise it uses one style guide per language, for example PEP 8 for Python or Airbnb for JavaScript.
+3. It adds security standards when the code handles untrusted input, logins, files or databases.
 
-Import the rules you want and link to them with `@{...}`. Each link becomes a lazy Markdown link, so the agent opens a rule only when it needs it:
+Books and design advice, such as Clean Code, SOLID or the code smell catalogues, are used only when you ask for them. The skill only reports. It changes code when you ask it to fix the findings.
+
+### Pick your own rules (Piton projects)
+
+You can also link individual rules or whole standards into your own skills and instructions:
 
 ```piton
 use @piton/belay
@@ -105,21 +80,13 @@ export skill CReview:
         - every rule listed in @{PowerOfTen}
 ```
 
-Link to a standard, as `@{PowerOfTen}` does here, to hand over all of its rules. Only what you link to, and what that links to, is written into your reference tree.
+Each `@{...}` becomes a link the agent opens only when it needs that rule, and your build includes only what you link to. The audit skill links to every standard, so exporting it writes the whole library (about 6,500 files) into your reference folder.
 
-To find rule names, browse `tethers/coding-standards/<standard>/` or this repository's compiled reference under `.claude/reference/standards/`. Anchor names start with the standard's prefix, shown in the table below.
+Rule names start with their standard's prefix. Find them in `tethers/coding-standards/<standard>/` or in the table below.
 
-## How the audit skill chooses standards
+## What's included
 
-1. It uses the standards you name.
-2. Otherwise it uses what the project says it follows: its instructions (`CLAUDE.md`, `AGENTS.md`), its contributing guide, or its tool settings (an ESLint config that extends `airbnb`, a `.clang-format` based on Google or LLVM, a `.rubocop.yml`).
-3. Otherwise it uses a default per language: PEP 8 with PEP 257 for Python, CERT C for C, the C++ Core Guidelines with CERT C++ for C++, Airbnb for JavaScript, and so on.
-
-It uses at most one style guide per language, because style guides disagree with each other. It adds security standards on top when the code handles untrusted input or sensitive data. Books and design guidance (Clean Code, the smell catalogues, SOLID and others) are used only when you ask for them. It only reads and reports: it changes code only if you ask it to fix what it found.
-
-The full selection rules are in [`spec/standards/skills/CodingStandardsAudit.pi`](spec/standards/skills/CodingStandardsAudit.pi).
-
-## Standards
+### Standards
 
 | Standard | Anchor | Folder | Rules | License |
 |---|---|---|---|---|
@@ -200,49 +167,72 @@ The full selection rules are in [`spec/standards/skills/CodingStandardsAudit.pi`
 | [Web Content Accessibility Guidelines (WCAG) 2.2](https://www.w3.org/TR/WCAG22/) | `Wcag22` | `wcag` | 86 | Copyright 2020-2024 World Wide Web Consortium, W3C Document License |
 | [Zalando RESTful API and Event Guidelines](https://opensource.zalando.com/restful-api-guidelines/) | `ZalandoApi` | `zalando-api` | 146 | CC BY 4.0 |
 
-The full scope, every decision and the open questions are in [`spec/standards/CodingStandards.pi`](spec/standards/CodingStandards.pi).
+### What a rule contains
 
-## Copyright
+| Field | Meaning |
+|---|---|
+| `standard` | Link to the standard it comes from. |
+| `ruleId` | The source's own ID, such as `STR31-C`, `C.21` or `item-12`. If the source has none, a section number or a slug of the heading. |
+| `title`, `statement`, `rationale` | What to do and why. |
+| `exceptions` | When the rule doesn't apply, or `null`. |
+| `severity` | `low`, `medium` or `high`. Only CERT gives one; elsewhere it's `null`. |
+| `noncompliant`, `compliant` | Short code examples, or `null` for rules that aren't about code. |
+| `languages` | For example `[c]` or `[python]`, or `[any]`. |
+| `tags` | Topic words. In some standards the first tag has a set meaning (next table). |
+| `source` | Link to the rule in the original. |
 
-No rule may infringe its source's copyright or license.
+| First tag | Meaning |
+|---|---|
+| `recommendation` | A CERT or ANSSI recommendation, softer than a rule. |
+| `practice` | Advice about careers, teams or process. The audit skill never reports these. |
+| `reviewer`, `author` | Google Engineering Practices: who the rule is for. |
+| `level-1` to `level-3` | OWASP ASVS verification level. |
+| `level-a`, `level-aa`, `level-aaa` | WCAG conformance level. |
+| `must`, `should`, `may` | Zalando guideline strength. |
+| `do`, `consider`, `avoid`, `do-not`, `prefer`, `dont` | .NET and Dart guideline strength. |
+| `rank-n` | Position in the CWE Top 25 or OWASP Top 10. |
 
-- **Our own words:** every statement, rationale and exception says what the source means in new wording and new sentence structure.
-- **New code:** every example is newly written. None is copied or lightly edited from the source.
-- **Titles:** our own words too. The exception is CERT, whose CC BY 4.0 license allows reuse with attribution and whose titles also serve as the rules' names.
-- **Attribution:** every rule links to its source, and every standard records its publisher, version and license.
-- **Books:** the rule lists come from each book's own published table of contents or rule summary, checked against public sources. The books' text is never reproduced.
-- **Overlap check:** before a standard is accepted, `tools/overlap.py` compares every rule's prose (runs of 7 to 10 words) and its long code lines against the fetched source pages, and anything that matches is rewritten.
-- **Left out:** BARR-C, *The Art of Unix Programming* and *97 Things Every Programmer Should Know*, because their licenses forbid derivative works or commercial use. MISRA is left out because it is paid.
+The shapes are defined in [`spec/standards/lib/`](spec/standards/lib/). Scope, decisions and open questions are in [`spec/standards/CodingStandards.pi`](spec/standards/CodingStandards.pi).
 
-This is careful practice, not legal advice. If a source's license matters for your use, check it yourself.
+### Copyright
+
+Every statement, rationale and exception is our own wording, and every code example is new. Titles are our own too, except CERT's, which its CC BY 4.0 license lets us reuse and which double as the rules' names. Each rule links to its source, and each standard records its publisher, version and license.
+
+For books, the list of rules comes from the book's published contents or rule summary, checked against public sources. None of the book text is reproduced.
+
+Before a standard is accepted, `tools/overlap.py` compares its rules against the saved source pages, looking for runs of 7 or more words and long code lines. Anything that matches is rewritten. What remains is CERT titles and short technical terms such as API names.
+
+BARR-C, *The Art of Unix Programming* and *97 Things Every Programmer Should Know* are left out because their licenses forbid derivative works or commercial use. MISRA is left out because it is paid. Still open is whether to keep the share-alike and copyleft sources: the OWASP standards (CC BY-SA), the GNU Coding Standards (GFDL) and the Linux kernel style (GPL-2.0).
+
+This is careful practice, not legal advice. If a license matters for your use, check it yourself.
 
 ## Working on this repository
 
-The Piton source is the truth. Everything under `.claude/` is generated.
+The `.pi` files are the source. Everything under `.claude/` is generated.
 
 ```sh
-piton format spec/standards/<standard>   # run per folder; project-wide format stops at 5,000 files
+piton format spec/standards/<standard>   # per folder: project-wide format stops at 5,000 files
 piton check
 piton build
 ```
 
-| Path | What it holds |
+| Path | Contents |
 |---|---|
-| `spec/standards/` | The package root, the part other projects tether. |
+| `spec/standards/` | The package other projects install. |
 | `spec/standards/lib/` | The `coding-rule` and `coding-standard` shapes. |
 | `spec/standards/skills/` | The audit skill. |
-| `spec/standards/<standard>/` | One standard: its anchor file and one file per rule. A large standard may use subfolders, as the C++ Core Guidelines do. |
-| `tools/gen_index.py` | Writes each standard's `index.pi` files and its `rules:` list. |
-| `tools/orders/` | The source order of each standard's rules, used by `gen_index.py`. |
-| `tools/overlap.py` | The copyright overlap check. Point it at a folder of fetched source pages. |
-| `tethers/crux/` | The crux spec skills, used to develop this specification. |
+| `spec/standards/<standard>/` | One standard: its anchor file and one file per rule. |
+| `tools/gen_index.py` | Writes each standard's `index.pi` and its `rules:` list. |
+| `tools/orders/` | The source order of each standard's rules. |
+| `tools/overlap.py` | The copyright overlap check. |
+| `tethers/crux/` | The crux skills used to develop this specification. |
 
-**To add a standard:**
+To add a standard:
 
 1. Create `spec/standards/<folder>/<Name>.pi` with a `coding-standard` anchor.
-2. Add one rule file per rule, named after its anchor, with the standard's prefix (`MyGuideRuleName.pi`). Start each file with `use ../lib/CodingRule` and `from ./<Name> import <Name>`.
-3. List the anchor names in source order in `tools/orders/<folder>.txt`.
-4. Run `python3 -I tools/gen_index.py spec/standards tools/orders <folder>`, and add `from ./<folder> export *` to `spec/standards/index.pi`.
-5. Run the overlap check against the fetched sources and rewrite any hits.
-6. Add the standard to the audit skill's `standardsByLanguage`, if it should be used there.
+2. Add one file per rule, named after its anchor and starting with the standard's prefix. Each begins with `use ../lib/CodingRule` and `from ./<Name> import <Name>`.
+3. List the rule names in source order in `tools/orders/<folder>.txt`.
+4. Run `python3 -I tools/gen_index.py spec/standards tools/orders <folder>` and add `from ./<folder> export *` to `spec/standards/index.pi`.
+5. Run the overlap check against the saved sources and rewrite any matches.
+6. If the audit skill should use the standard, add it to `standardsByLanguage` in the skill.
 7. Run `piton format`, `piton check` and `piton build`.
