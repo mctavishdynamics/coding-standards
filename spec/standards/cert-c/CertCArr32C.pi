@@ -9,9 +9,9 @@ export coding-rule CertCArr32C:
         Ensure size arguments for variable length arrays are in a valid
         range
     statement:
-        Check that the size of a variable length array is positive and small
-        enough to fit on the stack, especially when it comes from untrusted
-        data.
+        Before declaring a variable length array, verify that its length is
+        greater than zero and not so large that the stack overflows, above
+        all when untrusted input sets it.
     rationale:
         A zero or negative size is undefined behavior, and an excessive size
         can overflow the stack into other program data. CERT rates

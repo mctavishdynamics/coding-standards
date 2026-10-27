@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem31:
+    standard: @{EffectiveJava}
+    ruleId: item-31
+    title: Loosen generic parameter types with extends and super wildcards
+    statement:
+        For parameters that produce values, use extends wildcards, and for
+        parameters that consume values, use super wildcards. Leave return
+        types without wildcards.
+    rationale:
+        Wildcards let a method accept every type that would work, such as a
+        list of Integer where a list of Number is read, so callers do not
+        have to fight the type system.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public void pushAll(Iterable<E> source) {
+            for (E e : source) push(e);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public void pushAll(Iterable<? extends E> source) {
+            for (E e : source) push(e);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [generics, wildcards, api-design]
+    source: https://www.informit.com/store/effective-java-9780134686097

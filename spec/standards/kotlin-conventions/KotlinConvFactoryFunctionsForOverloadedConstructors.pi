@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvFactoryFunctionsForOverloadedConstructors:
+    standard: @{KotlinConventions}
+    ruleId: factory-functions-for-overloaded-constructors
+    title: Replace irreducible constructor overloads with factory functions
+    statement:
+        When a class has several overloaded constructors that do not call
+        different superclass constructors and cannot be merged into one with
+        default values, prefer factory functions.
+    rationale:
+        Named factories explain each way of creating the object better than
+        a set of constructors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        class Duration(val millis: Long) {
+            constructor(seconds: Int) : this(seconds * 1000L)
+            constructor(minutes: Double) : this((minutes * 60_000).toLong())
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        class Duration(val millis: Long) {
+            companion object {
+                fun ofSeconds(seconds: Int) = Duration(seconds * 1000L)
+                fun ofMinutes(minutes: Double) = Duration((minutes * 60_000).toLong())
+            }
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [factories, constructors]
+    source: https://kotlinlang.org/docs/coding-conventions.html#factory-functions

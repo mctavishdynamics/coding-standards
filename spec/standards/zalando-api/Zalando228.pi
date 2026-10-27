@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando228:
+    standard: @{ZalandoApi}
+    ruleId: 228
+    title: Use URL-friendly resource identifiers
+    statement:
+        Restrict resource identifiers to ASCII letters, digits, underscore,
+        hyphen, colon and period, with slashes allowed only for compound
+        keys. Never allow an empty identifier as a path parameter.
+    rationale:
+        Such identifiers need no percent encoding in URLs and cannot produce
+        the ambiguous paths that empty values create.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /articles/Blue%20Shirt%20%2342
+        GET /articles/
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /articles/blue-shirt-42
+        \\\
+        ```
+    languages: [any]
+    tags: [must, urls, identifiers]
+    source: https://opensource.zalando.com/restful-api-guidelines/#228

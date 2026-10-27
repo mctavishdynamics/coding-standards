@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule189:
+    standard: @{AnssiC}
+    ruleId: rule-189
+    title: Keep comment openers and line splices out of comments
+    statement:
+        Do not write the block-comment opener or a double slash inside any
+        comment, and do not end a line comment with a backslash.
+    rationale:
+        A stray opener can swallow code into a comment, and a trailing
+        backslash joins the next line into the comment.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* retry count /* see config */
+        int retries = 3; // default \
+        int timeout = 5;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* retry count, see config */
+        int retries = 3; // default
+        int timeout = 5;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, comments, preprocessor]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=151

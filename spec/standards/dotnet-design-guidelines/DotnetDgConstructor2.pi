@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgConstructor2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: constructor-2
+    title: Consider a static factory when construction is not a natural fit
+    statement:
+        Prefer a named static method over a constructor when the operation
+        is really a conversion, lookup or parse rather than plain creation,
+        or when the constructor guidelines would be awkward to follow.
+    rationale:
+        A named factory can describe conversions, caching or parsing more
+        clearly than an overloaded constructor.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Color(string hexCode) { /* parses "#RRGGBB" */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static Color FromHex(string hexCode) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, constructors, factories]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/constructor

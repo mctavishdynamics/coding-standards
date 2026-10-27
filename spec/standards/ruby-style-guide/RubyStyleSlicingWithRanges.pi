@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSlicingWithRanges:
+    standard: @{RubyStyleGuide}
+    ruleId: slicing-with-ranges
+    title: Slice arrays with clear ranges
+    statement:
+        Do not slice the whole array with a range from 0 to -1; use the
+        array itself. Use an endless range to slice to the end and a
+        beginless range or an explicit 0 to slice from the start, rather
+        than -1 or nil bounds. RuboCop checks this with
+        Style/SlicingWithRange.
+    rationale:
+        Bounds such as -1 and nil are hard to read, while endless and
+        beginless ranges state the slice directly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        rest = items[1..-1]
+        head = items[nil..9]
+        all = items[0..-1]
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        rest = items[1..]
+        head = items[..9]
+        all = items
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, ranges, readability]
+    source: https://rubystyle.guide/#slicing-with-ranges

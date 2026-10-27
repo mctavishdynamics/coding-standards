@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartBracesForFlowControl:
+    standard: @{EffectiveDart}
+    ruleId: do-use-curly-braces-for-all-flow-control-statements
+    title: Use braces around every flow control body
+    statement:
+        Wrap the bodies of `if`, `else`, `for`, `while` and `do` in braces.
+        The curly_braces_in_flow_control_structures lint checks this.
+    rationale:
+        Braces remove the dangling else ambiguity and stop a new line from
+        silently falling outside the body.
+    exceptions:
+        An `if` without `else` that fits entirely on one line may omit the
+        braces. If its body wraps onto another line, use braces.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        if (cart.isEmpty)
+          showEmptyMessage();
+        else
+          showTotal(cart);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        if (cart.isEmpty) {
+          showEmptyMessage();
+        } else {
+          showTotal(cart);
+        }
+        if (user == null) return;
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, formatting, control-flow]
+    source: https://dart.dev/effective-dart/style#do-use-curly-braces-for-all-flow-control-statements

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartStringInterpolation:
+    standard: @{EffectiveDart}
+    ruleId: prefer-using-interpolation-to-compose-strings-and-values
+    title: Build strings from values with interpolation
+    statement:
+        Combine literals and values with string interpolation instead of
+        chains of `+`. The prefer_interpolation_to_compose_strings lint
+        checks this.
+    rationale:
+        Interpolation is shorter and easier to read than repeated
+        concatenation.
+    exceptions:
+        Calling `toString()` to convert a single object is fine; the
+        guideline concerns mixing several literals and values.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final label = 'Order ' + order.id + ' has ' + count.toString() + ' items';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final label = 'Order ${order.id} has $count items';
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, strings]
+    source: https://dart.dev/effective-dart/usage#prefer-using-interpolation-to-compose-strings-and-values

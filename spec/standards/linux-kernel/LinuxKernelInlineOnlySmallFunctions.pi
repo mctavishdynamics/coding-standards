@@ -13,9 +13,9 @@ export coding-rule LinuxKernelInlineOnlySmallFunctions:
         Overusing inline makes the kernel bigger, which costs instruction
         cache and page cache space and slows the whole system.
     exceptions:
-        A larger function may be inline when a parameter is known to be a
-        compile-time constant and the compiler can then optimise most of the
-        body away, as with kmalloc.
+        Inlining a bigger function can pay off when one of its arguments is
+        always a constant at compile time, letting the compiler discard most of
+        the code; kmalloc is the usual case.
     severity: null
     noncompliant:
         ```c

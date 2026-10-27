@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExceptionThrowing11:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: exception-throwing-11
+    title: Avoid explicit throws in finally blocks
+    statement:
+        Do not write throw statements inside finally blocks. Exceptions
+        coming from methods called there are acceptable.
+    rationale:
+        An exception from a finally block replaces any exception already in
+        flight, hiding the original failure.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        finally
+        {
+            if (!_connection.IsClosed) throw new InvalidOperationException("Connection left open.");
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        finally
+        {
+            _connection.Close();
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, exceptions, error-handling]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/exception-throwing

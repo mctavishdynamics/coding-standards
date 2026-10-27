@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartEqualityIsEquivalence:
+    standard: @{EffectiveDart}
+    ruleId: do-make-your-operator-obey-the-mathematical-rules-of-equality
+    title: Make == reflexive, symmetric and transitive
+    statement:
+        Implement `==` as an equivalence relation. If the operation cannot
+        satisfy these laws, give it another name.
+    rationale:
+        Users and collections depend on equality behaving mathematically.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Price {
+          final int cents;
+          Price(this.cents);
+          @override
+          bool operator ==(Object other) =>
+              other is Price && (other.cents - cents).abs() <= 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Price {
+          final int cents;
+          Price(this.cents);
+          @override
+          bool operator ==(Object other) => other is Price && other.cents == cents;
+          @override
+          int get hashCode => cents.hashCode;
+          bool isCloseTo(Price other) => (other.cents - cents).abs() <= 1;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, equality]
+    source: https://dart.dev/effective-dart/design#do-make-your-operator-obey-the-mathematical-rules-of-equality

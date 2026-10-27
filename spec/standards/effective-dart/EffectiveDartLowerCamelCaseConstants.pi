@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartLowerCamelCaseConstants:
+    standard: @{EffectiveDart}
+    ruleId: prefer-using-lowercamelcase-for-constant-names
+    title: Write constant names in lowerCamelCase
+    statement:
+        In new code, name const variables and enum values in lowerCamelCase
+        rather than SCREAMING_CAPS. The constant_identifier_names lint
+        checks this.
+    rationale:
+        All-caps names read badly, especially for enum values, and a
+        constant that later becomes a final variable would need renaming.
+        The enum `values` property is already lowercase.
+    exceptions:
+        SCREAMING_CAPS is fine when extending code that already uses that
+        style, or in generated Dart that mirrors Java, such as enums
+        produced from protobuf definitions.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        const MAX_RETRIES = 3;
+        enum Shade { LIGHT_GREY, DARK_GREY }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        const maxRetries = 3;
+        enum Shade { lightGrey, darkGrey }
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, naming, constants]
+    source: https://dart.dev/effective-dart/style#prefer-using-lowercamelcase-for-constant-names

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuBreakBeforeOperators:
+    standard: @{GnuCodingStandards}
+    ruleId: formatting-split-before-operator
+    title: Break long expressions before an operator
+    statement:
+        When an expression needs more than one line, put the line break in
+        front of an operator rather than behind it, so each continuation
+        line starts with the operator.
+    rationale:
+        A leading operator shows at a glance how the continued line joins
+        the previous one.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (buffer_is_full (buf) ||
+            timeout_expired (now))
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (buffer_is_full (buf)
+            || timeout_expired (now))
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, line-breaking]
+    source: https://www.gnu.org/prep/standards/standards.html#Formatting

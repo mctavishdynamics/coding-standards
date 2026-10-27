@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem102:
+    standard: @{EffectivePython}
+    ruleId: item-102
+    title: Find positions in an ordered list by binary search
+    statement:
+        When a list is sorted, find positions and values with the bisect
+        module instead of scanning with index or a loop.
+    rationale:
+        Binary search takes logarithmic time, which matters for large
+        sequences.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        pos = next(i for i, t in enumerate(times) if t >= target)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from bisect import bisect_left
+
+        pos = bisect_left(times, target)
+        \\\
+        ```
+    languages: [python]
+    tags: [data-structures-and-algorithms, algorithms, searching]
+    source: https://effectivepython.com/

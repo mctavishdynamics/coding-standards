@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleCommentWhy:
+    standard: @{TigerStyle}
+    ruleId: comment-why
+    title: Use comments to explain why the code is written this way
+    statement:
+        Explain the reasons behind the code in comments. The code alone does
+        not document its rationale.
+    rationale:
+        Readers can see what the code does, but only the author can tell
+        them why it was done this way.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        // Increment retries.
+        retries += 1;
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        // Count retries so a flapping disk is reported instead of retried forever.
+        retries += 1;
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [comments, documentation]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#naming-things

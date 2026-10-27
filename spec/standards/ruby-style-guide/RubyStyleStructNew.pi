@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleStructNew:
+    standard: @{RubyStyleGuide}
+    ruleId: struct-new
+    title: Consider Struct.new for simple data classes
+    statement:
+        Use Struct.new when a class mainly holds a few attributes; it
+        defines the accessors, the constructor and the comparison operators
+        for you.
+    rationale:
+        It removes boilerplate that is easy to get slightly wrong by hand.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Point
+          attr_accessor :x, :y
+
+          def initialize(x, y)
+            @x = x
+            @y = y
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        Point = Struct.new(:x, :y)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, data]
+    source: https://rubystyle.guide/#struct-new

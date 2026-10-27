@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleIsAVsInstanceOf:
+    standard: @{RubyStyleGuide}
+    ruleId: is-a-vs-instance-of
+    title: Check types with is_a? rather than instance_of?
+    statement:
+        Check types with is_a? rather than instance_of?.
+    rationale:
+        The is_a? check considers superclasses and included modules, which
+        is normally what you want, while instance_of? rejects subclasses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        handle(error) if error.instance_of?(StandardError)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        handle(error) if error.is_a?(StandardError)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comparison, types]
+    source: https://rubystyle.guide/#is-a-vs-instance-of

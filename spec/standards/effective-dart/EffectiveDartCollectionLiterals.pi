@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartCollectionLiterals:
+    standard: @{EffectiveDart}
+    ruleId: do-use-collection-literals-when-possible
+    title: Create collections with literals
+    statement:
+        Build lists, maps and sets with literal syntax rather than the
+        unnamed `Map()` or `Set()` constructors. Named constructors such as
+        `List.from` are not covered. The prefer_collection_literals lint
+        checks this.
+    rationale:
+        Literals are shorter and support spreads and collection `if` and
+        `for` for building contents.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final scores = Map<String, int>();
+        final tags = Set<String>();
+        tags.addAll(defaultTags);
+        if (isAdmin) tags.add('admin');
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final scores = <String, int>{};
+        final tags = <String>{...defaultTags, if (isAdmin) 'admin'};
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, collections]
+    source: https://dart.dev/effective-dart/usage#do-use-collection-literals-when-possible

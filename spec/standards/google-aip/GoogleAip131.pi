@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip131:
+    standard: @{GoogleAip}
+    ruleId: AIP-131
+    title: Provide a Get method that returns the resource itself
+    statement:
+        Every resource needs a Get method named Get plus the resource, with
+        a request message named after the RPC and the resource itself as the
+        response. The request takes the resource name in a name field that
+        references the resource type and has no other required fields; bind
+        it to HTTP GET.
+    rationale:
+        A uniform Get lets clients and tools read any resource the same way
+        and confirm the result of a mutation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        rpc FetchRecipe(FetchRecipeRequest) returns (FetchRecipeResponse);
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        rpc GetRecipe(GetRecipeRequest) returns (Recipe) {
+          option (google.api.http) = {
+            get: "/v1/{name=kitchens/*/recipes/*}"
+          };
+          option (google.api.method_signature) = "name";
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [methods, standard-methods]
+    source: https://google.aip.dev/131

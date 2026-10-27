@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando248:
+    standard: @{ZalandoApi}
+    ruleId: 248
+    title: Use the pagination response page object
+    statement:
+        Return paginated results in an object with self, first, prev, next
+        and last links or cursors and an items array, and for queries sent
+        in a body, a query field echoing the applied filters.
+    rationale:
+        A common page structure lets clients iterate any collection the same
+        way.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```json
+        \\\
+        {
+          "self": "https://orders.example.com/orders?cursor=c2",
+          "prev": "https://orders.example.com/orders?cursor=c1",
+          "next": "https://orders.example.com/orders?cursor=c3",
+          "items": [ { "id": "so-4471" } ]
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [should, pagination, json]
+    source: https://opensource.zalando.com/restful-api-guidelines/#248

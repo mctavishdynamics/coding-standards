@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuUseEnumForIntegerConstants:
+    standard: @{GnuCodingStandards}
+    ruleId: names-enum-constants
+    title: Define integer constants with enum instead of #define
+    statement:
+        When you need named integer constants, declare them as enumeration
+        constants rather than macros.
+    rationale:
+        Debuggers such as GDB know enumeration constants and can show them
+        by name.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define MODE_READ  1
+        #define MODE_WRITE 2
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum { MODE_READ = 1, MODE_WRITE = 2 };
+        \\\
+        ```
+    languages: [c]
+    tags: [constants, preprocessor, debugging]
+    source: https://www.gnu.org/prep/standards/standards.html#Names

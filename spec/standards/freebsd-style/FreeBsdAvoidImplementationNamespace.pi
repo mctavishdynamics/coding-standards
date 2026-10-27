@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdAvoidImplementationNamespace:
+    standard: @{FreeBsdStyle}
+    ruleId: implementation-namespace
+    title: Do not define names in the implementation namespace
+    statement:
+        Avoid defining macros or declaring identifiers in the namespace
+        reserved for the implementation, such as those beginning with an
+        underscore and a capital letter, unless you are implementing an
+        application interface.
+    rationale:
+        Such names belong to the compiler and C library and may clash with
+        their definitions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define _MAX_SLOTS 64
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define MAX_SLOTS 64
+        \\\
+        ```
+    languages: [c]
+    tags: [naming, preprocessor]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

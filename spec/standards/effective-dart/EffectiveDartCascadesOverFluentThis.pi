@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartCascadesOverFluentThis:
+    standard: @{EffectiveDart}
+    ruleId: avoid-returning-this-from-methods-just-to-enable-a-fluent-interface
+    title: Use cascades instead of returning this for chaining
+    statement:
+        Do not return `this` from methods solely so calls can be chained;
+        callers can chain with the `..` cascade. The avoid_returning_this
+        lint checks this.
+    rationale:
+        Cascades give chaining on any object without distorting method
+        signatures.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class QueryBuilder {
+          QueryBuilder where(String clause) {
+            _clauses.add(clause);
+            return this;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class QueryBuilder {
+          void where(String clause) => _clauses.add(clause);
+        }
+
+        final query = QueryBuilder()
+          ..where('age > 18')
+          ..where('active');
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, api-design, cascades]
+    source: https://dart.dev/effective-dart/design#avoid-returning-this-from-methods-just-to-enable-a-fluent-interface

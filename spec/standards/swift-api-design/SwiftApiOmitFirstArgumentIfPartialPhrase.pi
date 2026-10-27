@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiOmitFirstArgumentIfPartialPhrase:
+    standard: @{SwiftApiDesign}
+    ruleId: omit-first-argument-if-partial-phrase
+    title: Drop the first label when the argument continues the phrase
+    statement:
+        If the first argument completes a grammatical phrase with the base
+        name, omit its label and move any leading words into the base name.
+        If it does not form part of such a phrase, label it, and always
+        label arguments that have defaults.
+    rationale:
+        The phrase must express the right meaning; an unlabelled argument
+        that does not fit the phrase reads as something else.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        sheet.close(true)
+        let chunks = data.split(512)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        sheet.close(animated: true)
+        let chunks = data.split(maxLength: 512)
+        toolbar.addButton(saveButton)
+        \\\
+        ```
+    languages: [swift]
+    tags: [argument-labels, fluency]
+    source: https://www.swift.org/documentation/api-design-guidelines/#omit-first-argument-if-partial-phrase

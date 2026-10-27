@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe20:
+    standard: @{CweTop25}
+    ruleId: CWE-20
+    title: Prevent improper input validation
+    statement:
+        Treat all input as hostile and validate it on the server against an
+        allow list of what is acceptable, covering type, length, range,
+        syntax and business rules. Reject anything that does not conform
+        instead of trying to repair it, and find every point where untrusted
+        data enters the program.
+    rationale:
+        Unvalidated input is the starting point for most other weaknesses,
+        from injection to memory corruption and logic abuse. It is ranked 18
+        of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        int quantity = Integer.parseInt(request.getParameter("qty"));
+        cart.add(itemId, quantity);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int quantity = Integer.parseInt(request.getParameter("qty"));
+        if (quantity < 1 || quantity > MAX_PER_ORDER) {
+            throw new IllegalArgumentException("quantity out of range");
+        }
+        cart.add(itemId, quantity);
+        \\\
+        ```
+    languages: [java]
+    tags: [rank-18, input-validation]
+    source: https://cwe.mitre.org/data/definitions/20.html

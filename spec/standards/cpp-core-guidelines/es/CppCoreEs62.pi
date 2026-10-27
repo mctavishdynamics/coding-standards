@@ -5,28 +5,32 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs62:
     standard: @{CppCoreGuidelines}
     ruleId: ES.62
-    title: Don't compare pointers into different arrays
+    title: Compare pointers only within the same array
     statement:
-        Only compare or subtract pointers that point into the same array or
-        object.
+        Compare or subtract two pointers only when both point into one array
+        or one object.
     rationale:
-        Ordering comparisons between pointers into unrelated arrays have no
-        defined result.
+        The standard gives no meaning to ordering pointers that point into
+        different arrays, so the result is undefined.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        int a[10];
-        int b[10];
-        bool before = &a[3] < &b[3];
+        bool comes_first(const std::vector<int>& xs, const std::vector<int>& ys)
+        {
+            return xs.data() < ys.data();   // two unrelated buffers
+        }
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        int a[10];
-        bool before = &a[3] < &a[7];
+        bool comes_first(const int* p, const int* q, std::span<const int> buf)
+        {
+            // both p and q are known to point into buf
+            return p - buf.data() < q - buf.data();
+        }
         \\\
         ```
     languages: [cpp]

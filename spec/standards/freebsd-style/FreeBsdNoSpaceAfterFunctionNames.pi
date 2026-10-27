@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdNoSpaceAfterFunctionNames:
+    standard: @{FreeBsdStyle}
+    ruleId: call-spacing
+    title: Do not space after function names or inside parentheses and brackets
+    statement:
+        Write no space between a function name and its parenthesis, and none
+        after an opening or before a closing parenthesis or bracket. Put a
+        space after each comma.
+    rationale:
+        Tight calls and spaced commas are the KNF look and read cleanly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        error = copyout ( &st,uaddr, sizeof( st ) );
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        error = copyout(&st, uaddr, sizeof(st));
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, whitespace]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

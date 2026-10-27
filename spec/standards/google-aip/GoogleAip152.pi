@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip152:
+    standard: @{GoogleAip}
+    ruleId: AIP-152
+    title: Model repeatable or separately permissioned tasks as Job resources
+    statement:
+        When a long task runs repeatedly or needs separate permissions to
+        configure and to run, model it as a resource whose name ends in Job
+        and manage it with the standard methods. Execute it with a Run
+        method named Run plus the job, which should return a long-running
+        operation.
+    rationale:
+        A plain operation cannot be configured once and run many times, or
+        have its configuration secured apart from its execution. A job
+        resource gives both.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        rpc RebuildSearchIndex(RebuildSearchIndexRequest)
+            returns (google.longrunning.Operation);
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message ReindexCatalogJob {
+          string name = 1;
+          string schedule = 2;
+        }
+        rpc RunReindexCatalogJob(RunReindexCatalogJobRequest)
+            returns (google.longrunning.Operation);
+        \\\
+        ```
+    languages: [any]
+    tags: [design-patterns, long-running-operations]
+    source: https://google.aip.dev/152

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmDocumentFunctionsAndEdgeCases:
+    standard: @{LlvmCodingStandards}
+    ruleId: method-information
+    title: Document what functions do, including edge cases
+    statement:
+        Give methods and global functions a short comment that states what
+        they do and how they behave in unusual cases, such as whether they
+        can return null. A caller should be able to use the interface
+        without reading its body.
+    rationale:
+        Edge-case behavior is what callers most often get wrong when it is
+        left implicit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Function *findCallee(CallBase &Call);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        /// Returns the function called directly by \p Call, or null if the call
+        /// is indirect or goes through a cast.
+        Function *findCallee(CallBase &Call);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, documentation, functions]
+    source: https://llvm.org/docs/CodingStandards.html#method-information

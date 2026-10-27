@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule42:
+    standard: @{CppCodingStandards}
+    ruleId: rule-42
+    title: Do not expose handles to internal data
+    statement:
+        Avoid returning non-const references or raw pointers to data
+        members, and be careful with handles even to const data.
+    rationale:
+        External handles let clients change state behind the class's back
+        and outlive the object.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Config {
+        public:
+            std::map<std::string, std::string>& values() { return v_; }
+        private:
+            std::map<std::string, std::string> v_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Config {
+        public:
+            std::optional<std::string> get(const std::string& k) const;
+            void set(const std::string& k, std::string v);
+        private:
+            std::map<std::string, std::string> v_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, encapsulation, lifetime]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

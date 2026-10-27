@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoDeferToCleanUp:
+    standard: @{UberGo}
+    ruleId: defer-to-clean-up
+    title: Release resources with defer
+    statement:
+        Use defer to release files, locks and similar resources. Skip it
+        only when you can show the function runs in nanoseconds and the
+        overhead matters.
+    rationale:
+        Defer costs very little and guarantees cleanup on every return path,
+        which is easy to miss when unlocking by hand in a function with
+        several returns.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (s *Store) Get(key string) (string, bool) {
+            s.mu.Lock()
+            v, ok := s.data[key]
+            if !ok {
+                s.mu.Unlock()
+                return "", false
+            }
+            s.mu.Unlock()
+            return v, true
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (s *Store) Get(key string) (string, bool) {
+            s.mu.Lock()
+            defer s.mu.Unlock()
+            v, ok := s.data[key]
+            return v, ok
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [resources, defer]
+    source: https://github.com/uber-go/guide/blob/master/style.md#defer-to-clean-up

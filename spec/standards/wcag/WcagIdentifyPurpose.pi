@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagIdentifyPurpose:
+    standard: @{Wcag22}
+    ruleId: 1.3.6
+    title: Mark the purpose of components, icons and regions in code
+    statement:
+        In content built from markup, expose what each control, icon and
+        region is for in a way programs can read, such as through ARIA roles
+        or landmark elements.
+    rationale:
+        Software can then adapt or simplify the interface, such as swapping
+        icons for symbols a user knows.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <div class="top"><div class="links">...</div></div>
+        <div class="content">...</div>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <header><nav aria-label="Main">...</nav></header>
+        <main>...</main>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aaa, semantics, landmarks]
+    source: https://www.w3.org/TR/WCAG22/#identify-purpose

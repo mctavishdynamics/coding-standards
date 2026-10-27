@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoSelfUnlessRequired:
+    standard: @{RubyStyleGuide}
+    ruleId: no-self-unless-required
+    title: Write self only where Ruby needs it
+    statement:
+        Do not write self in front of a method call unless Ruby needs it,
+        which is when calling a writer accessor, a method named like a
+        reserved word, or an overloadable operator.
+    rationale:
+        Unneeded self adds clutter and suggests a distinction that does not
+        exist.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def finish
+          self.status = :done if self.ready?
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def finish
+          self.status = :done if ready?
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, classes]
+    source: https://rubystyle.guide/#no-self-unless-required

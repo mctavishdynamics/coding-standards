@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoHandleTypeAssertionFailures:
+    standard: @{UberGo}
+    ruleId: handle-type-assertion-failures
+    title: Use the comma-ok form of type assertions
+    statement:
+        Always use the two-value form of a type assertion and handle the
+        case where the type does not match.
+    rationale:
+        The single-value form panics when the dynamic type is wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        name := payload["name"].(string)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        name, ok := payload["name"].(string)
+        if !ok {
+            return errors.New("name must be a string")
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [type-assertions, error-handling]
+    source: https://github.com/uber-go/guide/blob/master/style.md#handle-type-assertion-failures

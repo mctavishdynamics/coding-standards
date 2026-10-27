@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12PreferEightyColumns:
+    standard: @{Psr12}
+    ruleId: 2.3c
+    title: Aim to keep lines within 80 characters
+    statement:
+        Lines should not exceed 80 characters. Split a longer line into
+        several following lines that each stay within 80 characters.
+    rationale:
+        Short lines are easier to scan and fit side by side in editors and
+        review tools.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        $total = $calculator->applyDiscount($order->subtotal(), $customer->loyaltyTier(), $coupon);
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        $total = $calculator->applyDiscount(
+            $order->subtotal(),
+            $customer->loyaltyTier(),
+            $coupon
+        );
+        \\\
+        ```
+    languages: [php]
+    tags: [formatting, line-length]
+    source: https://www.php-fig.org/psr/psr-12/#23-lines

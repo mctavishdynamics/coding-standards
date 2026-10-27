@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12HeaderAtTopInMixedFiles:
+    standard: @{Psr12}
+    ruleId: 3b
+    title: Keep header blocks at the top in mixed HTML files
+    statement:
+        In a file that mixes HTML and PHP, any header blocks you use must
+        still come at the very top of the file, even when the rest is markup
+        with embedded PHP.
+    rationale:
+        Readers and tools look for declarations and imports at the start of
+        the file, so they should not be scattered through the template.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <html>
+        <?php
+        use Acme\View\Escaper;
+        ?>
+        <body><?= Escaper::html($title) ?></body>
+        </html>
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        use Acme\View\Escaper;
+        ?>
+        <html>
+        <body><?= Escaper::html($title) ?></body>
+        </html>
+        \\\
+        ```
+    languages: [php]
+    tags: [files, templates]
+    source: https://www.php-fig.org/psr/psr-12/#3-declare-statements-namespace-and-import-statements

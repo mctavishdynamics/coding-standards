@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartPreferRelativeImports:
+    standard: @{EffectiveDart}
+    ruleId: prefer-relative-import-paths
+    title: Use relative imports within the same side of lib
+    statement:
+        When an import does not cross the `lib` boundary, write it as a
+        relative path. The prefer_relative_imports lint checks this.
+    rationale:
+        Relative paths are shorter and stay valid if the package is renamed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        // In lib/src/checkout.dart:
+        import 'package:shop/src/cart.dart';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        // In lib/src/checkout.dart:
+        import 'cart.dart';
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, imports]
+    source: https://dart.dev/effective-dart/usage#prefer-relative-import-paths

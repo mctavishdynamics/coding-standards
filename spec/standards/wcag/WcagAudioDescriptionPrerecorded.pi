@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagAudioDescriptionPrerecorded:
+    standard: @{Wcag22}
+    ruleId: 1.2.5
+    title: Provide audio description for recorded video
+    statement:
+        Provide audio description for all recorded video content in
+        synchronized media.
+    rationale:
+        At this level a text alternative alone is not enough; blind users
+        should be able to follow the video in time with its soundtrack.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <video src="/media/product-tour.mp4" controls>
+          <track kind="captions" src="/media/product-tour.vtt" srclang="en">
+        </video>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <video src="/media/product-tour.mp4" controls>
+          <track kind="captions" src="/media/product-tour.vtt" srclang="en">
+          <track kind="descriptions" src="/media/product-tour.desc.vtt" srclang="en">
+        </video>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, media, audio-description]
+    source: https://www.w3.org/TR/WCAG22/#audio-description-prerecorded

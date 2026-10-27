@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEventsAndCallbacks4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: events-and-callbacks-4
+    title: Keep delegates out of hot code paths
+    statement:
+        Do not rely on delegates in code paths where call overhead matters.
+    rationale:
+        Delegate calls cannot be inlined and add cost on every invocation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static void Transform(Span<float> samples, Func<float, float> op)
+        {
+            for (int i = 0; i < samples.Length; i++) samples[i] = op(samples[i]);
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static void Scale(Span<float> samples, float factor)
+        {
+            for (int i = 0; i < samples.Length; i++) samples[i] *= factor;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, extensibility, callbacks, performance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/events-and-callbacks

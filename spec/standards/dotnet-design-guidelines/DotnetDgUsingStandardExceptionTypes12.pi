@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgUsingStandardExceptionTypes12:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: using-standard-exception-types-12
+    title: Do not throw OutOfMemoryException
+    statement:
+        Leave OutOfMemoryException to the runtime and never throw it
+        explicitly.
+    rationale:
+        Callers treat it as a real allocation failure, which your code is
+        not reporting.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        if (requestedBytes > _quota) throw new OutOfMemoryException();
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        if (requestedBytes > _quota) throw new InsufficientQuotaException(requestedBytes, _quota);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, exceptions, exception-types]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/using-standard-exception-types#outofmemoryexception

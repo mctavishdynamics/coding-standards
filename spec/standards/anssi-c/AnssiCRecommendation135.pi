@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation135:
+    standard: @{AnssiC}
+    ruleId: recommendation-135
+    title: Use forward goto only for clear single-exit cleanup
+    statement:
+        Use a forward goto only when it markedly reduces the number of exit
+        points or clearly improves readability, and place all its labels at
+        the end of the function.
+    rationale:
+        Used this way goto gives one cleanup path; used elsewhere it
+        scatters control flow.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        int load(const char *path) {
+            int rc = -1;
+            FILE *f = fopen(path, "r");
+            char *buf = NULL;
+            if (NULL == f) { goto out; }
+            buf = malloc(BUF_LEN);
+            if (NULL == buf) { goto out; }
+            rc = parse(f, buf);
+        out:
+            free(buf);
+            if (f != NULL) { fclose(f); }
+            return rc;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, control-flow, goto, error-handling]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=107

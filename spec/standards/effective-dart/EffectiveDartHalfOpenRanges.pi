@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartHalfOpenRanges:
+    standard: @{EffectiveDart}
+    ruleId: do-use-inclusive-start-and-exclusive-end-parameters-to-accept-a-range
+    title: Take ranges as an inclusive start and exclusive end
+    statement:
+        For an API that selects a range from an indexed sequence, take the
+        index of the first item and an end index one past the last, often
+        optional.
+    rationale:
+        This matches the core libraries. Such parameters are usually
+        positional, so a length in place of an end would be invisible at the
+        call site.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        List<T> slice<T>(List<T> list, int first, int count) =>
+            list.sublist(first, first + count);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        List<T> slice<T>(List<T> list, int start, [int? end]) =>
+            list.sublist(start, end);
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, parameters, api-design]
+    source: https://dart.dev/effective-dart/design#do-use-inclusive-start-and-exclusive-end-parameters-to-accept-a-range

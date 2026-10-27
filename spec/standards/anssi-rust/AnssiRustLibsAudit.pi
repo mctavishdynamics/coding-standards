@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLibsAudit:
+    standard: @{AnssiRust}
+    ruleId: LIBS-AUDIT
+    title: Check dependencies for known vulnerabilities with cargo-audit
+    statement:
+        Run cargo-audit to compare the dependency tree against the RustSec
+        advisory database.
+    rationale:
+        It reports crates with published security advisories so they can be
+        updated or replaced before they ship.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        cargo install cargo-audit
+        cargo audit
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, dependencies, vulnerabilities]
+    source: https://anssi-fr.github.io/rust-guide/libraries.html#LIBS-AUDIT

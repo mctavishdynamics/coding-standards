@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHashTransformMethods:
+    standard: @{RubyStyleGuide}
+    ruleId: hash-transform-methods
+    title: Use transform_keys and transform_values
+    statement:
+        When you change only the keys or only the values of a hash, use
+        transform_keys or transform_values rather than each_with_object or
+        map followed by to_h. RuboCop checks this with
+        Style/HashTransformKeys and Style/HashTransformValues.
+    rationale:
+        The dedicated methods show what changes and need no hand-built
+        result hash.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        prices.map { |item, cents| [item, cents / 100.0] }.to_h
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        prices.transform_values { |cents| cents / 100.0 }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes]
+    source: https://rubystyle.guide/#hash-transform-methods

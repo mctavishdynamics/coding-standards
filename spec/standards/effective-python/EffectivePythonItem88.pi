@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem88:
+    standard: @{EffectivePython}
+    ruleId: item-88
+    title: Chain exceptions explicitly to make tracebacks clear
+    statement:
+        When you raise a new exception while handling another, use raise ...
+        from to mark the original as the cause, or from None to hide an
+        irrelevant one.
+    rationale:
+        Explicit chaining tells readers whether the second error was a
+        deliberate translation or an accident in the handler.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        except KeyError:
+            raise ConfigError("missing setting")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        except KeyError as e:
+            raise ConfigError(f"missing setting {e.args[0]}") from e
+        \\\
+        ```
+    languages: [python]
+    tags: [robustness, exceptions, debugging]
+    source: https://effectivepython.com/

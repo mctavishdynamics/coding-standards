@@ -3,14 +3,36 @@ use @piton/belay
 from ../CodingStandards import CodingStandards
 from ../airbnb-javascript/AirbnbJavaScript import AirbnbJavaScript
 from ../airbnb-react/AirbnbReact import AirbnbReact
+from ../anssi-c/AnssiC import AnssiC
+from ../anssi-rust/AnssiRust import AnssiRust
+from ../beck-simple-design/BeckSimpleDesign import BeckSimpleDesign
+from ../carmack/Carmack import Carmack
 from ../cert-c/CertC import CertC
 from ../cert-cpp/CertCpp import CertCpp
 from ../cert-java/CertJava import CertJava
 from ../clean-code/CleanCode import CleanCode
+from ../commit-messages/CommitMessages import CommitMessages
+from ../conventional-commits/ConventionalCommits import ConventionalCommits
+from ../cpp-coding-standards/CppCodingStandards import CppCodingStandards
 from ../cpp-core-guidelines/CppCoreGuidelines import CppCoreGuidelines
+from ../cwe-top-25/CweTop25 import CweTop25
+from ../dijkstra/Dijkstra import Dijkstra
+from ../dotnet-design-guidelines/DotnetDesignGuidelines import
+    DotnetDesignGuidelines
+from ../effective-cpp/EffectiveCpp import EffectiveCpp
+from ../effective-dart/EffectiveDart import EffectiveDart
 from ../effective-go/EffectiveGo import EffectiveGo
+from ../effective-java/EffectiveJava import EffectiveJava
+from ../effective-modern-cpp/EffectiveModernCpp import EffectiveModernCpp
+from ../effective-python/EffectivePython import EffectivePython
+from ../elements-of-programming-style/ElementsOfProgrammingStyle import
+    ElementsOfProgrammingStyle
 from ../fowler-refactoring/FowlerRefactoring import FowlerRefactoring
+from ../freebsd-style/FreeBsdStyle import FreeBsdStyle
+from ../gnu-coding-standards/GnuCodingStandards import GnuCodingStandards
 from ../go-code-review-comments/GoCodeReviewComments import GoCodeReviewComments
+from ../go-proverbs/GoProverbs import GoProverbs
+from ../google-aip/GoogleAip import GoogleAip
 from ../google-cpp/GoogleCpp import GoogleCpp
 from ../google-csharp/GoogleCSharp import GoogleCSharp
 from ../google-eng-practices/GoogleEngPractices import GoogleEngPractices
@@ -24,18 +46,42 @@ from ../google-r/GoogleR import GoogleR
 from ../google-shell/GoogleShell import GoogleShell
 from ../google-swift/GoogleSwift import GoogleSwift
 from ../google-typescript/GoogleTypeScript import GoogleTypeScript
+from ../joel-test/JoelTest import JoelTest
+from ../jpl-c/JplC import JplC
+from ../kotlin-api-guidelines/KotlinApiGuidelines import KotlinApiGuidelines
+from ../kotlin-conventions/KotlinConventions import KotlinConventions
 from ../linux-kernel/LinuxKernelStyle import LinuxKernelStyle
+from ../llvm-coding-standards/LlvmCodingStandards import LlvmCodingStandards
+from ../mcilroy-unix/McIlroyUnix import McIlroyUnix
+from ../nasa-power-of-ten/PowerOfTen import PowerOfTen
+from ../openbsd-style/OpenBsdStyle import OpenBsdStyle
+from ../owasp-asvs/OwaspAsvs import OwaspAsvs
 from ../owasp-scp/OwaspScp import OwaspScp
+from ../owasp-top-10/OwaspTop10 import OwaspTop10
 from ../pep257/Pep257 import Pep257
 from ../pep8/Pep8 import Pep8
 from ../philosophy-of-software-design/PhilosophyOfSoftwareDesign import
     PhilosophyOfSoftwareDesign
+from ../pike-notes/PikeNotes import PikeNotes
+from ../practice-of-programming/PracticeOfProgramming import
+    PracticeOfProgramming
 from ../pragmatic-programmer/PragmaticProgrammer import PragmaticProgrammer
+from ../psr-1/Psr1 import Psr1
+from ../psr-12/Psr12 import Psr12
 from ../refactoring-guru-smells/RefactoringGuruSmells import
     RefactoringGuruSmells
+from ../ruby-style-guide/RubyStyleGuide import RubyStyleGuide
 from ../rust-api-guidelines/RustApiGuidelines import RustApiGuidelines
+from ../sandi-metz-rules/SandiMetzRules import SandiMetzRules
+from ../semver/SemVer import SemVer
 from ../solid/Solid import Solid
+from ../swift-api-design/SwiftApiDesign import SwiftApiDesign
+from ../tiger-style/TigerStyle import TigerStyle
 from ../twelve-factor/TwelveFactor import TwelveFactor
+from ../uber-go/UberGo import UberGo
+from ../wcag/Wcag22 import Wcag22
+from ../zalando-api/ZalandoApi import ZalandoApi
+from ../zen-of-python/ZenOfPython import ZenOfPython
 
 // Audits code against the rules in this package. It ships with the
 // package, so every project that tethers coding-standards builds it.
@@ -97,45 +143,64 @@ export skill CodingStandardsAudit:
         project says it follows, in its instructions such as CLAUDE.md
         or AGENTS.md, its contributing guide, or its tool settings: an
         ESLint config that extends airbnb points at the Airbnb guide,
-        and a .clang-format based on Google points at the Google C++
-        guide. Otherwise use the defaults for each language in the code,
-        from standardsByLanguage.
+        a .clang-format based on Google or LLVM points at that C++
+        guide, and a .rubocop.yml points at the Ruby Style Guide.
+        Otherwise use the defaults for each language in the code, from
+        standardsByLanguage.
 
         Use at most one style guide per language, because style guides
         disagree with each other, for example on line length. Safety
         and security standards can be added to a style guide, because
-        they rarely conflict. Add the OWASP rules when the code handles
-        user input, authentication, sessions, access control,
-        cryptography, files, databases or logging. Use SOLID and the
-        Twelve-Factor App only when the user asks for a design or
-        deployment review, because they judge structure rather than
-        lines of code. Use Clean Code, the code smell catalogues, A
-        Philosophy of Software Design and The Pragmatic Programmer only
-        when the user asks for them, because they overlap the style
-        guides and call for judgement. Use the Google Engineering
-        Practices when the user asks for a review of a change in the
-        way a reviewer would do it, taking the reviewer rules as the
-        checklist and the author rules for the change description and
-        size.
+        they rarely conflict. Add the OWASP Secure Coding Practices and
+        the CWE Top 25 when the code handles user input,
+        authentication, sessions, access control, cryptography, files,
+        databases or logging, and add the OWASP ASVS when the user asks
+        for a security review. Add the Power of 10 and the JPL standard
+        for safety-critical C. Add WCAG when
+        the code builds a user interface. Use the Zalando or the Google
+        API guidelines, one of the two, when the code defines an HTTP or
+        RPC API, such as an OpenAPI file, a proto file or route
+        handlers. Use Conventional Commits, the commit message rules
+        and Semantic Versioning when the user asks to check commits,
+        a changelog or a version number.
+
+        Use SOLID and the Twelve-Factor App only when the user asks for
+        a design or deployment review, because they judge structure
+        rather than lines of code. Use the books and the famous
+        programmers' rules only when the user asks for them, because
+        they overlap the style guides and call for judgement. Use the
+        Google Engineering Practices when the user asks for a review of
+        a change in the way a reviewer would do it, taking the reviewer
+        rules as the checklist and the author rules for the change
+        description and size.
 
         State the standards you chose in the first line of the report,
         so the user can ask for different ones.
 
     standardsByLanguage:
         The first standard under each language is the default. The rest
-        are used when the user or the project asks for them.
+        are used when the user or the project asks for them, or when
+        their note says so.
 
         python:
             - @{Pep8} and @{Pep257} together
             - @{GooglePython}
+            - @{EffectivePython} or @{ZenOfPython}, on request
         c:
             - @{CertC}
-            - @{LinuxKernelStyle}, for kernel code or projects that follow kernel style
+            - @{PowerOfTen} with @{JplC}, for safety-critical code
+            - @{AnssiC}, for a security review
+            - @{LinuxKernelStyle}, @{GnuCodingStandards}, @{FreeBsdStyle} or @{OpenBsdStyle}, for projects that follow that style
+            - @{PikeNotes}, on request
         cpp:
             - @{CppCoreGuidelines} with @{CertCpp}
-            - @{GoogleCpp}
+            - @{GoogleCpp} or @{LlvmCodingStandards}
+            - @{EffectiveCpp}, @{EffectiveModernCpp}, @{CppCodingStandards} or @{Carmack}, on request
         java:
             - @{GoogleJava} with @{CertJava}
+            - @{EffectiveJava}, on request
+        kotlin:
+            - @{KotlinConventions}, adding @{KotlinApiGuidelines} for the public API of a library
         javascript:
             - @{AirbnbJavaScript}, adding @{AirbnbReact} for React and JSX code
             - @{GoogleJavaScript}
@@ -143,30 +208,55 @@ export skill CodingStandardsAudit:
             - @{GoogleTypeScript}
         go:
             - @{EffectiveGo} with @{GoCodeReviewComments}
-            - @{GoogleGo}
+            - @{GoogleGo} or @{UberGo}
+            - @{GoProverbs}, on request
         rust:
             - @{RustApiGuidelines}, for the public API of a library
+            - @{AnssiRust}, for a security review
+        csharp:
+            - @{GoogleCSharp}, adding @{DotnetDesignGuidelines} for the public API of a library
+        swift:
+            - @{GoogleSwift} with @{SwiftApiDesign}
+        objectiveC:
+            - @{GoogleObjC}
+        dart:
+            - @{EffectiveDart}
+        php:
+            - @{Psr1} with @{Psr12}
+        ruby:
+            - @{RubyStyleGuide}
+            - @{SandiMetzRules}, on request
+        zig:
+            - @{TigerStyle}, on request
         shell:
             - @{GoogleShell}
         htmlAndCss:
             - @{GoogleHtmlCss}
+            - @{Wcag22}, for any user interface code
         r:
             - @{GoogleR}
-        objectiveC:
-            - @{GoogleObjC}
-        csharp:
-            - @{GoogleCSharp}
-        swift:
-            - @{GoogleSwift}
-        anyLanguage:
-            - @{OwaspScp}, for code that handles untrusted input or sensitive data
-            - @{CleanCode}, on request, for names, functions, comments and tests
-            - @{RefactoringGuruSmells} or @{FowlerRefactoring}, on request, for code smells; use one of the two, not both
-            - @{PhilosophyOfSoftwareDesign}, on request, for module depth, interfaces and complexity
-            - @{PragmaticProgrammer}, on request, skipping tips tagged practice
-            - @{GoogleEngPractices}, on request, for a code review of a change
-            - @{Solid}, on request, for object-oriented design
-            - @{TwelveFactor}, on request, for how a service is configured and deployed
+        security:
+            - @{OwaspScp} with @{CweTop25}, for code that handles untrusted input or sensitive data
+            - @{OwaspTop10}, for a web application overview
+            - @{OwaspAsvs}, for a full security review
+        apis:
+            - @{ZalandoApi} or @{GoogleAip}, for HTTP and RPC API definitions; use one of the two
+        commitsAndVersions:
+            - @{ConventionalCommits} with @{CommitMessages}, for commit messages
+            - @{SemVer}, for version numbers
+        designAndReview:
+            - @{CleanCode}, for names, functions, comments and tests
+            - @{RefactoringGuruSmells} or @{FowlerRefactoring}, for code smells; use one of the two
+            - @{PhilosophyOfSoftwareDesign}, for module depth, interfaces and complexity
+            - @{Solid}, for object-oriented design
+            - @{BeckSimpleDesign}, for simple design
+            - @{TwelveFactor}, for how a service is configured and deployed
+            - @{GoogleEngPractices}, for a code review of a change
+        famousAdvice:
+            - @{PragmaticProgrammer} and @{JoelTest}, skipping items tagged practice
+            - @{ElementsOfProgrammingStyle} and @{PracticeOfProgramming}
+            - @{McIlroyUnix}
+            - @{Dijkstra}
 
     checking:
         Work one standard at a time. Open its document and read its list

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe89:
+    standard: @{CweTop25}
+    ruleId: CWE-89
+    title: Prevent SQL injection
+    statement:
+        Pass values to the database through prepared statements or a
+        parameterized API so they never become part of the SQL text, and do
+        not rebuild query strings with exec inside stored procedures.
+        Connect with an account that holds only the privileges the task
+        needs.
+    rationale:
+        Injected SQL can read, change or delete anything the database
+        account can reach, and sometimes run commands on the server. It is
+        ranked 2 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def find_user(cur, email):
+            cur.execute(f"SELECT id, name FROM users WHERE email = '{email}'")
+            return cur.fetchone()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def find_user(cur, email):
+            cur.execute("SELECT id, name FROM users WHERE email = %s", (email,))
+            return cur.fetchone()
+        \\\
+        ```
+    languages: [python]
+    tags: [rank-2, injection, sql, database]
+    source: https://cwe.mitre.org/data/definitions/89.html

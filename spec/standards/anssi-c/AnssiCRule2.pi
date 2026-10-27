@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule2:
+    standard: @{AnssiC}
+    ruleId: rule-2
+    title: Write only standard-conforming C
+    statement:
+        Code must not break any constraint or syntax rule of the C90 or C99
+        standard.
+    rationale:
+        Constraint violations and non-standard syntax lead to undefined or
+        compiler-specific behaviour that a reviewer cannot reason about.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int count_items(void) {
+            int n = 0;
+            n = n++ + 1;
+            return n;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int count_items(void) {
+            int n = 0;
+            n = n + 1;
+            return n;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, portability, undefined-behavior]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=11

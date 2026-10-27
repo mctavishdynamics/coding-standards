@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule1:
+    standard: @{JplC}
+    ruleId: rule-1
+    title: Write strictly standard C99 code
+    statement:
+        Write all code to conform to ISO/IEC 9899:1999 and never depend on
+        undefined or unspecified behavior. This also rules out #pragma
+        directives, which are implementation defined.
+    rationale:
+        Code that follows the standard compiles on any conforming compiler,
+        suits many static analysis tools and is understandable to any skilled
+        C developer, with no hidden reliance on one compiler or platform.
+    exceptions:
+        Using the error directive is allowed, since it belongs to the
+        language. The compiler-specific warning directive is acceptable where
+        supported, provided the build still produces no warnings.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #pragma pack(1)
+        int shift_out(int x) {
+            return x << 40;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdint.h>
+
+        uint64_t shift_out(uint32_t x) {
+            return (uint64_t)x << 8;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-1, portability, undefined-behavior]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

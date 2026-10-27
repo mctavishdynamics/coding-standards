@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvClassHeaders:
+    standard: @{KotlinConventions}
+    ruleId: class-headers
+    title: Break long class headers one parameter per line
+    statement:
+        Write a short class header on one line. For a long one, put each
+        primary constructor parameter on its own line with normal
+        indentation and the closing parenthesis on a new line, followed by
+        the superclass call and the first interface; put further interfaces
+        on their own lines. For a long supertype list, break after the
+        colon, and separate a long header from the body with a blank line or
+        a brace on its own line.
+    rationale:
+        One parameter per line keeps long headers readable and gives
+        constructor properties the same indentation as body properties.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        class Order(id: Long, customer: Customer,
+                    lines: List<Line>, placedAt: Instant) : Entity(id), Auditable {
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        class Order(
+            id: Long,
+            customer: Customer,
+            lines: List<Line>,
+            placedAt: Instant,
+        ) : Entity(id),
+            Auditable {
+
+            fun total(): Money = TODO()
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, classes]
+    source: https://kotlinlang.org/docs/coding-conventions.html#class-headers

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNestedTypes1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: nested-types-1
+    title: Nest a type when it needs access to its outer type's members
+    statement:
+        Use a nested type when its close relationship with the containing
+        type makes access to private members desirable.
+    rationale:
+        Nested types can reach private state of the outer type, which is the
+        main reason to nest.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class LinkedQueue<T> : IEnumerable<T>
+        {
+            private Node _head;
+
+            private sealed class Node { public T Value; public Node Next; }
+
+            private sealed class Enumerator : IEnumerator<T> { /* reads _head */ }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, nested-types]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/nested-types

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem32:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-32
+    title: Capture move-only objects with an initialising capture
+    statement:
+        Capture move-only or expensive objects with an init capture that
+        moves them into the lambda.
+    rationale:
+        Plain captures can only copy or reference; init capture states the
+        intent directly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto data = std::make_unique<Blob>();
+        auto task = [&data] { upload(*data); };   // data may be gone
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto data = std::make_unique<Blob>();
+        auto task = [data = std::move(data)] { upload(*data); };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [lambda-expressions, lambdas, move-semantics]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

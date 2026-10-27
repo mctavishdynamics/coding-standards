@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgInterface2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: interface-2
+    title: Consider an interface for types that already have a base class
+    statement:
+        Think about an interface when the functionality must be available on
+        types that already derive from another class.
+    rationale:
+        .NET allows only one base class, so an interface is how such types
+        can take on another role.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public interface IAuditable
+        {
+            DateTime LastModified { get; }
+        }
+
+        public class InvoiceForm : Form, IAuditable { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, type-design, interfaces, inheritance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/interface

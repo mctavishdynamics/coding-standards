@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem49:
+    standard: @{EffectivePython}
+    ruleId: item-49
+    title: Use polymorphic methods instead of isinstance chains
+    statement:
+        When behaviour depends on an object's type, put a method on each
+        class and call it, rather than testing types with isinstance in a
+        central function.
+    rationale:
+        Polymorphism keeps each type's logic with the type and lets new
+        types be added without editing a growing if chain.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def area(shape):
+            if isinstance(shape, Circle):
+                return 3.14159 * shape.r ** 2
+            elif isinstance(shape, Square):
+                return shape.side ** 2
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Circle:
+            def area(self):
+                return 3.14159 * self.r ** 2
+
+        class Square:
+            def area(self):
+                return self.side ** 2
+        \\\
+        ```
+    languages: [python]
+    tags: [classes-and-interfaces, classes, polymorphism]
+    source: https://effectivepython.com/

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuFormatHelpOutput:
+    standard: @{GnuCodingStandards}
+    ruleId: help-option
+    title: Print brief usage and bug-report details for --help
+    statement:
+        On --help, print short usage documentation to standard output and
+        exit successfully, ignoring other arguments. End with lines giving
+        the bug-report address, the package home page and the general GNU
+        help page.
+    rationale:
+        Users need to know how to run the program and where to report
+        problems, and the fixed placement makes it easy to find.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fprintf (stderr, "usage: tally [OPTION]... FILE...\n");
+        exit (1);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        printf ("Usage: %s [OPTION]... FILE...\n", program_name);
+        /* ... option descriptions ... */
+        printf ("\nReport bugs to: %s\n", PACKAGE_BUGREPORT);
+        printf ("%s home page: <%s>\n", PACKAGE_NAME, PACKAGE_URL);
+        puts ("General help using GNU software: <https://www.gnu.org/gethelp/>");
+        exit (EXIT_SUCCESS);
+        \\\
+        ```
+    languages: [c]
+    tags: [command-line, documentation]
+    source: https://www.gnu.org/prep/standards/standards.html#g_t_002d_002dhelp

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem24:
+    standard: @{EffectiveJava}
+    ruleId: item-24
+    title: Make member classes static unless they need the enclosing instance
+    statement:
+        Declare a nested class static whenever it does not use the enclosing
+        object. Use inner classes only when each instance truly needs that
+        link.
+    rationale:
+        A non-static member class holds a hidden reference to its outer
+        instance, which costs space and can keep the outer object alive.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class Tree {
+            class Node { int value; Node left, right; }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class Tree {
+            private static class Node { int value; Node left, right; }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [classes-and-interfaces, nested-classes, memory]
+    source: https://www.informit.com/store/effective-java-9780134686097

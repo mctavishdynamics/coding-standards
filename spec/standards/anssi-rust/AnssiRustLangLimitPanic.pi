@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangLimitPanic:
+    standard: @{AnssiRust}
+    ruleId: LANG-LIMIT-PANIC
+    title: Panic only when the caller breaks the contract
+    statement:
+        A function should panic only when it is called in violation of its
+        documented usage conditions. Report other failures with Result or
+        Option.
+    rationale:
+        A panic aborts the current thread or the whole program, which turns
+        ordinary failures such as bad input into a denial of service.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        fn parse_port(s: &str) -> u16 {
+            s.parse().unwrap()
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        fn parse_port(s: &str) -> Result<u16, std::num::ParseIntError> {
+            s.parse()
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, error-handling, panic]
+    source: https://anssi-fr.github.io/rust-guide/errors.html#LANG-LIMIT-PANIC

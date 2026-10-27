@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-3
+    title: Consider the dispose pattern on bases whose subclasses hold resources
+    statement:
+        Think about implementing the dispose pattern on a base class that
+        holds no resources itself if most of its subclasses will.
+    rationale:
+        Callers can then dispose any instance through the base type, and
+        subclasses only override Dispose(bool).
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public abstract class MessageChannel : IDisposable
+        {
+            public abstract Task SendAsync(string text);
+            public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+            protected virtual void Dispose(bool disposing) { }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, dispose, resources, inheritance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule18:
+    standard: @{AnssiC}
+    ruleId: rule-18
+    title: Name macros in upper case with underscores
+    statement:
+        Write macro names in upper case, separate words with underscores,
+        and do not start them with an underscore.
+    rationale:
+        This tells macros apart from functions and avoids the names the C
+        language reserves for the implementation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define max_len 64U
+        #define _clamp(v) ((v) > 9 ? 9 : (v))
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define MAX_LEN 64U
+        #define CLAMP_DIGIT(v) (((v) > 9) ? 9 : (v))
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, naming, macros]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=22

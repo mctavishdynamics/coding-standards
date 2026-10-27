@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartCapitalizeAcronymsAsWords:
+    standard: @{EffectiveDart}
+    ruleId: do-capitalize-acronyms-and-abbreviations-longer-than-two-letters-like-words
+    title: Capitalize acronyms longer than two letters as ordinary words
+    statement:
+        Treat an acronym or abbreviation of three or more letters as a word,
+        capitalizing only its first letter. A two-letter acronym that is all
+        capitals in English stays all capitals, and any abbreviation at the
+        start of a lowerCamelCase name is all lowercase.
+    rationale:
+        Runs of capitals are hard to read, and neighbouring acronyms run
+        together so the reader cannot tell where one ends and the next
+        begins.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class HTTPSFTPBridge {}
+        final XMLParser parser = XMLParser();
+        var HTMLBody = '';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class HttpsFtpBridge {}
+        final XmlParser parser = XmlParser();
+        var htmlBody = '';
+        class IOBuffer {}
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, naming, acronyms]
+    source: https://dart.dev/effective-dart/style#do-capitalize-acronyms-and-abbreviations-longer-than-two-letters-like-words

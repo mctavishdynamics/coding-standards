@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleReverseEach:
+    standard: @{RubyStyleGuide}
+    ruleId: reverse-each
+    title: Use reverse_each instead of reverse.each
+    statement:
+        Iterate backwards with reverse_each rather than calling reverse and
+        then each.
+    rationale:
+        reverse_each avoids building a reversed copy, and some Enumerable
+        classes provide a faster version of it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        history.reverse.each { |entry| undo(entry) }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        history.reverse_each { |entry| undo(entry) }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, performance]
+    source: https://rubystyle.guide/#reverse-each

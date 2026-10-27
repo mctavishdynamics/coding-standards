@@ -5,20 +5,21 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE2:
     standard: @{CppCoreGuidelines}
     ruleId: E.2
-    title: Throw an exception to signal that a function cannot perform its task
+    title: Report a function's failure to do its job by throwing
     statement:
-        When a function cannot do what it is meant to do, such as meet a
-        precondition, build a valid object, stay in range or acquire a
-        resource, throw an exception. Do not use throw as an alternative way
-        of returning ordinary values.
+        Throw when a function is unable to complete its task, for example when a
+        precondition fails, an object cannot be made valid, a value is out of range
+        or a resource cannot be acquired. Never use throw to pass back normal
+        results.
     rationale:
-        Exceptions make error handling systematic, robust and
-        non-repetitive. They also work where no return value is available,
-        such as constructors, and RAII cleans up on the way out.
+        An exception cannot be ignored by accident, keeps failure handling out of
+        the main path and spares every caller from repeating the same check. It also
+        works in constructors, which have no return value, and destructors tidy up
+        as the stack unwinds.
     exceptions:
-        Hard real-time systems that must bound response times may use
-        exceptions only if tools can predict the maximum time to recover
-        from a throw.
+        Hard real-time systems that need a known worst-case response time should use
+        exceptions only when a tool can bound the time taken to recover from a
+        throw.
     severity: null
     noncompliant:
         ```cpp

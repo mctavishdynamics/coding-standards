@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleExceptionClassMessages:
+    standard: @{RubyStyleGuide}
+    ruleId: exception-class-messages
+    title: Pass the exception class and message as separate arguments
+    statement:
+        Give raise the exception class and the message as two arguments
+        rather than building an exception instance yourself.
+    rationale:
+        The two-argument form is shorter and is the common idiom.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        raise KeyError.new("unknown currency: #{code}")
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        raise KeyError, "unknown currency: #{code}"
+        \\\
+        ```
+    languages: [ruby]
+    tags: [error-handling, exceptions]
+    source: https://rubystyle.guide/#exception-class-messages

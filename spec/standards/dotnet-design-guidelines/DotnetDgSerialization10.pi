@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSerialization10:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: serialization-10
+    title: Plan for backward and forward compatibility of serializable types
+    statement:
+        When creating or changing a serializable type, remember that old and
+        new versions read each other's data. Do not rename, retype or
+        reorder data members, even private ones, without preserving the
+        contract explicitly, and test both directions.
+    rationale:
+        Serialized data outlives the code version that wrote it, and
+        careless changes break existing data.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        [DataContract(Name = "Customer")]
+        public class Client
+        {
+            [DataMember(Name = "FullName", Order = 1)] public string Name { get; set; }
+            [DataMember(Order = 2, IsRequired = false)] public string Phone { get; set; }   // added in v2
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, serialization, versioning]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/serialization#supporting-data-contract-serialization

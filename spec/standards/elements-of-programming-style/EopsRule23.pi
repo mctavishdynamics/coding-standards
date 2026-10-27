@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule23:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-23
+    title: Avoid else branches that only jump or return
+    statement:
+        Do not write an else whose whole job is to jump away or return.
+        Restructure the test so the normal path is not left dangling after
+        it.
+    rationale:
+        An else that leaves the routine splits the logic oddly and hides the
+        main path. Inverting the test usually gives a cleaner shape.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (p != NULL) {
+            use(p);
+            finish(p);
+        } else {
+            return;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (p == NULL) {
+            return;
+        }
+        use(p);
+        finish(p);
+        \\\
+        ```
+    languages: [any]
+    tags: [control-structure, conditionals, control-flow]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

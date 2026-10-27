@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando179:
+    standard: @{ZalandoApi}
+    ruleId: 179
+    title: Use Content-Location only with its exact meaning
+    statement:
+        Content-Location may be sent on successful reads and writes to name
+        the actual location of the representation in the body, for example
+        the negotiated variant or a status report. When it is used,
+        Content-Type must be set as well.
+    rationale:
+        Used correctly, it lets clients identify the returned resource and
+        update cached copies.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        HTTP/1.1 200 OK
+        Content-Type: application/pdf
+        Content-Location: https://billing.example.com/invoices/INV-1042.pdf
+        \\\
+        ```
+    languages: [any]
+    tags: [may, http, headers]
+    source: https://opensource.zalando.com/restful-api-guidelines/#179

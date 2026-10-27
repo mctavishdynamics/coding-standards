@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip214:
+    standard: @{GoogleAip}
+    ruleId: AIP-214
+    title: Express expiration with expire_time and an optional input-only ttl
+    statement:
+        Represent expiration with a google.protobuf.Timestamp named
+        expire_time. To accept a relative time, put expire_time and an
+        input-only Duration ttl in a oneof named expiration, and always
+        return the absolute expire_time when reading.
+    rationale:
+        A countdown field would have to change constantly and confuse
+        declarative tools. An absolute time is stable, while an input-only
+        ttl keeps relative input convenient.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message ApiKey {
+          google.protobuf.Duration ttl = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message ApiKey {
+          oneof expiration {
+            google.protobuf.Timestamp expire_time = 1;
+            google.protobuf.Duration ttl = 2
+                [(google.api.field_behavior) = INPUT_ONLY];
+          }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [fields, time]
+    source: https://google.aip.dev/214

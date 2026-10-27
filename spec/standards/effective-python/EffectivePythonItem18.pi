@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem18:
+    standard: @{EffectivePython}
+    ruleId: item-18
+    title: Walk several iterables in step with zip
+    statement:
+        Use zip to loop over two or more iterables together. Pass
+        strict=True when they must have the same length, or use
+        itertools.zip_longest when they may differ.
+    rationale:
+        zip avoids index juggling, but by default it stops at the shortest
+        input and silently drops the rest.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        for i in range(len(names)):
+            print(names[i], ages[i])
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        for name, age in zip(names, ages, strict=True):
+            print(name, age)
+        \\\
+        ```
+    languages: [python]
+    tags: [loops-and-iterators, loops, iteration]
+    source: https://effectivepython.com/

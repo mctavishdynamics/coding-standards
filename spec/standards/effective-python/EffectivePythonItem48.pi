@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem48:
+    standard: @{EffectivePython}
+    ruleId: item-48
+    title: Let callers pass a function for small hooks
+    statement:
+        When an API needs a small piece of caller behaviour, such as a
+        callback or key function, accept a function rather than requiring a
+        class. Use a class with __call__ when the hook needs state.
+    rationale:
+        Functions are first-class in Python, so simple hooks need no
+        interface boilerplate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class LengthKey:
+            def key(self, s):
+                return len(s)
+
+        sorted_names = sort_with(names, LengthKey())
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        sorted_names = sorted(names, key=len)
+        \\\
+        ```
+    languages: [python]
+    tags: [classes-and-interfaces, classes, functions, api-design]
+    source: https://effectivepython.com/

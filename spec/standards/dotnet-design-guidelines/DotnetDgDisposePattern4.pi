@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-4
+    title: Centralize cleanup in protected virtual Dispose(bool)
+    statement:
+        Declare a protected virtual Dispose method taking a disposing flag
+        and put all release logic there. The flag is false when called from
+        a finalizer, in which case other managed objects must not be
+        touched.
+    rationale:
+        One method serves both explicit disposal and finalization, and
+        subclasses extend it in one place.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _timer?.Dispose();      // managed: only when disposing
+            }
+            CloseNativeHandle();        // unmanaged: always
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, dispose, resources]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern#basic-dispose-pattern

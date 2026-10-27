@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule69:
+    standard: @{AnssiC}
+    ruleId: rule-69
+    title: Do not use anonymous enumerations
+    statement:
+        Give every enumeration a name, and do not use an unnamed enum just
+        to declare integer constants.
+    rationale:
+        Enumerations are for related sets of values; using them as a
+        constant trick makes the code harder to understand.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        enum { BUF_LEN = 256, MAX_USERS = 16 };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define BUF_LEN 256U
+        #define MAX_USERS 16U
+        enum log_level { LOG_ERROR = 0, LOG_WARN = 1, LOG_INFO = 2 };
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, enums, constants]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=51

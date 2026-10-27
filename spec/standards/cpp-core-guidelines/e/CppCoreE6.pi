@@ -5,16 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE6:
     standard: @{CppCoreGuidelines}
     ruleId: E.6
-    title: Use RAII to prevent leaks
+    title: Rely on scope-bound owners so resources cannot leak
     statement:
-        Tie every resource to an object whose destructor releases it, such
-        as a container, smart pointer or file handle, so it is freed on
-        every exit path including exceptions. Prefer a local resource object
-        to a pointer when pointer semantics are not needed.
+        Give every resource to an owning object, such as a container, smart pointer
+        or file stream, whose destructor frees it. That way release happens on every
+        exit, exceptions included. A local object beats a pointer when you do not
+        need pointer semantics.
     rationale:
-        Leaks are usually unacceptable and manual release is error-prone,
-        especially with several possible throw points. RAII is the simplest
-        and most systematic way to prevent leaks.
+        Freeing resources by hand is error-prone, more so when many statements can
+        throw, and leaks are rarely acceptable. RAII is the plainest and most
+        consistent fix.
     exceptions: null
     severity: null
     noncompliant:

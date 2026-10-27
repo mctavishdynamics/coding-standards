@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdParseOptionsWithGetopt:
+    standard: @{FreeBsdStyle}
+    ruleId: getopt
+    title: Parse options with getopt, sorted, and check numeric arguments
+    statement:
+        Use getopt(3) for options. Sort the option letters in the getopt
+        string and in the switch unless cases cascade; mark a case that runs
+        code and falls into the next with a FALLTHROUGH comment. Validate
+        numeric arguments.
+    rationale:
+        A uniform parser and order make every program's option handling easy
+        to read, and checked numbers avoid silent misuse.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        case 'v':
+                verbose++;
+        case 'q':
+                quiet = 1;
+                break;
+        case 'n':
+                count = atoi(optarg);
+                break;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        case 'n':
+                count = strtol(optarg, &ep, 10);
+                if (count <= 0 || *ep != '\0')
+                        errx(1, "invalid count: %s", optarg);
+                break;
+        case 'v':
+                verbose++;
+                /* FALLTHROUGH */
+        case 'q':
+                quiet = 1;
+                break;
+        \\\
+        ```
+    languages: [c]
+    tags: [command-line, parsing, switch]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiBeginWithSummary:
+    standard: @{SwiftApiDesign}
+    ruleId: begin-with-summary
+    title: Start a doc comment with a summary
+    statement:
+        Open each documentation comment with a summary of what the entity is
+        or does, and put most of your effort into it. Often the declaration
+        plus the summary is all a reader needs.
+    rationale:
+        The summary is what tools show first and what most readers read;
+        many good comments consist of nothing else.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        /// This was added in 2.3 after the sync refactor.
+        func pendingUploads() -> [Upload]
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// Returns the uploads that have not reached the server yet.
+        func pendingUploads() -> [Upload]
+        \\\
+        ```
+    languages: [swift]
+    tags: [documentation]
+    source: https://www.swift.org/documentation/api-design-guidelines/#write-doc-comment

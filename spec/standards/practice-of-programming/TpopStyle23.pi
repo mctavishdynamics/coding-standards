@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle23:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-23
+    title: Keep comments in agreement with the code
+    statement:
+        Update comments whenever the code they describe changes, so the two
+        never conflict.
+    rationale:
+        When comment and code disagree, the reader cannot tell which is
+        right, and often both are suspect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* trim trailing newline */
+        while (n > 0 && isspace((unsigned char)buf[n - 1]))
+            buf[--n] = '\0';
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* trim all trailing white space, including the newline */
+        while (n > 0 && isspace((unsigned char)buf[n - 1]))
+            buf[--n] = '\0';
+        \\\
+        ```
+    languages: [any]
+    tags: [style, comments]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

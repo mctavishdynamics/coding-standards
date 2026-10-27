@@ -18,12 +18,15 @@ export coding-rule CertJavaCon52J:
     noncompliant:
         ```java
         \\\
-        class Inventory {
-            private final Object lock = new Object();
-            private int stock;
+        final class SeatMap {
+            private final Object seatGuard = new Object();
+            private final boolean[] taken = new boolean[200];
 
-            void add(int n) {
-                synchronized (lock) { stock += n; }
+            boolean reserve(int seat) {
+                synchronized (seatGuard) {
+                    if (taken[seat]) return false;
+                    return taken[seat] = true;
+                }
             }
         }
         \\\
@@ -32,13 +35,16 @@ export coding-rule CertJavaCon52J:
         ```java
         \\\
         @ThreadSafe
-        class Inventory {
-            private final Object lock = new Object();
-            @GuardedBy("lock")
-            private int stock;
+        final class SeatMap {
+            private final Object seatGuard = new Object();
+            @GuardedBy("seatGuard")
+            private final boolean[] taken = new boolean[200];
 
-            void add(int n) {
-                synchronized (lock) { stock += n; }
+            boolean reserve(int seat) {
+                synchronized (seatGuard) {
+                    if (taken[seat]) return false;
+                    return taken[seat] = true;
+                }
             }
         }
         \\\

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleWhileAsAModifier:
+    standard: @{RubyStyleGuide}
+    ruleId: while-as-a-modifier
+    title: Prefer the modifier form for single-line while bodies
+    statement:
+        When a while or until loop has a one-line body, write it as a
+        trailing modifier.
+    rationale:
+        The modifier form expresses a short loop in one line.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        while queue.any?
+          process(queue.shift)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        process(queue.shift) while queue.any?
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, loops]
+    source: https://rubystyle.guide/#while-as-a-modifier

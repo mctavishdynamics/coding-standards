@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNestedTypes6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: nested-types-6
+    title: Do not declare nested types inside interfaces
+    statement:
+        Keep type declarations out of interfaces.
+    rationale:
+        Many .NET languages cannot express or consume a type nested in an
+        interface.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public interface IShippingService
+        {
+            enum Speed { Standard, Express }
+            void Ship(Parcel parcel, Speed speed);
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public enum ShippingSpeed { Standard, Express }
+
+        public interface IShippingService
+        {
+            void Ship(Parcel parcel, ShippingSpeed speed);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, type-design, nested-types, interfaces]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/nested-types

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoPointersToInterfaces:
+    standard: @{UberGo}
+    ruleId: pointers-to-interfaces
+    title: Pass interfaces by value, not by pointer
+    statement:
+        Take and pass interfaces as plain values. When methods have to
+        modify the underlying data, store a pointer inside the interface
+        rather than pointing at the interface.
+    rationale:
+        An interface already holds a type descriptor and a pointer to its
+        data, so adding another pointer only adds indirection and confusion.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func Save(w *io.Writer, data []byte) error {
+            _, err := (*w).Write(data)
+            return err
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func Save(w io.Writer, data []byte) error {
+            _, err := w.Write(data)
+            return err
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [interfaces, pointers]
+    source: https://github.com/uber-go/guide/blob/master/style.md#pointers-to-interfaces

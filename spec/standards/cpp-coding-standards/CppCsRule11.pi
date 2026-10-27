@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule11:
+    standard: @{CppCodingStandards}
+    ruleId: rule-11
+    title: Hide implementation details behind interfaces
+    statement:
+        Do not expose internal representation; give clients operations
+        rather than access to data.
+    rationale:
+        Hiding information limits the effect of changes and lets the owner
+        keep its invariants.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Queue {
+        public:
+            std::deque<Job> items;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Queue {
+        public:
+            void push(Job j);
+            std::optional<Job> pop();
+        private:
+            std::deque<Job> items_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [design-style, encapsulation]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

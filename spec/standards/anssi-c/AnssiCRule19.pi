@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule19:
+    standard: @{AnssiC}
+    ruleId: rule-19
+    title: Do not end a macro definition with a semicolon
+    statement:
+        Leave out the trailing semicolon from a macro body and let the
+        caller write it.
+    rationale:
+        A semicolon in the macro adds an empty statement after each use,
+        which can break if-else chains or change control flow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define RESET(x) (x) = 0;
+        if (done) RESET(count); else count++;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define RESET(x) ((x) = 0)
+        if (done) { RESET(count); } else { count++; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, macros]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=22

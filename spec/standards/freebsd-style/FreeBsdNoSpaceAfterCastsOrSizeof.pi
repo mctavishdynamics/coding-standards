@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdNoSpaceAfterCastsOrSizeof:
+    standard: @{FreeBsdStyle}
+    ruleId: cast-and-sizeof
+    title: Do not space after casts or sizeof, and always parenthesize sizeof
+    statement:
+        Do not put a space after a cast or after sizeof, and always use
+        parentheses with sizeof, even for a variable.
+    rationale:
+        A single consistent form is easy to read and search for.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        len = (size_t) sizeof hdr;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        len = (size_t)sizeof(hdr);
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, expressions]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

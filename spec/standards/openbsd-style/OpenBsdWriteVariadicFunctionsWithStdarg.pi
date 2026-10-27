@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdWriteVariadicFunctionsWithStdarg:
+    standard: @{OpenBsdStyle}
+    ruleId: variadic-functions
+    title: Write variadic functions with stdarg.h
+    statement:
+        Implement variable-argument functions with stdarg.h, pairing
+        va_start with va_end. A void function needs no return statement.
+    rationale:
+        The standard interface is portable and pairing the calls avoids
+        undefined behavior.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        #include <stdarg.h>
+
+        void
+        debug(const char *fmt, ...)
+        {
+                va_list ap;
+                va_start(ap, fmt);
+
+                vfprintf(stderr, fmt, ap);
+
+                va_end(ap);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, portability]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

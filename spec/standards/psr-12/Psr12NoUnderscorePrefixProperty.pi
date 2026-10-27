@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12NoUnderscorePrefixProperty:
+    standard: @{Psr12}
+    ruleId: 4.3e
+    title: Do not mark private properties with a leading underscore
+    statement:
+        Do not prefix property names with a single underscore to signal
+        protected or private access. An underscore prefix carries no
+        meaning.
+    rationale:
+        Visibility keywords already state access, so the prefix duplicates
+        them and goes stale when visibility changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Cache
+        {
+            private $_entries = [];
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Cache
+        {
+            private $entries = [];
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [naming, properties, visibility]
+    source: https://www.php-fig.org/psr/psr-12/#43-properties-and-constants

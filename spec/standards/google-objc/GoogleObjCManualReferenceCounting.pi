@@ -7,10 +7,11 @@ export coding-rule GoogleObjCManualReferenceCounting:
     ruleId: manual-reference-counting
     title: Mark non-retained and non-Objective-C pointers
     statement:
-        NSObject ivars are presumed retained. Mark ivars that are not
-        retained as weak with a comment or the __weak qualifier. Always
-        comment Core Foundation, C++ and other non-Objective-C pointer ivars
-        as strong or weak.
+        Instance variables holding NSObject types are assumed to be
+        retained. Flag any that are not as weak, by comment or by the __weak
+        qualifier. Pointer ivars to Core Foundation, C++ or other
+        non-Objective-C types always need a comment saying whether they are
+        strong or weak.
     rationale:
         Non-Objective-C pointers need manual memory management even under
         ARC, so readers must know which pointers own their objects.

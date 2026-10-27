@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiAvoidGlobalStateAndStatefulTopLevelFunctions:
+    standard: @{KotlinApiGuidelines}
+    ruleId: avoid-global-state-and-stateful-top-level-functions
+    title: Keep public APIs free of global state
+    statement:
+        Do not make the public API depend on global variables or stateful
+        top-level functions. Expose an instance, such as a clock or random
+        source, that users can inject and replace.
+    rationale:
+        Code that calls a global cannot easily be given fake values in
+        tests.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun isExpired(token: Token): Boolean = token.expiresAt < currentTimeMillis()
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public class TokenValidator(private val clock: Clock) {
+            public fun isExpired(token: Token): Boolean = token.expiresAt < clock.now()
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [testing, global-state]
+    source: https://kotlinlang.org/docs/api-guidelines-testability.html#avoid-global-state-and-stateful-top-level-functions

@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleRareEolAnnotations:
+    standard: @{RubyStyleGuide}
+    ruleId: rare-eol-annotations
+    title: Keep bare end-of-line annotations for obvious cases
+    statement:
+        An annotation with no note may sit at the end of a line only when
+        the problem is so plain that a note would add nothing. Treat this as
+        an exception.
+    rationale:
+        Most annotations need a note to be useful, so the short form should
+        stay rare.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```ruby
+        \\\
+        def rebuild_index
+          records.each { |r| index.add(r) } # OPTIMIZE
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comments, annotations]
+    source: https://rubystyle.guide/#rare-eol-annotations

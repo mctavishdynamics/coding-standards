@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleLiskov:
+    standard: @{RubyStyleGuide}
+    ruleId: liskov
+    title: Follow the Liskov Substitution Principle in class hierarchies
+    statement:
+        Design subclasses so that they can stand in for their parent class
+        anywhere it is used.
+    rationale:
+        If a subclass breaks the parent's contract, code written against the
+        parent fails in ways that are hard to predict.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Bird
+          def fly = 'flying'
+        end
+
+        class Penguin < Bird
+          def fly = raise(NotImplementedError)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Bird
+        end
+
+        class FlyingBird < Bird
+          def fly = 'flying'
+        end
+
+        class Penguin < Bird
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [design, inheritance]
+    source: https://rubystyle.guide/#liskov

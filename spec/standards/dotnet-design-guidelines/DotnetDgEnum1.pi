@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEnum1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: enum-1
+    title: Use enums to type sets of values strongly
+    statement:
+        When a parameter, property or return value takes one of a fixed set
+        of values, give it an enum type.
+    rationale:
+        An enum documents the allowed values and lets the compiler reject
+        anything else.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void SetAlignment(int alignment) { }   // 0 = left, 1 = center, 2 = right
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public enum Alignment { Left, Center, Right }
+
+        public void SetAlignment(Alignment alignment) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, enums, type-safety]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/enum

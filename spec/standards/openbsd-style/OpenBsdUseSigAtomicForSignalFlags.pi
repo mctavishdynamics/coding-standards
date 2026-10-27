@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdUseSigAtomicForSignalFlags:
+    standard: @{OpenBsdStyle}
+    ruleId: signal-flags
+    title: Declare flags set by signal handlers as volatile sig_atomic_t
+    statement:
+        Give global flags that signal handlers set the type volatile
+        sig_atomic_t when possible.
+    rationale:
+        Only that type is guaranteed to be read and written atomically with
+        respect to signal delivery.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static int got_sigterm;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static volatile sig_atomic_t got_sigterm;
+        \\\
+        ```
+    languages: [c]
+    tags: [signals, concurrency]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

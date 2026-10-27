@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdMarkObscureUnreachableCode:
+    standard: @{FreeBsdStyle}
+    ruleId: notreached
+    title: Mark code unreachable for non-obvious reasons with NOTREACHED
+    statement:
+        When code cannot be reached for reasons that are not obvious, you
+        may mark it with a NOTREACHED comment.
+    rationale:
+        The comment tells readers and checkers that the path is
+        intentionally dead.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        usage();
+        /* NOTREACHED */
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, control-flow]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

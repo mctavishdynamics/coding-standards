@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip145:
+    standard: @{GoogleAip}
+    ruleId: AIP-145
+    title: Use half-open ranges and document inclusiveness
+    statement:
+        Represent ranges with an inclusive start and an exclusive end, using
+        paired fields with start_ and end_ prefixes. Use first_ and last_
+        with an inclusive end only where there is strong colloquial
+        precedent, and always document whether each range is inclusive or
+        exclusive.
+    rationale:
+        Half-open ranges compose without gaps or overlaps and avoid off-by-
+        one errors with continuous values such as time. Saying which
+        convention applies removes any ambiguity.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Shift {
+          google.protobuf.Timestamp from = 1;
+          google.protobuf.Timestamp to = 2;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Shift {
+          // Inclusive.
+          google.protobuf.Timestamp start_time = 1;
+          // Exclusive.
+          google.protobuf.Timestamp end_time = 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [fields, ranges]
+    source: https://google.aip.dev/145

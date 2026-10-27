@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./SemVer import SemVer
+
+export coding-rule SemVerMajorVersion:
+    standard: @{SemVer}
+    ruleId: 8
+    title: Bump the major version for incompatible API changes
+    statement:
+        Once X is greater than zero, bump X in X.y.z for any change that
+        breaks backward compatibility of the public API, and set the minor and
+        patch numbers back to 0. Such a release can carry minor and patch
+        changes too.
+    rationale:
+        A major bump warns consumers that upgrading may require changes on
+        their side.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        3.7.2 -> 3.8.0   removes the legacy login() function
+        3.7.2 -> 4.7.2   removes the legacy login() function
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        3.7.2 -> 4.0.0   removes the legacy login() function
+        \\\
+        ```
+    languages: [any]
+    tags: [versioning, breaking-changes]
+    source: https://semver.org/#semantic-versioning-specification-semver

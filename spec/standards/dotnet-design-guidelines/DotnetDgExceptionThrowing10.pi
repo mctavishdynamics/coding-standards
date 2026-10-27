@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExceptionThrowing10:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: exception-throwing-10
+    title: Do not throw inside exception filters
+    statement:
+        Make sure the condition in a when clause cannot throw.
+    rationale:
+        An exception in a filter is swallowed and treated as false, which is
+        almost impossible to debug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        catch (HttpRequestException ex) when (int.Parse(ex.Data["Status"].ToString()) == 503)
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.ServiceUnavailable)
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, exceptions, error-handling]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/exception-throwing

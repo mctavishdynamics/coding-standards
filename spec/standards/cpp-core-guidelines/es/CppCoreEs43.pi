@@ -5,29 +5,28 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs43:
     standard: @{CppCoreGuidelines}
     ruleId: ES.43
-    title: Avoid expressions with undefined order of evaluation
+    title: Avoid expressions whose evaluation order is unspecified
     statement:
-        Do not write expressions that modify a variable and also read or
-        modify it elsewhere in the same expression without a defined
-        sequence.
+        An expression should not change a variable while also reading or
+        changing that same variable somewhere else without a sequencing
+        guarantee.
     rationale:
-        The result is unknown and can change with the compiler, its version
-        or the optimizer settings, so the code is not portable.
+        What such code computes depends on the compiler, its version and its
+        optimization flags. It may appear to work today and break after an
+        upgrade.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        int i = 0;
-        v[i] = i++;
+        int doubled = ++count + count;   // read and write are unsequenced
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        int i = 0;
-        v[i] = i;
-        ++i;
+        ++count;
+        int doubled = count + count;
         \\\
         ```
     languages: [cpp]

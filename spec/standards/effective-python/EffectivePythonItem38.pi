@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem38:
+    standard: @{EffectivePython}
+    ruleId: item-38
+    title: Decorate wrappers with functools.wraps
+    statement:
+        When you write a decorator, apply functools.wraps to the inner
+        wrapper function.
+    rationale:
+        Without it the decorated function loses its name, docstring and
+        signature, which confuses debuggers, help and serializers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def timed(func):
+            def wrapper(*args, **kwargs):
+                return func(*args, **kwargs)
+            return wrapper
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import functools
+
+        def timed(func):
+            @functools.wraps(func)
+            def wrapper(*args, **kwargs):
+                return func(*args, **kwargs)
+            return wrapper
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, decorators]
+    source: https://effectivepython.com/

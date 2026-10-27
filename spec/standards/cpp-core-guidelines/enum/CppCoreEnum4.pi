@@ -5,33 +5,38 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEnum4:
     standard: @{CppCoreGuidelines}
     ruleId: Enum.4
-    title: Define operations on enumerations for safe and simple use
+    title: Give enums the operators they need to be used safely
     statement:
-        Provide the operations an enumeration needs, such as increment,
-        bitwise combination or printing, as functions or operators on the
-        enum type.
+        Write the operators and helper functions an enumeration needs, for
+        example stepping to the next value or combining flags, directly on
+        the enum type.
     rationale:
-        This makes the type convenient to use without casts to int and
-        avoids mistakes.
+        Callers then never have to cast to an integer and back. Each cast is
+        a chance to produce a value that matches no enumerator, so keeping
+        the logic in one place prevents bugs and keeps call sites short.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        enum class Day { mon, tue, wed, thu, fri, sat, sun };
+        enum class Light { red, amber, green };
 
-        Day d = Day::sun;
-        d = static_cast<Day>(static_cast<int>(d) + 1);   // past sun, invalid
+        Light next = static_cast<Light>(static_cast<int>(Light::green) + 1);
+        // next holds no valid enumerator
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        enum class Day { mon, tue, wed, thu, fri, sat, sun };
+        enum class Light { red, amber, green };
 
-        Day& operator++(Day& d) {
-            d = (d == Day::sun) ? Day::mon : static_cast<Day>(static_cast<int>(d) + 1);
-            return d;
+        Light advance(Light l) {
+            switch (l) {
+            case Light::red:   return Light::green;
+            case Light::green: return Light::amber;
+            case Light::amber: return Light::red;
+            }
+            return Light::red;
         }
         \\\
         ```

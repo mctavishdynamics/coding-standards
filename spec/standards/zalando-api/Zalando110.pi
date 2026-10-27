@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando110:
+    standard: @{ZalandoApi}
+    ruleId: 110
+    title: Return JSON objects as top-level structures
+    statement:
+        Always use a JSON object, not an array or a map, at the top level of
+        a response body.
+    rationale:
+        An object can gain new fields later, such as pagination links,
+        without breaking clients.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        [ { "id": "so-1" }, { "id": "so-2" } ]
+        \\\
+        ```
+    compliant:
+        ```json
+        \\\
+        { "items": [ { "id": "so-1" }, { "id": "so-2" } ] }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, json, compatibility]
+    source: https://opensource.zalando.com/restful-api-guidelines/#110

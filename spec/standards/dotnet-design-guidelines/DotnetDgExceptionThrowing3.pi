@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExceptionThrowing3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: exception-throwing-3
+    title: Consider FailFast when continuing would be unsafe
+    statement:
+        If code reaches a state where it is dangerous to keep running, think
+        about terminating the process with Environment.FailFast instead of
+        throwing.
+    rationale:
+        An exception could be caught and execution would continue in a
+        corrupted state.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        if (!_ledger.ChecksumMatches())
+            Environment.FailFast("Ledger corruption detected; stopping to protect data.");
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, exceptions, reliability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/exception-throwing

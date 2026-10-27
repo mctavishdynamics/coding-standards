@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule47:
+    standard: @{CppCodingStandards}
+    ruleId: rule-47
+    title: List member initialisers in declaration order
+    statement:
+        Write the constructor's member initialiser list in the same order
+        the members are declared.
+    rationale:
+        Members are always initialised in declaration order, so a different
+        list order misleads and can read unset members.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Range {
+            int size_;
+            int end_;
+        public:
+            Range(int b, int e) : end_(e), size_(end_ - b) {}   // end_ not set yet
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Range {
+            int end_;
+            int size_;
+        public:
+            Range(int b, int e) : end_(e), size_(end_ - b) {}
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [construction-destruction-copying, initialization, constructors]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

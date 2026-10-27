@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoNewKeyword:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-new
+    title: Call constructors without new
+    statement:
+        Leave out the optional `new` keyword when invoking a constructor.
+        The unnecessary_new lint checks this.
+    rationale:
+        A factory constructor can hand back an existing object, so the
+        keyword can be misleading, and the language keeps it only for
+        backward compatibility.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final buffer = new StringBuffer();
+        final timer = new Stopwatch()..start();
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final buffer = StringBuffer();
+        final timer = Stopwatch()..start();
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, constructors]
+    source: https://dart.dev/effective-dart/usage#dont-use-new

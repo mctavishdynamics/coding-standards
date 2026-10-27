@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12DoWhileSplitCondition:
+    standard: @{Psr12}
+    ruleId: 5.3d
+    title: Wrap long do while conditions in the standard shape
+    statement:
+        When the condition of a do while loop is split over several lines,
+        indent each continuation line at least once, put the first condition
+        on the line after the opening parenthesis, and keep boolean
+        operators consistently at either the start or the end of lines.
+    rationale:
+        A fixed shape for long conditions keeps them readable and stops each
+        author from inventing a different wrapping style.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        do {
+            $row = $cursor->next();
+        } while ($row !== null &&
+            $row->id < $lastId);
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        do {
+            $row = $cursor->next();
+        } while (
+            $row !== null
+            && $row->id < $lastId
+        );
+        \\\
+        ```
+    languages: [php]
+    tags: [control-structures, loops]
+    source: https://www.php-fig.org/psr/psr-12/#53-while-do-while

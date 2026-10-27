@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleNoRecursion:
+    standard: @{TigerStyle}
+    ruleId: no-recursion
+    title: Do not use recursion
+    statement:
+        Write iterative code with explicit bounds instead of recursive
+        calls.
+    rationale:
+        Without recursion every execution that ought to be bounded can be
+        shown to be bounded, including its stack depth.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn depth(node: ?*const Node) u32 {
+            const n = node orelse return 0;
+            return 1 + @max(depth(n.left), depth(n.right));
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn depth(root: *const Node, stack: []Frame) u32 {
+            // Walk the tree with an explicit stack of fixed capacity.
+            assert(stack.len >= tree_height_max);
+            // ...
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [control-flow, safety, bounds]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

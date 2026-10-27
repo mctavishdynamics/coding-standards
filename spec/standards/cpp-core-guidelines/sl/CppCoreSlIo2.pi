@@ -5,12 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSlIo2:
     standard: @{CppCoreGuidelines}
     ruleId: SL.io.2
-    title: When reading, always consider ill-formed input
+    title: Expect malformed input whenever you read
     statement:
-        Check input for errors and bad data as soon as it is read.
+        Validate every piece of input right where it is read, and handle read
+        failures there.
     rationale:
-        Errors are best handled early; if input is not validated, every
-        function downstream must cope with bad data, which is not practical.
+        Catching bad data at the edge is cheapest. If it gets through, every
+        function deeper in the program would have to defend against it, which nobody
+        can do in practice.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartConstConstructors:
+    standard: @{EffectiveDart}
+    ruleId: consider-making-your-constructor-const-if-the-class-supports-it
+    title: Consider const constructors for immutable classes
+    statement:
+        If all fields are final and the constructor only initializes them,
+        consider making it `const`, especially for small value types. Only
+        do so if you are willing to keep it const.
+    rationale:
+        Const constructors let users build instances inside constants,
+        switch cases and defaults. Removing const later is a breaking
+        change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Insets {
+          final double horizontal, vertical;
+          Insets(this.horizontal, this.vertical);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Insets {
+          final double horizontal, vertical;
+          const Insets(this.horizontal, this.vertical);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [consider, constructors, immutability]
+    source: https://dart.dev/effective-dart/design#consider-making-your-constructor-const-if-the-class-supports-it

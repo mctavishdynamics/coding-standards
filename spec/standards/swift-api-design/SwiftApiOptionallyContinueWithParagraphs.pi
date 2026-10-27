@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiOptionallyContinueWithParagraphs:
+    standard: @{SwiftApiDesign}
+    ruleId: optionally-continue-with-paragraphs
+    title: Put further detail after the summary
+    statement:
+        After the summary you may add paragraphs and bullet items, separated
+        by blank lines and written as complete sentences.
+    rationale:
+        Keeping detail below the summary leaves the summary short while
+        still giving room for discussion.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        /// Parses the file and it is slow for big files so use the async one
+        /// and also it throws on bad UTF-8.
+        func parse(_ url: URL) throws -> Document
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// Parses the document stored at `url`.
+        ///
+        /// Parsing reads the whole file into memory. For large files, prefer
+        /// `parseIncrementally(_:)`.
+        ///
+        /// - Throws: `ParseError.invalidEncoding` if the file is not UTF-8.
+        func parse(_ url: URL) throws -> Document
+        \\\
+        ```
+    languages: [swift]
+    tags: [documentation]
+    source: https://www.swift.org/documentation/api-design-guidelines/#write-doc-comment

@@ -1,0 +1,23 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV6x8x4:
+    standard: @{OwaspAsvs}
+    ruleId: V6.8.4
+    title: Verify authentication strength reported by the identity provider
+    statement:
+        When functions need a certain authentication strength, method or
+        recency, check it using what the IdP returns, such as the acr, amr
+        and auth_time claims in OIDC. If the IdP gives no such data,
+        document a fallback that assumes the weakest method.
+    rationale:
+        Without this check, a user who logged in weakly at the IdP could
+        reach functions that require stronger authentication.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-2, identity-provider, authentication-strength]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x15-V6-Authentication.md#v68-authentication-with-an-identity-provider

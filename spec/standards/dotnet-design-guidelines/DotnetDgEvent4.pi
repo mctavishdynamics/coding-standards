@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEvent4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: event-4
+    title: Raise each event through a protected virtual On method
+    statement:
+        On unsealed classes, raise each instance event from a protected
+        virtual method named On plus the event name. Put nothing in it that
+        the base class needs, since overrides may skip the base call.
+    rationale:
+        Derived classes can then handle the event by overriding, which is
+        simpler and faster than subscribing.
+    exceptions:
+        Structs, sealed classes and static events do not need such a method.
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class Downloader
+        {
+            public event EventHandler<ProgressEventArgs> ProgressChanged;
+
+            protected virtual void OnProgressChanged(ProgressEventArgs e)
+                => ProgressChanged?.Invoke(this, e);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, events, extensibility]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/event

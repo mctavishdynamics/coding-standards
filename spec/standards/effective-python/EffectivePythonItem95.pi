@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem95:
+    standard: @{EffectivePython}
+    ruleId: item-95
+    title: Load a shared library from Python without a compiler using ctypes
+    statement:
+        To use an existing shared library without writing an extension
+        module, load it with ctypes and declare its argument and return
+        types.
+    rationale:
+        ctypes needs no compiler and is fast to try, though it is unsafe if
+        types are wrong and calls carry some overhead.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        import ctypes
+
+        libm = ctypes.CDLL("libm.so.6")
+        libm.cbrt.argtypes = [ctypes.c_double]
+        libm.cbrt.restype = ctypes.c_double
+        print(libm.cbrt(27.0))
+        \\\
+        ```
+    languages: [python]
+    tags: [performance, native-code]
+    source: https://effectivepython.com/

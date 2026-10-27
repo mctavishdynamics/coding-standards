@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem7:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-7
+    title: Know when to initialise with parentheses and when with \ {} \
+    statement:
+        Braced initialisation works everywhere and forbids narrowing, but it
+        strongly prefers initializer_list constructors. Pick one style
+        deliberately and know where it changes meaning.
+    rationale:
+        vector of int built with parentheses and braces from the same two
+        numbers gives different contents.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::vector<int> v{10, 0};   // intended ten zeros, got two elements
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<int> v(10, 0);   // ten zeros
+        std::vector<int> w{10, 0};   // the values 10 and 0
+        \\\
+        ```
+    languages: [cpp]
+    tags: [moving-to-modern-cpp, initialization]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT25:
     standard: @{CppCoreGuidelines}
     ruleId: T.25
-    title: Avoid complementary constraints
+    title: Avoid pairs of constraints that are exact negations of each other
     statement:
-        Do not overload templates on a constraint and its negation. Provide
-        a general template and a constrained one, or delete the general one
-        if no fallback exists.
+        Do not provide one overload for a constraint and another for its negation.
+        Write a general template plus a more constrained one, or a deleted general
+        template when there is no sensible fallback.
     rationale:
-        Negated constraints are brittle, and with several constraints the
-        number of required combinations grows exponentially. Overload
-        resolution already prefers the more constrained template.
+        Overload resolution already picks the more constrained candidate, so the
+        negation adds nothing. It is fragile, and once several constraints are
+        involved the number of negated combinations to keep in sync grows very fast.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV15x4x2:
+    standard: @{OwaspAsvs}
+    ruleId: V15.4.2
+    title: Combine state checks and dependent actions atomically
+    statement:
+        Perform a check on a resource, such as whether it exists or who may
+        use it, together with the action that depends on it as one atomic
+        operation.
+    rationale:
+        If checking and acting are two separate steps, the resource can
+        change in between, which is the TOCTOU race condition.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if not os.path.exists(path):
+            with open(path, "w") as f:
+                f.write(report)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        with open(path, "x") as f:
+            f.write(report)
+        \\\
+        ```
+    languages: [any]
+    tags: [level-3, concurrency, toctou]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x24-V15-Secure-Coding-and-Architecture.md#v154-safe-concurrency

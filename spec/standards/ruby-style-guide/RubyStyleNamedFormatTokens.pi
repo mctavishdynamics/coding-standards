@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNamedFormatTokens:
+    standard: @{RubyStyleGuide}
+    ruleId: named-format-tokens
+    title: Use annotated named format tokens
+    statement:
+        In format strings with named tokens, prefer the angle-bracket form
+        with a type letter, such as %<total>d, over the brace form. RuboCop
+        checks this with Style/FormatStringToken.
+    rationale:
+        The angle-bracket form also states the type of the value being
+        formatted.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        format('Due: %{amount}', amount: 42)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        format('Due: %<amount>d', amount: 42)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, formatting]
+    source: https://rubystyle.guide/#named-format-tokens

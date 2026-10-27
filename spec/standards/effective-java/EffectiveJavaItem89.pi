@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem89:
+    standard: @{EffectiveJava}
+    ruleId: item-89
+    title: Control instances with enums rather than readResolve
+    statement:
+        When a serializable class must keep a fixed set of instances, make
+        it an enum. If you rely on readResolve, mark every reference field
+        transient.
+    rationale:
+        Enums guarantee there are no other instances. A readResolve approach
+        can be defeated by a crafted stream that steals a reference.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class Mode implements Serializable {
+            public static final Mode FAST = new Mode();
+            private Object readResolve() { return FAST; }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public enum Mode { FAST, SAFE }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, enums]
+    source: https://www.informit.com/store/effective-java-9780134686097

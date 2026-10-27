@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdWrapParametersWithFourSpaces:
+    standard: @{FreeBsdStyle}
+    ruleId: long-parameter-lists
+    title: Wrap long parameter lists with a four-space indent
+    statement:
+        When a parameter list does not fit on one line, continue it on the
+        next line indented by four spaces.
+    rationale:
+        This is the standard continuation indent and distinguishes wrapped
+        parameters from the body.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int
+        attach_device(struct device *parent, struct device *self,
+                      void *aux, int flags)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int
+        attach_device(struct device *parent, struct device *self,
+            void *aux, int flags)
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, functions]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

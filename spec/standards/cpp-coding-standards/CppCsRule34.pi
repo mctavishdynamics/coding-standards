@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule34:
+    standard: @{CppCodingStandards}
+    ruleId: rule-34
+    title: Reuse by holding a member rather than by inheriting
+    statement:
+        Reuse code by holding another object as a member rather than
+        deriving from it, unless you need its virtual functions or protected
+        members.
+    rationale:
+        Inheritance is the strongest coupling C++ offers; composition keeps
+        the dependency narrow and replaceable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Cache : public std::unordered_map<std::string, Blob> {};
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Cache {
+        public:
+            const Blob* find(const std::string& key) const;
+        private:
+            std::unordered_map<std::string, Blob> map_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, composition, inheritance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

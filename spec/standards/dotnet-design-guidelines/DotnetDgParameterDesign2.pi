@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-2
+    title: Do not add reserved parameters
+    statement:
+        Do not include parameters set aside for some future use; add an
+        overload when more input is needed.
+    rationale:
+        Reserved parameters confuse callers today, and overloads already
+        solve the future problem.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Compress(Stream input, Stream output, int reserved) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Compress(Stream input, Stream output) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, parameters, versioning]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design

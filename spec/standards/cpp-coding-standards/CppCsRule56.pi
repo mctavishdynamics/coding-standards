@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule56:
+    standard: @{CppCodingStandards}
+    ruleId: rule-56
+    title: Give value types a cheap swap that cannot fail
+    statement:
+        Give value types an efficient member swap that cannot fail, plus a
+        non-member swap in the same namespace.
+    rationale:
+        Swap is the key tool for strong exception safety and for efficient
+        algorithms.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // relies on std::swap: three deep copies
+        std::swap(bigA, bigB);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Image {
+        public:
+            void swap(Image& o) noexcept { std::swap(px_, o.px_); }
+        private:
+            std::unique_ptr<Pixel[]> px_;
+        };
+        inline void swap(Image& a, Image& b) noexcept { a.swap(b); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [construction-destruction-copying, exceptions, performance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

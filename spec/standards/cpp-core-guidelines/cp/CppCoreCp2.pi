@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp2:
     standard: @{CppCoreGuidelines}
     ruleId: CP.2
-    title: Avoid data races
+    title: Never let threads touch shared data without synchronization
     statement:
-        Never let two threads access the same object at the same time
-        without synchronization when at least one of them writes to it.
+        Synchronize every access to an object that one thread writes while another
+        thread reads or writes it.
     rationale:
-        A data race is undefined behavior: nothing is guaranteed and the
-        resulting bugs are subtle. A compiler may, for example, turn a
-        range-checked switch into a jump table that jumps anywhere if the
-        value changes underneath it.
+        Unsynchronized concurrent access is undefined behavior, so the program has
+        no defined meaning at all. The bugs it causes are intermittent and hard to
+        trace, because the optimizer may assume no other thread changes the value
+        and generate code that misbehaves when one does.
     exceptions: null
     severity: null
     noncompliant:

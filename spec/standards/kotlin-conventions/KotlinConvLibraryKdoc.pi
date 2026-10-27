@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvLibraryKdoc:
+    standard: @{KotlinConventions}
+    ruleId: library-kdoc
+    title: Write KDoc for every public library member
+    statement:
+        Every public declaration in a library needs KDoc. Overrides that add
+        nothing new to document are the only ones you may skip.
+    rationale:
+        It supports generating complete reference documentation for users.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun parseDuration(text: String): Duration = TODO()
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        /**
+         * Parses an ISO-8601 duration such as `PT5M` from [text].
+         */
+        public fun parseDuration(text: String): Duration = TODO()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [libraries, documentation]
+    source: https://kotlinlang.org/docs/coding-conventions.html#coding-conventions-for-libraries

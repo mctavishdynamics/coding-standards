@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartConciseConstructorSyntax:
+    standard: @{EffectiveDart}
+    ruleId: prefer-using-concise-constructor-syntax
+    title: Declare constructors with new and factory, not the class name
+    statement:
+        In libraries at language version 3.13 or later, declare constructors
+        with `new` and factory constructors with `factory` instead of
+        repeating the class name. This covers declarations only, not calls.
+        The unnecessary_type_name_in_constructor lint checks this.
+    rationale:
+        Writing the class name again adds nothing, and every such copy needs
+        editing whenever the class gets a new name.
+    exceptions:
+        Not applicable before language version 3.13, where the concise
+        syntax does not exist.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Color {
+          final int value;
+          Color(this.value);
+          Color.black() : value = 0;
+          factory Color.parse(String hex) => Color(int.parse(hex, radix: 16));
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Color {
+          final int value;
+          new(this.value);
+          new black() : value = 0;
+          factory parse(String hex) => Color(int.parse(hex, radix: 16));
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, constructors]
+    source: https://dart.dev/effective-dart/usage#prefer-using-concise-constructor-syntax

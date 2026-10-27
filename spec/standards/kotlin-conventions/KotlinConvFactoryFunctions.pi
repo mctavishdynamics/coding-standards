@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvFactoryFunctions:
+    standard: @{KotlinConventions}
+    ruleId: factory-functions
+    title: Give special factory functions distinct names
+    statement:
+        Avoid naming a factory function the same as its class; choose a name
+        that explains what is special about it. Reuse the class name only if
+        there is no special behaviour.
+    rationale:
+        A descriptive name tells callers how the result differs from a
+        normal constructor call.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        class Color(val r: Int, val g: Int, val b: Int)
+        fun Color(hex: String): Color = TODO()
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        class Color(val r: Int, val g: Int, val b: Int) {
+            companion object {
+                fun fromHex(hex: String): Color = TODO()
+            }
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [factories, naming]
+    source: https://kotlinlang.org/docs/coding-conventions.html#factory-functions

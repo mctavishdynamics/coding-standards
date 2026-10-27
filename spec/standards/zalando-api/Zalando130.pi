@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando130:
+    standard: @{ZalandoApi}
+    ruleId: 130
+    title: Use snake_case for query parameters
+    statement:
+        Name query parameters in snake_case and never in camelCase, matching
+        the rule for JSON property names.
+    rationale:
+        Query parameters often mirror payload properties, so the same casing
+        keeps them consistent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /orders?customerId=c-90&createdBetween=2024-01-01/..
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /orders?customer_id=c-90&created_between=2024-01-01/..
+        \\\
+        ```
+    languages: [any]
+    tags: [must, naming, query-parameters]
+    source: https://opensource.zalando.com/restful-api-guidelines/#130

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdOpenNamespacesOnOneLine:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-namespaces
+    title: Put the namespace brace on the first line and nest with one declaration
+    statement:
+        Keep a namespace's opening brace on the line that names it, and write
+        nested namespaces as a single combined declaration such as a::b.
+    rationale:
+        It matches structure and class layout and saves nesting levels.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        namespace net
+        {
+        namespace tcp
+        {
+        }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace net::tcp {
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, namespaces, formatting]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

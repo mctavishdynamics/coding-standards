@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartLowercaseFileNames:
+    standard: @{EffectiveDart}
+    ruleId: do-name-packages-and-file-system-entities-using-lowercase-with-underscores
+    title: Use lowercase_with_underscores for packages, directories and files
+    statement:
+        Spell package names, directory names and Dart source file names in
+        lowercase letters, joining words with underscores. The file_names
+        and package_names lints check this.
+    rationale:
+        Some file systems ignore case, so all-lowercase names avoid clashes.
+        The underscore keeps words readable and leaves the name a legal Dart
+        identifier.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        // File: lib/OrderHistory.dart
+        // File: lib/order-history.dart
+        import 'package:MyShop/OrderHistory.dart';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        // File: lib/order_history.dart
+        import 'package:my_shop/order_history.dart';
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, naming, files]
+    source: https://dart.dev/effective-dart/style#do-name-packages-and-file-system-entities-using-lowercase-with-underscores

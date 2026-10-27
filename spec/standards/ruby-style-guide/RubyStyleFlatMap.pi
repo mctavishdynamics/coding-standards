@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleFlatMap:
+    standard: @{RubyStyleGuide}
+    ruleId: flat-map
+    title: Use flat_map instead of map then flatten
+    statement:
+        Replace map followed by flatten with flat_map when each block
+        returns an array one level deep. Keep map and flatten when the
+        results are nested more deeply.
+    rationale:
+        flat_map does the job in one pass, but it flattens only one level,
+        unlike flatten.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        tags = posts.map(&:tags).flatten
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        tags = posts.flat_map(&:tags)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, performance]
+    source: https://rubystyle.guide/#flat-map

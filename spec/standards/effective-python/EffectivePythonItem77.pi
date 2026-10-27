@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem77:
+    standard: @{EffectivePython}
+    ruleId: item-77
+    title: Bridge threads and coroutines while migrating to asyncio
+    statement:
+        Move a large program to asyncio gradually. Call blocking code from
+        coroutines with run_in_executor or asyncio.to_thread, and call
+        coroutines from threads with run_coroutine_threadsafe.
+    rationale:
+        A gradual move lets you convert one part at a time without rewriting
+        everything at once.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        async def checksum(path):
+            return await asyncio.to_thread(compute_sha256, path)
+        \\\
+        ```
+    languages: [python]
+    tags: [concurrency-and-parallelism, asyncio, threads, migration]
+    source: https://effectivepython.com/

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagAudioOnlyVideoOnlyPrerecorded:
+    standard: @{Wcag22}
+    ruleId: 1.2.1
+    title: Provide alternatives for recorded audio-only and video-only media
+    statement:
+        For recorded audio with no video, provide a transcript or other text
+        alternative with the same information. For recorded video with no
+        sound, provide either a text alternative or an audio track that
+        conveys the same content.
+    rationale:
+        Deaf users cannot hear a podcast and blind users cannot see a silent
+        animation, so each needs the content in another form.
+    exceptions:
+        Not required when the media is itself an alternative to text on the
+        page and is clearly labelled as such.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <audio src="/media/episode-12.mp3" controls></audio>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <audio src="/media/episode-12.mp3" controls></audio>
+        <a href="/media/episode-12-transcript.html">Read the transcript of episode 12</a>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, media, transcripts]
+    source: https://www.w3.org/TR/WCAG22/#audio-only-and-video-only-prerecorded

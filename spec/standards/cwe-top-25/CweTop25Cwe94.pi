@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe94:
+    standard: @{CweTop25}
+    ruleId: CWE-94
+    title: Prevent code injection
+    statement:
+        Design the program so it never builds and runs code from input; use
+        lookup tables, configuration data or safe parsers in place of eval-
+        style functions. If dynamic code cannot be avoided, validate input
+        strictly against an allow list and run it in a sandbox.
+    rationale:
+        Code built from input runs with the full rights of the application,
+        so an attacker can do anything the program can. It is ranked 10 of
+        25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def calculate(a, op, b):
+            return eval(f"{a} {op} {b}")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        OPERATIONS = {"+": operator.add, "-": operator.sub, "*": operator.mul}
+
+        def calculate(a, op, b):
+            if op not in OPERATIONS:
+                raise ValueError("unsupported operator")
+            return OPERATIONS[op](float(a), float(b))
+        \\\
+        ```
+    languages: [python]
+    tags: [rank-10, injection, eval]
+    source: https://cwe.mitre.org/data/definitions/94.html

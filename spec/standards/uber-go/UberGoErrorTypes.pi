@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoErrorTypes:
+    standard: @{UberGo}
+    ruleId: error-types
+    title: Pick the error form by matching needs and message type
+    statement:
+        Use errors.New for a fixed message and fmt.Errorf for a dynamic one
+        when callers need not match the error. When callers must match it,
+        export a top-level error variable for a fixed message, or a custom
+        error type for a dynamic one.
+    rationale:
+        Matching with errors.Is or errors.As needs a stable variable or type
+        to compare against, while simple errors stay lightweight. Exported
+        errors become part of the package API.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func Open(name string) error {
+            return errors.New("file not found")
+        }
+
+        // caller
+        if err.Error() == "file not found" { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var ErrNotFound = errors.New("file not found")
+
+        func Open(name string) error {
+            return ErrNotFound
+        }
+
+        // caller
+        if errors.Is(err, ErrNotFound) { /* ... */ }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, api-design]
+    source: https://github.com/uber-go/guide/blob/master/style.md#error-types

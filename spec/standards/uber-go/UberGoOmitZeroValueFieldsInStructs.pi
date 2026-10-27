@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoOmitZeroValueFieldsInStructs:
+    standard: @{UberGo}
+    ruleId: omit-zero-value-fields-in-structs
+    title: Leave zero-value fields out of struct literals
+    statement:
+        When initializing a struct with field names, leave out fields whose
+        value is the zero value unless naming them adds useful context.
+    rationale:
+        Listing only meaningful values cuts noise and shows what is special
+        about this value.
+    exceptions:
+        Keep zero values where the field name gives meaning, as in test
+        table cases.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        opts := Options{
+            Name:    "worker",
+            Retries: 0,
+            Debug:   false,
+            Tags:    nil,
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        opts := Options{
+            Name: "worker",
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [structs, initialization]
+    source: https://github.com/uber-go/guide/blob/master/style.md#omit-zero-value-fields-in-structs

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackWritePureFunctions:
+    standard: @{Carmack}
+    ruleId: write-pure-functions
+    title: Write pure functions that depend only on their parameters
+    statement:
+        Make a function read only its parameters and return computed values.
+        It should not read or write globals, keep internal state, do IO,
+        change its inputs, or receive a bundle of unrelated data.
+    rationale:
+        Pure functions are thread safe with value parameters, easy to reuse
+        elsewhere, trivial to test and easier to relearn later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int g_score;
+
+        void AddCombo(int hits) {
+            g_score += hits * hits;
+            printf("score %d\n", g_score);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int ComboScore(int score, int hits) {
+            return score + hits * hits;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [purity, functions, testability]
+    source: https://www.gamedeveloper.com/programming/in-depth-functional-programming-in-c-

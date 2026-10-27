@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartPreferPrivate:
+    standard: @{EffectiveDart}
+    ruleId: prefer-making-declarations-private
+    title: Make declarations private unless others need them
+    statement:
+        Prefix top-level and member declarations with an underscore unless
+        other libraries are meant to use them.
+    rationale:
+        Anything public becomes part of what the library promises to keep
+        working. Fewer public names mean less to support and less for users
+        to study, and unused private code shows up as an analyzer warning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Downloader {
+          int retryDelayMillis(int attempt) => 200 * attempt;
+          Future<void> download(Uri uri) async {}
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Downloader {
+          int _retryDelayMillis(int attempt) => 200 * attempt;
+          Future<void> download(Uri uri) async {}
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, libraries, privacy]
+    source: https://dart.dev/effective-dart/design#prefer-making-declarations-private

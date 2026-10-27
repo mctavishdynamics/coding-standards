@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleMergingKeywordArguments:
+    standard: @{RubyStyleGuide}
+    ruleId: merging-keyword-arguments
+    title: Add extra keyword arguments directly instead of merging
+    statement:
+        When passing a hash on as keyword arguments, list any additional
+        keywords next to the double splat rather than calling merge on the
+        hash.
+    rationale:
+        The direct form is shorter and avoids creating an intermediate hash.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        render(**defaults.merge(layout: false))
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        render(**defaults, layout: false)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [method-calls, keyword-arguments, hashes]
+    source: https://rubystyle.guide/#merging-keyword-arguments

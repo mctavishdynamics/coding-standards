@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip155:
+    standard: @{GoogleAip}
+    ruleId: AIP-155
+    title: Make a request_id field guarantee idempotency
+    statement:
+        If clients may tag a request with an identifier, put a request_id
+        string on the request message, not on the resource, and treat
+        repeated IDs as the same request. Document the allowed format,
+        preferably UUID4, and annotate UUID request IDs with the UUID4
+        format.
+    rationale:
+        A client-supplied identifier makes retries and parallel submissions
+        safe to deduplicate. A universally unique format makes accidental
+        collisions very unlikely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Order {
+          string name = 1;
+          string request_id = 2;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message CreateOrderRequest {
+          string parent = 1;
+          Order order = 2;
+          string request_id = 3 [(google.api.field_info).format = UUID4];
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [idempotency, design-patterns]
+    source: https://google.aip.dev/155

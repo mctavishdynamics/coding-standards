@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule94:
+    standard: @{CppCodingStandards}
+    ruleId: rule-94
+    title: Leave const intact instead of casting it off
+    statement:
+        Avoid const_cast to modify something declared const; use mutable for
+        cached state or fix the interface.
+    rationale:
+        Writing to a genuinely const object is undefined behaviour and
+        breaks callers' assumptions.
+    exceptions:
+        Calling a legacy API that is not const-correct but does not modify
+        its argument may need const_cast.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Cache::warm() const { const_cast<Cache*>(this)->load(); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Cache {
+        public:
+            void warm() const { std::call_once(once_, [this] { load(); }); }
+        private:
+            void load() const;
+            mutable std::once_flag once_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-safety, casting, const-correctness]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

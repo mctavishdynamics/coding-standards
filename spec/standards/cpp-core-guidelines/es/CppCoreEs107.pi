@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs107:
     standard: @{CppCoreGuidelines}
     ruleId: ES.107
-    title: Don't use unsigned for subscripts and prefer gsl::index
+    title: Index with a signed type such as gsl::index
     statement:
-        Use a signed index type such as gsl::index for subscripts and loop
-        counters over containers.
+        Subscripts and loop counters that walk a container should have a
+        signed type, ideally gsl::index.
     rationale:
-        It avoids signed and unsigned confusion, enables better optimization
-        and error detection, and avoids pitfalls with auto and int.
+        A signed index removes confusion between signed and unsigned values.
+        It also gives optimizers and checkers more to work with, and
+        sidesteps traps such as auto deducing int from a literal.
     exceptions: null
     severity: null
     noncompliant:

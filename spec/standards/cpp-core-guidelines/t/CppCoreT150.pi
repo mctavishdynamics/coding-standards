@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT150:
     standard: @{CppCoreGuidelines}
     ruleId: T.150
-    title: Check that a class matches a concept using static_assert
+    title: Verify that a type meets a concept with a static assertion
     statement:
-        When a class is meant to satisfy a concept, assert that with
-        static_assert next to its definition.
+        If a class is intended to model a concept, write a static_assert that checks
+        it right after the class definition.
     rationale:
-        Verifying it early catches a missing operation where the class is
-        written, instead of in a user's distant template error.
+        The assertion reports a missing or wrong operation where the class is
+        written. Otherwise the problem shows up later as a puzzling template error
+        in some user's code.
     exceptions: null
     severity: null
     noncompliant:

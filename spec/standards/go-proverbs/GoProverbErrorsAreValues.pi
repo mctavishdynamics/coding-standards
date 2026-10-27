@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbErrorsAreValues:
+    standard: @{GoProverbs}
+    ruleId: errors-are-values
+    title: Program with errors like any other value
+    statement:
+        Treat an error as an ordinary value you can store, pass, combine and
+        act on with normal code, not only as something to test and return at
+        each call.
+    rationale:
+        Thinking of errors as values opens up simpler designs, such as
+        recording the first error and checking it once.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if _, err := w.Write(header); err != nil {
+            return err
+        }
+        if _, err := w.Write(body); err != nil {
+            return err
+        }
+        if _, err := w.Write(footer); err != nil {
+            return err
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        ew := &errWriter{w: w}
+        ew.write(header)
+        ew.write(body)
+        ew.write(footer)
+        return ew.err
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling]
+    source: https://go-proverbs.github.io/

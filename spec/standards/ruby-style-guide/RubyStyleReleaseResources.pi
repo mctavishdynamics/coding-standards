@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleReleaseResources:
+    standard: @{RubyStyleGuide}
+    ruleId: release-resources
+    title: Release external resources in an ensure block
+    statement:
+        Free any external resource your code obtains, such as a file handle
+        or connection, in an ensure clause.
+    rationale:
+        The ensure clause runs even when an exception is raised, so the
+        resource is never leaked.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        conn = PG.connect(dbname: 'shop')
+        conn.exec(sql)
+        conn.close
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        conn = PG.connect(dbname: 'shop')
+        begin
+          conn.exec(sql)
+        ensure
+          conn.close
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [resources, error-handling]
+    source: https://rubystyle.guide/#release-resources

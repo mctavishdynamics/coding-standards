@@ -7,10 +7,9 @@ export coding-rule CertCppErr58Cpp:
     ruleId: ERR58-CPP
     title: Handle all exceptions thrown before main() begins executing
     statement:
-        Make sure exceptions thrown while initializing objects with static
-        or thread storage duration, before main runs, are caught. Use
-        constructors that cannot throw, or initialize such objects lazily
-        inside a function.
+        Exceptions thrown during initialization of static or thread-local
+        objects, before main starts, must be caught. Prefer constructors
+        that do not throw, or create such objects lazily within a function.
     rationale:
         No handler, not even a function-try-block on main, can catch these
         exceptions, so the program terminates. CERT rates likelihood likely,

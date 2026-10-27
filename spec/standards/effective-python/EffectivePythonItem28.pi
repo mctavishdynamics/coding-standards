@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem28:
+    standard: @{EffectivePython}
+    ruleId: item-28
+    title: Implement __missing__ when the default depends on the key
+    statement:
+        When the default value for a missing key must be computed from the
+        key itself, subclass dict and define __missing__.
+    rationale:
+        defaultdict factories take no arguments, and get or setdefault would
+        repeat the work at every call site.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        class FileCache(dict):
+            def __missing__(self, path):
+                handle = open(path, "rb")
+                self[path] = handle
+                return handle
+        \\\
+        ```
+    languages: [python]
+    tags: [dictionaries]
+    source: https://effectivepython.com/

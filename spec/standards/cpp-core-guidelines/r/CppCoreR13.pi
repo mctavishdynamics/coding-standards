@@ -5,17 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR13:
     standard: @{CppCoreGuidelines}
     ruleId: R.13
-    title:
-        Perform at most one explicit resource allocation in a single
-        expression statement
+    title: Allocate at most one resource per statement
     statement:
-        Do not make two explicit allocations in one expression, such as two
-        new calls as arguments to the same function. Split them or use
-        make_unique and make_shared.
+        One expression should contain no more than one explicit allocation.
+        Two new calls in the arguments of a single function call are the
+        classic case, so split them into separate statements or use the
+        make_ functions.
     rationale:
-        The order of evaluating subexpressions such as function arguments is
-        unspecified, so one allocation can succeed while the other throws
-        before ownership is taken, leaking the first.
+        C++ does not fix the order in which arguments and many other
+        subexpressions are evaluated. One allocation may finish, the second
+        may then throw, and the first object is lost before anything owns
+        it.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartWhetherForBooleanDocs:
+    standard: @{EffectiveDart}
+    ruleId: prefer-starting-a-boolean-variable-or-property-comment-with-whether-followed-by-a-noun-or-gerund-phrase
+    title: Start docs of boolean properties with "Whether"
+    statement:
+        Start the doc comment of a boolean property or variable with the
+        word "Whether" and then a noun phrase or gerund phrase. Adding "or
+        not" after "Whether" is rarely needed.
+    rationale:
+        The comment should make clear which states the value represents,
+        whatever work a getter does to compute it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        /// Returns true when the invoice is overdue or not.
+        bool get isOverdue => DateTime.now().isAfter(dueDate);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Whether the invoice is past its due date.
+        bool get isOverdue => DateTime.now().isAfter(dueDate);
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, documentation, properties]
+    source: https://dart.dev/effective-dart/documentation#prefer-starting-a-boolean-variable-or-property-comment-with-whether-followed-by-a-noun-or-gerund-phrase

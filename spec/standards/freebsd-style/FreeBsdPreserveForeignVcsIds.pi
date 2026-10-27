@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdPreserveForeignVcsIds:
+    standard: @{FreeBsdStyle}
+    ruleId: vcs-ids
+    title: Keep foreign version-control IDs intact and out of object files
+    statement:
+        Keep a file's own VCS ID tag only once. Preserve revision IDs in
+        files imported from elsewhere, including several that show history,
+        without editing them, and wrap them in #if 0 unless they are already
+        wrapped. Prefix them with From only when the file was renamed, and
+        when deriving from another FreeBSD file, cite its git hash and path
+        and carry its copyright.
+    rationale:
+        The IDs record provenance, and hiding them keeps uncompilable text
+        and ID strings out of builds.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        #if 0
+        static char sccsid[] = "@(#)ls.c  8.5 (Berkeley) 4/2/94";
+        #endif
+        \\\
+        ```
+    languages: [c]
+    tags: [version-control, file-structure]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

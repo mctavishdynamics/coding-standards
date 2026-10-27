@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem67:
+    standard: @{EffectivePython}
+    ruleId: item-67
+    title: Launch external programs through the subprocess module
+    statement:
+        Start and manage external programs with the subprocess module, using
+        run for simple cases and Popen for pipelines. Pass a timeout so a
+        stuck child cannot hang your program.
+    rationale:
+        subprocess is the standard, safe way to run processes, and children
+        run in parallel with your Python code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import os
+
+        os.system("gzip " + path)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import subprocess
+
+        subprocess.run(["gzip", path], check=True, timeout=60)
+        \\\
+        ```
+    languages: [python]
+    tags: [concurrency-and-parallelism, subprocess, processes]
+    source: https://effectivepython.com/

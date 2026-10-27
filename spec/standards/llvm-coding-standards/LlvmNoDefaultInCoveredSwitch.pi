@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmNoDefaultInCoveredSwitch:
+    standard: @{LlvmCodingStandards}
+    ruleId: don-t-use-default-labels-in-fully-covered-switches-over-enumerations
+    title: Omit default in a switch that covers every enumerator
+    statement:
+        When a switch over an enumeration handles every value, leave out the
+        default label. If GCC then warns that control can reach the end of
+        the function, put llvm_unreachable after the switch.
+    rationale:
+        Without a default, -Wswitch reports the switch when a new enumerator
+        is added; a default label hides that.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        switch (Dir) {
+        case Direction::Up:   return 1;
+        case Direction::Down: return -1;
+        default:              return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        switch (Dir) {
+        case Direction::Up:   return 1;
+        case Direction::Down: return -1;
+        }
+        llvm_unreachable("unknown direction");
+        \\\
+        ```
+    languages: [cpp]
+    tags: [switch, enums, warnings]
+    source: https://llvm.org/docs/CodingStandards.html#don-t-use-default-labels-in-fully-covered-switches-over-enumerations

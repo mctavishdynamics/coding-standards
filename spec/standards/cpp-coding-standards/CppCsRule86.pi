@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule86:
+    standard: @{CppCodingStandards}
+    ruleId: rule-86
+    title: Sort only as much as the task needs
+    statement:
+        Use partition, nth_element, partial_sort or stable_sort when they do
+        what you need instead of a full sort.
+    rationale:
+        Cheaper algorithms exist for top-N, median and partition problems.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::sort(scores.begin(), scores.end(), std::greater<>());
+        auto top3 = std::vector<int>(scores.begin(), scores.begin() + 3);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::partial_sort(scores.begin(), scores.begin() + 3, scores.end(), std::greater<>());
+        \\\
+        ```
+    languages: [cpp]
+    tags: [stl-algorithms, algorithms, performance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

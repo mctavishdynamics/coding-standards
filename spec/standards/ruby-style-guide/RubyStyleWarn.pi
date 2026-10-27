@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleWarn:
+    standard: @{RubyStyleGuide}
+    ruleId: warn
+    title: Write warnings with warn
+    statement:
+        Use warn rather than calling puts on the standard error stream.
+        RuboCop checks this with Style/StderrPuts.
+    rationale:
+        warn is shorter and clearer, and it can be silenced by running Ruby
+        with warnings turned off.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        $stderr.puts 'Config file not found, using defaults'
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        warn 'Config file not found, using defaults'
+        \\\
+        ```
+    languages: [ruby]
+    tags: [io]
+    source: https://rubystyle.guide/#warn

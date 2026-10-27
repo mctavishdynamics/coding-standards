@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartDocsBeforeAnnotations:
+    standard: @{EffectiveDart}
+    ruleId: do-put-doc-comments-before-metadata-annotations
+    title: Place doc comments above metadata annotations
+    statement:
+        Write the doc comment first, then the annotations, then the
+        declaration.
+    rationale:
+        This is the standard Dart layout and keeps the description at the
+        top of the declaration.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        @Deprecated('Use fetchAll instead')
+        /// Loads every record.
+        Future<List<Record>> loadAll();
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Loads every record.
+        @Deprecated('Use fetchAll instead')
+        Future<List<Record>> loadAll();
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, documentation, annotations]
+    source: https://dart.dev/effective-dart/documentation#do-put-doc-comments-before-metadata-annotations

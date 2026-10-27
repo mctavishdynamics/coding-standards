@@ -5,14 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT83:
     standard: @{CppCoreGuidelines}
     ruleId: T.83
-    title: Do not declare a member function template virtual
+    title: Never make a member function template virtual
     statement:
-        Member function templates cannot be virtual. Use double dispatch, a
-        visitor, or another explicit way to choose the function.
+        Do not try to declare a member function template virtual. Choose the
+        function another way, for example with double dispatch, a visitor or a set
+        of ordinary virtual overloads.
     rationale:
-        C++ does not allow it, because the set of virtual functions would
-        only be known at link time. The rule exists since people keep asking
-        for it.
+        The language forbids it. Allowing it would mean the full set of virtual
+        functions is only known at link time, which conflicts with how vtables are
+        built and with dynamic linking. The rule is stated because people keep
+        reaching for it.
     exceptions: null
     severity: null
     noncompliant:

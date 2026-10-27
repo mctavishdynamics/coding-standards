@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation86:
+    standard: @{AnssiC}
+    ruleId: recommendation-86
+    title: Give arrays an explicit size
+    statement:
+        State the size of every array, even when an initialiser could imply
+        it.
+    rationale:
+        An explicit size makes the bounds visible and lets the compiler
+        catch too many initialisers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static const uint8_t MAGIC[] = { 0x7F, 'E', 'L', 'F' };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static const uint8_t MAGIC[4] = { 0x7F, 'E', 'L', 'F' };
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, arrays]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=69

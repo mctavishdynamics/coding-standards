@@ -5,42 +5,42 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC67:
     standard: @{CppCoreGuidelines}
     ruleId: C.67
-    title: Suppress public copy and move in a polymorphic class
+    title: Hide copy and move in polymorphic classes to prevent slicing
     statement:
-        In a class with virtual functions, delete the copy and move
-        operations if it has no data, or make them protected otherwise.
+        In a class with virtual functions, delete copy and move if the class
+        holds no data, or make them protected if it does.
     rationale:
-        Copying a polymorphic object by value slices it, keeping only the
-        base part and corrupting its behavior.
+        Copying a polymorphic object by value slices it. Only the base part
+        survives, so the copy no longer behaves like the original.
     exceptions:
-        Exception classes need to be both polymorphic and
-        copy-constructible.
+        Exception types are a special case, since they must be both polymorphic
+        and copy constructible.
     severity: null
     noncompliant:
         ```cpp
         \\\
-        class Shape {
+        class Handler {
         public:
-            virtual void draw() const = 0;
-            virtual ~Shape() = default;
+            virtual ~Handler() = default;
+            virtual void handle(const Request& r) {}
         };
 
-        void render(Shape s);   // slices any derived shape
+        void dispatch(Handler h, const Request& r);   // slices the real handler
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        class Shape {
+        class Handler {
         public:
-            Shape() = default;
-            Shape(const Shape&) = delete;
-            Shape& operator=(const Shape&) = delete;
-            virtual void draw() const = 0;
-            virtual ~Shape() = default;
+            Handler() = default;
+            Handler(const Handler&) = delete;
+            Handler& operator=(const Handler&) = delete;
+            virtual ~Handler() = default;
+            virtual void handle(const Request& r) = 0;
         };
 
-        void render(const Shape& s);
+        void dispatch(Handler& h, const Request& r);
         \\\
         ```
     languages: [cpp]

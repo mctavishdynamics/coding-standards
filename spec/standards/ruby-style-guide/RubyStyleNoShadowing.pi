@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoShadowing:
+    standard: @{RubyStyleGuide}
+    ruleId: no-shadowing
+    title: Avoid shadowing methods with local variables
+    statement:
+        Do not give a local variable the same name as a method in scope
+        unless the two hold the same value.
+    rationale:
+        Ruby picks the local variable silently, so readers may think the
+        method is being called.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def label
+          title = title.strip.upcase
+          "#{title}:"
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def label
+          clean_title = title.strip.upcase
+          "#{clean_title}:"
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [naming, variables, methods]
+    source: https://rubystyle.guide/#no-shadowing

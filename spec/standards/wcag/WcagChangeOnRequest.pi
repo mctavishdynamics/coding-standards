@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagChangeOnRequest:
+    standard: @{Wcag22}
+    ruleId: 3.2.5
+    title: Change context only when the user asks
+    statement:
+        Make changes of context happen only at the user's request, or
+        provide a way to turn such automatic changes off.
+    rationale:
+        Unrequested redirects, popups and focus jumps confuse users who
+        cannot see the whole screen.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <meta http-equiv="refresh" content="5; url=/dashboard">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <p>Your account is ready. <a href="/dashboard">Go to your dashboard</a></p>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aaa, predictability]
+    source: https://www.w3.org/TR/WCAG22/#change-on-request

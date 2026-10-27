@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule75:
+    standard: @{AnssiC}
+    ruleId: rule-75
+    title: Keep protected and unprotected sensitive data in separate variables
+    statement:
+        Store sensitive data protected for confidentiality or integrity,
+        such as ciphertext, in different variables from the same data in
+        clear form.
+    rationale:
+        Mixing them makes it easy to send or store plaintext where protected
+        data was expected.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        uint8_t data[256];
+        encrypt_in_place(key, data, len);
+        send(sock, data, len, 0);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        uint8_t clear_data[256];
+        uint8_t cipher_data[256];
+        encrypt(key, clear_data, cipher_data, len);
+        send(sock, cipher_data, len, 0);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, sensitive-data, cryptography]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=57

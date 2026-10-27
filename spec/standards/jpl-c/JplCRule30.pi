@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule30:
+    standard: @{JplC}
+    ruleId: rule-30
+    title: Avoid casting function pointers to other pointer types
+    statement:
+        A function pointer may only be converted to an integral type. Never
+        cast it to an object pointer or to a different function pointer type.
+    rationale:
+        Calling a function through a pointer of the wrong type is undefined
+        behavior, and such casts hide the real call target from analysis
+        tools.
+    exceptions:
+        Converting a function pointer to an integral type is not prohibited
+        by this rule.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int handler(int code);
+
+        void *p = (void *)handler;
+        void (*f)(void) = (void (*)(void))handler;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int handler(int code);
+
+        int (*const f)(int) = handler;
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-4, function-pointers, type-conversion]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

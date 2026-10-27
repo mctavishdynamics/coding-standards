@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ZenOfPython import ZenOfPython
+
+export coding-rule ZenAphorism11:
+    standard: @{ZenOfPython}
+    ruleId: aphorism-11
+    title: Silence an error only on purpose and only the expected one
+    statement:
+        If an error is to be ignored, do so deliberately and visibly,
+        catching only the specific exception you expect.
+    rationale:
+        An explicit, narrow suppression documents the decision and still
+        lets unexpected errors through. This qualifies the previous
+        aphorism.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            os.remove(tmp_path)
+        except:
+            pass
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        with contextlib.suppress(FileNotFoundError):
+            os.remove(tmp_path)
+        \\\
+        ```
+    languages: [python]
+    tags: [error-handling, exceptions]
+    source: https://peps.python.org/pep-0020/#the-zen-of-python

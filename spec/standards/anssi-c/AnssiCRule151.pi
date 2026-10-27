@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule151:
+    standard: @{AnssiC}
+    ruleId: rule-151
+    title: Do not use the comma operator to sequence statements
+    statement:
+        Separate statements with semicolons, not with the comma operator.
+    rationale:
+        Comma-sequenced code is hard to read and its value is easy to
+        misunderstand.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (ready) a = 1, b = 2;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (ready) {
+            a = 1;
+            b = 2;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, expressions, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=123

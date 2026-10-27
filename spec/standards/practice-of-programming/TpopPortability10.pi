@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPortability10:
+    standard: @{PracticeOfProgramming}
+    ruleId: portability-10
+    title: Prefer plain text formats between systems
+    statement:
+        Prefer textual formats for data passed between programs and systems.
+    rationale:
+        Text is easy to read, debug and process with standard tools, and
+        avoids byte order and size issues.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fwrite(&rec, sizeof rec, 1, fp);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        fprintf(fp, "%d\t%s\t%.3f\n", rec.id, rec.name, rec.score);
+        \\\
+        ```
+    languages: [any]
+    tags: [portability, data-exchange]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule62:
+    standard: @{AnssiC}
+    ruleId: rule-62
+    title: Use global variables only when strictly necessary
+    statement:
+        Keep global variables to a minimum and pass data through function
+        parameters instead.
+    rationale:
+        Globals can be changed from anywhere, which makes data flow hard to
+        follow and shared state hard to protect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static int g_retries;
+        void connect_once(void) { g_retries++; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void connect_once(int *retries) { (*retries)++; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, globals, design]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=45

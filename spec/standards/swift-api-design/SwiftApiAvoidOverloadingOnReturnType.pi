@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiAvoidOverloadingOnReturnType:
+    standard: @{SwiftApiDesign}
+    ruleId: avoid-overloading-on-return-type
+    title: Avoid overloads that differ only in return type
+    statement:
+        Do not declare methods that differ only in their return type.
+    rationale:
+        With type inference, the compiler and the reader often cannot tell
+        which overload is meant.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        extension Settings {
+            func value(for key: String) -> Int?
+            func value(for key: String) -> String?
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        extension Settings {
+            func integer(for key: String) -> Int?
+            func string(for key: String) -> String?
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [overloading, type-inference]
+    source: https://www.swift.org/documentation/api-design-guidelines/#similar-methods-can-share-a-base-name

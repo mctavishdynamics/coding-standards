@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem72:
+    standard: @{EffectiveJava}
+    ruleId: item-72
+    title: Reuse the standard exception types
+    statement:
+        Throw the standard exceptions, such as IllegalArgumentException,
+        IllegalStateException, NullPointerException and
+        UnsupportedOperationException, where they fit, instead of defining
+        your own.
+    rationale:
+        Familiar exceptions make an API easier to learn and use, and keep
+        the number of classes small.
+    exceptions:
+        Do not throw Exception, RuntimeException, Throwable or Error
+        directly.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class BadIndexException extends RuntimeException { }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Objects.checkIndex(index, size);
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions]
+    source: https://www.informit.com/store/effective-java-9780134686097

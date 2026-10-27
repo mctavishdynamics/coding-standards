@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangSyncTraits:
+    standard: @{AnssiRust}
+    ruleId: LANG-SYNC-TRAITS
+    title: Justify manual Send and Sync implementations
+    statement:
+        Avoid implementing Send or Sync by hand. When it is necessary,
+        justify and document why the type is safe to share or move between
+        threads.
+    rationale:
+        These unsafe traits tell the compiler a type is thread-safe; a wrong
+        claim causes data races that the compiler can no longer catch.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        struct Handle(*mut RawConn);
+        unsafe impl Send for Handle {}
+        unsafe impl Sync for Handle {}
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        struct Handle(*mut RawConn);
+
+        // SAFETY: the C library documents RawConn as usable from any thread,
+        // and Handle exposes no method that shares it without locking.
+        unsafe impl Send for Handle {}
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, concurrency, unsafe]
+    source: https://anssi-fr.github.io/rust-guide/standard.html#LANG-SYNC-TRAITS

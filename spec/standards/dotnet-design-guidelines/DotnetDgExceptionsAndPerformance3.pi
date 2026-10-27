@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExceptionsAndPerformance3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: exceptions-and-performance-3
+    title: Consider a Try variant for members that often fail
+    statement:
+        When a member often fails in normal use and testing first is
+        impractical, think about a Try variant that reports failure through
+        its return value.
+    rationale:
+        Try methods do the check and the work in one call with no exception.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        if (Coordinates.TryParse(text, out Coordinates point))
+            map.Pin(point);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, exceptions, performance, patterns]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/exceptions-and-performance#try-parse-pattern

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoForEachWithLiteral:
+    standard: @{EffectiveDart}
+    ruleId: avoid-using-iterable-foreach-with-a-function-literal
+    title: Use a for-in loop instead of forEach with a function literal
+    statement:
+        Iterate with a `for`-`in` loop rather than passing an inline
+        function to `Iterable.forEach`. The
+        avoid_function_literals_in_foreach_calls lint checks this.
+    rationale:
+        A loop is the idiomatic Dart way to iterate and supports `break`,
+        `continue`, `return` and `await` directly.
+    exceptions:
+        Passing an existing function, such as a tear-off, to `forEach` is
+        fine, and `Map.forEach` is always acceptable.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        orders.forEach((order) {
+          archive(order);
+        });
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        for (final order in orders) {
+          archive(order);
+        }
+        orders.forEach(archive);
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, collections, loops]
+    source: https://dart.dev/effective-dart/usage#avoid-using-iterable-foreach-with-a-function-literal

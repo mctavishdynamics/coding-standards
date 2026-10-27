@@ -5,13 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC44:
     standard: @{CppCoreGuidelines}
     ruleId: C.44
-    title: Keep default constructors simple and non-throwing
+    title: Keep default constructors cheap and free of failures
     statement:
-        Prefer default constructors that do not allocate or perform other
-        operations that might fail.
+        Default constructors should be simple. Avoid allocation or any other
+        step that could fail.
     rationale:
-        A default state reachable without failure simplifies error handling
-        and the design of move operations.
+        If the default state can always be reached, error handling is easier.
+        Move operations can also leave objects in that state cheaply.
     exceptions: null
     severity: null
     noncompliant:

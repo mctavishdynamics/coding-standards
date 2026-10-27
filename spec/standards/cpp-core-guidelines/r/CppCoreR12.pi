@@ -5,15 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR12:
     standard: @{CppCoreGuidelines}
     ruleId: R.12
-    title:
-        Immediately give the result of an explicit allocation to a manager
-        object
+    title: Hand the result of an allocation to its owner in the same statement
     statement:
-        When you must allocate a resource explicitly, hand the result
-        straight to the object that will release it, in the same statement.
+        If you allocate a resource by hand, pass it to its managing object
+        as part of the very statement that allocates it.
     rationale:
-        Any code between the allocation and the hand-over can return or
-        throw, and then the resource leaks.
+        Leaving even one line between acquiring the resource and handing it
+        over creates a window. A throw or a return inside that window loses
+        the resource.
     exceptions: null
     severity: null
     noncompliant:

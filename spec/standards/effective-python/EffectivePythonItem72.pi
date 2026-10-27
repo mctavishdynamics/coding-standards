@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem72:
+    standard: @{EffectivePython}
+    ruleId: item-72
+    title: Do not start a new thread for every fan-out task
+    statement:
+        Avoid creating a Thread object per unit of work when fanning out
+        many tasks.
+    rationale:
+        Threads cost memory and startup time, need manual coordination and
+        make exceptions hard to collect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        for cell in grid:
+            Thread(target=step, args=(cell,)).start()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            pool.map(step, grid)
+        \\\
+        ```
+    languages: [python]
+    tags: [concurrency-and-parallelism, threads, performance]
+    source: https://effectivepython.com/

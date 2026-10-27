@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamingResources5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: naming-resources-5
+    title: Name exception message resources after the exception type
+    statement:
+        For an exception message resource, use the exception type name
+        followed by a short description of the specific failure.
+    rationale:
+        The convention makes it obvious which exception a message belongs to
+        and keeps related messages together.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        throw new ArgumentException(Resources.BadPortText, nameof(port));
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        throw new ArgumentException(Resources.ArgumentExceptionPortOutOfRange, nameof(port));
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, resources, exceptions]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/naming-resources

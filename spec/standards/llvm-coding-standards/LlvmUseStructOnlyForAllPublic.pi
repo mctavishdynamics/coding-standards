@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmUseStructOnlyForAllPublic:
+    standard: @{LlvmCodingStandards}
+    ruleId: use-of-class-and-struct-keywords-public
+    title: Use struct only when every member is public
+    statement:
+        Use struct for a type whose members are all public, and class for
+        any type that has private or protected members.
+    rationale:
+        The keyword then tells a reader at a glance whether the type is a
+        plain aggregate or encapsulates state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Counter {
+        private:
+          unsigned Hits = 0;
+        public:
+          void bump() { ++Hits; }
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Counter {
+          unsigned Hits = 0;
+        public:
+          void bump() { ++Hits; }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, encapsulation]
+    source: https://llvm.org/docs/CodingStandards.html#use-of-class-and-struct-keywords

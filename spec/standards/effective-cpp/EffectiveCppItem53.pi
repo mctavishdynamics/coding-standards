@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem53:
+    standard: @{EffectiveCpp}
+    ruleId: item-53
+    title: Take compiler warnings seriously
+    statement:
+        Build without warnings at the highest sensible warning level, and
+        understand what a warning means rather than silencing it blindly.
+    rationale:
+        Warnings often point at real bugs, and different compilers warn
+        about different things.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Base { public: virtual void run() const; };
+        class Job : public Base { public: virtual void run(); };   // hides, warned
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Base { public: virtual void run() const; };
+        class Job : public Base { public: void run() const override; };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [miscellany, warnings, build]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

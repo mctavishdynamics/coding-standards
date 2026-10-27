@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign12:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-12
+    title: Do not range-check enums with Enum.IsDefined
+    statement:
+        Validate enum arguments with explicit comparisons rather than
+        Enum.IsDefined.
+    rationale:
+        IsDefined is slow, and it accepts values that are defined but not
+        supported, including ones added in later versions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        if (!Enum.IsDefined(typeof(DisplayMode), mode))
+            throw new ArgumentOutOfRangeException(nameof(mode));
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        if (mode < DisplayMode.Windowed || mode > DisplayMode.Fullscreen)
+            throw new ArgumentOutOfRangeException(nameof(mode));
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, parameters, enums]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#validating-arguments

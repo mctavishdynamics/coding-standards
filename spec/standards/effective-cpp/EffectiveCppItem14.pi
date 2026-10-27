@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem14:
+    standard: @{EffectiveCpp}
+    ruleId: item-14
+    title: Decide deliberately what copying means for a resource owner
+    statement:
+        For a class that manages a resource, choose whether copying is
+        forbidden, shares the resource with a reference count, duplicates
+        it, or transfers ownership.
+    rationale:
+        The default member-wise copy releases the same resource twice or not
+        at all.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class FileLock {
+        public:
+            explicit FileLock(int fd) : fd_(fd) { lock(fd_); }
+            ~FileLock() { unlock(fd_); }
+        private:
+            int fd_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class FileLock {
+        public:
+            explicit FileLock(int fd) : fd_(fd) { lock(fd_); }
+            ~FileLock() { unlock(fd_); }
+            FileLock(const FileLock&) = delete;
+            FileLock& operator=(const FileLock&) = delete;
+        private:
+            int fd_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [resource-management, raii, special-members]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

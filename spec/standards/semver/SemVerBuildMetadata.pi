@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./SemVer import SemVer
+
+export coding-rule SemVerBuildMetadata:
+    standard: @{SemVer}
+    ruleId: 10
+    title: Append build metadata with a plus sign and ignore it in ordering
+    statement:
+        Denote build metadata by appending a plus sign and dot-separated
+        identifiers after the patch or pre-release part, using only ASCII
+        letters, digits and hyphens with no empty identifiers. Ignore build
+        metadata when comparing versions.
+    rationale:
+        Metadata records how a build was made without changing what version
+        it is, so two versions differing only in metadata rank the same.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        2.0.0+build_17
+        2.0.0+
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        2.0.0+build.17
+        2.0.0-rc.2+git.9c1e4ab
+        \\\
+        ```
+    languages: [any]
+    tags: [versioning, build-metadata, format]
+    source: https://semver.org/#semantic-versioning-specification-semver

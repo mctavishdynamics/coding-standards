@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoNestedTernary:
+    standard: @{RubyStyleGuide}
+    ruleId: no-nested-ternary
+    title: Keep one expression per ternary branch and do not nest ternaries
+    statement:
+        Give each branch of a ternary operator a single expression, and
+        never put one ternary inside another. Use if and else for such
+        cases.
+    rationale:
+        Nested ternaries are hard to parse, and it is unclear which branch
+        belongs to which condition.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        size = n > 100 ? (n > 1000 ? :large : :medium) : :small
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        size =
+          if n > 1000
+            :large
+          elsif n > 100
+            :medium
+          else
+            :small
+          end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals]
+    source: https://rubystyle.guide/#no-nested-ternary

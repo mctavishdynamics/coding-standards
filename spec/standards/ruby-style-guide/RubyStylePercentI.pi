@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStylePercentI:
+    standard: @{RubyStyleGuide}
+    ruleId: percent-i
+    title: Use %i for arrays of symbols
+    statement:
+        For an array of two or more symbols, prefer the %i literal over
+        writing each symbol separately, unless you must support Ruby 1.9.
+        RuboCop checks this with Style/SymbolArray.
+    rationale:
+        It removes repeated colons and commas and reads as a plain list.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        ROLES = [:admin, :editor, :viewer]
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        ROLES = %i[admin editor viewer]
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, literals]
+    source: https://rubystyle.guide/#percent-i

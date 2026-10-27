@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule4:
+    standard: @{AnssiC}
+    ruleId: rule-4
+    title: Include only the headers a file needs
+    statement:
+        Include just the header files whose declarations the file actually
+        uses.
+    rationale:
+        Includes that are not needed obscure what a file truly depends on, and
+        they slow down anyone reading or reviewing it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include <math.h>
+        #include <stdio.h>
+        #include <stdlib.h>
+
+        int main(void) { puts("ready"); return 0; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdio.h>
+
+        int main(void) { puts("ready"); return 0; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, headers, preprocessor]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=13

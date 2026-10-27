@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando231:
+    standard: @{ZalandoApi}
+    ruleId: 231
+    title: Use a secondary key for idempotent POST
+    statement:
+        Make creating POST requests idempotent with a unique secondary key
+        in the request body, stored with the resource and protected by a
+        uniqueness constraint. A repeated create should fail with 409
+        Conflict.
+    rationale:
+        A natural unique key, such as the cart id of an order, prevents
+        duplicate resources even when different clients submit the same
+        creation.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        POST /orders
+        Content-Type: application/json
+
+        { "cart_id": "cart-7", "items": [ { "sku": "A-1", "quantity": 1 } ] }
+
+        HTTP/1.1 409 Conflict
+        \\\
+        ```
+    languages: [any]
+    tags: [should, http, idempotency]
+    source: https://opensource.zalando.com/restful-api-guidelines/#231

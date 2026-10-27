@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgStruct2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: struct-2
+    title: Do not create mutable structs
+    statement:
+        Make value types immutable: set their state in the constructor and
+        do not expose setters or mutating methods.
+    rationale:
+        Value types are copied silently, for example when returned from a
+        property, so a change often lands on a copy instead of the original.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public struct Size
+        {
+            public int Width { get; set; }
+            public int Height { get; set; }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public readonly struct Size
+        {
+            public Size(int width, int height) => (Width, Height) = (width, height);
+            public int Width { get; }
+            public int Height { get; }
+            public Size WithWidth(int width) => new Size(width, Height);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, type-design, structs, immutability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/struct

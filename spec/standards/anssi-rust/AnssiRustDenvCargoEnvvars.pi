@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustDenvCargoEnvvars:
+    standard: @{AnssiRust}
+    ruleId: DENV-CARGO-ENVVARS
+    title: Do not override compiler environment variables for Cargo
+    statement:
+        Build the project with Cargo without setting RUSTC, RUSTC_WRAPPER or
+        RUSTFLAGS to non-default values.
+    rationale:
+        These variables change which compiler runs and with which flags,
+        outside the versioned project configuration, so the binary may not
+        be what the sources describe.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```shell
+        \\\
+        RUSTFLAGS="-C overflow-checks=off" cargo build --release
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        cargo build --release
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, toolchain, build]
+    source: https://anssi-fr.github.io/rust-guide/devenv.html#DENV-CARGO-ENVVARS

@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-7
+    title: Consider indexers for data held in an internal array
+    statement:
+        Think about an indexer when a type stores its data in an internal
+        array and callers need element access.
+    rationale:
+        Indexer syntax gives natural, array-like access to the stored
+        elements.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class Palette
+        {
+            private readonly Color[] _colors = new Color[16];
+            public Color this[int index] => _colors[index];
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, indexers]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property#indexed-property-design

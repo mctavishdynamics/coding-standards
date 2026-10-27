@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoMonkeyPatching:
+    standard: @{RubyStyleGuide}
+    ruleId: no-monkey-patching
+    title: Do not monkey-patch core classes in libraries
+    statement:
+        When writing a library, do not reopen and modify core classes; use
+        refinements or your own helpers instead.
+    rationale:
+        Changes to core classes leak into every program that loads the
+        library and can clash with other code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Integer
+          def to_cents
+            self * 100
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        module Money
+          refine Integer do
+            def to_cents
+              self * 100
+            end
+          end
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [metaprogramming, libraries]
+    source: https://rubystyle.guide/#no-monkey-patching

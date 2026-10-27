@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoExplicitRuntimeerror:
+    standard: @{RubyStyleGuide}
+    ruleId: no-explicit-runtimeerror
+    title: Do not name RuntimeError explicitly in raise
+    statement:
+        When raising a plain runtime error with a message, pass just the
+        message instead of RuntimeError and the message.
+    rationale:
+        A raise with only a message already produces a RuntimeError, so
+        naming it is redundant.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        raise RuntimeError, 'queue is closed'
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        raise 'queue is closed'
+        \\\
+        ```
+    languages: [ruby]
+    tags: [error-handling, exceptions]
+    source: https://rubystyle.guide/#no-explicit-runtimeerror

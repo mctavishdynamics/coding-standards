@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmAvoidAssertOnlyUnusedValues:
+    standard: @{LlvmCodingStandards}
+    ruleId: assert-liberally-unused
+    title: Keep assert-only computations inside the assert
+    statement:
+        If a value is computed only to be checked, move the computation into
+        the assert. If the call has side effects that must always happen,
+        keep it outside and mark the result maybe_unused, or cast it to void
+        in C.
+    rationale:
+        Values used only by asserts trigger unused-variable warnings in
+        release builds, and pure checks should not run there at all.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        unsigned Count = Uses.size();
+        assert(Count == 1 && "expected a single use");
+        bool Added = Seen.insert(BB).second;
+        assert(Added && "block visited twice");
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        assert(Uses.size() == 1 && "expected a single use");
+        [[maybe_unused]] bool Added = Seen.insert(BB).second;
+        assert(Added && "block visited twice");
+        \\\
+        ```
+    languages: [cpp]
+    tags: [assertions, warnings]
+    source: https://llvm.org/docs/CodingStandards.html#assert-liberally

@@ -5,15 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE5:
     standard: @{CppCoreGuidelines}
     ruleId: E.5
-    title: Let a constructor establish an invariant and throw if it cannot
+    title: Have constructors set up the invariant or throw
     statement:
-        Make each constructor fully establish its class invariant, and throw
-        an exception when that is impossible instead of leaving a half-built
-        object.
+        A constructor must either leave the object satisfying its class invariant or
+        throw. Do not return a partially initialized object.
     rationale:
-        An object whose invariant does not hold invites trouble, because
-        member functions rely on the invariant and not all of them can be
-        called safely.
+        The other member functions assume the invariant holds. With a half-built
+        object some of them cannot be called safely, and bugs follow.
     exceptions: null
     severity: null
     noncompliant:

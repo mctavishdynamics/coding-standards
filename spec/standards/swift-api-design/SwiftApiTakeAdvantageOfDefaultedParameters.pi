@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiTakeAdvantageOfDefaultedParameters:
+    standard: @{SwiftApiDesign}
+    ruleId: take-advantage-of-defaulted-parameters
+    title: Use default arguments for common cases
+    statement:
+        Give a parameter a default value when one value is used most of the
+        time. Prefer a single method with defaults to a family of overloads.
+    rationale:
+        Defaults hide irrelevant detail at call sites, and one documented
+        method is easier to learn than several near-identical ones.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func export(_ doc: Document) -> Data
+        func export(_ doc: Document, format: Format) -> Data
+        func export(_ doc: Document, format: Format, compressed: Bool) -> Data
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        func export(
+            _ doc: Document, format: Format = .pdf, compressed: Bool = false
+        ) -> Data
+        \\\
+        ```
+    languages: [swift]
+    tags: [parameters, defaults]
+    source: https://www.swift.org/documentation/api-design-guidelines/#take-advantage-of-defaulted-parameters

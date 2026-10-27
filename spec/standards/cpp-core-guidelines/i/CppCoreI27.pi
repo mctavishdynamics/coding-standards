@@ -5,16 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreI27:
     standard: @{CppCoreGuidelines}
     ruleId: I.27
-    title: For stable library ABI, consider the Pimpl idiom
+    title: Hide a library's implementation behind a pointer for a stable ABI
     statement:
-        Keep private data and helper functions in a separate implementation
-        class reached through a pointer, so the public class layout does not
-        change.
+        For a library that must keep a stable ABI, move private data and helpers
+        into a separate implementation class. The public class holds only a
+        pointer to it.
     rationale:
-        Private members are part of the class layout and of overload
-        resolution, so changing them forces all users to recompile. A
-        pointer to implementation isolates users at the cost of one
-        indirection.
+        Private members still affect object size and overload resolution, so
+        editing them forces every client to rebuild. The pointer hides those
+        details at the price of one indirection.
     exceptions: null
     severity: null
     noncompliant:

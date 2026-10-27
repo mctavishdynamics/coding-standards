@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartAnnotateNonObviousFields:
+    standard: @{EffectiveDart}
+    ruleId: do-type-annotate-fields-and-top-level-variables-if-the-type-isnt-obvious
+    title: Annotate fields and top-level variables with non-obvious types
+    statement:
+        Write types on fields and top-level variables, public or private,
+        unless the initializer makes them obvious, such as a literal, a
+        constructor call or a well-known factory like int.parse. When in
+        doubt, annotate. The type_annotate_public_apis lint checks this.
+    rationale:
+        Types document an API and isolate type errors. They also stop a
+        change in another library from silently changing your declaration's
+        type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final defaultTimeout = config.lookup('timeout');
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final Duration defaultTimeout = config.lookup('timeout');
+        final retries = 3;
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, types, fields]
+    source: https://dart.dev/effective-dart/design#do-type-annotate-fields-and-top-level-variables-if-the-type-isnt-obvious

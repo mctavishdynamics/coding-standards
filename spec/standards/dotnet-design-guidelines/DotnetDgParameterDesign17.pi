@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign17:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-17
+    title: Avoid params when callers already hold an array
+    statement:
+        Do not use params when the input almost always arrives as an
+        existing array, such as a byte buffer.
+    rationale:
+        Nobody passes such data as individual arguments, so params only adds
+        noise to the signature.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Write(params byte[] buffer) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Write(byte[] buffer) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, member-design, parameters, params]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#members-with-variable-number-of-parameters

@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHack:
+    standard: @{RubyStyleGuide}
+    ruleId: hack
+    title: Mark questionable code with HACK
+    statement:
+        Use the HACK keyword to flag a dubious shortcut that should later be
+        refactored away.
+    rationale:
+        Naming the shortcut keeps it visible so it does not quietly become
+        permanent.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```ruby
+        \\\
+        # HACK: Strips the BOM by hand until the CSV library handles it.
+        line = line.delete_prefix("﻿")
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comments, annotations]
+    source: https://rubystyle.guide/#hack

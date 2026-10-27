@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvHorizontalWhitespace:
+    standard: @{KotlinConventions}
+    ruleId: horizontal-whitespace
+    title: Place spaces around operators and keywords as specified
+    statement:
+        Put spaces around binary operators except the range operator, none
+        around unary operators, and one between if, when, for or while and
+        its parenthesis. Put no space before the parenthesis of a
+        declaration or call, inside parentheses or brackets, around dots,
+        safe calls, double colons or type angle brackets, or before the
+        nullable question mark, and one after a line comment marker.
+    rationale:
+        Uniform spacing makes code look the same whoever wrote it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        val total=price*qty
+        for(i in 0 .. n) process (i)
+        val name : String ? = user ?. name
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        val total = price * qty
+        for (i in 0..n) process(i)
+        val name: String? = user?.name
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, whitespace]
+    source: https://kotlinlang.org/docs/coding-conventions.html#horizontal-whitespace

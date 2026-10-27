@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoRedundantConst:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-const-redundantly
+    title: Omit const where the context is already constant
+    statement:
+        Do not write `const` inside a const collection literal, const
+        constructor call, metadata annotation, const variable initializer or
+        switch case expression. The unnecessary_const lint checks this.
+    rationale:
+        In those places the expression must be constant, so `const` is
+        implied.
+    exceptions:
+        Default parameter values are not one of these contexts.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        const palette = const [const Color(0xFF0000), const Color(0x00FF00)];
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        const palette = [Color(0xFF0000), Color(0x00FF00)];
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, constants]
+    source: https://dart.dev/effective-dart/usage#dont-use-const-redundantly

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDependencyProperties4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dependency-properties-4
+    title: Implement wrappers with GetValue and SetValue
+    statement:
+        Have the CLR wrapper read and write the value only through the
+        instance methods GetValue and SetValue.
+    rationale:
+        These calls go to the property store that WPF manages, so the
+        wrapper and WPF agree on the value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        private double _maximum;
+        public double Maximum { get => _maximum; set => _maximum = value; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public double Maximum
+        {
+            get => (double)GetValue(MaximumProperty);
+            set => SetValue(MaximumProperty, value);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, dependency-properties, wpf, properties]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dependency-properties#dependency-property-design

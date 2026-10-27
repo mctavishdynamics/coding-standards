@@ -5,16 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSlCon1:
     standard: @{CppCoreGuidelines}
     ruleId: SL.con.1
-    title: Prefer using STL array or vector instead of a C array
+    title: Use std::array or std::vector instead of built-in arrays
     statement:
-        Use std::array for fixed-size sequences and std::vector for
-        variable-size ones instead of built-in arrays or new[]. Use span for
-        non-owning views.
+        Prefer std::array when the element count is fixed and std::vector when it
+        varies. Avoid built-in arrays and new[], and use a span to look at elements
+        you do not own.
     rationale:
-        C arrays decay to pointers, lose their size and need manual memory
-        management, and they offer no advantage over the standard
-        containers. A std::array lives on the stack just like a built-in
-        array.
+        A built-in array converts to a pointer at the slightest chance, forgets its
+        length and, when allocated with new, has to be freed by hand. The standard
+        types avoid all of this at no extra cost, and a std::array still keeps its
+        elements on the stack.
     exceptions: null
     severity: null
     noncompliant:

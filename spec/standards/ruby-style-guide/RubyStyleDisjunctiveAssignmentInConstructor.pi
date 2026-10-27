@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleDisjunctiveAssignmentInConstructor:
+    standard: @{RubyStyleGuide}
+    ruleId: disjunctive-assignment-in-constructor
+    title: Assign instance variables plainly in a constructor
+    statement:
+        Inside initialize, set instance variables with plain assignment
+        rather than the or-equals operator. RuboCop checks this with
+        Lint/DisjunctiveAssignmentInConstructor.
+    rationale:
+        An instance variable is nil until something assigns it, so guarding
+        the first assignment with or-equals does nothing except mislead the
+        reader.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def initialize
+          @retries ||= 3
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def initialize
+          @retries = 3
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, constructors, assignment]
+    source: https://rubystyle.guide/#disjunctive-assignment-in-constructor

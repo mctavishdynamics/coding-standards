@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign10:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-10
+    title: Throw ArgumentNullException for unsupported null arguments
+    statement:
+        When a member does not accept null for a parameter and receives it,
+        throw ArgumentNullException.
+    rationale:
+        The specific exception names the offending parameter and tells the
+        caller exactly what went wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Register(Plugin plugin) => _plugins.Add(plugin.Name, plugin);   // NullReferenceException
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Register(Plugin plugin)
+        {
+            ArgumentNullException.ThrowIfNull(plugin);
+            _plugins.Add(plugin.Name, plugin);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, parameters, null-handling]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#validating-arguments

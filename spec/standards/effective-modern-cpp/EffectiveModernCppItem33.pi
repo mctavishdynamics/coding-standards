@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem33:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-33
+    title: Forward auto&& lambda parameters using decltype
+    statement:
+        In a generic lambda with an auto&& parameter, forward it
+        with std::forward of decltype of that parameter.
+    rationale:
+        Generic lambdas have no named template parameter, and decltype
+        recovers the value category.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto call = [](auto&& x) { handle(x); };   // always an lvalue
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto call = [](auto&& x) { handle(std::forward<decltype(x)>(x)); };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [lambda-expressions, lambdas, move-semantics]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

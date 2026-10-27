@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule77:
+    standard: @{CppCodingStandards}
+    ruleId: rule-77
+    title: Replace C arrays and char buffers with standard containers
+    statement:
+        Store sequences in vector, array or string rather than C arrays and
+        character buffers.
+    rationale:
+        They manage memory, know their size, can be checked and copy
+        correctly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        char name[32];
+        strcpy(name, input);   // overflow risk
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string name = input;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [stl-containers, containers, memory]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

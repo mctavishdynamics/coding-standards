@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem78:
+    standard: @{EffectiveJava}
+    ruleId: item-78
+    title: Make every thread that touches shared mutable state go through synchronisation
+    statement:
+        When threads share mutable data, every read and write must be
+        synchronised, or the field must be volatile when only visibility is
+        needed. Better still, avoid sharing mutable data.
+    rationale:
+        Without synchronisation, one thread may never see another's writes,
+        and compound actions can interleave.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        private static boolean stop;
+
+        // worker thread
+        while (!stop) work();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private static volatile boolean stop;
+
+        // worker thread
+        while (!stop) work();
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, synchronization]
+    source: https://www.informit.com/store/effective-java-9780134686097

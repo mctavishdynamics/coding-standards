@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleIndexCountSize:
+    standard: @{TigerStyle}
+    ruleId: index-count-size
+    title: Treat indexes, counts and sizes as distinct quantities
+    statement:
+        Keep indexes, counts and sizes conceptually separate and convert
+        between them deliberately. Going from an index to a count adds one,
+        and going from a count to a size multiplies by the unit.
+    rationale:
+        Careless mixing of these integers is the usual source of off-by-one
+        errors, which is also why names should carry units.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        const size = last_index * @sizeOf(Entry);
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        const count = last_index + 1;
+        const size = count * @sizeOf(Entry);
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [off-by-one, integers]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#off-by-one-errors

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoNamingPrintfStyleFunctions:
+    standard: @{UberGo}
+    ruleId: naming-printf-style-functions
+    title: End custom Printf-style function names with f
+    statement:
+        Give Printf-style functions one of the standard names where
+        possible, and otherwise a name ending in f, so that go vet can check
+        their format strings.
+    rationale:
+        go vet recognises the standard names by default and can be told
+        about other names only if they end in f.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func Fail(format string, args ...any) error {
+            return fmt.Errorf(format, args...)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func Failf(format string, args ...any) error {
+            return fmt.Errorf(format, args...)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [naming, static-analysis]
+    source: https://github.com/uber-go/guide/blob/master/style.md#naming-printf-style-functions

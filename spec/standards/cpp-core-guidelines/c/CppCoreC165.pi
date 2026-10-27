@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC165:
     standard: @{CppCoreGuidelines}
     ruleId: C.165
-    title: Use using for customization points
+    title: Bring std overloads into scope with a using declaration before calling
     statement:
-        To call a customizable function such as swap in generic code, write
-        a using declaration for the general version and then make an
-        unqualified call.
+        In generic code that calls a customization point such as swap, first
+        write a using declaration for the standard version. Then call it without
+        qualification.
     rationale:
-        This finds a type-specific version through argument-dependent lookup
-        when one exists and falls back to the general one otherwise.
+        Argument-dependent lookup then picks a type's own version when one
+        exists. Otherwise the standard version is used.
     exceptions: null
     severity: null
     noncompliant:

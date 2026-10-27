@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip192:
+    standard: @{GoogleAip}
+    ruleId: AIP-192
+    title: Write a public comment for every API component
+    statement:
+        Every API element, from services and methods down to individual
+        fields and enum values, gets a CommonMark comment above it. Leave
+        out headings, tables, raw HTML and ASCII art. Use absolute URLs for
+        links, mark deprecation with the deprecated option plus a comment
+        that begins Deprecated, and label notes meant only for insiders as
+        internal.
+    rationale:
+        Callers only ever see the interface, so its comments carry most of
+        what they learn about it. Documentation generators and client
+        libraries all render these comments, which is why plain, portable
+        formatting matters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          string title = 1;  // the title
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        // A dish that can be prepared in a kitchen.
+        message Recipe {
+          // The human-readable title shown on menus.
+          string title = 1;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [documentation, comments]
+    source: https://google.aip.dev/192

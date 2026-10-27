@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule17:
+    standard: @{AnssiC}
+    ruleId: rule-17
+    title: Know how macro arguments expand around # and ##
+    statement:
+        When using the stringizing or token-pasting operators, understand
+        that the arguments next to them are not macro-expanded first, and
+        add an extra macro level when expansion is wanted.
+    rationale:
+        Without the extra level the result contains the macro's name instead
+        of its value, which is a common surprise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define VERSION 3
+        #define STR(x) #x
+        const char *v = STR(VERSION); /* "VERSION" */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define VERSION 3
+        #define STR_(x) #x
+        #define STR(x) STR_(x)
+        const char *v = STR(VERSION); /* "3" */
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, preprocessor, macros]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=20

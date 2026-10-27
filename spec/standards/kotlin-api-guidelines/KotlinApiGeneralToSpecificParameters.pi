@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiGeneralToSpecificParameters:
+    standard: @{KotlinApiGuidelines}
+    ruleId: general-to-specific-parameters
+    title: Order parameters from general to specific
+    statement:
+        Declare essential inputs first and optional or more specific ones
+        last.
+    rationale:
+        A predictable order lets callers write the common case quickly and
+        guess signatures correctly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun search(ignoreCase: Boolean = false, query: String, text: String): Int
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun search(text: String, query: String, ignoreCase: Boolean = false): Int
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [consistency, parameters]
+    source: https://kotlinlang.org/docs/api-guidelines-consistency.html#preserve-parameter-order-naming-and-usage

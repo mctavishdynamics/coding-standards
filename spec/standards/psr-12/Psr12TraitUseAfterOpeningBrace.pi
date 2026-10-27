@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12TraitUseAfterOpeningBrace:
+    standard: @{Psr12}
+    ruleId: 4.2a
+    title: Import traits on the line after the class brace
+    statement:
+        Place the use statement that brings a trait into a class on the line
+        directly after the opening brace of the class.
+    rationale:
+        Traits change what a class contains, so they belong first, where
+        readers expect them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Order
+        {
+            private $lines = [];
+
+            use Timestamps;
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Order
+        {
+            use Timestamps;
+
+            private $lines = [];
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [traits, classes]
+    source: https://www.php-fig.org/psr/psr-12/#42-using-traits

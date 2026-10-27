@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoMutableDefaults:
+    standard: @{RubyStyleGuide}
+    ruleId: no-mutable-defaults
+    title: Avoid a shared mutable default for a hash
+    statement:
+        Do not pass a mutable object such as an array or hash as the default
+        value to Hash.new. Use a frozen default, or a block or default proc
+        that creates a fresh object per key. RuboCop checks this with
+        Lint/SharedMutableDefault.
+    rationale:
+        One default object is shared by every missing key, so changing it
+        through one key changes what all the other keys see.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        groups = Hash.new([])
+        groups[:red] << 'apple'
+        groups[:green] # => ["apple"]
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        groups = Hash.new { |hash, key| hash[key] = [] }
+        groups[:red] << 'apple'
+        groups[:green] # => []
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes, mutability]
+    source: https://rubystyle.guide/#no-mutable-defaults

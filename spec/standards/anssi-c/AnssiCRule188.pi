@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule188:
+    standard: @{AnssiC}
+    ruleId: rule-188
+    title: Do not use C++ keywords as identifiers
+    statement:
+        Do not use words that are keywords in C++, such as class, new,
+        delete or private, as names in C code.
+    rationale:
+        Such names break when the code is compiled as C++ or included from
+        C++, and confuse readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct item *new(void);
+        void delete(struct item *this);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct item *item_new(void);
+        void item_delete(struct item *self);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, naming, portability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=149

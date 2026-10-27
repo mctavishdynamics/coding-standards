@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem107:
+    standard: @{EffectivePython}
+    ruleId: item-107
+    title: Keep pickled data readable across versions with copyreg
+    statement:
+        If you must use pickle, register functions with copyreg so that
+        added fields get defaults, versions are recorded and renamed classes
+        still load.
+    rationale:
+        Plain pickles break when classes change. Pickle is also unsafe for
+        untrusted data.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        import copyreg
+
+        def pickle_profile(p):
+            return unpickle_profile, ({"version": 2, **vars(p)},)
+
+        copyreg.pickle(Profile, pickle_profile)
+        \\\
+        ```
+    languages: [python]
+    tags: [data-structures-and-algorithms, serialization, compatibility]
+    source: https://effectivepython.com/

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfTypeMembers15:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-type-members-15
+    title: Do not prefix field names
+    statement:
+        Do not add prefixes to field names, for example to mark them as
+        static or global.
+    rationale:
+        Such prefixes are noise in a public API and depart from the
+        framework's conventions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static readonly string s_DefaultCulture = "en-US";
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static readonly string DefaultCulture = "en-US";
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, naming, fields]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-type-members#names-of-fields

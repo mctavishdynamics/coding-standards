@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgInterface5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: interface-5
+    title: Have at least one member that takes or returns each interface
+    statement:
+        Provide at least one method parameter or property typed as each
+        interface you define.
+    rationale:
+        A consumer of the interface proves that the abstraction is actually
+        useful from the calling side.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public interface IRetryPolicy
+        {
+            TimeSpan? NextDelay(int attempt);
+        }
+
+        public class HttpGateway
+        {
+            public HttpGateway(IRetryPolicy retryPolicy) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, interfaces, validation]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/interface

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem44:
+    standard: @{EffectiveJava}
+    ruleId: item-44
+    title: Check java.util.function before writing a functional interface
+    statement:
+        Before writing a functional interface, check java.util.function.
+        Write your own only when none fits, and annotate it with
+        FunctionalInterface.
+    rationale:
+        Standard interfaces are familiar and come with useful default
+        methods, and they keep an API small.
+    exceptions:
+        A custom interface is worth it when it is widely used, has a
+        descriptive name, carries a strong contract or benefits from
+        defaults.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        interface StringMapper { String map(String s); }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        UnaryOperator<String> trim = String::strip;
+        \\\
+        ```
+    languages: [java]
+    tags: [lambdas-and-streams, lambdas, functional-interfaces]
+    source: https://www.informit.com/store/effective-java-9780134686097

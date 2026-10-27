@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoSetterReturnType:
+    standard: @{EffectiveDart}
+    ruleId: dont-specify-a-return-type-for-a-setter
+    title: Do not write a return type on setters
+    statement:
+        Leave `void` off setter declarations and `[]=` operators. The
+        avoid_return_types_on_setters lint checks this.
+    rationale:
+        Setters always return void, so the annotation is noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        void set width(double value) => _width = value;
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        set width(double value) => _width = value;
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, types, properties]
+    source: https://dart.dev/effective-dart/design#dont-specify-a-return-type-for-a-setter

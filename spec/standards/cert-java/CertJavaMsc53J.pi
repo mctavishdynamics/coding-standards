@@ -20,23 +20,23 @@ export coding-rule CertJavaMsc53J:
     noncompliant:
         ```java
         \\\
-        public interface User {
-            void authenticate();
-            void subscribe();
-            void freeService();  // added later, every implementer must change
+        public interface Storage {
+            byte[] read(String key);
+            void write(String key, byte[] data);
+            void compact();  // added in v2: breaks every existing Storage
         }
         \\\
         ```
     compliant:
         ```java
         \\\
-        public interface User {
-            void authenticate();
-            void subscribe();
+        public interface Storage {
+            byte[] read(String key);
+            void write(String key, byte[] data);
+        }
 
-            default void freeService() {
-                throw new UnsupportedOperationException();
-            }
+        public interface Compactable {
+            void compact();
         }
         \\\
         ```

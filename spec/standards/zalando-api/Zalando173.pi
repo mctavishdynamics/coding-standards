@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando173:
+    standard: @{ZalandoApi}
+    ruleId: 173
+    title: Use the common money object
+    statement:
+        Represent money as an object with a decimal amount and an ISO 4217
+        currency. Treat it as a closed type and compose it into other
+        objects rather than extending it, and accept amounts of any
+        precision unless stated otherwise.
+    rationale:
+        A shared money type works with existing libraries, and composition
+        keeps amounts self-describing and allows mixed currencies.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        { "price": { "amount": 19.99, "currency": "EUR", "discounted_amount": 14.99 } }
+        \\\
+        ```
+    compliant:
+        ```json
+        \\\
+        {
+          "price": { "amount": 19.99, "currency": "EUR" },
+          "discounted_price": { "amount": 14.99, "currency": "EUR" }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, json, money]
+    source: https://opensource.zalando.com/restful-api-guidelines/#173

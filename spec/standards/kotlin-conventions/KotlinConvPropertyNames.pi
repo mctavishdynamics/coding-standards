@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvPropertyNames:
+    standard: @{KotlinConventions}
+    ruleId: property-names
+    title: Use screaming snake case for constants
+    statement:
+        Name constants, meaning const properties and top-level or object val
+        properties without a custom getter that hold deeply immutable data,
+        in upper case with underscores. Use camel case for top-level or
+        object properties holding mutable data or objects with behaviour,
+        and a property holding a singleton may be named like an object.
+    rationale:
+        The name signals whether the value is a fixed constant or a live
+        object.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        const val maxUploadSize = 10_485_760
+        val ACTIVE_SESSIONS: MutableMap<String, Session> = HashMap()
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        const val MAX_UPLOAD_SIZE = 10_485_760
+        val activeSessions: MutableMap<String, Session> = HashMap()
+        val ByPriority: Comparator<Task> = compareBy { it.priority }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [naming, constants]
+    source: https://kotlinlang.org/docs/coding-conventions.html#property-names

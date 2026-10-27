@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreI22:
     standard: @{CppCoreGuidelines}
     ruleId: I.22
-    title: Avoid complex initialization of global objects
+    title: Keep the setup of global objects simple
     statement:
-        Do not initialize a global object using values or functions that
-        depend on other globals, especially across translation units.
+        Initialize globals with simple values. Avoid initializers that call into
+        other globals, above all globals defined in a different source file.
     rationale:
-        The order of dynamic initialization across translation units is
-        unspecified, so one global may be used before it is initialized.
-        This is even harder to manage in concurrent code.
+        The order in which source files run their dynamic initialization is not
+        specified. A global may therefore be read before it has its value, and
+        threads make this worse.
     exceptions: null
     severity: null
     noncompliant:

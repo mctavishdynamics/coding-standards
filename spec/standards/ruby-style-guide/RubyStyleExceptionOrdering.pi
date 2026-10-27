@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleExceptionOrdering:
+    standard: @{RubyStyleGuide}
+    ruleId: exception-ordering
+    title: Rescue more specific exceptions first
+    statement:
+        Order rescue clauses from the most specific exception class to the
+        most general.
+    rationale:
+        Ruby uses the first matching clause, so a specific clause after a
+        general one can never run.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        begin
+          download(url)
+        rescue StandardError
+          retry_later
+        rescue Net::ReadTimeout
+          retry_now
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        begin
+          download(url)
+        rescue Net::ReadTimeout
+          retry_now
+        rescue StandardError
+          retry_later
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [error-handling, exceptions]
+    source: https://rubystyle.guide/#exception-ordering

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiAvoidAddingArgumentsToExistingApiFunctions:
+    standard: @{KotlinApiGuidelines}
+    ruleId: avoid-adding-arguments-to-existing-api-functions
+    title: Do not add parameters to published functions
+    statement:
+        Avoid adding parameters to existing public functions. A parameter
+        without a default breaks source and binary compatibility, and even
+        one with a default changes the compiled signature.
+    rationale:
+        Clients compiled against the old signature fail with
+        NoSuchMethodError until they are rebuilt.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        // v1.0: public fun render(page: Page): Html
+        // v1.1:
+        public fun render(page: Page, minify: Boolean = false): Html
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun render(page: Page): Html = render(page, minify = false)
+        public fun render(page: Page, minify: Boolean): Html = TODO()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [compatibility, parameters]
+    source: https://kotlinlang.org/docs/api-guidelines-backward-compatibility.html#avoid-adding-arguments-to-existing-api-functions

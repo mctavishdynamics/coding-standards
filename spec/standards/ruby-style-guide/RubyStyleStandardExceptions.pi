@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleStandardExceptions:
+    standard: @{RubyStyleGuide}
+    ruleId: standard-exceptions
+    title: Prefer standard library exceptions to new classes
+    statement:
+        Raise an existing exception from the standard library when one fits
+        before inventing a new exception class.
+    rationale:
+        Standard exceptions are already understood by readers and by
+        callers' rescue clauses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class NegativeQuantityError < StandardError
+        end
+
+        raise NegativeQuantityError if quantity.negative?
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        raise ArgumentError, 'quantity must not be negative' if quantity.negative?
+        \\\
+        ```
+    languages: [ruby]
+    tags: [error-handling, exceptions]
+    source: https://rubystyle.guide/#standard-exceptions

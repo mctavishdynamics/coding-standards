@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleInPlaceInitialization:
+    standard: @{TigerStyle}
+    ruleId: in-place-initialization
+    title: Initialize large structs in place through an out pointer
+    statement:
+        Construct a large struct directly at its final location by handing the
+        initializer a pointer to it, instead of returning it by value. Once
+        one field is set up in place, set up the enclosing struct in place as
+        well.
+    rationale:
+        In-place construction allows stable pointers and immovable types and
+        avoids intermediate copies that grow the stack.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        pub fn init(gpa: Allocator) !Grid {
+            return Grid{ .cells = try gpa.alloc(Cell, cells_max) };
+        }
+
+        var grid = try Grid.init(gpa);
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        pub fn init(grid: *Grid, gpa: Allocator) !void {
+            grid.* = .{ .cells = try gpa.alloc(Cell, cells_max) };
+        }
+
+        var grid: Grid = undefined;
+        try grid.init(gpa);
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [memory, initialization]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#cache-invalidation

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando105:
+    standard: @{ZalandoApi}
+    ruleId: 105
+    title: Define and assign permissions to endpoints
+    statement:
+        Assign permissions (scopes) to each endpoint that needs client
+        authorization, for example because it exposes confidential data.
+        When an endpoint needs no specific permission, say so explicitly
+        with the uid pseudo permission.
+    rationale:
+        Permissions per endpoint enforce least privilege, and the explicit
+        uid marker shows that open access was a deliberate decision.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        paths:
+          /parcels/{parcel_id}:
+            get:
+              security:
+                - BearerAuth: [ parcel-tracking.read ]
+            put:
+              security:
+                - BearerAuth: [ parcel-tracking.write ]
+          /carriers:
+            get:
+              security:
+                - BearerAuth: [ uid ]
+        \\\
+        ```
+    languages: [any]
+    tags: [must, security, authorization]
+    source: https://opensource.zalando.com/restful-api-guidelines/#105

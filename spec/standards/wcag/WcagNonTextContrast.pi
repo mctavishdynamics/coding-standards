@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagNonTextContrast:
+    standard: @{Wcag22}
+    ruleId: 1.4.11
+    title: Give controls and meaningful graphics 3 to 1 contrast
+    statement:
+        Give the visual parts needed to identify controls and their states,
+        and the parts of graphics needed to understand them, a contrast of
+        at least 3 to 1 against neighboring colors.
+    rationale:
+        Users with low vision need to see where a text field, checkbox or
+        chart line is.
+    exceptions:
+        Inactive components, controls styled only by the browser, and
+        graphics whose exact presentation is essential are excluded.
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        input[type="text"] { border: 1px solid #e6e6e6; background: #ffffff; }
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        input[type="text"] { border: 1px solid #767676; background: #ffffff; }
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, contrast, controls]
+    source: https://www.w3.org/TR/WCAG22/#non-text-contrast

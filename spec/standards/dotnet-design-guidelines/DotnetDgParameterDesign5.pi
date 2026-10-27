@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-5
+    title: Keep parameter names when overriding or implementing
+    statement:
+        Use the same parameter names as the base member or interface member
+        you override or implement.
+    rationale:
+        Matching names show the relationship and keep named arguments
+        working through either type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public override bool Equals(object other2) => /* ... */;
+        public int CompareTo(Invoice x) => /* ... */;   // interface declares "other"
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public override bool Equals(object obj) => /* ... */;
+        public int CompareTo(Invoice other) => /* ... */;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, parameters, inheritance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design

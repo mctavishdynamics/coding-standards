@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule99:
+    standard: @{AnssiC}
+    ruleId: rule-99
+    title: Group data about one entity in a structure
+    statement:
+        Put related data that describe the same thing into a structure.
+    rationale:
+        Long parameter lists of loose values are hard to understand and easy
+        to pass in the wrong order.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void draw_line(int x1, int y1, int x2, int y2);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct point { int x; int y; };
+        void draw_line(struct point from, struct point to);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, structs, design]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=79

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip180:
+    standard: @{GoogleAip}
+    ruleId: AIP-180
+    title: Do not break existing clients within a major version
+    statement:
+        Inside one major version, existing clients have to keep compiling
+        and keep working on the wire. So a change may not introduce required
+        fields; delete, rename or relocate anything; shift a field across a
+        oneof boundary; alter a type or a resource name; or change defaults,
+        formats or any other behavior a client can observe.
+    rationale:
+        An API is a contract that deployed client code relies on. That code
+        may depend on details like value formats or string lengths that were
+        never promised, so any visible change can break it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        // v1, after the change: price changed from int64 to string.
+        message Dish {
+          string price = 3;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        // v1, after the change: new field added, old one kept.
+        message Dish {
+          int64 price = 3 [deprecated = true];
+          google.type.Money unit_price = 4;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [compatibility, versioning]
+    source: https://google.aip.dev/180

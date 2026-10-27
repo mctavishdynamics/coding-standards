@@ -5,13 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR4:
     standard: @{CppCoreGuidelines}
     ruleId: R.4
-    title: Treat a raw reference as non-owning
+    title: Assume a raw reference does not own what it refers to
     statement:
-        A plain T& never owns the object it refers to. Do not delete through
-        a reference or hand ownership out as a reference.
+        Treat a bare T& as a way to reach an object, never as its owner.
+        Never delete through a reference, and never return ownership in the
+        form of a reference.
     rationale:
-        Most references are non-owning and readers and tools assume so.
-        Owners must be identifiable so that objects are deleted reliably.
+        References almost never own, and people and tools rely on that.
+        Ownership has to be visible somewhere else for deletion to be
+        reliable.
     exceptions: null
     severity: null
     noncompliant:

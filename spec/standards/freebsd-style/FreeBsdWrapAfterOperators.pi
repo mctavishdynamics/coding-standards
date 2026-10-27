@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdWrapAfterOperators:
+    standard: @{FreeBsdStyle}
+    ruleId: line-wrap-operator
+    title: Leave the operator at the end of a wrapped line
+    statement:
+        If a long statement must be wrapped, break it after an operator, so
+        the operator ends the first line.
+    rationale:
+        A trailing operator signals that the statement continues.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (len > sizeof(buf)
+            || off < 0)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (len > sizeof(buf) ||
+            off < 0)
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, line-breaking]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

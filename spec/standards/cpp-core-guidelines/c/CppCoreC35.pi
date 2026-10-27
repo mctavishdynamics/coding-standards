@@ -5,19 +5,19 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC35:
     standard: @{CppCoreGuidelines}
     ruleId: C.35
-    title: Make a base class destructor public and virtual, or protected and non-virtual
+    title: Make base class destruction either public virtual or protected non-virtual
     statement:
-        If users may delete a derived object through a pointer to the base,
-        make the base destructor public and virtual. If not, make it
-        protected and non-virtual.
+        Give a base class a destructor that is either public and virtual or
+        protected and non-virtual. Choose public virtual if callers may delete
+        derived objects through a base pointer.
     rationale:
-        Deleting a derived object through a base pointer whose destructor is
-        not virtual is undefined behavior. A protected destructor prevents
-        that deletion at compile time.
+        Deleting through a base pointer with a non-virtual destructor is
+        undefined behavior. A protected destructor turns such a delete into a
+        compile error.
     exceptions:
-        A protected virtual destructor could make sense when a derived
-        object must destroy another object through a base pointer, but the
-        guide has not seen this in practice.
+        A protected virtual destructor is conceivable when a derived object must
+        destroy a different object through a base pointer. Such a design is rare
+        in practice.
     severity: null
     noncompliant:
         ```cpp

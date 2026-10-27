@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoAvoidUsingBuiltInNames:
+    standard: @{UberGo}
+    ruleId: avoid-using-built-in-names
+    title: Do not reuse predeclared identifiers as names
+    statement:
+        Do not name variables, fields, functions or types after Go's
+        predeclared identifiers such as len, error, string or new.
+    rationale:
+        Shadowing a built-in makes code confusing and can cause subtle bugs
+        that the compiler does not report.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func describe(len int) string {
+            var string = fmt.Sprint(len)
+            return string
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func describe(size int) string {
+            label := fmt.Sprint(size)
+            return label
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [naming, shadowing]
+    source: https://github.com/uber-go/guide/blob/master/style.md#avoid-using-built-in-names

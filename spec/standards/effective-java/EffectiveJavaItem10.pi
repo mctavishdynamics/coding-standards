@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem10:
+    standard: @{EffectiveJava}
+    ruleId: item-10
+    title: Keep the equals contract when you override equals
+    statement:
+        Override equals only when a class has a notion of logical equality,
+        and then make it reflexive, symmetric, transitive, consistent and
+        false for null. Compare the significant fields after checking the
+        argument type.
+    rationale:
+        Collections and many other classes assume the contract holds. A
+        broken equals makes objects vanish from sets or match the wrong
+        keys.
+    exceptions:
+        Leave equals alone when each instance is unique by nature, when no
+        caller needs logical equality, or when a superclass already supplies
+        a correct version.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        @Override
+        public boolean equals(Object o) {
+            return o instanceof String s && s.equalsIgnoreCase(code);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Override
+        public boolean equals(Object o) {
+            return o instanceof Currency other && code.equals(other.code);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods-common-to-all-objects, equality, contracts]
+    source: https://www.informit.com/store/effective-java-9780134686097

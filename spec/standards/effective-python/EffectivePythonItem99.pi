@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem99:
+    standard: @{EffectivePython}
+    ruleId: item-99
+    title: Avoid copies of binary data with memoryview and bytearray
+    statement:
+        Slice and modify large binary buffers through memoryview and
+        bytearray instead of creating new bytes objects.
+    rationale:
+        Slicing bytes copies data every time, while a memoryview references
+        the same memory and supports zero-copy reads and writes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        chunk = data[offset:offset + size]
+        sock.send(chunk)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        view = memoryview(data)
+        sock.send(view[offset:offset + size])
+        \\\
+        ```
+    languages: [python]
+    tags: [performance, memory, bytes]
+    source: https://effectivepython.com/

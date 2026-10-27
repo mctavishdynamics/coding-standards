@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvGuardConditionsInWhenExpression:
+    standard: @{KotlinConventions}
+    ruleId: guard-conditions-in-when-expression
+    title: Parenthesise combined guard conditions in when
+    statement:
+        When a guard condition in a when branch combines several Boolean
+        expressions, wrap them in parentheses.
+    rationale:
+        Parentheses make it clear where the guard ends and the branch
+        begins.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        when (event) {
+            is Event.Click if event.x < 0 || event.y < 0 -> ignore()
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        when (event) {
+            is Event.Click if (event.x < 0 || event.y < 0) -> ignore()
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [control-flow]
+    source: https://kotlinlang.org/docs/coding-conventions.html#guard-conditions-in-when-expression

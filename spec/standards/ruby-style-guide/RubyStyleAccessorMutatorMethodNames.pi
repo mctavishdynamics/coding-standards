@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAccessorMutatorMethodNames:
+    standard: @{RubyStyleGuide}
+    ruleId: accessor_mutator_method_names
+    title: Do not prefix accessors with get_ or set_
+    statement:
+        Name readers after the attribute and writers after the attribute
+        followed by an equals sign, without get_ or set_ prefixes.
+    rationale:
+        That is the Ruby convention, and it lets callers use plain
+        assignment syntax.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def get_color = @color
+        def set_color(value)
+          @color = value
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def color = @color
+        def color=(value)
+          @color = value
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [naming, accessors]
+    source: https://rubystyle.guide/#accessor_mutator_method_names

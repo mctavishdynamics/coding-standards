@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEvent5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: event-5
+    title: Give the event-raising method a single parameter e
+    statement:
+        Give the On method that raises an event exactly one argument, called
+        e, whose type is the event's data class.
+    rationale:
+        This mirrors the handler signature and keeps every On method
+        uniform.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        protected virtual void OnProgressChanged(int percent, string file) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        protected virtual void OnProgressChanged(ProgressEventArgs e) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, events, parameters]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/event

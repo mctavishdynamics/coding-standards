@@ -5,16 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC46:
     standard: @{CppCoreGuidelines}
     ruleId: C.46
-    title: Declare single-argument constructors explicit by default
+    title: Make one-parameter constructors explicit unless conversion is wanted
     statement:
-        Mark constructors that can be called with one argument explicit
-        unless you deliberately want an implicit conversion.
+        Declare a constructor explicit when it can be called with one argument,
+        unless an implicit conversion is the whole point.
     rationale:
-        Implicit conversions through constructors happen silently and can
-        cause unintended calls.
+        A non-explicit constructor converts values silently, so a call can pick
+        an overload or create an object nobody intended.
     exceptions:
-        When an implicit conversion from the argument type is really wanted,
-        such as a complex number built from a double, omit explicit.
+        Leave explicit off when an implicit conversion really is wanted, as with
+        a complex number type built from a double.
     severity: null
     noncompliant:
         ```cpp

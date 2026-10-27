@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation29:
+    standard: @{AnssiC}
+    ruleId: recommendation-29
+    title: Do not write two question marks in a row
+    statement:
+        Avoid consecutive question marks anywhere, including strings and
+        comments.
+    rationale:
+        Two question marks start a trigraph, so the following character can
+        be turned into something else.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* is this right?? */
+        const char *q = "what??";
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* is this right? */
+        const char *q = "what?";
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, portability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=28

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem8:
+    standard: @{EffectivePython}
+    ruleId: item-8
+    title: Use the walrus operator to avoid repeating a computation
+    statement:
+        Use an assignment expression to bind a value and test it in the same
+        condition, instead of computing it twice or adding an extra line
+        before the test.
+    rationale:
+        Assignment expressions remove duplicated calls and make
+        loop-and-a-half patterns compact.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        chunk = f.read(4096)
+        while chunk:
+            process(chunk)
+            chunk = f.read(4096)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        while chunk := f.read(4096):
+            process(chunk)
+        \\\
+        ```
+    languages: [python]
+    tags: [pythonic-thinking, assignment-expressions, readability]
+    source: https://effectivepython.com/

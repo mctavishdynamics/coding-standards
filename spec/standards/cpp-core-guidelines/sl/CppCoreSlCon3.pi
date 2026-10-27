@@ -5,31 +5,30 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSlCon3:
     standard: @{CppCoreGuidelines}
     ruleId: SL.con.3
-    title: Avoid bounds errors
+    title: Never read or write outside a container's bounds
     statement:
-        Never read or write outside a container's range. Prefer range-for
-        loops, algorithms, span and checked access such as at() over raw
-        indexing and memory functions with hand-computed lengths.
+        Stay inside a container's valid range on every access. Range-based loops,
+        algorithms, span and checked accessors like at() help, while raw subscripts
+        and memory functions with hand-computed sizes do not.
     rationale:
-        Out-of-bounds access causes wrong results, crashes and security
-        holes. Bounds-safe loops are as fast as unchecked ones, and a single
-        pre-check often replaces per-element checks.
+        An access past the end yields bad data, crashes the program or opens a
+        security hole. Safe iteration is generally as fast as unchecked code, and
+        one check up front can often cover a whole loop.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        std::array<int, 16> counts;
-        std::memset(counts.data(), 0, 16);          // clears only 16 bytes
-        int last = counts[index];                   // index never checked
+        std::vector<double> samples(count);
+        std::memcpy(samples.data(), source, count);   // copies count bytes, not doubles
+        double peak = samples[pos];                   // pos never checked
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        std::array<int, 16> counts{};
-        counts.fill(0);
-        int last = counts.at(index);                // throws if out of range
+        std::vector<double> samples(source, source + count);
+        double peak = samples.at(pos);                // throws std::out_of_range
         \\\
         ```
     languages: [cpp]

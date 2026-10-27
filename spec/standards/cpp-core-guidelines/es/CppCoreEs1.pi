@@ -5,18 +5,22 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs1:
     standard: @{CppCoreGuidelines}
     ruleId: ES.1
-    title: Prefer the standard library to other libraries and handcrafted code
+    title: Reach for the standard library before other libraries or custom code
     statement:
-        Use a standard library facility when one does the job, before
-        reaching for another library or writing the code yourself.
+        Before writing a facility yourself or pulling in a third-party
+        package, check whether the standard library already provides it, and
+        use that if it fits.
     rationale:
-        Library code is shorter, more abstract and already tested, and the
-        standard library is the most widely known and available C++ library.
+        A library call is typically far shorter than equivalent hand-written
+        code and states the intent at a higher level. The ISO standard
+        library ships with every C++ compiler, is familiar to most C++
+        programmers and has been tested heavily.
     exceptions:
-        Parts of the standard library, notably the containers, depend on
-        dynamic allocation and may not suit hard-real-time or embedded code.
-        There, use similar facilities such as a standard-style container on
-        a pool allocator.
+        Some standard components, the containers in particular, allocate on
+        the heap and can be a poor fit for hard real-time or embedded
+        systems. In those settings use an equivalent with the same
+        interface, for example a standard-like container backed by a pool
+        allocator.
     severity: null
     noncompliant:
         ```cpp

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiAdoptAndDocumentAPolicyForHandlingExceptions:
+    standard: @{KotlinApiGuidelines}
+    ruleId: adopt-and-document-a-policy-for-handling-exceptions
+    title: Adopt and document one exception-handling policy
+    statement:
+        Decide consistently whether dependency exceptions are passed
+        through, converted or suppressed, and document the choice. Exception
+        types should identify the kind of error, and a library-specific
+        exception commonly wraps the low-level one as its cause.
+    rationale:
+        Users must be able to recognise in logs and debuggers which errors
+        came from your library and trace them to the root cause.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun loadProfile(id: String): Profile =
+            try { json.decode(fetch(id)) } catch (e: Exception) { throw RuntimeException() }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public class ProfileLoadException(message: String, cause: Throwable) :
+            Exception(message, cause)
+
+        public fun loadProfile(id: String): Profile =
+            try { json.decode(fetch(id)) }
+            catch (e: SerializationException) {
+                throw ProfileLoadException("Malformed profile $id", e)
+            }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [error-handling, debugging]
+    source: https://kotlinlang.org/docs/api-guidelines-debuggability.html#adopt-and-document-a-policy-for-handling-exceptions

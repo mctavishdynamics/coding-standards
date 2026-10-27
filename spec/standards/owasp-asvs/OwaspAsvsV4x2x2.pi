@@ -1,0 +1,21 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV4x2x2:
+    standard: @{OwaspAsvs}
+    ruleId: V4.2.2
+    title: Generate HTTP messages with a correct Content-Length
+    statement:
+        When producing HTTP messages, make sure Content-Length never
+        disagrees with the length implied by the protocol framing.
+    rationale:
+        A mismatched length lets downstream parsers split messages
+        differently, which enables request smuggling.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-3, http, request-smuggling]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x13-V4-API-and-Web-Service.md#v42-http-message-structure-validation

@@ -1,0 +1,23 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV3x5x2:
+    standard: @{OwaspAsvs}
+    ruleId: V3.5.2
+    title: Make sure sensitive calls always trigger CORS preflight
+    statement:
+        When the design depends on CORS preflight, make it impossible to
+        call sensitive functions with a request that skips preflight, for
+        example by checking Origin and Content-Type or requiring a
+        non-safelisted header.
+    rationale:
+        Simple requests never trigger preflight, so an endpoint that accepts
+        them is still open to forged cross-origin calls.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-1, csrf, cors]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x12-V3-Web-Frontend-Security.md#v35-browser-origin-separation

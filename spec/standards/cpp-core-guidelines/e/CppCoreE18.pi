@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE18:
     standard: @{CppCoreGuidelines}
     ruleId: E.18
-    title: Minimize the use of explicit try and catch
+    title: Keep try blocks rare
     statement:
-        Use resource handles and RAII, or a final_action as a last resort,
-        so that most functions need no try block.
+        Rely on RAII handles, or a final_action when nothing else fits, so that try
+        blocks are rarely needed.
     rationale:
-        Try and catch blocks are verbose and error-prone when non-trivial,
-        and often signal unsystematic, low-level resource management.
+        Non-trivial try and catch code is wordy and easy to get wrong. A function
+        full of it usually means resources or errors are being managed by hand at
+        too low a level.
     exceptions: null
     severity: null
     noncompliant:

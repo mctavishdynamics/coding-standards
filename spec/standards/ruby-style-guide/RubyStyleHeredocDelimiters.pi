@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHeredocDelimiters:
+    standard: @{RubyStyleGuide}
+    ruleId: heredoc-delimiters
+    title: Give heredocs descriptive delimiters
+    statement:
+        Name each heredoc delimiter after its content, such as SQL, HTML or
+        MESSAGE, rather than a generic word. RuboCop checks this with
+        Naming/HeredocDelimiterCase and Naming/HeredocDelimiterNaming.
+    rationale:
+        A descriptive delimiter tells the reader what the text is, and some
+        editors use it to highlight the embedded language.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        query = <<~EOS
+          SELECT id FROM users
+        EOS
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        query = <<~SQL
+          SELECT id FROM users
+        SQL
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, heredocs, naming]
+    source: https://rubystyle.guide/#heredoc-delimiters

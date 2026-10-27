@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem84:
+    standard: @{EffectivePython}
+    ruleId: item-84
+    title: Copy exception variables you need after the except block
+    statement:
+        The name bound by except ... as is deleted when the block ends.
+        Assign the exception to another variable if you need it later.
+    rationale:
+        Using the name after the block raises NameError, often in a rarely
+        run error path.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            connect()
+        except OSError as e:
+            pass
+        print(e)  # NameError
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        error = None
+        try:
+            connect()
+        except OSError as e:
+            error = e
+        print(error)
+        \\\
+        ```
+    languages: [python]
+    tags: [robustness, exceptions, scope]
+    source: https://effectivepython.com/

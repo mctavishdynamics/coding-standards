@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoAvoidOverlyLongLines:
+    standard: @{UberGo}
+    ruleId: avoid-overly-long-lines
+    title: Keep lines under a soft limit of 99 characters
+    statement:
+        Avoid lines so long that readers have to scroll sideways. Aim to
+        wrap before 99 characters, treating this as a soft limit that code
+        may exceed.
+    rationale:
+        Long lines are hard to read and to review side by side.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        resp, err := client.CreateInvoice(ctx, &billing.CreateInvoiceRequest{CustomerID: customer.ID, Currency: "EUR", Lines: lines})
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        resp, err := client.CreateInvoice(ctx, &billing.CreateInvoiceRequest{
+            CustomerID: customer.ID,
+            Currency:   "EUR",
+            Lines:      lines,
+        })
+        \\\
+        ```
+    languages: [go]
+    tags: [formatting, line-length]
+    source: https://github.com/uber-go/guide/blob/master/style.md#avoid-overly-long-lines

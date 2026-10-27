@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule16:
+    standard: @{AnssiC}
+    ruleId: rule-16
+    title: Use at most one of the # and ## operators per macro expression
+    statement:
+        Do not combine several stringizing or token-pasting operators in the
+        same macro expression.
+    rationale:
+        The order in which the operators apply is unspecified, so the result
+        can differ between compilers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define LABEL(a, b) #a ## b
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define CONCAT(a, b) a ## b
+        #define STR(a) #a
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, preprocessor, macros]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=20

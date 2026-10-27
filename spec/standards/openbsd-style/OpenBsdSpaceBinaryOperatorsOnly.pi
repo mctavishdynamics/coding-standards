@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdSpaceBinaryOperatorsOnly:
+    standard: @{OpenBsdStyle}
+    ruleId: operator-spacing
+    title: Space binary operators but not unary ones
+    statement:
+        Put spaces around binary operators and none after unary operators.
+    rationale:
+        The spacing shows how operators bind.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        x=~ mask&flags;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        x = ~mask & flags;
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, whitespace, expressions]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

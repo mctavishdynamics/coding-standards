@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem4:
+    standard: @{EffectivePython}
+    ruleId: item-4
+    title: Move complicated expressions into helper functions
+    statement:
+        When an expression grows hard to read, especially one that combines
+        several operators or repeats logic, move it into a small, named
+        helper function.
+    rationale:
+        Dense one-liners save lines but cost readers time. A named helper
+        explains intent and can be reused.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        port = int(params.get("port", [""])[0] or 0) or 8080
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def first_int(params, key, default):
+            values = params.get(key, [""])
+            return int(values[0]) if values[0] else default
+
+        port = first_int(params, "port", 8080)
+        \\\
+        ```
+    languages: [python]
+    tags: [pythonic-thinking, readability, functions]
+    source: https://effectivepython.com/

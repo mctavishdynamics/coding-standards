@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleHandleAllErrors:
+    standard: @{TigerStyle}
+    ruleId: handle-all-errors
+    title: Handle every error
+    statement:
+        Never ignore an error. Every error that the code can return must be
+        dealt with explicitly.
+    rationale:
+        Research on distributed systems found that most catastrophic
+        failures came from mishandled non-fatal errors that simple tests of
+        the error paths would have caught.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        file.sync() catch {};
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        file.sync() catch |err| {
+            log.err("sync failed: {}", .{err});
+            return err;
+        };
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [error-handling, reliability]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

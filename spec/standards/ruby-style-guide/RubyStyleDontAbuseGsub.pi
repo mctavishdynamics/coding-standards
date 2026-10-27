@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleDontAbuseGsub:
+    standard: @{RubyStyleGuide}
+    ruleId: dont-abuse-gsub
+    title: Prefer faster methods to gsub when they fit
+    statement:
+        Do not reach for gsub when a more specific method does the job, such
+        as sub for a single replacement or tr for swapping characters.
+    rationale:
+        The specialised methods are faster and say more precisely what the
+        code does.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        path.gsub('/', '\\')
+        title.gsub(/\A\s+/, '')
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        path.tr('/', '\\')
+        title.lstrip
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, performance]
+    source: https://rubystyle.guide/#dont-abuse-gsub

@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSf6:
     standard: @{CppCoreGuidelines}
     ruleId: SF.6
-    title: Use using namespace directives for transition, for foundation libraries (such as std), or within a local scope (only)
+    title: Limit using namespace directives to migration, core libraries or local scopes
     statement:
-        Limit using namespace directives to transition work, to pervasive
-        foundation libraries such as std, or to a local scope. A source file
-        counts as a local scope.
+        Write a using namespace directive only in three cases. Use it while
+        migrating code, for a foundational namespace such as std, or inside a local
+        scope, which may be a whole source file.
     rationale:
-        Using directives can cause name clashes, so they should be rare, but
-        qualifying every name from a pervasive namespace is verbose and
-        distracting.
+        Each directive can create name clashes, so keep them scarce. On the other
+        hand, writing out a namespace that is used throughout the code on every
+        single name adds noise.
     exceptions: null
     severity: null
     noncompliant:

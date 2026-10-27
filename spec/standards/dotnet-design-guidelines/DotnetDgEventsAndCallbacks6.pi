@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEventsAndCallbacks6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: events-and-callbacks-6
+    title: Measure the cost of Expression before choosing it over delegates
+    statement:
+        Understand and measure the performance impact of taking an
+        Expression rather than a Func or Action.
+    rationale:
+        Expressions can be translated or sent elsewhere, but building and
+        compiling them is much more expensive than calling a delegate.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public IQueryable<Order> Where(Expression<Func<Order, bool>> predicate); // translated to SQL
+        public IEnumerable<Order> Where(Func<Order, bool> predicate);             // runs in process
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, extensibility, callbacks, performance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/events-and-callbacks

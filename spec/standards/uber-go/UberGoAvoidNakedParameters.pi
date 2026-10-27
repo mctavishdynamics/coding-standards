@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoAvoidNakedParameters:
+    standard: @{UberGo}
+    ruleId: avoid-naked-parameters
+    title: Label unclear literal arguments
+    statement:
+        When a literal argument's meaning is not obvious, add a C-style
+        comment naming the parameter. Better still, replace bare bool
+        parameters with a named type.
+    rationale:
+        Bare true or false at a call site tells the reader nothing, and a
+        custom type is also safer and leaves room for more than two states.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        report.Render(w, true, false)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        report.Render(w, true /* withHeader */, false /* compact */)
+
+        // better
+        report.Render(w, report.WithHeader, report.Expanded)
+        \\\
+        ```
+    languages: [go]
+    tags: [readability, parameters]
+    source: https://github.com/uber-go/guide/blob/master/style.md#avoid-naked-parameters

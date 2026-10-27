@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangArrindexing:
+    standard: @{AnssiRust}
+    ruleId: LANG-ARRINDEXING
+    title: Check indexes or use get for array access
+    statement:
+        Make sure an index is in bounds before indexing a slice or array, or
+        use the get method, which returns an Option.
+    rationale:
+        Out-of-bounds indexing panics, which can be triggered by untrusted
+        input and stop the program.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        fn nth_field(fields: &[&str], n: usize) -> &str {
+            fields[n]
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        fn nth_field<'a>(fields: &[&'a str], n: usize) -> Option<&'a str> {
+            fields.get(n).copied()
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, bounds-checking, panic]
+    source: https://anssi-fr.github.io/rust-guide/errors.html#LANG-ARRINDEXING

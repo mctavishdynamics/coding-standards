@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ReferenceOperatorNoSpace:
+    standard: @{Psr12}
+    ruleId: 4.5g
+    title: Write no space after a by-reference ampersand
+    statement:
+        When a parameter is passed by reference, put the ampersand directly
+        before the variable name with no space.
+    rationale:
+        Keeping the operator against the name shows clearly which parameter
+        is passed by reference.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        function appendLine(array & $lines, string $line)
+        {
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        function appendLine(array &$lines, string $line)
+        {
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [parameters, whitespace]
+    source: https://www.php-fig.org/psr/psr-12/#45-method-and-function-arguments

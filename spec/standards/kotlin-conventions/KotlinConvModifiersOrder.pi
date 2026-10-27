@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvModifiersOrder:
+    standard: @{KotlinConventions}
+    ruleId: modifiers-order
+    title: Write modifiers in the standard order
+    statement:
+        When a declaration has several modifiers, write them in the
+        documented order, starting with visibility, then expect or actual,
+        then final, open, abstract, sealed or const, and so on through to
+        data. Place all annotations before the modifiers.
+    rationale:
+        A fixed order makes declarations easy to scan and compare.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        override suspend public fun load() { }
+        private @Inject lateinit var repo: Repo
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public override suspend fun load() { }
+        @Inject private lateinit var repo: Repo
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, modifiers]
+    source: https://kotlinlang.org/docs/coding-conventions.html#modifiers-order

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoImplementingClosedClasses:
+    standard: @{EffectiveDart}
+    ruleId: avoid-implementing-a-class-that-isnt-intended-to-be-an-interface
+    title: Implement only classes intended as interfaces
+    statement:
+        Do not implement the implicit interface of a class unless it is
+        clearly meant to be implemented.
+    rationale:
+        Implementing a class couples you to all its members, so adding any
+        member breaks you, and authors lose room to evolve their classes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class FakeCache implements LruCache {
+          // Breaks whenever LruCache gains a member.
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        abstract interface class Cache {
+          String? read(String key);
+        }
+
+        class FakeCache implements Cache {
+          @override
+          String? read(String key) => null;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, classes, interfaces]
+    source: https://dart.dev/effective-dart/design#avoid-implementing-a-class-that-isnt-intended-to-be-an-interface

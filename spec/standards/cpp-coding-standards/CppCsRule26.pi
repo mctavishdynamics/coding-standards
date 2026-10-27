@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule26:
+    standard: @{CppCodingStandards}
+    ruleId: rule-26
+    title: Keep overloaded operators consistent with their usual meaning
+    statement:
+        Overload an operator only when it does what readers expect from the
+        built-in operator, with matching related operators.
+    rationale:
+        Surprising operators make code misleading and break generic
+        algorithms.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Logger& operator+(Logger& l, const std::string& msg);   // writes to disk
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Logger& operator<<(Logger& l, const std::string& msg);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions-and-operators, operators]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

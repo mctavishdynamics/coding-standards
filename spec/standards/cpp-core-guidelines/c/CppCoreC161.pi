@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC161:
     standard: @{CppCoreGuidelines}
     ruleId: C.161
-    title: Use non-member functions for symmetric operators
+    title: Write operators that treat both operands alike as free functions
     statement:
-        Define symmetric binary operators such as ==, + and < as non-member
-        functions, often friends, rather than members.
+        Write binary operators that should treat both sides alike, such as ==, +
+        and <, as non-member functions, which may be friends.
     rationale:
-        A member operator converts only the right operand, so a == b and b
-        == a can behave differently, and a member version would be needed
-        for each side.
+        With a member operator only the right-hand operand can be converted. So
+        a == b might compile while b == a does not, or the two may behave
+        differently.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando198:
+    standard: @{ZalandoApi}
+    ruleId: 198
+    title: Make events conform to an event category
+    statement:
+        Base every event on a category, general or data change, and follow
+        its structure, including the reserved metadata field.
+    rationale:
+        Categories give all events a predictable shape and standard
+        information such as the operation of a data change.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```json
+        \\\
+        {
+          "metadata": { "eid": "1f5c2a7e-6c1b-4f0e-8d2a-9b7e3c4d5f60",
+                        "occurred_at": "2024-03-02T10:00:00Z" },
+          "data_type": "logistics:parcel",
+          "data_op": "U",
+          "data": { "parcel_id": "p-4", "status": "SCANNED" }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, events, schema]
+    source: https://opensource.zalando.com/restful-api-guidelines/#198

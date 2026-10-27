@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CommitMessages import CommitMessages
+
+export coding-rule CommitMsgImperativeSubject:
+    standard: @{CommitMessages}
+    ruleId: 5
+    title: Phrase the summary as a command
+    statement:
+        Write the summary in the imperative mood, as an instruction. A good
+        test is that the line reads naturally after the words "If applied,
+        this commit will".
+    rationale:
+        Git itself writes merge and revert messages as commands, so
+        imperative summaries match the messages the tools already produce.
+    exceptions:
+        The imperative is needed only in the summary; the body can use
+        ordinary prose.
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        Added validation for phone numbers
+        Fixes for the broken search page
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        Validate phone numbers before saving
+        Restore results on the search page
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, grammar]
+    source: https://cbea.ms/git-commit/#imperative

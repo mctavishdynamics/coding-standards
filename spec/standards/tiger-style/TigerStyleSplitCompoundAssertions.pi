@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleSplitCompoundAssertions:
+    standard: @{TigerStyle}
+    ruleId: split-compound-assertions
+    title: Split compound assertions into separate ones
+    statement:
+        Write one assertion per condition instead of joining conditions with
+        and in a single assertion.
+    rationale:
+        Separate assertions read more easily and tell you exactly which
+        condition failed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        assert(offset < size and size <= capacity);
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        assert(offset < size);
+        assert(size <= capacity);
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [assertions, readability]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

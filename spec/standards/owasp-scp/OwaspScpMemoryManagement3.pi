@@ -5,13 +5,13 @@ from ./OwaspScp import OwaspScp
 export coding-rule OwaspScpMemoryManagement3:
     standard: @{OwaspScp}
     ruleId: memory-management-3
-    title: Handle null termination with byte-count functions
+    title: Ensure null termination with length-limited copy functions
     statement:
-        When a function takes a number of bytes to copy, such as strncpy,
-        make sure the result is null terminated, since it may not be when
-        the destination is the same size as the source.
+        When using a function that copies a fixed count of bytes, such as
+        strncpy, check that the result ends in a null character. It will not
+        when the source fills the whole destination.
     rationale:
-        An unterminated string makes later reads run past the buffer.
+        Without a terminator, later string reads run beyond the buffer.
     exceptions: null
     severity: null
     noncompliant:

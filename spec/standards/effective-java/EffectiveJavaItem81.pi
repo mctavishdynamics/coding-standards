@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem81:
+    standard: @{EffectiveJava}
+    ruleId: item-81
+    title: Coordinate threads with java.util.concurrent, not hand-written wait loops
+    statement:
+        Use concurrent collections and synchronizers such as
+        ConcurrentHashMap, CountDownLatch and BlockingQueue rather than wait
+        and notify. If you must use wait, call it in a loop.
+    rationale:
+        The high-level utilities are easier to use correctly and often
+        faster. Hand-written wait and notify code is fragile.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        synchronized (lock) {
+            if (!ready) lock.wait();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        CountDownLatch ready = new CountDownLatch(1);
+        ready.await();
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, synchronization]
+    source: https://www.informit.com/store/effective-java-9780134686097

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdOmitPrototypeParameterNames:
+    standard: @{OpenBsdStyle}
+    ruleId: prototype-parameter-names
+    title: Leave parameter names out of prototypes
+    statement:
+        Write prototypes with only the parameter types, without variable
+        names.
+    rationale:
+        Names in prototypes can collide with macros and add nothing to type
+        checking.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void    copy_block(char *dst, const char *src, size_t len);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void    copy_block(char *, const char *, size_t);
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, declarations]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

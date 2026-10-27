@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC62:
     standard: @{CppCoreGuidelines}
     ruleId: C.62
-    title: Make copy assignment safe for self-assignment
+    title: Let copy assignment handle an object assigned to itself
     statement:
-        Ensure that x = x leaves x unchanged. Members that handle
-        self-assignment, or the copy-and-swap idiom, usually take care of
-        this.
+        Assigning an object to itself must leave it unchanged. Members that
+        already cope with self-assignment, or the copy-and-swap idiom, usually
+        take care of this.
     rationale:
-        If self-assignment changes the value, users are surprised and
-        serious errors such as leaks or use of freed memory follow.
+        If self-assignment changes the value, users are caught off guard. It can
+        also cause leaks or reads from freed memory.
     exceptions: null
     severity: null
     noncompliant:

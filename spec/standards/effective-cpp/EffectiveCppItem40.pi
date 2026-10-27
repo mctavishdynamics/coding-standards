@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem40:
+    standard: @{EffectiveCpp}
+    ruleId: item-40
+    title: Reserve multiple inheritance for designs that need it
+    statement:
+        Reach for multiple inheritance only when single inheritance cannot
+        express the design, such as a public interface plus private
+        implementation. Avoid virtual bases that carry data.
+    rationale:
+        It brings ambiguous names and the costs and initialisation rules of
+        virtual inheritance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Device { public: int id; };
+        class Printer : public Device {};
+        class Scanner : public Device {};
+        class Copier : public Printer, public Scanner {};
+        copier.id;   // ambiguous
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Printable { public: virtual void print() = 0; virtual ~Printable() = default; };
+        class Copier : public Printable, private ScannerImpl {
+        public:
+            void print() override;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance-and-oo-design, inheritance]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

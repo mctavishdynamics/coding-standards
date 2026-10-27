@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoTrailingArrayCommas:
+    standard: @{RubyStyleGuide}
+    ruleId: no-trailing-array-commas
+    title: Leave out the comma after the last element
+    statement:
+        Leave no comma after the last element in array and hash literals,
+        especially when the whole literal fits on one line. RuboCop enforces
+        this through Style/TrailingCommaInArrayLiteral.
+    rationale:
+        The trailing comma adds clutter, and on a single line it looks like
+        a mistake.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        PORTS = [8080, 8443, 9090, ]
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        PORTS = [8080, 8443, 9090]
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, formatting]
+    source: https://rubystyle.guide/#no-trailing-array-commas

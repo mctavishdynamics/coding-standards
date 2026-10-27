@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule158:
+    standard: @{AnssiC}
+    ruleId: rule-158
+    title: Free dynamic memory as soon as it is no longer needed
+    statement:
+        Release each dynamically allocated block once it is no longer used.
+    rationale:
+        Memory held too long leaks or leaves data around longer than needed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char *line = read_line(f);
+        handle(line);
+        /* line never freed */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *line = read_line(f);
+        handle(line);
+        free(line);
+        line = NULL;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, memory, allocation]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=127

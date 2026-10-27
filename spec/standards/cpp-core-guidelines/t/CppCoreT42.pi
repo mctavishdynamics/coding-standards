@@ -5,35 +5,38 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT42:
     standard: @{CppCoreGuidelines}
     ruleId: T.42
-    title: Use template aliases to simplify notation and hide implementation details
+    title: Shorten type spellings and hide details with alias templates
     statement:
-        Introduce alias templates for long dependent type names and for
-        wrapping traits, so users write the short name.
+        Define alias templates for long dependent type names and to wrap traits, so
+        users can write a short, clear name.
     rationale:
-        Aliases improve readability and hide how a type is computed or where
-        elements are stored. They replace many uses of traits.
+        An alias is easier to read and hides how the type is computed or which
+        container stores the elements. Many former uses of traits classes are better
+        served by an alias.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        template<typename C>
-        void process(C& c)
+        template<typename K, typename V>
+        void dump(const std::map<K, V>& m)
         {
-            typename container_traits<C>::value_type first = c.front();
+            for (typename std::map<K, V>::const_iterator it = m.begin(); it != m.end(); ++it)
+                print(it->first, it->second);
         }
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        template<typename C>
-        using Value_type = typename container_traits<C>::value_type;
+        template<typename K, typename V>
+        using Map_iter = typename std::map<K, V>::const_iterator;
 
-        template<typename C>
-        void process(C& c)
+        template<typename K, typename V>
+        void dump(const std::map<K, V>& m)
         {
-            Value_type<C> first = c.front();
+            for (Map_iter<K, V> it = m.begin(); it != m.end(); ++it)
+                print(it->first, it->second);
         }
         \\\
         ```

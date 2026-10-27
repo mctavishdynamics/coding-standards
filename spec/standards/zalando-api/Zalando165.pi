@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando165:
+    standard: @{ZalandoApi}
+    ruleId: 165
+    title: Express pagination and self references as plain link objects
+    statement:
+        For pagination and self references, use plain URI values under the
+        standard relation names self, first, prev, next and last.
+    rationale:
+        The simple form is enough here and keeps specifications and payloads
+        smaller.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```json
+        \\\
+        {
+          "self": "https://orders.example.com/orders?cursor=abc",
+          "next": "https://orders.example.com/orders?cursor=def",
+          "items": []
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [should, hypermedia, pagination]
+    source: https://opensource.zalando.com/restful-api-guidelines/#165

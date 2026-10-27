@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule31:
+    standard: @{CppCodingStandards}
+    ruleId: rule-31
+    title: Compute interacting arguments in separate statements
+    statement:
+        Avoid argument expressions with side effects that interact; compute
+        them in separate statements first.
+    rationale:
+        The language leaves the evaluation order unspecified, so results
+        differ between compilers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        draw(next(), next());   // which is first?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto first = next();
+        auto second = next();
+        draw(first, second);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions-and-operators, evaluation-order]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

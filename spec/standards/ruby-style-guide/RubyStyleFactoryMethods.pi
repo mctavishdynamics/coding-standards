@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleFactoryMethods:
+    standard: @{RubyStyleGuide}
+    ruleId: factory-methods
+    title: Offer factory methods for other ways to build an object
+    statement:
+        When a class can sensibly be built from several kinds of input, add
+        class-level factory methods that name each way of building it.
+    rationale:
+        A named factory method tells the reader what the input is, and keeps
+        the constructor simple.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```ruby
+        \\\
+        class Invoice
+          def self.from_csv_row(row)
+            new(number: row[0], total: row[1].to_f)
+          end
+
+          def initialize(number:, total:)
+            @number = number
+            @total = total
+          end
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, constructors]
+    source: https://rubystyle.guide/#factory-methods

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleMethodInvocationParens:
+    standard: @{RubyStyleGuide}
+    ruleId: method-invocation-parens
+    title: Use parentheses around method call arguments
+    statement:
+        Put the arguments of a method call in parentheses, particularly when
+        the first argument starts with a parenthesis. Leave them out when
+        there are no arguments and for methods with keyword status, such as
+        declarative macros like attr_reader; for keyword-like Kernel methods
+        such as puts either style is acceptable if used consistently. A
+        super call that passes arguments always wraps them in parentheses.
+    rationale:
+        Parentheses make argument boundaries unambiguous, while the
+        exceptions keep keyword-like calls reading like the language. A bare
+        super and super with empty parentheses do different things, so
+        choose deliberately.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        total = sum (price * qty), tax
+        user.reload()
+        attr_reader(:name)
+        super name, email
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        total = sum((price * qty), tax)
+        user.reload
+        attr_reader :name
+        super(name, email)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [method-calls, formatting]
+    source: https://rubystyle.guide/#method-invocation-parens

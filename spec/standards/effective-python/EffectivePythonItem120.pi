@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem120:
+    standard: @{EffectivePython}
+    ruleId: item-120
+    title: Choose environment-specific implementations at import time
+    statement:
+        Use code at module scope, such as an if on an environment variable
+        or platform, to choose implementations for each deployment
+        environment.
+    rationale:
+        Module scope runs once at import, so a module can adapt to
+        production, testing or a platform without scattering checks.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        import os
+
+        if os.environ.get("APP_ENV") == "test":
+            from .fake_store import Store
+        else:
+            from .db_store import Store
+        \\\
+        ```
+    languages: [python]
+    tags: [collaboration, configuration, deployment]
+    source: https://effectivepython.com/

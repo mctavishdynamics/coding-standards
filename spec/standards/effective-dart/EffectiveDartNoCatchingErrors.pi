@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoCatchingErrors:
+    standard: @{EffectiveDart}
+    ruleId: dont-explicitly-catch-error-or-types-that-implement-it
+    title: Do not catch Error or its subtypes
+    statement:
+        Fix the code that throws an `Error` rather than catching it with `on
+        Error` or a subtype. The avoid_catching_errors lint checks this.
+    rationale:
+        An Error marks a bug and should stop the program with a stack trace.
+        Catching it masks the bug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        try {
+          return items[index];
+        } on RangeError {
+          return null;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        if (index < 0 || index >= items.length) return null;
+        return items[index];
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, error-handling, exceptions]
+    source: https://dart.dev/effective-dart/usage#dont-explicitly-catch-error-or-types-that-implement-it

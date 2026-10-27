@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule42:
+    standard: @{AnssiC}
+    ruleId: rule-42
+    title: Do not use an executable stack
+    statement:
+        Keep the stack non-executable. Do not use GCC nested functions, do
+        not pass options that make the stack executable, and pass z
+        noexecstack to BFD and gold linkers.
+    rationale:
+        An executable stack lets an attacker run code placed there through a
+        buffer overflow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int apply(int x) {
+            int add(int y) { return x + y; } /* GCC nested function */
+            return add(1);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int add(int x, int y) { return x + y; }
+        int apply(int x) { return add(x, 1); }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, compilation, hardening]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=36

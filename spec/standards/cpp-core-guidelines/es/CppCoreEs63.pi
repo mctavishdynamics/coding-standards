@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs63:
     standard: @{CppCoreGuidelines}
     ruleId: ES.63
-    title: Don't slice
+    title: Avoid copying a derived object into a base object
     statement:
-        Do not copy a derived object into a base class object by assignment
-        or initialization. Use a pointer, a reference or an explicit
-        conversion function.
+        Avoid initializing or assigning a base class object from a derived
+        object. Work through a pointer or a reference, or convert explicitly
+        with a named function.
     rationale:
-        Slicing copies only the base part of an object that was meant to be
-        treated as a whole, which usually causes errors and surprises
-        readers even when deliberate.
+        Copying into the base keeps only the base portion and throws away
+        the rest. The object was meant to be handled whole, so this is
+        usually a bug, and even an intended slice confuses readers.
     exceptions: null
     severity: null
     noncompliant:

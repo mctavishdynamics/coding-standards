@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule44:
+    standard: @{CppCodingStandards}
+    ruleId: rule-44
+    title: Write operations as free functions that are neither members nor friends
+    statement:
+        When a function can be implemented using only the public interface,
+        make it a non-member non-friend.
+    rationale:
+        This improves encapsulation and keeps classes minimal.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Text {
+        public:
+            std::size_t size() const;
+            char at(std::size_t i) const;
+            bool isPalindrome() const;   // uses only size and at
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        bool isPalindrome(const Text& t);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, encapsulation, functions]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

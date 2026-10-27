@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR21:
     standard: @{CppCoreGuidelines}
     ruleId: R.21
-    title: Prefer unique_ptr over shared_ptr unless you need to share ownership
+    title: Default to unique ownership and share only when needed
     statement:
-        Use unique_ptr by default and reach for shared_ptr only when several
-        owners really must keep an object alive together.
+        Start with unique_ptr. Switch to shared_ptr only when ownership
+        truly has to be split among several holders.
     rationale:
-        A unique_ptr is simpler, makes the moment of destruction predictable
-        and costs nothing for a use count.
+        Single ownership is easier to reason about, and you can see exactly
+        where the object dies. It also skips the reference count that
+        shared_ptr has to maintain at run time.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando151:
+    standard: @{ZalandoApi}
+    ruleId: 151
+    title: Specify success and error responses
+    statement:
+        Define every success response and every service-specific error
+        response in the specification, and describe the conditions behind
+        each error.
+    rationale:
+        Responses are part of the contract, and documented errors let
+        clients handle failures correctly and reduce support work.
+    exceptions:
+        Standard errors such as 401, 403, 404, 500 and 503, whose meaning
+        follows from the endpoint, may be covered by a default response.
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        responses:
+          '201':
+            description: Return request created.
+          '422':
+            description: The order is older than the return period.
+          default:
+            description: Error occurred - see status code and problem object.
+            content:
+              application/problem+json:
+                schema:
+                  $ref: '#/components/schemas/Problem'
+        \\\
+        ```
+    languages: [any]
+    tags: [must, openapi, error-handling]
+    source: https://opensource.zalando.com/restful-api-guidelines/#151

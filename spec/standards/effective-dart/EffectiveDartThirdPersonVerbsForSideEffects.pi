@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartThirdPersonVerbsForSideEffects:
+    standard: @{EffectiveDart}
+    ruleId: prefer-starting-comments-of-a-function-or-method-with-third-person-verbs-if-its-main-purpose-is-a-side-effect
+    title: Start docs of side-effecting functions with a third-person verb
+    statement:
+        When a function or method is called mainly for what it does, begin
+        its doc comment with a verb in the third person, such as "Sends"
+        or "Removes".
+    rationale:
+        The comment then describes the action the code performs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        /// This will be the method for emailing the receipt.
+        void emailReceipt(Order order) {}
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Emails a receipt for [order] to its customer.
+        void emailReceipt(Order order) {}
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, documentation, functions]
+    source: https://dart.dev/effective-dart/documentation#prefer-starting-comments-of-a-function-or-method-with-third-person-verbs-if-its-main-purpose-is-a-side-effect

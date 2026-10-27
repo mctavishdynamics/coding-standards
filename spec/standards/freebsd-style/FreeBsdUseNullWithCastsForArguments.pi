@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdUseNullWithCastsForArguments:
+    standard: @{FreeBsdStyle}
+    ruleId: null-pointer
+    title: Use NULL, cast to the pointer type when passed as an argument
+    statement:
+        Use NULL as the null pointer constant wherever the target type is
+        already known, such as in assignments. In function arguments,
+        especially variadic ones, write a cast NULL of the right pointer
+        type.
+    rationale:
+        Variadic functions and calls without a visible prototype cannot
+        convert a bare NULL to the right type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        p = (struct buf *)0;
+        execl(path, name, NULL);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        p = NULL;
+        execl(path, name, (char *)NULL);
+        \\\
+        ```
+    languages: [c]
+    tags: [pointers, null-safety]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

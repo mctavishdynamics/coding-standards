@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoEmbeddingInStructs:
+    standard: @{UberGo}
+    ruleId: embedding-in-structs
+    title: Embed only for real benefit and list embedded fields first
+    statement:
+        List embedded types first among a struct's fields and leave an empty
+        line before the ordinary fields. Only embed when all exported fields
+        and methods of the inner type really belong on the outer one; if not,
+        give it a field name.
+    rationale:
+        Careless embedding leaks internals, changes zero values or copy
+        semantics and widens the API in ways users notice.
+    exceptions:
+        Mutexes should never be embedded, even in unexported types.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Client struct {
+            timeout time.Duration
+            http.Client
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Client struct {
+            http.Client
+
+            timeout time.Duration
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [embedding, structs]
+    source: https://github.com/uber-go/guide/blob/master/style.md#embedding-in-structs

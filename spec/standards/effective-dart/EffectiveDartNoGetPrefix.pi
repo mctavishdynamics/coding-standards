@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoGetPrefix:
+    standard: @{EffectiveDart}
+    ruleId: avoid-starting-a-function-or-method-name-with-get
+    title: Do not prefix function names with get
+    statement:
+        Turn a get-prefixed method into a getter without the prefix. If it
+        must stay a method, drop get for a noun phrase or use a more precise
+        verb such as fetch, compute or download.
+    rationale:
+        The prefix adds no meaning in Dart, which has getters, and a vague
+        verb hides the actual work.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        int getItemCount() => _items.length;
+        Future<Report> getReport(String id) => _http.get('/reports/$id');
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        int get itemCount => _items.length;
+        Future<Report> fetchReport(String id) => _http.get('/reports/$id');
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, naming, functions]
+    source: https://dart.dev/effective-dart/design#avoid-starting-a-function-or-method-name-with-get

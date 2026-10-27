@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCGoodPractice117:
+    standard: @{AnssiC}
+    ruleId: good-practice-117
+    title: Do not use the value of an assignment
+    statement:
+        Do not use the result of an assignment as part of another
+        expression.
+    rationale:
+        Mixing assignment with other operations hides the side effect and is
+        easily confused with a comparison.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        total += (last = read_value());
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        last = read_value();
+        total += last;
+        \\\
+        ```
+    languages: [c]
+    tags: [good-practice, expressions, side-effects]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=93

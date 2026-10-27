@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvInterfaceImplementationLayout:
+    standard: @{KotlinConventions}
+    ruleId: interface-implementation-layout
+    title: Implement interface members in interface order
+    statement:
+        When implementing an interface, keep its members in the same order
+        as the interface declares them, with any private helpers placed
+        among them as needed.
+    rationale:
+        Matching order makes it easy to compare an implementation against
+        its interface.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        interface Cache { fun get(k: String): Any?; fun put(k: String, v: Any) }
+
+        class MemoryCache : Cache {
+            override fun put(k: String, v: Any) { /* ... */ }
+            override fun get(k: String): Any? = null
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        class MemoryCache : Cache {
+            override fun get(k: String): Any? = null
+            override fun put(k: String, v: Any) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [organization, interfaces]
+    source: https://kotlinlang.org/docs/coding-conventions.html#interface-implementation-layout

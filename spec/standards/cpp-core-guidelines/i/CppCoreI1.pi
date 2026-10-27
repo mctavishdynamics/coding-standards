@@ -5,18 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreI1:
     standard: @{CppCoreGuidelines}
     ruleId: I.1
-    title: Make interfaces explicit
+    title: Put everything a function depends on in its signature
     statement:
-        Pass everything a function depends on through its parameters and
-        return value rather than through hidden channels such as global
-        variables.
+        A function's inputs and outputs should all appear in its signature.
+        Avoid reading or writing hidden state such as globals to get work done.
     rationale:
-        Assumptions that an interface does not state are easily overlooked
-        and hard to test.
+        A dependency that the declaration does not show is easy to miss when
+        calling or testing the function. Explicit parameters make every input
+        visible.
     exceptions:
-        Non-local controls such as an environment variable selecting verbose
-        output can be acceptable when they only affect implementation
-        details of otherwise fixed behavior.
+        A process-wide setting, for example an environment variable that turns
+        on debug logging, may be acceptable when it only tunes how a fixed
+        behavior is carried out.
     severity: null
     noncompliant:
         ```cpp

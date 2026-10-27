@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule68:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-68
+    title: Profile to find where time goes before optimizing
+    statement:
+        Add instrumentation such as timers or counters, and find out where
+        the time goes before you optimize.
+    rationale:
+        Intuition about where a program is slow is often wrong. Measurement
+        directs effort to the parts that matter.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```sh
+        \\\
+        cc -O2 -pg -o prog prog.c
+        ./prog < big-input.txt
+        gprof prog gmon.out | head -20
+        \\\
+        ```
+    languages: [any]
+    tags: [efficiency-and-instrumentation, profiling, performance]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

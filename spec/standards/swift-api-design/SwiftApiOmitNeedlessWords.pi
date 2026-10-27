@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiOmitNeedlessWords:
+    standard: @{SwiftApiDesign}
+    ruleId: omit-needless-words
+    title: Drop words that add no information
+    statement:
+        Cut any word in a name that adds no information where the name is
+        used, in particular words that just repeat type information. Name a
+        parameter for the job it does, not the type it has.
+    rationale:
+        Redundant words make calls longer without making them clearer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        mutating func addTagString(_ tag: String)
+        note.addTagString("urgent")
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        mutating func addTag(_ tag: String)
+        note.addTag("urgent")
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, clarity]
+    source: https://www.swift.org/documentation/api-design-guidelines/#omit-needless-words

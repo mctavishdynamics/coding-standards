@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem52:
+    standard: @{EffectivePython}
+    ruleId: item-52
+    title: Add alternative constructors as classmethods so subclasses work too
+    statement:
+        Use classmethods as alternative constructors so code can create
+        instances of whatever subclass it is given, without hardcoding
+        classes.
+    rationale:
+        Python allows only one __init__ per class, and classmethods give a
+        polymorphic way to construct objects from other inputs.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        class Reader:
+            @classmethod
+            def from_config(cls, config):
+                return cls(config["path"])
+
+        def open_all(reader_cls, configs):
+            return [reader_cls.from_config(c) for c in configs]
+        \\\
+        ```
+    languages: [python]
+    tags: [classes-and-interfaces, classes, construction]
+    source: https://effectivepython.com/

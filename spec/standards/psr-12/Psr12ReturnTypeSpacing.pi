@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ReturnTypeSpacing:
+    standard: @{Psr12}
+    ruleId: 4.5e
+    title: Attach the return type colon to the closing parenthesis
+    statement:
+        Put the colon of a return type directly after the closing
+        parenthesis of the parameter list, with no space between them,
+        followed by one space and the type, all on that line.
+    rationale:
+        A fixed position for the return type makes signatures predictable to
+        read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        function total(array $items) :int
+        {
+            return array_sum($items);
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        function total(array $items): int
+        {
+            return array_sum($items);
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [functions, types, whitespace]
+    source: https://www.php-fig.org/psr/psr-12/#45-method-and-function-arguments

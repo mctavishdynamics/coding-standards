@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoExplicitRbToRequire:
+    standard: @{RubyStyleGuide}
+    ruleId: no-explicit-rb-to-require
+    title: Leave off .rb in require
+    statement:
+        Do not add the .rb extension to file names passed to require or
+        require_relative. RuboCop checks this with
+        Style/RedundantFileExtensionInRequire.
+    rationale:
+        Ruby adds the extension itself when it searches, so writing it is
+        redundant.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        require 'csv_export.rb'
+        require_relative 'helpers/format.rb'
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        require 'csv_export'
+        require_relative 'helpers/format'
+        \\\
+        ```
+    languages: [ruby]
+    tags: [files, dependencies]
+    source: https://rubystyle.guide/#no-explicit-rb-to-require

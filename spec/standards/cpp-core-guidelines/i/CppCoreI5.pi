@@ -5,16 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreI5:
     standard: @{CppCoreGuidelines}
     ruleId: I.5
-    title: State preconditions (if any)
+    title: Say what a function requires of its arguments
     statement:
-        Document what a function requires of its arguments, preferably in
-        code, for example with Expects, and otherwise in a comment.
+        Write down the conditions an argument must meet before the call. Express
+        them in code such as Expects where possible, and in a comment otherwise.
     rationale:
-        Arguments often have constraints that the callee relies on, and
-        callers need to know them.
+        The function body may rely on those conditions. A caller who does not
+        know them can pass a value that breaks the function.
     exceptions:
-        The class invariant is an implied precondition of most member
-        functions and does not need repeating for each one.
+        Most member functions assume the class invariant holds. That assumption
+        need not be restated in every one of them.
     severity: null
     noncompliant:
         ```cpp

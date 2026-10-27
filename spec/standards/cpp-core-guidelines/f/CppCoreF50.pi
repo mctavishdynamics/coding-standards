@@ -5,18 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF50:
     standard: @{CppCoreGuidelines}
     ruleId: F.50
-    title: Use a lambda when a function will not do
+    title: Write a lambda when a plain function cannot capture what you need
     statement:
-        Use a lambda when you need to capture local variables or define a
-        function at local scope. Use a function when you need overloading.
-        When either works, prefer a function.
+        Pick a lambda when you need to capture locals or define a function
+        inside a block. Pick a function when you need overloads. If both fit, a
+        function is simpler.
     rationale:
-        Functions cannot capture locals or be defined locally, and lambdas
-        cannot be overloaded. Choosing the simplest tool that works keeps
-        code clear.
+        Lambdas can capture state and live in local scope, which functions
+        cannot. Functions can be overloaded, which lambdas cannot. Use the least
+        powerful tool that does the job.
     exceptions:
-        Generic lambdas are a concise way to write a function template and
-        can be useful even where a normal template would work.
+        A generic lambda is a short way to write a function template, so it can
+        be handy even where an ordinary template would do.
     severity: null
     noncompliant:
         ```cpp

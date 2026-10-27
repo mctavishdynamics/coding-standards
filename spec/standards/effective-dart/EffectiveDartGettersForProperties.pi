@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartGettersForProperties:
+    standard: @{EffectiveDart}
+    ruleId: do-use-getters-for-operations-that-conceptually-access-properties
+    title: Use a getter for field-like operations
+    statement:
+        Make an operation a getter when it takes no arguments, returns a
+        result the caller cares about, has no visible side effects, gives
+        the same result each time and does not expose the whole object's
+        state.
+    rationale:
+        In Dart every dotted access may compute, so a getter signals
+        field-like behaviour, not speed. Surprising work, side effects or
+        non-repeatable results call for a method.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Clock {
+          DateTime get now => DateTime.now();
+          int numberOfTicks() => _ticks;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Clock {
+          DateTime now() => DateTime.now();
+          int get ticks => _ticks;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, properties, api-design]
+    source: https://dart.dev/effective-dart/design#do-use-getters-for-operations-that-conceptually-access-properties

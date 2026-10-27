@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule7:
+    standard: @{CppCodingStandards}
+    ruleId: rule-7
+    title: Plan for growth in data sizes from the start
+    statement:
+        Pick algorithms and data structures whose cost grows acceptably with
+        input size, and avoid accidental quadratic or worse behaviour,
+        without premature tuning.
+    rationale:
+        Data grows over a program's lifetime, and poor complexity cannot be
+        fixed later by micro-optimisation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (const auto& order : orders)
+            if (std::find(seen.begin(), seen.end(), order.id) == seen.end())   // linear search
+                seen.push_back(order.id);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::unordered_set<int> seen;
+        for (const auto& order : orders)
+            seen.insert(order.id);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [design-style, performance, algorithms]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

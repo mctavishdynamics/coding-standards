@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation82:
+    standard: @{AnssiC}
+    ruleId: recommendation-82
+    title: Do not cast pointers between differently structured types
+    statement:
+        Avoid casting between pointers to structure types whose member layouts
+        differ.
+    rationale:
+        Accessing the object through the wrong type reads or writes outside
+        it and breaks aliasing rules.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct small { int id; };
+        struct big { int id; char name[32]; };
+        void rename(struct small *s) {
+            struct big *b = (struct big *)s;
+            strcpy(b->name, "x"); /* writes past s */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct big { int id; char name[32]; };
+        void rename(struct big *b) {
+            snprintf(b->name, sizeof b->name, "%s", "x");
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, pointers, conversions, memory]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=64

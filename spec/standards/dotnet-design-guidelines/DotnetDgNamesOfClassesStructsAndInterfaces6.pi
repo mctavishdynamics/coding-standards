@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfClassesStructsAndInterfaces6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-classes-structs-and-interfaces-6
+    title: Let a standard implementation differ from its interface only by the I
+    statement:
+        When a class is the default implementation of an interface, name it
+        exactly like the interface without the leading I.
+    rationale:
+        The matching names show at once which class is the canonical
+        implementation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public interface IClock { DateTime Now { get; } }
+        public class DefaultTimeSource : IClock { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public interface IClock { DateTime Now { get; } }
+        public class Clock : IClock { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, interfaces]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces

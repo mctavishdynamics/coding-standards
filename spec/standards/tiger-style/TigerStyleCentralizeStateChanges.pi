@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleCentralizeStateChanges:
+    standard: @{TigerStyle}
+    ruleId: centralize-state-changes
+    title: Keep state in the parent and let helpers compute changes
+    statement:
+        Let the parent function hold the relevant state in locals and apply
+        updates itself, while helpers only calculate what should change.
+        Keep leaf functions pure.
+    rationale:
+        When state changes in one place, it is easy to see what changes and
+        when, and pure helpers are easy to test.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn apply(self: *Account, amount: u64) void {
+            self.balance_update(amount);  // mutates self.balance and self.history
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn apply(self: *Account, amount: u64) void {
+            const balance_new = balance_after(self.balance, amount);
+            self.balance = balance_new;
+        }
+
+        fn balance_after(balance: u64, amount: u64) u64 {
+            return balance + amount;
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [state, purity, functions]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

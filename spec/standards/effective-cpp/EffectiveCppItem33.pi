@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem33:
+    standard: @{EffectiveCpp}
+    ruleId: item-33
+    title: Bring base overloads into scope when a derived class reuses a name
+    statement:
+        When a derived class declares a name that the base also declares,
+        bring the base overloads into scope with using declarations or
+        forwarding functions.
+    rationale:
+        A name in the derived scope hides every base overload with that
+        name, regardless of signature.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Logger { public: void write(const char*); void write(int); };
+        class FileLogger : public Logger { public: void write(const char*); };
+        fl.write(42);   // error, int overload hidden
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class FileLogger : public Logger {
+        public:
+            using Logger::write;
+            void write(const char*);
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance-and-oo-design, inheritance, scope]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem7:
+    standard: @{EffectiveJava}
+    ruleId: item-7
+    title: Clear references to objects you no longer need
+    statement:
+        When a class manages its own storage, such as an array-backed stack,
+        cache or listener list, null out or remove entries once they are no
+        longer live.
+    rationale:
+        The garbage collector cannot know that a slot in your array is
+        logically dead. Stale references keep objects alive and cause slow
+        memory leaks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public Object pop() {
+            return elements[--size];
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public Object pop() {
+            Object item = elements[--size];
+            elements[size] = null;
+            return item;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [creating-and-destroying-objects, memory, leaks]
+    source: https://www.informit.com/store/effective-java-9780134686097

@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExtensionMethods3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: extension-methods-3
+    title: Do not extend object with extension methods
+    statement:
+        Do not define extension methods whose first parameter is object.
+    rationale:
+        Visual Basic binds calls on object late and cannot use extension
+        syntax for them, and similar languages have the same problem.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static string ToJson(this object value) => JsonSerializer.Serialize(value);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static string ToJson<T>(T value) => JsonSerializer.Serialize(value);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, member-design, extension-methods, interoperability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/extension-methods

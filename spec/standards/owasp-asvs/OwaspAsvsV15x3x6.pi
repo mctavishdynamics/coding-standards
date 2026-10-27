@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV15x3x6:
+    standard: @{OwaspAsvs}
+    ruleId: V15.3.6
+    title: Write JavaScript that prevents prototype pollution
+    statement:
+        Avoid patterns that let input modify object prototypes, for example
+        by using Map or Set instead of plain object literals for keyed data.
+    rationale:
+        Polluting a prototype changes the behavior of every object in the
+        application and can lead to privilege escalation or code execution.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const prefs = {};
+        prefs[req.body.key] = req.body.value;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const prefs = new Map();
+        prefs.set(String(req.body.key), req.body.value);
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, javascript, prototype-pollution]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x24-V15-Secure-Coding-and-Architecture.md#v153-defensive-coding

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem46:
+    standard: @{EffectivePython}
+    ruleId: item-46
+    title: Feed generators with an input iterator rather than send
+    statement:
+        To give a generator a stream of input values, pass it an iterator as
+        an argument instead of pushing values in with the send method.
+    rationale:
+        send is obscure, needs a priming call and interacts badly with yield
+        from. An input iterator is easier to understand and compose.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        gen = scaler()
+        next(gen)
+        print(gen.send(3))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def scaler(values, factor):
+            for v in values:
+                yield v * factor
+
+        print(list(scaler([1, 2, 3], 10)))
+        \\\
+        ```
+    languages: [python]
+    tags: [comprehensions-and-generators, generators]
+    source: https://effectivepython.com/

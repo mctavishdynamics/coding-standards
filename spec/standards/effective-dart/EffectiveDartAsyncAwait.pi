@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartAsyncAwait:
+    standard: @{EffectiveDart}
+    ruleId: prefer-asyncawait-over-using-raw-futures
+    title: Write asynchronous code with async and await
+    statement:
+        Use `async` and `await` instead of chaining callbacks on futures.
+    rationale:
+        Async code is hard to follow; `await` makes it read like synchronous
+        code and allows normal loops and try-catch.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        Future<int> countUnread() {
+          return fetchInbox().then((inbox) {
+            return inbox.where((m) => !m.read).length;
+          }).catchError((_) => 0);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        Future<int> countUnread() async {
+          try {
+            final inbox = await fetchInbox();
+            return inbox.where((m) => !m.read).length;
+          } on HttpException {
+            return 0;
+          }
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, async]
+    source: https://dart.dev/effective-dart/usage#prefer-asyncawait-over-using-raw-futures

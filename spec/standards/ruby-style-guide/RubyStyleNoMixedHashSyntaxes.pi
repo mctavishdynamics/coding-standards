@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoMixedHashSyntaxes:
+    standard: @{RubyStyleGuide}
+    ruleId: no-mixed-hash-syntaxes
+    title: Use one key syntax within a hash literal
+    statement:
+        Do not mix colon-style keys and hash rockets in one hash literal. If
+        any key is not a symbol, write every key with hash rockets.
+    rationale:
+        A single style per literal is consistent and easier to scan.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        headers = { accept: 'text/html', 'X-Trace' => trace_id }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        headers = { :accept => 'text/html', 'X-Trace' => trace_id }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes, consistency]
+    source: https://rubystyle.guide/#no-mixed-hash-syntaxes

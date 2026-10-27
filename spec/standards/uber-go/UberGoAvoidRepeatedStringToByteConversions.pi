@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoAvoidRepeatedStringToByteConversions:
+    standard: @{UberGo}
+    ruleId: avoid-repeated-string-to-byte-conversions
+    title: Convert a fixed string to bytes once
+    statement:
+        Do not convert the same constant string to a byte slice over and
+        over in a hot path. Convert it once and reuse the result.
+    rationale:
+        Each conversion allocates and copies the string, which adds up
+        quickly in loops.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        for _, conn := range conns {
+            conn.Write([]byte("PING\r\n"))
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        ping := []byte("PING\r\n")
+        for _, conn := range conns {
+            conn.Write(ping)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [performance, strings, allocation]
+    source: https://github.com/uber-go/guide/blob/master/style.md#avoid-repeated-string-to-byte-conversions

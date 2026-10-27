@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem15:
+    standard: @{EffectiveCpp}
+    ruleId: item-15
+    title: Let resource owners expose the raw resource when needed
+    statement:
+        Provide a way to reach the underlying handle, preferably an explicit
+        accessor, so code using older APIs can work with it.
+    rationale:
+        Many APIs need the raw handle; an explicit accessor is safer, while
+        an implicit conversion is more convenient but easier to misuse.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Socket {
+            int fd_;   // no way to pass to setsockopt
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Socket {
+        public:
+            int native() const { return fd_; }
+        private:
+            int fd_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [resource-management, raii, interfaces]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

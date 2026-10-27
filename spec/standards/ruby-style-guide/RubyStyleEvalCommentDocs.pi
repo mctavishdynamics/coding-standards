@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleEvalCommentDocs:
+    standard: @{RubyStyleGuide}
+    ruleId: eval-comment-docs
+    title: Show the generated code beside string eval
+    statement:
+        When you generate code with class_eval or another eval from an
+        interpolated string, add comments next to it showing what the code
+        looks like once interpolated. RuboCop checks this with
+        Style/DocumentDynamicEvalDefinition.
+    rationale:
+        The comments let readers see the methods being defined without
+        running the interpolation in their heads.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```ruby
+        \\\
+        %w[width height].each do |dim|
+          class_eval <<~RUBY, __FILE__, __LINE__ + 1
+            def #{dim}_in_cm           # def width_in_cm
+              #{dim} * 2.54            #   width * 2.54
+            end                        # end
+          RUBY
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [metaprogramming, comments]
+    source: https://rubystyle.guide/#eval-comment-docs

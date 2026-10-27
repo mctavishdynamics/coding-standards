@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoClosureParameterTypes:
+    standard: @{EffectiveDart}
+    ruleId: dont-annotate-inferred-parameter-types-on-function-expressions
+    title: Let inference type function expression parameters
+    statement:
+        Leave parameter types off anonymous functions when Dart can infer
+        them from the expected callback type. The
+        avoid_types_on_closure_parameters lint checks this.
+    rationale:
+        The context already fixes the types, so annotations only add noise.
+    exceptions:
+        Annotate when the context is too loose to infer a type. A function
+        that is not used right away is better as a named declaration.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final lengths = words.map((String w) => w.length);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final lengths = words.map((w) => w.length);
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, types, functions]
+    source: https://dart.dev/effective-dart/design#dont-annotate-inferred-parameter-types-on-function-expressions

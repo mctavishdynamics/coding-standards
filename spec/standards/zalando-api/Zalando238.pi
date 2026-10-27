@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando238:
+    standard: @{ZalandoApi}
+    ruleId: 238
+    title: Use standard data formats
+    statement:
+        Use the OpenAPI formats for integers, numbers, binary data and dates
+        and times whenever they apply, such as int32, int64, decimal,
+        date-time and binary, plus the bigint and decimal extensions the
+        guidelines add.
+    rationale:
+        Standard formats tell every client exactly how to parse and store a
+        value, so precision and meaning are not guessed.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        properties:
+          weight_grams:
+            type: integer
+            format: int32
+          shipped_at:
+            type: string
+            format: date-time
+        \\\
+        ```
+    languages: [any]
+    tags: [must, data-formats, openapi]
+    source: https://opensource.zalando.com/restful-api-guidelines/#238

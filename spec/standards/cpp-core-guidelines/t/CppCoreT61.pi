@@ -5,41 +5,39 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT61:
     standard: @{CppCoreGuidelines}
     ruleId: T.61
-    title: Do not over-parameterize members (SCARY)
+    title: Do not make members depend on template parameters they do not use
     statement:
-        A member type or function of a class template should depend only on
-        the template parameters it actually uses. Move members that ignore
-        some parameters out to their own, smaller template.
+        Make each member type or function of a class template depend only on the
+        template parameters it actually uses. Move members that ignore some
+        parameters into a separate, smaller template.
     rationale:
-        A member that formally depends on an unused parameter, such as a
-        node type depending on the allocator, is instantiated redundantly
-        for each argument combination and cannot be shared between them.
+        A member that is tied to a parameter it does not need is generated again for
+        every combination of arguments, and cannot be shared between instantiations
+        that differ only in that parameter. Code grows and reuse suffers.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        template<typename T, typename Alloc = std::allocator<T>>
-        class Tree {
+        template<typename K, typename Compare = std::less<K>>
+        class Counter {
         public:
-            struct Node { T value; Node* left; Node* right; };  // depends on Alloc
-        private:
-            Node* root;
+            struct Entry { K key; int count; };   // ignores Compare, yet tied to it
+            const Entry* top() const;
         };
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        template<typename T>
-        struct Tree_node { T value; Tree_node* left; Tree_node* right; };
+        template<typename K>
+        struct Counter_entry { K key; int count; };
 
-        template<typename T, typename Alloc = std::allocator<T>>
-        class Tree {
+        template<typename K, typename Compare = std::less<K>>
+        class Counter {
         public:
-            using Node = Tree_node<T>;
-        private:
-            Node* root;
+            using Entry = Counter_entry<K>;      // shared across comparators
+            const Entry* top() const;
         };
         \\\
         ```

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmUseLlvmUnreachable:
+    standard: @{LlvmCodingStandards}
+    ruleId: assert-liberally-unreachable
+    title: Mark impossible code paths with llvm_unreachable
+    statement:
+        For a point that must never be reached, call llvm_unreachable with a
+        message instead of assert(0) or assert(false). Errors that user
+        input can trigger must use the recoverable error mechanism instead,
+        or report_fatal_error where that is impractical.
+    rationale:
+        llvm_unreachable prints the message in checked builds and becomes an
+        optimization hint in release builds without missing-return warnings.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        switch (Width) {
+        case 32: return Ty32;
+        case 64: return Ty64;
+        default: assert(0 && "unsupported width");
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        switch (Width) {
+        case 32: return Ty32;
+        case 64: return Ty64;
+        }
+        llvm_unreachable("unsupported width");
+        \\\
+        ```
+    languages: [cpp]
+    tags: [assertions, error-handling]
+    source: https://llvm.org/docs/CodingStandards.html#assert-liberally

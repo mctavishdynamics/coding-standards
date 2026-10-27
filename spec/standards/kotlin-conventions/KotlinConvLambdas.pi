@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvLambdas:
+    standard: @{KotlinConventions}
+    ruleId: lambdas
+    title: Space lambda braces and pass a sole lambda outside parentheses
+    statement:
+        Leave a space just inside each lambda brace and on both sides of the
+        arrow. If the lambda is the only argument, move it out of the
+        parentheses when the language allows, and attach any label straight
+        to the opening brace.
+    rationale:
+        Consistent spacing and trailing lambdas make lambda-heavy code easy
+        to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        val adults = people.filter({it.age >= 18})
+        items.forEach outer @ { }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        val adults = people.filter { it.age >= 18 }
+        items.forEach outer@{ }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, lambdas]
+    source: https://kotlinlang.org/docs/coding-conventions.html#lambdas

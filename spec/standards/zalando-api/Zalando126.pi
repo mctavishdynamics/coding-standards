@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando126:
+    standard: @{ZalandoApi}
+    ruleId: 126
+    title: Encode dates and times in a standard string format
+    statement:
+        Define date and time properties as strings with the date, time,
+        date-time, time-local, date-time-local, duration or period formats,
+        based on RFC 3339. Generate an upper-case T separator and Z suffix,
+        and prefer UTC without an offset.
+    rationale:
+        One standard textual format avoids ambiguity between systems, and
+        UTC without offsets makes times easy to compare.
+    exceptions:
+        Standard HTTP headers keep the RFC 5322 date format that HTTP
+        requires.
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        {
+          "shipped_at": "03/11/2023 09:41",
+          "delivered_at": "2023-11-04t16:20:00+01:00"
+        }
+        \\\
+        ```
+    compliant:
+        ```json
+        \\\
+        {
+          "shipped_at": "2023-11-03T08:41:05Z",
+          "delivered_at": "2023-11-04T15:20:00Z"
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, data-formats, date-time]
+    source: https://opensource.zalando.com/restful-api-guidelines/#126

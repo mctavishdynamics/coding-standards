@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem68:
+    standard: @{EffectivePython}
+    ruleId: item-68
+    title: Reserve threads for waiting on I/O, since they do not run Python in parallel
+    statement:
+        Threads help when the program waits on blocking I/O such as network
+        calls. Do not use them to speed up CPU-bound Python code.
+    rationale:
+        The global interpreter lock lets only one thread run Python bytecode
+        at a time, but it is released during system calls.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        threads = [Thread(target=compute_primes, args=(n,)) for n in ranges]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        threads = [Thread(target=download, args=(url,)) for url in urls]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        \\\
+        ```
+    languages: [python]
+    tags: [concurrency-and-parallelism, threads, gil]
+    source: https://effectivepython.com/

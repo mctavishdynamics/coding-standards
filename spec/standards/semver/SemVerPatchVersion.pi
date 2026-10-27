@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./SemVer import SemVer
+
+export coding-rule SemVerPatchVersion:
+    standard: @{SemVer}
+    ruleId: 6
+    title: Bump the patch version for backward compatible bug fixes only
+    statement:
+        Increase Z in x.y.Z, for x above zero, when a release contains
+        nothing but backward compatible bug fixes, meaning internal changes
+        that correct wrong behavior.
+    rationale:
+        Users can take patch releases without fear, because they promise no
+        new features and no incompatibilities.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        2.3.1 -> 2.3.2   adds a new export() method
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        2.3.1 -> 2.3.2   fixes rounding in total()
+        2.3.1 -> 2.4.0   adds a new export() method
+        \\\
+        ```
+    languages: [any]
+    tags: [versioning, bug-fixes]
+    source: https://semver.org/#semantic-versioning-specification-semver

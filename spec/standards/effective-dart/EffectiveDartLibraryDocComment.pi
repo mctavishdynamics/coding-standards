@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartLibraryDocComment:
+    standard: @{EffectiveDart}
+    ruleId: consider-writing-a-library-level-doc-comment
+    title: Consider documenting the library as a whole
+    statement:
+        Introduce the library with a doc comment placed above the `library`
+        directive and above any annotations at the start of the file. That
+        comment may contain a one-line summary, important terms, example
+        code, and links to the central classes or external material.
+    rationale:
+        In Dart a library is a unit that users import and think about
+        directly, so it is a natural place to explain the main concepts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        library;
+
+        import 'src/queue.dart';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Background job scheduling with retries and backoff.
+        ///
+        /// Create a [JobQueue], add jobs to it, then call [JobQueue.start].
+        library;
+
+        import 'src/queue.dart';
+        \\\
+        ```
+    languages: [dart]
+    tags: [consider, documentation, libraries]
+    source: https://dart.dev/effective-dart/documentation#consider-writing-a-library-level-doc-comment

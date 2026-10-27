@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando250:
+    standard: @{ZalandoApi}
+    ruleId: 250
+    title: Watch for tools that do not fully support JSON or Unicode
+    statement:
+        When passing JSON content on to other tools such as databases, check
+        that they accept every valid character. If not, reject or sanitize
+        the unsupported characters and describe that behavior in the
+        specification.
+    rationale:
+        Valid JSON can still break downstream tools, for example PostgreSQL
+        cannot store the NUL character in jsonb or text columns.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        { "comment": "fragile\u0000value" }
+        \\\
+        ```
+    compliant: null
+    languages: [any]
+    tags: [should, json, unicode]
+    source: https://opensource.zalando.com/restful-api-guidelines/#250

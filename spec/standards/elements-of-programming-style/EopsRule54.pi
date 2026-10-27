@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule54:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-54
+    title: Make code behave sensibly when there is nothing to do
+    statement:
+        Check that routines handle empty input, zero counts and similar
+        degenerate cases correctly.
+    rationale:
+        Empty cases arise in practice and are often overlooked, leading to
+        crashes or division by zero.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        double mean(const double *a, int n)
+        {
+            double s = 0;
+            for (int i = 0; i < n; i++) s += a[i];
+            return s / n;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        double mean(const double *a, int n)
+        {
+            if (n == 0) {
+                return 0.0;
+            }
+            double s = 0;
+            for (int i = 0; i < n; i++) s += a[i];
+            return s / n;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [common-blunders, edge-cases]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

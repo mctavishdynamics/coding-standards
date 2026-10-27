@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC89:
     standard: @{CppCoreGuidelines}
     ruleId: C.89
-    title: Make a hash noexcept
+    title: Keep hash functions from throwing
     statement:
-        Write hash specializations and hash function objects so they cannot
-        throw, and declare them noexcept.
+        A hash function or std::hash specialization must not throw. Mark it
+        noexcept.
     rationale:
-        Hashed containers call hash behind the scenes and users do not
-        expect a lookup to throw. The standard library also requires it.
+        Unordered containers call the hash on every insert and lookup, and
+        nobody expects those to fail for that reason. The standard library also
+        demands a non-throwing hash.
     exceptions: null
     severity: null
     noncompliant:

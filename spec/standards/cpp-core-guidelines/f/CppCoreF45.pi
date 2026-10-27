@@ -5,16 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF45:
     standard: @{CppCoreGuidelines}
     ruleId: F.45
-    title: Do not return a T&&
+    title: Avoid returning rvalue references
     statement:
-        Do not declare functions that return an rvalue reference.
+        Do not give a function a return type of T&&.
     rationale:
-        An rvalue reference attracts temporaries, so returning one almost
-        always means returning a reference to a destroyed temporary.
+        An rvalue reference binds readily to temporaries. A function that
+        returns one will almost always end up referring to a temporary that is
+        already gone.
     exceptions:
-        The standard functions std::move and std::forward return rvalue
-        references, but they are casts used within a single expression.
-        There are no other known good uses.
+        The helpers std::move and std::forward return T&&, but they act as casts
+        whose result is consumed in the same expression. No other good use is
+        known.
     severity: null
     noncompliant:
         ```cpp

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvMethodCalls:
+    standard: @{KotlinConventions}
+    ruleId: method-calls
+    title: Wrap long argument lists after the opening parenthesis
+    statement:
+        When the argument list is long, start a new line right after the
+        opening parenthesis, give the arguments a four-space indent, and
+        keep arguments that belong together on the same line. Surround the =
+        of a named argument with spaces.
+    rationale:
+        Grouping shows which arguments belong together while keeping the
+        call readable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        createWindow(title="Editor", width=800,
+                     height=600, resizable=true)
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        createWindow(
+            title = "Editor",
+            width = 800, height = 600,
+            resizable = true,
+        )
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, calls]
+    source: https://kotlinlang.org/docs/coding-conventions.html#method-calls

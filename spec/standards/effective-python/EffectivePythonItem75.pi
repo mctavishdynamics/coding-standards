@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem75:
+    standard: @{EffectivePython}
+    ruleId: item-75
+    title: Serve thousands of simultaneous I/O tasks with async coroutines
+    statement:
+        When a program must handle thousands of simultaneous I/O operations,
+        write them as async coroutines run by asyncio.
+    rationale:
+        Coroutines are cheap compared with threads and avoid most data
+        races, because they switch only at await points.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        import asyncio
+
+        async def main(urls):
+            results = await asyncio.gather(*(fetch(u) for u in urls))
+            return results
+        \\\
+        ```
+    languages: [python]
+    tags: [concurrency-and-parallelism, asyncio, coroutines]
+    source: https://effectivepython.com/

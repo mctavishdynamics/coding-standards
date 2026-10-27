@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem86:
+    standard: @{EffectivePython}
+    ruleId: item-86
+    title: Know how Exception differs from BaseException
+    statement:
+        Catch Exception, not BaseException, in ordinary handlers.
+        BaseException also covers KeyboardInterrupt, SystemExit and
+        generator exit, which should usually propagate.
+    rationale:
+        Catching BaseException can stop a program from shutting down or
+        reacting to Ctrl-C. Use finally or with blocks for cleanup instead.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        while True:
+            try:
+                poll()
+            except BaseException:
+                continue
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        while True:
+            try:
+                poll()
+            except Exception:
+                log.exception("poll failed")
+        \\\
+        ```
+    languages: [python]
+    tags: [robustness, exceptions]
+    source: https://effectivepython.com/

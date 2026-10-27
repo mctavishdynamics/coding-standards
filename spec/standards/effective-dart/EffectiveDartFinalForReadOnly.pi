@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartFinalForReadOnly:
+    standard: @{EffectiveDart}
+    ruleId: prefer-using-a-final-field-to-make-a-read-only-property
+    title: Make read-only properties final fields
+    statement:
+        For a property outside code may read but not assign, declare a
+        `final` field rather than a private field with a public getter.
+    rationale:
+        It is the simplest way to get read-only state. Use the private field
+        and getter pattern only when the class must reassign the value after
+        construction.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Account {
+          Account(this._number);
+          final String _number;
+          String get number => _number;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Account {
+          Account(this.number);
+          final String number;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, classes, immutability]
+    source: https://dart.dev/effective-dart/usage#prefer-using-a-final-field-to-make-a-read-only-property

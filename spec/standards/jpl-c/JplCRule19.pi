@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule19:
+    standard: @{JplC}
+    ruleId: rule-19
+    title: Keep conditions free of state changes
+    statement:
+        Evaluating a Boolean expression must not change any state, for
+        example through increments, assignments or calls that modify data.
+    rationale:
+        With short-circuit evaluation, a side effect on the right of && or
+        || may not happen, and side effects in conditions are easy to
+        overlook.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (ready && (count++ < limit)) {
+            send();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (ready && (count < limit)) {
+            count++;
+            send();
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-3, expressions, side-effects]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

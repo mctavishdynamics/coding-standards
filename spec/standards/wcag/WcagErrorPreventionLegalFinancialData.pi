@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagErrorPreventionLegalFinancialData:
+    standard: @{Wcag22}
+    ruleId: 3.3.4
+    title: Let users review, correct or reverse legal, financial and data submissions
+    statement:
+        For pages that create legal commitments, make financial
+        transactions, change or delete user data, or submit test answers,
+        make submissions reversible, check input and let users fix it, or
+        let users review and confirm before finalizing.
+    rationale:
+        Mistakes in these transactions can have serious consequences that
+        are hard to undo.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <button onclick="deleteAccount()">Delete account</button>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <button onclick="confirmDialog.showModal()">Delete account</button>
+        <dialog id="confirmDialog">
+          <p>This permanently deletes your account and data.</p>
+          <button onclick="deleteAccount()">Yes, delete my account</button>
+          <button onclick="confirmDialog.close()">Cancel</button>
+        </dialog>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, forms, errors, transactions]
+    source: https://www.w3.org/TR/WCAG22/#error-prevention-legal-financial-data

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-2
+    title: Add dispose and a finalizer for raw resources without finalizers
+    statement:
+        When a type holds a resource that must be released explicitly and
+        has no finalizer of its own, such as unmanaged memory, implement the
+        dispose pattern and a finalizer.
+    rationale:
+        The finalizer is a safety net that frees the resource if a caller
+        forgets to dispose.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class NativeBuffer : IDisposable
+        {
+            private IntPtr _memory = Marshal.AllocHGlobal(4096);
+
+            ~NativeBuffer() => Dispose(false);
+
+            public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (_memory != IntPtr.Zero) { Marshal.FreeHGlobal(_memory); _memory = IntPtr.Zero; }
+            }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, dispose, resources, finalizers]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAliasMethodLexically:
+    standard: @{RubyStyleGuide}
+    ruleId: alias-method-lexically
+    title: Prefer alias in lexical class scope
+    statement:
+        Use the alias keyword, with bare names rather than symbols or
+        strings, when aliasing a method directly in a class body. Remember
+        that an alias points to the method as it was when the alias was
+        made, so a subclass that overrides the original must also redefine
+        the alias.
+    rationale:
+        In lexical scope alias resolves self predictably and tells readers
+        the alias will not change at runtime. Like def, alias is a keyword,
+        so bare names fit it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Article
+          def headline = title.upcase
+          alias :heading :headline
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Article
+          def headline = title.upcase
+          alias heading headline
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, methods, aliases]
+    source: https://rubystyle.guide/#alias-method-lexically

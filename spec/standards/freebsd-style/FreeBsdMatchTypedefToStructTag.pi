@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdMatchTypedefToStructTag:
+    standard: @{FreeBsdStyle}
+    ruleId: typedef-naming
+    title: When a typedef is required, match it to the struct tag and avoid _t
+    statement:
+        If convention requires a typedef for a structure, give it the same
+        name as the struct tag. Do not end typedef names in _t unless the C
+        or POSIX standard does.
+    rationale:
+        Matching names show which struct a typedef refers to, and the _t
+        suffix is reserved by POSIX.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        typedef struct ring_s {
+                int head;
+        } ring_t;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        typedef struct ring {
+                int head;
+        } RING;
+        \\\
+        ```
+    languages: [c]
+    tags: [types, naming]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule24:
+    standard: @{JplC}
+    ruleId: rule-24
+    title: Write one statement or declaration per line
+    statement:
+        Each line holds a single statement or a single variable declaration at
+        most.
+    rationale:
+        One item per line keeps code easy to read, review and step through,
+        and makes line-based tools and diffs more precise.
+    exceptions:
+        The three controlling expressions of a for loop may share one line.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int x = 0, y = 0; x = read_x(); y = read_y();
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int x = 0;
+        int y = 0;
+        x = read_x();
+        y = read_y();
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-4, formatting, readability]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustMemUninit:
+    standard: @{AnssiRust}
+    ruleId: MEM-UNINIT
+    title: Do not use uninitialized memory
+    statement:
+        Do not call the deprecated std::mem::uninitialized. Justify every
+        use of MaybeUninit explicitly.
+    rationale:
+        Reading uninitialized memory is undefined behaviour, and
+        uninitialized was removed for good reason; MaybeUninit is easy to
+        misuse.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        let buf: [u8; 64] = unsafe { std::mem::uninitialized() };
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        let buf = [0u8; 64];
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, memory, initialization, unsafe]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/memory.html#MEM-UNINIT

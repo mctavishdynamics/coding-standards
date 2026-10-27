@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdAvoidCallsInInitializers:
+    standard: @{OpenBsdStyle}
+    ruleId: declaration-initialization
+    title: Initialize in declarations sparingly and never with function calls
+    statement:
+        Be careful about initializing variables in their declarations, as it
+        can obscure the code, and never call functions in initializers.
+    rationale:
+        Hidden work in declarations is easy to overlook and makes the order
+        of operations unclear.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int fd = open(path, O_RDONLY);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int fd;
+
+        fd = open(path, O_RDONLY);
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, initialization]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

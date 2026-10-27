@@ -5,16 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs86:
     standard: @{CppCoreGuidelines}
     ruleId: ES.86
-    title:
-        Avoid modifying loop control variables inside the body of raw
-        for-loops
+    title: Leave a counted loop's variable alone inside its body
     statement:
-        Do not change a for loop's counter inside the loop body. If the step
-        varies, use a while loop or restructure the logic.
+        Inside a for loop, do not update the counter that the header already
+        advances. If the step size varies, write a while loop or rework the
+        logic.
     rationale:
-        The loop header should be enough to understand the iteration, and
-        changing the counter in both the header and the body causes
-        surprises and bugs.
+        Someone reading the header should be able to predict how the loop
+        iterates. Changing the counter in two places breaks that and is a
+        classic source of bugs.
     exceptions: null
     severity: null
     noncompliant:

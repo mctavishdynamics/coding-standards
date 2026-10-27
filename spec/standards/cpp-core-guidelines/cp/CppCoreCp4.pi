@@ -5,16 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp4:
     standard: @{CppCoreGuidelines}
     ruleId: CP.4
-    title: Think in terms of tasks rather than threads
+    title: Design concurrency around units of work, not around threads
     statement:
-        Express concurrent work as tasks that produce results,
-        using std::async or a higher-level library, rather than managing raw
-        threads directly.
+        Model concurrent work as tasks that return results, through std::async or a
+        higher-level library, instead of creating and coordinating threads by hand.
     rationale:
-        A thread is a machine-level implementation concept while a task is
-        an application notion, and application concepts are easier to reason
-        about. Raising the level of abstraction helps productivity,
-        reliability and performance.
+        Threads describe how the machine runs code, while tasks describe what the
+        program wants done. The second view is simpler to reason about, and working
+        at that level tends to give code that is more correct, more productive to
+        write and often faster.
     exceptions: null
     severity: null
     noncompliant:

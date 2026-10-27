@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiPreferMethodAndPropertiesToFunctions:
+    standard: @{SwiftApiDesign}
+    ruleId: prefer-method-and-properties-to-functions
+    title: Favor methods and properties over free functions
+    statement:
+        Reach for methods and properties first. A free function is appropriate
+        only when no self is obvious, when it is a generic with no
+        constraints, or when function call notation is the accepted convention
+        in the domain.
+    rationale:
+        Members are discoverable through the type and read naturally at the
+        call site.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func isExpired(_ token: Token) -> Bool
+        if isExpired(token) { }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        extension Token {
+            var isExpired: Bool { expiry < .now }
+        }
+        if token.isExpired { }
+        \\\
+        ```
+    languages: [swift]
+    tags: [api-design]
+    source: https://www.swift.org/documentation/api-design-guidelines/#prefer-method-and-properties-to-functions

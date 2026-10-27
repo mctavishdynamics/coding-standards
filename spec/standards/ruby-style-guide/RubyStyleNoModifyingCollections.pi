@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoModifyingCollections:
+    standard: @{RubyStyleGuide}
+    ruleId: no-modifying-collections
+    title: Build a new collection instead of editing one mid-loop
+    statement:
+        While a loop walks a collection, leave that collection alone;
+        collect the result into a new one instead.
+    rationale:
+        Changing the collection during traversal skips or repeats elements
+        and gives wrong results.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        queue.each { |job| queue.delete(job) if job.done? }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        pending = queue.reject(&:done?)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, iteration, mutability]
+    source: https://rubystyle.guide/#no-modifying-collections

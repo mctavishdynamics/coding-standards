@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoImportGroupOrdering:
+    standard: @{UberGo}
+    ruleId: import-group-ordering
+    title: Split imports into standard library and everything else
+    statement:
+        Use two import groups, the standard library first and all other
+        packages second, separated by a blank line.
+    rationale:
+        This is what goimports does by default and makes dependencies easy
+        to scan.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        import (
+            "fmt"
+            "go.uber.org/zap"
+            "net/http"
+        )
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        import (
+            "fmt"
+            "net/http"
+
+            "go.uber.org/zap"
+        )
+        \\\
+        ```
+    languages: [go]
+    tags: [imports, formatting]
+    source: https://github.com/uber-go/guide/blob/master/style.md#import-group-ordering

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando167:
+    standard: @{ZalandoApi}
+    ruleId: 167
+    title: Use JSON as the payload format
+    statement:
+        Send structured resource data in request and response bodies as JSON
+        with an object at the top level. The JSON must also follow the
+        stricter Internet JSON profile, with UTF-8 encoding, valid Unicode
+        strings and unique member names.
+    rationale:
+        JSON is universally supported, a top-level object can be extended
+        later, and the restrictions prevent payloads that parsers handle
+        differently.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        { "sku": "A-1", "sku": "A-2" }
+        \\\
+        ```
+    compliant:
+        ```json
+        \\\
+        { "sku": "A-1", "quantity": 2 }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, json, payload]
+    source: https://opensource.zalando.com/restful-api-guidelines/#167

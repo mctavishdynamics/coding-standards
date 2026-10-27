@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopTesting13:
+    standard: @{PracticeOfProgramming}
+    ruleId: testing-13
+    title: Make each test carry its own inputs and expected results
+    statement:
+        Write tests that include everything they need to run and to judge
+        the result, without manual setup.
+    rationale:
+        Self-contained tests can be run by anyone, at any time, and give the
+        same verdict.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        static const struct { const char *in; int want; } tests[] = {
+            { "",      0 },
+            { "42",   42 },
+            { "-7",   -7 },
+        };
+
+        for (size_t i = 0; i < sizeof tests / sizeof tests[0]; i++)
+            assert(parse_int(tests[i].in) == tests[i].want);
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, table-driven]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

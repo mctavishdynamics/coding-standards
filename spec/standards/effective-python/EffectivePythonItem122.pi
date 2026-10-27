@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem122:
+    standard: @{EffectivePython}
+    ruleId: item-122
+    title: Break circular imports between modules
+    statement:
+        When two modules import each other, restructure them. Move shared
+        code to a separate module, or failing that, import inside functions
+        or in a configure step after loading.
+    rationale:
+        Circular imports can fail with partly initialised modules, depending
+        on which module is imported first.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # orders.py
+        from customers import Customer
+        # customers.py
+        from orders import Order
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        # models.py holds the shared types
+        # orders.py
+        from models import Customer, Order
+        \\\
+        ```
+    languages: [python]
+    tags: [collaboration, imports, modules]
+    source: https://effectivepython.com/

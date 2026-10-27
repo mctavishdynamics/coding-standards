@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSeparateMagicCommentsFromCode:
+    standard: @{RubyStyleGuide}
+    ruleId: separate-magic-comments-from-code
+    title: Follow magic comments with a blank line
+    statement:
+        Leave a blank line between the magic comments and the code or
+        documentation that follows them. RuboCop checks this with
+        Layout/EmptyLineAfterMagicComment.
+    rationale:
+        The blank line sets the file-level settings apart from the code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        # frozen_string_literal: true
+        # Holds the pricing rules.
+        class PriceList
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        # frozen_string_literal: true
+
+        # Holds the pricing rules.
+        class PriceList
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comments, magic-comments, formatting]
+    source: https://rubystyle.guide/#separate-magic-comments-from-code

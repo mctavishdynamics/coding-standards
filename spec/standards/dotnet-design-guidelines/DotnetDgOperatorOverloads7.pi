@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgOperatorOverloads7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: operator-overloads-7
+    title: Consider named methods matching each overloaded operator
+    statement:
+        Provide a method with a descriptive name, such as Add or Multiply,
+        alongside each overloaded operator.
+    rationale:
+        Several .NET languages cannot use operator overloads and need a
+        named method to reach the same functionality.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public static Money operator +(Money left, Money right) => Add(left, right);
+        public static Money Add(Money left, Money right) => new(left.Amount + right.Amount, left.Currency);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, operators, interoperability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/operator-overloads

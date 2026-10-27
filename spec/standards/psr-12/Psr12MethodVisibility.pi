@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12MethodVisibility:
+    standard: @{Psr12}
+    ruleId: 4.4a
+    title: Declare visibility on every method
+    statement:
+        Give every method an explicit visibility keyword.
+    rationale:
+        Stating visibility makes the public interface of a class obvious and
+        prevents helpers from becoming public by default.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Parser
+        {
+            function parse(string $input)
+            {
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Parser
+        {
+            public function parse(string $input)
+            {
+            }
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [visibility, methods]
+    source: https://www.php-fig.org/psr/psr-12/#44-methods-and-functions

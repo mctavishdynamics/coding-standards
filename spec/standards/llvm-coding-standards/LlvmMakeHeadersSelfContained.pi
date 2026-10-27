@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmMakeHeadersSelfContained:
+    standard: @{LlvmCodingStandards}
+    ruleId: self-contained-headers
+    title: Make every header compile on its own
+    statement:
+        Each header ends in .h, has include guards and includes everything
+        it uses. Files meant to be included at odd places without those
+        properties end in .inc and are rare. Every .cpp file includes its
+        own interface header first.
+    rationale:
+        Users and tools should be able to include a header anywhere without
+        hidden prerequisites; including it first in its .cpp proves that.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Graph.h: relies on the includer to have pulled in <vector>.
+        struct Graph {
+          std::vector<unsigned> Edges;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #ifndef LLVM_ADT_GRAPH_H
+        #define LLVM_ADT_GRAPH_H
+        #include <vector>
+        struct Graph {
+          std::vector<unsigned> Edges;
+        };
+        #endif
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, includes]
+    source: https://llvm.org/docs/CodingStandards.html#self-contained-headers

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiWeakTypeInformation:
+    standard: @{SwiftApiDesign}
+    ruleId: weak-type-information
+    title: Add a role noun before weakly typed parameters
+    statement:
+        If a parameter's type says little about its role, as with Any,
+        AnyObject, NSObject, Int or String, precede it with a noun naming that
+        role in the method name or argument label.
+    rationale:
+        Weak types say little about intent, so the call site stays vague
+        unless the name supplies the meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func register(_ handler: AnyObject, for name: String)
+        center.register(self, for: "logout")
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        func registerHandler(_ handler: AnyObject, forEventNamed name: String)
+        center.registerHandler(self, forEventNamed: "logout")
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, parameters]
+    source: https://www.swift.org/documentation/api-design-guidelines/#weak-type-information

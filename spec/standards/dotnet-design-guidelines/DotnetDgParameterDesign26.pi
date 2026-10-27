@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign26:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-26
+    title: Follow pointer conventions in pointer-based members
+    statement:
+        Design pointer members the way pointer code usually works, for
+        example without a separate start index, since the caller can offset
+        the pointer.
+    rationale:
+        Familiar conventions make pointer APIs predictable and avoid
+        redundant parameters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public unsafe void Copy(byte* source, int sourceIndex, byte* destination, int count) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public unsafe void Copy(byte* source, byte* destination, int count) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, parameters]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#pointer-parameters

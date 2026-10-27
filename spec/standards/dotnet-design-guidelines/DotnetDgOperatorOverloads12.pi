@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgOperatorOverloads12:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: operator-overloads-12
+    title: Throw InvalidCastException for disallowed lossy casts
+    statement:
+        When a cast would lose data and the operator's contract forbids
+        that, throw InvalidCastException.
+    rationale:
+        This is the exception callers expect from a failed cast.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public static explicit operator byte(Level level)
+        {
+            if (level.Value > byte.MaxValue)
+                throw new InvalidCastException("Level does not fit in a byte.");
+            return (byte)level.Value;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, operators, exceptions]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/operator-overloads#conversion-operators

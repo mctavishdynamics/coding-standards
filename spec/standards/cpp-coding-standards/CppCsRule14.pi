@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule14:
+    standard: @{CppCodingStandards}
+    ruleId: rule-14
+    title: Let the compiler and linker find mistakes
+    statement:
+        Use the type system, static assertions and templates to turn
+        mistakes into build errors where possible.
+    rationale:
+        Build-time errors are found every time and cost nothing at runtime;
+        runtime checks are found only on tested paths.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void setMode(int mode) { assert(mode >= 0 && mode < 3); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum class Mode { read, write, append };
+        void setMode(Mode mode);
+        static_assert(sizeof(Header) == 16, "wire format");
+        \\\
+        ```
+    languages: [cpp]
+    tags: [coding-style, type-safety, static-checking]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

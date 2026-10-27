@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule17:
+    standard: @{CppCodingStandards}
+    ruleId: rule-17
+    title: Name your constants instead of using magic numbers
+    statement:
+        Give literal values other than trivial ones like 0 and 1 a symbolic
+        name at a suitable scope.
+    rationale:
+        Named constants explain meaning and can be changed in one place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (retries > 5) sleep(300);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr int maxRetries = 5;
+        constexpr auto backoff = std::chrono::minutes(5);
+        if (retries > maxRetries) std::this_thread::sleep_for(backoff);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [coding-style, constants, readability]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

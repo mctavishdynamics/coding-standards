@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartImperativeVerbForSideEffects:
+    standard: @{EffectiveDart}
+    ruleId: prefer-an-imperative-verb-phrase-for-a-function-or-method-whose-main-purpose-is-a-side-effect
+    title: Name side-effecting functions with imperative verbs
+    statement:
+        When the main purpose of calling a function or method is a side
+        effect, such as mutating state, doing I/O or writing output, give it
+        a name that is an imperative verb phrase.
+    rationale:
+        The call then reads as a command to do that work.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        cart.itemAddition(book);
+        logger.fileFlushing();
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        cart.add(book);
+        logger.flushToFile();
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, naming, functions]
+    source: https://dart.dev/effective-dart/design#prefer-an-imperative-verb-phrase-for-a-function-or-method-whose-main-purpose-is-a-side-effect

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdPrototypeAllFunctions:
+    standard: @{FreeBsdStyle}
+    ruleId: prototypes-everywhere
+    title: Prototype every function and make file-local ones static
+    statement:
+        Every function has a prototype somewhere. Prototypes for functions
+        used in only one source file go at the top of that file, and those
+        functions are declared static.
+    rationale:
+        Prototypes let the compiler check every call, and static keeps local
+        helpers out of the global namespace.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int
+        helper(int x)
+        {
+                return (x * 2);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int      helper(int);
+
+        static int
+        helper(int x)
+        {
+                return (x * 2);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, declarations, linkage]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

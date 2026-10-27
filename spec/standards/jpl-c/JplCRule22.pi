@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule22:
+    standard: @{JplC}
+    ruleId: rule-22
+    title: Never undefine a macro
+    statement:
+        Never use #undef to remove or redefine a macro.
+    rationale:
+        When a macro can be undefined or redefined, its meaning depends on
+        where in the file you are, which makes the code hard to read and
+        check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define BUF_SIZE 64
+        /* ... */
+        #undef BUF_SIZE
+        #define BUF_SIZE 128
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define RX_BUF_SIZE 64
+        #define TX_BUF_SIZE 128
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-4, preprocessor, macros]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

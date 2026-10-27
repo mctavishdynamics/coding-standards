@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp24:
     standard: @{CppCoreGuidelines}
     ruleId: CP.24
-    title: Think of a thread as a global container
+    title: Treat a detached thread like a global object
     statement:
-        Treat a thread that is, or might be, detached like a global object.
-        Pass it only pointers to objects with static storage or free-store
-        objects that will outlive it, never to locals.
+        Think of a thread that is or may be detached as a global object. Give it
+        pointers only to static objects or to heap objects that stay alive longer
+        than it does. Never hand it the address of a local.
     rationale:
-        A detached thread may keep running after the scope that started it
-        has ended, and then use pointers to destroyed objects. Even statics
-        can be raced on while they are destroyed at program exit.
+        Nothing ties a detached thread to the scope that started it, so locals may
+        be gone while it still runs. Even static objects are at risk while they are
+        torn down during program shutdown.
     exceptions: null
     severity: null
     noncompliant:

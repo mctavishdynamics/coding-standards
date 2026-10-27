@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmUseRangeBasedFor:
+    standard: @{LlvmCodingStandards}
+    ruleId: use-range-based-for-loops-wherever-possible
+    title: Prefer range-based for loops over explicit iterators
+    statement:
+        Write new loops over containers as range-based for loops instead of
+        manipulating iterators. Avoid for_each unless the callable already
+        exists.
+    rationale:
+        Range-based loops are shorter and remove a class of iterator
+        mistakes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (auto It = F.arg_begin(), E = F.arg_end(); It != E; ++It)
+          record(&*It);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (Argument &Arg : F.args())
+          record(&Arg);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [loops, readability]
+    source: https://llvm.org/docs/CodingStandards.html#use-range-based-for-loops-wherever-possible

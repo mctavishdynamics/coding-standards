@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuPutFunctionBraceInColumnOne:
+    standard: @{GnuCodingStandards}
+    ruleId: formatting-function-braces
+    title: Put the opening brace of a function body in column one
+    statement:
+        Place the brace that opens a function body at the start of its own
+        line. Inside functions, never let an open brace, parenthesis or
+        bracket fall in column one.
+    rationale:
+        Editors and other tools treat a column-one brace as the start of a
+        function definition, so stray ones confuse them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int
+        count_lines (FILE *fp) {
+          int n = 0;
+          /* ... */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int
+        count_lines (FILE *fp)
+        {
+          int n = 0;
+          /* ... */
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, braces, functions]
+    source: https://www.gnu.org/prep/standards/standards.html#Formatting

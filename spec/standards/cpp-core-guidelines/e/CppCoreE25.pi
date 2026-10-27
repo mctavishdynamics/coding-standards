@@ -5,16 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE25:
     standard: @{CppCoreGuidelines}
     ruleId: E.25
-    title: If you cannot throw exceptions, simulate RAII for resource management
+    title: Emulate scope-based cleanup when exceptions are unavailable
     statement:
-        Without exceptions, still manage resources with handles whose
-        destructors release them. Give each handle a way to report failed
-        construction, such as a valid() member, and check it right after
-        construction.
+        When exceptions are off, keep using handle classes whose destructors free
+        their resources. Give each one a way to signal that construction failed,
+        such as a valid() member, and test it immediately after creating the object.
     rationale:
-        RAII is usually the best and most systematic way of handling
-        resources even without exceptions. The caller has to remember the
-        check, which nodiscard can help enforce.
+        Automatic release in destructors is still far safer than freeing things by
+        hand, even with no exceptions in play. Callers must remember the check, and
+        marking the test function nodiscard makes forgetting it harder.
     exceptions: null
     severity: null
     noncompliant:

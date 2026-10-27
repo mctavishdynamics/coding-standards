@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule30:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-30
+    title: Give each module a single job
+    statement:
+        Design each module or routine to perform one well-defined task
+        completely.
+    rationale:
+        A module with one purpose is easy to name, easy to test and easy to
+        replace. Mixed purposes make every change risky.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int read_and_sum_and_print(FILE *fp);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int read_values(FILE *fp, int *buf, int max);
+        int sum(const int *buf, int n);
+        void print_total(int total);
+        \\\
+        ```
+    languages: [any]
+    tags: [program-structure, modularity, cohesion]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

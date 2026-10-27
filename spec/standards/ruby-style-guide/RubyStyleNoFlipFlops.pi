@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoFlipFlops:
+    standard: @{RubyStyleGuide}
+    ruleId: no-flip-flops
+    title: Replace flip-flop conditions with explicit state
+    statement:
+        Avoid the flip-flop operator, a range used as a condition that
+        switches on and off between two tests. RuboCop checks this with
+        Lint/FlipFlop.
+    rationale:
+        Its hidden state makes the condition very hard to understand.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        lines.each { |l| puts l if (l =~ /BEGIN/)..(l =~ /END/) }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        inside = false
+        lines.each do |l|
+          inside = true if l.include?('BEGIN')
+          puts l if inside
+          inside = false if l.include?('END')
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, readability]
+    source: https://rubystyle.guide/#no-flip-flops

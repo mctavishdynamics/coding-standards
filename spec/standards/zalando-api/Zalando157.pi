@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando157:
+    standard: @{ZalandoApi}
+    ruleId: 157
+    title: Support partial responses through field filtering
+    statement:
+        Let clients pick the fields they need with the fields query
+        parameter, using the guideline's grammar for nested selections, and
+        note the support in the parameter description.
+    rationale:
+        Returning only the requested fields can greatly reduce payload size.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        GET /customers/c-90?fields=(name,addresses(city))
+
+        HTTP/1.1 200 OK
+        { "name": "Ada", "addresses": [ { "city": "Hamburg" } ] }
+        \\\
+        ```
+    languages: [any]
+    tags: [should, performance, query-parameters]
+    source: https://opensource.zalando.com/restful-api-guidelines/#157

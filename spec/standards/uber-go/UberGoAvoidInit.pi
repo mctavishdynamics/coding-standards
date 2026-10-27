@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoAvoidInit:
+    standard: @{UberGo}
+    ruleId: avoid-init
+    title: Avoid init functions
+    statement:
+        Prefer explicit setup over init. If an init function is truly
+        needed, keep it deterministic, independent of other init functions,
+        free of global or environment state and free of I/O; otherwise move
+        the work into code called from main.
+    rationale:
+        Init runs implicitly at import time, so hidden dependencies and side
+        effects there make programs brittle and hard to test.
+    exceptions:
+        Init can be appropriate for complex expressions that a single
+        assignment cannot express, pluggable registration hooks, and
+        deterministic precomputation.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var cfg Config
+
+        func init() {
+            data, _ := os.ReadFile("config.yaml")
+            yaml.Unmarshal(data, &cfg)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func loadConfig(path string) (Config, error) {
+            var cfg Config
+            data, err := os.ReadFile(path)
+            if err != nil {
+                return cfg, err
+            }
+            return cfg, yaml.Unmarshal(data, &cfg)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [initialization, side-effects]
+    source: https://github.com/uber-go/guide/blob/master/style.md#avoid-init

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuCommentEveryFunction:
+    standard: @{GnuCodingStandards}
+    ruleId: comments-functions
+    title: Comment each function's purpose, arguments and return value
+    statement:
+        Before each function, say what it does, what arguments it takes,
+        what their values mean, and what it returns. Point out anything
+        unusual about an argument or values that will not work as expected;
+        ordinary C types used in the usual way need no restating.
+    rationale:
+        Callers need this contract and should not have to reverse-engineer
+        it from the body.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static char *
+        skip_field (char *p, int n)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* Return a pointer just past the Nth tab-separated field of P,
+           or NULL if P has fewer than N fields.  P must be NUL-terminated.  */
+        static char *
+        skip_field (char *p, int n)
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, functions, documentation]
+    source: https://www.gnu.org/prep/standards/standards.html#Comments

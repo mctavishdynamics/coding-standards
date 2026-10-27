@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdBreakAfterTemplateHeader:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-templates
+    title: Put a newline after the template parameter list
+    statement:
+        Follow the template keyword and its parameter list with a newline
+        before the declaration they apply to.
+    rationale:
+        The declaration then starts in the same place as an ordinary one.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <typename T> class ring {
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <typename T>
+        class ring {
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, formatting, templates]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

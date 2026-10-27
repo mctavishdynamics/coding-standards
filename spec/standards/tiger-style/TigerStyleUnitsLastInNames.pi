@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleUnitsLastInNames:
+    standard: @{TigerStyle}
+    ruleId: units-last-in-names
+    title: Put units and qualifiers at the end of names
+    statement:
+        Include units and qualifiers in variable names, and order the words
+        from most to least significant so the qualifiers come last.
+    rationale:
+        Related names then start with the same word, group together and line
+        up when a sibling such as a minimum is added.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        const max_timeout_ms = 500;
+        const min_timeout_ms = 50;
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        const timeout_ms_max = 500;
+        const timeout_ms_min = 50;
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [naming, units]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#naming-things

@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleAssertImplications:
+    standard: @{TigerStyle}
+    ruleId: assert-implications
+    title: Assert implications with a one-line if
+    statement:
+        When one condition implies another, express it as a single-line if
+        statement whose body is the assertion.
+    rationale:
+        This form states the implication directly and keeps it compact.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        assert(!closed or pending == 0);
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        if (closed) assert(pending == 0);
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [assertions, readability]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem34:
+    standard: @{EffectivePython}
+    ruleId: item-34
+    title: Accept a variable number of positional arguments with star args
+    statement:
+        Use a *args parameter when callers naturally pass a varying number
+        of values, so they need not build a list first.
+    rationale:
+        Star args reduce clutter at call sites. They are turned into a
+        tuple, so avoid them with generators that could be huge, and add new
+        parameters as keyword-only.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def log(message, values):
+            print(message, ", ".join(map(str, values)))
+
+        log("ids", [])
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def log(message, *values):
+            print(message, ", ".join(map(str, values)))
+
+        log("ids")
+        log("ids", 3, 7)
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, arguments]
+    source: https://effectivepython.com/

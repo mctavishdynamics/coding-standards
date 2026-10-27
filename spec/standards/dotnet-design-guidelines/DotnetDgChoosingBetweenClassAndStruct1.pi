@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgChoosingBetweenClassAndStruct1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: choosing-between-class-and-struct-1
+    title: Consider a struct for small, short-lived or embedded instances
+    statement:
+        Think about making a type a struct when its instances are small and
+        usually short-lived, or when they are typically stored inside other
+        objects.
+    rationale:
+        Value types avoid separate heap allocations and garbage collection
+        work, which pays off for many small values.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public readonly struct GeoPoint
+        {
+            public GeoPoint(double latitude, double longitude)
+                => (Latitude, Longitude) = (latitude, longitude);
+
+            public double Latitude { get; }
+            public double Longitude { get; }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, type-design, structs, performance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/choosing-between-class-and-struct

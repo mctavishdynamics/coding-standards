@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule62:
+    standard: @{CppCodingStandards}
+    ruleId: rule-62
+    title: Stop exceptions at the edge of a module
+    statement:
+        Catch exceptions at the edge of a module, such as a C interface,
+        callback or thread entry, and translate them to error codes the
+        other side understands.
+    rationale:
+        Different compilers and runtimes do not agree on exception handling
+        across these boundaries.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        extern "C" int lib_open(const char* path) {
+            return Library::open(path);   // may throw into C
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        extern "C" int lib_open(const char* path) {
+            try { return Library::open(path); }
+            catch (...) { return -1; }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces-and-modules, exceptions, modules]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

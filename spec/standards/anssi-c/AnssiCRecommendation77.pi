@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation77:
+    standard: @{AnssiC}
+    ruleId: recommendation-77
+    title: Use integer types with explicit size and sign
+    statement:
+        Prefer fixed-width integer types such as uint32_t and int16_t over
+        int, long and similar.
+    rationale:
+        The size of the basic types depends on the platform, which can
+        change behaviour between targets.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        unsigned long packet_id;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdint.h>
+        uint32_t packet_id;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, types, portability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=59

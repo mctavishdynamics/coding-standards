@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSafeAssignmentInCondition:
+    standard: @{RubyStyleGuide}
+    ruleId: safe-assignment-in-condition
+    title: Wrap assignments used as conditions in parentheses
+    statement:
+        When a condition relies on an assignment's result, wrap that
+        assignment in parentheses.
+    rationale:
+        The parentheses, an idiom known as safe assignment in condition,
+        show that the single equals sign is intended and not a mistaken
+        comparison.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        if match = line.match(/id=(\d+)/)
+          record(match[1])
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        if (match = line.match(/id=(\d+)/))
+          record(match[1])
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, assignment, conditionals]
+    source: https://rubystyle.guide/#safe-assignment-in-condition

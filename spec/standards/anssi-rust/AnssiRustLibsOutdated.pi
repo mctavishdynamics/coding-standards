@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLibsOutdated:
+    standard: @{AnssiRust}
+    ruleId: LIBS-OUTDATED
+    title: Check dependencies for newer versions with cargo-outdated
+    statement:
+        Run cargo-outdated to find dependencies that have newer releases.
+        Update each outdated crate where possible, and document why when a
+        version is kept.
+    rationale:
+        Old versions may lack security fixes; a written reason makes a
+        pinned version a deliberate choice rather than an oversight.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        cargo install cargo-outdated
+        cargo outdated --root-deps-only
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, dependencies, tooling]
+    source: https://anssi-fr.github.io/rust-guide/libraries.html#LIBS-OUTDATED

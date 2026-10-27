@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleParallelAssignment:
+    standard: @{RubyStyleGuide}
+    ruleId: parallel-assignment
+    title: Assign new variables one at a time
+    statement:
+        Assign variables one per line instead of on a single line with
+        commas.
+    rationale:
+        Separate assignments are easier to read than one parallel
+        assignment.
+    exceptions:
+        Parallel assignment is fine when the values come from a method call
+        that returns several values, when a splat is involved, or when
+        swapping variables.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        host, port, scheme = 'example.com', 443, 'https'
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        host = 'example.com'
+        port = 443
+        scheme = 'https'
+        first, *rest = queue
+        \\\
+        ```
+    languages: [ruby]
+    tags: [assignment]
+    source: https://rubystyle.guide/#parallel-assignment

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./SandiMetzRules import SandiMetzRules
+
+export coding-rule SandiMetzOneControllerObject:
+    standard: @{SandiMetzRules}
+    ruleId: rule-4
+    title: Instantiate only one object per controller action
+    statement:
+        Have each controller action build exactly one object and hand only
+        that to the view. The view reads a single instance variable and
+        talks to it directly, without reaching through it to other objects.
+    rationale:
+        A single object, often a facade, gives the view one interface to its
+        data and keeps the view from depending on how collaborators are
+        reached.
+    exceptions:
+        Rule zero covers every rule. Break one only when you have a sound
+        reason or when your pair, or whoever reviews the code, agrees to it.
+        Instance variables used only for memoization inside the controller
+        do not count; the thoughtbot team prefixed them with an underscore.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def show
+          @user = current_user
+          @statuses = Status.for(current_user)
+          @notifications = current_user.notifications
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def show
+          @home = HomePage.new(current_user)
+        end
+        \\\
+        ```
+    languages: [ruby, any]
+    tags: [rails, controllers, coupling]
+    source: https://thoughtbot.com/blog/sandi-metz-rules-for-developers#only-instantiate-one-object-in-the-controller

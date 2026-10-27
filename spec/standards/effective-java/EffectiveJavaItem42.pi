@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem42:
+    standard: @{EffectiveJava}
+    ruleId: item-42
+    title: Express small function objects as lambdas
+    statement:
+        Use lambdas to create small function objects for functional
+        interfaces. Keep each lambda to a few lines and obvious in meaning.
+    rationale:
+        Lambdas remove the boilerplate of anonymous classes and make short
+        behaviour easy to read.
+    exceptions:
+        Use an anonymous class when you need an abstract class instance, an
+        interface with several abstract methods, or a reference to the
+        function object itself.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        names.sort(new Comparator<String>() {
+            public int compare(String a, String b) {
+                return Integer.compare(a.length(), b.length());
+            }
+        });
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        names.sort((a, b) -> Integer.compare(a.length(), b.length()));
+        \\\
+        ```
+    languages: [java]
+    tags: [lambdas-and-streams, lambdas, readability]
+    source: https://www.informit.com/store/effective-java-9780134686097

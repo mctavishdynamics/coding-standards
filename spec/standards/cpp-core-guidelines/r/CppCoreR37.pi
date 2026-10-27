@@ -5,23 +5,22 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR37:
     standard: @{CppCoreGuidelines}
     ruleId: R.37
-    title:
-        Do not pass a pointer or reference obtained from an aliased smart
-        pointer
+    title: Pin a shared object before passing out raw access to it
     statement:
-        Before passing a raw pointer or reference taken from a smart pointer
-        that other code can reset, make a local copy of the smart pointer so
-        the object stays alive for the call.
+        A smart pointer that other code could reset is not a safe source for
+        a raw pointer or reference you pass down. Take a local copy of the
+        smart pointer first, and pass access through that copy.
     rationale:
-        If code deeper in the call tree resets or reassigns the aliased
-        smart pointer, the object is destroyed and the pointer passed down
-        dangles. This is the leading cause of lost reference counts.
+        Something deeper in the call chain may reassign the shared smart
+        pointer and free the object while the callee still uses it. This
+        pattern is the most common way programs end up with a dangling
+        pointer and a lost reference count.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        std::shared_ptr<Widget> g_current;
+        std::shared_ptr<Scene> g_current;
 
         void show() {
             paint(*g_current);    // paint may reset g_current
@@ -31,10 +30,10 @@ export coding-rule CppCoreR37:
     compliant:
         ```cpp
         \\\
-        std::shared_ptr<Widget> g_current;
+        std::shared_ptr<Scene> g_current;
 
         void show() {
-            auto pin = g_current;  // keeps the widget alive
+            auto pin = g_current;  // keeps the scene alive
             paint(*pin);
         }
         \\\

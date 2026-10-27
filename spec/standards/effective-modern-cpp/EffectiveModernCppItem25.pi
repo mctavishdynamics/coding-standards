@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem25:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-25
+    title: Cast each kind of reference parameter correctly on its last use
+    statement:
+        Cast rvalue reference parameters with move and forwarding references
+        with forward on their last use. Return such parameters the same way,
+        but never apply move to a local you return by value.
+    rationale:
+        This passes on the right value category, and moving a returned local
+        defeats copy elision.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class T>
+        void setName(T&& n) { name_ = std::move(n); }   // steals lvalues
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T>
+        void setName(T&& n) { name_ = std::forward<T>(n); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [rvalue-references-move-semantics-forwarding, move-semantics]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoExceptionalFlows:
+    standard: @{RubyStyleGuide}
+    ruleId: no-exceptional-flows
+    title: Branch with conditions, not exceptions
+    statement:
+        Check for an expected condition directly instead of letting an
+        exception occur and rescuing it.
+    rationale:
+        Exceptions are for unexpected failures; using them for ordinary
+        branching is slower and obscures the logic.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        begin
+          ratio = hits / attempts
+        rescue ZeroDivisionError
+          ratio = 0
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        ratio = attempts.zero? ? 0 : hits / attempts
+        \\\
+        ```
+    languages: [ruby]
+    tags: [error-handling, exceptions, control-flow]
+    source: https://rubystyle.guide/#no-exceptional-flows

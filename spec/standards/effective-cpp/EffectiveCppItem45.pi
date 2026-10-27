@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem45:
+    standard: @{EffectiveCpp}
+    ruleId: item-45
+    title: Let class templates convert like the types they model
+    statement:
+        Write generalised copy constructors and assignment operators as
+        member templates so a class template converts like the built-in
+        types it models. Still declare the normal copy operations.
+    rationale:
+        Smart pointer style templates should allow the same conversions as
+        raw pointers, such as derived to base.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class T>
+        class Handle {
+        public:
+            Handle(const Handle& other);
+        };
+        Handle<Base> h = Handle<Derived>(d);   // error
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T>
+        class Handle {
+        public:
+            Handle(const Handle& other);
+            template <class U>
+            Handle(const Handle<U>& other) : p_(other.get()) {}
+            T* get() const { return p_; }
+        private:
+            T* p_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates-and-generic-programming, templates, conversions]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

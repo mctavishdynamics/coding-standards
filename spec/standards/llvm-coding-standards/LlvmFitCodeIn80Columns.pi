@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmFitCodeIn80Columns:
+    standard: @{LlvmCodingStandards}
+    ruleId: source-code-width
+    title: Keep source lines within 80 columns
+    statement:
+        Write code so that no line is wider than 80 columns. Documentation
+        files instead put one sentence on each line.
+    rationale:
+        A fixed, common limit lets several files sit side by side on a
+        modest screen and matches the editor setup many developers already
+        have.
+    exceptions:
+        TableGen files are exempt because no tool can reformat them; try to
+        keep them within 80 columns and change only the lines you edit.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto *Result = Builder.CreateInsertElement(Vector, ScalarValue, Builder.getInt32(LaneIndex));
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto *Result = Builder.CreateInsertElement(Vector, ScalarValue,
+                                                   Builder.getInt32(LaneIndex));
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, line-length]
+    source: https://llvm.org/docs/CodingStandards.html#source-code-width

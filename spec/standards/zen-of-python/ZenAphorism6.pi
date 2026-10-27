@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ZenOfPython import ZenOfPython
+
+export coding-rule ZenAphorism6:
+    standard: @{ZenOfPython}
+    ruleId: aphorism-6
+    title: Do not pack too much into one line
+    statement:
+        Spread work over several readable lines rather than cramming many
+        operations into one dense expression.
+    rationale:
+        Dense code saves little space and costs the reader effort to unpick
+        it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        name = (u.get("first") or "").strip().title() + " " + (u.get("last") or "").strip().title()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        first = (u.get("first") or "").strip().title()
+        last = (u.get("last") or "").strip().title()
+        name = f"{first} {last}"
+        \\\
+        ```
+    languages: [python]
+    tags: [readability, formatting]
+    source: https://peps.python.org/pep-0020/#the-zen-of-python

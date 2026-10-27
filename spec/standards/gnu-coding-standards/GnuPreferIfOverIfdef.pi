@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuPreferIfOverIfdef:
+    standard: @{GnuCodingStandards}
+    ruleId: conditional-compilation
+    title: Prefer ordinary if statements to preprocessor conditionals
+    statement:
+        For configuration known at build time, define a macro as 0 or 1 and
+        test it with an if statement instead of #ifdef. For a macro that
+        cannot be tested that way, define a companion HAS_ macro that is 0
+        or 1.
+    rationale:
+        The compiler then checks every branch on every build, yet still
+        removes the dead one, so mistakes in rarely built code are found
+        early.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #ifdef ENABLE_CACHE
+          lookup_cached (key);
+        #else
+          lookup_slow (key);
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (ENABLE_CACHE)
+          lookup_cached (key);
+        else
+          lookup_slow (key);
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, configuration]
+    source: https://www.gnu.org/prep/standards/standards.html#Conditional-Compilation

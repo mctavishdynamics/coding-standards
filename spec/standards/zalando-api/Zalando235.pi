@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando235:
+    standard: @{ZalandoApi}
+    ruleId: 235
+    title: Follow the naming convention for date and time properties
+    statement:
+        Name date and time properties so that the name contains a type word
+        such as date, day, time or timestamp, or ends in _at.
+    rationale:
+        The convention makes temporal fields easy to recognise and keeps
+        them apart from booleans, such as paid versus paid_at.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        { "shipped": "2024-03-02T10:00:00Z", "delivery": "2024-03-04" }
+        \\\
+        ```
+    compliant:
+        ```json
+        \\\
+        { "shipped_at": "2024-03-02T10:00:00Z", "delivery_date": "2024-03-04" }
+        \\\
+        ```
+    languages: [any]
+    tags: [should, json, naming]
+    source: https://opensource.zalando.com/restful-api-guidelines/#235

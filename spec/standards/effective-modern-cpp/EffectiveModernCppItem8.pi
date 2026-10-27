@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem8:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-8
+    title: Write null pointers as nullptr
+    statement:
+        Write nullptr wherever you mean a null pointer.
+    rationale:
+        0 and NULL are integers, so they pick integer overloads and break
+        template deduction.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void find(int id);
+        void find(Node* n);
+        find(NULL);   // calls find(int)
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        find(nullptr);   // calls find(Node*)
+        \\\
+        ```
+    languages: [cpp]
+    tags: [moving-to-modern-cpp, pointers]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

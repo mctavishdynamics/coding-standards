@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopDebugging12:
+    standard: @{PracticeOfProgramming}
+    ruleId: debugging-12
+    title: Add code that checks its own consistency
+    statement:
+        Write checks that verify internal invariants and report when they
+        fail.
+    rationale:
+        Self-checks catch corruption close to where it happens, long before
+        it shows up as a wrong answer.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        static void check_heap(const Heap *h)
+        {
+            for (int i = 1; i < h->n; i++)
+                if (h->a[(i - 1) / 2] > h->a[i])
+                    fprintf(stderr, "heap order broken at %d\n", i);
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [debugging, invariants]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

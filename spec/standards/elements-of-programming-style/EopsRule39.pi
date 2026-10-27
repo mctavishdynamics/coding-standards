@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule39:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-39
+    title: Name the faulty input and continue where safe
+    statement:
+        When input is invalid, say which item is wrong and why, and continue
+        processing the rest if that makes sense.
+    rationale:
+        A clear message lets the user fix the problem quickly. Recovering
+        means one bad record does not waste the whole run.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        for line in lines:
+            total += float(line)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        for num, line in enumerate(lines, 1):
+            try:
+                total += float(line)
+            except ValueError:
+                print(f"line {num}: not a number: {line!r}", file=sys.stderr)
+        \\\
+        ```
+    languages: [any]
+    tags: [input-and-output, input-validation, error-handling]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

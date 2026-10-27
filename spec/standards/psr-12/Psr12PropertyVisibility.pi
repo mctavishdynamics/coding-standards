@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12PropertyVisibility:
+    standard: @{Psr12}
+    ruleId: 4.3a
+    title: Declare visibility on every property
+    statement:
+        Give every property an explicit visibility keyword: public,
+        protected or private.
+    rationale:
+        Explicit visibility shows the intended access at the point of
+        declaration instead of relying on defaults.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Account
+        {
+            static $instances = 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Account
+        {
+            private static $instances = 0;
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [visibility, properties]
+    source: https://www.php-fig.org/psr/psr-12/#43-properties-and-constants

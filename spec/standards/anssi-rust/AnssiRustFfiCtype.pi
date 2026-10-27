@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiCtype:
+    standard: @{AnssiRust}
+    ruleId: FFI-CTYPE
+    title: Use only C-compatible types across FFI
+    statement:
+        Parameters, return types and global variables shared with foreign
+        code must use C-compatible types, except types that the foreign side
+        treats as opaque.
+    rationale:
+        Types without a defined C layout, such as String, Vec or
+        default-repr structs, have no stable representation the other side
+        can read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub extern "C" fn set_name(name: String) {}
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub unsafe extern "C" fn set_name(name: *const std::ffi::c_char) {}
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, ffi, types]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-CTYPE

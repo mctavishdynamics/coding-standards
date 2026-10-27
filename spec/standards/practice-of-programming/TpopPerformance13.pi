@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance13:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-13
+    title: Use a custom allocator for many same-sized objects
+    statement:
+        When a program allocates large numbers of small objects of one size,
+        manage them with a purpose-built allocator.
+    rationale:
+        A specialized allocator can be much faster and use less space than a
+        general one.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        static Node *free_list;
+
+        Node *node_alloc(void)
+        {
+            if (free_list == NULL)
+                refill_pool(&free_list, 1024);
+            Node *n = free_list;
+            free_list = n->next;
+            return n;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [performance, memory]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

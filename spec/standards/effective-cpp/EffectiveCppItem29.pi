@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem29:
+    standard: @{EffectiveCpp}
+    ruleId: item-29
+    title: Write code that stays consistent when exceptions are thrown
+    statement:
+        Every function should leak nothing and leave data valid if an
+        exception escapes. Offer the strong guarantee, often through copy
+        and swap, when it is practical.
+    rationale:
+        Code without these guarantees corrupts state on the first failure
+        and makes the whole program unreliable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Menu::setIcon(std::istream& src) {
+            mutex_.lock();
+            delete icon_;
+            icon_ = new Image(src);   // throw leaves mutex locked
+            mutex_.unlock();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Menu::setIcon(std::istream& src) {
+            std::lock_guard<std::mutex> g(mutex_);
+            icon_ = std::make_unique<Image>(src);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [implementations, exceptions, raii]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuPreserveNulAndMultibyte:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-nul-and-multibyte
+    title: Keep NUL and non-printing bytes and support multibyte encodings
+    statement:
+        When reading files, do not drop NUL or other non-printing
+        characters, and make the program work correctly with multibyte
+        encodings such as UTF-8.
+    rationale:
+        Real data contains such bytes and non-ASCII text; losing or
+        misreading them corrupts the user's files.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        while (fgets (buf, sizeof buf, in))
+          fputs (buf, out);   /* stops at an embedded NUL */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        size_t n;
+        while ((n = fread (buf, 1, sizeof buf, in)) > 0)
+          fwrite (buf, 1, n, out);
+        \\\
+        ```
+    languages: [c]
+    tags: [robustness, encoding, input-validation]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

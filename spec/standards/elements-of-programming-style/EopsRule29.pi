@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule29:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-29
+    title: Pass data between modules explicitly
+    statement:
+        Let modules communicate through parameters and return values that
+        anyone can see, rather than through hidden shared state.
+    rationale:
+        Visible connections show what each module depends on. Hidden
+        coupling lets a change in one place break another without warning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static int g_count;
+
+        void tally(void)  { g_count++; }
+        void report(void) { printf("%d\n", g_count); }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int tally(int count) { return count + 1; }
+        void report(int count) { printf("%d\n", count); }
+        \\\
+        ```
+    languages: [any]
+    tags: [program-structure, modularity, coupling]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

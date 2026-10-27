@@ -7,10 +7,10 @@ export coding-rule CertCErr30C:
     ruleId: ERR30-C
     title: Take care when reading errno
     statement:
-        Set errno to zero before calling a library function that reports
-        errors only through errno, and read errno only after a function that
-        sets it has indicated an error. Do not use errno to detect an error
-        from functions that report failure through their return value.
+        When a library function signals errors only by way of errno, clear
+        errno to 0 before the call, and inspect errno only once the
+        function's result shows that an error happened. For functions whose
+        return value reports failure, rely on that value rather than errno.
     rationale:
         Library functions never clear errno and may set it even on success,
         so a stale or incidental value leads to wrong error handling. CERT

@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp60:
     standard: @{CppCoreGuidelines}
     ruleId: CP.60
-    title: Use a future to return a value from a concurrent task
+    title: Get results from concurrent work through a future
     statement:
-        Get results from a concurrent task through a std::future rather than
-        through shared variables written by the task.
+        Have a concurrent task hand back its result through a std::future instead of
+        writing it into a variable that another thread reads.
     rationale:
-        A future keeps ordinary return semantics for asynchronous work. No
-        explicit locking is needed, and both values and exceptions are
-        delivered to the caller.
+        A future works like a normal return value for code that runs elsewhere. The
+        caller needs no lock, and it receives either the value or the exception the
+        task threw.
     exceptions: null
     severity: null
     noncompliant:

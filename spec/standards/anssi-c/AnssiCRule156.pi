@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule156:
+    standard: @{AnssiC}
+    ruleId: rule-156
+    title: Give both branches of a ternary the same type
+    statement:
+        Make the two result expressions of a conditional operator exactly
+        the same type.
+    rationale:
+        Different types force an implicit conversion whose result depends on
+        the condition.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        double r = ok ? 1 : 0.5f;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        double r = ok ? 1.0 : 0.5;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, expressions, conversions]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=126

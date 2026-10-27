@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiLabelClosureParameters:
+    standard: @{SwiftApiDesign}
+    ruleId: label-closure-parameters
+    title: Give tuple members labels and closure parameters names
+    statement:
+        Give names to tuple members and closure parameters that appear in
+        your API, choosing them as you would top-level parameter names.
+    rationale:
+        The names explain the values, can be referred to from documentation
+        and give readable access to tuple members.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func download(
+            progress: (Int, Int) -> Void
+        ) -> (Data, Bool)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        func download(
+            progress: (_ bytesReceived: Int, _ bytesExpected: Int) -> Void
+        ) -> (data: Data, fromCache: Bool)
+        \\\
+        ```
+    languages: [swift]
+    tags: [closures, tuples]
+    source: https://www.swift.org/documentation/api-design-guidelines/#label-closure-parameters

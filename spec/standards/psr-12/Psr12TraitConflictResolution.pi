@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12TraitConflictResolution:
+    standard: @{Psr12}
+    ruleId: 4.2d
+    title: Format insteadof and as rules inside a trait block
+    statement:
+        When resolving trait conflicts with insteadof or as, open a brace
+        after the use statement, write each rule on its own indented line
+        ending in a semicolon, and close the brace on its own line.
+    rationale:
+        A uniform block layout makes the resolution rules easy to read and
+        to extend.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Report
+        {
+            use CsvExport, PdfExport { CsvExport::export insteadof PdfExport; PdfExport::export as exportPdf; }
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Report
+        {
+            use CsvExport;
+            use PdfExport {
+                CsvExport::export insteadof PdfExport;
+                PdfExport::export as exportPdf;
+            }
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [traits, formatting]
+    source: https://www.php-fig.org/psr/psr-12/#42-using-traits

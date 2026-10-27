@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./PowerOfTen import PowerOfTen
+
+export coding-rule PowerOfTenRule2:
+    standard: @{PowerOfTen}
+    ruleId: rule-2
+    title: Make every loop provably bounded
+    statement:
+        Every loop must have a fixed limit on its number of iterations, and
+        a checking tool must be able to prove statically that the limit
+        cannot be exceeded. A loop whose bound cannot be proven breaks the
+        rule.
+    rationale:
+        Loop bounds, together with the ban on recursion, prevent runaway
+        code. Adding an explicit limit to loops with a variable iteration
+        count, such as a list walk, lets the code detect and report the
+        overrun.
+    exceptions:
+        Loops that are meant never to end, such as a process scheduler, are
+        exempt; for them it should instead be provable that the loop cannot
+        terminate.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        while (item != NULL) {
+            process(item);
+            item = item->next;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int steps = 0;
+        while (item != NULL && steps < MAX_ITEMS) {
+            process(item);
+            item = item->next;
+            steps++;
+        }
+        if (item != NULL) {
+            return ERR_LIST_TOO_LONG;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loops, control-flow]
+    source: https://spinroot.com/gerard/pdf/P10.pdf

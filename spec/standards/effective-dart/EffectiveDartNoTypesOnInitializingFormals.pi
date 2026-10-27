@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoTypesOnInitializingFormals:
+    standard: @{EffectiveDart}
+    ruleId: dont-type-annotate-initializing-formals
+    title: Do not annotate this. or super. parameters
+    statement:
+        Leave the type off constructor parameters declared with `this.` or
+        `super.`. The type_init_formals lint checks this.
+    rationale:
+        Their type comes from the field or the super constructor parameter,
+        so writing it repeats information.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Tile {
+          final int row;
+          Tile(int this.row);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Tile {
+          final int row;
+          Tile(this.row);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, types, constructors]
+    source: https://dart.dev/effective-dart/design#dont-type-annotate-initializing-formals

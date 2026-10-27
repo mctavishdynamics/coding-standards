@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV3x6x1:
+    standard: @{OwaspAsvs}
+    ruleId: V3.6.1
+    title: Use Subresource Integrity for externally hosted assets
+    statement:
+        Host scripts, styles and fonts externally only when they are static
+        and versioned and checked with Subresource Integrity. Where that is
+        not possible, document a security decision for each resource.
+    rationale:
+        A compromised third-party host could otherwise serve altered code to
+        every user of the application.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <script src="https://cdn.example.net/chart/latest/chart.js"></script>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <script src="https://cdn.example.net/chart/4.2.0/chart.min.js"
+          integrity="sha384-REPLACE_WITH_REAL_HASH"
+          crossorigin="anonymous"></script>
+        \\\
+        ```
+    languages: [any]
+    tags: [level-3, supply-chain, integrity, cdn]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x12-V3-Web-Frontend-Security.md#v36-external-resource-integrity

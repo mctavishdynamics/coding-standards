@@ -7,8 +7,9 @@ export coding-rule GoogleGoCryptoRand:
     ruleId: decisions/crypto-rand
     title: Generate keys with crypto/rand
     statement:
-        Never use math/rand to generate keys, even throwaway ones. Read from
-        the crypto/rand Reader and encode as hex or base64 if you need text.
+        Keys, even short-lived ones, must not come from math/rand. Draw
+        bytes from the crypto/rand Reader instead, and hex or base64 encode
+        them when a string is needed.
     rationale:
         math/rand is predictable when unseeded and has very little entropy
         when seeded with the time.

@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoTestTables:
+    standard: @{UberGo}
+    ruleId: test-tables
+    title: Use table-driven subtests for repeated test logic
+    statement:
+        When the same logic is tested against several inputs and outputs,
+        write a table-driven test with subtests. Name the slice tests, each
+        case tt, and prefix inputs with give and outputs with want.
+    rationale:
+        Tables remove duplicated test code, make it easy to add cases and
+        give each failure a clear name.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func TestAbs(t *testing.T) {
+            if got := Abs(-2); got != 2 {
+                t.Errorf("Abs(-2) = %d", got)
+            }
+            if got := Abs(3); got != 3 {
+                t.Errorf("Abs(3) = %d", got)
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func TestAbs(t *testing.T) {
+            tests := []struct {
+                give int
+                want int
+            }{
+                {give: -2, want: 2},
+                {give: 3, want: 3},
+            }
+            for _, tt := range tests {
+                t.Run(fmt.Sprint(tt.give), func(t *testing.T) {
+                    if got := Abs(tt.give); got != tt.want {
+                        t.Errorf("Abs(%d) = %d, want %d", tt.give, got, tt.want)
+                    }
+                })
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [testing]
+    source: https://github.com/uber-go/guide/blob/master/style.md#test-tables

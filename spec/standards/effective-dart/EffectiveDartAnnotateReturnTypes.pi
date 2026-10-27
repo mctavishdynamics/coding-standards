@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartAnnotateReturnTypes:
+    standard: @{EffectiveDart}
+    ruleId: do-annotate-return-types-on-function-declarations
+    title: Annotate return types on non-local functions
+    statement:
+        Give an explicit return type to every getter, method, whether
+        instance or static, and top-level function. Function expressions and
+        functions declared locally can rely on inference instead.
+    rationale:
+        Dart does not infer return types of these declarations from their
+        bodies, so they default to dynamic.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        formatPrice(int cents) => '\$${(cents / 100).toStringAsFixed(2)}';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        String formatPrice(int cents) => '\$${(cents / 100).toStringAsFixed(2)}';
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, types, functions]
+    source: https://dart.dev/effective-dart/design#do-annotate-return-types-on-function-declarations

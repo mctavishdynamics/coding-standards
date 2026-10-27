@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartCompleteGenericTypes:
+    standard: @{EffectiveDart}
+    ruleId: avoid-writing-incomplete-generic-types
+    title: Write generic types with all their type arguments
+    statement:
+        When you write a generic type in an annotation or as a type
+        argument, give it its full type arguments.
+    rationale:
+        Dart fills missing arguments with dynamic or the bound rather than
+        inferring them, which is rarely intended.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        List scores = <int>[];
+        final completer = Completer<Map>();
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        List<int> scores = <int>[];
+        final completer = Completer<Map<String, Object?>>();
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, types, generics]
+    source: https://dart.dev/effective-dart/design#avoid-writing-incomplete-generic-types

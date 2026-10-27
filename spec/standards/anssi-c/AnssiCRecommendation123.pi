@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation123:
+    standard: @{AnssiC}
+    ruleId: recommendation-123
+    title: Use floating-point numbers only when strictly needed
+    statement:
+        Limit the use of floating-point arithmetic.
+    rationale:
+        Rounding, absorption of small values and platform differences make
+        floating-point results hard to predict.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        double balance = 10.10;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int64_t balance_cents = 1010;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, floating-point]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=96

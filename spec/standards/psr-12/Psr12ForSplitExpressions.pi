@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ForSplitExpressions:
+    standard: @{Psr12}
+    ruleId: 5.4b
+    title: Wrap long for clauses one per line
+    statement:
+        If the three clauses of a for loop wrap across lines, start the
+        first one on a new line after the opening parenthesis and indent
+        every clause at least one level. The final parenthesis and the brace
+        then share a line of their own, separated by a single space.
+    rationale:
+        A fixed wrapped shape keeps long loop headers readable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        for ($index = $start; $index < $end;
+            $index += $step) {
+            visit($index);
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        for (
+            $index = $start;
+            $index < $end;
+            $index += $step
+        ) {
+            visit($index);
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [control-structures, loops]
+    source: https://www.php-fig.org/psr/psr-12/#54-for

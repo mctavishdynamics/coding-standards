@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./PowerOfTen import PowerOfTen
+
+export coding-rule PowerOfTenRule3:
+    standard: @{PowerOfTen}
+    ruleId: rule-3
+    title: Allocate heap memory only during start-up
+    statement:
+        Allocate all heap memory during initialization. Once the program is
+        running, do not call malloc or any other dynamic allocator.
+    rationale:
+        Heap managers have unpredictable timing and are behind many memory
+        bugs. Setting all memory aside at start-up removes that risk, and
+        with recursion banned the stack depth can also be bounded by
+        analysis.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int handle_packet(const packet_t *p) {
+            char *buf = malloc(p->len);
+            if (buf == NULL) {
+                return ERR_NOMEM;
+            }
+            decode(p, buf);
+            free(buf);
+            return OK;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static char packet_buf[MAX_PACKET_LEN];
+
+        int handle_packet(const packet_t *p) {
+            if (p->len > sizeof packet_buf) {
+                return ERR_TOO_LONG;
+            }
+            decode(p, packet_buf);
+            return OK;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, allocation]
+    source: https://spinroot.com/gerard/pdf/P10.pdf

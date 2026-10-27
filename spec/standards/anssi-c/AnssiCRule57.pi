@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule57:
+    standard: @{AnssiC}
+    ruleId: rule-57
+    title: Use define for constants that need no type check
+    statement:
+        Declare constants that do not need type checking with the define
+        directive.
+    rationale:
+        A plain macro is enough when the type does not matter, such as for
+        array sizes.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        #define NAME_LEN 32U
+        char name[NAME_LEN];
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, constants, preprocessor]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=43

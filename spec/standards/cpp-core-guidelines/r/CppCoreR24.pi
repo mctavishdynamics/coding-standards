@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR24:
     standard: @{CppCoreGuidelines}
     ruleId: R.24
-    title: Use weak_ptr to break cycles of shared_ptrs
+    title: Break shared_ptr reference cycles with weak_ptr
     statement:
-        When objects held by shared_ptr refer back to each other, make one
-        direction of the link a std::weak_ptr.
+        Where shared_ptr links form a loop, for example a child pointing
+        back at its parent, turn one of the links into a std::weak_ptr.
     rationale:
-        Use counts in a cycle of shared_ptrs never reach zero, so the
-        objects are never destroyed. A weak_ptr does not keep its object
-        alive and breaks the cycle.
+        Objects in a ring of shared_ptrs keep one another's counts above
+        zero forever, so none of them is ever freed. A weak_ptr observes
+        without holding a count, which lets the ring be torn down.
     exceptions: null
     severity: null
     noncompliant:

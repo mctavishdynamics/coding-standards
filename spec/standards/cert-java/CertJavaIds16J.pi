@@ -19,14 +19,19 @@ export coding-rule CertJavaIds16J:
     noncompliant:
         ```java
         \\\
-        String xml = "<item><quantity>" + quantity + "</quantity></item>";
+        String note = request.getParameter("note");
+        String body = "<ticket><note>" + note + "</note></ticket>";
         \\\
         ```
     compliant:
         ```java
         \\\
-        int count = Integer.parseUnsignedInt(quantity);
-        String xml = "<item><quantity>" + count + "</quantity></item>";
+        Document doc = builder.newDocument();
+        Element ticket = doc.createElement("ticket");
+        Element note = doc.createElement("note");
+        note.setTextContent(request.getParameter("note"));
+        ticket.appendChild(note);
+        doc.appendChild(ticket);
         \\\
         ```
     languages: [java]

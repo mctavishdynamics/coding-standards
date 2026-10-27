@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSerialization16:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: serialization-16
+    title: Declare the deserialization constructor protected with the expected signature
+    statement:
+        Declare the deserialization constructor protected and give it a
+        SerializationInfo parameter named info and a StreamingContext
+        parameter named context.
+    rationale:
+        The runtime looks for exactly that signature, and protected access
+        lets subclasses chain to it without exposing it publicly.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        [Serializable]
+        public class Waypoint : ISerializable
+        {
+            protected Waypoint(SerializationInfo info, StreamingContext context)
+            {
+                Name = info.GetString(nameof(Name));
+            }
+            /* ... */
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, serialization, constructors]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/serialization#supporting-runtime-serialization

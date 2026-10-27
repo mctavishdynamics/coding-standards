@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule22:
+    standard: @{AnssiC}
+    ruleId: rule-22
+    title: Wrap multi-statement macros in a do-while(0) loop
+    statement:
+        When a macro has more than one statement, put its body inside a
+        do-while(0) loop.
+    rationale:
+        The loop runs once and makes the macro behave like one statement, so
+        it works correctly after an if without braces and before an else.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define LOG_AND_FAIL(msg) log_error(msg); return -1
+        if (fd < 0)
+            LOG_AND_FAIL("open");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define LOG_AND_FAIL(msg) \
+            do {                   \
+                log_error(msg);    \
+                return -1;         \
+            } while (0)
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, macros]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=25

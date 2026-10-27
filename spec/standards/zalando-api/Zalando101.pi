@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando101:
+    standard: @{ZalandoApi}
+    ruleId: 101
+    title: Provide API specifications in OpenAPI
+    statement:
+        Describe every API with an OpenAPI specification kept in one
+        self-contained YAML file under version control. OpenAPI 3.1 is
+        preferred, especially for new APIs.
+    rationale:
+        A single standard, machine-readable contract can be linted,
+        reviewed, published and used to generate clients, and one file is
+        easy to read.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        openapi: 3.1.0
+        info:
+          title: Parcel Tracking API
+          version: 1.4.0
+        paths:
+          /parcels/{parcel_id}:
+            get:
+              summary: Read one parcel
+        \\\
+        ```
+    languages: [any]
+    tags: [must, openapi, documentation]
+    source: https://opensource.zalando.com/restful-api-guidelines/#101

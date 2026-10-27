@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackPureConstructors:
+    standard: @{Carmack}
+    ruleId: pure-constructors
+    title: Make constructors pure
+    statement:
+        Write constructors so that they take arguments and produce an object
+        without touching outside state.
+    rationale:
+        A constructor is naturally a function from inputs to a new value, so
+        it can enjoy the benefits of purity.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Enemy::Enemy(int type) : type(type) {
+            g_enemyCount++;
+            LoadSounds(type);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Enemy::Enemy(int type, const SoundSet& sounds)
+            : type(type), sounds(sounds) {}
+        \\\
+        ```
+    languages: [cpp]
+    tags: [purity, constructors]
+    source: https://www.gamedeveloper.com/programming/in-depth-functional-programming-in-c-

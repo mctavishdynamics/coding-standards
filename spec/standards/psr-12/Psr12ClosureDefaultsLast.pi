@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ClosureDefaultsLast:
+    standard: @{Psr12}
+    ruleId: 7e
+    title: Put closure parameters with defaults at the end
+    statement:
+        In a closure, place parameters that have default values after those
+        that do not.
+    rationale:
+        A default placed before a required parameter can never take effect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        $round = function ($precision = 2, $value) {
+            return round($value, $precision);
+        };
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        $round = function ($value, $precision = 2) {
+            return round($value, $precision);
+        };
+        \\\
+        ```
+    languages: [php]
+    tags: [closures, parameters]
+    source: https://www.php-fig.org/psr/psr-12/#7-closures

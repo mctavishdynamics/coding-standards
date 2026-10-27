@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule73:
+    standard: @{CppCodingStandards}
+    ruleId: rule-73
+    title: Throw temporaries and catch through references
+    statement:
+        Throw temporary objects, not pointers, and catch by reference,
+        usually to const. Rethrow with a bare throw.
+    rationale:
+        Catching by value slices and copies, and throwing pointers raises
+        ownership questions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        throw new NetworkError("timeout");
+        catch (NetworkError e) { throw e; }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        throw NetworkError("timeout");
+        catch (const NetworkError& e) { log(e.what()); throw; }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling-and-exceptions, exceptions]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

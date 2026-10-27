@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvIfVersusWhen:
+    standard: @{KotlinConventions}
+    ruleId: if-versus-when
+    title: Use if for two branches and when for three or more
+    statement:
+        Choose if when there are two branches, and switch to when once there
+        are three or more.
+    rationale:
+        Each construct reads best for the number of cases it handles.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        when (session) {
+            null -> showLogin()
+            else -> showHome()
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        if (session == null) showLogin() else showHome()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [control-flow]
+    source: https://kotlinlang.org/docs/coding-conventions.html#if-versus-when

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule75:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-75
+    title: Make nesting depth visible through consistent indentation
+    statement:
+        Indent each nested block consistently so the depth of nesting is
+        visible.
+    rationale:
+        Indentation lets readers see which statements are controlled by
+        which condition or loop without counting brackets.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        while (n > 0) {
+        if (n % 2)
+        odd++;
+        n /= 2;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        while (n > 0) {
+            if (n % 2) {
+                odd++;
+            }
+            n /= 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [documentation, formatting, indentation]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

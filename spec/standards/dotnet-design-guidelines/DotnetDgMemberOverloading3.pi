@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgMemberOverloading3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: member-overloading-3
+    title: Keep parameters in the same order across overloads
+    statement:
+        A parameter that appears in several overloads should sit at the same
+        position in each of them.
+    rationale:
+        Consistent order lets callers move between overloads without
+        rearranging their arguments.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Image Load(string path, int maxWidth);
+        public Image Load(int maxWidth, string path, bool cache);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public Image Load(string path, int maxWidth);
+        public Image Load(string path, int maxWidth, bool cache);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, member-design, overloading, parameters]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/member-overloading

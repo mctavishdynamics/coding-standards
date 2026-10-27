@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV11x5x1:
+    standard: @{OwaspAsvs}
+    ruleId: V11.5.1
+    title: Generate unguessable values with a CSPRNG and 128 bits
+    statement:
+        Create every random value that must be unguessable with a
+        cryptographically secure generator and give it at least 128 bits of
+        entropy. UUIDs do not meet this bar.
+    rationale:
+        Ordinary random functions and UUIDs are predictable enough for
+        attackers to guess tokens and secrets.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        reset_token = str(uuid.uuid4())
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        reset_token = secrets.token_urlsafe(32)
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, randomness, cryptography]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x20-V11-Cryptography.md#v115-random-values

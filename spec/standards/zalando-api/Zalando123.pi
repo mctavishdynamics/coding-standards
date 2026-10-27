@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando123:
+    standard: @{ZalandoApi}
+    ruleId: 123
+    title: Give null and absent properties the same meaning
+    statement:
+        When a property is optional and nullable, treat a null value and a
+        missing property exactly the same.
+    rationale:
+        A subtle difference between the two cases is easy for clients to
+        misunderstand and implement wrongly, and it outweighs the
+        expressiveness gained.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        nickname:
+          type: [ string, 'null' ]
+          description: Omit to keep the current value, send null to delete it.
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        nickname:
+          type: [ string, 'null' ]
+          description: Omitted or null both mean the customer has no nickname.
+        \\\
+        ```
+    languages: [any]
+    tags: [must, json, null-handling]
+    source: https://opensource.zalando.com/restful-api-guidelines/#123

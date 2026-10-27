@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCGoodPractice13:
+    standard: @{AnssiC}
+    ruleId: good-practice-13
+    title: Avoid double negation in preprocessor conditions
+    statement:
+        Do not write conditions that negate a mode which is itself a
+        negation, such as testing ifndef on NDEBUG.
+    rationale:
+        Double negatives make it hard to tell which branch is compiled.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #ifndef NDEBUG
+        log_state();
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #ifdef DEBUG_BUILD
+        log_state();
+        #endif /* DEBUG_BUILD */
+        \\\
+        ```
+    languages: [c]
+    tags: [good-practice, preprocessor, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=18

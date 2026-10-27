@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule74:
+    standard: @{CppCodingStandards}
+    ruleId: rule-74
+    title: Deal with each error at the layer that has the context
+    statement:
+        Report an error where it is detected, handle it where there is
+        enough context to deal with it, and translate it at layer boundaries
+        into a form the caller understands.
+    rationale:
+        Catching errors too early hides them; translating at boundaries
+        keeps abstractions clean.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Rows Repo::load() {
+            try { return db_.query(sql_); }
+            catch (...) { return {}; }   // error swallowed
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Rows Repo::load() {
+            try { return db_.query(sql_); }
+            catch (const DbError& e) { throw RepositoryError(e.what()); }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling-and-exceptions, error-handling, exceptions]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

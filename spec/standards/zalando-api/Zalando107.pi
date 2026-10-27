@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando107:
+    standard: @{ZalandoApi}
+    ruleId: 107
+    title: Prefer compatible extensions
+    statement:
+        Change APIs in backward-compatible ways, never changing the meaning
+        of fields. For input schemas, add only optional fields and never
+        tighten validation. For output schemas, add fields freely but never
+        remove them or make mandatory fields optional.
+    rationale:
+        Following these rules lets an API grow without forcing consumers to
+        change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        # input schema, new version
+        required: [ sku, quantity, gift_wrap ]
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        # input schema, new version
+        required: [ sku, quantity ]
+        properties:
+          gift_wrap:
+            type: boolean
+            default: false
+        \\\
+        ```
+    languages: [any]
+    tags: [should, compatibility]
+    source: https://opensource.zalando.com/restful-api-guidelines/#107

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem10:
+    standard: @{EffectivePython}
+    ruleId: item-10
+    title: Keep bytes and str apart
+    statement:
+        Treat bytes as raw data and str as text. Decode at the input
+        boundary, work with str inside, encode on output, and open files in
+        binary mode for bytes.
+    rationale:
+        The two types do not mix: comparing or joining them fails or gives
+        wrong results, and default encodings vary by platform.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        with open("image.png") as f:
+            header = f.read(8)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        with open("image.png", "rb") as f:
+            header = f.read(8)
+        \\\
+        ```
+    languages: [python]
+    tags: [strings-and-slicing, strings, bytes, encoding]
+    source: https://effectivepython.com/

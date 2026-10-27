@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPortability15:
+    standard: @{PracticeOfProgramming}
+    ruleId: portability-15
+    title: Keep user-facing text translatable
+    statement:
+        Do not build English text, word order or conventions such as date
+        formats into programs.
+    rationale:
+        Software is used worldwide, and messages and formats need to be
+        adaptable to other languages.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        printf("%d file%s deleted\n", n, n == 1 ? "" : "s");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        printf(ngettext("%d file deleted\n", "%d files deleted\n", n), n);
+        \\\
+        ```
+    languages: [any]
+    tags: [portability, internationalization]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

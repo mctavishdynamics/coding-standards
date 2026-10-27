@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem31:
+    standard: @{EffectivePython}
+    ruleId: item-31
+    title: Return a result object instead of many values
+    statement:
+        When a function would return more than three values, return a small
+        class or named tuple instead of a bare tuple.
+    rationale:
+        Callers unpacking many positional values easily mix up the order,
+        and adding a value breaks every caller.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        low, high, mean, median, count = stats(values)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        @dataclass
+        class Stats:
+            low: float
+            high: float
+            mean: float
+            median: float
+            count: int
+
+        summary = stats(values)
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, return-values]
+    source: https://effectivepython.com/

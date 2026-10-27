@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem5:
+    standard: @{EffectivePython}
+    ruleId: item-5
+    title: Unpack values into names instead of indexing
+    statement:
+        When a tuple or other sequence has a known shape, assign its parts
+        to names with unpacking rather than reading them by index.
+    rationale:
+        Unpacking is shorter, names each part and fails loudly if the shape
+        is wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        for pair in scores.items():
+            print(pair[0], pair[1])
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        for name, score in scores.items():
+            print(name, score)
+        \\\
+        ```
+    languages: [python]
+    tags: [pythonic-thinking, unpacking, readability]
+    source: https://effectivepython.com/

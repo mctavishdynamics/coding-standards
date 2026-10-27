@@ -7,10 +7,11 @@ export coding-rule GoogleGoGoroutineLifetimes:
     ruleId: decisions/goroutine-lifetimes
     title: Make it clear when goroutines exit
     statement:
-        Whenever you start a goroutine, make it obvious when or whether it
-        stops, typically by keeping synchronisation inside one function and
-        using a context or wait group. If that is still not obvious,
-        document when and why the goroutines exit.
+        Each goroutine you launch should have a visible end, usually
+        achieved by keeping the synchronisation within a single function and
+        relying on a context or a WaitGroup. When the exit point still is
+        not evident, write down when the goroutines finish and for what
+        reason.
     rationale:
         Goroutines blocked on channels leak, and in-flight goroutines can
         send on closed channels, race on inputs and make tests unreliable.

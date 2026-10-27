@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdSortUsrIncludeHeaders:
+    standard: @{OpenBsdStyle}
+    ruleId: include-order-userland
+    title: Follow with a blank line and the sorted /usr/include headers
+    statement:
+        After a blank line, include the /usr/include headers, mostly sorted.
+        Take global paths from paths.h and keep program-specific paths in a
+        local pathnames.h.
+    rationale:
+        Sorted groups are easy to scan, and central path definitions are
+        easy to change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include <unistd.h>
+        #include <err.h>
+        #define LOGFILE "/var/log/mydaemon"
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <err.h>
+        #include <paths.h>
+        #include <unistd.h>
+
+        #include "pathnames.h"      /* defines _PATH_MYDAEMON_LOG */
+        \\\
+        ```
+    languages: [c]
+    tags: [includes, file-structure]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

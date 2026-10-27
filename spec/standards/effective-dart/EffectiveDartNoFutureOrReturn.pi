@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoFutureOrReturn:
+    standard: @{EffectiveDart}
+    ruleId: avoid-using-futureort-as-a-return-type
+    title: Return Future<T> rather than FutureOr<T>
+    statement:
+        Use FutureOr only in contravariant positions, such as parameters or
+        a callback's return type, and return a plain Future.
+    rationale:
+        Accepting FutureOr is generous to callers, but returning it forces
+        them to check which they got. A function should be always
+        synchronous or always asynchronous.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        FutureOr<Settings> loadSettings() =>
+            _cached ?? _readFromDisk();
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        Future<Settings> loadSettings() async =>
+            _cached ?? await _readFromDisk();
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, types, async]
+    source: https://dart.dev/effective-dart/design#avoid-using-futureort-as-a-return-type

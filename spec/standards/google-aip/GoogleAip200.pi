@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip200:
+    standard: @{GoogleAip}
+    ruleId: AIP-200
+    title: Mark deliberate standards violations as not precedent
+    statement:
+        Wherever an API departs from the AIPs, add an internal comment
+        linking to aip.dev/not-precedent that explains what is non-standard
+        and why. Inside an API that already breaks a rule consistently, new
+        parts may follow the local pattern.
+    rationale:
+        New APIs copy existing ones, so an undocumented exception spreads.
+        Recording the reason stops the copying and keeps the history.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Window {
+          string length = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Window {
+          // (-- aip.dev/not-precedent: Kept as a string to match the legacy
+          //     scheduler. Normally a google.protobuf.Duration. --)
+          string length = 1;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [documentation, governance]
+    source: https://google.aip.dev/200

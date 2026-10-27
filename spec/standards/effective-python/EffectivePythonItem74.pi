@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem74:
+    standard: @{EffectivePython}
+    ruleId: item-74
+    title: Hand thread work to an executor pool rather than managing threads
+    statement:
+        When concurrent I/O with threads is needed, submit work to a
+        concurrent.futures.ThreadPoolExecutor rather than managing threads
+        yourself.
+    rationale:
+        The executor reuses threads, limits their number and passes
+        exceptions back to the caller through futures.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        from concurrent.futures import ThreadPoolExecutor
+
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            pages = list(pool.map(fetch, urls))
+        \\\
+        ```
+    languages: [python]
+    tags: [concurrency-and-parallelism, threads, executors]
+    source: https://effectivepython.com/

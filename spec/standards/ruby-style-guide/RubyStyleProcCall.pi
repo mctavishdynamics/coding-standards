@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleProcCall:
+    standard: @{RubyStyleGuide}
+    ruleId: proc-call
+    title: Invoke lambdas and procs with call
+    statement:
+        Call lambdas and procs with the call method rather than square
+        brackets or the dot-parenthesis shorthand.
+    rationale:
+        The bracket form looks like collection access and the dot form
+        puzzles newcomers, while call is completely clear.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        format_price[9.5]
+        format_price.(9.5)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        format_price.call(9.5)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [procs, lambdas]
+    source: https://rubystyle.guide/#proc-call

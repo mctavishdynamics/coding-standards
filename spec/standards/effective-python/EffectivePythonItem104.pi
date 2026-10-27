@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem104:
+    standard: @{EffectivePython}
+    ruleId: item-104
+    title: Keep a heap when you repeatedly need the smallest item
+    statement:
+        When you repeatedly need the smallest or most urgent item, keep the
+        items in a list managed by heapq.
+    rationale:
+        Heap operations are logarithmic, far faster than re-sorting a list
+        after each change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        tasks.append(task)
+        tasks.sort(key=lambda t: t.due)
+        urgent = tasks.pop(0)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import heapq
+
+        heapq.heappush(tasks, (task.due, task.id, task))
+        _, _, urgent = heapq.heappop(tasks)
+        \\\
+        ```
+    languages: [python]
+    tags: [data-structures-and-algorithms, data-structures, algorithms]
+    source: https://effectivepython.com/

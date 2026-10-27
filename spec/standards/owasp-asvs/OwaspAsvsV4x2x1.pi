@@ -1,0 +1,24 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV4x2x1:
+    standard: @{OwaspAsvs}
+    ruleId: V4.2.1
+    title: Determine HTTP message boundaries consistently in every component
+    statement:
+        Have every component, from load balancers to application servers,
+        find message boundaries with the right mechanism for the HTTP
+        version. In HTTP/1.x, ignore Content-Length when Transfer-Encoding
+        is present. In HTTP/2 and HTTP/3, check that Content-Length agrees
+        with the data frames.
+    rationale:
+        Components that disagree about where a request ends allow request
+        smuggling, where hidden requests slip past front-end controls.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-2, http, request-smuggling]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x13-V4-API-and-Web-Service.md#v42-http-message-structure-validation

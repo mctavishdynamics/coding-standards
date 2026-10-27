@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoConstantDefinitionInBlock:
+    standard: @{RubyStyleGuide}
+    ruleId: no-constant-definition-in-block
+    title: Do not define constants inside a block
+    statement:
+        Do not define a constant inside a block. When putting it in the
+        enclosing scope would cause trouble, use a local variable or a
+        method in its place.
+    rationale:
+        A block does not create a namespace, so a constant assigned in it
+        lands in the enclosing scope and may clash or leak.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        RSpec.describe Cart do
+          MAX_ITEMS = 50
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        RSpec.describe Cart do
+          let(:max_items) { 50 }
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [constants, blocks]
+    source: https://rubystyle.guide/#no-constant-definition-in-block

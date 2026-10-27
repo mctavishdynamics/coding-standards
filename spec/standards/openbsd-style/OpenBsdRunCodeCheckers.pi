@@ -1,0 +1,23 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdRunCodeCheckers:
+    standard: @{OpenBsdStyle}
+    ruleId: code-checkers
+    title: Compile with warnings enabled and keep only the FALLTHROUGH lint comment
+    statement:
+        Run code through a checker, such as gcc with -Wall -W
+        -Wpointer-arith, and aim for minimal warnings. Of the old lint
+        annotations keep only FALLTHROUGH, which helps readers; the rest can
+        be deleted.
+    rationale:
+        Warnings catch bugs, and lint itself is gone, so its other
+        annotations serve no purpose.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [c]
+    tags: [warnings, tooling, comments]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

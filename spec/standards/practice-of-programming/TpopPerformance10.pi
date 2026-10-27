@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance10:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-10
+    title: Swap costly operations for cheaper equivalents
+    statement:
+        Replace expensive operations with cheaper ones that give the same
+        result, such as comparing squared distances instead of taking square
+        roots.
+    rationale:
+        In a hot loop the saving per operation adds up.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (sqrt(dx * dx + dy * dy) < radius)
+            hit();
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (dx * dx + dy * dy < radius * radius)
+            hit();
+        \\\
+        ```
+    languages: [any]
+    tags: [performance]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

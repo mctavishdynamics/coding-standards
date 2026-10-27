@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNestedTypes4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: nested-types-4
+    title: Do not nest types likely to be used outside the outer type
+    statement:
+        If code outside the containing type is likely to refer to a type,
+        declare it at namespace level instead.
+    rationale:
+        An enum passed to a public method, for example, would otherwise have
+        to be written with its outer type every time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class Printer
+        {
+            public enum Orientation { Portrait, Landscape }
+            public void Print(Document document, Orientation orientation) { }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public enum PageOrientation { Portrait, Landscape }
+
+        public class Printer
+        {
+            public void Print(Document document, PageOrientation orientation) { }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, type-design, nested-types]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/nested-types

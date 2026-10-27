@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdPrototypeNonStaticFunctions:
+    standard: @{OpenBsdStyle}
+    ruleId: prototypes
+    title: Prototype non-static functions and make userland helpers static
+    statement:
+        Every non-static function has a prototype somewhere. Prototypes for
+        file-private functions belong near the top of the first source file
+        of the program. In userland, make such functions static; in the
+        kernel do not, and their prototypes may be omitted when they are
+        defined before use.
+    rationale:
+        Prototypes let the compiler check calls; the kernel avoids static so
+        the kernel debugger can see every function.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* userland tool */
+        int
+        parse_line(char *line)
+        {
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* userland tool */
+        static int      parse_line(char *);
+
+        static int
+        parse_line(char *line)
+        {
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, declarations, linkage]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

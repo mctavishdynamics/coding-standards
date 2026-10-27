@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvDirectoryStructure:
+    standard: @{KotlinConventions}
+    ruleId: directory-structure
+    title: Mirror the package structure in directories
+    statement:
+        In a pure Kotlin project, lay out directories to follow the
+        packages, leaving out the common root package. When Kotlin sits
+        beside Java on the JVM, keep Kotlin files in the same source root as
+        Java and put each file in the directory that matches its package.
+    rationale:
+        Readers and tools can find a file from its package name without
+        extra nesting for the shared root.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        // src/main/kotlin/com/shop/app/cart/Cart.kt
+        package com.shop.app.cart
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        // src/main/kotlin/cart/Cart.kt  (root package com.shop.app omitted)
+        package com.shop.app.cart
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [organization, files]
+    source: https://kotlinlang.org/docs/coding-conventions.html#directory-structure

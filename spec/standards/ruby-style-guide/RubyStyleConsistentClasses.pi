@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleConsistentClasses:
+    standard: @{RubyStyleGuide}
+    ruleId: consistent-classes
+    title: Structure class definitions consistently
+    statement:
+        Lay out each class in the same order. Mixins come first, then inner
+        classes, constants, attribute macros, other macros, public class
+        methods, initialize, other public instance methods, and finally
+        protected and private methods.
+    rationale:
+        A predictable layout lets readers find any part of any class
+        quickly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Account
+          def deposit(amount) = @balance += amount
+          LIMIT = 10_000
+          include Auditable
+          attr_reader :balance
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Account
+          include Auditable
+
+          LIMIT = 10_000
+
+          attr_reader :balance
+
+          def deposit(amount) = @balance += amount
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, organization]
+    source: https://rubystyle.guide/#consistent-classes

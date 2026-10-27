@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleTooManyParams:
+    standard: @{RubyStyleGuide}
+    ruleId: too-many-params
+    title: Avoid long parameter lists
+    statement:
+        Let a method take no more than three or four parameters.
+    rationale:
+        Long parameter lists are hard to remember and call correctly, and
+        often signal that a method does too much.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def book(guest, room, arrival, departure, adults, children, breakfast)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def book(guest, stay, extras: [])
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, parameters, complexity]
+    source: https://rubystyle.guide/#too-many-params

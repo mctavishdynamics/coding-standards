@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule63:
+    standard: @{CppCodingStandards}
+    ruleId: rule-63
+    title: Expose only layout-stable types across module boundaries
+    statement:
+        Expose only types that all clients can use safely, typically
+        built-in types and simple structs, at boundaries between separately
+        compiled modules.
+    rationale:
+        Standard library types and classes can differ in layout between
+        compilers and settings.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        extern "C" __declspec(dllexport) std::string version();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        extern "C" __declspec(dllexport) const char* version();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces-and-modules, modules, portability]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

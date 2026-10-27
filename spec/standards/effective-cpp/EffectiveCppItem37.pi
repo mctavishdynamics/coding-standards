@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem37:
+    standard: @{EffectiveCpp}
+    ruleId: item-37
+    title: Keep default arguments of virtual functions out of overrides
+    statement:
+        Do not redeclare an inherited virtual function with a different
+        default argument. Use the non-virtual interface idiom if you need
+        defaults.
+    rationale:
+        Default arguments bind statically while the function binds
+        dynamically, so the call mixes the derived body with the base
+        default.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Shape { public: virtual void draw(Color c = Color::Red) const; };
+        class Circle : public Shape { public: void draw(Color c = Color::Blue) const override; };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Shape {
+        public:
+            void draw(Color c = Color::Red) const { doDraw(c); }
+        private:
+            virtual void doDraw(Color c) const;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance-and-oo-design, inheritance, functions]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

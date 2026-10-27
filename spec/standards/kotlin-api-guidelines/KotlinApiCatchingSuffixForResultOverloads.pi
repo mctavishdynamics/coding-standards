@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiCatchingSuffixForResultOverloads:
+    standard: @{KotlinApiGuidelines}
+    ruleId: catching-suffix-for-result-overloads
+    title: Name result-returning variants with a Catching suffix
+    statement:
+        When you offer one overload that throws and another that wraps the
+        failure in a result type, give the wrapping one a Catching suffix.
+    rationale:
+        The suffix follows the standard library pattern of run and
+        runCatching, so users know what to expect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun parseConfig(text: String): Config
+        public fun safeParseConfig(text: String): Result<Config>
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun parseConfig(text: String): Config
+        public fun parseConfigCatching(text: String): Result<Config>
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [naming, error-handling]
+    source: https://kotlinlang.org/docs/api-guidelines-consistency.html#choose-the-appropriate-error-handling-mechanism

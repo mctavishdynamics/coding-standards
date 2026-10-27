@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule184:
+    standard: @{AnssiC}
+    ruleId: rule-184
+    title: Leave no unreachable code except commented defensive or interface code
+    statement:
+        Remove code that can never run. Defensive code and interface code
+        are the only exceptions, and each must be marked with a comment.
+    rationale:
+        Unreachable code is untested and may hide mistakes in the
+        surrounding logic.
+    exceptions:
+        Defensive code and interface code, provided a comment identifies it.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        return status;
+        log_debug("done"); /* never reached */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        log_debug("done");
+        return status;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, dead-code]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=147

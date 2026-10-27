@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoClassVars:
+    standard: @{RubyStyleGuide}
+    ruleId: no-class-vars
+    title: Avoid class variables
+    statement:
+        Do not use class variables, the kind written with a double at-sign.
+        Use class instance variables instead.
+    rationale:
+        A class variable is shared by the whole hierarchy, so a subclass
+        that assigns it silently changes it for the parent and every
+        sibling.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Plugin
+          @@registry = []
+
+          def self.register(name) = @@registry << name
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Plugin
+          @registry = []
+
+          class << self
+            attr_reader :registry
+
+            def register(name) = registry << name
+          end
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, state, inheritance]
+    source: https://rubystyle.guide/#no-class-vars

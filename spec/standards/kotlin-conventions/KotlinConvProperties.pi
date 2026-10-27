@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvProperties:
+    standard: @{KotlinConventions}
+    ruleId: properties
+    title: Format property accessors and long initializers clearly
+    statement:
+        Keep a trivial read-only property to one line. Larger properties put
+        get and set on lines of their own. If the initializer is long, end
+        the line with the = and continue the initializer below with a
+        four-space indent.
+    rationale:
+        Accessors on their own lines are easy to find, and breaking after
+        the equals sign keeps long initializers readable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        val label: String get() { return if (count == 1) "item" else "items" }
+        private val config: AppConfig = ConfigLoader.fromEnvironment(System.getenv()).withDefaults()
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        val isFull: Boolean get() = count == capacity
+
+        val label: String
+            get() { return if (count == 1) "item" else "items" }
+
+        private val config: AppConfig =
+            ConfigLoader.fromEnvironment(System.getenv()).withDefaults()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, properties]
+    source: https://kotlinlang.org/docs/coding-conventions.html#properties

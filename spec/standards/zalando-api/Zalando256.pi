@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando256:
+    standard: @{ZalandoApi}
+    ruleId: 256
+    title: Keep HTTP status codes meaningful across every hop
+    statement:
+        Middleware such as proxies, gateways and sidecars must not change
+        the meaning of an application's status code or answer on its behalf.
+        A missing route must produce 502, 503 or 504, never 404.
+    rationale:
+        Clients read 404 as a statement about the resource, so
+        infrastructure that sends it for its own errors misleads them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        # gateway has no route configured
+        HTTP/1.1 404 Not Found
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        # gateway has no route configured
+        HTTP/1.1 503 Service Unavailable
+        \\\
+        ```
+    languages: [any]
+    tags: [must, http, status-codes]
+    source: https://opensource.zalando.com/restful-api-guidelines/#256

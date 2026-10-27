@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHashValuesAtAndHashFetchValues:
+    standard: @{RubyStyleGuide}
+    ruleId: hash-values-at-and-hash-fetch-values
+    title: Read several hash values with values_at or fetch_values
+    statement:
+        When you need several values from a hash at once, use values_at, or
+        fetch_values when the keys must exist.
+    rationale:
+        One call is shorter than a line per key and clearer than mapping
+        over a list of keys.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        host = options[:host]
+        port = options[:port]
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        host, port = options.values_at(:host, :port)
+        host, port = options.fetch_values(:host, :port)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes]
+    source: https://rubystyle.guide/#hash-values-at-and-hash-fetch-values

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleEmptyLinesAfterModuleInclusion:
+    standard: @{RubyStyleGuide}
+    ruleId: empty-lines-after-module-inclusion
+    title: Put an empty line after module inclusion
+    statement:
+        Leave an empty line after a group of extend, include and prepend
+        calls.
+    rationale:
+        The blank line sets the class's mixins apart from the rest of its
+        body.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Invoice
+          include Comparable
+          attr_reader :total
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Invoice
+          include Comparable
+
+          attr_reader :total
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, whitespace, classes]
+    source: https://rubystyle.guide/#empty-lines-after-module-inclusion

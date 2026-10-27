@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagUseOfColor:
+    standard: @{Wcag22}
+    ruleId: 1.4.1
+    title: Do not use color as the only way to convey information
+    statement:
+        Pair color with another visual cue, such as text, an icon, a pattern
+        or an underline, whenever it conveys information, indicates an
+        action, prompts a response or distinguishes an element.
+    rationale:
+        People with color vision deficiencies or monochrome displays may not
+        see the difference between colors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <style>.error { border-color: red; }</style>
+        <input id="zip" class="error">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <input id="zip" aria-invalid="true" aria-describedby="zip-err" class="error">
+        <p id="zip-err">Error. Enter a five-digit postal code.</p>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, color, visual-design]
+    source: https://www.w3.org/TR/WCAG22/#use-of-color

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem5:
+    standard: @{EffectiveJava}
+    ruleId: item-5
+    title: Pass the resources a class depends on in from outside
+    statement:
+        When a class needs a resource that may vary, such as a dictionary or
+        a clock, take it as a constructor argument or factory instead of
+        fixing it in a static field or singleton.
+    rationale:
+        Hardwired resources make a class inflexible and hard to test.
+        Injected ones can be swapped, shared and replaced with test doubles.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class SpellChecker {
+            private static final Lexicon LEXICON = new EnglishLexicon();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class SpellChecker {
+            private final Lexicon lexicon;
+
+            public SpellChecker(Lexicon lexicon) {
+                this.lexicon = Objects.requireNonNull(lexicon);
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [creating-and-destroying-objects, dependency-injection, testability]
+    source: https://www.informit.com/store/effective-java-9780134686097

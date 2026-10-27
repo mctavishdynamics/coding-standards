@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleDoubleColons:
+    standard: @{RubyStyleGuide}
+    ruleId: double-colons
+    title: Use the double colon only for constants and constructor methods
+    statement:
+        Reference constants, including classes and modules, and
+        constructor-style methods such as Integer() with the double colon,
+        and call ordinary methods with a dot.
+    rationale:
+        Mixing the two notations for normal calls hides the difference
+        between looking up a constant and sending a message.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        now = Time::now
+        digest = Digest::SHA256::hexdigest(body)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        now = Time.now
+        digest = Digest::SHA256.hexdigest(body)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [method-calls, constants]
+    source: https://rubystyle.guide/#double-colons

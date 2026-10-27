@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoSetterWithoutGetter:
+    standard: @{EffectiveDart}
+    ruleId: dont-define-a-setter-without-a-corresponding-getter
+    title: Do not define a setter without a matching getter
+    statement:
+        Pair every setter with a getter. If state can be changed but should
+        not be visible, use a method instead of adding a getter just for the
+        setter. The avoid_setters_without_getters lint checks this.
+    rationale:
+        A property callers can assign but never read breaks the usual mental
+        model of properties, and compound assignment on it fails.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Uploader {
+          set password(String value) => _auth = hash(value);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Uploader {
+          void authenticate(String password) => _auth = hash(password);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, properties, api-design]
+    source: https://dart.dev/effective-dart/design#dont-define-a-setter-without-a-corresponding-getter

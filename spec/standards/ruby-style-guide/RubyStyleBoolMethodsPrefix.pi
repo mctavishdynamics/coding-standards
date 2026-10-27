@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleBoolMethodsPrefix:
+    standard: @{RubyStyleGuide}
+    ruleId: bool-methods-prefix
+    title: Do not prefix predicate methods with is, does or can
+    statement:
+        Name predicate methods without a leading helper verb; write empty?
+        rather than is_empty?, and leave off does and can as well.
+    rationale:
+        The question mark already marks the method as a question, and core
+        methods such as empty? and include? set the style.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def is_paid?
+          balance.zero?
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def paid?
+          balance.zero?
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [naming, methods, predicates]
+    source: https://rubystyle.guide/#bool-methods-prefix

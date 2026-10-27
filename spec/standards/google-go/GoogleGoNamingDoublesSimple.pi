@@ -18,20 +18,22 @@ export coding-rule GoogleGoNamingDoublesSimple:
     noncompliant:
         ```go
         \\\
-        package creditcardtest
+        package geocodetest
 
-        type StubCreditCardService struct{ /* ... */ }
+        type FakeGeocodeResolver struct{ /* ... */ }
         \\\
         ```
     compliant:
         ```go
         \\\
-        package creditcardtest
+        package geocodetest
 
-        // Stub stubs creditcard.Service and returns no errors.
-        type Stub struct{}
+        // Fake stands in for geocode.Resolver and always finds the origin.
+        type Fake struct{}
 
-        func (Stub) Charge(*creditcard.Card, money.Money) error { return nil }
+        func (Fake) Resolve(string) (geocode.Point, error) {
+            return geocode.Point{}, nil
+        }
         \\\
         ```
     languages: [go]

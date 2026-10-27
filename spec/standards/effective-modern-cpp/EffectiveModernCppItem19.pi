@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem19:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-19
+    title: Hold jointly owned objects in shared_ptr
+    statement:
+        Manage objects that several owners keep alive with shared_ptr. Avoid
+        creating two control blocks from one raw pointer.
+    rationale:
+        shared_ptr gives automatic lifetime for shared resources, at the
+        cost of a control block and atomic reference counts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto* conn = new Connection;
+        std::shared_ptr<Connection> a(conn);
+        std::shared_ptr<Connection> b(conn);   // deleted twice
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto a = std::make_shared<Connection>();
+        auto b = a;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, smart-pointers, ownership]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

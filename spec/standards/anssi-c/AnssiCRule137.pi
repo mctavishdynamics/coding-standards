@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule137:
+    standard: @{AnssiC}
+    ruleId: rule-137
+    title: Keep prototypes consistent with definitions
+    statement:
+        Use exactly the same parameter types in a function's declaration and
+        its definition.
+    rationale:
+        A mismatch makes callers pass arguments the function reads
+        differently.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int crc16(const uint8_t *buf, int len);
+        int crc16(const uint8_t *buf, size_t len) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int crc16(const uint8_t *buf, size_t len);
+        int crc16(const uint8_t *buf, size_t len) { /* ... */ }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, functions, declarations]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=109

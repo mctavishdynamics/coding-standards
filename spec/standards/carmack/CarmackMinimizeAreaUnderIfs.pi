@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackMinimizeAreaUnderIfs:
+    standard: @{Carmack}
+    ruleId: minimize-area-under-ifs
+    title: Keep the amount of code guarded by conditionals small
+    statement:
+        Keep the amount of code guarded by conditions small, and favour
+        paths that run the same way and take the same time each pass over
+        skipping work that seems unnecessary.
+    rationale:
+        Conditional skipping made for better average timings causes bugs,
+        and in a fixed-rate game the worst case matters more than the
+        average.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (!paused && player.alive && level.loaded) {
+            // 400 lines of per-frame simulation
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        const float step = (paused || !player.alive) ? 0.0f : dt;
+        SimulateFrame(world, step);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [control-flow, performance, reliability]
+    source: http://number-none.com/blow/john_carmack_on_inlined_code.html

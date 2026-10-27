@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAlignMultilineArrays:
+    standard: @{RubyStyleGuide}
+    ruleId: align-multiline-arrays
+    title: Align the elements of multi-line array literals
+    statement:
+        When an array literal spans several lines, align its elements,
+        either under the first element or on their own lines with a single
+        indent.
+    rationale:
+        Aligned elements read as one list and keep diffs tidy when items are
+        added.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        COLORS = [:red, :green,
+          :blue, :yellow,
+              :black]
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        COLORS = [
+          :red,
+          :green,
+          :blue,
+          :yellow,
+          :black
+        ]
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, collections]
+    source: https://rubystyle.guide/#align-multiline-arrays

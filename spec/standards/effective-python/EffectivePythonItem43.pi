@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem43:
+    standard: @{EffectivePython}
+    ruleId: item-43
+    title: Yield results from a generator instead of building a list
+    statement:
+        When a function produces a sequence of results, write it as a
+        generator that yields each one rather than appending to and
+        returning a list.
+    rationale:
+        Generators are shorter, use constant memory and can handle inputs of
+        any size.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def word_starts(text):
+            result = []
+            for i, ch in enumerate(text):
+                if ch != " " and (i == 0 or text[i - 1] == " "):
+                    result.append(i)
+            return result
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def word_starts(text):
+            for i, ch in enumerate(text):
+                if ch != " " and (i == 0 or text[i - 1] == " "):
+                    yield i
+        \\\
+        ```
+    languages: [python]
+    tags: [comprehensions-and-generators, generators, memory]
+    source: https://effectivepython.com/

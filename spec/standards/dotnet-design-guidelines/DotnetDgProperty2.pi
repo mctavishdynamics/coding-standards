@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-2
+    title: Avoid set-only properties and setters more visible than getters
+    statement:
+        Do not write properties without a getter, or whose setter is more
+        accessible than the getter. Use a method named Set plus the would-be
+        property name instead.
+    rationale:
+        A value that can be written but not read surprises callers and does
+        not behave like a property.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public string Password { set => _hash = Hash(value); }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void SetPassword(string password) => _hash = Hash(password);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, properties, accessibility]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property

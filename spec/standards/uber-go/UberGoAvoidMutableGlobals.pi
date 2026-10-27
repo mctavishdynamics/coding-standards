@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoAvoidMutableGlobals:
+    standard: @{UberGo}
+    ruleId: avoid-mutable-globals
+    title: Inject dependencies instead of mutating globals
+    statement:
+        Do not change global variables, function variables included, to
+        alter behaviour. Pass the dependency into the type or function that
+        needs it.
+    rationale:
+        Injected dependencies keep tests isolated and make the code's inputs
+        explicit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var now = time.Now
+
+        func IsExpired(t Token) bool {
+            return now().After(t.Expiry)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Checker struct {
+            now func() time.Time
+        }
+
+        func (c Checker) IsExpired(t Token) bool {
+            return c.now().After(t.Expiry)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [globals, dependency-injection, testing]
+    source: https://github.com/uber-go/guide/blob/master/style.md#avoid-mutable-globals

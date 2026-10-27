@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem59:
+    standard: @{EffectivePython}
+    ruleId: item-59
+    title: Add properties to existing attributes before redesigning
+    statement:
+        When an attribute needs new behaviour, such as computing its value
+        from other data, a property can bridge the gap without changing
+        callers. If properties keep piling up, refactor the class.
+    rationale:
+        Properties let a data model evolve gradually, but heavy use is a
+        sign the design needs rethinking.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        class Bucket:
+            @property
+            def quota(self):
+                return self.max_quota - self.used
+
+            @quota.setter
+            def quota(self, value):
+                self.max_quota = self.used + value
+        \\\
+        ```
+    languages: [python]
+    tags: [metaclasses-and-attributes, attributes, properties, refactoring]
+    source: https://effectivepython.com/

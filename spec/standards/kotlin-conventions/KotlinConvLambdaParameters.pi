@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvLambdaParameters:
+    standard: @{KotlinConventions}
+    ruleId: lambda-parameters
+    title: Use it in short lambdas, explicit names in nested ones
+    statement:
+        In short lambdas that are not nested, use the implicit it parameter.
+        In nested lambdas with parameters, always name the parameters.
+    rationale:
+        It keeps small lambdas concise, while nested its would be ambiguous.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        groups.forEach { it.members.forEach { println(it) } }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        val ids = users.map { it.id }
+        groups.forEach { group -> group.members.forEach { member -> println(member) } }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [lambdas]
+    source: https://kotlinlang.org/docs/coding-conventions.html#lambda-parameters

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdUseC99Bool:
+    standard: @{FreeBsdStyle}
+    ruleId: bool-type
+    title: Use bool with true and false for boolean values
+    statement:
+        Use the C99 bool type in new code rather than int or boolean_t, with
+        the values true and false instead of TRUE and FALSE. Include
+        stdbool.h in userland and sys/types.h in the kernel.
+    rationale:
+        A real boolean type documents intent and lets the compiler check it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int done = FALSE;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        bool done = false;
+        \\\
+        ```
+    languages: [c]
+    tags: [types, booleans]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

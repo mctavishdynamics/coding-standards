@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule22:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-22
+    title: Avoid nested ifs in the then branch and empty else branches
+    statement:
+        Do not put an if directly in the then part of another if, and do not
+        write else branches that do nothing. Reorganize the tests instead.
+    rationale:
+        Such shapes make it unclear which else belongs to which if and
+        usually mean the conditions could be stated more simply.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (a > 0)
+            if (b > 0)
+                both_positive();
+            else
+                ;
+        else
+            a_not_positive();
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (a <= 0) {
+            a_not_positive();
+        } else if (b > 0) {
+            both_positive();
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [control-structure, conditionals]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

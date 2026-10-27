@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem110:
+    standard: @{EffectivePython}
+    ruleId: item-110
+    title: Give each test a fresh environment through fixture hooks
+    statement:
+        Use setUp and tearDown to give each test a fresh environment, and
+        setUpModule and tearDownModule for expensive shared fixtures.
+    rationale:
+        Tests that share state can pass or fail depending on their order,
+        making failures hard to trust.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        class StoreTests(unittest.TestCase):
+            def setUp(self):
+                self.dir = tempfile.TemporaryDirectory()
+                self.store = Store(self.dir.name)
+
+            def tearDown(self):
+                self.dir.cleanup()
+        \\\
+        ```
+    languages: [python]
+    tags: [testing-and-debugging, testing, isolation]
+    source: https://effectivepython.com/

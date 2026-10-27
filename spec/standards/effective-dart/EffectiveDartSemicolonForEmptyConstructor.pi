@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartSemicolonForEmptyConstructor:
+    standard: @{EffectiveDart}
+    ruleId: do-use-instead-of-for-empty-constructor-bodies
+    title: End constructors with an empty body using ; instead of \ {} \
+    statement:
+        When a constructor has no body, terminate it with a semicolon rather
+        than an empty pair of braces. The empty_constructor_bodies lint
+        checks this.
+    rationale:
+        The semicolon is shorter, and const constructors require it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Tag {
+          final String name;
+          Tag(this.name) {}
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Tag {
+          final String name;
+          Tag(this.name);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, constructors, formatting]
+    source: https://dart.dev/effective-dart/usage#do-use-instead-of-for-empty-constructor-bodies

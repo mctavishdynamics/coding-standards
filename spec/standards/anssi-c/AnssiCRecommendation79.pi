@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation79:
+    standard: @{AnssiC}
+    ruleId: recommendation-79
+    title: Do not create several aliases for the same type
+    statement:
+        Do not define new typedef names for a type that already has one.
+    rationale:
+        Several names for one type mislead readers into thinking the types
+        differ.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        typedef uint16_t port_t;
+        typedef uint16_t port_number_t;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        typedef uint16_t port_t;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, types, typedef]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=60

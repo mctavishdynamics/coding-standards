@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem18:
+    standard: @{EffectiveJava}
+    ruleId: item-18
+    title: Prefer wrapping an object to extending its class
+    statement:
+        To reuse or extend a concrete class from another package, hold an
+        instance of it in a private field and forward calls to it, rather
+        than subclassing it.
+    rationale:
+        Inheritance ties a subclass to the superclass's implementation
+        details, so a superclass change can silently break it. Composition
+        depends only on the public API.
+    exceptions:
+        Inheritance fits when the subclass truly is a subtype of the
+        superclass and both are under the same team's control or designed
+        for extension.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class CountingList<E> extends ArrayList<E> {
+            int added;
+            @Override public boolean add(E e) { added++; return super.add(e); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class CountingList<E> {
+            private final List<E> inner = new ArrayList<>();
+            private int added;
+
+            public boolean add(E e) { added++; return inner.add(e); }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [classes-and-interfaces, composition, inheritance]
+    source: https://www.informit.com/store/effective-java-9780134686097

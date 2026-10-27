@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule87:
+    standard: @{AnssiC}
+    ruleId: rule-87
+    title: Use unsigned integers for array sizes
+    statement:
+        Express array sizes with unsigned integer types such as size_t.
+    rationale:
+        A size can never be negative, and a signed size may be negative
+        after an error.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int len = get_len();
+        char *buf = malloc(len);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        size_t len = get_len();
+        char *buf = malloc(len);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, arrays, types]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=70

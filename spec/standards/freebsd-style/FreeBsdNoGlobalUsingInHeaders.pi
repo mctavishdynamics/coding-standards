@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdNoGlobalUsingInHeaders:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-using-namespace
+    title: Do not import namespaces at global scope in headers
+    statement:
+        Never put a using directive at global scope in a header. Source
+        files, and function scopes in headers, may import namespaces other
+        than std.
+    rationale:
+        A global using in a header affects every file that includes it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // ring.hh
+        using namespace std::literals;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // ring.cc
+        using namespace std::literals;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, namespaces, headers]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

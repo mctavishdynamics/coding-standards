@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvWhenBranchFormatting:
+    standard: @{KotlinConventions}
+    ruleId: when-branch-formatting
+    title: Keep short when branches on one line
+    statement:
+        Write short when branches on the same line as their condition
+        without braces, and consider a blank line around branches that span
+        several lines.
+    rationale:
+        Compact short branches and spaced long ones make a when easy to
+        scan.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        when (status) {
+            Status.OK -> { show() }
+            Status.ERROR -> { alert() }
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        when (status) {
+            Status.OK -> show()
+            Status.ERROR -> alert()
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, control-flow]
+    source: https://kotlinlang.org/docs/coding-conventions.html#control-flow-statements

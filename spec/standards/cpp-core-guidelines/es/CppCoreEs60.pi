@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs60:
     standard: @{CppCoreGuidelines}
     ruleId: ES.60
-    title: Avoid new and delete outside resource management functions
+    title: Confine new and delete to resource management code
     statement:
-        Keep new and delete inside the implementation of resource handles
-        such as containers and smart pointers, not in application code.
+        Application code should not call new or delete. Those calls belong
+        in the implementation of classes that manage resources, such as
+        containers and smart pointers.
     rationale:
-        Managing resources directly in application code is tedious and
-        error-prone.
+        Doing resource management by hand everywhere is laborious. Any path
+        that skips the delete leaks, so mistakes come easily.
     exceptions: null
     severity: null
     noncompliant:

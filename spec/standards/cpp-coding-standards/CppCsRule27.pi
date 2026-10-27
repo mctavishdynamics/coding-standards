@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule27:
+    standard: @{CppCodingStandards}
+    ruleId: rule-27
+    title: Implement arithmetic operators in terms of their assignment forms
+    statement:
+        Write op= as a member returning a reference, and write op as a
+        non-member that copies its left argument and applies op= to it.
+    rationale:
+        This keeps the two consistent, puts the logic in one place and
+        supports conversions on both sides.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Money Money::operator+(const Money& b) const { return Money(c_ + b.c_); }
+        Money& Money::operator+=(const Money& o) { c_ += o.c_; return *this; }   // logic duplicated
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Money& Money::operator+=(const Money& o) { c_ += o.c_; return *this; }
+        Money operator+(Money a, const Money& b) { a += b; return a; }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions-and-operators, operators]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

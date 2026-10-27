@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleStabbyLambdaNoArgs:
+    standard: @{RubyStyleGuide}
+    ruleId: stabby-lambda-no-args
+    title: Omit parentheses for arrow lambdas without parameters
+    statement:
+        When an arrow lambda takes no parameters, leave out the empty
+        parentheses.
+    rationale:
+        Empty parentheses carry no information.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        now = ->() { Time.now }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        now = -> { Time.now }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [lambdas]
+    source: https://rubystyle.guide/#stabby-lambda-no-args

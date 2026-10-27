@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleIndentAnnotations:
+    standard: @{RubyStyleGuide}
+    ruleId: indent-annotations
+    title: Indent continuation lines of an annotation
+    statement:
+        When an annotation note runs over several lines, indent the
+        following lines by three spaces after the hash sign, two more than
+        the first line.
+    rationale:
+        The extra indent shows that the later lines belong to the same
+        annotation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        # OPTIMIZE: This loads every invoice into memory.
+        # Batch the query once the reports move to the new store.
+        load_invoices
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        # OPTIMIZE: This loads every invoice into memory.
+        #   Batch the query once the reports move to the new store.
+        load_invoices
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comments, annotations, formatting]
+    source: https://rubystyle.guide/#indent-annotations

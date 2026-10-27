@@ -5,15 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR32:
     standard: @{CppCoreGuidelines}
     ruleId: R.32
-    title:
-        Take a unique_ptr parameter to express that a function assumes
-        ownership
+    title: Take a unique_ptr by value when the function takes ownership
     statement:
-        When a function takes over ownership of an object, declare the
-        parameter as unique_ptr of that type, passed by value.
+        Declare a parameter as unique_ptr of T, by value, when the function
+        becomes the new owner of the T.
     rationale:
-        The signature documents the transfer and the type system enforces
-        it, because the caller has to move the pointer in.
+        Callers must std::move their pointer to make the call. The signature
+        therefore both states and enforces that ownership changes hands.
     exceptions: null
     severity: null
     noncompliant:

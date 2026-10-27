@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiWriteDocComment:
+    standard: @{SwiftApiDesign}
+    ruleId: write-doc-comment
+    title: Document every declaration
+    statement:
+        Give each declaration a documentation comment and write it early,
+        while the design is still open. If the API is hard to explain
+        simply, treat that as a sign the design itself may be wrong.
+    rationale:
+        Writing the description often exposes awkward names and muddled
+        responsibilities before they are locked in.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func adjust(_ v: Double, _ m: Int) -> Double
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// Returns `value` rounded to `places` decimal places.
+        func rounded(_ value: Double, toPlaces places: Int) -> Double
+        \\\
+        ```
+    languages: [swift]
+    tags: [documentation]
+    source: https://www.swift.org/documentation/api-design-guidelines/#write-doc-comment

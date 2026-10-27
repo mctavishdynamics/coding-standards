@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSafeBecauseUnsafe:
+    standard: @{RubyStyleGuide}
+    ruleId: safe-because-unsafe
+    title: Implement the non-bang method by calling the bang version
+    statement:
+        Where you can, implement the method without a bang by copying the
+        object and calling the bang version on the copy.
+    rationale:
+        The logic then lives in one place, and the two versions cannot drift
+        apart.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def normalize!
+          @tags = @tags.map(&:downcase).uniq
+          self
+        end
+
+        def normalize
+          copy = dup
+          copy.tags = @tags.map(&:downcase).uniq
+          copy
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def normalize!
+          @tags = @tags.map(&:downcase).uniq
+          self
+        end
+
+        def normalize
+          dup.normalize!
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, duplication]
+    source: https://rubystyle.guide/#safe-because-unsafe

@@ -1,0 +1,24 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip211:
+    standard: @{GoogleAip}
+    ruleId: AIP-211
+    title: Check authorization before validating the request
+    statement:
+        Check that the caller is authorized before any other validation, and
+        answer every failed check with PERMISSION_DENIED, whether or not the
+        resource exists. The message should name the permission and resource
+        and note that the resource might not exist.
+    rationale:
+        Validating first would leak information about resources to
+        unauthorized callers. A single error for both cases avoids the
+        confusing switch from not-found to forbidden as permissions grow.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [security, authorization, errors]
+    source: https://google.aip.dev/211

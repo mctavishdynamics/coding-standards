@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-8
+    title: Allow Dispose(bool) to run more than once
+    statement:
+        Make Dispose(bool) safe to call repeatedly, typically by doing
+        nothing after the first call.
+    rationale:
+        Objects are often disposed from several places, and a second call
+        must not fail.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        private bool _disposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            if (disposing) _connection.Dispose();
+            _disposed = true;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, dispose, resources]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern#basic-dispose-pattern

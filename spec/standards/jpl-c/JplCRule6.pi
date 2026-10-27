@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule6:
+    standard: @{JplC}
+    ruleId: rule-6
+    title: Exchange data between tasks by message passing
+    statement:
+        Tasks should talk to each other only through an IPC mechanism and
+        should avoid callbacks. A task should not run code or touch data
+        owned by another task, and it must receive all its IPC messages at
+        one point.
+    rationale:
+        When each module keeps its own state and others reach it only by
+        message, there is far less need for locks and interrupt masking.
+        Keep message contents to plain values; avoid embedding pointers to
+        data or code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        extern int nav_target_heading;
+
+        void guidance_update(int heading) {
+            nav_target_heading = heading;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void guidance_update(int heading) {
+            nav_msg_t msg = { .type = NAV_SET_HEADING, .heading = heading };
+            if (ipc_send(NAV_QUEUE, &msg, sizeof msg) != OK) {
+                report_fault(FAULT_IPC);
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-2, concurrency, ipc]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

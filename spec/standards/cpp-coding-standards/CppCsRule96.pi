@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule96:
+    standard: @{CppCodingStandards}
+    ruleId: rule-96
+    title: Copy and compare class objects with their own operations
+    statement:
+        Copy and compare class objects with their own operations, not with
+        memcpy, memmove or memcmp.
+    rationale:
+        Byte copies skip constructors and break objects with pointers,
+        virtual functions or owned resources; byte comparison reads padding.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::memcpy(&copy, &original, sizeof(Customer));   // Customer holds std::string
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Customer copy = original;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-safety, memory, type-safety]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

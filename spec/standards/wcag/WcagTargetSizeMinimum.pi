@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagTargetSizeMinimum:
+    standard: @{Wcag22}
+    ruleId: 2.5.8
+    title: Size pointer targets to 24 CSS pixels square or larger
+    statement:
+        Give pointer targets a size of 24 CSS pixels or more in each
+        dimension. A smaller target passes when a 24 pixel circle drawn
+        around its centre stays clear of every other target and its circle.
+    rationale:
+        Small, crowded targets cause mistaken activations for people with
+        limited dexterity.
+    exceptions:
+        Exempt when an equivalent control meets the size, the target is
+        inline in text, the browser sets the size, or the presentation is
+        essential or legally required.
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        .pager a { width: 16px; height: 16px; margin: 0; }
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        .pager a { min-width: 24px; min-height: 24px; margin-inline: 4px; }
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, pointer, target-size]
+    source: https://www.w3.org/TR/WCAG22/#target-size-minimum

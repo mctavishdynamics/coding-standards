@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule102:
+    standard: @{AnssiC}
+    ruleId: rule-102
+    title: Make no assumption about bit-field layout
+    statement:
+        Do not rely on how a compiler places bit-fields in memory, for
+        example by reading the structure through another type.
+    rationale:
+        Bit-field order, packing and padding are implementation-defined.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct hdr { unsigned int ver : 4; unsigned int len : 4; };
+        uint8_t raw = *(uint8_t *)&h; /* assumes ver is the low nibble */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        uint8_t raw = (uint8_t)((h.ver & 0x0FU) | ((h.len & 0x0FU) << 4));
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, structs, bit-fields, portability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=81

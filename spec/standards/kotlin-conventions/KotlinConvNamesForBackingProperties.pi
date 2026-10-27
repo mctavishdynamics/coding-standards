@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvNamesForBackingProperties:
+    standard: @{KotlinConventions}
+    ruleId: names-for-backing-properties
+    title: Prefix private backing properties with an underscore
+    statement:
+        When a class has a public property and a private property that
+        represent the same thing, name the private one with a leading
+        underscore.
+    rationale:
+        The prefix pairs the implementation detail with its public view
+        without inventing a second name.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        class Feed {
+            private val itemsInternal = mutableListOf<Post>()
+            val items: List<Post> get() = itemsInternal
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        class Feed {
+            private val _items = mutableListOf<Post>()
+            val items: List<Post> get() = _items
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [naming, properties]
+    source: https://kotlinlang.org/docs/coding-conventions.html#names-for-backing-properties

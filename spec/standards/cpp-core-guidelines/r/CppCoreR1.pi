@@ -5,15 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR1:
     standard: @{CppCoreGuidelines}
     ruleId: R.1
-    title: Manage resources automatically with RAII handles
+    title: Tie each resource's lifetime to an owning object
     statement:
-        Wrap every resource that needs a matching acquire and release call
-        in an object that acquires it in its constructor and releases it in
-        its destructor.
+        Any resource that comes with a release step, for instance an open
+        file, a held mutex or heap memory, should live inside an object.
+        That object grabs the resource when it is constructed and gives it
+        back when it is destroyed.
     rationale:
-        The destructor runs on every exit path, including returns and
-        exceptions, so the release cannot be forgotten and leaks disappear
-        without manual bookkeeping.
+        Manual cleanup is easy to forget and hard to get right on every
+        path. A destructor is called whenever the owner goes out of scope,
+        whether by return or by exception, so the release happens without
+        extra code.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando112:
+    standard: @{ZalandoApi}
+    ruleId: 112
+    title: Use open-ended value lists for enumerations
+    statement:
+        Use enum only when the API owner controls the values and the list is
+        complete for all time. Otherwise list the known values under
+        examples and mark the description as an extensible enum, so
+        consumers handle new values with a fallback.
+    rationale:
+        Adding a value to a closed enum is an incompatible change, while an
+        open-ended list can grow safely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        delivery_method:
+          type: string
+          enum: [ STANDARD, EXPRESS ]
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        delivery_method:
+          type: string
+          description: Extensible enum. Delivery method chosen for the order.
+          examples: [ STANDARD, EXPRESS ]
+        \\\
+        ```
+    languages: [any]
+    tags: [should, compatibility, enums]
+    source: https://opensource.zalando.com/restful-api-guidelines/#112

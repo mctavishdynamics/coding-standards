@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSingleLineBlocks:
+    standard: @{RubyStyleGuide}
+    ruleId: single-line-blocks
+    title: Use braces for single-line blocks and do end for multi-line ones
+    statement:
+        Prefer curly braces for blocks that fit on one line and avoid them
+        for multi-line blocks. Always use do and end for control flow and
+        method-definition style blocks such as Rake tasks, and avoid do and
+        end when chaining.
+    rationale:
+        The convention shows a block's size and purpose at a glance;
+        multi-line blocks in a chain are usually better extracted into
+        methods.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        names = users.select do |u| u.active? end.map do |u| u.name end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        names = users.select(&:active?).map { |u| u.name.capitalize }
+
+        task :deploy do
+          upload_release
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [blocks, formatting]
+    source: https://rubystyle.guide/#single-line-blocks

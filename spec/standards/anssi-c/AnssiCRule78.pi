@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule78:
+    standard: @{AnssiC}
+    ruleId: rule-78
+    title: Use signed char or unsigned char for small numbers, never plain char
+    statement:
+        Use plain char only for characters. For numeric values held in a
+        byte, use signed char or unsigned char.
+    rationale:
+        Whether plain char is signed is implementation-defined, so
+        arithmetic and comparisons on it are not portable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char level = 200;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        unsigned char level = 200U;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, types, portability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=59

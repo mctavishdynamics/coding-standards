@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule58:
+    standard: @{CppCodingStandards}
+    ruleId: rule-58
+    title: Separate unrelated functions from a type's namespace
+    statement:
+        Do not put a function in a type's namespace unless it is meant to
+        work with that type, especially unconstrained function templates.
+    rationale:
+        Argument-dependent lookup otherwise picks up unintended functions in
+        generic code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        namespace app {
+        struct Order {};
+        template <class T> void advance(T& x, int n);   // hijacks std::advance via ADL
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace app { struct Order {}; }
+        namespace app::util { template <class T> void step(T& x, int n); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces-and-modules, namespaces]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

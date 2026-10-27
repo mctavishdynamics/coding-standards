@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule160:
+    standard: @{AnssiC}
+    ruleId: rule-160
+    title: Free only dynamically allocated memory
+    statement:
+        Call free only on pointers returned by the allocation functions.
+    rationale:
+        Freeing stack, static or offset pointers corrupts the heap.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char name[32];
+        free(name);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *name = malloc(32);
+        /* ... */
+        free(name);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, memory, allocation]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=128

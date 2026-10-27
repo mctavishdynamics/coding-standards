@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartStreamTransforms:
+    standard: @{EffectiveDart}
+    ruleId: consider-using-higher-order-methods-to-transform-a-stream
+    title: Consider stream methods such as map and where for transformations
+    statement:
+        Transform streams with methods like `map`, `where` and `expand`
+        instead of listening and forwarding events by hand.
+    rationale:
+        These methods mirror the Iterable API and handle errors and closing
+        correctly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        Stream<String> errorLines(Stream<String> lines) {
+          final controller = StreamController<String>();
+          lines.listen((line) {
+            if (line.startsWith('ERROR')) controller.add(line);
+          }, onDone: controller.close);
+          return controller.stream;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        Stream<String> errorLines(Stream<String> lines) =>
+            lines.where((line) => line.startsWith('ERROR'));
+        \\\
+        ```
+    languages: [dart]
+    tags: [consider, async, streams]
+    source: https://dart.dev/effective-dart/usage#consider-using-higher-order-methods-to-transform-a-stream

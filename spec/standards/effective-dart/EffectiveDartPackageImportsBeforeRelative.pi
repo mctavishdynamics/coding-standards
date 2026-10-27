@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartPackageImportsBeforeRelative:
+    standard: @{EffectiveDart}
+    ruleId: do-place-package-imports-before-relative-imports
+    title: Put package imports before relative imports
+    statement:
+        Place the `package:` import section above the section of relative
+        imports, with a blank line between them. The directives_ordering
+        lint checks this.
+    rationale:
+        Grouping external dependencies before local files gives every file
+        the same predictable layout.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        import 'src/cart.dart';
+        import 'package:collection/collection.dart';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        import 'package:collection/collection.dart';
+
+        import 'src/cart.dart';
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, imports, ordering]
+    source: https://dart.dev/effective-dart/style#do-place-package-imports-before-relative-imports

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem22:
+    standard: @{EffectiveCpp}
+    ruleId: item-22
+    title: Hide data members behind member functions
+    statement:
+        Make data members private and expose them through functions.
+        Protected data is no better encapsulated than public data.
+    rationale:
+        Private data lets you enforce invariants, control access and change
+        the representation later without breaking clients.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Thermostat {
+            double target;   // any code can set -500
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Thermostat {
+        public:
+            void setTarget(double c) { target_ = std::clamp(c, 5.0, 30.0); }
+            double target() const { return target_; }
+        private:
+            double target_ = 20.0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [designs-and-declarations, encapsulation]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

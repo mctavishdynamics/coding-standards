@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuFormatVersionOutput:
+    standard: @{GnuCodingStandards}
+    ruleId: version-option
+    title: Print a parsable version line, copyright and license for --version
+    statement:
+        On --version, print to standard output and exit successfully,
+        ignoring other arguments. The first line gives the fixed canonical
+        name, optional package name in parentheses, and the version after
+        the last space; then a copyright line with the latest year, a
+        license line using a standard abbreviation, a free-software and
+        no-warranty statement, and optionally the main authors.
+    rationale:
+        A fixed layout lets scripts read the version, and the legal lines
+        tell users their rights.
+    exceptions:
+        Mention versions of separately distributed libraries only when they
+        matter in practice for debugging. Keep the word Copyright in English
+        in translations.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        printf ("Version %s (built from %s)\n", VERSION, argv[0]);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        printf ("tally (GNU countutils) %s\n", VERSION);
+        printf ("Copyright (C) 2026 Free Software Foundation, Inc.\n");
+        puts (LICENSE_LINE);       /* e.g. "License GPLv3+: ..." */
+        puts (FREEDOM_AND_WARRANTY_LINES);
+        exit (EXIT_SUCCESS);
+        \\\
+        ```
+    languages: [c]
+    tags: [command-line, versioning, licensing]
+    source: https://www.gnu.org/prep/standards/standards.html#g_t_002d_002dversion

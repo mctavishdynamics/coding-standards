@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartMultipleClassesPerLibrary:
+    standard: @{EffectiveDart}
+    ruleId: consider-declaring-multiple-classes-in-the-same-library
+    title: Consider grouping related classes in one library
+    statement:
+        Put several classes, functions and variables in one library when
+        they belong together. This does not mean building one huge library.
+    rationale:
+        Dart does not tie files to classes, and privacy is per library, so
+        classes in the same library can share private members like friends.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```dart
+        \\\
+        // lib/src/graph.dart
+        class Graph {
+          final List<Node> _nodes = [];
+        }
+
+        class Node {
+          void attachTo(Graph graph) => graph._nodes.add(this);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [consider, libraries, classes]
+    source: https://dart.dev/effective-dart/design#consider-declaring-multiple-classes-in-the-same-library

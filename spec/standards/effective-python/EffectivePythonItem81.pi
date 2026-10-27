@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem81:
+    standard: @{EffectivePython}
+    ruleId: item-81
+    title: Check your own invariants with assert and report bad input by raising
+    statement:
+        Use assert to check conditions that can only fail through a bug in
+        your own code. Raise an exception for bad input from callers or the
+        outside world.
+    rationale:
+        Assertions may be disabled and signal programmer errors, while
+        raised exceptions are part of the API that callers can handle.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def withdraw(amount):
+            assert amount > 0
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def withdraw(amount):
+            if amount <= 0:
+                raise ValueError("amount must be positive")
+        \\\
+        ```
+    languages: [python]
+    tags: [robustness, exceptions, assertions]
+    source: https://effectivepython.com/

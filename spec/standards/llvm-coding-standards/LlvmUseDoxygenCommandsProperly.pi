@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmUseDoxygenCommandsProperly:
+    standard: @{LlvmCodingStandards}
+    ruleId: doxygen-use-in-documentation-comments
+    title: Document public interfaces with concise Doxygen comments
+    statement:
+        Give every public class and function a descriptive Doxygen comment
+        whose first sentence serves as the summary; do not merely restate
+        the signature. Refer to parameters with the p command, wrap examples
+        in code and endcode, and use param and returns paragraphs only when
+        they add information.
+    rationale:
+        Consistent Doxygen markup produces usable generated documentation,
+        and leaving out redundant text keeps comments short and readable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        /// \brief setLimit - sets the limit.
+        /// \param Limit the limit
+        void setLimit(unsigned Limit);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        /// Caps the number of inlining steps at \p Limit; zero disables inlining.
+        void setLimit(unsigned Limit);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [documentation, comments, doxygen]
+    source: https://llvm.org/docs/CodingStandards.html#doxygen-use-in-documentation-comments

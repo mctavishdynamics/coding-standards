@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStylePreferRaiseOverFail:
+    standard: @{RubyStyleGuide}
+    ruleId: prefer-raise-over-fail
+    title: Prefer raise to fail
+    statement:
+        Signal exceptions with raise rather than its alias fail.
+    rationale:
+        Most Ruby code uses raise, so fail only makes readers pause.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        fail ArgumentError, 'amount must be positive' if amount <= 0
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        raise ArgumentError, 'amount must be positive' if amount <= 0
+        \\\
+        ```
+    languages: [ruby]
+    tags: [error-handling, exceptions]
+    source: https://rubystyle.guide/#prefer-raise-over-fail

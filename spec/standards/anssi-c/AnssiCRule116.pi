@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule116:
+    standard: @{AnssiC}
+    ruleId: rule-116
+    title: Do not use bitwise operators on boolean operands
+    statement:
+        Do not apply bitwise operators to boolean values or results of
+        comparisons, and check that each bitwise operator in a condition is
+        really the one intended.
+    rationale:
+        It is easy to write the bitwise and or or by mistake in place of the
+        logical ones.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if ((x > 0) & (x < 10)) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if ((x > 0) && (x < 10)) { /* ... */ }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, bitwise, booleans]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=92

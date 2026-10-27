@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCGoodPractice122:
+    standard: @{AnssiC}
+    ruleId: good-practice-122
+    title: Avoid floating-point constants
+    statement:
+        Avoid floating-point literals. If one is needed, check that the
+        value can be represented exactly enough.
+    rationale:
+        Many decimal values have no exact binary form, so precision is lost
+        before the program even runs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define TAX 0.07
+        price_cents = price_cents + price_cents * TAX;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define TAX_PER_MILLE 70U
+        price_cents = price_cents + (price_cents * TAX_PER_MILLE) / 1000U;
+        \\\
+        ```
+    languages: [c]
+    tags: [good-practice, floating-point, constants]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=96

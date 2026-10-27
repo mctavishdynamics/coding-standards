@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuCommentConditionalEnds:
+    standard: @{GnuCodingStandards}
+    ruleId: comments-endif
+    title: Label #else and #endif with the condition they belong to
+    statement:
+        Give every #endif a comment stating the condition being closed,
+        including its sense, and give #else a comment describing the
+        condition of the code that follows it. Short, non-nested
+        conditionals need no comments.
+    rationale:
+        In long or nested conditionals readers otherwise cannot tell
+        which #if a line closes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #ifndef HAVE_STRNDUP
+        /* ... many lines ... */
+        #else
+        /* ... */
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #ifndef HAVE_STRNDUP
+        /* ... many lines ... */
+        #else /* HAVE_STRNDUP */
+        /* ... */
+        #endif /* HAVE_STRNDUP */
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, preprocessor]
+    source: https://www.gnu.org/prep/standards/standards.html#Comments

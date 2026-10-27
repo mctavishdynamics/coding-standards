@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem74:
+    standard: @{EffectiveJava}
+    ruleId: item-74
+    title: Document every exception each method can throw
+    statement:
+        Declare each checked exception separately and document, with the
+        throws tag, the conditions under which every checked and unchecked
+        exception is thrown. Do not list unchecked ones in the throws
+        clause.
+    rationale:
+        Callers need to know what can go wrong to use a method correctly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public void open(Path p) throws Exception { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        /**
+         * @throws NoSuchFileException if the file does not exist
+         * @throws IllegalArgumentException if the path is not absolute
+         */
+        public void open(Path p) throws NoSuchFileException { /* ... */ }
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, documentation]
+    source: https://www.informit.com/store/effective-java-9780134686097

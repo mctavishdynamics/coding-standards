@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem34:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-34
+    title: Write a lambda where you might reach for std::bind
+    statement:
+        Write a lambda rather than a bind expression.
+    rationale:
+        Lambdas read more clearly, evaluate arguments at the right time,
+        handle overloads and are easier for compilers to inline.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto alarm = std::bind(setAlarm, now() + 1h, _1, 30s);   // time fixed at bind
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto alarm = [](Sound s) { setAlarm(now() + 1h, s, 30s); };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [lambda-expressions, lambdas]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

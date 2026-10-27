@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgUsingStandardExceptionTypes5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: using-standard-exception-types-5
+    title: Throw InvalidOperationException for a wrong object state
+    statement:
+        When a call is invalid because of the object's current state rather
+        than its arguments, throw InvalidOperationException.
+    rationale:
+        The exception tells callers the problem is the timing or state of
+        the call, not the values passed.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public void Send(Message message)
+        {
+            if (!_isConnected)
+                throw new InvalidOperationException("Connect must be called before Send.");
+            /* ... */
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, exceptions, exception-types, state]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/using-standard-exception-types#invalidoperationexception

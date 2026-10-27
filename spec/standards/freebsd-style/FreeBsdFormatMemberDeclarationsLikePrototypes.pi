@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdFormatMemberDeclarationsLikePrototypes:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-member-declarations
+    title: Declare member functions like prototypes with a space before the name
+    statement:
+        Write member function declarations in the style of standalone
+        prototypes, but with a single space between the return type and the
+        name.
+    rationale:
+        The space keeps class bodies compact while staying consistent with C
+        prototypes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class parser {
+                int
+                parse(const char *);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class parser {
+                int parse(const char *);
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, formatting, classes]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

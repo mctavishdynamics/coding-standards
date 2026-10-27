@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartInlineFunctionTypes:
+    standard: @{EffectiveDart}
+    ruleId: prefer-inline-function-types-over-typedefs
+    title: Prefer inline function types to typedefs
+    statement:
+        Write a function type inline where it is used instead of declaring a
+        typedef for it. A typedef is still worthwhile for a long or widely
+        reused type. The avoid_private_typedef_functions lint checks this.
+    rationale:
+        Readers usually want to see the actual function type at the point of
+        use.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        typedef _OnSaved = void Function(String);
+
+        class Form {
+          _OnSaved? onSaved;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Form {
+          void Function(String)? onSaved;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, types, typedefs]
+    source: https://dart.dev/effective-dart/design#prefer-inline-function-types-over-typedefs

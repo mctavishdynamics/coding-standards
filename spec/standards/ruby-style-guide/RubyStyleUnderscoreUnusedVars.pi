@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleUnderscoreUnusedVars:
+    standard: @{RubyStyleGuide}
+    ruleId: underscore-unused-vars
+    title: Prefix unused variables with an underscore
+    statement:
+        Start the name of an unused block parameter or local variable with
+        an underscore, or use a bare underscore.
+    rationale:
+        Ruby and tools such as RuboCop recognise the prefix and stop
+        warning, and readers know the value is ignored on purpose. A named
+        underscore variable still documents what is being skipped.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        prices.each do |product, price|
+          puts price
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        prices.each do |_product, price|
+          puts price
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [naming, variables]
+    source: https://rubystyle.guide/#underscore-unused-vars

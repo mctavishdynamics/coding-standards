@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoGroupSimilarDeclarations:
+    standard: @{UberGo}
+    ruleId: group-similar-declarations
+    title: Group related declarations together
+    statement:
+        Group related import, const, var and type declarations in a single
+        parenthesised block, including inside functions. Keep unrelated
+        declarations in separate groups.
+    rationale:
+        Grouping shows which declarations belong together and reduces
+        repetition.
+    exceptions:
+        Variables declared next to each other inside a function should be
+        grouped even when they are unrelated.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        const minPort = 1024
+        const maxPort = 65535
+        const defaultUser = "admin"
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        const (
+            minPort = 1024
+            maxPort = 65535
+        )
+
+        const defaultUser = "admin"
+        \\\
+        ```
+    languages: [go]
+    tags: [declarations, formatting]
+    source: https://github.com/uber-go/guide/blob/master/style.md#group-similar-declarations

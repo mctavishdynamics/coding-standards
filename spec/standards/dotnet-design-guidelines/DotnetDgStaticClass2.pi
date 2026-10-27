@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgStaticClass2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: static-class-2
+    title: Do not use a static class as a miscellaneous dumping ground
+    statement:
+        Every static class should have a clear theme; do not collect
+        unrelated helpers in one.
+    rationale:
+        A catch-all class becomes hard to discover, hard to name and grows
+        without bound.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static class Utilities
+        {
+            public static bool IsWeekend(DateTime day) { /* ... */ }
+            public static byte[] Compress(byte[] data) { /* ... */ }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static class BusinessCalendar
+        {
+            public static bool IsWeekend(DateTime day) { /* ... */ }
+            public static DateTime NextWorkingDay(DateTime day) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, type-design, static-classes, cohesion]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/static-class

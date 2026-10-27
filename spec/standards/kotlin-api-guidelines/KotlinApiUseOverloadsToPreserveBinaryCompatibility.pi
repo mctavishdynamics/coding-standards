@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiUseOverloadsToPreserveBinaryCompatibility:
+    standard: @{KotlinApiGuidelines}
+    ruleId: use-overloads-to-preserve-binary-compatibility
+    title: Preserve old signatures when adding optional parameters
+    statement:
+        When you add an optional parameter to a published function, mark it
+        with the IntroducedAt annotation so the compiler generates hidden
+        overloads, or write the overloads yourself. JvmOverloads does not
+        protect Kotlin callers.
+    rationale:
+        The old signature stays available, so previously compiled clients
+        keep working.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        @JvmOverloads
+        public fun render(page: Page, minify: Boolean = false): Html = TODO()
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        @OptIn(ExperimentalVersionOverloading::class)
+        public fun render(page: Page, @IntroducedAt("1.1") minify: Boolean = false): Html =
+            TODO()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [compatibility, overloading]
+    source: https://kotlinlang.org/docs/api-guidelines-backward-compatibility.html#use-overloads-to-preserve-binary-compatibility

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuPrefixMessagesWithProgramName:
+    standard: @{GnuCodingStandards}
+    ruleId: errors-program-name
+    title: Start non-interactive error messages with the program name
+    statement:
+        A non-interactive program begins each error message with its name,
+        then the source file and line when relevant. An interactive program
+        reading from a terminal leaves the name out.
+    rationale:
+        In a pipeline the name shows which program failed, while an
+        interactive user already knows from the prompt.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fprintf (stderr, "missing operand\n");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        fprintf (stderr, "%s: missing operand\n", program_name);
+        \\\
+        ```
+    languages: [c]
+    tags: [error-messages, diagnostics]
+    source: https://www.gnu.org/prep/standards/standards.html#Errors

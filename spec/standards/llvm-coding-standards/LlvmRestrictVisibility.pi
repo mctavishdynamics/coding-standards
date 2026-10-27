@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmRestrictVisibility:
+    standard: @{LlvmCodingStandards}
+    ruleId: restrict-visibility
+    title: Give functions and variables the narrowest visibility possible
+    statement:
+        Make class members private or protected when they need not be
+        public. Make non-member functions and variables used only in one
+        .cpp file local to it, with static or an anonymous namespace.
+    rationale:
+        Narrow visibility enables more optimization and removes the chance
+        of symbol clashes between files.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Only used in this file.
+        bool isHotBlock(const BasicBlock &BB) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        static bool isHotBlock(const BasicBlock &BB) { /* ... */ }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [visibility, encapsulation, linkage]
+    source: https://llvm.org/docs/CodingStandards.html#restrict-visibility

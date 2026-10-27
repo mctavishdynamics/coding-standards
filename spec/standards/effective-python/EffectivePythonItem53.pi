@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem53:
+    standard: @{EffectivePython}
+    ruleId: item-53
+    title: Call parent initialisers through super
+    statement:
+        Initialise parent classes with super().__init__ rather than calling
+        the parent class by name.
+    rationale:
+        super follows the method resolution order, so diamond inheritance
+        initialises each class once and in a predictable order.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Child(Base):
+            def __init__(self, value):
+                Base.__init__(self, value)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Child(Base):
+            def __init__(self, value):
+                super().__init__(value)
+        \\\
+        ```
+    languages: [python]
+    tags: [classes-and-interfaces, classes, inheritance]
+    source: https://effectivepython.com/

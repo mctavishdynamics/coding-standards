@@ -5,14 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC66:
     standard: @{CppCoreGuidelines}
     ruleId: C.66
-    title: Make move operations noexcept
+    title: Mark move constructors and move assignment noexcept
     statement:
-        Write move constructors and move assignment so they do not throw,
-        and declare them noexcept.
+        Write move constructors and move assignment so they cannot throw, and
+        mark them noexcept.
     rationale:
-        A throwing move breaks reasonable expectations, and standard
-        containers such as std::vector only use moves they know will not
-        throw.
+        Users expect a move not to fail. Containers such as std::vector use a
+        move only when it is noexcept, and otherwise fall back to copying.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackDocumentReachableState:
+    standard: @{Carmack}
+    ruleId: document-reachable-state
+    title: Document the external state a function can reach
+    statement:
+        For a non-trivial function, list in a comment the outside data it
+        can read and the outside data it can change.
+    rationale:
+        The survey makes good documentation, and it shows how much hidden
+        state a function depends on.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Updates the player.
+        void Player::Think();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Reads: input, level collision, game time.
+        // Writes: position, velocity, weapon state; may spawn projectiles.
+        void Player::Think();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [documentation, state, side-effects]
+    source: https://www.gamedeveloper.com/programming/in-depth-functional-programming-in-c-

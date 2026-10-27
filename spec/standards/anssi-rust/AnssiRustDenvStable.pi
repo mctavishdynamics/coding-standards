@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustDenvStable:
+    standard: @{AnssiRust}
+    ruleId: DENV-STABLE
+    title: Build secure code with a stable toolchain
+    statement:
+        Compile security-sensitive Rust only with the stable release channel
+        of the toolchain, never with nightly or beta compilers.
+    rationale:
+        Nightly and beta toolchains carry unfinished features and fresh
+        changes, so they are more likely to contain compiler, runtime or
+        tooling bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```shell
+        \\\
+        rustup override set nightly
+        cargo build --release
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        rustup override set stable
+        cargo build --release
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, toolchain]
+    source: https://anssi-fr.github.io/rust-guide/devenv.html#DENV-STABLE

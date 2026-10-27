@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoStartEnumsAtOne:
+    standard: @{UberGo}
+    ruleId: start-enums-at-one
+    title: Start iota enumerations at one
+    statement:
+        When declaring an enumeration with a custom type and iota, usually
+        begin at a non-zero value so that the zero value does not stand for
+        a valid case.
+    rationale:
+        Variables default to zero, so a zero enum member makes an unset
+        value look like a deliberate choice.
+    exceptions:
+        Start at zero when the zero value is the sensible default behaviour.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Color int
+
+        const (
+            Red Color = iota
+            Green
+            Blue
+        )
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Color int
+
+        const (
+            Red Color = iota + 1
+            Green
+            Blue
+        )
+        \\\
+        ```
+    languages: [go]
+    tags: [enums, zero-value]
+    source: https://github.com/uber-go/guide/blob/master/style.md#start-enums-at-one

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoInitializingMaps:
+    standard: @{UberGo}
+    ruleId: initializing-maps
+    title: Create maps with make unless the contents are fixed
+    statement:
+        Use make for empty maps and maps filled in by code, with a size hint
+        where known. Use a map literal when the map holds a fixed set of
+        entries known at initialization.
+    rationale:
+        make looks distinct from a nil map declaration and has room for a
+        size hint, while a literal shows fixed contents directly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        seen := map[string]bool{}
+
+        statusText := make(map[int]string, 2)
+        statusText[200] = "OK"
+        statusText[404] = "Not Found"
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        seen := make(map[string]bool, len(ids))
+
+        statusText := map[int]string{
+            200: "OK",
+            404: "Not Found",
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [maps, initialization]
+    source: https://github.com/uber-go/guide/blob/master/style.md#initializing-maps

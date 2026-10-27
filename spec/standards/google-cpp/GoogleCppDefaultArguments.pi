@@ -7,14 +7,15 @@ export coding-rule GoogleCppDefaultArguments:
     ruleId: Default_Arguments
     title: Avoid default arguments on virtual functions
     statement:
-        Default arguments are allowed on non-virtual functions when the
-        default always has the same value. Do not use them on virtual
-        functions or with defaults that can evaluate differently between
-        calls, and prefer overloads when in doubt.
+        A non-virtual function may take a default argument, provided that
+        default yields the same value on every call. Keep defaults off
+        virtual functions and away from expressions whose result can vary,
+        and reach for an overload whenever the choice is unclear.
     rationale:
-        Defaults on virtual calls come from the static type, so overrides
-        can disagree. Defaults are re-evaluated at each call site, which
-        surprises readers when the value can change.
+        A virtual call takes its defaults from the static type, so an
+        override may end up with different ones. Default values are also
+        computed anew at every call, which confuses readers when that value
+        can vary.
     exceptions: null
     severity: null
     noncompliant:

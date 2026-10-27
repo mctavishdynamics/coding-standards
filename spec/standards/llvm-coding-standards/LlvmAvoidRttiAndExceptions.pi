@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmAvoidRttiAndExceptions:
+    standard: @{LlvmCodingStandards}
+    ruleId: do-not-use-rtti-or-exceptions
+    title: Do not use C++ exceptions or RTTI
+    statement:
+        Do not throw exceptions or use built-in RTTI such as dynamic_cast or
+        typeid. Use LLVM's opt-in casting templates isa, cast and dyn_cast
+        instead.
+    rationale:
+        Leaving out exceptions and RTTI reduces code and binary size; the
+        hand-rolled scheme gives the same type queries cheaply.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (auto *Call = dynamic_cast<CallInst *>(I))
+          handleCall(Call);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        if (auto *Call = dyn_cast<CallInst>(I))
+          handleCall(Call);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [rtti, exceptions, casting]
+    source: https://llvm.org/docs/CodingStandards.html#do-not-use-rtti-or-exceptions

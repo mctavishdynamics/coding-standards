@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule76:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-76
+    title: Explain what each data structure holds
+    statement:
+        Document the meaning, units and organization of important data
+        structures and file formats.
+    rationale:
+        Code that handles data can only be understood if the reader knows
+        what the data looks like.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct rec {
+            int a;
+            int b;
+            char c[8];
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* One sensor reading, as stored in readings.dat */
+        struct reading {
+            int sensor_id;     /* 1..999 */
+            int millikelvin;   /* temperature, thousandths of a kelvin */
+            char site[8];      /* site code, NUL padded */
+        };
+        \\\
+        ```
+    languages: [any]
+    tags: [documentation, data-structures]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

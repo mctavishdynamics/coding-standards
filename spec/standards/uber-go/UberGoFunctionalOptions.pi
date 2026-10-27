@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoFunctionalOptions:
+    standard: @{UberGo}
+    ruleId: functional-options
+    title: Use functional options for optional arguments
+    statement:
+        For constructors and public APIs that may grow, especially those
+        with three or more arguments, accept a variadic list of Option
+        values. Implement Option as an interface with an unexported method
+        that records settings on an unexported options struct.
+    rationale:
+        Callers pass only the options they need, the API can grow without
+        breaking callers, and interface-based options can be compared in
+        tests and printed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func NewClient(addr string, timeout time.Duration, retries int, logger *zap.Logger) *Client
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Option interface {
+            apply(*options)
+        }
+
+        type timeoutOption time.Duration
+
+        func (t timeoutOption) apply(o *options) { o.timeout = time.Duration(t) }
+
+        func WithTimeout(d time.Duration) Option { return timeoutOption(d) }
+
+        func NewClient(addr string, opts ...Option) *Client
+        \\\
+        ```
+    languages: [go]
+    tags: [api-design, constructors]
+    source: https://github.com/uber-go/guide/blob/master/style.md#functional-options

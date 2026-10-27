@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgInterface6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: interface-6
+    title: Leave released interfaces unchanged
+    statement:
+        Once an interface has been released, leave its members alone;
+        introduce a new interface for new functionality.
+    rationale:
+        Every existing implementation would stop compiling or fail at run
+        time when a member is added.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public interface IFileStore
+        {
+            Stream Open(string path);
+            void Delete(string path);   // added in version 2
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public interface IFileStore
+        {
+            Stream Open(string path);
+        }
+
+        public interface IDeletableFileStore : IFileStore
+        {
+            void Delete(string path);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, type-design, interfaces, versioning]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/interface

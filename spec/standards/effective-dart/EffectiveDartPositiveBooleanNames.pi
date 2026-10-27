@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartPositiveBooleanNames:
+    standard: @{EffectiveDart}
+    ruleId: prefer-the-positive-name-for-a-boolean-property-or-variable
+    title: Name booleans for the positive case
+    statement:
+        Make `true` mean the positive or more fundamental state, such as
+        isEnabled rather than isDisabled. When neither form is clearly
+        positive, pick the one users are less likely to negate or the
+        shorter one.
+    rationale:
+        Booleans are often negated, and a name that is already a negation
+        forces readers to resolve double negatives.
+    exceptions:
+        If users nearly always need the negative state, naming the property
+        for it can save a `!` at every use.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        if (!field.isInvalid) submit();
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        if (field.isValid) submit();
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, naming, booleans]
+    source: https://dart.dev/effective-dart/design#prefer-the-positive-name-for-a-boolean-property-or-variable

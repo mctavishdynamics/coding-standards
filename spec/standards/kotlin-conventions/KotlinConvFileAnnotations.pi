@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvFileAnnotations:
+    standard: @{KotlinConventions}
+    ruleId: file-annotations
+    title: Place file annotations before the package line
+    statement:
+        Put file annotations after any file comment and before the package
+        statement, with a blank line between them and the package line.
+    rationale:
+        The blank line shows that the annotation targets the file, not the
+        package.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        package com.acme.util
+        @file:JvmName("Strings")
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        /* Copyright Acme */
+        @file:JvmName("Strings")
+
+        package com.acme.util
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, annotations]
+    source: https://kotlinlang.org/docs/coding-conventions.html#file-annotations

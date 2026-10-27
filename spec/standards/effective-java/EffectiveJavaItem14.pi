@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem14:
+    standard: @{EffectiveJava}
+    ruleId: item-14
+    title: Implement Comparable for value classes with a natural order
+    statement:
+        When a value class has an obvious ordering, implement Comparable and
+        keep compareTo consistent with equals. Build the comparison with
+        Comparator construction methods or the boxed compare methods, not
+        subtraction.
+    rationale:
+        A natural order lets the class work with sorting, binary search and
+        sorted collections. Subtraction-based comparisons overflow and give
+        wrong answers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public int compareTo(Version o) {
+            return major - o.major;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private static final Comparator<Version> ORDER =
+                Comparator.comparingInt((Version v) -> v.major).thenComparingInt(v -> v.minor);
+
+        public int compareTo(Version o) {
+            return ORDER.compare(this, o);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods-common-to-all-objects, ordering, contracts]
+    source: https://www.informit.com/store/effective-java-9780134686097

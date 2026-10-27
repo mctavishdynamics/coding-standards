@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule13:
+    standard: @{JplC}
+    ruleId: rule-13
+    title: Keep every variable as local as it can be
+    statement:
+        Keep each variable visible only where it is needed, and give names
+        in nested blocks distinct identities so none shadows an outer name.
+        Share globals through a header with the extern declaration, included
+        by the defining file and every user.
+    rationale:
+        An object out of scope cannot be misused, and fewer places that can
+        write it make faults easier to trace. Sharing extern declarations
+        through a header lets the compiler catch type mismatches between
+        files, which it otherwise misses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* a.c */
+        int sample_count;
+
+        /* b.c */
+        extern double sample_count;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* samples.h */
+        extern int sample_count;
+
+        /* a.c */
+        #include "samples.h"
+        int sample_count;
+
+        /* b.c */
+        #include "samples.h"
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-3, scope, data-hiding]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

@@ -10,11 +10,11 @@ export coding-rule CertCppExp55Cpp:
         Do not cast away const or volatile to modify or access an object
         that was defined with that qualifier.
     rationale:
-        Modifying a const object, or accessing a volatile object through a
-        non-volatile lvalue, is undefined behavior; the compiler may have
-        placed the object in read-only memory or cached it. CERT rates
-        likelihood probable, detectable no, repairable no, priority P4,
-        level L3.
+        Writing to a const object, or reading or writing a volatile object
+        through an lvalue that lacks volatile, is undefined behavior,
+        because the compiler may have put the object in read-only memory or
+        kept it in a register. CERT rates likelihood probable, detectable
+        no, repairable no, priority P4, level L3.
     exceptions:
         Casting away const is allowed to call a legacy API that takes a
         non-const argument but never modifies it, though fixing the API is

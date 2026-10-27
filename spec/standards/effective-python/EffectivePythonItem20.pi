@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem20:
+    standard: @{EffectivePython}
+    ruleId: item-20
+    title: Do not read a loop variable after the loop ends
+    statement:
+        Do not rely on the value a for loop variable holds once the loop is
+        over. Store what you need in a separate variable inside the loop.
+    rationale:
+        If the iterable was empty the variable is never assigned, which
+        raises an error or leaves an older value in place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        for line in lines:
+            pass
+        last = line  # NameError if lines is empty
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        last = None
+        for line in lines:
+            last = line
+        \\\
+        ```
+    languages: [python]
+    tags: [loops-and-iterators, loops, bugs]
+    source: https://effectivepython.com/

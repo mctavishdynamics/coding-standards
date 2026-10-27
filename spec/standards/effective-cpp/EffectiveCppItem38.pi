@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem38:
+    standard: @{EffectiveCpp}
+    ruleId: item-38
+    title: Use a data member to express has-a and implemented-with relationships
+    statement:
+        When a class contains or is built on top of another, hold the other
+        as a member rather than inheriting from it.
+    rationale:
+        Composition carries a different meaning from public inheritance and
+        does not expose operations that would break the outer class.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class T>
+        class Set : public std::list<T> {};   // a set is not a list
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T>
+        class Set {
+        public:
+            bool contains(const T& v) const;
+            void insert(const T& v);
+        private:
+            std::list<T> items_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance-and-oo-design, composition, inheritance]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

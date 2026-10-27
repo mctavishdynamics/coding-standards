@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem69:
+    standard: @{EffectivePython}
+    ruleId: item-69
+    title: Guard read-modify-write steps on shared state with a mutex
+    statement:
+        Guard state that several threads read and write with a
+        threading.Lock, held in a with statement.
+    rationale:
+        The global interpreter lock does not make compound operations such
+        as increment atomic, so updates can be lost.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Counter:
+            def add(self):
+                self.value += 1
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Counter:
+            def __init__(self):
+                self.value = 0
+                self.lock = threading.Lock()
+            def add(self):
+                with self.lock:
+                    self.value += 1
+        \\\
+        ```
+    languages: [python]
+    tags: [concurrency-and-parallelism, threads, synchronization]
+    source: https://effectivepython.com/

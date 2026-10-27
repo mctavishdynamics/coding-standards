@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiBooleanAssertions:
+    standard: @{SwiftApiDesign}
+    ruleId: boolean-assertions
+    title: Make Boolean members read as assertions
+    statement:
+        Name nonmutating Boolean methods and properties so that their use
+        reads as a statement about the receiver, such as isEmpty or
+        overlaps.
+    rationale:
+        An assertion reads naturally inside an if condition and makes the
+        meaning of true obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        if account.locked() { }
+        if range.overlap(other) { }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        if account.isLocked { }
+        if range.overlaps(other) { }
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, booleans]
+    source: https://www.swift.org/documentation/api-design-guidelines/#boolean-assertions

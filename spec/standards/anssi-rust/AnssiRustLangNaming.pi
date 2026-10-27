@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangNaming:
+    standard: @{AnssiRust}
+    ruleId: LANG-NAMING
+    title: Follow the Rust API Guidelines naming conventions
+    statement:
+        Name items according to the conventions of the Rust API Guidelines,
+        such as UpperCamelCase for types and snake_case for functions and
+        variables.
+    rationale:
+        Shared conventions make code predictable to read and review, and
+        keep the meaning of a name obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        struct session_token;
+        fn ValidateToken(T: &session_token) -> bool { true }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        struct SessionToken;
+        fn validate_token(token: &SessionToken) -> bool { true }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, naming]
+    source: https://anssi-fr.github.io/rust-guide/naming.html#LANG-NAMING

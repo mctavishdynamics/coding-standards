@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdFormatUsageLikeSynopsis:
+    standard: @{OpenBsdStyle}
+    ruleId: usage-statements
+    title: Format usage messages like the manual page synopsis
+    statement:
+        List options without operands first, alphabetically in one pair of
+        brackets, then options with operands each in their own brackets,
+        then required and then optional arguments. Put numeric options first
+        and upper case before lower case, separate alternatives with a bar
+        and group options given together in one pair of brackets.
+    rationale:
+        A usage line that mirrors the synopsis is familiar and easy to
+        check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fprintf(stderr, "usage: %s file [-o out] [-v] [-a]\n", getprogname());
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        fprintf(stderr, "usage: %s [-av] [-o out] file\n", getprogname());
+        \\\
+        ```
+    languages: [c]
+    tags: [command-line, documentation]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

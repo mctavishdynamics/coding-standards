@@ -5,16 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC41:
     standard: @{CppCoreGuidelines}
     ruleId: C.41
-    title: Make a constructor create a fully initialized object
+    title: Leave every object fully set up when its constructor returns
     statement:
-        When a constructor returns, the object should be fully usable. Do
-        not require callers to call an init function before using it.
+        An object must be ready to use as soon as its constructor finishes. Do
+        not make callers run a separate init step first.
     rationale:
-        A constructor establishes the invariant, and users should be able to
-        assume that a constructed object works.
+        Users expect a constructed object to work. A two-phase setup lets them
+        use an object that is not ready yet.
     exceptions:
-        If a valid object cannot conveniently be built by a constructor, use
-        a factory function.
+        If a constructor cannot conveniently produce a valid object, provide a
+        factory function that returns one instead.
     severity: null
     noncompliant:
         ```cpp

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdCommentMajorRoutines:
+    standard: @{OpenBsdStyle}
+    ruleId: routine-comments
+    title: Describe each major routine, and the program before main
+    statement:
+        Put a brief comment before every major function saying what it does,
+        and before main describe what the program does.
+    rationale:
+        Purpose comments let readers navigate a file quickly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int
+        main(int argc, char *argv[])
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /*
+         * Report the disk usage of each named file.
+         */
+        int
+        main(int argc, char *argv[])
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, functions]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

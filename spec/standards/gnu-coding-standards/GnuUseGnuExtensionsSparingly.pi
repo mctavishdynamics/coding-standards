@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuUseGnuExtensionsSparingly:
+    standard: @{GnuCodingStandards}
+    ruleId: using-extensions
+    title: Use GNU-only extensions only when they are a big improvement
+    statement:
+        Avoid depending on GNU extensions when you can easily do without
+        them, and use them when they help a great deal. Where practical,
+        support both, for example with a macro that expands to inline or to
+        nothing depending on the compiler.
+    rationale:
+        Requiring other GNU tools to build a program limits the machines it
+        can be built on.
+    exceptions:
+        Large programs that run on many systems, such as Emacs, and programs
+        needed to bootstrap the GNU compiler should not use GNU extensions
+        at all.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static __inline__ int
+        square (int x)
+        {
+          return x * x;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #if defined __GNUC__ || __STDC_VERSION__ >= 199901L
+        # define INLINE inline
+        #else
+        # define INLINE
+        #endif
+
+        static INLINE int
+        square (int x)
+        {
+          return x * x;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [portability, extensions]
+    source: https://www.gnu.org/prep/standards/standards.html#Using-Extensions

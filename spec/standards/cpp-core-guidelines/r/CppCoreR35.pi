@@ -5,14 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR35:
     standard: @{CppCoreGuidelines}
     ruleId: R.35
-    title:
-        Take a shared_ptr reference to express that a function might reseat
-        the shared pointer
+    title: Take a shared_ptr by reference when the function may repoint it
     statement:
-        When a function may make the caller's shared_ptr point at another
-        object, take it as a non-const reference to shared_ptr.
+        Pass a non-const reference to shared_ptr when the function might
+        point the caller's shared_ptr at a different object.
     rationale:
-        This makes the reseating explicit in the signature.
+        Such a signature announces that reseating may happen, so callers are
+        not caught out.
     exceptions: null
     severity: null
     noncompliant:

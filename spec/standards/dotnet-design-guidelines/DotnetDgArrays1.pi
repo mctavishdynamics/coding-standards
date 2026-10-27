@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgArrays1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: arrays-1
+    title: Prefer collections to arrays in public APIs
+    statement:
+        Expose collections rather than arrays from public members.
+    rationale:
+        Collections can be read-only, can change implementation and can
+        grow, while arrays are fixed and always writable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Order[] Orders { get; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public ReadOnlyCollection<Order> Orders { get; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, arrays, collections]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/arrays

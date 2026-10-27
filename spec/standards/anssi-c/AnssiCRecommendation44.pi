@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation44:
+    standard: @{AnssiC}
+    ruleId: recommendation-44
+    title: Use per-thread stack canaries where available
+    statement:
+        Where the platform and compiler allow it, give each thread its own
+        canary value, for example with mstack-protector-guard=tls on x86.
+    rationale:
+        A leaked canary then only helps against one thread instead of the
+        whole process.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        gcc -O2 -fstack-protector-strong -mstack-protector-guard=tls -c worker.c
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, compilation, hardening]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=36

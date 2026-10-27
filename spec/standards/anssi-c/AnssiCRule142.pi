@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule142:
+    standard: @{AnssiC}
+    ruleId: rule-142
+    title: Declare read-only pointer parameters const
+    statement:
+        Qualify the pointed-to type as const for every pointer parameter
+        whose target the function does not modify.
+    rationale:
+        The compiler then stops accidental writes, and callers know their
+        data is safe.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        size_t count_spaces(char *text);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        size_t count_spaces(const char *text);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, functions, const-correctness]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=113

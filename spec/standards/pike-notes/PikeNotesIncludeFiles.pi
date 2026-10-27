@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./PikeNotes import PikeNotes
+
+export coding-rule PikeNotesIncludeFiles:
+    standard: @{PikeNotes}
+    ruleId: include-files
+    title: Do not include headers from inside headers
+    statement:
+        Keep include directives out of header files. Note at the top of each
+        header which other headers a source file must include before it.
+    rationale:
+        Nested includes lead to the same file being read many times per
+        compile, and include guards placed inside the file do not stop the
+        repeated reading. Leaving the choice to the source file avoids
+        multiple inclusion by construction.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* geom.h */
+        #include <stdio.h>
+        #include "vec.h"
+
+        void printbox(FILE *f, struct vec lo, struct vec hi);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* geom.h: needs <stdio.h> and "vec.h" included first */
+        void printbox(FILE *f, struct vec lo, struct vec hi);
+        \\\
+        ```
+    languages: [c]
+    tags: [headers, includes, build]
+    source: https://www.cs.princeton.edu/courses/archive/spr01/cs217/pike.html

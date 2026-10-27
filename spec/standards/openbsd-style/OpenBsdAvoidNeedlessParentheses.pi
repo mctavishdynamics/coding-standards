@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdAvoidNeedlessParentheses:
+    standard: @{OpenBsdStyle}
+    ruleId: redundant-parentheses
+    title: Use parentheses only when precedence, clarity or the compiler needs them
+    statement:
+        Add parentheses only where precedence demands them, where a reader
+        less familiar with the code would struggle without them, or where
+        the compiler would otherwise warn.
+    rationale:
+        Unneeded parentheses clutter expressions, while needed ones prevent
+        misreading.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if ((len) > (max))
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (len > max)
+        if ((error = check(a, b)))
+        \\\
+        ```
+    languages: [c]
+    tags: [expressions, readability]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

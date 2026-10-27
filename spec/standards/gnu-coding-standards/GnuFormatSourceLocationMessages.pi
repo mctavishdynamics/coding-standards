@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuFormatSourceLocationMessages:
+    standard: @{GnuCodingStandards}
+    ruleId: errors-compiler-format
+    title: Format diagnostics as file, line and column followed by the message
+    statement:
+        A compiler or other tool reporting a problem in a source file writes
+        the file name, line number and optional column, separated by colons
+        and then the message. Line and column numbers start at 1, columns
+        assume eight-column tabs, and ranges may give start and end
+        positions.
+    rationale:
+        Editors and other tools parse this form to jump to the error, so all
+        programs should share it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fprintf (stderr, "Error at line %d in %s: %s\n", line, file, msg);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        fprintf (stderr, "%s:%d:%d: %s\n", file, line, col, msg);
+        \\\
+        ```
+    languages: [c]
+    tags: [error-messages, diagnostics]
+    source: https://www.gnu.org/prep/standards/standards.html#Errors

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiPreventUnwantedAndInvalidExtensions:
+    standard: @{KotlinApiGuidelines}
+    ruleId: prevent-unwanted-and-invalid-extensions
+    title: Seal hierarchies that must not be extended
+    statement:
+        Stop users from extending the library in ways the problem domain
+        does not allow, for instance by making a closed hierarchy sealed
+        instead of open.
+    rationale:
+        Sealed types rule out invalid subtypes and let when expressions be
+        checked for exhaustiveness without an else branch.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public interface Shape
+        public class Circle(public val r: Double) : Shape
+        public class Square(public val side: Double) : Shape
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public sealed interface PaymentStatus
+        public object Pending : PaymentStatus
+        public class Settled(public val at: Instant) : PaymentStatus
+        public class Failed(public val reason: String) : PaymentStatus
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [api-design, sealed-types]
+    source: https://kotlinlang.org/docs/api-guidelines-predictability.html#prevent-unwanted-and-invalid-extensions

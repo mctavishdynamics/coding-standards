@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CommitMessages import CommitMessages
+
+export coding-rule CommitMsgExplainWhy:
+    standard: @{CommitMessages}
+    ruleId: 7
+    title: Explain the reason for the change in the body
+    statement:
+        Use the body to describe what changed and why: how things worked
+        before, what was wrong with that, and how they work now. Leave out
+        the mechanics, which the diff and code comments already show.
+    rationale:
+        The motivation behind a change is rarely recoverable from the code,
+        and recording it saves future maintainers, possibly you, from
+        guessing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        Update session.py
+
+        Changed line 42 to call refresh() and added an if statement.
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        Refresh sessions before they expire
+
+        Users were logged out mid-checkout because the token was only
+        renewed after expiry. Renewing five minutes early keeps long
+        checkouts alive without extending the overall session lifetime.
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, documentation]
+    source: https://cbea.ms/git-commit/#why-not-how

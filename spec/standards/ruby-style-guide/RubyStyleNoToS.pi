@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoToS:
+    standard: @{RubyStyleGuide}
+    ruleId: no-to-s
+    title: Do not call to_s inside interpolation
+    statement:
+        Leave out to_s on values you interpolate into a string. RuboCop
+        checks this with Lint/RedundantStringCoercion.
+    rationale:
+        Interpolation already calls to_s on the value, so the explicit call
+        is redundant.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        puts "Saved #{count.to_s} rows"
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        puts "Saved #{count} rows"
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, interpolation]
+    source: https://rubystyle.guide/#no-to-s

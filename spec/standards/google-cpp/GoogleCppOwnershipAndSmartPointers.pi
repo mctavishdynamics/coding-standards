@@ -8,11 +8,11 @@ export coding-rule GoogleCppOwnershipAndSmartPointers:
     title:
         Keep single owners and transfer ownership with smart pointers
     statement:
-        Give dynamically allocated objects a single, fixed owner, and
-        use std::unique_ptr to make ownership transfer explicit. Avoid
-        shared ownership without a very good reason, such as sharing an
-        immutable object to avoid costly copies, and then
-        use std::shared_ptr. Never use std::auto_ptr.
+        Every dynamically allocated object should have one fixed owner, and
+        ownership transfers should be made explicit with std::unique_ptr.
+        Share ownership only for a strong reason, for example to avoid
+        expensive copies of an immutable object, and rely on std::shared_ptr
+        in that case. Never use std::auto_ptr.
     rationale:
         Clear ownership removes doubt about who deletes an object and when.
         Shared ownership makes lifetimes hard to predict.

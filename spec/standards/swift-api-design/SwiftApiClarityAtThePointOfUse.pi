@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiClarityAtThePointOfUse:
+    standard: @{SwiftApiDesign}
+    ruleId: clarity-at-the-point-of-use
+    title: Design for clear call sites
+    statement:
+        Make every place an API is used read clearly and concisely. When you
+        judge a design, look at real calls in context, not only at the
+        declaration.
+    rationale:
+        A declaration is written once but its uses are read many times, so
+        the call site is where clarity pays off.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let r = store.get(42, true)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let receipt = store.receipt(forOrder: 42, includingRefunds: true)
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, clarity]
+    source: https://www.swift.org/documentation/api-design-guidelines/#clarity-at-the-point-of-use

@@ -20,19 +20,27 @@ export coding-rule CertJavaSer04J:
     noncompliant:
         ```java
         \\\
-        private void readObject(ObjectInputStream in)
-                throws IOException, ClassNotFoundException {
-            in.defaultReadObject();
+        class Vault implements Serializable {
+            Vault() { checkVaultAccess(); }
+
+            private void readObject(ObjectInputStream s)
+                    throws ClassNotFoundException, IOException {
+                s.defaultReadObject();
+            }
         }
         \\\
         ```
     compliant:
         ```java
         \\\
-        private void readObject(ObjectInputStream in)
-                throws IOException, ClassNotFoundException {
-            performSecurityManagerCheck();
-            in.defaultReadObject();
+        class Vault implements Serializable {
+            Vault() { checkVaultAccess(); }
+
+            private void readObject(ObjectInputStream s)
+                    throws ClassNotFoundException, IOException {
+                checkVaultAccess();
+                s.defaultReadObject();
+            }
         }
         \\\
         ```

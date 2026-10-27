@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdAvoidRegisterKeyword:
+    standard: @{OpenBsdStyle}
+    ruleId: register
+    title: Do not use the register specifier in new code
+    statement:
+        Avoid register in new code and let the compiler choose register
+        allocation.
+    rationale:
+        Modern compilers make better register choices on their own.
+    exceptions:
+        Functions containing assembly may need register for correct code
+        generation without optimization.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        register int i;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int i;
+        \\\
+        ```
+    languages: [c]
+    tags: [performance, declarations]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

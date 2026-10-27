@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF48:
     standard: @{CppCoreGuidelines}
     ruleId: F.48
-    title: Do not return std::move(local)
+    title: Return local variables plainly, without std::move
     statement:
-        Return a local variable by name, not wrapped in std::move.
+        When returning a local variable, write just its name. Do not wrap it
+        in std::move.
     rationale:
-        Returning a local already moves it implicitly. An explicit std::move
-        prevents return value optimization, which could have removed the
-        move entirely.
+        The compiler already treats a returned local as an rvalue.
+        Adding std::move blocks return value optimization, which might have removed the
+        move altogether.
     exceptions: null
     severity: null
     noncompliant:

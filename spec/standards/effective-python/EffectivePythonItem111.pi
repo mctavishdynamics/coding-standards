@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem111:
+    standard: @{EffectivePython}
+    ruleId: item-111
+    title: Stand in for slow or awkward collaborators with mock objects
+    statement:
+        When the code under test depends on slow or hard-to-create
+        resources, replace them with unittest.mock objects that use spec and
+        verify how they were called.
+    rationale:
+        Mocks let you test logic without databases or networks, and spec
+        stops tests from calling methods that do not exist.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        from unittest import mock
+
+        db = mock.create_autospec(Database)
+        db.fetch_user.return_value = User("ana")
+        greet(db, 7)
+        db.fetch_user.assert_called_once_with(7)
+        \\\
+        ```
+    languages: [python]
+    tags: [testing-and-debugging, testing, mocking]
+    source: https://effectivepython.com/

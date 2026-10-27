@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule68:
+    standard: @{AnssiC}
+    ruleId: rule-68
+    title: Make all or none of an enumeration's values explicit
+    statement:
+        In an enumeration, either give every constant an explicit value or
+        give none of them one.
+    rationale:
+        Mixing the two can give two constants the same value by accident.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        enum color { RED = 1, GREEN, BLUE = 2 }; /* GREEN == BLUE */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum color { RED = 1, GREEN = 2, BLUE = 3 };
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, enums]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=51

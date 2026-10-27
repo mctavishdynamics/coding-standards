@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoRegexpForPlaintext:
+    standard: @{RubyStyleGuide}
+    ruleId: no-regexp-for-plaintext
+    title: Search for plain text without a regexp
+    statement:
+        Do not use a regular expression when you only need to find a fixed
+        piece of text in a string.
+    rationale:
+        Plain string methods are simpler to read and faster than a regexp
+        match.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        gzip = filename =~ /\.gz/
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        gzip = filename.include?('.gz')
+        \\\
+        ```
+    languages: [ruby]
+    tags: [regex, strings]
+    source: https://rubystyle.guide/#no-regexp-for-plaintext

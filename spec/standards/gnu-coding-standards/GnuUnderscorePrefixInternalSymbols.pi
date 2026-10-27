@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuUnderscorePrefixInternalSymbols:
+    standard: @{GnuCodingStandards}
+    ruleId: libraries-internal-symbols
+    title: Begin undocumented external library symbols with an underscore
+    statement:
+        Give external symbols meant only for internal use a leading
+        underscore followed by the library prefix. Static functions and
+        variables need no naming convention.
+    rationale:
+        The marker keeps internal names out of the user's way and away from
+        other libraries' names.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void cfgx_grow_table (struct cfgx_table *t);   /* internal helper */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void _cfgx_grow_table (struct cfgx_table *t);
+        \\\
+        ```
+    languages: [c]
+    tags: [libraries, naming]
+    source: https://www.gnu.org/prep/standards/standards.html#Libraries

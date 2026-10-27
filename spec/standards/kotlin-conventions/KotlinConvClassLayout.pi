@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvClassLayout:
+    standard: @{KotlinConventions}
+    ruleId: class-layout
+    title: Order class contents consistently
+    statement:
+        Order class contents as properties and init blocks, then secondary
+        constructors, then methods, then the companion object. Group methods
+        by what they do, not alphabetically or by visibility. A nested class
+        goes beside the code that relies on it, or at the bottom when only
+        outside code uses it.
+    rationale:
+        A logical order lets someone reading top to bottom follow what the
+        class does.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        class Player(val name: String) {
+            companion object { const val MAX_LIVES = 3 }
+            fun respawn() { lives = MAX_LIVES }
+            var lives = MAX_LIVES
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        class Player(val name: String) {
+            var lives = MAX_LIVES
+
+            fun respawn() { lives = MAX_LIVES }
+
+            companion object { const val MAX_LIVES = 3 }
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [organization, classes]
+    source: https://kotlinlang.org/docs/coding-conventions.html#class-layout

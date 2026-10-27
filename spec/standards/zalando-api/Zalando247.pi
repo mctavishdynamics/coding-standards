@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando247:
+    standard: @{ZalandoApi}
+    ruleId: 247
+    title: Provide mandatory event metadata
+    statement:
+        Fill in the shared metadata of every event, and as a producer always
+        set the event id eid and the creation time occurred_at.
+    rationale:
+        Metadata gives consumers and brokers generic information to
+        validate, deduplicate and order events.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```json
+        \\\
+        {
+          "metadata": {
+            "eid": "8a6e0804-2bd0-4672-b79d-d97027f9071a",
+            "occurred_at": "2024-03-02T10:00:00Z",
+            "flow_id": "r7Tq2WmZx0cVb8yN4kLp1A"
+          }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, events, metadata]
+    source: https://opensource.zalando.com/restful-api-guidelines/#247

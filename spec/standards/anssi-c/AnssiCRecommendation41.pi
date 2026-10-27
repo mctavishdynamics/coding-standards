@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation41:
+    standard: @{AnssiC}
+    ruleId: recommendation-41
+    title: Enable options that detect signed integer overflow
+    statement:
+        Use compiler options that trap signed overflow at run time, such as
+        ftrapv for GCC and Clang.
+    rationale:
+        Signed overflow is undefined behaviour and a frequent root cause of
+        security bugs.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        gcc -O2 -ftrapv -c counter.c
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, compilation, integer-overflow]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=35

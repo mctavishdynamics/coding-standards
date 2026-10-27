@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando160:
+    standard: @{ZalandoApi}
+    ruleId: 160
+    title: Prefer cursor-based pagination over offsets
+    statement:
+        Use cursor-based pagination rather than offsets, especially for
+        large data sets and NoSQL or sharded stores. Treat the cursor as
+        opaque, and weigh the trade-offs such as the loss of jumping to a
+        page number.
+    rationale:
+        Cursors are efficient on large data and avoid the duplicates and
+        gaps that offsets produce when data changes between requests.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /orders?offset=150000&limit=50
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /orders?cursor=eyJsYXN0IjoiMTQ5OTk5In0&limit=50
+        \\\
+        ```
+    languages: [any]
+    tags: [should, pagination]
+    source: https://opensource.zalando.com/restful-api-guidelines/#160

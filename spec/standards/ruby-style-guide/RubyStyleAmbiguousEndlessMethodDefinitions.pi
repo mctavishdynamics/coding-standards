@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAmbiguousEndlessMethodDefinitions:
+    standard: @{RubyStyleGuide}
+    ruleId: ambiguous-endless-method-definitions
+    title: Do not combine endless methods with low-precedence keywords
+    statement:
+        Use a normal method definition instead of an endless one when the
+        body would be followed by and, or, or a modifier if, unless, while
+        or until.
+    rationale:
+        Those keywords bind more loosely than the equals sign, so they apply
+        to the whole definition rather than to the body as it appears.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def notify = deliver_mail if subscribed?
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def notify
+          deliver_mail if subscribed?
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, operators]
+    source: https://rubystyle.guide/#ambiguous-endless-method-definitions

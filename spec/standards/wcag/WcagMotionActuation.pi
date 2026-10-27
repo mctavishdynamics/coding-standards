@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagMotionActuation:
+    standard: @{Wcag22}
+    ruleId: 2.5.4
+    title: Offer controls for motion-triggered functions and let motion be disabled
+    statement:
+        When a function can be triggered by moving or shaking the device,
+        also provide a normal control for it, and let users turn off the
+        motion response.
+    rationale:
+        Some users cannot move a device, and others have it mounted or move
+        it involuntarily.
+    exceptions:
+        Exempt when motion works through an accessibility supported
+        interface, or when motion is essential to the function.
+    severity: null
+    noncompliant:
+        ```js
+        \\\
+        window.addEventListener("devicemotion", e => {
+          if (isShake(e)) undoLastEdit();
+        });
+        \\\
+        ```
+    compliant:
+        ```js
+        \\\
+        undoButton.addEventListener("click", undoLastEdit);
+        window.addEventListener("devicemotion", e => {
+          if (prefs.shakeToUndo && isShake(e)) undoLastEdit();
+        });
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, motion, mobile]
+    source: https://www.w3.org/TR/WCAG22/#motion-actuation

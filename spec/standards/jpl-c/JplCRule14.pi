@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule14:
+    standard: @{JplC}
+    ruleId: rule-14
+    title: Never silently drop a function result
+    statement:
+        Callers must use the value a non-void function returns. When the
+        result truly does not matter, cast the call to (void) to show that it
+        is ignored on purpose.
+    rationale:
+        Ignoring a returned error lets a failure pass unnoticed and lets it
+        spread. The explicit cast shows that ignoring the value was a
+        deliberate choice.
+    exceptions:
+        A result that is truly irrelevant may be discarded with an explicit
+        (void) cast.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fclose(log_file);
+        write_record(fd, &rec);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        (void)fclose(log_file);
+        if (write_record(fd, &rec) != OK) {
+            return ERR_IO;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-3, error-handling, return-values]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

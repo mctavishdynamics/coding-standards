@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartExplicitDynamic:
+    standard: @{EffectiveDart}
+    ruleId: do-annotate-with-dynamic-instead-of-letting-inference-fail
+    title: Write dynamic explicitly instead of letting inference fail
+    statement:
+        When dynamic is the type you mean, annotate it. Letting dynamic flow
+        from an existing dynamic source through inference is still fine.
+    rationale:
+        A missing annotation leaves readers unsure whether dynamic was
+        meant, expected to be inferred or forgotten, and it hides lost
+        static safety.
+    exceptions:
+        Unused parameters named `_` may omit the type.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        void handle(message) {
+          print(message.payload);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        void handle(dynamic message) {
+          print(message.payload);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, types, dynamic]
+    source: https://dart.dev/effective-dart/design#do-annotate-with-dynamic-instead-of-letting-inference-fail

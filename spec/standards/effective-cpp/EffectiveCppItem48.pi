@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem48:
+    standard: @{EffectiveCpp}
+    ruleId: item-48
+    title: Move suitable computation to compile time
+    statement:
+        Be aware that templates can compute values and choose code at
+        compile time, moving work and error detection from runtime to
+        compilation.
+    rationale:
+        This can give faster code and earlier errors, at the cost of longer
+        builds and harder diagnostics.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        unsigned long factorial(unsigned n) {   // computed every run
+            return n < 2 ? 1 : n * factorial(n - 1);
+        }
+        const auto table = factorial(10);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr unsigned long factorial(unsigned n) {
+            return n < 2 ? 1 : n * factorial(n - 1);
+        }
+        static_assert(factorial(5) == 120);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates-and-generic-programming, templates, metaprogramming]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

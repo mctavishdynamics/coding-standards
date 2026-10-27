@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagUnusualWords:
+    standard: @{Wcag22}
+    ruleId: 3.1.3
+    title: Explain jargon, idioms and words used unusually
+    statement:
+        When a word or phrase carries a specialised or unusual meaning, such
+        as jargon or an idiom, give readers a way to look that meaning up,
+        like a glossary or a definition in place.
+    rationale:
+        People with cognitive disabilities or who read in a second language
+        may take such words literally.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <p>Each build is idempotent.</p>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <p>Each build is <dfn id="def-idem">idempotent</dfn>: running it twice gives the same result
+        as running it once.</p>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aaa, content, readability]
+    source: https://www.w3.org/TR/WCAG22/#unusual-words

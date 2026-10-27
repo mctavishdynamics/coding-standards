@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleSmallestScope:
+    standard: @{TigerStyle}
+    ruleId: smallest-scope
+    title: Declare variables in the smallest possible scope
+    statement:
+        Declare each variable in the narrowest scope that works, and keep
+        the number of variables in scope at any point low.
+    rationale:
+        Fewer variables in view means fewer chances to use the wrong one.
+        The style guide repeats this point under cache invalidation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        var checksum: u128 = 0;
+        var i: u32 = 0;
+        while (i < count) : (i += 1) {
+            checksum = hash(entries[i]);
+            verify(entries[i], checksum);
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        for (entries[0..count]) |*entry| {
+            const checksum = hash(entry.*);
+            verify(entry.*, checksum);
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [scope, variables]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

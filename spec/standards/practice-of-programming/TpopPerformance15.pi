@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance15:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-15
+    title: Give common special cases their own fast path
+    statement:
+        Handle frequent special cases, such as small sizes, with separate
+        simple code so the general path is not slowed down.
+    rationale:
+        A fast path for the common case can make the whole program faster.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        void *pool_get(size_t n)
+        {
+            if (n <= SMALL_MAX)
+                return small_get(n);
+            return malloc(n);
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [performance]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

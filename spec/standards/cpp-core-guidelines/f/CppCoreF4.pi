@@ -5,17 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF4:
     standard: @{CppCoreGuidelines}
     ruleId: F.4
-    title: If a function might have to be evaluated at compile time, declare it constexpr
+    title: Mark functions that may run during compilation constexpr
     statement:
-        Mark a function constexpr when it may be needed in constant
-        expressions such as array bounds or template arguments.
+        Declare a function constexpr if callers may need its result as a
+        constant, such as an array size or a template argument.
     rationale:
-        The compiler only allows compile-time evaluation of functions
-        declared constexpr.
+        Without constexpr the compiler will not run the function during
+        compilation, even if it could.
     exceptions:
-        Do not make every function constexpr; most work belongs at run time.
-        Avoid constexpr on APIs that may later depend on run-time
-        configuration or business logic.
+        Not everything should be constexpr, since most work happens at run time
+        anyway. Leave it off functions whose logic may later need run-time data
+        such as configuration.
     severity: null
     noncompliant:
         ```cpp

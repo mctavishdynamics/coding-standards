@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule9:
+    standard: @{JplC}
+    ruleId: rule-9
+    title: Keep locking rare, ordered and paired
+    statement:
+        Prefer designs that need no locking at all. Where locks are used,
+        hold only one at a time if possible, document a single acquisition
+        order when several are needed, and pair each lock with its unlock
+        inside one function.
+    rationale:
+        Taking nested locks in more than one order can deadlock. Keeping
+        each lock and unlock, or interrupt mask and unmask, paired within
+        one function makes the pairing easy to check.
+    exceptions:
+        Semaphores used for producer-consumer signalling rather than locking
+        may be acquired and released in different tasks.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void update_a(void) {
+            lock(&mutex_a);
+            lock(&mutex_b);
+            copy_b_to_a();
+            unlock(&mutex_b);
+        }
+
+        void finish_update(void) {
+            unlock(&mutex_a);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* lock order: mutex_a, then mutex_b */
+        void update_a(void) {
+            lock(&mutex_a);
+            lock(&mutex_b);
+            copy_b_to_a();
+            unlock(&mutex_b);
+            unlock(&mutex_a);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-2, concurrency, locking]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

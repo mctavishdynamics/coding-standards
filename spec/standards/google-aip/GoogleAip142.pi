@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip142:
+    standard: @{GoogleAip}
+    ruleId: AIP-142
+    title: Represent times and durations with the common time types
+    statement:
+        Use google.protobuf.Timestamp for instants with names ending in
+        _time, google.protobuf.Duration for spans, and the google.type date
+        and time types for civil dates and wall-clock times. An offset
+        inside a stream uses a Duration whose name ends in _offset and whose
+        comment must state the reference point.
+    rationale:
+        Shared time types let infrastructure and client libraries handle
+        time the same way everywhere, avoiding confusion over time zones,
+        epochs and string formats that JSON cannot express natively.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Order {
+          int64 created = 1;      // Seconds? Milliseconds?
+          string prep_minutes = 2;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Order {
+          google.protobuf.Timestamp create_time = 1;
+          google.protobuf.Duration prep_duration = 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [fields, time]
+    source: https://google.aip.dev/142

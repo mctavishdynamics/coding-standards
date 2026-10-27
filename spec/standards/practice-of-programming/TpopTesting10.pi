@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopTesting10:
+    standard: @{PracticeOfProgramming}
+    ruleId: testing-10
+    title: Cross-check against a separate implementation
+    statement:
+        Compare results with those of another, independently written version
+        of the same function.
+    rationale:
+        Two implementations are unlikely to share the same bugs, so
+        disagreements point to errors.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        for (int i = 0; i < 100000; i++) {
+            unsigned x = rand();
+            assert(fast_popcount(x) == slow_popcount(x));
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, differential-testing]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

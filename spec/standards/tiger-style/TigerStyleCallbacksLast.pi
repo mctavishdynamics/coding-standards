@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleCallbacksLast:
+    standard: @{TigerStyle}
+    ruleId: callbacks-last
+    title: Put callback parameters last
+    statement:
+        Place callbacks at the end of a parameter list.
+    rationale:
+        The order matches control flow, since the callback also runs last.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn read(callback: *const fn (*Read) void, sector: u64, buffer: []u8) void {}
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn read(sector: u64, buffer: []u8, callback: *const fn (*Read) void) void {}
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [parameters, callbacks]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#naming-things

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPortability3:
+    standard: @{PracticeOfProgramming}
+    ruleId: portability-3
+    title: Steer clear of areas where implementations differ
+    statement:
+        Know the features whose behavior varies between systems, such as
+        type sizes, sign of char, evaluation order and shifts, and avoid
+        relying on them.
+    rationale:
+        Code that depends on unspecified or implementation-defined behavior
+        may work in one place and fail in another.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char c;
+        while ((c = getchar()) != EOF)
+            putchar(c);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int c;
+        while ((c = getchar()) != EOF)
+            putchar(c);
+        \\\
+        ```
+    languages: [any]
+    tags: [portability, undefined-behavior]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

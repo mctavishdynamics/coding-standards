@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiSpecifyReturnTypesExplicitly:
+    standard: @{KotlinApiGuidelines}
+    ruleId: specify-return-types-explicitly
+    title: Declare return types of public functions explicitly
+    statement:
+        Always state the return types of public functions and the types of
+        public properties.
+    rationale:
+        With an inferred type, changing the implementation can change the
+        signature and break binary compatibility without anyone noticing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun defaultParser() = CsvParser(separator = ',')
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun defaultParser(): Parser = CsvParser(separator = ',')
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [compatibility, types]
+    source: https://kotlinlang.org/docs/api-guidelines-backward-compatibility.html#specify-return-types-explicitly

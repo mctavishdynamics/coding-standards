@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando254:
+    standard: @{ZalandoApi}
+    ruleId: 254
+    title: Avoid a total result count
+    statement:
+        Do not return the total number of results in paginated responses. If
+        a consumer really needs it, offer it on request through the Prefer
+        header with return=total-count.
+    rationale:
+        Counting usually requires a full scan, grows more expensive as data
+        grows, and is hard to remove once clients depend on it.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        GET /orders?limit=50
+        Prefer: return=total-count
+        \\\
+        ```
+    languages: [any]
+    tags: [should, pagination, performance]
+    source: https://opensource.zalando.com/restful-api-guidelines/#254

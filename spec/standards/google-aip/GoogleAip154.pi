@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip154:
+    standard: @{GoogleAip}
+    ruleId: AIP-154
+    title: Use an etag string to detect stale writes
+    statement:
+        When a resource needs freshness checks, give it a server-provided
+        string field named etag and accept it on mutating requests. If the
+        supplied etag does not match the current value, the request must
+        fail with ABORTED; weak etags carry a W/ prefix, and declarative-
+        friendly resources must have an etag.
+    rationale:
+        Concurrent writers can overwrite each other's changes without
+        noticing. An etag lets a client make a change conditional on the
+        version it last read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Inventory {
+          string name = 1;
+          int64 version = 2 [(google.api.field_behavior) = REQUIRED];
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Inventory {
+          string name = 1;
+          // Server-computed; send it back to guard updates.
+          string etag = 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [concurrency, design-patterns]
+    source: https://google.aip.dev/154

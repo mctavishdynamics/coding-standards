@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartExportsAfterImports:
+    standard: @{EffectiveDart}
+    ruleId: do-specify-exports-in-a-separate-section-after-all-imports
+    title: Put exports in their own section after all imports
+    statement:
+        Collect `export` directives in a separate section that comes after
+        every import. The directives_ordering lint checks this.
+    rationale:
+        Mixing exports among imports hides what the library re-publishes to
+        its users.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        import 'src/cart.dart';
+        export 'src/cart.dart';
+        import 'src/pricing.dart';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        import 'src/cart.dart';
+        import 'src/pricing.dart';
+
+        export 'src/cart.dart';
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, imports, ordering]
+    source: https://dart.dev/effective-dart/style#do-specify-exports-in-a-separate-section-after-all-imports

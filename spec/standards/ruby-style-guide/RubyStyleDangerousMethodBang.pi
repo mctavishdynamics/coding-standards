@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleDangerousMethodBang:
+    standard: @{RubyStyleGuide}
+    ruleId: dangerous-method-bang
+    title: End dangerous method names with a bang when a safe version exists
+    statement:
+        Add an exclamation mark to a method that modifies its receiver or
+        arguments, or is otherwise dangerous, when a safe counterpart
+        without the mark also exists.
+    rationale:
+        The bang warns callers that this version does something the plain
+        one does not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Cart
+          def compact
+            @items.reject!(&:nil?)
+            self
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Cart
+          def compact!
+            @items.reject!(&:nil?)
+            self
+          end
+
+          def compact
+            dup.compact!
+          end
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [naming, methods]
+    source: https://rubystyle.guide/#dangerous-method-bang

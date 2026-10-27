@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule41:
+    standard: @{CppCodingStandards}
+    ruleId: rule-41
+    title: Keep data members private unless the type is a plain aggregate
+    statement:
+        Make data private in every class with behaviour; public data is
+        acceptable only in simple structs that just bundle values.
+    rationale:
+        Protected and public data cannot be protected by invariants and lock
+        the representation into the interface.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Account {
+        public:
+            void deposit(long c);
+            long balance;   // bypasses deposit rules
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Account {
+        public:
+            void deposit(long c);
+            long balance() const { return balance_; }
+        private:
+            long balance_ = 0;
+        };
+        struct Point { int x; int y; };   // aggregate, fine
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, encapsulation]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

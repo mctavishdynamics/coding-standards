@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbSyscallBuildTags:
+    standard: @{GoProverbs}
+    ruleId: syscall-must-always-be-guarded-with-build-tags
+    title: Guard syscall code with build constraints
+    statement:
+        Put code that uses the syscall package behind build constraints for
+        the operating systems and architectures it supports.
+    rationale:
+        System call interfaces differ between platforms, so unguarded code
+        fails to build or behaves wrongly elsewhere.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package fsutil
+
+        import "syscall"
+
+        func freeBytes(path string) uint64 {
+            var st syscall.Statfs_t
+            syscall.Statfs(path, &st)
+            return st.Bavail * uint64(st.Bsize)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        //go:build linux
+
+        package fsutil
+
+        import "syscall"
+
+        func freeBytes(path string) uint64 {
+            var st syscall.Statfs_t
+            syscall.Statfs(path, &st)
+            return st.Bavail * uint64(st.Bsize)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [portability, build]
+    source: https://go-proverbs.github.io/

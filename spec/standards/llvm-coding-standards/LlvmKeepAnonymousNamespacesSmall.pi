@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmKeepAnonymousNamespacesSmall:
+    standard: @{LlvmCodingStandards}
+    ruleId: restrict-visibility-anonymous-namespaces
+    title: Keep anonymous namespaces small and only for classes
+    statement:
+        Use anonymous namespaces only around class declarations and keep
+        them as short as possible. Make file-local functions static instead
+        of placing them in an anonymous namespace.
+    rationale:
+        A static marker is visible at the definition, while membership in a
+        large anonymous namespace can only be seen by scanning far up the
+        file.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        namespace {
+        struct Edge { unsigned From, To; };
+        // ... many lines ...
+        void addEdge(Edge E) { /* ... */ }
+        } // namespace
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace {
+        struct Edge { unsigned From, To; };
+        } // namespace
+
+        static void addEdge(Edge E) { /* ... */ }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [visibility, namespaces]
+    source: https://llvm.org/docs/CodingStandards.html#restrict-visibility

@@ -5,18 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreI2:
     standard: @{CppCoreGuidelines}
     ruleId: I.2
-    title: Avoid non-const global variables
+    title: Avoid global variables that can be modified
     statement:
-        Do not use mutable variables at global or namespace scope. Pass the
-        data explicitly, or make it the state of an object whose member
-        functions operate on it.
+        Do not keep mutable state at namespace or global scope. Pass the data as
+        an argument, or wrap it in an object and operate on it through member
+        functions.
     rationale:
-        Mutable globals hide dependencies, can be changed unpredictably from
-        anywhere and invite data races.
+        Any code anywhere can change a writable global, so readers cannot see
+        who depends on it. Concurrent access to it also risks data races.
     exceptions:
-        Global constants are fine. A few mutable globals, such as std::cout,
-        are reasonable exceptions, and a global object is often better than
-        a singleton.
+        Global constants are fine, as are a few established objects such
+        as std::cout. If shared mutable state truly cannot be avoided, a plain
+        global object is still better than a singleton.
     severity: null
     noncompliant:
         ```cpp

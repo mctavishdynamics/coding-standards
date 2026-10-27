@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleEndlessMethods:
+    standard: @{RubyStyleGuide}
+    ruleId: endless-methods
+    title: Use endless methods only for simple one-line bodies
+    statement:
+        Reserve the endless method syntax introduced in Ruby 3.0 for bodies
+        of a single line, ideally one simple expression with no side
+        effects. When a one-line method is warranted, prefer this form.
+    rationale:
+        Endless definitions read well for tiny computations but become
+        confusing when the body grows or changes state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def save! = (validate!
+          persist
+          notify_listeners)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def area = width * height
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, formatting]
+    source: https://rubystyle.guide/#endless-methods

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuStreamLargeInputs:
+    standard: @{GnuCodingStandards}
+    ruleId: memory-usage-large-inputs
+    title: Keep only a line in memory when processing arbitrary input
+    statement:
+        Small programs may read whole files into memory. A line-oriented
+        program that may be given arbitrary user files should hold just the
+        current line, so it can handle inputs larger than memory.
+    rationale:
+        Tools like cat or tail are expected to work on files of any size.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char *all = read_entire_file (fp);
+        for (char *l = strtok (all, "\n"); l; l = strtok (NULL, "\n"))
+          count_words (l);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        while (getline (&line, &cap, fp) != -1)
+          count_words (line);
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, scalability]
+    source: https://www.gnu.org/prep/standards/standards.html#Memory-Usage

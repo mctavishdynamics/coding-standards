@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoDontFireAndForgetGoroutines:
+    standard: @{UberGo}
+    ruleId: dont-fire-and-forget-goroutines
+    title: Give every goroutine a controlled lifetime
+    statement:
+        Never let a goroutine outlive the code that owns it. Each one needs
+        a predictable end or a way to be told to stop, and callers need a
+        way to wait for it to finish. Test for leaks with
+        go.uber.org/goleak.
+    rationale:
+        Unmanaged goroutines consume memory and CPU, hold resources and keep
+        objects from being garbage collected.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        go func() {
+            for {
+                syncInventory()
+                time.Sleep(time.Minute)
+            }
+        }()
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        stop := make(chan struct{})
+        done := make(chan struct{})
+        go func() {
+            defer close(done)
+            ticker := time.NewTicker(time.Minute)
+            defer ticker.Stop()
+            for {
+                select {
+                case <-ticker.C:
+                    syncInventory()
+                case <-stop:
+                    return
+                }
+            }
+        }()
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, goroutines]
+    source: https://github.com/uber-go/guide/blob/master/style.md#dont-fire-and-forget-goroutines

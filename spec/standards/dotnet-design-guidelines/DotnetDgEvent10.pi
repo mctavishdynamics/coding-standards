@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEvent10:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: event-10
+    title: Return void from event handlers
+    statement:
+        Event handler delegates must have a void return type.
+    rationale:
+        An event can call many handlers, so a return value would be
+        ambiguous.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public delegate bool ValidatingEventHandler(object sender, ValidatingEventArgs e);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public delegate void ValidatingEventHandler(object sender, ValidatingEventArgs e);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, events, delegates]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/event#custom-event-handler-design

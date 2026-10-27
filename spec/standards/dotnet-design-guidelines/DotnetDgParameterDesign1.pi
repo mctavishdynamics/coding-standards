@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-1
+    title: Accept the most general parameter type that does the job
+    statement:
+        Type each parameter as the least derived type that offers what the
+        member actually uses.
+    rationale:
+        A general parameter type lets callers pass more kinds of objects
+        without converting them first.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public decimal Sum(List<decimal> amounts) => amounts.Sum();
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public decimal Sum(IEnumerable<decimal> amounts) => amounts.Sum();
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, parameters, abstraction]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design

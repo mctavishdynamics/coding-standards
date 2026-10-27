@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule12:
+    standard: @{JplC}
+    ruleId: rule-12
+    title: Give explicit enum values to the first member or to all
+    statement:
+        Within one enumeration, either assign a value to the first constant
+        alone or assign values to every constant. Do not assign values to
+        only some later constants.
+    rationale:
+        Mixing explicit and implicit values makes it easy to create
+        duplicate or unexpected values without noticing.
+    exceptions:
+        Setting only the first member, or every member, is allowed.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        enum mode { MODE_IDLE, MODE_RUN = 3, MODE_SAFE, MODE_TEST = 4 };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum mode { MODE_IDLE = 0, MODE_RUN = 3, MODE_SAFE = 4, MODE_TEST = 5 };
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-2, enums, initialization]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

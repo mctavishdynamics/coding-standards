@@ -1,0 +1,25 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule45:
+    standard: @{AnssiC}
+    ruleId: rule-45
+    title: Build position-independent executables
+    statement:
+        Compile with fPIE and link with pie on GCC and Clang toolchains.
+    rationale:
+        A position-independent executable can be loaded at a random address,
+        which lets address space layout randomisation do its job.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        gcc -O2 -fPIE -pie main.c -o server
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, compilation, hardening, linking]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=37

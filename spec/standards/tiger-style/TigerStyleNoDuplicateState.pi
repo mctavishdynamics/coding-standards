@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleNoDuplicateState:
+    standard: @{TigerStyle}
+    ruleId: no-duplicate-state
+    title: Do not duplicate variables or alias them
+    statement:
+        Keep a single copy of each piece of state, and avoid taking aliases
+        to it.
+    rationale:
+        Every extra copy is a chance for the values to drift out of sync.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        const op_current = self.op;
+        self.advance();
+        log(op_current);
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        self.advance();
+        log(self.op);
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [state, variables]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#cache-invalidation

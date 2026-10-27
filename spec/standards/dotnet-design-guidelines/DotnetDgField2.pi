@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgField2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: field-2
+    title: Use const only for values that will never change
+    statement:
+        Declare a field const only when its value is fixed for all time,
+        such as a mathematical or physical constant.
+    rationale:
+        The compiler copies const values into calling assemblies, so
+        changing one later leaves callers using the old value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public const int MaxUploadMegabytes = 25;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public const int MinutesPerHour = 60;
+        public static readonly int MaxUploadMegabytes = 25;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, fields, versioning]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/field

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-1
+    title: Make properties get-only when callers must not change them
+    statement:
+        Omit the setter when callers should not be able to assign the
+        property. Remember that a mutable object returned from a get-only
+        property can still be modified.
+    rationale:
+        A get-only property states and enforces that the value is read-only
+        to callers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public DateTime CreatedAt { get; set; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public DateTime CreatedAt { get; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, properties, immutability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property

@@ -5,19 +5,19 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreI26:
     standard: @{CppCoreGuidelines}
     ruleId: I.26
-    title: If you want a cross-compiler ABI, use a C-style subset
+    title: Expose a C-style interface when other compilers must link against it
     statement:
-        When code built by different compilers must link together, restrict
-        the interface to a C-style subset, using extern C functions and
-        plain types.
+        If parts of a program are built by different compilers and linked
+        together, limit the shared interface to a C subset: extern "C" functions
+        and plain data types.
     rationale:
-        Compilers lay out classes, handle exceptions and mangle names
-        differently, so full C++ interfaces are not binary compatible
-        between them.
+        Each compiler has its own rules for class layout, exceptions and name
+        mangling. A full C++ interface may therefore not link or work across
+        them.
     exceptions:
-        Common ABIs exist on some platforms and relax these restrictions.
-        With a single compiler you can use full C++ in interfaces, though an
-        upgrade may require recompiling.
+        Some platforms have a common C++ ABI, which removes much of this limit.
+        When one compiler builds everything, a full C++ interface is fine, but a
+        compiler upgrade means rebuilding all parts.
     severity: null
     noncompliant:
         ```cpp

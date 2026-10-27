@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem13:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-13
+    title: Use const_iterator when the elements are not modified
+    statement:
+        Prefer const iterators when you do not change elements, and in
+        generic code use the non-member cbegin, begin and end.
+    rationale:
+        In modern C++ const iterators are easy to obtain and usable with
+        container insert and erase.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto it = std::find(names.begin(), names.end(), "root");
+        names.insert(it, "admin");
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto it = std::find(names.cbegin(), names.cend(), "root");
+        names.insert(it, "admin");
+        \\\
+        ```
+    languages: [cpp]
+    tags: [moving-to-modern-cpp, const-correctness, iterators]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

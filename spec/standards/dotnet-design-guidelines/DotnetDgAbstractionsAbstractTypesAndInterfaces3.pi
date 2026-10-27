@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgAbstractionsAbstractTypesAndInterfaces3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: abstractions-abstract-types-and-interfaces-3
+    title: Consider shipping reference tests for implementations
+    statement:
+        Provide tests that implementers can run against their own
+        implementation of your abstraction to check it honors the contract.
+    rationale:
+        Contract tests catch implementations that compile but behave
+        incorrectly.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public abstract class KeyValueStoreContractTests
+        {
+            protected abstract IKeyValueStore CreateStore();
+
+            [Fact]
+            public void ReadReturnsLastWrite()
+            {
+                var store = CreateStore();
+                store.Write("k", "v");
+                Assert.Equal("v", store.Read("k"));
+            }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, extensibility, abstraction, testing]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/abstractions-abstract-types-and-interfaces

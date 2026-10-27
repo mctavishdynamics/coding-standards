@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem83:
+    standard: @{EffectivePython}
+    ruleId: item-83
+    title: Keep try blocks as small as you can
+    statement:
+        Put only the statement that can raise the expected exception in the
+        try block, and move everything else out.
+    rationale:
+        Large try blocks catch exceptions from unrelated code and hide bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            user = users[user_id]
+            send_email(user.email)
+        except KeyError:
+            log("unknown user")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        try:
+            user = users[user_id]
+        except KeyError:
+            log("unknown user")
+        else:
+            send_email(user.email)
+        \\\
+        ```
+    languages: [python]
+    tags: [robustness, exceptions]
+    source: https://effectivepython.com/

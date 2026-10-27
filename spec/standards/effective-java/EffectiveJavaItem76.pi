@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem76:
+    standard: @{EffectiveJava}
+    ruleId: item-76
+    title: Leave objects unchanged when a method fails
+    statement:
+        Aim for a failed method call to leave the object as it was before
+        the call. Validate first, order the work so failures happen before
+        mutation, or work on a copy.
+    rationale:
+        Objects that are left half updated after an exception are
+        unpredictable and hard to recover from.
+    exceptions:
+        Atomicity is not always possible, for example after concurrent
+        modification, and is sometimes too costly. Document the state left
+        behind in those cases.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public void transfer(Account to, long cents) {
+            balance -= cents;
+            to.deposit(cents); // may throw after balance changed
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public void transfer(Account to, long cents) {
+            to.checkCanDeposit(cents);
+            balance -= cents;
+            to.deposit(cents);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, robustness]
+    source: https://www.informit.com/store/effective-java-9780134686097

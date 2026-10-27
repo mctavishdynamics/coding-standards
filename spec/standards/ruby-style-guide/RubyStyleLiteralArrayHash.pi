@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleLiteralArrayHash:
+    standard: @{RubyStyleGuide}
+    ruleId: literal-array-hash
+    title: Create arrays and hashes with literals
+    statement:
+        Build empty arrays and hashes with the literal forms, and call the
+        constructor only when you need to pass it arguments. RuboCop checks
+        this with Style/EmptyLiteral.
+    rationale:
+        Literals are shorter and are the form Ruby programmers expect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        tags = Array.new
+        counts = Hash.new
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        tags = []
+        counts = {}
+        slots = Array.new(8)
+        totals = Hash.new(0)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections]
+    source: https://rubystyle.guide/#literal-array-hash

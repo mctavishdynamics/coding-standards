@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation20:
+    standard: @{AnssiC}
+    ruleId: recommendation-20
+    title: Prefer static inline functions to multi-statement macros
+    statement:
+        When a macro would need several statements, write a static inline
+        function instead.
+    rationale:
+        A function checks argument types, evaluates each argument once and
+        is easier to read and debug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define SWAP(a, b) do { int t = (a); (a) = (b); (b) = t; } while (0)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static inline void swap_int(int *a, int *b) {
+            int t = *a;
+            *a = *b;
+            *b = t;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, macros, functions]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=24

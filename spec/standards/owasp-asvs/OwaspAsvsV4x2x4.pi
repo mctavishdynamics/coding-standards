@@ -1,0 +1,21 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV4x2x4:
+    standard: @{OwaspAsvs}
+    ruleId: V4.2.4
+    title: Reject CR and LF in HTTP/2 and HTTP/3 header fields
+    statement:
+        Accept HTTP/2 and HTTP/3 requests only when header names and values
+        contain no carriage return or line feed characters.
+    rationale:
+        Line breaks survive in binary framing but become header separators
+        when the message is converted to HTTP/1.1, enabling injection.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-3, http, header-injection]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x13-V4-API-and-Web-Service.md#v42-http-message-structure-validation

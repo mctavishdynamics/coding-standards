@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule166:
+    standard: @{AnssiC}
+    ruleId: rule-166
+    title: Handle every error returned by standard library functions
+    statement:
+        Read the result of each standard library call and handle its error
+        cases.
+    rationale:
+        Library failures such as a file that cannot open are common and must
+        not be ignored.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        FILE *out = fopen("report.txt", "w");
+        fputs("ok\n", out);
+        fclose(out);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        FILE *out = fopen("report.txt", "w");
+        if (NULL == out) { return -1; }
+        if (fputs("ok\n", out) == EOF) { (void)fclose(out); return -1; }
+        if (fclose(out) != 0) { return -1; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, error-handling]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=136

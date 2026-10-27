@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./McIlroyUnix import McIlroyUnix
+
+export coding-rule McIlroyOutputBecomesInput:
+    standard: @{McIlroyUnix}
+    ruleId: 1978-ii
+    title: Write output that another program can consume
+    statement:
+        Design every program expecting that something else, perhaps not yet
+        written, will read its output. Print only the data, accept loose
+        text input rather than fixed columns or binary layouts, and never
+        depend on a person typing answers.
+    rationale:
+        Programs that read and write plain data can be connected in
+        pipelines in ways their authors never planned.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```shell
+        \\\
+        $ countwords notes.txt
+        Welcome to countwords 2.1!
+        Please wait, counting...
+        The file has 1532 words.
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        $ countwords notes.txt
+        1532
+        $ countwords notes.txt | awk '$1 > 1000'
+        1532
+        \\\
+        ```
+    languages: [any]
+    tags: [composability, output, text-streams]
+    source: https://archive.org/details/bstj57-6-1899

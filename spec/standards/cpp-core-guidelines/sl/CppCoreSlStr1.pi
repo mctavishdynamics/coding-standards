@@ -5,15 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSlStr1:
     standard: @{CppCoreGuidelines}
     ruleId: SL.str.1
-    title: Use std::string to own character sequences
+    title: Own text with std::string
     statement:
-        When code owns a sequence of characters, hold it in a std::string
-        rather than managing a char buffer by hand.
+        Store character data that your code owns in a std::string, not in a char
+        array or a buffer you allocate and free yourself.
     rationale:
-        A std::string handles allocation, ownership, copying and growth and
-        provides useful operations. Hand-written C string code invites
-        leaks, overflows and security bugs, and string is rarely slower in
-        practice.
+        A string takes care of memory, ownership, copying and growth, and comes with
+        many handy operations. Hand-managed C strings are a steady source of leaks,
+        overruns and security flaws, and they are seldom faster.
     exceptions: null
     severity: null
     noncompliant:

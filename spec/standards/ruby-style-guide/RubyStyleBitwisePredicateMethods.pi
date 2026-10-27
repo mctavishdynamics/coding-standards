@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleBitwisePredicateMethods:
+    standard: @{RubyStyleGuide}
+    ruleId: bitwise-predicate-methods
+    title: Test bits with anybits?, allbits? and nobits?
+    statement:
+        Check flags with anybits?, allbits? and nobits? rather than
+        comparing the result of a bitwise and. RuboCop checks this with
+        Style/BitwisePredicate.
+    rationale:
+        The predicates say which test is meant, which bare bitwise
+        expressions hide.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        writable = (mode & WRITE_MASK) == WRITE_MASK
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        writable = mode.allbits?(WRITE_MASK)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [readability, numbers]
+    source: https://rubystyle.guide/#bitwise-predicate-methods

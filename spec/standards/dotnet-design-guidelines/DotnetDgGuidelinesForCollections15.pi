@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgGuidelinesForCollections15:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: guidelines-for-collections-15
+    title: Return live collections from properties, not snapshots
+    statement:
+        A property should return a live view of the collection rather than a
+        fresh copy.
+    rationale:
+        Property getters should be cheap, and copying a collection costs
+        time proportional to its size.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public IReadOnlyList<Order> Orders => _orders.ToList();
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public ReadOnlyCollection<Order> Orders => _ordersView;   // wraps _orders
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, collections, properties, performance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/guidelines-for-collections#snapshots-versus-live-collections

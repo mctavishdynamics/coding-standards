@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./PowerOfTen import PowerOfTen
+
+export coding-rule PowerOfTenRule1:
+    standard: @{PowerOfTen}
+    ruleId: rule-1
+    title: Use only simple, acyclic control flow
+    statement:
+        Use only very simple control flow. Do not write goto statements, do
+        not call setjmp or longjmp, and do not let a function call itself
+        directly or through other functions.
+    rationale:
+        Simple control flow is easier for people and tools to verify.
+        Without recursion the call graph is acyclic, so analyzers can prove
+        that executions meant to be bounded really are bounded.
+    exceptions:
+        The rule does not demand a single return point per function; an
+        early error return is allowed when it is the simpler choice.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int count_nodes(const struct node *n) {
+            if (n == NULL) {
+                return 0;
+            }
+            return 1 + count_nodes(n->next);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int count_nodes(const struct node *n) {
+            int count = 0;
+            for (int i = 0; i < MAX_NODES && n != NULL; i++) {
+                count++;
+                n = n->next;
+            }
+            return count;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [control-flow, recursion]
+    source: https://spinroot.com/gerard/pdf/P10.pdf

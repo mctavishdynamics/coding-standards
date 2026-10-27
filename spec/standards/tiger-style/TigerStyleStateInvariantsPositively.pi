@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleStateInvariantsPositively:
+    standard: @{TigerStyle}
+    ruleId: state-invariants-positively
+    title: State conditions positively
+    statement:
+        Phrase conditions as the invariant that holds rather than its
+        negation, for example comparing index less than count.
+    rationale:
+        Negated conditions are harder to get right, and the positive form
+        matches how loop bounds are usually written.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        if (!(slot < slots_count)) return error.OutOfRange;
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        if (slot < slots_count) {
+            use(slot);
+        } else {
+            return error.OutOfRange;
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [readability, conditions]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

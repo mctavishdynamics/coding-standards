@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule64:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-64
+    title: Share code by redesign, not by contortion
+    statement:
+        If existing code fits only awkwardly, reorganize the program so that
+        the shared part is clean, instead of bending the old code to a new
+        use.
+    rationale:
+        Forced reuse adds flags and special cases that make both uses harder
+        to understand.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* print_report gained a flag so it can also write CSV */
+        print_report(data, n, 1 /* csv mode */);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        collect_rows(data, n, rows);
+        write_text_report(rows);
+        write_csv(rows);
+        \\\
+        ```
+    languages: [any]
+    tags: [efficiency-and-instrumentation, reuse, refactoring]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

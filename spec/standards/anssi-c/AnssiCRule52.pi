@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule52:
+    standard: @{AnssiC}
+    ruleId: rule-52
+    title: Do not initialise inside a multiple declaration
+    statement:
+        Do not attach an initialiser to a declaration that introduces
+        several variables at once.
+    rationale:
+        Only the last variable gets the value, while the code suggests all
+        of them do.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        uint32_t width, height = 0; /* width is not initialised */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        uint32_t width = 0;
+        uint32_t height = 0;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, declarations, initialization]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=40

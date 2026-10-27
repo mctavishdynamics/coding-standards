@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackConstEverything:
+    standard: @{Carmack}
+    ruleId: const-everything
+    title: Make local variables const by default
+    statement:
+        Default to declaring locals const, leaving loop counters as the main
+        exception.
+    rationale:
+        Single assignment makes code easier to follow and turns accidental
+        reassignment into a compile error.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        float len = Length(v);
+        float inv = 1.0f / len;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        const float len = Length(v);
+        const float inv = 1.0f / len;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [const, immutability]
+    source: https://www.gamedeveloper.com/programming/in-depth-functional-programming-in-c-

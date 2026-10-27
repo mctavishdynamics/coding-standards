@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvSourceFileOrganization:
+    standard: @{KotlinConventions}
+    ruleId: source-file-organization
+    title: Group closely related declarations in one file
+    statement:
+        Several declarations may share a file when they are closely related
+        and the file stays at a few hundred lines or less. Keep extensions
+        useful to every client of a class in the class's file, put
+        client-specific extensions next to that client, and do not create a
+        file just to collect all of a class's extensions.
+    rationale:
+        Related code is easier to read together, while dumping grounds for
+        extensions hide where functionality belongs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        // File: InvoiceExtensions.kt holds every Invoice extension,
+        // including one used only by the PDF exporter.
+        fun Invoice.toPdfRows(): List<Row> = TODO()
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        // File: PdfExporter.kt
+        private fun Invoice.toPdfRows(): List<Row> = TODO()
+
+        class PdfExporter { /* uses toPdfRows */ }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [organization, files]
+    source: https://kotlinlang.org/docs/coding-conventions.html#source-file-organization

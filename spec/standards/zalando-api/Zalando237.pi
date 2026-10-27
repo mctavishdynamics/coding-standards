@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando237:
+    standard: @{ZalandoApi}
+    ruleId: 237
+    title: Design complex query languages with JSON
+    statement:
+        For APIs that need rich queries, such as search with many dynamic
+        filters and free choice of operators, define the query as a nested
+        JSON structure in OpenAPI.
+    rationale:
+        Structured JSON queries need no special parsing or escaping, attach
+        meaning to data rather than text, and are fully described in the
+        specification.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```json
+        \\\
+        {
+          "query": {
+            "and": [
+              { "field": "brand", "equals": "acme" },
+              { "or": [ { "field": "color", "equals": "RED" },
+                        { "field": "color", "equals": "BLUE" } ] }
+            ]
+          }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [should, json, api-design]
+    source: https://opensource.zalando.com/restful-api-guidelines/#237

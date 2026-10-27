@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV1x3x7:
+    standard: @{OwaspAsvs}
+    ruleId: V1.3.7
+    title: Never build templates from untrusted input
+    statement:
+        Keep templates fixed and pass untrusted data only as template
+        values. If dynamic template creation cannot be avoided, sanitize or
+        strictly validate the untrusted parts.
+    rationale:
+        Template engines evaluate expressions, so input that becomes part of
+        the template itself can lead to code execution on the server.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        template = env.from_string("Hello " + user_name)
+        html = template.render()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        template = env.from_string("Hello {{ name }}")
+        html = template.render(name=user_name)
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, injection, templates]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x10-V1-Encoding-and-Sanitization.md#v13-sanitization

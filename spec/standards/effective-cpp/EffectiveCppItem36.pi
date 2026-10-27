@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem36:
+    standard: @{EffectiveCpp}
+    ruleId: item-36
+    title: Do not shadow a base class's non-virtual function
+    statement:
+        A derived class must not redeclare, using the identical signature, a
+        non-virtual function it inherits from a public base.
+    rationale:
+        The function called then depends on the static type of the pointer,
+        not on the object, which contradicts the is-a relationship.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Base { public: void reset(); };
+        class Derived : public Base { public: void reset(); };
+        Base* p = &derived;
+        p->reset();   // Base::reset runs
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Base { public: virtual ~Base() = default; virtual void reset(); };
+        class Derived : public Base { public: void reset() override; };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance-and-oo-design, inheritance]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

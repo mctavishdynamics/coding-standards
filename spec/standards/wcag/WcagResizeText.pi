@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagResizeText:
+    standard: @{Wcag22}
+    ruleId: 1.4.4
+    title: Let text scale to 200 percent without breaking
+    statement:
+        Allow text to be enlarged to 200 percent without assistive
+        technology and without losing content or functionality. Do not block
+        zoom and avoid fixed-height containers that clip text.
+    rationale:
+        People with low vision rely on browser zoom or larger text settings
+        to read.
+    exceptions:
+        Captions and images of text are excluded.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no">
+        <style>.card { height: 120px; overflow: hidden; font-size: 12px; }</style>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <style>.card { min-height: 7.5rem; font-size: 0.75rem; }</style>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, zoom, typography]
+    source: https://www.w3.org/TR/WCAG22/#resize-text

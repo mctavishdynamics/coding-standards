@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSlStr2:
     standard: @{CppCoreGuidelines}
     ruleId: SL.str.2
-    title: Use std::string_view or gsl::span<char> to refer to character sequences
+    title: Refer to text you do not own with string_view or a char span
     statement:
-        Take a string_view, or a span of char when the text must be mutable,
-        to refer to characters you do not own.
+        Use std::string_view for read access to characters owned elsewhere, or a
+        span of char when they must be changeable.
     rationale:
-        These give simple, potentially safe access to characters regardless
-        of how they are stored, so one function accepts string literals, C
-        strings and std::string alike. string_view is read-only.
+        Both work no matter where or how the characters are stored. A single
+        function can therefore take a literal, a C string or a std::string, and
+        access is bounded by a known length.
     exceptions: null
     severity: null
     noncompliant:

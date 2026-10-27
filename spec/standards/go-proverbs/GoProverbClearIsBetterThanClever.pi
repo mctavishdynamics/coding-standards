@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbClearIsBetterThanClever:
+    standard: @{GoProverbs}
+    ruleId: clear-is-better-than-clever
+    title: Write the obvious code rather than the clever code
+    statement:
+        Prefer code whose meaning is plain at first reading over code that
+        is short or ingenious.
+    rationale:
+        Code is read and changed far more often than it is written, and
+        clever code hides its intent and its bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func isPowerOfTwo(n uint) bool { return n&(n-1) == 0 && n != 0 }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // isPowerOfTwo reports whether n has exactly one bit set.
+        func isPowerOfTwo(n uint) bool {
+            return bits.OnesCount(n) == 1
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [readability, simplicity]
+    source: https://go-proverbs.github.io/

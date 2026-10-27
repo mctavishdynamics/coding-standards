@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartAvoidCast:
+    standard: @{EffectiveDart}
+    ruleId: avoid-using-cast
+    title: Avoid changing a collection's type with cast
+    statement:
+        Prefer creating the collection with the right type, casting each
+        element when you use it, or copying eagerly with `List.from()` over
+        calling `cast()`.
+    rationale:
+        `cast()` returns a lazy view that checks types on every operation,
+        which can be slow and can fail at runtime.
+    exceptions:
+        Sometimes none of the alternatives work and `cast()` is the right
+        tool, used with care.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        int sumAll(List<Object> values) {
+          var sum = 0;
+          for (final v in values.cast<int>()) sum += v;
+          return sum;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        int sumAll(List<Object> values) {
+          var sum = 0;
+          for (final v in values) sum += v as int;
+          return sum;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, collections, types]
+    source: https://dart.dev/effective-dart/usage#avoid-using-cast

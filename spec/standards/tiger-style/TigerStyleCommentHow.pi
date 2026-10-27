@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleCommentHow:
+    standard: @{TigerStyle}
+    ruleId: comment-how
+    title: Describe the goal and method at the top of a test
+    statement:
+        Explain how the code works where it helps, for example with a short
+        description of a test's goal and approach at its start.
+    rationale:
+        A summary lets readers get up to speed or skip sections without
+        reading every line.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        test "recovery" {
+            // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        test "recovery" {
+            // Crash a replica mid-commit, restart it, and check that it rejoins
+            // with the same log as the rest of the cluster.
+            // ...
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [comments, testing]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#naming-things

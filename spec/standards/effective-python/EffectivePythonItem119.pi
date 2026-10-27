@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem119:
+    standard: @{EffectivePython}
+    ruleId: item-119
+    title: Organise modules into packages with a stable public API
+    statement:
+        Group related modules into packages, and define what the package
+        exports with __all__ so internals can change without breaking users.
+    rationale:
+        Packages provide namespaces that prevent name clashes, and an
+        explicit API keeps clients off private details.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        # mylib/__init__.py
+        from .client import Client
+        from .errors import MyLibError
+
+        __all__ = ["Client", "MyLibError"]
+        \\\
+        ```
+    languages: [python]
+    tags: [collaboration, packages, api-design]
+    source: https://effectivepython.com/

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern14:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-14
+    title: Make a type finalizable when it alone frees an unmanaged resource
+    statement:
+        Give a type a finalizer when it directly owns an unmanaged resource
+        that nothing else will finalize. Keep the finalizer to a single call
+        of Dispose(false).
+    rationale:
+        Without it the resource leaks whenever a caller forgets to dispose.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class SharedMemoryBlock : IDisposable
+        {
+            ~SharedMemoryBlock() => Dispose(false);
+            public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+            protected virtual void Dispose(bool disposing) { UnmapView(_address); }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, dispose, resources, finalizers]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern#finalizable-types

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiMemWrapping:
+    standard: @{AnssiRust}
+    ruleId: FFI-MEM-WRAPPING
+    title: Wrap foreign-owned data in a releasing Drop type
+    statement:
+        Wrap non-sensitive data allocated and freed by the foreign side in a
+        Rust type whose Drop calls the foreign deallocation function.
+    rationale:
+        The destructor then frees the data automatically on every path,
+        including early returns and panics.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        let img = unsafe { img_load(path.as_ptr()) };
+        process(img)?;
+        unsafe { img_free(img) };
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        struct Image(*mut RawImage);
+
+        impl Drop for Image {
+            fn drop(&mut self) { unsafe { img_free(self.0) } }
+        }
+
+        let img = Image(unsafe { img_load(path.as_ptr()) });
+        process(&img)?;
+        \\\
+        ```
+    languages: [rust]
+    tags: [recommendation, ffi, memory, resource-management]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-MEM-WRAPPING

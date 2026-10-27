@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartVerbPhraseForBooleans:
+    standard: @{EffectiveDart}
+    ruleId: prefer-a-non-imperative-verb-phrase-for-a-boolean-property-or-variable
+    title: Name boolean properties with non-imperative verb phrases
+    statement:
+        Start boolean names with a form of "to be", such as isOpen, an
+        auxiliary verb, such as canRetry, or an unambiguous active verb.
+        Never phrase them as commands.
+    rationale:
+        Booleans appear in conditions, where these forms read well, and
+        reading a property should not sound like it changes anything. Names
+        such as loggedResult are ambiguous.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        if (socket.close) reconnect();
+        bool connectionDrop = false;
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        if (socket.isClosed) reconnect();
+        bool hasDroppedConnection = false;
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, naming, booleans]
+    source: https://dart.dev/effective-dart/design#prefer-a-non-imperative-verb-phrase-for-a-boolean-property-or-variable

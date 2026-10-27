@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule100:
+    standard: @{CppCodingStandards}
+    ruleId: rule-100
+    title: Keep arrays of derived objects away from base pointers
+    statement:
+        Never pass or index an array of derived objects through a pointer to
+        the base class; use containers of pointers or smart pointers.
+    rationale:
+        Pointer arithmetic uses the base size, so elements after the first
+        are read from the wrong place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void drawAll(const Shape* shapes, int n);
+        Circle circles[4];
+        drawAll(circles, 4);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void drawAll(const std::vector<std::unique_ptr<Shape>>& shapes);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-safety, inheritance, memory]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

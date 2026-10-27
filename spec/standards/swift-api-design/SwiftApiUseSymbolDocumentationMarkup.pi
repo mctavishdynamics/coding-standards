@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiUseSymbolDocumentationMarkup:
+    standard: @{SwiftApiDesign}
+    ruleId: use-symbol-documentation-markup
+    title: Use recognised symbol markup for extra information
+    statement:
+        When information goes beyond the summary, express it with the
+        recognised symbol documentation markup elements, such as parameter,
+        returns and throws sections.
+    rationale:
+        Tools understand these elements and can present them in a structured
+        way.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        /// Moves the file. The first argument is where it goes. Can fail.
+        func move(to destination: URL) throws
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// Moves the file to a new location.
+        ///
+        /// - Parameter destination: The URL the file should end up at.
+        /// - Throws: `FileError.exists` if `destination` is already taken.
+        func move(to destination: URL) throws
+        \\\
+        ```
+    languages: [swift]
+    tags: [documentation]
+    source: https://www.swift.org/documentation/api-design-guidelines/#write-doc-comment

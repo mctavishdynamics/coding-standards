@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleDoublePipeForUninit:
+    standard: @{RubyStyleGuide}
+    ruleId: double-pipe-for-uninit
+    title: Use the or-equals operator to initialise variables
+    statement:
+        Initialise a variable only when it has no value yet with the
+        or-equals operator. Do not use it for boolean variables.
+    rationale:
+        It is the idiomatic lazy initialisation. For booleans it is wrong,
+        because a false value would be replaced.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        @currency = 'EUR' if @currency.nil?
+        @enabled ||= true
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        @currency ||= 'EUR'
+        @enabled = true if @enabled.nil?
+        \\\
+        ```
+    languages: [ruby]
+    tags: [assignment, initialization]
+    source: https://rubystyle.guide/#double-pipe-for-uninit

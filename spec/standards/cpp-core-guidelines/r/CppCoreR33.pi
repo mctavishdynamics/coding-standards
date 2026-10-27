@@ -5,16 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR33:
     standard: @{CppCoreGuidelines}
     ruleId: R.33
-    title:
-        Take a unique_ptr reference to express that a function reseats the
-        object
+    title: Take a unique_ptr by reference when the function may replace the object
     statement:
-        When a function replaces the object a caller's unique_ptr owns, take
-        the parameter as a non-const reference to unique_ptr. Do not use
-        that form for anything else.
+        Use a parameter of type unique_ptr of T, by non-const reference,
+        only for a function that may swap in a different object for the
+        caller. Do not use it to simply give access to the object.
     rationale:
-        The signature documents and enforces that the caller's pointer may
-        be changed to point at a different object.
+        This type tells readers and the compiler that the function is
+        allowed to reseat the caller's pointer. Using it for anything else
+        misleads both.
     exceptions: null
     severity: null
     noncompliant:

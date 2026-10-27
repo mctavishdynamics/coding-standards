@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule128:
+    standard: @{AnssiC}
+    ruleId: rule-128
+    title: Give every switch a default case, placed last
+    statement:
+        Include a default label in every switch statement as its last case.
+    rationale:
+        The default branch handles unexpected values instead of silently
+        ignoring them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        switch (cmd) {
+        case CMD_START: start(); break;
+        case CMD_STOP: stop(); break;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        switch (cmd) {
+        case CMD_START: start(); break;
+        case CMD_STOP: stop(); break;
+        default: reject(cmd); break;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, control-flow, switch]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=100

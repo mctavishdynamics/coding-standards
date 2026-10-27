@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEvent7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: event-7
+    title: Pass null as sender for static events
+    statement:
+        When raising a static event, pass null as the sender.
+    rationale:
+        A static event has no instance to report, and null makes that
+        explicit.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public static event EventHandler ConfigurationReloaded;
+
+        private static void NotifyReloaded() => ConfigurationReloaded?.Invoke(null, EventArgs.Empty);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, events, static]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/event

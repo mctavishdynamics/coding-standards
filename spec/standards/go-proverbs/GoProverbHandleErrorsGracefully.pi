@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbHandleErrorsGracefully:
+    standard: @{GoProverbs}
+    ruleId: dont-just-check-errors-handle-them-gracefully
+    title: Handle errors thoughtfully instead of only passing them on
+    statement:
+        When you check an error, decide what to do about it: add context,
+        retry, fall back or report it, rather than returning it unchanged by
+        reflex.
+    rationale:
+        An error that travels up bare loses the information a reader of the
+        logs needs to find what failed and why.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        cfg, err := os.ReadFile(path)
+        if err != nil {
+            return err
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        cfg, err := os.ReadFile(path)
+        if err != nil {
+            return fmt.Errorf("load settings %s: %w", path, err)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling]
+    source: https://go-proverbs.github.io/

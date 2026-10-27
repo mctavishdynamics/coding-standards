@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule56:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-56
+    title: Guard against conditions that should not happen
+    statement:
+        Add checks for cases that cannot occur if the rest of the program is
+        right, and handle them safely.
+    rationale:
+        Programs change and assumptions break. A defensive check turns a
+        mysterious failure into a clear one.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        switch (kind) {
+        case CIRCLE: draw_circle(s); break;
+        case SQUARE: draw_square(s); break;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        switch (kind) {
+        case CIRCLE: draw_circle(s); break;
+        case SQUARE: draw_square(s); break;
+        default:
+            fprintf(stderr, "unknown shape kind %d\n", kind);
+            abort();
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [common-blunders, defensive-programming]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

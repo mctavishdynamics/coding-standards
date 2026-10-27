@@ -5,17 +5,17 @@ from ./CleanCode import CleanCode
 export coding-rule CleanCodeG23:
     standard: @{CleanCode}
     ruleId: G23
-    title: Prefer polymorphism to if/else or switch/case chains
+    title: Replace repeated type switches with polymorphism
     statement:
-        Allow at most one switch on a given type, typically where objects
-        are created, and let polymorphism handle the type-dependent behavior
-        everywhere else.
+        Branch on a type in one place only, usually the factory that builds
+        the objects. Every other piece of behavior that varies by type
+        belongs in overridden methods.
     rationale:
-        Repeated switches over the same type must all be found and updated
-        each time a new case is added.
+        Each copy of a type switch is one more spot to hunt down and edit
+        whenever a new type appears, and missing one causes a bug.
     exceptions:
-        When new functions are more likely to be added than new types, a
-        switch can be the better choice.
+        A switch may fit better when the set of types is stable and new
+        operations arrive more often than new types.
     severity: null
     noncompliant:
         ```java

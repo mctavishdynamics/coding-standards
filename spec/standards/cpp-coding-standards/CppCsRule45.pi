@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule45:
+    standard: @{CppCodingStandards}
+    ruleId: rule-45
+    title: Pair every class-specific operator new with its delete
+    statement:
+        If a class declares an operator new overload, declare the matching
+        operator delete as well.
+    rationale:
+        The runtime needs the matching delete to release memory when a
+        constructor throws, and to free objects correctly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Node {
+            static void* operator new(std::size_t n);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Node {
+            static void* operator new(std::size_t n);
+            static void operator delete(void* p) noexcept;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, memory, allocation]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

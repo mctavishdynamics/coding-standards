@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem38:
+    standard: @{EffectiveJava}
+    ruleId: item-38
+    title: Let clients extend an enum through a shared interface
+    statement:
+        Enums cannot be subclassed. When users need to add their own
+        constants, have the enum implement an interface and write APIs in
+        terms of that interface.
+    rationale:
+        Clients can then supply their own enum implementing the same
+        interface, and it works wherever the built-in one does.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```java
+        \\\
+        public interface Operation { double apply(double a, double b); }
+
+        public enum BasicOp implements Operation {
+            PLUS { public double apply(double a, double b) { return a + b; } },
+            MINUS { public double apply(double a, double b) { return a - b; } }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [enums-and-annotations, enums, interfaces, extensibility]
+    source: https://www.informit.com/store/effective-java-9780134686097

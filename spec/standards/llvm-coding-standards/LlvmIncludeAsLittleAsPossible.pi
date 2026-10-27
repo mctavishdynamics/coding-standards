@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmIncludeAsLittleAsPossible:
+    standard: @{LlvmCodingStandards}
+    ruleId: include-as-little-as-possible
+    title: Include headers only when a full definition is needed
+    statement:
+        Do not include a header you can avoid, especially from another
+        header. A forward declaration is enough for pointers, references and
+        declared return types. Still include every header you actually
+        depend on, and include the module header first in its implementation
+        file.
+    rationale:
+        Every include costs compile time, while missing includes create
+        hidden dependencies that surface later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Scheduler.h
+        #include "llvm/CodeGen/MachineFunction.h"
+        void schedule(MachineFunction &MF);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Scheduler.h
+        namespace llvm { class MachineFunction; }
+        void schedule(llvm::MachineFunction &MF);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [includes, headers, compile-time]
+    source: https://llvm.org/docs/CodingStandards.html#include-as-little-as-possible

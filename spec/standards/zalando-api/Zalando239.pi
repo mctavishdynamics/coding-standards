@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando239:
+    standard: @{ZalandoApi}
+    ruleId: 239
+    title: Encode binary data in base64url
+    statement:
+        Use a standard media type and format for binary data where one
+        exists. Otherwise define it as a string property with the binary
+        format and base64url encoding.
+    rationale:
+        base64url is safe in JSON and in URLs and is decoded the same way by
+        every client.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        properties:
+          label_png:
+            type: string
+            format: binary
+            description: Shipping label image, base64url encoded.
+        \\\
+        ```
+    languages: [any]
+    tags: [must, data-formats, binary]
+    source: https://opensource.zalando.com/restful-api-guidelines/#239

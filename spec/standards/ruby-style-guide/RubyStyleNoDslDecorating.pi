@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoDslDecorating:
+    standard: @{RubyStyleGuide}
+    ruleId: no-dsl-decorating
+    title: Omit braces and parentheses in internal DSL calls
+    statement:
+        When calling methods of an internal DSL, such as those of Rake,
+        Rails or RSpec, omit the parentheses as well as the braces around a
+        final hash of options.
+    rationale:
+        DSL calls are meant to read like declarations, and the punctuation
+        hides that.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Post < ApplicationRecord
+          validates(:title, { presence: true, length: { maximum: 80 } })
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Post < ApplicationRecord
+          validates :title, presence: true, length: { maximum: 80 }
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [method-calls, dsl]
+    source: https://rubystyle.guide/#no-dsl-decorating

@@ -18,10 +18,11 @@ export coding-rule CertCInt36C:
         when pointer sizes change. CERT rates likelihood probable,
         detectable yes, repairable no, priority P4, level L3.
     exceptions:
-        Zero may be converted to a pointer and becomes the null pointer. A
-        valid void pointer may be converted to intptr_t or uintptr_t and
-        back. An in-range integer may round-trip through a void pointer if
-        the pointer is never dereferenced.
+        The constant zero turns into the null pointer and is always safe. A
+        void pointer that points to a real object can make a round trip
+        through intptr_t or uintptr_t. An integer that fits may likewise
+        travel through a void pointer, provided nobody dereferences it on
+        the way.
     severity: low
     noncompliant:
         ```c

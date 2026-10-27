@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule125:
+    standard: @{AnssiC}
+    ruleId: rule-125
+    title: Do not compare floating-point values for equality
+    statement:
+        Never test floating-point values with the equality or inequality
+        operators.
+    rationale:
+        Values that should be equal often differ in their last bits, and the
+        outcome can depend on optimisation and promotion.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (ratio == 0.3) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (fabs(ratio - 0.3) < 1e-9) { /* ... */ }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, floating-point, comparison]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=97

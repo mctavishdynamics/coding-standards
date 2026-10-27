@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem56:
+    standard: @{EffectiveJava}
+    ruleId: item-56
+    title: Document every exported API element
+    statement:
+        Write a Javadoc comment for every public class, interface,
+        constructor, method and field. Describe what a method does, its
+        preconditions, postconditions, side effects and thread safety.
+    rationale:
+        The doc comment is the contract between an API and its users.
+        Without it, the API cannot be used correctly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public double rate(double amount, int days) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        /**
+         * Returns the interest owed on an amount held for a number of days.
+         *
+         * @param amount principal, must not be negative
+         * @param days holding period, at least 1
+         * @throws IllegalArgumentException if a parameter is out of range
+         */
+        public double rate(double amount, int days) { /* ... */ }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods, documentation, api-design]
+    source: https://www.informit.com/store/effective-java-9780134686097

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule176:
+    standard: @{AnssiC}
+    ruleId: rule-176
+    title: Use the strto functions instead of atoi, atol, atoll and atof
+    statement:
+        Convert strings to numbers with strtol, strtoul, strtod and related
+        functions, not with atoi, atol, atoll or atof.
+    rationale:
+        The ato functions report no errors and have undefined behaviour on
+        out-of-range input.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int port = atoi(arg);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *end = NULL;
+        errno = 0;
+        long port = strtol(arg, &end, 10);
+        if ((errno != 0) || (end == arg) || (*end != '\0') || (port < 1) || (port > 65535)) {
+            return -1;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, standard-library, input-validation]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=143

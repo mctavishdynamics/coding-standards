@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule99:
+    standard: @{CppCodingStandards}
+    ruleId: rule-99
+    title: Touch only live objects and use checked functions
+    statement:
+        Do not use destroyed objects, dangling pointers or references,
+        invalidated iterators or uninitialised values, and avoid unchecked
+        legacy functions such as strcpy and sprintf.
+    rationale:
+        These are classic sources of undefined behaviour and security holes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        char out[16];
+        sprintf(out, "%s-%d", name, id);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string out = std::format("{}-{}", name, id);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-safety, memory, safety]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExceptionThrowing6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: exception-throwing-6
+    title: Document contract exceptions and keep them stable
+    statement:
+        Document every exception a public member throws for contract
+        violations, and treat those exceptions as part of its contract that
+        must not change between versions.
+    rationale:
+        Callers write handlers for the documented exceptions, and changing
+        them breaks that code.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="count"/> is negative.
+        /// </exception>
+        public void Skip(int count) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, exceptions, documentation, versioning]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/exception-throwing

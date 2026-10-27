@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoForLoops:
+    standard: @{RubyStyleGuide}
+    ruleId: no-for-loops
+    title: Do not use for loops without a clear reason
+    statement:
+        Iterate with each or another iterator instead of for, unless you
+        know exactly why you need for.
+    rationale:
+        A for loop is built on each, adds a layer of indirection, and does
+        not open a new scope, so its loop variable remains visible after the
+        loop.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        for name in names
+          puts name
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        names.each { |name| puts name }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, loops, iteration]
+    source: https://rubystyle.guide/#no-for-loops

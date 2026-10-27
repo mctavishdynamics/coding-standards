@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle15:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-15
+    title: Wrap every macro argument and the whole body in parentheses
+    statement:
+        If you must write a function-like macro, parenthesize each use of a
+        parameter and the complete expansion.
+    rationale:
+        Without parentheses, operator precedence at the call site can change
+        what the macro computes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define HALF(n) n / 2
+
+        mid = HALF(lo + hi) * 3;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define HALF(n) ((n) / 2)
+
+        mid = HALF(lo + hi) * 3;
+        \\\
+        ```
+    languages: [any]
+    tags: [style, macros]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

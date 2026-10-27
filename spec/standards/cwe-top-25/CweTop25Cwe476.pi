@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe476:
+    standard: @{CweTop25}
+    ruleId: CWE-476
+    title: Prevent NULL pointer dereferences
+    statement:
+        Before dereferencing any pointer that might be NULL, test it,
+        especially when it came back from a call that can fail. Give variables
+        explicit initial values, and in multithreaded code keep the lock held
+        from the test through the use.
+    rationale:
+        Dereferencing NULL usually crashes the program, giving attackers an
+        easy denial of service and sometimes more. It is ranked 13 of 25 in
+        the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int user_age(struct db *db, int id) {
+            struct user *u = find_user(db, id);
+            return u->age;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int user_age(struct db *db, int id) {
+            struct user *u = find_user(db, id);
+            if (u == NULL) {
+                return -1;
+            }
+            return u->age;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rank-13, memory, pointers, null-safety]
+    source: https://cwe.mitre.org/data/definitions/476.html

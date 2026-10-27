@@ -7,17 +7,17 @@ export coding-rule CertCppOop52Cpp:
     ruleId: OOP52-CPP
     title: Do not delete a polymorphic object without a virtual destructor
     statement:
-        Do not delete a derived object through a pointer to a base class
-        unless the base class has a virtual destructor.
+        Deleting a derived object via a base-class pointer is allowed only
+        when the base class declares a virtual destructor.
     rationale:
         Deleting through a base pointer without a virtual destructor is
         undefined behavior and normally skips the derived destructor. CERT
         rates likelihood likely, detectable no, repairable no, priority P3,
         level L3.
     exceptions:
-        It is allowed when the object is deleted through a pointer to its
-        own final class, or when the base class has a destroying operator
-        delete that finds the right destructor.
+        This is fine when the pointer has the object's own final class type,
+        or when the base class provides a destroying operator delete that
+        calls the correct destructor.
     severity: low
     noncompliant:
         ```cpp

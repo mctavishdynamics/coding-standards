@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF25:
     standard: @{CppCoreGuidelines}
     ruleId: F.25
-    title: Use a zstring or a not_null<zstring> to designate a C-style string
+    title: Mark pointers to C strings with a zstring alias
     statement:
-        Use zstring or czstring from the GSL for zero-terminated character
-        arrays, wrapped in not_null when null is not allowed. If you do not
-        need zero termination, use string_view.
+        Mark a pointer to a zero-terminated character array with the GSL alias
+        zstring or czstring, and wrap it in not_null if it can never be null. If
+        the terminator is not needed, use string_view.
     rationale:
-        A C-style string is a convention, not a type. The name distinguishes
-        it from a pointer to a single character or to an unterminated array.
-        A zstring does not own.
+        A bare char* could point to one character, a raw byte buffer or a C
+        string. The alias says which, and it makes clear the pointer does not
+        own the text.
     exceptions: null
     severity: null
     noncompliant:

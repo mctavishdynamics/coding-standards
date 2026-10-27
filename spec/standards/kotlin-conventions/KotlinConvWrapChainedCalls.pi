@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvWrapChainedCalls:
+    standard: @{KotlinConventions}
+    ruleId: wrap-chained-calls
+    title: Start wrapped chain lines with the dot
+    statement:
+        When wrapping a chain of calls, put the dot or safe-call operator at
+        the start of the next line with one indent. The first call usually
+        gets its own line too, though it may stay on the first line when
+        that reads better.
+    rationale:
+        Leading operators make each step of the chain visible.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        val names = users.
+            filter { it.isActive }.
+            map { it.name }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        val names = users
+            .filter { it.isActive }
+            .map { it.name }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, calls]
+    source: https://kotlinlang.org/docs/coding-conventions.html#wrap-chained-calls

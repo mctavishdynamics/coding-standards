@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule15:
+    standard: @{JplC}
+    ruleId: rule-15
+    title: Validate arguments before using them
+    statement:
+        A function shared between tasks, such as a library routine,
+        validates its arguments on entry. Within a module, make sure each
+        argument is checked at least once, on one side of the call or the
+        other.
+    rationale:
+        A function that handles every possible input, not just the expected
+        ones, is safer than one that assumes its callers are correct.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int buf_copy(char *dst, const char *src, size_t n) {
+            memcpy(dst, src, n);
+            return OK;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int buf_copy(char *dst, size_t dst_len, const char *src, size_t n) {
+            if (dst == NULL || src == NULL || n > dst_len) {
+                return ERR_ARG;
+            }
+            memcpy(dst, src, n);
+            return OK;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-3, input-validation, defensive-programming]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

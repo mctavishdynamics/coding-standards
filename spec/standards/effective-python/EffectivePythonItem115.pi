@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem115:
+    standard: @{EffectivePython}
+    ruleId: item-115
+    title: Trace which lines allocate memory to track down leaks
+    statement:
+        Use the tracemalloc module to see which lines allocated memory, and
+        compare snapshots to find leaks.
+    rationale:
+        It reports where memory came from, which gc alone cannot tell you.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        import tracemalloc
+
+        tracemalloc.start()
+        run_job()
+        for stat in tracemalloc.take_snapshot().statistics("lineno")[:5]:
+            print(stat)
+        \\\
+        ```
+    languages: [python]
+    tags: [testing-and-debugging, debugging, memory]
+    source: https://effectivepython.com/

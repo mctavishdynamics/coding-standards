@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleDefineToS:
+    standard: @{RubyStyleGuide}
+    ruleId: define-to-s
+    title: Supply a to_s method for domain objects
+    statement:
+        Give every class that represents a domain object a meaningful to_s
+        method.
+    rationale:
+        A good string form makes logs, debugging output and string
+        interpolation useful.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Money
+          def initialize(cents, currency)
+            @cents = cents
+            @currency = currency
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Money
+          def initialize(cents, currency)
+            @cents = cents
+            @currency = currency
+          end
+
+          def to_s = format('%.2f %s', @cents / 100.0, @currency)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes]
+    source: https://rubystyle.guide/#define-to-s

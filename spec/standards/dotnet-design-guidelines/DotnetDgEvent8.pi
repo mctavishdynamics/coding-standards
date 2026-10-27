@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEvent8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: event-8
+    title: Never pass null as event data
+    statement:
+        Always pass an event argument object; use EventArgs.Empty when there
+        is no data.
+    rationale:
+        Handlers expect the data parameter to be non-null and would crash on
+        dereference.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        Disconnected?.Invoke(this, null);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        Disconnected?.Invoke(this, EventArgs.Empty);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, events, null-handling]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/event

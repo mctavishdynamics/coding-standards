@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagCaptionsPrerecorded:
+    standard: @{Wcag22}
+    ruleId: 1.2.2
+    title: Caption prerecorded video with sound
+    statement:
+        Provide synchronized captions for all recorded audio in video and
+        other synchronized media.
+    rationale:
+        Captions give deaf and hard of hearing users the dialogue and
+        important sounds at the moment they happen.
+    exceptions:
+        Not required when the media is a clearly labelled alternative to
+        text already on the page.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <video src="/media/onboarding.mp4" controls></video>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <video src="/media/onboarding.mp4" controls>
+          <track kind="captions" src="/media/onboarding.en.vtt" srclang="en" label="English" default>
+        </video>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, media, captions]
+    source: https://www.w3.org/TR/WCAG22/#captions-prerecorded

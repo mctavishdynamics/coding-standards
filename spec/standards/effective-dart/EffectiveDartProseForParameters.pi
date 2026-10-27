@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartProseForParameters:
+    standard: @{EffectiveDart}
+    ruleId: do-use-prose-to-explain-parameters-return-values-and-exceptions
+    title: Describe parameters, results and exceptions in prose
+    statement:
+        Explain parameters, return values and thrown exceptions in the
+        running text of the doc comment, highlighting parameters in
+        brackets, rather than with tags such as `@param` or `@returns`.
+    rationale:
+        Tag sections are verbose. Dart docs read as prose and link parameter
+        names with brackets.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        /// Moves money between accounts.
+        ///
+        /// @param from the source account
+        /// @param amount the sum to move
+        /// @returns the new balance of from
+        double transfer(Account from, Account to, double amount);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Moves [amount] from [from] into [to].
+        ///
+        /// Returns the remaining balance of [from].
+        ///
+        /// Throws an [InsufficientFunds] if [from] holds less than [amount].
+        double transfer(Account from, Account to, double amount);
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, documentation, parameters]
+    source: https://dart.dev/effective-dart/documentation#do-use-prose-to-explain-parameters-return-values-and-exceptions

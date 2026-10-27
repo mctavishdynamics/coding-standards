@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe639:
+    standard: @{CweTop25}
+    ruleId: CWE-639
+    title: Prevent authorization bypass through user-controlled keys
+    statement:
+        For each data access, confirm the user is allowed to see the
+        specific record requested, not just that they are logged in. Do not
+        let users control the key used to look up their records, or make
+        tampering detectable, for example by signing the key.
+    rationale:
+        Changing an id in a request is trivial, so without a per-record
+        check one user can read or modify another user's data. It is ranked
+        24 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        @app.get("/orders/<int:order_id>")
+        def show_order(order_id):
+            return render(Order.query.get_or_404(order_id))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        @app.get("/orders/<int:order_id>")
+        def show_order(order_id):
+            order = Order.query.filter_by(id=order_id, owner_id=current_user.id).first_or_404()
+            return render(order)
+        \\\
+        ```
+    languages: [python]
+    tags: [rank-24, authorization, idor, access-control]
+    source: https://cwe.mitre.org/data/definitions/639.html

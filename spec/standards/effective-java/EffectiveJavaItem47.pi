@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem47:
+    standard: @{EffectiveJava}
+    ruleId: item-47
+    title: Return a Collection rather than a Stream from public methods
+    statement:
+        When a method returns a sequence of elements, return a Collection,
+        or a List, if one is practical, so callers can iterate or stream it.
+    rationale:
+        Callers may want a loop or a stream. A Collection supports both,
+        while a Stream cannot be used in a for-each loop.
+    exceptions:
+        Return a Stream or Iterable when the sequence is too large or costly
+        to hold in memory.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public Stream<User> activeUsers() { return users.stream().filter(User::active); }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public List<User> activeUsers() {
+            return users.stream().filter(User::active).toList();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [lambdas-and-streams, streams, api-design, collections]
+    source: https://www.informit.com/store/effective-java-9780134686097

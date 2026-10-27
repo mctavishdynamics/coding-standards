@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiGivePrepositionalPhraseArgumentLabel:
+    standard: @{SwiftApiDesign}
+    ruleId: give-prepositional-phrase-argument-label
+    title: Label a first argument that starts a prepositional phrase
+    statement:
+        When the first argument is part of a prepositional phrase, give it a
+        label that normally starts at the preposition. If the first two
+        arguments are parts of one abstraction, put the preposition in the
+        base name and start the labels after it.
+    rationale:
+        The preposition explains how the argument relates to the action, and
+        moving it into the base name keeps a compound value visibly
+        together.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        shape.scale(toWidth: w, height: h)
+        view.fade(fromRed: r, green: g, blue: b)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        shape.scaleTo(width: w, height: h)
+        view.fadeFrom(red: r, green: g, blue: b)
+        files.delete(olderThan: cutoff)
+        \\\
+        ```
+    languages: [swift]
+    tags: [argument-labels, fluency]
+    source: https://www.swift.org/documentation/api-design-guidelines/#give-prepositional-phrase-argument-label

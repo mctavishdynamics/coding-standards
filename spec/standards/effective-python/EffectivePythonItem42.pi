@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem42:
+    standard: @{EffectivePython}
+    ruleId: item-42
+    title: Use the walrus operator to reuse values inside comprehensions
+    statement:
+        When a comprehension computes the same value in its condition and
+        its output, compute it once with an assignment expression in the
+        condition.
+    rationale:
+        It removes duplicate work and keeps the two uses in sync.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        found = {sku: stock(sku) for sku in order if stock(sku) > 0}
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        found = {sku: n for sku in order if (n := stock(sku)) > 0}
+        \\\
+        ```
+    languages: [python]
+    tags: [comprehensions-and-generators, comprehensions, assignment-expressions]
+    source: https://effectivepython.com/

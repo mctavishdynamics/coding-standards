@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiSummarySingleSentenceFragment:
+    standard: @{SwiftApiDesign}
+    ruleId: summary-single-sentence-fragment
+    title: Write the summary as one sentence fragment
+    statement:
+        Where possible, make the summary a single sentence fragment ending
+        with a full stop, not a complete sentence. In rare cases several
+        fragments joined by semicolons are acceptable.
+    rationale:
+        A fragment that starts with the verb or noun keeps the summary short
+        and consistent across an API.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        /// This method will give you back the number of seats that are free.
+        func freeSeatCount() -> Int
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// Returns the number of unbooked seats.
+        func freeSeatCount() -> Int
+        \\\
+        ```
+    languages: [swift]
+    tags: [documentation]
+    source: https://www.swift.org/documentation/api-design-guidelines/#write-doc-comment

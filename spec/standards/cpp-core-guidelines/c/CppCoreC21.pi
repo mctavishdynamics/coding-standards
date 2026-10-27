@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC21:
     standard: @{CppCoreGuidelines}
     ruleId: C.21
-    title: Define or delete all of copy, move and destructor if you define one
+    title: Treat copy, move and destruction as one set to declare together
     statement:
-        If a class declares any of the copy constructor, copy assignment,
-        move constructor, move assignment or destructor, even as =default or
-        =delete, declare all five.
+        The copy constructor, copy assignment, move constructor, move assignment
+        and destructor form a group. Once you declare one, even as =default or
+        =delete, declare the whole group.
     rationale:
-        Declaring one of them changes which of the others the compiler
-        generates. Moves can quietly become copies or a class can become
-        move-only by accident.
+        Declaring any one of them changes which others the compiler provides. A
+        class can lose its moves and fall back to copies, or become move-only
+        without anyone noticing.
     exceptions: null
     severity: null
     noncompliant:

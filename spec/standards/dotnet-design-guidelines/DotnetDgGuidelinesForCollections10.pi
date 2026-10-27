@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgGuidelinesForCollections10:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: guidelines-for-collections-10
+    title: Use ReadOnlyCollection for read-only collection results
+    statement:
+        Type read-only collection properties and return values as
+        ReadOnlyCollection of T or a subclass, and only rarely as
+        IEnumerable of T when forward iteration is all that will ever be
+        needed.
+    rationale:
+        ReadOnlyCollection gives count and indexing while preventing
+        changes; a custom read-only collection should report IsReadOnly as
+        true.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public List<Permission> GetPermissions() => _permissions;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public ReadOnlyCollection<Permission> GetPermissions() => _permissions.AsReadOnly();
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, collections, immutability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/guidelines-for-collections#collection-properties-and-return-values

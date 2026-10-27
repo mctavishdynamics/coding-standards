@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule93:
+    standard: @{CppCodingStandards}
+    ruleId: rule-93
+    title: Downcast only with checked casts
+    statement:
+        Do not downcast pointers with static_cast; redesign so the cast is
+        not needed, or use dynamic_cast.
+    rationale:
+        static_cast performs no check, so a wrong guess gives undefined
+        behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto* admin = static_cast<Admin*>(user);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        if (auto* admin = dynamic_cast<Admin*>(user)) admin->grant();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-safety, casting, inheritance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

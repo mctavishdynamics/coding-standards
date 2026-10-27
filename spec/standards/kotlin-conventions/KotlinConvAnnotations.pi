@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvAnnotations:
+    standard: @{KotlinConventions}
+    ruleId: annotations
+    title: Put annotations on their own lines
+    statement:
+        Place annotations on separate lines above the declaration, at the
+        same indentation. Annotations without arguments may share a line,
+        and a single argument-free annotation may sit on the declaration's
+        line.
+    rationale:
+        Separate lines keep long annotations from hiding the declaration.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        @Retention(AnnotationRetention.RUNTIME) annotation class Audited
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        @Retention(AnnotationRetention.RUNTIME)
+        annotation class Audited
+
+        @Test fun rejectsEmptyName() { }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, annotations]
+    source: https://kotlinlang.org/docs/coding-conventions.html#annotations

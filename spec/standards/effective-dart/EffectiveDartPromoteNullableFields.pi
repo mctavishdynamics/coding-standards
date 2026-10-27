@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartPromoteNullableFields:
+    standard: @{EffectiveDart}
+    ruleId: consider-type-promotion-or-null-check-patterns-for-using-nullable-types
+    title: Consider promotion or null-check patterns for nullable fields
+    statement:
+        When a nullable field cannot be promoted, bind it with a null-check
+        pattern or copy it into a final local variable and test that, rather
+        than repeating `!` at every use.
+    rationale:
+        Promotion only works on locals, parameters and private final fields.
+        A pattern or local gives a non-nullable value once and avoids
+        scattered runtime assertions.
+    exceptions:
+        A local copy can go stale if the field changes while it is in scope,
+        and writes must go back to the field. Sometimes a single `!` is the
+        simplest answer.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        void printAddress() {
+          if (customer.address != null) {
+            print(customer.address!.street);
+            print(customer.address!.city);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        void printAddress() {
+          if (customer.address case final address?) {
+            print(address.street);
+            print(address.city);
+          }
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [consider, null-safety, type-promotion]
+    source: https://dart.dev/effective-dart/usage#consider-type-promotion-or-null-check-patterns-for-using-nullable-types

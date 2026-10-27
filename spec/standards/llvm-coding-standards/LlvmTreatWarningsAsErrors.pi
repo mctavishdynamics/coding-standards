@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmTreatWarningsAsErrors:
+    standard: @{LlvmCodingStandards}
+    ruleId: treat-compiler-warnings-like-errors
+    title: Keep code free of compiler warnings
+    statement:
+        Fix or silence compiler warnings with a small code change instead of
+        ignoring them. For example, put an intended assignment in a
+        condition inside an extra pair of parentheses.
+    rationale:
+        Warnings often point to real bugs, and a warning-free build makes
+        new warnings stand out.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (Node = Worklist.pop_back_val())
+          visit(Node);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        if ((Node = Worklist.pop_back_val()))
+          visit(Node);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [warnings, compiler]
+    source: https://llvm.org/docs/CodingStandards.html#treat-compiler-warnings-like-errors

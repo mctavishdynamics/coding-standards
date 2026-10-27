@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando111:
+    standard: @{ZalandoApi}
+    ruleId: 111
+    title: Treat OpenAPI objects as open for extension
+    statement:
+        Assume every object definition is extensible even without an
+        additionalProperties declaration, and never set additionalProperties
+        to false. Clients ignore unknown fields and servers reject or
+        document them.
+    rationale:
+        Closed schemas would make adding any field an incompatible change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        Order:
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              type: string
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        Order:
+          type: object
+          properties:
+            id:
+              type: string
+        \\\
+        ```
+    languages: [any]
+    tags: [must, compatibility, openapi]
+    source: https://opensource.zalando.com/restful-api-guidelines/#111

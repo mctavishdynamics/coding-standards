@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvDocumentationComments:
+    standard: @{KotlinConventions}
+    ruleId: documentation-comments
+    title: Format long doc comments with a separate opening line
+    statement:
+        For longer documentation comments, put the opening marker on its own
+        line and start each following line with an asterisk. A short comment
+        may fit on one line.
+    rationale:
+        The consistent block shape is easy to read and is what KDoc tools
+        expect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        /** Sends the message to every subscriber
+         and records delivery. */
+        fun broadcast(message: Message) { }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        /**
+         * Sends the message to every subscriber
+         * and records delivery.
+         */
+        fun broadcast(message: Message) { }
+
+        /** Number of open connections. */
+        val openConnections: Int
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [documentation, formatting]
+    source: https://kotlinlang.org/docs/coding-conventions.html#documentation-comments

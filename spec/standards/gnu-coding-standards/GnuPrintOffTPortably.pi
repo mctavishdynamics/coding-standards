@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuPrintOffTPortably:
+    standard: @{GnuCodingStandards}
+    ruleId: cpu-portability-off-t
+    title: Do not print off_t values by casting them to long
+    statement:
+        File-size types such as off_t can be wider than long, so do not
+        print them through a cast to long; use a wide enough type or format.
+    rationale:
+        A cast to long truncates large offsets on many platforms.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        printf ("%ld\n", (long) st.st_size);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        printf ("%jd\n", (intmax_t) st.st_size);
+        \\\
+        ```
+    languages: [c]
+    tags: [portability, types]
+    source: https://www.gnu.org/prep/standards/standards.html#CPU-Portability

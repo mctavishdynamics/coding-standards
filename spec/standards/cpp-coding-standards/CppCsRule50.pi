@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule50:
+    standard: @{CppCodingStandards}
+    ruleId: rule-50
+    title: Make a base class destructor virtual and public, or non-virtual and protected
+    statement:
+        If deletion through a base pointer is allowed, make the base
+        destructor public and virtual; otherwise make it protected and
+        non-virtual.
+    rationale:
+        This either makes polymorphic deletion correct or prevents it at
+        compile time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Listener {
+        public:
+            ~Listener();
+            virtual void notify() = 0;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Listener {
+        public:
+            virtual void notify() = 0;
+        protected:
+            ~Listener() = default;   // no delete through Listener*
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [construction-destruction-copying, destructors, inheritance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

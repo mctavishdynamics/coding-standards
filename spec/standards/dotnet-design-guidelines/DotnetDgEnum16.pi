@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEnum16:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: enum-16
+    title: Name the zero flag None and mean all flags cleared
+    statement:
+        Call the zero member of a flags enum None, and use it only to mean
+        that no flags are set.
+    rationale:
+        Callers rely on this convention to test for and create the empty
+        combination.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        [Flags]
+        public enum Sync { Default = 0, Contacts = 1, Calendar = 2 }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        [Flags]
+        public enum Sync { None = 0, Contacts = 1, Calendar = 2 }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, enums, flags]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/enum#designing-flag-enums

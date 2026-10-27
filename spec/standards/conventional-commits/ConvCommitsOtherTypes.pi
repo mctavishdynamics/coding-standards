@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ConventionalCommits import ConventionalCommits
+
+export coding-rule ConvCommitsOtherTypes:
+    standard: @{ConventionalCommits}
+    ruleId: 14
+    title: Use other types beyond feat and fix where they fit
+    statement:
+        Types other than feat and fix, such as docs, refactor or test, may
+        be used to describe commits.
+    rationale:
+        Extra types make the history more informative. They carry no
+        versioning effect unless the commit also marks a breaking change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        misc: explain the retry settings in the README and refactor cart
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        docs: explain the retry settings in the README
+        refactor(cart): extract price rounding into a helper
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, types]
+    source: https://www.conventionalcommits.org/en/v1.0.0/#specification

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule81:
+    standard: @{CppCodingStandards}
+    ruleId: rule-81
+    title: Use range operations instead of element-by-element loops
+    statement:
+        Insert, assign or erase whole ranges with one call rather than
+        looping over single elements.
+    rationale:
+        Range operations are clearer and let the container allocate once and
+        move elements once.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (auto x : source) dest.insert(dest.end(), x);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        dest.insert(dest.end(), source.begin(), source.end());
+        \\\
+        ```
+    languages: [cpp]
+    tags: [stl-containers, containers, performance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

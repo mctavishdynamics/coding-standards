@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule25:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-25
+    title: Use tables of data instead of repeated control code
+    statement:
+        When a series of tests differs only in its values, put the values in
+        an array and loop over it.
+    rationale:
+        A table separates the data from the logic, so adding a case means
+        adding a row rather than another branch.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if month == 1:
+            days = 31
+        elif month == 2:
+            days = 28
+        elif month == 3:
+            days = 31
+        # ... nine more branches
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        days = DAYS[month - 1]
+        \\\
+        ```
+    languages: [any]
+    tags: [control-structure, data-driven]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

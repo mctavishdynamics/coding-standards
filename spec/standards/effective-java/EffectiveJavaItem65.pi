@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem65:
+    standard: @{EffectiveJava}
+    ruleId: item-65
+    title: Use interfaces rather than reflection where possible
+    statement:
+        Limit reflection to creating objects of classes unknown at compile
+        time, and then use them through an interface or superclass known at
+        compile time.
+    rationale:
+        Reflection loses compile-time checking, is verbose and runs slower
+        than normal method calls.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Object codec = Class.forName(name).getDeclaredConstructor().newInstance();
+        codec.getClass().getMethod("encode", String.class).invoke(codec, text);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Codec codec = (Codec) Class.forName(name).getDeclaredConstructor().newInstance();
+        codec.encode(text);
+        \\\
+        ```
+    languages: [java]
+    tags: [general-programming, reflection, interfaces]
+    source: https://www.informit.com/store/effective-java-9780134686097

@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoNilIsAValidSlice:
+    standard: @{UberGo}
+    ruleId: nil-is-a-valid-slice
+    title: Treat a nil slice as an empty slice
+    statement:
+        Return nil instead of an explicitly empty slice, check emptiness
+        with len rather than comparing to nil, and use a var-declared slice
+        directly without make.
+    rationale:
+        A nil slice has length zero and works with append and range, though
+        it may serialize differently from an allocated empty slice.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func evens(nums []int) []int {
+            if nums == nil {
+                return []int{}
+            }
+            out := []int{}
+            for _, n := range nums {
+                if n%2 == 0 {
+                    out = append(out, n)
+                }
+            }
+            return out
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func evens(nums []int) []int {
+            var out []int
+            for _, n := range nums {
+                if n%2 == 0 {
+                    out = append(out, n)
+                }
+            }
+            return out
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [slices, zero-value]
+    source: https://github.com/uber-go/guide/blob/master/style.md#nil-is-a-valid-slice

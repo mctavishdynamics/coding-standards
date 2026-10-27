@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoTrailingParametersComma:
+    standard: @{RubyStyleGuide}
+    ruleId: no-trailing-parameters-comma
+    title: Avoid a trailing comma after the last block parameter
+    statement:
+        Do not put a comma after the last parameter of a block.
+    rationale:
+        The comma looks like a typo and changes how the block destructures
+        its argument.
+    exceptions:
+        Keep it when there is a single parameter and removing the comma
+        would change behaviour, as in array destructuring.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        pairs.each { |key, value,| puts key }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        pairs.each { |key, value| puts key }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [blocks, formatting]
+    source: https://rubystyle.guide/#no-trailing-parameters-comma

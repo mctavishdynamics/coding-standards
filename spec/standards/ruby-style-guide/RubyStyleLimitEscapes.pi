@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleLimitEscapes:
+    standard: @{RubyStyleGuide}
+    ruleId: limit-escapes
+    title:
+        Escape only the characters that are special in a character class
+    statement:
+        Inside a bracketed character class, escape only the caret, hyphen,
+        backslash and closing bracket; do not escape the dot or other
+        brackets. RuboCop checks this with Style/RedundantRegexpEscape.
+    rationale:
+        Only those few characters have special meaning there, so other
+        escapes are just noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        /[\.\(\)]/
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        /[.()]/
+        \\\
+        ```
+    languages: [ruby]
+    tags: [regex, readability]
+    source: https://rubystyle.guide/#limit-escapes

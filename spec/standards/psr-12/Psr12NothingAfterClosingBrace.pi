@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12NothingAfterClosingBrace:
+    standard: @{Psr12}
+    ruleId: 4a
+    title: Put nothing after a closing brace on its line
+    statement:
+        Leave the rest of the line empty after a closing brace. Neither a
+        comment nor a further statement may share that line.
+    rationale:
+        Code or notes after a brace are easy to overlook and make the end of
+        a block less clear.
+    exceptions:
+        Keywords that continue a structure, such as else or catch, still
+        follow the brace as the control structure rules require.
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Invoice
+        {
+            public function total()
+            {
+                return $this->sum;
+            } // end total
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Invoice
+        {
+            public function total()
+            {
+                return $this->sum;
+            }
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [braces, formatting]
+    source: https://www.php-fig.org/psr/psr-12/#4-classes-properties-and-methods

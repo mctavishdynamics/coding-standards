@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleCentralizeControlFlow:
+    standard: @{TigerStyle}
+    ruleId: centralize-control-flow
+    title: Keep branching in the parent function and push loops into helpers
+    statement:
+        When splitting a function, keep the switch and if statements in the
+        parent and move straight-line logic into helpers, so one function
+        owns the control flow.
+    rationale:
+        With branching in one place, a reader can follow every decision
+        without chasing it through helper functions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn tick(self: *Replica) void {
+            self.maybe_commit();   // branches internally on status
+            self.maybe_repair();   // branches internally on status
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn tick(self: *Replica) void {
+            switch (self.status) {
+                .normal => self.commit(),
+                .recovering => self.repair(),
+                .idle => {},
+            }
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [control-flow, functions]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

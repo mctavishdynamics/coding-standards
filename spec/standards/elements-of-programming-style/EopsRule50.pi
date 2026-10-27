@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule50:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-50
+    title: Set constants at declaration and reset variables in code
+    statement:
+        Give fixed values their value where they are declared. Give
+        variables that change their starting value in executable code at the
+        point the work begins.
+    rationale:
+        A variable set only at declaration keeps its old value when the
+        routine is run again, which causes errors on the second use.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void count_words(FILE *fp)
+        {
+            static int words = 0;
+            /* ... counts into words; wrong on a second call ... */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static const int MAX_WORD = 64;
+
+        void count_words(FILE *fp)
+        {
+            int words = 0;
+            /* ... */
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [common-blunders, initialization, constants]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

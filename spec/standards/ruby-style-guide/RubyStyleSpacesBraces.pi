@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSpacesBraces:
+    standard: @{RubyStyleGuide}
+    ruleId: spaces-braces
+    title: Space braces but not parentheses or brackets
+    statement:
+        Put no spaces just inside parentheses or square brackets. Put spaces
+        around an opening curly brace and before a closing one in blocks.
+        For hash literals either pad the braces with spaces or not, but pick
+        one style and apply it everywhere. Do not pad the braces of string
+        interpolation.
+    rationale:
+        Consistent spacing makes blocks, hashes and calls easy to tell
+        apart. Padding inside interpolation only adds stray spaces to the
+        code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        values = [ 1, 2, 3 ]
+        total( values )
+        values.each {|v| puts v}
+        label = "Total: #{ total }"
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        values = [1, 2, 3]
+        total(values)
+        values.each { |v| puts v }
+        label = "Total: #{total}"
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, whitespace]
+    source: https://rubystyle.guide/#spaces-braces

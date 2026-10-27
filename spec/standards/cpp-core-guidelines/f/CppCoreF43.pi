@@ -5,18 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF43:
     standard: @{CppCoreGuidelines}
     ruleId: F.43
-    title: Never return a pointer or a reference to a local object
+    title: Never hand back a pointer or reference to a local variable
     statement:
-        Do not let the address of a non-static local variable escape a
-        function, whether by return, through an out parameter, inside a
-        returned object or by storing it in a longer-lived container.
+        A non-static local variable must not be reachable after its function
+        ends. Do not return its address, store it through an out parameter, put
+        it in a returned object or save it in a longer-lived container.
     rationale:
-        The local is destroyed when the function returns, so any pointer or
-        reference to it dangles and its use causes crashes and data
-        corruption.
+        The local dies when the function returns. Anything still pointing at it
+        dangles, and using it corrupts memory or crashes.
     exceptions:
-        This applies only to non-static locals; pointers to static variables
-        cannot dangle.
+        This applies only to automatic locals. A pointer to a static variable
+        remains valid.
     severity: null
     noncompliant:
         ```cpp

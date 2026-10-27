@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip216:
+    standard: @{GoogleAip}
+    ruleId: AIP-216
+    title: Expose lifecycle state as an output-only State enum
+    statement:
+        Show a resource's lifecycle with a nested State enum in an output-
+        only field, and change it through custom transition methods that use
+        POST with a colon verb rather than through Create or Update.
+        Disallowed transitions must fail with FAILED_PRECONDITION, and top-
+        level enums in one package must not share value names.
+    rationale:
+        State usually depends on system activity, so letting clients set it
+        directly invites invalid transitions. Dedicated methods make each
+        transition explicit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Order {
+          string state = 1;  // Clients set "SHIPPED" via UpdateOrder.
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Order {
+          enum State {
+            STATE_UNSPECIFIED = 0;
+            PENDING = 1;
+            SHIPPED = 2;
+          }
+          State state = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+        }
+        rpc ShipOrder(ShipOrderRequest) returns (Order) {
+          option (google.api.http) = {
+            post: "/v1/{name=stores/*/orders/*}:ship"
+            body: "*"
+          };
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [enums, state, methods]
+    source: https://google.aip.dev/216

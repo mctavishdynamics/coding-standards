@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle16:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-16
+    title: Replace unexplained numbers with names
+    statement:
+        Give any literal number other than trivial ones like 0 and 1 a name
+        that says what it means.
+    rationale:
+        A bare number tells the reader nothing and must be found and changed
+        in every place it appears.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (attempts > 5)
+            lock_account(user);
+        sleep(30);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum { MAX_LOGIN_ATTEMPTS = 5, RETRY_DELAY_SECONDS = 30 };
+
+        if (attempts > MAX_LOGIN_ATTEMPTS)
+            lock_account(user);
+        sleep(RETRY_DELAY_SECONDS);
+        \\\
+        ```
+    languages: [any]
+    tags: [style, magic-numbers, constants]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

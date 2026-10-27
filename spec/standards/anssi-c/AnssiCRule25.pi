@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule25:
+    standard: @{AnssiC}
+    ruleId: rule-25
+    title: Do not pass arguments with side effects to macros
+    statement:
+        Never give a macro an argument with side effects, such as an
+        increment, an assignment or a function call that changes state.
+    rationale:
+        The argument may be expanded several times, so the side effect
+        happens more than once.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define SQUARE(x) ((x) * (x))
+        int s = SQUARE(i++);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define SQUARE(x) ((x) * (x))
+        int s = SQUARE(i);
+        i++;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, macros, side-effects]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=26

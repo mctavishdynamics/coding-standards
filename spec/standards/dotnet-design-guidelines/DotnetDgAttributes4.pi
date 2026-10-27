@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgAttributes4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: attributes-4
+    title: Make required attribute values read-only properties
+    statement:
+        Expose required attribute arguments as read-only properties.
+    rationale:
+        A read-only property makes clear that the value is fixed when the
+        attribute is created.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public string Region { get; set; }   // required, but settable
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public string Region { get; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, attributes, properties]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/attributes

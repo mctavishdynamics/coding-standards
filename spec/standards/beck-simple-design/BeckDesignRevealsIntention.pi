@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./BeckSimpleDesign import BeckSimpleDesign
+
+export coding-rule BeckDesignRevealsIntention:
+    standard: @{BeckSimpleDesign}
+    ruleId: rule-2
+    title: Make the code reveal its intent
+    statement:
+        Write code that tells a reader what the programmer meant it to do.
+        Choose names and structure that make the purpose visible without
+        extra explanation.
+    rationale:
+        Programs are read by people far more often than they are written,
+        and readers can only change code safely when they can see what it
+        was meant to do.
+    exceptions:
+        This rule ranks below passing the tests. When it seems to conflict
+        with removing duplication, which happens mostly in test code, Beck
+        favours whatever helps the reader.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def calc(d, x):
+            return [i for i in d if i[2] > x and not i[3]]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def unpaid_invoices_over(invoices, minimum_amount):
+            return [
+                invoice for invoice in invoices
+                if invoice.amount > minimum_amount and not invoice.paid
+            ]
+        \\\
+        ```
+    languages: [any]
+    tags: [design, readability, naming]
+    source: https://martinfowler.com/bliki/BeckDesignRules.html

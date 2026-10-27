@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip141:
+    standard: @{GoogleAip}
+    ruleId: AIP-141
+    title: Put the unit in quantity field names and avoid unsigned integers
+    statement:
+        When a field holds a measured quantity, end its name with the unit,
+        ideally a short singular abbreviation like _km or _bytes. Never give
+        such a field an unsigned integer type, and keep any metric prefix
+        joined to its unit.
+    rationale:
+        A unit in the name removes guessing about what a number means. Many
+        languages and systems handle unsigned integers poorly, so signed
+        types travel more safely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Delivery {
+          uint32 distance = 1;
+          int64 size = 2;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Delivery {
+          int32 distance_km = 1;
+          int64 size_bytes = 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [naming, fields, units]
+    source: https://google.aip.dev/141

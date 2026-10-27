@@ -5,18 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC146:
     standard: @{CppCoreGuidelines}
     ruleId: C.146
-    title: Use dynamic_cast where navigating a hierarchy is unavoidable
+    title: Cast down a hierarchy with dynamic_cast only when there is no alternative
     statement:
-        When you must move down or across a class hierarchy, use
-        dynamic_cast rather than static_cast or other unchecked casts.
+        If you have no choice but to cast down or across a class hierarchy, use
+        dynamic_cast rather than static_cast or another unchecked cast.
     rationale:
-        dynamic_cast checks the actual type at run time instead of assuming
-        it.
+        dynamic_cast inspects the object's real type at run time rather than
+        trusting an assumption.
     exceptions:
-        If dynamic_cast has been measured to be too slow in a critical path
-        and the downcast is guaranteed some other way without virtual
-        inheritance, a carefully commented static_cast may be used. Such
-        code still needs human attention during maintenance.
+        If profiling shows dynamic_cast is too slow on a hot path, and the
+        target type is guaranteed by other means and no virtual inheritance is
+        involved, a static_cast with a clear comment may be used. Reviewers must
+        keep an eye on that code as it evolves.
     severity: null
     noncompliant:
         ```cpp

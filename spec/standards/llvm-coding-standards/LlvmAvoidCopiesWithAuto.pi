@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmAvoidCopiesWithAuto:
+    standard: @{LlvmCodingStandards}
+    ruleId: beware-unnecessary-copies-with-auto
+    title: Bind auto to a reference or pointer unless you need a copy
+    statement:
+        Plain auto deduces a copy. Unless you want one, bind values with a
+        reference form of auto and pointers with auto *, which matters most
+        in range-based for loops.
+    rationale:
+        Accidental copies of large objects in loops are easy to miss and
+        costly at run time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (auto Entry : SymbolTable)
+          report(Entry);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (const auto &Entry : SymbolTable)
+          report(Entry);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-deduction, performance]
+    source: https://llvm.org/docs/CodingStandards.html#beware-unnecessary-copies-with-auto

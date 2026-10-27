@@ -21,10 +21,10 @@ export coding-rule GuruSmellRefusedBequest:
     noncompliant:
         ```java
         \\\
-        class ReadOnlyList<T> extends ArrayList<T> {
+        class Penguin extends Bird {
             @Override
-            public boolean add(T item) {
-                throw new UnsupportedOperationException();
+            void fly(double altitude) {
+                throw new IllegalStateException("penguins stay on the ground");
             }
         }
         \\\
@@ -32,13 +32,11 @@ export coding-rule GuruSmellRefusedBequest:
     compliant:
         ```java
         \\\
-        class ReadOnlyList<T> implements Iterable<T> {
-            private final List<T> items;
+        class Penguin {
+            private final Plumage plumage = new Plumage();
 
-            ReadOnlyList(List<T> items) { this.items = List.copyOf(items); }
-
-            public T get(int i) { return items.get(i); }
-            public Iterator<T> iterator() { return items.iterator(); }
+            void swim(double depth) { /* ... */ }
+            Color colour() { return plumage.colour(); }
         }
         \\\
         ```

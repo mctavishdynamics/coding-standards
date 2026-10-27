@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe502:
+    standard: @{CweTop25}
+    ruleId: CWE-502
+    title: Prevent deserialization of untrusted data
+    statement:
+        Do not feed untrusted bytes to a deserializer that can create
+        arbitrary objects. Prefer a plain data format and build new objects
+        from it through validation, protect serialized data you must accept
+        back with a signature or MAC, and keep unneeded classes that could
+        act as gadgets out of reach.
+    rationale:
+        Deserializing attacker-controlled data can run code, tamper with
+        application state or exhaust resources before any validation
+        happens. It is ranked 15 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def load_cart(request):
+            return pickle.loads(base64.b64decode(request.cookies["cart"]))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def load_cart(request):
+            items = json.loads(request.cookies["cart"])
+            return [CartItem(sku=str(i["sku"]), qty=int(i["qty"])) for i in items]
+        \\\
+        ```
+    languages: [python]
+    tags: [rank-15, deserialization, input-validation]
+    source: https://cwe.mitre.org/data/definitions/502.html

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdWriteCopyrightHeaderBlock:
+    standard: @{FreeBsdStyle}
+    ruleId: copyright-header
+    title: Start files with a copyright block and SPDX identifier
+    statement:
+        Put the copyright notice in a multi-line comment starting in column
+        one, with the copyright lines before the SPDX-License-Identifier
+        line, and leave a blank line after the comment.
+    rationale:
+        Tools treat only column-one comments as license statements, and the
+        SPDX tag makes the license machine-readable.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        /*
+         * Copyright (c) 2026 Jane Doe
+         *
+         * SPDX-License-Identifier: BSD-2-Clause
+         */
+
+        #include <sys/param.h>
+        \\\
+        ```
+    languages: [c]
+    tags: [licensing, comments, file-structure]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

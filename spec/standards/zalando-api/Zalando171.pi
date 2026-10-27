@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando171:
+    standard: @{ZalandoApi}
+    ruleId: 171
+    title: Give every number and integer property an explicit format
+    statement:
+        Always give number and integer properties a format, one of int32,
+        int64 or bigint for integers and float, double or decimal for
+        numbers. Map it to the most specific type in client and server code.
+    rationale:
+        Without a format, clients guess the precision and may silently
+        change a value, for example by parsing a large id into a double.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        properties:
+          price:
+            type: number
+          quantity:
+            type: integer
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        properties:
+          price:
+            type: number
+            format: decimal
+          quantity:
+            type: integer
+            format: int32
+        \\\
+        ```
+    languages: [any]
+    tags: [must, data-formats, numbers]
+    source: https://opensource.zalando.com/restful-api-guidelines/#171

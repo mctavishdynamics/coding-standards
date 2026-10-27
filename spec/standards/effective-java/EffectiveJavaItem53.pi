@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem53:
+    standard: @{EffectiveJava}
+    ruleId: item-53
+    title: Use varargs only when it helps
+    statement:
+        Use varargs for methods that truly take a variable number of
+        arguments. Put required parameters before the varargs one.
+    rationale:
+        Declaring required arguments separately lets the compiler catch
+        missing ones. Each varargs call allocates an array.
+    exceptions:
+        In performance-critical code, add overloads for the common small
+        argument counts.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        static int max(int... values) {
+            if (values.length == 0) throw new IllegalArgumentException();
+            return Arrays.stream(values).max().getAsInt();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        static int max(int first, int... rest) {
+            int m = first;
+            for (int v : rest) m = Math.max(m, v);
+            return m;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods, varargs]
+    source: https://www.informit.com/store/effective-java-9780134686097

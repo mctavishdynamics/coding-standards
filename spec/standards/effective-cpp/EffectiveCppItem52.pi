@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem52:
+    standard: @{EffectiveCpp}
+    ruleId: item-52
+    title: Provide a matching placement delete for every placement new
+    statement:
+        If you declare an operator new that takes extra parameters, declare
+        an operator delete with the same extra parameters, and keep the
+        normal forms visible.
+    rationale:
+        When a constructor throws, the runtime calls the matching delete;
+        without it the memory leaks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Node {
+            static void* operator new(std::size_t n, Arena& a);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Node {
+            static void* operator new(std::size_t n, Arena& a);
+            static void operator delete(void* p, Arena& a) noexcept;
+            static void operator delete(void* p) noexcept;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [customizing-new-and-delete, memory, allocation]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

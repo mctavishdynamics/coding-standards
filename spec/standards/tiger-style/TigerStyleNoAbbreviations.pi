@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleNoAbbreviations:
+    standard: @{TigerStyle}
+    ruleId: no-abbreviations
+    title: Do not abbreviate names
+    statement:
+        Write names out in full. Use long-form flags in scripts and keep
+        single letter flags for interactive use.
+    rationale:
+        Full words are unambiguous to every reader, while abbreviations rely
+        on knowledge the reader may not share.
+    exceptions:
+        Primitive integers used as arguments to a sort or a matrix
+        calculation may have short names.
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        const cnt = req.hdr.sz;
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        const count = request.header.size;
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [naming, readability]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#naming-things

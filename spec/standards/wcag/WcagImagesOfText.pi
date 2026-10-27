@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagImagesOfText:
+    standard: @{Wcag22}
+    ruleId: 1.4.5
+    title: Use real text instead of images of text
+    statement:
+        When the technology can produce the visual effect, present text as
+        text rather than as an image of text.
+    rationale:
+        Real text can be resized, recolored, translated and read aloud; text
+        baked into an image cannot.
+    exceptions:
+        Allowed when the user can customize the image of text, or when the
+        particular presentation is essential, as with a logo.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <img src="/img/summer-sale-heading.png" alt="Summer sale, 30 percent off">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <h2 class="promo-heading">Summer sale, 30 percent off</h2>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, images, typography]
+    source: https://www.w3.org/TR/WCAG22/#images-of-text

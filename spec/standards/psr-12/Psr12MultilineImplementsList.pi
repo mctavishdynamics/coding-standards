@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12MultilineImplementsList:
+    standard: @{Psr12}
+    ruleId: 4.1d
+    title: Put one interface per line when wrapping implements
+    statement:
+        A list of implemented interfaces, or of extended interfaces for an
+        interface, may be split over several lines indented once. If you
+        split it, start the list on the next line and put only one interface
+        on each line.
+    rationale:
+        One name per line keeps long lists readable and makes diffs show
+        exactly which interface changed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Collection implements \Countable,
+            \IteratorAggregate, \JsonSerializable
+        {
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Collection implements
+            \Countable,
+            \IteratorAggregate,
+            \JsonSerializable
+        {
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [classes, formatting]
+    source: https://www.php-fig.org/psr/psr-12/#41-extends-and-implements

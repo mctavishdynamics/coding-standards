@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ZenOfPython import ZenOfPython
+
+export coding-rule ZenAphorism19:
+    standard: @{ZenOfPython}
+    ruleId: aphorism-19
+    title: Use namespaces to keep names apart
+    statement:
+        Group names into modules, classes and other namespaces, and refer to
+        them through those namespaces, instead of piling everything into one
+        scope.
+    rationale:
+        Namespaces prevent clashes and show where a name comes from.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        from json import loads
+        from pickle import loads
+
+        data = loads(blob)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import json
+        import pickle
+
+        data = pickle.loads(blob)
+        \\\
+        ```
+    languages: [python]
+    tags: [namespaces, modules]
+    source: https://peps.python.org/pep-0020/#the-zen-of-python

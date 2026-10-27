@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule5:
+    standard: @{JplC}
+    ruleId: rule-5
+    title: Reserve heap memory only while a task starts up
+    statement:
+        Do not call malloc, sbrk, alloca or similar allocators once task
+        initialization is complete. Reserve the memory a task needs up
+        front.
+    rationale:
+        Heap allocation has unpredictable timing and is a frequent source of
+        memory bugs. When a task's memory is all set aside in advance,
+        checking that it is used safely becomes much easier.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void on_command(const cmd_t *c) {
+            reply_t *r = malloc(sizeof *r);
+            build_reply(c, r);
+            send_reply(r);
+            free(r);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static reply_t reply;
+
+        void on_command(const cmd_t *c) {
+            build_reply(c, &reply);
+            send_reply(&reply);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-2, memory, allocation]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

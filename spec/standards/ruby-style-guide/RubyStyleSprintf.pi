@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSprintf:
+    standard: @{RubyStyleGuide}
+    ruleId: sprintf
+    title: Use format or sprintf rather than String#%
+    statement:
+        Format strings with sprintf or its alias format instead of the
+        percent operator on a string. RuboCop checks this with
+        Style/FormatString.
+    rationale:
+        The percent operator is cryptic, while a named method makes
+        formatting obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        line = '%-10s %5.2f' % [item, price]
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        line = format('%-10s %5.2f', item, price)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, formatting]
+    source: https://rubystyle.guide/#sprintf

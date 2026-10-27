@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./SandiMetzRules import SandiMetzRules
+
+export coding-rule SandiMetzClassLength:
+    standard: @{SandiMetzRules}
+    ruleId: rule-1
+    title: Keep classes to at most 100 lines
+    statement:
+        Do not let a class grow beyond one hundred lines of code. The
+        thoughtbot team applied the same limit to spec files.
+    rationale:
+        The limit forces you to ask what the single responsibility of the
+        class is and what should move out of it.
+    exceptions:
+        Rule zero covers every rule. Break one only when you have a sound
+        reason or when your pair, or whoever reviews the code, agrees to it.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Order
+          # 160 lines covering pricing, tax rules,
+          # PDF receipts and email notifications
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Order
+          # line items and totals only
+        end
+
+        class OrderReceipt
+          def initialize(order)
+            @order = order
+          end
+        end
+        \\\
+        ```
+    languages: [ruby, any]
+    tags: [size, classes, cohesion]
+    source: https://thoughtbot.com/blog/sandi-metz-rules-for-developers#100-line-classes

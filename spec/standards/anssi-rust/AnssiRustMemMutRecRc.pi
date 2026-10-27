@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustMemMutRecRc:
+    standard: @{AnssiRust}
+    ruleId: MEM-MUT-REC-RC
+    title: Do not combine reference-counted recursion with interior mutability
+    statement:
+        Do not use recursive types whose recursion goes through Rc or Arc
+        together with interior mutability such as RefCell or Mutex.
+    rationale:
+        That combination is what lets code build reference cycles, which
+        leak memory and skip destructors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        struct Node { children: RefCell<Vec<Rc<Node>>>, parent: RefCell<Option<Rc<Node>>> }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        struct Node { children: Vec<Node> }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, memory, reference-counting]
+    source: https://anssi-fr.github.io/rust-guide/standard.html#MEM-MUT-REC-RC

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule54:
+    standard: @{AnssiC}
+    ruleId: rule-54
+    title: Do not use magic numbers
+    statement:
+        Give values used in the code a name as a constant, including strings
+        or characters that appear more than once.
+    rationale:
+        Named constants explain what a value means and change in one place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (len > 1500) { drop_packet(); }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define MAX_FRAME_LEN 1500U
+        if (len > MAX_FRAME_LEN) { drop_packet(); }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, constants, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=42

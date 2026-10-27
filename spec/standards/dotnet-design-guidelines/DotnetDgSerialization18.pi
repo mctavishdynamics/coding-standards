@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSerialization18:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: serialization-18
+    title: Protect GetObjectData with a link demand
+    statement:
+        Apply a link demand for serialization permission to the
+        GetObjectData implementation so only fully trusted code and the
+        serializer can call it.
+    rationale:
+        Otherwise partially trusted code could call it to read private
+        state.
+    exceptions:
+        Code access security does not exist in .NET Core and later, so this
+        applies only to .NET Framework.
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, serialization, security]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/serialization#supporting-runtime-serialization

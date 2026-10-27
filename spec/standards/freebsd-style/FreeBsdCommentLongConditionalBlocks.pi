@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdCommentLongConditionalBlocks:
+    standard: @{FreeBsdStyle}
+    ruleId: endif-comments
+    title: Annotate #else and #endif of long conditional regions
+    statement:
+        For conditional regions longer than about 20 lines or confusingly
+        nested, put a comment one space after #else and #endif. The #endif
+        comment repeats the #if expression, and the #else comment gives its
+        inverse, writing defined(FOO) as FOO. Short regions get no comment.
+    rationale:
+        Readers can tell where a long conditional region ends and which
+        branch they are in.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #ifndef SMP
+        /* ... 40 lines ... */
+        #else
+        /* ... */
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #ifndef SMP
+        /* ... 40 lines ... */
+        #else /* SMP */
+        /* ... */
+        #endif /* !SMP */
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, comments]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

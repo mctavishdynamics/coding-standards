@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmPreferCppStyleCasts:
+    standard: @{LlvmCodingStandards}
+    ruleId: prefer-c-style-casts
+    title: Use named C++ casts instead of C-style casts
+    statement:
+        Cast with static_cast, reinterpret_cast or const_cast rather than
+        the C cast syntax.
+    rationale:
+        Named casts say which conversion is intended and cannot silently do
+        a more dangerous one.
+    exceptions:
+        Casting to void to silence an unused-variable warning uses a C-style
+        cast, though a variable used only in an assert should get
+        maybe_unused instead. Conversions between integral types may use
+        functional-style casts.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto *Header = (const ObjectHeader *)Buffer.data();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto *Header = reinterpret_cast<const ObjectHeader *>(Buffer.data());
+        \\\
+        ```
+    languages: [cpp]
+    tags: [casting, type-safety]
+    source: https://llvm.org/docs/CodingStandards.html#prefer-c-style-casts

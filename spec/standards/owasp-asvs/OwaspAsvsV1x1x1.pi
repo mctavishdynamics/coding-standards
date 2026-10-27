@@ -1,0 +1,24 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV1x1x1:
+    standard: @{OwaspAsvs}
+    ruleId: V1.1.1
+    title: Canonicalize input once and before any other processing
+    statement:
+        Turn encoded input into its canonical form a single time, only when
+        the input is expected to arrive in that encoding, and do it before
+        checks run. Never decode again after validation or sanitization has
+        happened.
+    rationale:
+        Decoding after the checks, or decoding twice, lets an attacker hide
+        a payload behind a second layer of encoding that the checks never
+        saw.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-2, encoding, canonicalization]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x10-V1-Encoding-and-Sanitization.md#v11-encoding-and-sanitization-architecture

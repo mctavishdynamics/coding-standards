@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdUsePredictHintsSparingly:
+    standard: @{FreeBsdStyle}
+    ruleId: branch-prediction
+    title: Use __predict_true and __predict_false only with measured benefit
+    statement:
+        Add branch prediction hints only in frequently run code where they
+        make it measurably faster, and only with evidence of the branch's
+        likelihood. Use __predict_false for rare error cases and
+        __predict_true for nearly certain success, applied to the whole if
+        condition.
+    rationale:
+        Hints in cold code are wasted, and wrong guesses slow the hot path.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* Run once at boot. */
+        if (__predict_false(sc == NULL))
+                return (ENXIO);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* Per-packet fast path, measured. */
+        if (__predict_false(m->m_len < sizeof(struct ip)))
+                return (EINVAL);
+        \\\
+        ```
+    languages: [c]
+    tags: [performance, kernel]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

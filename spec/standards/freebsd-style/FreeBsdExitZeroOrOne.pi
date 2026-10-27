@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdExitZeroOrOne:
+    standard: @{FreeBsdStyle}
+    ruleId: exit-status
+    title: Exit with 0 on success and 1 on failure
+    statement:
+        Return exit status 0 for success and 1 for failure.
+    rationale:
+        Callers and scripts rely on these conventional values.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        exit(-1);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        exit(1);
+        \\\
+        ```
+    languages: [c]
+    tags: [exit-status, error-handling]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

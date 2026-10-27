@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvTypeAliases:
+    standard: @{KotlinConventions}
+    ruleId: type-aliases
+    title: Alias repeated function and generic types
+    statement:
+        Define a type alias for a function type or a parameterised type used
+        many times. To resolve a name clash privately, prefer an import
+        alias.
+    rationale:
+        An alias names the concept and shortens repeated signatures.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        fun onSave(handler: (Document, Boolean) -> Unit) { }
+        fun onLoad(handler: (Document, Boolean) -> Unit) { }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        typealias DocumentHandler = (Document, Boolean) -> Unit
+
+        fun onSave(handler: DocumentHandler) { }
+        fun onLoad(handler: DocumentHandler) { }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [types]
+    source: https://kotlinlang.org/docs/coding-conventions.html#type-aliases

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem15:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-15
+    title: Evaluate at compile time with constexpr where possible
+    statement:
+        Use constexpr for objects and functions that can be evaluated at
+        compile time.
+    rationale:
+        constexpr values can be used in contexts that need constants, and
+        constexpr functions work both at compile time and at runtime.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int cube(int n) { return n * n * n; }
+        std::array<int, cube(3)> grid;   // error
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr int cube(int n) { return n * n * n; }
+        std::array<int, cube(3)> grid;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [moving-to-modern-cpp, constexpr, constants]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

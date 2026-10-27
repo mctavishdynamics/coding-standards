@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleStaticAllocation:
+    standard: @{TigerStyle}
+    ruleId: static-allocation
+    title: Allocate all memory statically at startup
+    statement:
+        Allocate every piece of memory during initialization and never
+        allocate, free or reallocate after that.
+    rationale:
+        This removes unpredictable performance and use-after-free errors,
+        and it forces designs that account for all memory use up front,
+        which tend to be simpler and faster.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn on_request(gpa: Allocator, size: u32) ![]u8 {
+            return try gpa.alloc(u8, size);
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn init(gpa: Allocator) !Server {
+            return .{ .buffers = try gpa.alloc(Buffer, buffers_max) };
+        }
+
+        fn on_request(server: *Server) *Buffer {
+            return server.buffer_pool.acquire();
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [memory, allocation, safety]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

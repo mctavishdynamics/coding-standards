@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleBraceIfStatements:
+    standard: @{TigerStyle}
+    ruleId: brace-if-statements
+    title: Use braces on if statements that span lines
+    statement:
+        Add braces to every if statement unless the whole statement fits on
+        one line.
+    rationale:
+        Braces keep the style consistent and defend against bugs where an
+        extra line seems guarded but is not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        if (err != 0)
+            return error.Io;
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        if (err != 0) return error.Io;
+
+        if (err != 0) {
+            log.err("write failed", .{});
+            return error.Io;
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [formatting, safety]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#style-by-the-numbers

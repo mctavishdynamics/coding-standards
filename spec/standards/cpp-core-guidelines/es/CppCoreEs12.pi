@@ -5,16 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs12:
     standard: @{CppCoreGuidelines}
     ruleId: ES.12
-    title: Do not reuse names in nested scopes
+    title: Avoid shadowing an outer name in an inner scope
     statement:
-        Do not declare a name in an inner scope that hides the same name in
-        an enclosing scope, including members and function parameters.
+        A name declared in an inner block should not match one already
+        visible from an outer block, a class member or a parameter.
     rationale:
-        Hiding makes it easy to confuse which variable is meant and causes
-        maintenance problems.
+        When two variables share a name, readers and maintainers easily mix
+        them up and change the wrong one. The risk grows with function
+        length.
     exceptions:
-        Derived classes commonly reuse base class function names. This is
-        error-prone, so bring the base overloads in with a using
+        Reusing a base class function name in a derived class is allowed. Be
+        aware that the new declaration hides every base overload of that
+        name. Pull those overloads into the derived class with a using
         declaration.
     severity: null
     noncompliant:

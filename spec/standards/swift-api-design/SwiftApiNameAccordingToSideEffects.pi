@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiNameAccordingToSideEffects:
+    standard: @{SwiftApiDesign}
+    ruleId: name-according-to-side-effects
+    title: Name methods by whether they have side effects
+    statement:
+        Name a function without side effects as a noun phrase, and one with
+        side effects as an imperative verb phrase.
+    rationale:
+        The grammatical form tells the reader whether calling the method
+        changes anything.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let d = a.measureDistance(to: b)
+        list.sorting()
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let d = a.distance(to: b)
+        list.sort()
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, side-effects]
+    source: https://www.swift.org/documentation/api-design-guidelines/#name-according-to-side-effects

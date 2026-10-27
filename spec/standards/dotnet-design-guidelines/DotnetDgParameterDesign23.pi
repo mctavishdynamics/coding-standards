@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign23:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-23
+    title: Do not use varargs methods
+    statement:
+        Do not declare methods using the varargs or ellipsis convention.
+    rationale:
+        Varargs is not CLS compliant, so many languages cannot call such
+        methods.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Trace(string format, __arglist) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Trace(string format, params object[] args) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, parameters, interoperability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#members-with-variable-number-of-parameters

@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamingParameters4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: naming-parameters-4
+    title: Call meaningless binary operator parameters left and right
+    statement:
+        When the two operands of a binary operator overload have no special
+        meaning, name them left and right.
+    rationale:
+        The names match the framework convention and the visual position of
+        the operands.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public static Money operator +(Money left, Money right)
+            => new Money(left.Amount + right.Amount, left.Currency);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, parameters, operators]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/naming-parameters#naming-operator-overload-parameters

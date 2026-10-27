@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule60:
+    standard: @{AnssiC}
+    ruleId: rule-60
+    title: Make sure constants fit in their type
+    statement:
+        Check that each constant value or constant expression fits in the
+        type it is given.
+    rationale:
+        A value that does not fit is truncated or changes sign without
+        warning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define MAX_ITEMS 70000
+        uint16_t limit = MAX_ITEMS;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define MAX_ITEMS 60000U
+        uint16_t limit = MAX_ITEMS;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, constants, integer-overflow]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=44

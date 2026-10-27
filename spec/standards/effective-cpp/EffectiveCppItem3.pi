@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem3:
+    standard: @{EffectiveCpp}
+    ruleId: item-3
+    title: Mark everything const that should not change
+    statement:
+        Apply const to objects, pointers, parameters, return values and
+        member functions wherever the value is not meant to be modified.
+    rationale:
+        The compiler then enforces the intent and catches accidental writes,
+        and const objects can be used in more places.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Account {
+        public:
+            int balance() { return balance_; }
+        private:
+            int balance_ = 0;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Account {
+        public:
+            int balance() const { return balance_; }
+        private:
+            int balance_ = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [accustoming-yourself-to-cpp, const-correctness]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

@@ -21,20 +21,20 @@ export coding-rule RustApiCSerde:
     noncompliant:
         ```rust
         \\\
-        #[cfg_attr(feature = "serde_impls", derive(Serialize, Deserialize))]
-        pub struct Coordinate {
-            pub lat: f64,
-            pub lon: f64,
+        #[cfg_attr(feature = "with-serde", derive(serde::Serialize))]
+        pub struct Invoice {
+            pub number: u32,
+            pub total_cents: i64,
         }
         \\\
         ```
     compliant:
         ```rust
         \\\
-        #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-        pub struct Coordinate {
-            pub lat: f64,
-            pub lon: f64,
+        #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+        pub struct Invoice {
+            pub number: u32,
+            pub total_cents: i64,
         }
         \\\
         ```

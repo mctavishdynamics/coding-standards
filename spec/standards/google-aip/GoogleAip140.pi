@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip140:
+    standard: @{GoogleAip}
+    ruleId: AIP-140
+    title: Name fields as lower_snake_case nouns
+    statement:
+        Use lower_snake_case field names in which no word starts with a
+        digit and no underscores lead, trail or repeat. Repeated fields take
+        a plural name and singular fields a singular one, and names must be
+        nouns describing a value, not verbs describing an action.
+    rationale:
+        Clean snake_case maps reliably to camelCase in JSON and generated
+        code. A field describes the desired or current value, so a noun
+        reads correctly in both requests and responses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          string RecipeTitle = 1;
+          repeated string ingredient = 2;
+          bool disable_sharing = 3;
+          string step_2nd = 4;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          string title = 1;
+          repeated string ingredients = 2;
+          bool sharing_enabled = 3;
+          string second_step = 4;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [naming, fields]
+    source: https://google.aip.dev/140

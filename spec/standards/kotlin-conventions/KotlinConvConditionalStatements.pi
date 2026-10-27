@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvConditionalStatements:
+    standard: @{KotlinConventions}
+    ruleId: conditional-statements
+    title: Prefer the expression form of if, when and try
+    statement:
+        Use try, if and when as expressions that yield a value rather than
+        as statements with returns or assignments in each branch.
+    rationale:
+        The expression form is shorter and makes the produced value
+        explicit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        if (score >= 50)
+            return "pass"
+        else
+            return "fail"
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        return if (score >= 50) "pass" else "fail"
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [control-flow, idioms]
+    source: https://kotlinlang.org/docs/coding-conventions.html#conditional-statements

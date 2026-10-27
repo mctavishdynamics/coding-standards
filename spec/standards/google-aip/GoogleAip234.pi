@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip234:
+    standard: @{GoogleAip}
+    ruleId: AIP-234
+    title: Provide a BatchUpdate method that is atomic when synchronous
+    statement:
+        A batch update method is named BatchUpdate plus the plural resource,
+        uses POST with a :batchUpdate URI and takes a repeated field of
+        update requests. A synchronous one must be atomic; a long-running
+        one may allow partial success, reporting failures in a
+        failed_requests map keyed by request index.
+    rationale:
+        A synchronous response cannot express partial failure clearly, since
+        success implies everything worked. Operations can carry partial
+        results, so only they may allow it.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```protobuf
+        \\\
+        message BatchUpdateRecipesRequest {
+          string parent = 1;
+          repeated UpdateRecipeRequest requests = 2 [(google.api.field_behavior) = REQUIRED];
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [batch-methods, methods]
+    source: https://google.aip.dev/234

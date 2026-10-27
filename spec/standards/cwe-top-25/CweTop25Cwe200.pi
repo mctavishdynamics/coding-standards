@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe200:
+    standard: @{CweTop25}
+    ruleId: CWE-200
+    title: Prevent exposure of sensitive information
+    statement:
+        Draw clear trust boundaries and do not let sensitive data cross
+        them; return to each caller only what that caller is entitled to
+        see. Use least privilege to decide which parts of the system may
+        handle each kind of data.
+    rationale:
+        Leaked details such as secrets, personal data, stack traces or
+        internal paths harm users directly and help attackers plan further
+        attacks. It is ranked 20 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        @app.errorhandler(Exception)
+        def on_error(e):
+            return {"error": str(e), "trace": traceback.format_exc()}, 500
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        @app.errorhandler(Exception)
+        def on_error(e):
+            app.logger.exception("unhandled error")
+            return {"error": "internal error"}, 500
+        \\\
+        ```
+    languages: [python]
+    tags: [rank-20, information-disclosure, privacy]
+    source: https://cwe.mitre.org/data/definitions/200.html

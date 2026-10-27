@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSerialization7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: serialization-7
+    title: Give DataMember properties both a getter and a setter
+    statement:
+        Every property marked with DataMember needs a getter and a setter,
+        though they may be non-public if the type is not used in partial
+        trust.
+    rationale:
+        Data contract serializers treat a type as serializable only when
+        they can both read and write its members.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        [DataMember] public string Sku { get; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        [DataMember] public string Sku { get; private set; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, serialization, data-contracts]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/serialization#supporting-data-contract-serialization

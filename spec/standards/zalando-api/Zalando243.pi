@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando243:
+    standard: @{ZalandoApi}
+    ruleId: 243
+    title: Use official HTTP status codes
+    statement:
+        Return only status codes registered with IANA and defined in the
+        RFCs, and use them with their intended meaning.
+    rationale:
+        Unofficial or repurposed codes are not understood by clients and
+        intermediaries.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        HTTP/1.1 499 Client Closed Request
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        HTTP/1.1 408 Request Timeout
+        \\\
+        ```
+    languages: [any]
+    tags: [must, http, status-codes]
+    source: https://opensource.zalando.com/restful-api-guidelines/#243

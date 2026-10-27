@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartFunctionTypeSyntaxForParameters:
+    standard: @{EffectiveDart}
+    ruleId: prefer-using-function-type-syntax-for-parameters
+    title: Use Function syntax for function-typed parameters
+    statement:
+        Declare a parameter that takes a function with the general
+        function type syntax, not the older C-style form that wraps the
+        name. The use_function_type_syntax_for_parameters lint checks this.
+    rationale:
+        It matches how function types are written everywhere else.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        void retry(bool shouldRetry(int attempt)) {}
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        void retry(bool Function(int attempt) shouldRetry) {}
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, types, parameters]
+    source: https://dart.dev/effective-dart/design#prefer-using-function-type-syntax-for-parameters

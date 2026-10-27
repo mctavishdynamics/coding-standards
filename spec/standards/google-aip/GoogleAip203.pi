@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip203:
+    standard: @{GoogleAip}
+    ruleId: AIP-203
+    title: Annotate every request field with its field behavior
+    statement:
+        Apply google.api.field_behavior to every field of messages used in
+        requests, using REQUIRED, OPTIONAL, OUTPUT_ONLY, INPUT_ONLY,
+        IMMUTABLE or IDENTIFIER as fits. IDENTIFIER goes only on the
+        resource name field, and servers must silently clear output-only
+        values sent by clients.
+    rationale:
+        Explicit behavior makes the resource contract clear to people and
+        tools and forces authors to decide it up front, because changing it
+        later can break clients.
+    exceptions:
+        The etag field on a resource takes no field behavior annotation.
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          string name = 1;
+          string title = 2;
+          google.protobuf.Timestamp create_time = 3;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          string name = 1 [(google.api.field_behavior) = IDENTIFIER];
+          string title = 2 [(google.api.field_behavior) = REQUIRED];
+          google.protobuf.Timestamp create_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [field-behavior, annotations]
+    source: https://google.aip.dev/203

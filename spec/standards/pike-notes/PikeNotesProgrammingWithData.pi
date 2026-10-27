@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./PikeNotes import PikeNotes
+
+export coding-rule PikeNotesProgrammingWithData:
+    standard: @{PikeNotes}
+    ruleId: programming-with-data
+    title: Encode independent details as data rather than branches
+    statement:
+        When a job is complex because it combines many independent details,
+        express those details in a table driven by a small fixed piece of
+        code, instead of a long chain of if statements. Consider generating
+        such tables with another program.
+    rationale:
+        Tables are compact and easy to check and extend, and the code that
+        reads them stays simple. Parsers and state machines are the classic
+        cases.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int daysin(int month) {
+            if (month == 2) return 28;
+            if (month == 4 || month == 6) return 30;
+            if (month == 9 || month == 11) return 30;
+            return 31;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static const int mdays[12] = {
+            31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+        };
+
+        int daysin(int month) {
+            return mdays[month - 1];
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [data-driven, design, simplicity]
+    source: https://www.cs.princeton.edu/courses/archive/spr01/cs217/pike.html

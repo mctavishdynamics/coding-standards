@@ -7,10 +7,10 @@ export coding-rule CertCppExp62Cpp:
     ruleId: EXP62-CPP
     title: Do not access the bits of an object representation that are not part of the object's value representation
     statement:
-        Do not read or write the bits of an object representation that are
-        not part of its value, such as padding bits or a virtual table
-        pointer, for example through memcmp or memset. Compare and modify
-        objects through their members.
+        An object holds bytes that are not part of its value, such as
+        padding or a hidden vtable pointer. Leave those bytes alone, so
+        avoid memcmp, memset and similar raw access on the whole object, and
+        work member by member instead.
     rationale:
         Padding bits have unspecified values and hidden data such as vtable
         pointers is implementation defined, so bytewise access gives wrong

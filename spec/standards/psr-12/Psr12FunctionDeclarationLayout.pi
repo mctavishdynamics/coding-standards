@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12FunctionDeclarationLayout:
+    standard: @{Psr12}
+    ruleId: 4.4c
+    title: Lay out method and function declarations consistently
+    statement:
+        Write a function or method name directly against its opening
+        parenthesis, and keep the parentheses free of inner padding. The
+        brace that opens the body gets a line to itself, and the brace that
+        closes it comes on the line after the last statement.
+    rationale:
+        A single declaration layout makes functions easy to find and read
+        across projects.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        function send ( string $to ) {
+            mail($to, 'Hi', 'Hello');
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        function send(string $to)
+        {
+            mail($to, 'Hi', 'Hello');
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [functions, formatting, braces]
+    source: https://www.php-fig.org/psr/psr-12/#44-methods-and-functions

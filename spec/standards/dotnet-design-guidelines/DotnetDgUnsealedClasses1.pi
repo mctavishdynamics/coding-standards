@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgUnsealedClasses1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: unsealed-classes-1
+    title: Consider leaving classes unsealed for cheap extensibility
+    statement:
+        Leaving a class unsealed, even without any virtual or protected
+        members, is an inexpensive way to let users extend it.
+    rationale:
+        Users often subclass just to add convenience constructors, overloads
+        or helpers for their own scenario.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class ReportPrinter
+        {
+            public void Print(Report report, PrintSettings settings) { /* ... */ }
+        }
+
+        // A user adds a convenience default for their office:
+        public class OfficeReportPrinter : ReportPrinter
+        {
+            public void Print(Report report) => Print(report, PrintSettings.A4Duplex);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, extensibility, inheritance, sealing]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/unsealed-classes

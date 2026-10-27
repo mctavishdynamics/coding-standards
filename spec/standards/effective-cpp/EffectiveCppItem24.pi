@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem24:
+    standard: @{EffectiveCpp}
+    ruleId: item-24
+    title: Use non-member operators when conversions should work on both operands
+    statement:
+        If implicit conversions should apply to every argument, including
+        the left one, make the function a non-member.
+    rationale:
+        A member function only allows conversions on its explicit
+        parameters, so mixed expressions work in one order but not the
+        other.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Ratio {
+        public:
+            Ratio(int n, int d = 1);
+            Ratio operator*(const Ratio& r) const;
+        };
+        Ratio x = 2 * half;   // error
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Ratio {
+        public:
+            Ratio(int n, int d = 1);
+        };
+        Ratio operator*(const Ratio& a, const Ratio& b);
+        Ratio x = 2 * half;   // ok
+        \\\
+        ```
+    languages: [cpp]
+    tags: [designs-and-declarations, operators, conversions]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

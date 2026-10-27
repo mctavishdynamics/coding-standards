@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoPerlRegexpLastMatchers:
+    standard: @{RubyStyleGuide}
+    ruleId: no-perl-regexp-last-matchers
+    title: Use Regexp.last_match instead of $1 and friends
+    statement:
+        Do not use the Perl-style numbered globals for the last match; call
+        Regexp.last_match with the group number instead. RuboCop checks this
+        with Style/PerlBackrefs.
+    rationale:
+        The numbered globals are cryptic, while Regexp.last_match names what
+        is being read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        if line =~ /\Aversion (\d+)/
+          upgrade_to $1
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        if line =~ /\Aversion (\d+)/
+          upgrade_to Regexp.last_match(1)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [regex, readability]
+    source: https://rubystyle.guide/#no-perl-regexp-last-matchers

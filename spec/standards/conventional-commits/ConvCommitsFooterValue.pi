@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ConventionalCommits import ConventionalCommits
+
+export coding-rule ConvCommitsFooterValue:
+    standard: @{ConventionalCommits}
+    ruleId: 10
+    title: Let footer values span lines until the next footer token
+    statement:
+        A footer value may contain spaces and newlines. A parser ends the
+        value when it reaches the next valid token and separator pair.
+    rationale:
+        Multi-line values allow long notes such as breaking change
+        explanations, while the termination rule keeps parsing unambiguous.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        BREAKING CHANGE: the config loader now reads YAML only.
+        Note: JSON files must be converted before upgrading.
+        Refs: #91
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        BREAKING CHANGE: the config loader now reads YAML only.
+        JSON files must be converted before upgrading.
+        Refs: #91
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, footers, parsing]
+    source: https://www.conventionalcommits.org/en/v1.0.0/#specification

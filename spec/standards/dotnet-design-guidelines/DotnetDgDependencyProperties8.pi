@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDependencyProperties8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dependency-properties-8
+    title: Do not keep secrets in dependency properties
+    statement:
+        Do not store sensitive data in dependency properties, even private
+        ones.
+    rationale:
+        Dependency property values can be read from outside the class,
+        whatever the declared accessibility.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        private static readonly DependencyProperty ApiKeyProperty = /* ... */;
+        \\\
+        ```
+    compliant: null
+    languages: [csharp]
+    tags: [do-not, dependency-properties, wpf, security]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dependency-properties#dependency-property-design

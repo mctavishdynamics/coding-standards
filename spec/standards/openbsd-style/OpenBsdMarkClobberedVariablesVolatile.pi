@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdMarkClobberedVariablesVolatile:
+    standard: @{OpenBsdStyle}
+    ruleId: longjmp-vfork-volatile
+    title: Make variables volatile when longjmp or vfork could clobber them
+    statement:
+        When a program uses longjmp or vfork, compile with -W or -Wall, and
+        if the compiler warns that a variable may be clobbered, declare that
+        variable volatile.
+    rationale:
+        Without volatile, optimized code may restore a stale value after the
+        jump.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char *buf = NULL;
+        if (setjmp(env) == 0)
+                buf = malloc(64);
+        free(buf);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *volatile buf = NULL;
+        if (setjmp(env) == 0)
+                buf = malloc(64);
+        free(buf);
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, compiler, undefined-behavior]
+    source: https://man.openbsd.org/style.9#longjmp

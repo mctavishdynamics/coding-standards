@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleAssertArgumentsAndResults:
+    standard: @{TigerStyle}
+    ruleId: assert-arguments-and-results
+    title: Assert arguments, return values and invariants
+    statement:
+        Check each function's arguments, results, preconditions,
+        postconditions and invariants with assertions, so no function works
+        on data it has not verified.
+    rationale:
+        A function exists to make correct behaviour more likely, and its
+        assertions are part of how it does that.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn slot_for(index: u64, slots: []Slot) *Slot {
+            return &slots[index % slots.len];
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn slot_for(index: u64, slots: []Slot) *Slot {
+            assert(slots.len > 0);
+            const slot = &slots[index % slots.len];
+            assert(slot.index == index % slots.len);
+            return slot;
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [assertions, contracts]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

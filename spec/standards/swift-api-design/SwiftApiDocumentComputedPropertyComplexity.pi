@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiDocumentComputedPropertyComplexity:
+    standard: @{SwiftApiDesign}
+    ruleId: document-computed-property-complexity
+    title: Document the cost of computed properties that are not O(1)
+    statement:
+        If reading a computed property takes more than constant time, say so
+        in its documentation.
+    rationale:
+        People assume property access is cheap, as with stored properties,
+        and will call an expensive one in loops unless warned.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        extension Graph {
+            var longestPath: [Node] { findLongestPath() }
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        extension Graph {
+            /// The longest simple path in the graph.
+            ///
+            /// - Complexity: O(V * E), where V and E count nodes and edges.
+            var longestPath: [Node] { findLongestPath() }
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [documentation, performance]
+    source: https://www.swift.org/documentation/api-design-guidelines/#document-computed-property-complexity

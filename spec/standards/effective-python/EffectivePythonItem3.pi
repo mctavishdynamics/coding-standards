@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem3:
+    standard: @{EffectivePython}
+    ruleId: item-3
+    title: Do not count on Python to catch errors before the code runs
+    statement:
+        Python checks very little before execution, so misspelled names and
+        wrong types surface only when the line runs. Rely on tests and
+        static analysis to find them.
+    rationale:
+        A bug in a rarely taken branch can sit unnoticed until it runs in
+        production.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def report(error):
+            if error:
+                print(f"failed: {erorr}")  # NameError only when error is set
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def test_report_prints_error(capsys):
+            report("disk full")
+            assert "disk full" in capsys.readouterr().out
+        \\\
+        ```
+    languages: [python]
+    tags: [pythonic-thinking, testing, static-analysis]
+    source: https://effectivepython.com/

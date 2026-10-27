@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartTypeParameterMnemonics:
+    standard: @{EffectiveDart}
+    ruleId: do-follow-existing-mnemonic-conventions-when-naming-type-parameters
+    title: Name type parameters with the usual mnemonic letters
+    statement:
+        Use E for collection elements, K and V for keys and values, R for
+        return types, and T, S and U for other single type parameters. If
+        none fits, another mnemonic letter or a descriptive name is fine.
+    rationale:
+        Single letters say little, but the shared conventions make them
+        instantly recognisable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Cache<A, B> {
+          B? lookup(A key) => null;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Cache<K, V> {
+          V? lookup(K key) => null;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, naming, generics]
+    source: https://dart.dev/effective-dart/design#do-follow-existing-mnemonic-conventions-when-naming-type-parameters

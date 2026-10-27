@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem91:
+    standard: @{EffectivePython}
+    ruleId: item-91
+    title: Do not use exec or eval outside developer tools
+    statement:
+        Avoid exec and eval in application code. Use data structures,
+        getattr, dispatch tables or ast.literal_eval instead.
+    rationale:
+        Dynamic evaluation is a security risk with untrusted input, is hard
+        to debug and defeats static analysis.
+    exceptions:
+        They are acceptable in tools built for developers, such as REPLs,
+        debuggers and code generators.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        value = eval(request.args["filter"])
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import ast
+
+        value = ast.literal_eval(request.args["filter"])
+        \\\
+        ```
+    languages: [python]
+    tags: [robustness, security, dynamic-code]
+    source: https://effectivepython.com/

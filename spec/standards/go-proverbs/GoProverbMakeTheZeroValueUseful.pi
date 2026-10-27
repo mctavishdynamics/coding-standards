@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbMakeTheZeroValueUseful:
+    standard: @{GoProverbs}
+    ruleId: make-the-zero-value-useful
+    title: Design types so their zero value works
+    statement:
+        Arrange a type so that a variable declared without initialisation is
+        ready to use, without a constructor call.
+    rationale:
+        Callers can embed or declare the type directly, and there is no
+        broken half-initialised state to guard against.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Buffer struct {
+            data []byte
+            init bool
+        }
+
+        func (b *Buffer) Write(p []byte) {
+            if !b.init {
+                panic("call NewBuffer first")
+            }
+            b.data = append(b.data, p...)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Buffer struct {
+            data []byte
+        }
+
+        // A zero Buffer is an empty buffer ready to use.
+        func (b *Buffer) Write(p []byte) {
+            b.data = append(b.data, p...)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [types, api-design, initialization]
+    source: https://go-proverbs.github.io/

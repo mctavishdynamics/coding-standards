@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuParenthesizeMixedPrecedence:
+    standard: @{GnuCodingStandards}
+    ruleId: formatting-precedence-indentation
+    title: Add parentheses so indentation shows operator nesting
+    statement:
+        In a wrapped expression, do not line up operators that bind with
+        different strength at one indentation level. Add parentheses so the
+        indentation shows the nesting, and so that Emacs indents the
+        continuation lines as intended.
+    rationale:
+        Readers infer grouping from indentation, and the editor's
+        auto-indentation follows parentheses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        limit = use_default
+                || base > ceiling
+                ? ceiling : base;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        limit = ((use_default
+                  || base > ceiling)
+                 ? ceiling : base);
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, line-breaking, expressions]
+    source: https://www.gnu.org/prep/standards/standards.html#Formatting

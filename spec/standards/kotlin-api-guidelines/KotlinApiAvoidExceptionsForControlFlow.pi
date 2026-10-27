@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiAvoidExceptionsForControlFlow:
+    standard: @{KotlinApiGuidelines}
+    ruleId: avoid-exceptions-for-control-flow
+    title: Let callers check conditions instead of catching exceptions
+    statement:
+        Do not make exceptions part of normal control flow. Give callers a
+        way to check a condition before an operation, following command and
+        query separation.
+    rationale:
+        Callers should not need try and catch for situations they can test
+        for.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        try { queue.take() } catch (e: EmptyQueueException) { idle() }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        if (queue.isEmpty()) idle() else queue.take()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [error-handling, control-flow]
+    source: https://kotlinlang.org/docs/api-guidelines-consistency.html#choose-the-appropriate-error-handling-mechanism

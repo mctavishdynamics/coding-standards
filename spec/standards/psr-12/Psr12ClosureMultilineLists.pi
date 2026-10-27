@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ClosureMultilineLists:
+    standard: @{Psr12}
+    ruleId: 7g
+    title: Put one item per line when wrapping closure lists
+    statement:
+        A closure's argument list or variable list may be split over several
+        lines, each indented once. If you split one, start it on the next
+        line and put only one argument or variable on each line.
+    rationale:
+        This follows the same wrapping rule as function parameter lists.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        $handler = function ($request, $response,
+            $next) {
+            return $next($request, $response);
+        };
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        $handler = function (
+            $request,
+            $response,
+            $next
+        ) {
+            return $next($request, $response);
+        };
+        \\\
+        ```
+    languages: [php]
+    tags: [closures, formatting]
+    source: https://www.php-fig.org/psr/psr-12/#7-closures

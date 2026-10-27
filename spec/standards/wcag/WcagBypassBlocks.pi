@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagBypassBlocks:
+    standard: @{Wcag22}
+    ruleId: 2.4.1
+    title: Provide a way to skip repeated blocks
+    statement:
+        Provide a mechanism, such as a skip link or landmark regions, to
+        bypass blocks of content that repeat across pages.
+    rationale:
+        Keyboard and screen reader users otherwise have to move through the
+        whole navigation on every page.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <body>
+          <nav>... 40 links ...</nav>
+          <div class="content">...</div>
+        </body>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <body>
+          <a class="skip-link" href="#main">Skip to main content</a>
+          <nav aria-label="Main">... 40 links ...</nav>
+          <main id="main" tabindex="-1">...</main>
+        </body>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, navigation, landmarks, keyboard]
+    source: https://www.w3.org/TR/WCAG22/#bypass-blocks

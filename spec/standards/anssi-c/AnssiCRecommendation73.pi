@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation73:
+    standard: @{AnssiC}
+    ruleId: recommendation-73
+    title: Use every declared identifier
+    statement:
+        Remove variables, functions, labels, parameters and other
+        identifiers that are declared but never used.
+    rationale:
+        Unused declarations clutter the code and can hide mistakes such as
+        using the wrong variable.
+    exceptions:
+        A library's exported functions and variables need not be used inside
+        the library itself.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int area(int w, int h) {
+            int unused_tmp = 0;
+            return w * h;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int area(int w, int h) {
+            return w * h;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, dead-code]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=55

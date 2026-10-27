@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiSimilarMethodsCanShareABaseName:
+    standard: @{SwiftApiDesign}
+    ruleId: similar-methods-can-share-a-base-name
+    title: Share a base name only for the same meaning
+    statement:
+        Methods may share a base name when they do essentially the same
+        thing or work in separate domains. Give methods with different
+        meanings different names.
+    rationale:
+        A shared name promises shared meaning; breaking that promise
+        misleads readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        extension Inbox {
+            func archive()                      // compresses old mail to disk
+            func archive(_ id: MessageID) -> Message   // looks up one message
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        extension Inbox {
+            func compressOldMail()
+            func message(withID id: MessageID) -> Message
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, overloading]
+    source: https://www.swift.org/documentation/api-design-guidelines/#similar-methods-can-share-a-base-name

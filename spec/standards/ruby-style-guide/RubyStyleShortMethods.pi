@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleShortMethods:
+    standard: @{RubyStyleGuide}
+    ruleId: short-methods
+    title: Keep methods under ten lines
+    statement:
+        Avoid methods with more than ten lines of code, and aim for most to
+        stay under five. Blank lines do not count.
+    rationale:
+        Short methods do one thing, are easier to name and test, and are
+        simpler to understand.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def checkout(cart)
+          raise 'empty cart' if cart.items.empty?
+          subtotal = cart.items.sum(&:price)
+          tax = subtotal * TAX_RATE
+          shipping = subtotal > 50 ? 0 : 5
+          total = subtotal + tax + shipping
+          payment = gateway.charge(cart.customer, total)
+          raise 'payment failed' unless payment.ok?
+          order = Order.create!(cart: cart, total: total)
+          mailer.confirmation(order).deliver
+          order
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def checkout(cart)
+          raise 'empty cart' if cart.items.empty?
+
+          total = price(cart)
+          charge!(cart.customer, total)
+          place_order(cart, total)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, complexity]
+    source: https://rubystyle.guide/#short-methods

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvInfixFunctions:
+    standard: @{KotlinConventions}
+    ruleId: infix-functions
+    title: Make a function infix only for symmetric, non-mutating operations
+    statement:
+        Declare a function infix only when its two operands play similar
+        roles, as with and, to or zip. Never make a method infix if it
+        mutates the receiver.
+    rationale:
+        Infix syntax suggests an operator between equals, which misleads for
+        asymmetric or mutating operations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        infix fun MutableList<Int>.push(x: Int) { add(x) }
+        stack push 3
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        infix fun Interval.overlaps(other: Interval): Boolean =
+            start < other.end && other.start < end
+        if (morning overlaps lunch) warn()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [functions, operators]
+    source: https://kotlinlang.org/docs/coding-conventions.html#infix-functions

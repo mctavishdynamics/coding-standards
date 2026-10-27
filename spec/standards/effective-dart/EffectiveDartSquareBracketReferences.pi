@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartSquareBracketReferences:
+    standard: @{EffectiveDart}
+    ruleId: do-use-square-brackets-in-doc-comments-to-refer-to-in-scope-identifiers
+    title: Refer to in-scope identifiers in square brackets
+    statement:
+        Wrap names of variables, methods, types and constructors in square
+        brackets inside doc comments. Use `Class.member` for members of
+        another class and `Class.new` for an unnamed constructor. The
+        comment_references lint checks this.
+    rationale:
+        `dart doc` resolves bracketed names and turns them into links to the
+        referenced API.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        /// Like `retry`, but waits `delay` between attempts. See Backoff.
+        Future<T> retryWithDelay<T>(Future<T> Function() task, Duration delay);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Like [retry], but waits [delay] between attempts. See [Backoff.new].
+        Future<T> retryWithDelay<T>(Future<T> Function() task, Duration delay);
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, documentation]
+    source: https://dart.dev/effective-dart/documentation#do-use-square-brackets-in-doc-comments-to-refer-to-in-scope-identifiers

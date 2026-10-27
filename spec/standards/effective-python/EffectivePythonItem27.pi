@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem27:
+    standard: @{EffectivePython}
+    ruleId: item-27
+    title: Use defaultdict for missing keys in your own data
+    statement:
+        When you control a dictionary and keys should start with a default
+        value, use collections.defaultdict instead of setdefault.
+    rationale:
+        setdefault has a confusing name and builds the default object on
+        every call, even when the key exists.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        groups = {}
+        for item in items:
+            groups.setdefault(item.kind, []).append(item)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from collections import defaultdict
+
+        groups = defaultdict(list)
+        for item in items:
+            groups[item.kind].append(item)
+        \\\
+        ```
+    languages: [python]
+    tags: [dictionaries, collections]
+    source: https://effectivepython.com/

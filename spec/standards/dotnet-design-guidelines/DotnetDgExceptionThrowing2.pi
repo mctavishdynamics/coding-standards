@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExceptionThrowing2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: exception-throwing-2
+    title: Throw exceptions to report execution failures
+    statement:
+        When a member cannot do what its name promises, signal that by
+        throwing an exception.
+    rationale:
+        Throwing makes failure explicit and lets callers handle it where
+        they choose.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public Customer Load(int id)
+            => _store.Find(id) ?? throw new KeyNotFoundException($"No customer with id {id}.");
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, exceptions, error-handling]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/exception-throwing

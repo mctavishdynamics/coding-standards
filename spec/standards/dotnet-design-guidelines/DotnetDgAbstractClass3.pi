@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgAbstractClass3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: abstract-class-3
+    title: Ship a concrete subclass of every abstract class
+    statement:
+        Alongside each abstract class you publish, ship a working subclass
+        of it.
+    rationale:
+        Writing a real implementation tests whether the abstract design
+        actually works.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public abstract class Notifier
+        {
+            public abstract Task SendAsync(string recipient, string text);
+        }
+
+        public sealed class EmailNotifier : Notifier
+        {
+            public override Task SendAsync(string recipient, string text) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, abstract-classes, validation]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/abstract-class

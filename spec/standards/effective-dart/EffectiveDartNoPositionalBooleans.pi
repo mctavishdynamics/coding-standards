@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoPositionalBooleans:
+    standard: @{EffectiveDart}
+    ruleId: avoid-positional-boolean-parameters
+    title: Avoid positional boolean parameters
+    statement:
+        Take booleans as named parameters, or offer named constructors or
+        constants, so the call site shows what the value means. The
+        avoid_positional_boolean_parameters lint checks this.
+    rationale:
+        Booleans are usually passed as bare literals, and a lone true or
+        false says nothing about its purpose.
+    exceptions:
+        Setters are fine, since their name explains the value.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        void export(File file, bool compress, bool overwrite) {}
+        export(file, true, false);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        void export(File file, {bool compress = false, bool overwrite = false}) {}
+        export(file, compress: true);
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, parameters, booleans]
+    source: https://dart.dev/effective-dart/design#avoid-positional-boolean-parameters

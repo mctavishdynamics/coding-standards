@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle8:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-8
+    title: Split dense expressions into steps
+    statement:
+        When an expression packs too much into one line, break it into
+        several simpler statements.
+    rationale:
+        Short steps are easier to read and debug, and they make the order of
+        evaluation obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        total += (last = (used < cap / 2 ? small[j++] : big[--top]));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (used < cap / 2)
+            last = small[j++];
+        else
+            last = big[--top];
+        total += last;
+        \\\
+        ```
+    languages: [any]
+    tags: [style, expressions, simplicity]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

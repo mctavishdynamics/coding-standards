@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartWildcardUnusedCallbackParameters:
+    standard: @{EffectiveDart}
+    ruleId: prefer-using-wildcards-for-unused-callback-parameters
+    title: Name unused callback parameters with the wildcard _
+    statement:
+        When a local anonymous function must accept a parameter it does not
+        use, name that parameter `_`. Several unused parameters may all be
+        `_`. Named functions and methods should still give each parameter a
+        real name. The related lints are no_wildcard_variable_uses and
+        unnecessary_underscores.
+    rationale:
+        A wildcard does not bind a name, so it states plainly that the value
+        is ignored. An inline callback has enough context for this, while a
+        top-level declaration does not.
+    exceptions:
+        Wildcards need language version 3.7 or later. Earlier code uses
+        `__`, `___` and so on to avoid collisions.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        button.onPressed((event, position) => submitForm());
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        button.onPressed((_, _) => submitForm());
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, naming, functions]
+    source: https://dart.dev/effective-dart/style#prefer-using-wildcards-for-unused-callback-parameters

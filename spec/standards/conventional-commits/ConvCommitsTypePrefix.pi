@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ConventionalCommits import ConventionalCommits
+
+export coding-rule ConvCommitsTypePrefix:
+    standard: @{ConventionalCommits}
+    ruleId: 1
+    title: Start every commit with a type followed by a colon and space
+    statement:
+        Begin the subject with a type noun such as feat or fix, optionally
+        followed by a scope and an exclamation mark, and then a colon and a
+        single space.
+    rationale:
+        A fixed prefix lets tools parse the history to build changelogs and
+        choose the next version number without guessing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        Added retry logic to the HTTP client
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        feat: add retry logic to the HTTP client
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, format]
+    source: https://www.conventionalcommits.org/en/v1.0.0/#specification

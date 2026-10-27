@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagFocusAppearance:
+    standard: @{Wcag22}
+    ruleId: 2.4.13
+    title: Make the focus indicator large and high contrast
+    statement:
+        Draw a focus indicator whose area is no smaller than a 2 CSS pixel
+        outline around the component in its normal state, and whose colours
+        differ between the focused and normal states by a contrast of 3 to 1
+        or more.
+    rationale:
+        A thin or faint indicator is easy to miss for people with low
+        vision.
+    exceptions:
+        Exempt when the browser draws the indicator and the author cannot
+        change it, or when the author has not changed the indicator or its
+        background.
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        button:focus-visible { outline: 1px dotted #c0c0c0; }
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        button:focus-visible { outline: 3px solid #0b3d91; outline-offset: 2px; }
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aaa, focus, contrast]
+    source: https://www.w3.org/TR/WCAG22/#focus-appearance

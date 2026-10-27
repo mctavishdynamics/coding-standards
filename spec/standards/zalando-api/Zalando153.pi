@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando153:
+    standard: @{ZalandoApi}
+    ruleId: 153
+    title: Signal rate limiting with status 429 and limit headers
+    statement:
+        Reject requests over the rate limit with 429 Too Many Requests and
+        tell the client when to try again, either with Retry-After,
+        preferably in seconds, or with the X-RateLimit-Limit, Remaining and
+        Reset headers.
+    rationale:
+        The headers let clients back off for the right time instead of
+        retrying blindly.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        HTTP/1.1 429 Too Many Requests
+        Retry-After: 30
+        \\\
+        ```
+    languages: [any]
+    tags: [must, http, rate-limiting]
+    source: https://opensource.zalando.com/restful-api-guidelines/#153

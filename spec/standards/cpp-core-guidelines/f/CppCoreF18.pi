@@ -5,18 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF18:
     standard: @{CppCoreGuidelines}
     ruleId: F.18
-    title: For will-move-from parameters, pass by X&& and std::move the parameter
+    title: Take sink parameters by rvalue reference and move from them
     statement:
-        When a function takes over the contents of an argument, take it by
-        rvalue reference and move from it in the body.
+        A parameter whose contents the function will take over should be an
+        rvalue reference, and the body should std::move from it.
     rationale:
-        It is efficient, and because an X&& does not bind to lvalues the
-        caller must write std::move explicitly, which prevents accidental
-        moves.
+        Moving avoids a copy. Because X&& will not bind to a named object, a
+        caller who passes one must write std::move, so a move never happens by
+        accident.
     exceptions:
-        Cheap-to-move, move-only owners such as unique_ptr may be passed by
-        value instead. A shared_ptr that will be moved from should be passed
-        by value, as in R.34.
+        A move-only owner that is cheap to move, such as unique_ptr, may simply
+        be taken by value. A shared_ptr that the function will move from is also
+        passed by value, as R.34 explains.
     severity: null
     noncompliant:
         ```cpp

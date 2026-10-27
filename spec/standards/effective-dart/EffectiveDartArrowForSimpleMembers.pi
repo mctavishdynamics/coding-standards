@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartArrowForSimpleMembers:
+    standard: @{EffectiveDart}
+    ruleId: consider-using-for-simple-members
+    title: Consider => bodies for simple members
+    statement:
+        Use an arrow body for members that just compute and return a value,
+        or for a small setter paired with an arrow getter. Switch to a block
+        body when the expression grows beyond a couple of lines or nests
+        deeply. The prefer_expression_function_bodies lint checks this.
+    rationale:
+        Arrow bodies keep simple members compact, but long or nested arrow
+        expressions become hard to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Temperature {
+          final double celsius;
+          Temperature(this.celsius);
+          double get fahrenheit {
+            return celsius * 9 / 5 + 32;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Temperature {
+          final double celsius;
+          Temperature(this.celsius);
+          double get fahrenheit => celsius * 9 / 5 + 32;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [consider, functions, members]
+    source: https://dart.dev/effective-dart/usage#consider-using-for-simple-members

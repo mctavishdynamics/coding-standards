@@ -5,13 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR20:
     standard: @{CppCoreGuidelines}
     ruleId: R.20
-    title: Use unique_ptr or shared_ptr to represent ownership
+    title: Express ownership with smart pointers
     statement:
-        When a pointer owns its object, make it a unique_ptr or a shared_ptr
-        instead of a raw pointer.
+        Use unique_ptr or shared_ptr whenever a pointer is responsible for
+        deleting its target. Reserve raw pointers for observing.
     rationale:
-        Smart pointers release the object automatically and so prevent
-        resource leaks.
+        A smart pointer destroys its object on its own when it goes away.
+        That removes the most common source of leaks.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule13:
+    standard: @{CppCodingStandards}
+    ruleId: rule-13
+    title: Give every resource an owning object
+    statement:
+        Give each resource an owning object whose destructor releases it,
+        and allocate each resource in its own statement that hands it
+        straight to its owner.
+    rationale:
+        Automatic release is the only reliable cleanup in the presence of
+        exceptions and early returns.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void save() {
+            FILE* f = fopen("out.txt", "w");
+            write(f);   // may throw, f leaks
+            fclose(f);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void save() {
+            std::ofstream f("out.txt");
+            write(f);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [design-style, raii, memory]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgMemberOverloading4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: member-overloading-4
+    title: Funnel overloads into one virtual implementation
+    statement:
+        If overloads must be extensible, make only the most complete one
+        virtual and have the shorter ones call it.
+    rationale:
+        Subclasses then override one method and every overload picks up the
+        new behavior consistently.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public virtual void Render(Canvas canvas) { /* ... */ }
+        public virtual void Render(Canvas canvas, float scale) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Render(Canvas canvas) => Render(canvas, 1.0f);
+        public virtual void Render(Canvas canvas, float scale) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, overloading, extensibility]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/member-overloading

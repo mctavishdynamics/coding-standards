@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDoNotAbbreviateWindowsAsWin:
+    standard: @{GnuCodingStandards}
+    ruleId: system-portability-windows-name
+    title: Do not abbreviate Windows as win
+    statement:
+        Write Windows in full; where brevity really matters, as in file or
+        macro names, abbreviate it to w, as in w32.
+    rationale:
+        The GNU project avoids the abbreviation win for this system.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include "win_console.h"
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include "w32_console.h"
+        \\\
+        ```
+    languages: [c]
+    tags: [naming, portability]
+    source: https://www.gnu.org/prep/standards/standards.html#System-Portability

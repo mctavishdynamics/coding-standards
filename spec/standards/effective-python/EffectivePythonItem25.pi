@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem25:
+    standard: @{EffectivePython}
+    ruleId: item-25
+    title: Do not assume every mapping keeps insertion order
+    statement:
+        Built-in dicts keep insertion order, but other mapping types passed
+        to your code may not. Do not depend on order unless you control the
+        type, or check for dict explicitly.
+    rationale:
+        Code that relies on ordering can break when given a custom mapping
+        that iterates in another order.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        def top_entry(ranking: dict[str, int]) -> str:
+            if not isinstance(ranking, dict):
+                raise TypeError("expected a dict")
+            return next(iter(ranking))
+        \\\
+        ```
+    languages: [python]
+    tags: [dictionaries, ordering]
+    source: https://effectivepython.com/

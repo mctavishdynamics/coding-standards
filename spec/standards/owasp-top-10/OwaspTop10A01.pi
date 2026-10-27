@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./OwaspTop10 import OwaspTop10
+
+export coding-rule OwaspTop10A01:
+    standard: @{OwaspTop10}
+    ruleId: A01:2025
+    title: Prevent broken access control
+    statement:
+        Enforce access control in trusted server-side code, deny everything
+        that is not public by default, and build the checks once so the
+        whole application reuses them. Tie records to their owners, keep
+        CORS narrow, keep directory listings, repository metadata and
+        backups out of the web root, rate-limit APIs, end sessions on logout
+        with short-lived tokens, and log and alert on failed checks.
+    rationale:
+        Users acting outside their permissions can read, change or destroy
+        other people's data or reach admin functions. It is the first
+        category in the OWASP Top 10 for 2025.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        app.get("/api/notes/:id", async (req, res) => {
+          res.json(await Notes.findById(req.params.id));
+        });
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        app.get("/api/notes/:id", requireLogin, async (req, res) => {
+          const note = await Notes.findOne({ _id: req.params.id, owner: req.user.id });
+          if (!note) return res.sendStatus(404);
+          res.json(note);
+        });
+        \\\
+        ```
+    languages: [any]
+    tags: [rank-1, access-control, authorization]
+    source: https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/

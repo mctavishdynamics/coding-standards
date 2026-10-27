@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip148:
+    standard: @{GoogleAip}
+    ruleId: AIP-148
+    title: Use the standard field names for common concepts
+    statement:
+        Use the defined standard fields for common concepts with their
+        stated types and behavior, such as name, display_name, uid,
+        create_time, update_time, delete_time, expire_time, etag and
+        annotations. Use given_name and family_name rather than first_name
+        and last_name, and make uid an output-only UUID4.
+    rationale:
+        Standard names let tools and users recognize the same concept across
+        every API. Well-defined semantics allow shared tooling and
+        documentation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Member {
+          string first_name = 1;
+          string last_name = 2;
+          int64 created_at = 3;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Member {
+          string name = 1;
+          string given_name = 2;
+          string family_name = 3;
+          google.protobuf.Timestamp create_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [fields, naming]
+    source: https://google.aip.dev/148

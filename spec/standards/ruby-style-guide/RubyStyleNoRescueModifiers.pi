@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoRescueModifiers:
+    standard: @{RubyStyleGuide}
+    ruleId: no-rescue-modifiers
+    title: Avoid the rescue modifier
+    statement:
+        Do not append rescue to a statement as a modifier; use a full begin
+        or method-level rescue that names the exception.
+    rationale:
+        The modifier form catches every StandardError, which hides unrelated
+        bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        config = YAML.load_file(path) rescue {}
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def load_config(path)
+          YAML.load_file(path)
+        rescue Errno::ENOENT
+          {}
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [error-handling, exceptions]
+    source: https://rubystyle.guide/#no-rescue-modifiers

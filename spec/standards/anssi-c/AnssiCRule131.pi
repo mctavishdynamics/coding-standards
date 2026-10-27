@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule131:
+    standard: @{AnssiC}
+    ruleId: rule-131
+    title: Put nothing before the first case label of a switch
+    statement:
+        Do not declare or initialise variables or write statements in a
+        switch body before its first case label.
+    rationale:
+        That code is never executed, so an initialisation there has no
+        effect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        switch (kind) {
+            int tmp = 0;
+        case KIND_A: tmp = 1; break;
+        default: break;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int tmp = 0;
+        switch (kind) {
+        case KIND_A: tmp = 1; break;
+        default: break;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, control-flow, switch]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=101

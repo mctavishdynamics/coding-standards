@@ -5,17 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC145:
     standard: @{CppCoreGuidelines}
     ruleId: C.145
-    title: Access polymorphic objects through pointers and references
+    title: Reach polymorphic objects only by pointer or reference
     statement:
-        Pass and hold objects of polymorphic types by pointer or reference,
-        not by value.
+        Handle objects of polymorphic types through pointers or references. Do
+        not pass or store them by value.
     rationale:
-        Calls on a polymorphic object should reach the override of its
-        dynamic type, and a copy by value slices the object down to the
-        base.
+        A virtual call should reach the override of the real type. A by-value
+        copy slices the object down to the base class and loses that behavior.
     exceptions:
-        A named polymorphic object can be used directly in the scope where
-        it is defined, as long as it is not sliced.
+        In the scope where a polymorphic object is declared by name, calling its
+        members directly is fine, as long as it is never copied into a base
+        class object.
     severity: null
     noncompliant:
         ```cpp

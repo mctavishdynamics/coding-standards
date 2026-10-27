@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV1x4x3:
+    standard: @{OwaspAsvs}
+    ruleId: V1.4.3
+    title: Release memory and clear dangling pointers
+    statement:
+        Free dynamically allocated memory and other resources when done, and
+        remove or null out references to memory that has been freed.
+    rationale:
+        A pointer left pointing at freed memory leads to use-after-free and
+        double-free bugs that attackers can exploit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        free(session->buffer);
+        /* buffer still points at freed memory */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        free(session->buffer);
+        session->buffer = NULL;
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, memory, use-after-free]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x10-V1-Encoding-and-Sanitization.md#v14-memory-string-and-unmanaged-code

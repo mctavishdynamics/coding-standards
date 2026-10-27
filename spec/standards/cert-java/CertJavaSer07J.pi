@@ -20,11 +20,12 @@ export coding-rule CertJavaSer07J:
     noncompliant:
         ```java
         \\\
-        class Range implements Serializable {
-            private final int low, high;
-            Range(int low, int high) {
-                if (low > high) throw new IllegalArgumentException();
-                this.low = low; this.high = high;
+        class Percent implements Serializable {
+            private final int value;
+
+            Percent(int value) {
+                if (value < 0 || value > 100) throw new IllegalArgumentException();
+                this.value = value;
             }
         }
         \\\
@@ -32,13 +33,20 @@ export coding-rule CertJavaSer07J:
     compliant:
         ```java
         \\\
-        class Range implements Serializable {
-            private final int low, high;
-            // constructor as before
-            private void readObject(ObjectInputStream in)
-                    throws IOException, ClassNotFoundException {
-                in.defaultReadObject();
-                if (low > high) throw new InvalidObjectException("low > high");
+        class Percent implements Serializable {
+            private final int value;
+
+            Percent(int value) {
+                if (value < 0 || value > 100) throw new IllegalArgumentException();
+                this.value = value;
+            }
+
+            private void readObject(ObjectInputStream s)
+                    throws ClassNotFoundException, IOException {
+                s.defaultReadObject();
+                if (value < 0 || value > 100) {
+                    throw new InvalidObjectException("out of range");
+                }
             }
         }
         \\\

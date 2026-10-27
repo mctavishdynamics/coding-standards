@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleLimitEverything:
+    standard: @{TigerStyle}
+    ruleId: limit-everything
+    title: Give every loop and queue a fixed upper bound
+    statement:
+        Put an explicit limit on everything, including all loops and queues.
+        A loop that is meant to run forever, such as an event loop, must
+        assert that fact.
+    rationale:
+        Everything has a limit in reality, and stating it stops runaway
+        loops and tail latency spikes while failing fast when a bound is
+        broken.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        while (queue.pop()) |message| {
+            handle(message);
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        var handled: u32 = 0;
+        while (queue.pop()) |message| : (handled += 1) {
+            assert(handled < queue_messages_max);
+            handle(message);
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [bounds, safety, loops]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

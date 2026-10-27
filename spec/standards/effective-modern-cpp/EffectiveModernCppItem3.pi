@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem3:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-3
+    title: Learn what decltype reports
+    statement:
+        decltype gives the declared type of a name, and for other lvalue
+        expressions it adds a reference. Use decltype(auto) to return
+        exactly what an expression yields.
+    rationale:
+        Parenthesising a name changes the result, which can turn a return
+        into a dangling reference.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        decltype(auto) total() {
+            int sum = compute();
+            return (sum);   // int&, dangling
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        decltype(auto) total() {
+            int sum = compute();
+            return sum;     // int
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [deducing-types, type-deduction]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

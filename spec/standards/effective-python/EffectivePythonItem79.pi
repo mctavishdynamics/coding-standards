@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem79:
+    standard: @{EffectivePython}
+    ruleId: item-79
+    title: Use process pools for CPU-bound parallelism
+    statement:
+        For CPU-heavy work that must run in parallel, use
+        concurrent.futures.ProcessPoolExecutor, after considering native
+        extensions for the hot spots.
+    rationale:
+        Separate processes sidestep the global interpreter lock and use all
+        cores, at the cost of serialising arguments and results.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        from concurrent.futures import ProcessPoolExecutor
+
+        with ProcessPoolExecutor() as pool:
+            hashes = list(pool.map(expensive_hash, blocks))
+        \\\
+        ```
+    languages: [python]
+    tags: [concurrency-and-parallelism, processes, parallelism]
+    source: https://effectivepython.com/

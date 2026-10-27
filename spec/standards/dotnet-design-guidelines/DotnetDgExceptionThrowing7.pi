@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExceptionThrowing7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: exception-throwing-7
+    title: Do not let an option decide whether a member throws
+    statement:
+        A public member should not throw or stay silent depending on a flag
+        or setting.
+    rationale:
+        Callers cannot know which behavior they will get and must handle
+        both.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Image Load(string path, bool throwOnError) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public Image Load(string path) { /* throws on failure */ }
+        public bool TryLoad(string path, out Image image) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, exceptions, api-design]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/exception-throwing

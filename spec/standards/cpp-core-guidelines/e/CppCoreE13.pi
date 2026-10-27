@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE13:
     standard: @{CppCoreGuidelines}
     ruleId: E.13
-    title: Never throw while being the direct owner of an object
+    title: Hand objects to an owner before any throw can occur
     statement:
-        Do not throw, or call code that can throw, while a raw pointer is
-        the only owner of a resource. Hold it in a resource handle or local
-        object first.
+        Never let an exception be raised while a resource is held only through a raw
+        pointer. Move it into a smart pointer, container or other handle before
+        calling anything that might throw.
     rationale:
-        Throwing past a raw owning pointer skips the delete, so the object
-        leaks.
+        If unwinding passes over a plain owning pointer, nothing deletes the object,
+        and it leaks.
     exceptions: null
     severity: null
     noncompliant:

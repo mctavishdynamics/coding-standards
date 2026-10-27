@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSf11:
     standard: @{CppCoreGuidelines}
     ruleId: SF.11
-    title: Header files should be self-contained
+    title: Make each header compile on its own
     statement:
-        Make every header compile on its own by including everything it
-        depends on.
+        Every header should include whatever it needs, so that a file containing
+        nothing but that one include compiles cleanly.
     rationale:
-        Clients should not have to manage a header's dependencies or include
-        things in a special order, and failures from missing includes are
-        hard to diagnose.
+        Users should be able to include a header first, last or alone and have it
+        work. A header that depends on what was included before it pushes its own
+        dependencies onto every user and fails in puzzling ways when their include
+        order changes.
     exceptions: null
     severity: null
     noncompliant:

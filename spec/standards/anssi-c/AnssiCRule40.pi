@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule40:
+    standard: @{AnssiC}
+    ruleId: rule-40
+    title: Have the compiler initialise automatic variables
+    statement:
+        Where the compiler supports it, force automatic initialisation of
+        local variables, using a pattern value during development and
+        testing and zero in release builds.
+    rationale:
+        Pattern values make uninitialised reads easier to spot during tests,
+        and zero limits how far such a bug can be exploited in production.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        clang -O2 -ftrivial-auto-var-init=pattern -c state.c   # test builds
+        clang -O2 -ftrivial-auto-var-init=zero -c state.c      # release builds
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, compilation, initialization, hardening]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=34

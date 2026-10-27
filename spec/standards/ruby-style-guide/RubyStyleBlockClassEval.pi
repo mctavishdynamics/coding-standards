@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleBlockClassEval:
+    standard: @{RubyStyleGuide}
+    ruleId: block-class-eval
+    title: Prefer the block form of class_eval
+    statement:
+        Use the block form of class_eval rather than the string form. When
+        you must use a string, pass __FILE__ and __LINE__ so backtraces
+        point to the right place. Prefer define_method to defining methods
+        inside class_eval.
+    rationale:
+        Blocks are parsed and checked like normal code, while strings hide
+        errors and produce backtraces with no location unless one is
+        supplied.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        Report.class_eval "def title; 'Sales'; end"
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        Report.class_eval do
+          define_method(:title) { 'Sales' }
+        end
+
+        Report.class_eval "def title; 'Sales'; end", __FILE__, __LINE__
+        \\\
+        ```
+    languages: [ruby]
+    tags: [metaprogramming]
+    source: https://rubystyle.guide/#block-class-eval

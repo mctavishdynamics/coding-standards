@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12OpeningTagOwnLine:
+    standard: @{Psr12}
+    ruleId: 3c
+    title: Put the opening tag on a line of its own
+    statement:
+        If a file starts with the PHP opening tag on line one, keep that
+        line to the tag alone.
+    rationale:
+        Keeping the tag alone makes the start of every file identical and
+        leaves room for the header blocks below it.
+    exceptions:
+        A file that mixes markup with PHP outside its tags can place further
+        statements after the opening tag.
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php namespace Acme\Shop;
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+
+        namespace Acme\Shop;
+        \\\
+        ```
+    languages: [php]
+    tags: [files, tags]
+    source: https://www.php-fig.org/psr/psr-12/#3-declare-statements-namespace-and-import-statements

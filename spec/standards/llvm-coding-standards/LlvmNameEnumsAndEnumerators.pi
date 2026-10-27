@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmNameEnumsAndEnumerators:
+    standard: @{LlvmCodingStandards}
+    ruleId: name-types-functions-variables-and-enumerators-properly-enums
+    title: Give discriminator enums a Kind suffix and prefix their enumerators
+    statement:
+        Enum types follow type naming, and an enum that tells subclasses or
+        union members apart ends in Kind. Enumerators start with an
+        upper-case letter and, unless scoped by a class or small namespace,
+        carry a prefix derived from the enum name.
+    rationale:
+        Prefixes keep unscoped enumerators from colliding and show which
+        enum a value belongs to.
+    exceptions:
+        Enumerators that only serve as convenience constants need no prefix.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        enum OperandType { Register, Immediate, Memory };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum OperandKind { OK_Register, OK_Immediate, OK_Memory };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, enums]
+    source: https://llvm.org/docs/CodingStandards.html#name-types-functions-variables-and-enumerators-properly

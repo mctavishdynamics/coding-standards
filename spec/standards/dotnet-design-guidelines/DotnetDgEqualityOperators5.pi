@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEqualityOperators5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: equality-operators-5
+    title: Keep identity equality on classes whose state can change
+    statement:
+        Do not give mutable classes value-based equality operators.
+    rationale:
+        Developers expect equality on reference types to compare identity,
+        and with mutable objects the difference shows up as surprising bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class Draft
+        {
+            public string Body { get; set; }
+            public static bool operator ==(Draft left, Draft right) => left?.Body == right?.Body;
+            public static bool operator !=(Draft left, Draft right) => !(left == right);
+        }
+        \\\
+        ```
+    compliant: null
+    languages: [csharp]
+    tags: [avoid, usage, equality, immutability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/equality-operators#equality-operators-on-reference-types

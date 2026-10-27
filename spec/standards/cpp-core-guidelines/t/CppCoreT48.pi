@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT48:
     standard: @{CppCoreGuidelines}
     ruleId: T.48
-    title: If your compiler does not support concepts, fake them with enable_if
+    title: Emulate missing concept support with enable_if
     statement:
-        Without language support for concepts, use enable_if to constrain
-        templates and select overloads, and switch to real concepts once
-        available.
+        If your compiler has no concepts, use enable_if to limit which types a
+        template accepts and to choose between overloads. Switch to real concepts
+        once they are available.
     rationale:
-        enable_if is the closest substitute for concepts in older C++,
-        letting a template exist only for suitable argument types. Watch out
-        for the complementary constraints this style tends to produce.
+        In older C++ this is the closest substitute for concepts. It lets a template
+        exist only for suitable arguments, but it tends to produce pairs of
+        complementary conditions, which T.25 warns about.
     exceptions: null
     severity: null
     noncompliant:

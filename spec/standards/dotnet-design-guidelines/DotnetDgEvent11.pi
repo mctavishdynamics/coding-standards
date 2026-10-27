@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEvent11:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: event-11
+    title: Type the first handler parameter as object and name it sender
+    statement:
+        In custom event handler delegates, declare the first parameter as
+        object named sender.
+    rationale:
+        A uniform sender parameter lets one handler serve events from
+        different kinds of objects.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public delegate void SnapshotEventHandler(Camera camera, SnapshotEventArgs e);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public delegate void SnapshotEventHandler(object sender, SnapshotEventArgs e);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, events, parameters]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/event#custom-event-handler-design

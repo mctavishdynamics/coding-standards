@@ -5,32 +5,32 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCorePer19:
     standard: @{CppCoreGuidelines}
     ruleId: Per.19
-    title: Access memory predictably
+    title: Lay out and visit memory in a cache-friendly order
     statement:
-        Walk data in the order it is laid out in memory, preferably linearly
-        over adjacent elements. For row-major arrays, loop over rows in the
-        outer loop and columns in the inner loop.
+        Visit data in the order it sits in memory, ideally stepping through
+        neighbouring elements one after another. In a row-major array, rows
+        go in the outer loop and columns in the inner one.
     rationale:
-        Performance depends heavily on the cache, and caches favor simple
-        linear access to neighbouring data.
+        Speed depends strongly on how well the cache is used. Caches work
+        best with simple sequential reads of adjacent memory.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        double grid[rows][cols];
-        for (int c = 0; c < cols; ++c)
-            for (int r = 0; r < rows; ++r)
-                total += grid[r][c];   // jumps a whole row each step
+        // order_ids is a shuffled list of every index into prices
+        double total = 0;
+        for (std::size_t id : order_ids)
+            total += prices[id];   // jumps around memory
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        double grid[rows][cols];
-        for (int r = 0; r < rows; ++r)
-            for (int c = 0; c < cols; ++c)
-                total += grid[r][c];   // walks memory in order
+        // same total, read in storage order
+        double total = 0;
+        for (double p : prices)
+            total += p;
         \\\
         ```
     languages: [cpp]

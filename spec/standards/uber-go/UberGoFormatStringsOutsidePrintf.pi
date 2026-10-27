@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoFormatStringsOutsidePrintf:
+    standard: @{UberGo}
+    ruleId: format-strings-outside-printf
+    title: Declare separate format strings as constants
+    statement:
+        When a format string for a Printf-style function is declared outside
+        the call, make it a const.
+    rationale:
+        go vet can only check a format string against its arguments when it
+        is a constant.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        msg := "%d items in %s\n"
+        fmt.Printf(msg, count, bucket)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        const msg = "%d items in %s\n"
+        fmt.Printf(msg, count, bucket)
+        \\\
+        ```
+    languages: [go]
+    tags: [strings, static-analysis]
+    source: https://github.com/uber-go/guide/blob/master/style.md#format-strings-outside-printf

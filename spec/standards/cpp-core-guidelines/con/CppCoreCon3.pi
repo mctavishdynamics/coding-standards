@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCon3:
     standard: @{CppCoreGuidelines}
     ruleId: Con.3
-    title: By default, pass pointers and references to const
+    title: Take pointers and references to const unless the callee modifies the target
     statement:
-        Take pointer and reference parameters as pointers or references to
-        const, and use non-const ones only when the function is meant to
-        modify the object.
+        Pass objects by pointer to const or reference to const by default. Use a
+        non-const pointer or reference only for a parameter the function is supposed
+        to change.
     rationale:
-        It stops a called function from unexpectedly changing the value, and
-        it is much easier to reason about calls that do not modify state. A
-        reader must assume a plain reference parameter is modified.
+        A const parameter guarantees the caller's object comes back unchanged.
+        Readers must assume that a plain reference will be written to, and code that
+        does not mutate its inputs is much simpler to reason about.
     exceptions: null
     severity: null
     noncompliant:

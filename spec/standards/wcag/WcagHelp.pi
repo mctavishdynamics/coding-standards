@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagHelp:
+    standard: @{Wcag22}
+    ruleId: 3.3.5
+    title: Provide context-sensitive help
+    statement:
+        Offer help related to the task at hand, such as field-level hints or
+        links to relevant instructions.
+    rationale:
+        Users who are unsure what a field expects can get help without
+        leaving the page.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <label for="iban">IBAN</label> <input id="iban">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <label for="iban">IBAN</label>
+        <input id="iban" aria-describedby="iban-help">
+        <p id="iban-help">Your IBAN is printed on your bank statement and starts with two letters.</p>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aaa, help, forms]
+    source: https://www.w3.org/TR/WCAG22/#help

@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSf2:
     standard: @{CppCoreGuidelines}
     ruleId: SF.2
-    title: A header file must not contain object definitions or non-inline function definitions
+    title: Keep object and non-inline function definitions out of headers
     statement:
-        Keep headers to declarations, templates, class definitions, inline
-        and constexpr functions, const and constexpr definitions, aliases
-        and includes. Put variable definitions and ordinary function bodies
-        in a source file.
+        Headers may hold declarations, class and template definitions, inline and
+        constexpr functions, constants, type aliases and includes. Ordinary function
+        bodies and variable definitions belong in source files.
     rationale:
-        A definition in a header is repeated in every file that includes it,
-        which breaks the one-definition rule and causes link errors.
+        Each file that includes the header receives its own copy of every definition
+        in it. For things covered by the one-definition rule, that produces
+        duplicate symbols at link time.
     exceptions: null
     severity: null
     noncompliant:

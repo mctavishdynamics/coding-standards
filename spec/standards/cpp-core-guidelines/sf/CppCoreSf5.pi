@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSf5:
     standard: @{CppCoreGuidelines}
     ruleId: SF.5
-    title: A .cpp file must include the header file(s) that defines its interface
+    title: Include a source file's own header in that source file
     statement:
-        Each source file should include its own header so that the compiler
-        sees the declarations alongside the definitions.
+        Have a source file include the header that declares its interface, so the
+        compiler sees declarations and definitions together.
     rationale:
-        The compiler can then catch mismatches such as a wrong return type
-        when the file is compiled, instead of leaving them to the linker.
+        A mismatch, such as a definition with a different return type than its
+        declaration, is then reported while compiling that file. Otherwise it might
+        only appear at link time, or not at all.
     exceptions: null
     severity: null
     noncompliant:

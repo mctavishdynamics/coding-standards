@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule6:
+    standard: @{AnssiC}
+    ruleId: rule-6
+    title: Put all include directives at the top of the file
+    statement:
+        Group every include directive at the start of the file, after any
+        opening comments or directives and before any global variable or
+        function definition.
+    rationale:
+        Includes scattered through a file are easy to miss and make
+        dependencies hard to see.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include <stdio.h>
+        static int level;
+        #include <string.h>
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdio.h>
+        #include <string.h>
+        static int level;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, headers, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=14

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfClassesStructsAndInterfaces2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-classes-structs-and-interfaces-2
+    title: Name interfaces with adjectives, or sometimes nouns
+    statement:
+        Prefer an adjective phrase that describes a capability for an
+        interface name, and use a noun only now and then.
+    rationale:
+        An interface usually describes something a type can do. Needing a
+        noun often hints that an abstract class would fit better.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public interface IDoComparison { int CompareTo(object other); }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public interface IComparableShipment { int CompareTo(Shipment other); }
+        public interface IRetryable { bool CanRetry { get; } }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, interfaces]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces

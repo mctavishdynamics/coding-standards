@@ -5,34 +5,35 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT68:
     standard: @{CppCoreGuidelines}
     ruleId: T.68
-    title: Use \ {} \ rather than () within templates to avoid ambiguities
+    title: Use braces in templates to avoid parsing ambiguity
     statement:
-        Inside templates, initialize objects with braces instead of
-        parentheses, and avoid function-style casts of dependent types.
+        In template code, initialize with braces rather than parentheses, and avoid
+        function-style casts of dependent types.
     rationale:
-        Parenthesized initialization is open to grammar ambiguities, such as
-        a declaration being parsed as a function, and a function-style cast
-        can hide a dangerous conversion.
+        Parentheses can be parsed in surprising ways, for example as a function
+        declaration where a variable was intended. A function-style cast may also
+        perform a dangerous conversion that braces would reject.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        template<typename T, typename U>
-        void store(U u)
+        template<typename T, typename Source>
+        T convert(Source s)
         {
-            T item(T(u));       // declares a function, not a variable
-            auto copy = T(u);   // construction or C-style cast?
+            T result();     // declares a function returning T
+            return T(s);    // may silently act as a C-style cast
         }
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        template<typename T, typename U>
-        void store(U u)
+        template<typename T, typename Source>
+        T convert(Source s)
         {
-            T item{u};          // clearly a variable
+            T result{s};    // a variable; narrowing is rejected
+            return result;
         }
         \\\
         ```

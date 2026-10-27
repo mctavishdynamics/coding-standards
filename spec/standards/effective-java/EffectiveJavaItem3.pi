@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem3:
+    standard: @{EffectiveJava}
+    ruleId: item-3
+    title: Guarantee a single instance by hiding the constructor or declaring an enum
+    statement:
+        When a class must have exactly one instance, hide its constructor
+        and expose the instance through a public field or static method, or
+        declare the class as an enum with a single constant.
+    rationale:
+        The enum form is short, survives serialization without extra code,
+        and cannot be broken by reflection. The private-constructor forms
+        keep the option of later returning something other than one shared
+        object.
+    exceptions:
+        The enum form cannot be used when the singleton must extend a class
+        other than Enum.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class Registry {
+            public Registry() { }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public enum Registry {
+            INSTANCE;
+
+            public void register(String name) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [creating-and-destroying-objects, singleton, construction]
+    source: https://www.informit.com/store/effective-java-9780134686097

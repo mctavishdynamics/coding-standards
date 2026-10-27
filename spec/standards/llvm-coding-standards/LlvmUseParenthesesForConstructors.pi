@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmUseParenthesesForConstructors:
+    standard: @{LlvmCodingStandards}
+    ruleId: do-not-use-braced-initializer-lists-to-call-a-constructor
+    title: Call constructors with parentheses, not braces
+    statement:
+        When a constructor does real work, or it matters which constructor
+        is chosen, call it with parentheses. Use braces, without naming the
+        type, for aggregate-like initialization, and put an equals sign
+        before the brace when initializing a variable from a braced list.
+    rationale:
+        Braces suggest plain aggregation; using them for logic-heavy
+        constructors hides what the call does and can select an unexpected
+        overload.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Archive A{"libfoo.a"};       // opens and parses a file
+        Ranges.push_back(Range(0, 4));
+        unsigned Widths[]{8, 16, 32};
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Archive A("libfoo.a");
+        Ranges.push_back({0, 4});
+        unsigned Widths[] = {8, 16, 32};
+        \\\
+        ```
+    languages: [cpp]
+    tags: [initialization, constructors]
+    source: https://llvm.org/docs/CodingStandards.html#do-not-use-braced-initializer-lists-to-call-a-constructor

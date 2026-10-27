@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartThisForInstance:
+    standard: @{EffectiveDart}
+    ruleId: prefer-using-this-instead-of-the-to-refer-to-a-members-instance
+    title: Say "this" when referring to the member's own object
+    statement:
+        In member docs, refer to the receiver as "this" followed by a
+        qualifier, such as "this list", instead of "the list".
+    rationale:
+        Using "the" can point at any object, and a lone "this" can be
+        unclear, so a qualified "this" says exactly which object is meant.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Playlist {
+          /// Whether the playlist contains the song.
+          bool contains(Song song) => _songs.contains(song);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Playlist {
+          /// Whether this playlist contains [song].
+          bool contains(Song song) => _songs.contains(song);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, documentation, writing]
+    source: https://dart.dev/effective-dart/documentation#prefer-using-this-instead-of-the-to-refer-to-a-members-instance

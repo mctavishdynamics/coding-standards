@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando220:
+    standard: @{ZalandoApi}
+    ruleId: 220
+    title: Pick the narrowest HTTP status code that fits
+    statement:
+        Return the most specific status code that describes the result or
+        the error.
+    rationale:
+        A precise code lets clients react correctly without parsing the
+        body.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        HTTP/1.1 400 Bad Request
+        # the order is already being processed by another request
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        HTTP/1.1 409 Conflict
+        \\\
+        ```
+    languages: [any]
+    tags: [must, http, status-codes]
+    source: https://opensource.zalando.com/restful-api-guidelines/#220

@@ -5,30 +5,31 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreNl7:
     standard: @{CppCoreGuidelines}
     ruleId: NL.7
-    title: Make the length of a name roughly proportional to the length of its scope
+    title: Use short names for short scopes and longer names for wide ones
     statement:
-        Use short names in small scopes and longer, more descriptive names
-        as the scope grows.
+        Match how long a name is to how far it reaches. Short names suit tiny
+        scopes, and names visible across many lines or files should be longer and
+        more descriptive.
     rationale:
-        The larger the scope, the more chance of confusion and accidental
-        name clashes. Conventional short names like p or x are fine in a
-        tiny scope.
+        A name in a wide scope is read far from its declaration and is more likely
+        to clash with or be confused with another one. In a few lines, familiar
+        short names such as i, p or x are clear enough.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        int n;              // global with a cryptic name
+        int t;   // global with a cryptic name
 
-        int count_of_number_of_characters_in_string(const char* zero_terminated_text);
+        void scale(std::vector<double>& values_to_be_multiplied, double multiplication_factor);
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        int active_connection_count;   // global, descriptive
+        int retry_timeout_seconds;   // global, descriptive
 
-        int length(const char* p);     // short parameter in a small scope
+        void scale(std::vector<double>& v, double factor);   // short names in a small scope
         \\\
         ```
     languages: [cpp]

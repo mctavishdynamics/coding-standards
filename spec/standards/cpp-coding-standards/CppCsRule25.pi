@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule25:
+    standard: @{CppCodingStandards}
+    ruleId: rule-25
+    title: Choose parameter passing by value, pointer or reference deliberately
+    statement:
+        Take small read-only values by value, larger read-only inputs by
+        const reference, outputs and in-out arguments by reference or
+        pointer when null is meaningful, and ownership through smart
+        pointers.
+    rationale:
+        The signature should show whether an argument is read, changed,
+        optional or transferred.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void update(Account* a, Settings s, int* count);   // nullability unclear
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void update(Account& a, const Settings& s, int count);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions-and-operators, parameters, interfaces]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiUnconstrainedPolymorphism:
+    standard: @{SwiftApiDesign}
+    ruleId: unconstrained-polymorphism
+    title: Take care with overloads on unconstrained types
+    statement:
+        Be careful with overload sets that involve Any, AnyObject or
+        unconstrained generic parameters, and name overloads explicitly when
+        one type could match both.
+    rationale:
+        When an element can itself be a collection, distinct-looking
+        overloads become ambiguous at the call site.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        struct Bag {
+            mutating func insert(_ item: Any)
+            mutating func insert(_ items: [Any])
+        }
+        bag.insert([1, 2])   // one item or two?
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        struct Bag {
+            mutating func insert(_ item: Any)
+            mutating func insert(contentsOf items: [Any])
+        }
+        bag.insert(contentsOf: [1, 2])
+        \\\
+        ```
+    languages: [swift]
+    tags: [overloading, generics]
+    source: https://www.swift.org/documentation/api-design-guidelines/#unconstrained-polymorphism

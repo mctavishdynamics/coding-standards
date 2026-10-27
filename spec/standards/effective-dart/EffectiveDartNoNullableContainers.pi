@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoNullableContainers:
+    standard: @{EffectiveDart}
+    ruleId: avoid-returning-nullable-future-stream-and-collection-types
+    title: Return empty containers instead of null
+    statement:
+        Represent the absence of results with an empty collection or stream,
+        or with a non-nullable Future whose value type is nullable, rather
+        than by making the return type itself nullable.
+    rationale:
+        Callers expect an empty container and can call methods such as
+        isEmpty on it without null checks.
+    exceptions:
+        A nullable type is fine when null means something different from
+        empty.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        List<Order>? ordersFor(String customerId) =>
+            _byCustomer[customerId];
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        List<Order> ordersFor(String customerId) =>
+            _byCustomer[customerId] ?? const [];
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, null-safety, collections]
+    source: https://dart.dev/effective-dart/design#avoid-returning-nullable-future-stream-and-collection-types

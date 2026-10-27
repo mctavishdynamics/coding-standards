@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgArrays3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: arrays-3
+    title: Consider arrays of arrays over rectangular arrays
+    statement:
+        Prefer arrays of arrays to multidimensional arrays.
+    rationale:
+        Jagged arrays waste less space when rows differ in length, and the
+        runtime optimizes their indexing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        int[,] seatsPerRow = new int[30, 40];
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        int[][] seatsPerRow = new int[30][];
+        seatsPerRow[0] = new int[24];
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, usage, arrays, performance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/arrays

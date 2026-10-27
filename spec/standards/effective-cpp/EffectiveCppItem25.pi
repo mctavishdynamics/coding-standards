@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem25:
+    standard: @{EffectiveCpp}
+    ruleId: item-25
+    title: Offer an efficient swap that does not throw
+    statement:
+        When the default swap would be slow for your type, provide a member
+        swap that cannot throw, a non-member swap in your namespace, and
+        call swap with an unqualified name after a using declaration.
+    rationale:
+        Swap is the basis of strong exception safety, and a pointer-swapping
+        version is far cheaper than three copies.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class T>
+        void reset(T& a, T& b) {
+            std::swap(a, b);   // never finds a custom swap
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T>
+        void reset(T& a, T& b) {
+            using std::swap;
+            swap(a, b);   // finds T's swap if it has one
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [designs-and-declarations, exceptions, performance]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

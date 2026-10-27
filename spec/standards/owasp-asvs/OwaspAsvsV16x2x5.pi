@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV16x2x5:
+    standard: @{OwaspAsvs}
+    ruleId: V16.2.5
+    title: Log sensitive data according to its protection level
+    statement:
+        Apply each data item's protection level when logging it. Some data,
+        such as credentials or card details, must never be logged, and other
+        data, such as session tokens, only hashed or masked.
+    rationale:
+        Careless logging turns the log store into another copy of the most
+        sensitive data in the system.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        log.info("login ok user=%s password=%s token=%s", user, password, token)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        log.info("login ok user=%s token_hash=%s", user, sha256_hex(token)[:12])
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, logging, sensitive-data]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x25-V16-Security-Logging-and-Error-Handling.md#v162-general-logging

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleBoolMethodsQmark:
+    standard: @{RubyStyleGuide}
+    ruleId: bool-methods-qmark
+    title: End predicate method names with a question mark
+    statement:
+        Give methods that return a boolean a name ending in a question mark,
+        as in Array#empty?. Do not end a method name with a question mark
+        when it returns something other than a boolean.
+    rationale:
+        The question mark tells the caller what kind of answer to expect,
+        and a misleading one breaks that promise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def expired
+          expires_at < Time.now
+        end
+
+        def owner?
+          @owner
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def expired?
+          expires_at < Time.now
+        end
+
+        def owner
+          @owner
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [naming, methods, predicates]
+    source: https://rubystyle.guide/#bool-methods-qmark

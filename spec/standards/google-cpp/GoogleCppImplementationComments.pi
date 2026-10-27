@@ -20,21 +20,21 @@ export coding-rule GoogleCppImplementationComments:
     noncompliant:
         ```cpp
         \\\
-        // Find the element in the vector.
-        auto it = std::find(v.begin(), v.end(), element);
-        ProductOptions options = CalculateProduct(values, 7, false, nullptr);
+        // Look up the order in the map.
+        auto it = orders.find(order_id);
+        const Quote quote = PriceShipment(parcels, 3, true, nullptr);
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        // Process elements only once, so skip ones already seen.
-        if (!seen.contains(element)) Process(element);
+        // A retry after a timeout may deliver the same order twice.
+        if (!handled_ids.contains(order.id())) Fulfil(order);
 
-        ProductOptions options;
-        options.set_precision_decimals(7);
-        options.set_use_cache(ProductOptions::kDontUseCache);
-        const DecimalNumber product = CalculateProduct(values, options);
+        ShippingRequest request;
+        request.set_max_days(3);
+        request.set_mode(ShippingRequest::kGroundOnly);
+        const Quote quote = PriceShipment(parcels, request);
         \\\
         ```
     languages: [cpp]

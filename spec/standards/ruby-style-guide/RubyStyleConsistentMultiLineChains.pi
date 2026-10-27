@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleConsistentMultiLineChains:
+    standard: @{RubyStyleGuide}
+    ruleId: consistent-multi-line-chains
+    title: Use one multi-line method chaining style consistently
+    statement:
+        When a method chain spans several lines, choose either the leading
+        dot style, with the dot at the start of each continued line, or the
+        trailing dot style, with the dot at the end of the line that
+        continues, and use it throughout the project.
+    rationale:
+        Both styles are accepted in the community; mixing them makes chains
+        harder to read and to edit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        active = users
+          .select(&:active?).
+          map(&:email)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        active = users
+          .select(&:active?)
+          .map(&:email)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, method-chains]
+    source: https://rubystyle.guide/#consistent-multi-line-chains

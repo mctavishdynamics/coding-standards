@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiMinimizePublicApi:
+    standard: @{KotlinApiGuidelines}
+    ruleId: minimize-public-api
+    title: Expose only what callers need and hide the rest
+    statement:
+        Set declaration visibility so that only APIs deliberately designed
+        and documented for users are public. Keep the number of concepts and
+        operations users must learn small.
+    rationale:
+        Fewer, clearly communicated concepts give users a simpler mental
+        model of the library.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        class HttpClient {
+            fun get(url: String): Response = TODO()
+            fun encodeChunkHeader(size: Int): ByteArray = TODO()
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public class HttpClient {
+            public fun get(url: String): Response = TODO()
+            internal fun encodeChunkHeader(size: Int): ByteArray = TODO()
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [api-design, visibility]
+    source: https://kotlinlang.org/docs/api-guidelines-simplicity.html

@@ -7,10 +7,10 @@ export coding-rule RustApiCObject:
     ruleId: C-OBJECT
     title: Make traits object-safe if they may be used as trait objects
     statement:
-        Decide early whether a trait will be used as an object or as a
-        generic bound. If it may be used as an object, keep its methods free
-        of generics, or exclude generic methods from the object with a where
-        Self is Sized clause.
+        Settle at design time whether callers will use the trait as a dyn
+        object, a generic constraint, or both. To keep the object option open,
+        avoid generic methods, or mark any generic method with a where Self is
+        Sized bound so it is left off the object.
     rationale:
         A trait that is not object-safe can never be used for dynamic
         dispatch or in heterogeneous collections.

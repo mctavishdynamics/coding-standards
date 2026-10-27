@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp8:
     standard: @{CppCoreGuidelines}
     ruleId: CP.8
-    title: Do not use volatile for synchronization
+    title: Never rely on volatile to coordinate threads
     statement:
-        Use std::atomic or a mutex to coordinate threads, never volatile.
+        Coordinate threads with std::atomic or mutexes. Do not use volatile for
+        this.
     rationale:
-        In C++ volatile gives no atomicity, no synchronization between
-        threads and no protection against reordering by the compiler or
-        hardware. It has nothing to do with concurrency.
+        The C++ volatile qualifier does not make an operation atomic, does not
+        create a happens-before relation and does not stop the compiler or CPU from
+        reordering. Other languages give it thread meaning, but C++ does not.
     exceptions: null
     severity: null
     noncompliant:

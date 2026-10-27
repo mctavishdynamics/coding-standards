@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiDoTheRightThingByDefault:
+    standard: @{KotlinApiGuidelines}
+    ruleId: do-the-right-thing-by-default
+    title: Make the common case work with defaults
+    statement:
+        Anticipate the usual path for each use case and supply default
+        settings for it, so users need not pass defaults themselves. If no
+        uncontroversial default exists, revisit the requirements.
+    rationale:
+        Sensible defaults let users get the common task done with the least
+        code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        val cache = Cache(maxEntries = 1000, evictionPolicy = Lru, clock = SystemClock)
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public class Cache(
+            public val maxEntries: Int = 1000,
+            public val evictionPolicy: EvictionPolicy = Lru,
+        )
+        val cache = Cache()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [api-design, defaults]
+    source: https://kotlinlang.org/docs/api-guidelines-predictability.html#do-the-right-thing-by-default

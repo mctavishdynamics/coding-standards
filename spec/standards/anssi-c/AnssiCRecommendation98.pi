@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation98:
+    standard: @{AnssiC}
+    ruleId: recommendation-98
+    title: Do not assign a fixed address to a pointer
+    statement:
+        Avoid setting a pointer directly to a hard-coded address.
+    rationale:
+        Hard-coded addresses are not portable and bypass the language's
+        knowledge of what lives there.
+    exceptions:
+        Hardware registers on embedded platforms, kept in one documented
+        place.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        uint32_t *cfg = (uint32_t *)0x20001000U;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        extern uint32_t board_config; /* placed by the linker script */
+        uint32_t *cfg = &board_config;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, pointers, portability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=77

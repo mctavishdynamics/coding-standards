@@ -5,15 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp50:
     standard: @{CppCoreGuidelines}
     ruleId: CP.50
-    title: Define a mutex together with the data it guards
+    title: Keep a mutex next to the data it protects
     statement:
-        Declare a mutex next to the data it protects, in the same class or
-        struct, and say what it guards. Where available, use a
-        synchronized_value wrapper that ties the data to its mutex.
+        Put a mutex in the same class or struct as the data it guards and note which
+        members it covers. If your library has a synchronized_value type that
+        bundles the two, use it.
     rationale:
-        It should be obvious to a reader what is guarded and how. Keeping
-        them together makes it less likely that the wrong mutex is locked or
-        that no mutex is locked.
+        The guarded data and its lock should be obvious to anyone reading the code.
+        Keeping them apart invites locking the wrong mutex or skipping the lock.
     exceptions: null
     severity: null
     noncompliant:

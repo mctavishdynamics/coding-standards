@@ -5,30 +5,31 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT21:
     standard: @{CppCoreGuidelines}
     ruleId: T.21
-    title: Require a complete set of operations for a concept
+    title: Make a concept require a whole coherent set of operations
     statement:
-        A concept, and likewise a class, should require a coherent set of
-        operations, such as all of the comparison operators or all of the
-        arithmetic operators, not an odd subset.
+        Have a concept require a complete, coherent group of operations, for
+        instance every comparison operator, and design classes the same way. Avoid
+        picking out an arbitrary few.
     rationale:
-        Complete sets are easier to understand, interoperate better and
-        avoid surprises where equality works but inequality does not.
+        A complete set is easier to understand and to implement, and types that
+        provide it work together better. Partial sets lead to surprises such as a
+        type where less-than compiles but greater-or-equal does not.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
         template<typename T>
-        concept Subtractable = requires(T a, T b) { a - b; };
+        concept Has_less = requires(T a, T b) { a < b; };   // a lone operator
         \\\
         ```
     compliant:
         ```cpp
         \\\
         template<typename T>
-        concept Arithmetic = requires(T a, T b) {
-            a + b; a - b; a * b; a / b;
-            a += b; a -= b; a *= b; a /= b;
+        concept Fully_comparable = requires(const T& a, const T& b) {
+            a == b; a != b;
+            a < b; a > b; a <= b; a >= b;
         };
         \\\
         ```

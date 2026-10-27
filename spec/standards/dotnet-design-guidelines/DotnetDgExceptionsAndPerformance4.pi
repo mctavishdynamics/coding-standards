@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExceptionsAndPerformance4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: exceptions-and-performance-4
+    title: Prefix Try-Parse methods with Try and return bool
+    statement:
+        Name members that follow the Try-Parse pattern with a leading Try
+        and give them a Boolean return value, delivering the result in an
+        out parameter.
+    rationale:
+        The naming and shape tell callers immediately that the method
+        reports failure instead of throwing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Coordinates? ParseOrNull(string text) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static bool TryParse(string text, out Coordinates result) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, exceptions, patterns, naming]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/exceptions-and-performance#try-parse-pattern

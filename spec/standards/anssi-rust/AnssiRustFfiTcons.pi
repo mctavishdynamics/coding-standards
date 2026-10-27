@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiTcons:
+    standard: @{AnssiRust}
+    ruleId: FFI-TCONS
+    title: Keep FFI types consistent on both sides
+    statement:
+        A type shared across the FFI boundary must match on both sides. Even
+        when one side hides details to make it opaque, size and alignment
+        must be identical.
+    rationale:
+        A mismatch in layout makes each side read and write different bytes,
+        which corrupts memory.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        // C side: struct point { int32_t x; int32_t y; };
+        #[repr(C)]
+        pub struct Point { x: i64, y: i64 }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        // C side: struct point { int32_t x; int32_t y; };
+        #[repr(C)]
+        pub struct Point { x: i32, y: i32 }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, ffi, types]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-TCONS

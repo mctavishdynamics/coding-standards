@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12DoWhileLayout:
+    standard: @{Psr12}
+    ruleId: 5.3c
+    title: Put the while of a do loop on the closing brace line
+    statement:
+        In a do while loop, the opening brace ends the do line. After the
+        body, the brace that closes it, one space, and then while with its
+        condition all sit together on a single line.
+    rationale:
+        Joining the condition to the brace shows that it belongs to the loop
+        above it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        do
+        {
+            $page = fetchPage($cursor);
+        }
+        while ($page->hasMore());
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        do {
+            $page = fetchPage($cursor);
+        } while ($page->hasMore());
+        \\\
+        ```
+    languages: [php]
+    tags: [control-structures, loops]
+    source: https://www.php-fig.org/psr/psr-12/#53-while-do-while

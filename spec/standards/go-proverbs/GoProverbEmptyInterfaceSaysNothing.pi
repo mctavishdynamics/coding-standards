@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbEmptyInterfaceSaysNothing:
+    standard: @{GoProverbs}
+    ruleId: interface-says-nothing
+    title: Do not use the empty interface where a real type is known
+    statement:
+        Avoid parameters and fields of the empty interface type, or any,
+        when a concrete type or a small interface can describe what is
+        expected.
+    rationale:
+        A value of the empty interface type tells the reader and the
+        compiler nothing about what it holds, so errors move from compile
+        time to run time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func Sum(values []any) float64 {
+            var total float64
+            for _, v := range values {
+                total += v.(float64)
+            }
+            return total
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func Sum(values []float64) float64 {
+            var total float64
+            for _, v := range values {
+                total += v
+            }
+            return total
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [interfaces, types, type-safety]
+    source: https://go-proverbs.github.io/

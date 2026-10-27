@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiClarityOverBrevity:
+    standard: @{SwiftApiDesign}
+    ruleId: clarity-over-brevity
+    title: Favour clarity over short code
+    statement:
+        Do not aim for the fewest characters. Any compactness should come
+        from the type system and the language removing boilerplate, not from
+        squeezing names.
+    rationale:
+        Terse names save keystrokes once and cost understanding every time
+        the code is read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func cmp(_ a: Ver, _ b: Ver) -> Int
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        func compareVersions(_ lhs: Version, _ rhs: Version) -> ComparisonResult
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, clarity]
+    source: https://www.swift.org/documentation/api-design-guidelines/#clarity-over-brevity

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem88:
+    standard: @{EffectiveJava}
+    ruleId: item-88
+    title: Validate and copy state in readObject as a constructor would
+    statement:
+        Treat readObject like a public constructor. Copy any mutable object
+        references and check all invariants, throwing InvalidObjectException
+        when they fail.
+    rationale:
+        A byte stream can be forged to create objects that break invariants
+        or that share internal state with an attacker.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        private void readObject(ObjectInputStream stream)
+                throws IOException,
+                       ClassNotFoundException {
+            stream.defaultReadObject();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private void readObject(ObjectInputStream stream)
+                throws IOException,
+                       ClassNotFoundException {
+            stream.defaultReadObject();
+            start = new Date(start.getTime());
+            if (start.after(end)) throw new InvalidObjectException("start after end");
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, security]
+    source: https://www.informit.com/store/effective-java-9780134686097

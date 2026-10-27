@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdAlignCaseWithSwitch:
+    standard: @{OpenBsdStyle}
+    ruleId: switch-indentation
+    title: Indent the switch but not its case labels
+    statement:
+        A switch statement takes normal indentation, its case labels get no
+        extra indent beyond the switch, and the statements below each label go
+        one level deeper.
+    rationale:
+        This avoids a double indent for every case body.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        switch (op) {
+                case OP_ADD:
+                        add();
+                        break;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        switch (op) {
+        case OP_ADD:
+                add();
+                break;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, indentation, switch]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

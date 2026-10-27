@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./PowerOfTen import PowerOfTen
+
+export coding-rule PowerOfTenRule8:
+    standard: @{PowerOfTen}
+    ruleId: rule-8
+    title: Keep preprocessor use minimal
+    statement:
+        Use the preprocessor only to include headers and define simple
+        macros. Do not use token pasting, variadic macros or recursive
+        macros, make every macro expand to a complete syntactic unit, and
+        keep conditional compilation beyond include guards rare and
+        justified in the code.
+    rationale:
+        Unrestricted preprocessor code obscures what the program does, for
+        both readers and tools. Each conditional compilation directive can
+        double the number of code versions that must be tested; ten of them
+        allow up to 1024 versions.
+    exceptions:
+        The standard include guard that prevents a header from being
+        included twice is allowed.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define MAKE_GETTER(name) int get_##name(void) { return name; }
+        #define LOG(...) fprintf(stderr, __VA_ARGS__)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define MAX_SENSORS 8
+        #define SQUARE(x) ((x) * (x))
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, macros]
+    source: https://spinroot.com/gerard/pdf/P10.pdf

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule138:
+    standard: @{AnssiC}
+    ruleId: rule-138
+    title: Spell out each function's return type and parameters
+    statement:
+        Declare each function with its return type, using void when it
+        returns nothing, and write void in the parameter list when it takes
+        no parameters.
+    rationale:
+        An empty parameter list in C means unspecified parameters, and a
+        missing return type means int.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        reset();
+        int count_users();
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void reset(void);
+        int count_users(void);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, functions, declarations]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=110

@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT100:
     standard: @{CppCoreGuidelines}
     ruleId: T.100
-    title: Use variadic templates when you need a function that takes a variable number of arguments of a variety of types
+    title: Use a variadic template for a variable number of mixed-type arguments
     statement:
-        For a function that accepts any number of arguments of differing
-        types, use a variadic template rather than C varargs.
+        Write a variadic template when a function must take a varying number of
+        arguments of varying types. Do not use the C ellipsis.
     rationale:
-        Variadic templates are the most general mechanism for this and are
-        both efficient and type safe, while va_arg is unchecked.
+        A parameter pack handles any mix of argument types, keeps full type checking
+        and adds no run-time overhead. With va_arg the compiler checks nothing, and
+        a mismatch is undefined behavior.
     exceptions: null
     severity: null
     noncompliant:

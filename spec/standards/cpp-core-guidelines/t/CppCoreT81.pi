@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT81:
     standard: @{CppCoreGuidelines}
     ruleId: T.81
-    title: Do not mix hierarchies and arrays
+    title: Keep inheritance hierarchies and arrays apart
     statement:
-        Do not pass an array of derived objects where a pointer to the base
-        class is expected. Use a typed container instead.
+        Never pass an array of derived objects to a function that takes a pointer to
+        the base class. Use a typed container or span instead.
     rationale:
-        An array of derived objects decays to a base pointer, and indexing
-        or assigning through it breaks type safety and can step into the
-        middle of objects.
+        The array converts silently to a base pointer. Indexing then steps by the
+        size of the base class and lands inside objects, and assigning through it
+        can put the wrong type into the array.
     exceptions: null
     severity: null
     noncompliant:

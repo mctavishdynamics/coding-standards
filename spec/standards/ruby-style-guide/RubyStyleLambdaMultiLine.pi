@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleLambdaMultiLine:
+    standard: @{RubyStyleGuide}
+    ruleId: lambda-multi-line
+    title: Use the lambda literal for one-line lambdas and lambda for multi-line ones
+    statement:
+        Write single-line lambdas with the arrow literal and multi-line
+        lambdas with the lambda method and a do end block.
+    rationale:
+        Each form is the most readable for its size.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        double = lambda { |n| n * 2 }
+
+        parse = ->(line) do
+          fields = line.split(',')
+          Record.new(*fields)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        double = ->(n) { n * 2 }
+
+        parse = lambda do |line|
+          fields = line.split(',')
+          Record.new(*fields)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [lambdas, blocks]
+    source: https://rubystyle.guide/#lambda-multi-line

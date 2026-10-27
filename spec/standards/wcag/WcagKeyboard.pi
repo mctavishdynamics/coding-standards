@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagKeyboard:
+    standard: @{Wcag22}
+    ruleId: 2.1.1
+    title: Make all functionality work from a keyboard
+    statement:
+        Let users reach every feature from the keyboard alone, and never
+        demand a specific speed or rhythm of key presses. Prefer native
+        controls, or add focus and key handling to custom widgets.
+    rationale:
+        Blind users, many people with motor disabilities and users of switch
+        or voice input depend on keyboard operation.
+    exceptions:
+        Functions that inherently depend on the path of movement, such as
+        freehand drawing, are exempt.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <div class="btn" onclick="saveDraft()">Save draft</div>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <button type="button" onclick="saveDraft()">Save draft</button>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, keyboard, controls]
+    source: https://www.w3.org/TR/WCAG22/#keyboard

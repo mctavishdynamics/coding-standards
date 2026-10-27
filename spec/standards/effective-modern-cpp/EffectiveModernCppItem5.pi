@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem5:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-5
+    title: Let auto name variable types by default
+    statement:
+        Declare variables with auto unless an explicit type makes the code
+        clearer.
+    rationale:
+        auto forces initialisation, avoids mismatched types that silently
+        convert, holds closures directly and survives refactoring.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::unordered_map<std::string, int> m;
+        for (const std::pair<std::string, int>& kv : m) {}   // copies each entry
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::unordered_map<std::string, int> m;
+        for (const auto& kv : m) {}
+        \\\
+        ```
+    languages: [cpp]
+    tags: [auto, auto]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign13:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-13
+    title: Remember that mutable arguments can change after validation
+    statement:
+        A mutable argument may be modified by another thread after you check
+        it. In security-sensitive code, copy it first and then validate and
+        use the copy.
+    rationale:
+        Otherwise an attacker can pass a valid value and swap it out between
+        the check and the use.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Grant(string[] roles)
+        {
+            Validate(roles);
+            Apply(roles);   // roles may have been changed meanwhile
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Grant(string[] roles)
+        {
+            string[] copy = (string[])roles.Clone();
+            Validate(copy);
+            Apply(copy);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, parameters, security]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#validating-arguments

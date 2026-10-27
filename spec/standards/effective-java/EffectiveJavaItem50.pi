@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem50:
+    standard: @{EffectiveJava}
+    ruleId: item-50
+    title: Copy mutable inputs and outputs defensively
+    statement:
+        When a class keeps mutable objects passed in by callers, or returns
+        its own mutable components, copy them so outside code cannot change
+        its internal state. Copy before validating.
+    rationale:
+        Clients may be careless or hostile. Without copies they can break a
+        class's invariants after construction.
+    exceptions:
+        Copies can be skipped when the class trusts its callers and
+        documents that they must not modify the objects.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public Meeting(Date start) {
+            this.start = start;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public Meeting(Date start) {
+            this.start = new Date(start.getTime());
+        }
+
+        public Date start() { return new Date(start.getTime()); }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods, immutability, security]
+    source: https://www.informit.com/store/effective-java-9780134686097

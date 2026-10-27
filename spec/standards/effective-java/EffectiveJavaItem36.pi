@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem36:
+    standard: @{EffectiveJava}
+    ruleId: item-36
+    title: Use EnumSet in place of bit flags
+    statement:
+        When you need a set of enum values, such as a group of options, use
+        EnumSet instead of combining int constants with bitwise or.
+    rationale:
+        EnumSet is as compact and fast as a bit field but is type safe and
+        readable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        static final int BOLD = 1, ITALIC = 2;
+        text.applyStyles(BOLD | ITALIC);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        enum Style { BOLD, ITALIC }
+        text.applyStyles(EnumSet.of(Style.BOLD, Style.ITALIC));
+        \\\
+        ```
+    languages: [java]
+    tags: [enums-and-annotations, enums, collections]
+    source: https://www.informit.com/store/effective-java-9780134686097

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern12:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-12
+    title: Avoid finalizable types
+    statement:
+        Add a finalizer only after careful thought; wrap unmanaged resources
+        in SafeHandle or similar instead.
+    rationale:
+        Finalizers slow allocation and collection and add complexity, while
+        resource wrappers handle their own cleanup.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class Mapping
+        {
+            private IntPtr _handle;
+            ~Mapping() => CloseHandle(_handle);
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class Mapping : IDisposable
+        {
+            private readonly SafeFileHandle _handle;
+            public void Dispose() => _handle.Dispose();
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, dispose, resources, finalizers]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern#finalizable-types

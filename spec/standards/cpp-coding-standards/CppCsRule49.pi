@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule49:
+    standard: @{CppCodingStandards}
+    ruleId: rule-49
+    title: Avoid virtual dispatch while an object is being built or destroyed
+    statement:
+        Constructors and destructors should not call virtual functions. When
+        derived classes must contribute behaviour during setup, route it
+        through a factory or a separate initialisation step.
+    rationale:
+        While the base is being built or destroyed the derived part does not
+        exist, so the base version runs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Plugin::Plugin() { registerHooks(); }   // virtual, calls base version
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T>
+        std::unique_ptr<T> makePlugin() {
+            auto p = std::make_unique<T>();
+            p->registerHooks();
+            return p;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [construction-destruction-copying, constructors, inheritance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

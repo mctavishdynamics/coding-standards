@@ -5,15 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs104:
     standard: @{CppCoreGuidelines}
     ruleId: ES.104
-    title: Don't underflow
+    title: Keep values from wrapping below the type's minimum
     statement:
-        Make sure values are not decremented below the minimum their type
-        can hold.
+        Ensure that decrements and subtractions never take a value under the
+        smallest number its type can represent.
     rationale:
-        Going below a minimum value can lead to memory corruption and
-        undefined behavior.
+        Going below the minimum is undefined for signed integers and wraps
+        for unsigned ones. If that value is then used as an index or a
+        length, memory can be corrupted.
     exceptions:
-        Use unsigned types when you really want modular arithmetic.
+        Deliberate wraparound on unsigned types is the one accepted use.
     severity: null
     noncompliant:
         ```cpp

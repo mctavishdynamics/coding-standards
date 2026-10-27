@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleInfiniteLoop:
+    standard: @{RubyStyleGuide}
+    ruleId: infinite-loop
+    title: Use Kernel#loop for infinite loops
+    statement:
+        Write an endless loop with loop and a block instead of while true or
+        until false.
+    rationale:
+        The intent of loop is obvious, and it ends cleanly when a
+        StopIteration is raised inside it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        while true
+          handle(socket.accept)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        loop do
+          handle(socket.accept)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, loops]
+    source: https://rubystyle.guide/#infinite-loop

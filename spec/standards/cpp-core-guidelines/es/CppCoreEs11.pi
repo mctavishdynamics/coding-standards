@@ -5,16 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs11:
     standard: @{CppCoreGuidelines}
     ruleId: ES.11
-    title: Use auto to avoid redundant repetition of type names
+    title: Let auto stand in for a type already spelled out nearby
     statement:
-        Declare a variable with auto when its type is already stated or
-        obvious in the initializer.
+        When the initializer already makes the type plain, declare the
+        variable with auto instead of writing the type again.
     rationale:
-        Repeating a long type is tedious and error-prone, and auto puts the
-        declared name in a fixed place, which helps reading.
+        Writing a long type twice is tiresome and can introduce mismatches.
+        With auto, the variable name always sits in the same spot, which
+        makes declarations easier to scan.
     exceptions:
-        Avoid auto with initializer lists and where you know exactly which
-        type you want and the initializer might need a conversion.
+        Write the type explicitly when the initializer is a braced list, or
+        when you need a particular type that differs from what the
+        initializer would deduce.
     severity: null
     noncompliant:
         ```cpp

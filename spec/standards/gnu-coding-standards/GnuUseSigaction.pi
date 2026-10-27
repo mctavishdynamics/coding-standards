@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuUseSigaction:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-signals
+    title: Use sigaction or BSD-style signal handling
+    statement:
+        Prefer POSIX sigaction, or the BSD semantics of signal, over the
+        older System V signal interface.
+    rationale:
+        The System V interface resets handlers and is an inferior design;
+        sigaction behaves the same everywhere.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        signal (SIGINT, on_interrupt);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct sigaction sa = { .sa_handler = on_interrupt };
+        sigemptyset (&sa.sa_mask);
+        sigaction (SIGINT, &sa, NULL);
+        \\\
+        ```
+    languages: [c]
+    tags: [signals, portability]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

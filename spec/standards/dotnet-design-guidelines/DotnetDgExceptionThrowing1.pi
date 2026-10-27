@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExceptionThrowing1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: exception-throwing-1
+    title: Report errors without status codes
+    statement:
+        Report errors with exceptions instead of returning status or error
+        codes.
+    rationale:
+        Exceptions are the standard error mechanism in .NET and cannot be
+        silently ignored the way return codes can.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public int SaveDocument(Document document)
+        {
+            if (!_disk.HasSpace) return -2;
+            /* ... */
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void SaveDocument(Document document)
+        {
+            if (!_disk.HasSpace) throw new IOException("Not enough disk space.");
+            /* ... */
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, exceptions, error-handling]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/exception-throwing

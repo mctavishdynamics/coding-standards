@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartUpperCamelCaseExtensions:
+    standard: @{EffectiveDart}
+    ruleId: do-name-extensions-using-uppercamelcase
+    title: Write extension names in UpperCamelCase
+    statement:
+        Name an extension the way you name a type: each word capitalized,
+        the first included, with no separators. The camel_case_extensions
+        lint checks this.
+    rationale:
+        Extensions sit beside types in declarations and imports, so the same
+        casing keeps them consistent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        extension string_padding on String {
+          String padBoth(int width) => padLeft(width).padRight(width);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        extension StringPadding on String {
+          String padBoth(int width) => padLeft(width).padRight(width);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, naming, extensions]
+    source: https://dart.dev/effective-dart/style#do-name-extensions-using-uppercamelcase

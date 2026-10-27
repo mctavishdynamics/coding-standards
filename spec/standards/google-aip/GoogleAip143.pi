@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip143:
+    standard: @{GoogleAip}
+    ruleId: AIP-143
+    title: Use standard codes for languages, regions, currencies and media types
+    statement:
+        Represent standardized concepts with their standard codes, usually
+        as strings rather than enums. Use BCP-47 in language_code, CLDR
+        region codes in region_code, ISO-4217 in currency_code, IANA media
+        types in mime_type, IANA time zones in time_zone and ISO-8601
+        offsets in utc_offset.
+    rationale:
+        Standard codes avoid many spellings of the same concept and work
+        across APIs without lookup tables. Region codes rather than country
+        codes avoid disputes about sovereignty.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Price {
+          Currency currency = 1;  // Custom enum
+          string country = 2;     // "United States"
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Price {
+          string currency_code = 1;  // "EUR"
+          string region_code = 2;    // "DE"
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [fields, internationalization]
+    source: https://google.aip.dev/143

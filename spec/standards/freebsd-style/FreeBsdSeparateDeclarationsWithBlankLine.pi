@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdSeparateDeclarationsWithBlankLine:
+    standard: @{FreeBsdStyle}
+    ruleId: blank-line-after-declarations
+    title: Put one blank line between local declarations and code
+    statement:
+        Follow local variable declarations with exactly one blank line
+        before the first statement. A function without locals starts
+        directly with a statement; remove old blank lines there when making
+        significant changes.
+    rationale:
+        The blank line marks where declarations end, and an empty one at the
+        top of a body adds nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static void
+        usage(void)
+        {
+
+                fprintf(stderr, "usage: ...\n");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static void
+        usage(void)
+        {
+                fprintf(stderr, "usage: ...\n");
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, declarations]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

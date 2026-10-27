@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando136:
+    standard: @{ZalandoApi}
+    ruleId: 136
+    title: Use normalized paths
+    statement:
+        Do not define paths with duplicate or trailing slashes, and do not
+        use path parameters with empty values. Services should normalize
+        incoming paths, or at least serve the normalized form and reject the
+        others.
+    rationale:
+        Paths with stray slashes have no clear meaning and different proxies
+        and frameworks treat them differently, which leads to surprising
+        routing and monitoring results.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /customers//addresses
+        GET /customers/
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /customers/8812/addresses
+        GET /customers
+        \\\
+        ```
+    languages: [any]
+    tags: [must, urls]
+    source: https://opensource.zalando.com/restful-api-guidelines/#136

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPortability11:
+    standard: @{PracticeOfProgramming}
+    ruleId: portability-11
+    title: Fix the byte order of binary data
+    statement:
+        When binary data must be exchanged, write and read it in one defined
+        byte order, byte by byte.
+    rationale:
+        Machines differ in byte order, so dumping memory directly makes
+        files unreadable elsewhere.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fwrite(&value, sizeof value, 1, fp);   /* host byte order */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* write a 32-bit value most significant byte first */
+        putc((value >> 24) & 0xFF, fp);
+        putc((value >> 16) & 0xFF, fp);
+        putc((value >> 8) & 0xFF, fp);
+        putc(value & 0xFF, fp);
+        \\\
+        ```
+    languages: [any]
+    tags: [portability, byte-order]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

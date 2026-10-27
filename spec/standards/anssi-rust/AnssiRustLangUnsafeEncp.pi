@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangUnsafeEncp:
+    standard: @{AnssiRust}
+    ruleId: LANG-UNSAFE-ENCP
+    title: Encapsulate unsafe code behind a sound interface
+    statement:
+        Wrap all unsafe code in a crate or module so that either no safe use
+        of its API can cause undefined behaviour, or the functions are
+        marked unsafe and their preconditions are fully documented.
+    rationale:
+        Callers can only rely on safety if the boundary is sound; otherwise
+        safe code elsewhere can trigger undefined behaviour without any
+        unsafe of its own.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub fn byte_at(buf: &[u8], i: usize) -> u8 {
+            unsafe { *buf.get_unchecked(i) }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        /// # Safety
+        /// `i` must be less than `buf.len()`.
+        pub unsafe fn byte_at_unchecked(buf: &[u8], i: usize) -> u8 {
+            unsafe { *buf.get_unchecked(i) }
+        }
+
+        pub fn byte_at(buf: &[u8], i: usize) -> Option<u8> {
+            buf.get(i).copied()
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, unsafe, encapsulation]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/generalities.html#LANG-UNSAFE-ENCP

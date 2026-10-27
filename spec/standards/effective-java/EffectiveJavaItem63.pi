@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem63:
+    standard: @{EffectiveJava}
+    ruleId: item-63
+    title: Do not build large strings by repeated concatenation
+    statement:
+        Avoid using the plus operator in a loop to grow a string. Use a
+        StringBuilder or a joining collector.
+    rationale:
+        Strings are immutable, so each concatenation copies everything built
+        so far and the cost grows quadratically.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String csv = "";
+        for (String field : fields) csv += field + ",";
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        StringBuilder csv = new StringBuilder();
+        for (String field : fields) csv.append(field).append(',');
+        \\\
+        ```
+    languages: [java]
+    tags: [general-programming, strings, performance]
+    source: https://www.informit.com/store/effective-java-9780134686097

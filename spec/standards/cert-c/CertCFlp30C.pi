@@ -19,20 +19,24 @@ export coding-rule CertCFlp30C:
     noncompliant:
         ```c
         \\\
-        void sample(void (*emit)(float)) {
-            for (float x = 0.1f; x <= 1.0f; x += 0.1f) {
-                emit(x);
+        double total_dose(double rate) {
+            double sum = 0.0;
+            for (double t = 0.0; t != 2.0; t += 0.2) {
+                sum += rate * t;
             }
+            return sum;
         }
         \\\
         ```
     compliant:
         ```c
         \\\
-        void sample(void (*emit)(float)) {
-            for (int i = 1; i <= 10; i++) {
-                emit(i / 10.0f);
+        double total_dose(double rate) {
+            double sum = 0.0;
+            for (int step = 0; step < 10; step++) {
+                sum += rate * (step * 0.2);
             }
+            return sum;
         }
         \\\
         ```

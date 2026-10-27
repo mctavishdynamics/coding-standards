@@ -25,11 +25,11 @@ export coding-rule CertJavaLck00J:
     noncompliant:
         ```java
         \\\
-        public class Account {
-            private long balance;
+        public class Thermostat {
+            private int target;
 
-            public synchronized void deposit(long amount) {
-                balance += amount;
+            public synchronized void setTarget(int degrees) {
+                target = degrees;
             }
         }
         \\\
@@ -37,13 +37,13 @@ export coding-rule CertJavaLck00J:
     compliant:
         ```java
         \\\
-        public class Account {
-            private final Object lock = new Object();
-            private long balance;
+        public class Thermostat {
+            private final Object targetGuard = new Object();
+            private int target;
 
-            public void deposit(long amount) {
-                synchronized (lock) {
-                    balance += amount;
+            public void setTarget(int degrees) {
+                synchronized (targetGuard) {
+                    target = degrees;
                 }
             }
         }

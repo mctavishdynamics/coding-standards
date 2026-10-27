@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem35:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-35
+    title: Launch work as async tasks rather than raw threads
+    statement:
+        Run asynchronous work with std::async and futures rather than
+        creating std::thread objects, unless you need low-level control.
+    rationale:
+        Tasks return results and exceptions and let the library manage
+        thread exhaustion and oversubscription.
+    exceptions:
+        Use threads directly when you need the native handle, specialised
+        tuning or a thread pool of your own.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int result;
+        std::thread t([&] { result = analyse(); });
+        t.join();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto fut = std::async(analyse);
+        int result = fut.get();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [the-concurrency-api, concurrency]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

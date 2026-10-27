@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgUsingStandardExceptionTypes8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: using-standard-exception-types-8
+    title: Use value as the parameter name for property setters
+    statement:
+        When a property setter throws an argument exception, give value as
+        the parameter name.
+    rationale:
+        value is the name of the implicit setter parameter, so it is what
+        the caller can relate to.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        set { if (value < 0) throw new ArgumentOutOfRangeException(nameof(Volume)); _volume = value; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        set { if (value < 0) throw new ArgumentOutOfRangeException(nameof(value)); _volume = value; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, exceptions, properties, validation]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/using-standard-exception-types#argumentexception-argumentnullexception-and-argumentoutofrangeexception

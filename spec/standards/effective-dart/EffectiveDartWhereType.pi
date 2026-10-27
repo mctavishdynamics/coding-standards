@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartWhereType:
+    standard: @{EffectiveDart}
+    ruleId: do-use-wheretype-to-filter-a-collection-by-type
+    title: Filter a collection by type with whereType
+    statement:
+        Call `whereType<T>()` to keep only elements of a given type, instead
+        of `where` with an `is` test, with or without `cast`. Linter rule:
+        prefer_iterable_whereType.
+    rationale:
+        `where` keeps the original element type, and adding `cast` creates
+        extra wrappers and checks. `whereType` is short and yields the right
+        type directly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final shapes = <Object>[Circle(1), 'label', Square(2)];
+        final circles = shapes.where((s) => s is Circle).cast<Circle>();
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final shapes = <Object>[Circle(1), 'label', Square(2)];
+        final circles = shapes.whereType<Circle>();
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, collections, types]
+    source: https://dart.dev/effective-dart/usage#do-use-wheretype-to-filter-a-collection-by-type

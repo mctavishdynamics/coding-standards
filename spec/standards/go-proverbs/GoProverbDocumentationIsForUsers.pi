@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbDocumentationIsForUsers:
+    standard: @{GoProverbs}
+    ruleId: documentation-is-for-users
+    title: Write documentation for the people who use the code
+    statement:
+        Aim doc comments at callers. Explain the purpose of the function and
+        the way to call it, and leave its internals out.
+    rationale:
+        Users read documentation to decide how to call something;
+        implementation notes belong in comments inside the code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Parse loops over the bytes with a state machine and a stack.
+        func Parse(src []byte) (*Doc, error)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Parse reads a document from src. It returns an error that
+        // describes the first syntax problem it finds.
+        func Parse(src []byte) (*Doc, error)
+        \\\
+        ```
+    languages: [go]
+    tags: [documentation, comments]
+    source: https://go-proverbs.github.io/

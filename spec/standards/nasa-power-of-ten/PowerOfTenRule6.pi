@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./PowerOfTen import PowerOfTen
+
+export coding-rule PowerOfTenRule6:
+    standard: @{PowerOfTen}
+    ruleId: rule-6
+    title: Keep variables in the narrowest scope
+    statement:
+        Declare every variable in the innermost scope where it is needed,
+        not at file or function level when a block would do.
+    rationale:
+        An object that is out of scope cannot be read or corrupted, and
+        fewer statements that can assign it make a bad value easier to
+        trace. It also discourages reusing one variable for unrelated
+        purposes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static int i;
+
+        void clear_table(int *table, int n) {
+            for (i = 0; i < n; i++) {
+                table[i] = 0;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void clear_table(int *table, int n) {
+            for (int i = 0; i < n; i++) {
+                table[i] = 0;
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [scope, data-hiding]
+    source: https://spinroot.com/gerard/pdf/P10.pdf

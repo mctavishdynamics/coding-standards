@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV12x3x2:
+    standard: @{OwaspAsvs}
+    ruleId: V12.3.2
+    title: Validate server certificates in TLS clients
+    statement:
+        Make TLS clients check the certificate presented by the server
+        before sending any data.
+    rationale:
+        Skipping validation lets anyone intercept the connection with a fake
+        certificate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        response = requests.get(PARTNER_URL, verify=False)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        response = requests.get(PARTNER_URL, verify=PARTNER_CA_BUNDLE)
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, tls, certificates]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x21-V12-Secure-Communication.md#v123-general-service-to-service-communication-security

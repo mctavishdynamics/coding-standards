@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagMeaningfulSequence:
+    standard: @{Wcag22}
+    ruleId: 1.3.2
+    title: Keep the source order consistent with the reading order
+    statement:
+        When the order of content affects its meaning, make sure the correct
+        reading order can be determined from the code, typically by keeping
+        the DOM order logical.
+    rationale:
+        Screen readers follow the DOM order, so content rearranged only with
+        CSS can be read in a confusing sequence.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <div class="steps" style="display:flex; flex-direction:row-reverse">
+          <p>Step 2: Confirm your email</p>
+          <p>Step 1: Create an account</p>
+        </div>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <ol class="steps">
+          <li>Create an account</li>
+          <li>Confirm your email</li>
+        </ol>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, structure, reading-order]
+    source: https://www.w3.org/TR/WCAG22/#meaningful-sequence

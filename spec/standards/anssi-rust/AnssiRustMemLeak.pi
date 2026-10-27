@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustMemLeak:
+    standard: @{AnssiRust}
+    ruleId: MEM-LEAK
+    title: Do not leak values with Box::leak
+    statement:
+        Do not leak memory or other resources, in particular through
+        the Box::leak function or similar leak functions.
+    rationale:
+        A leaked value is never freed and its destructor never runs, so the
+        resource stays held for the rest of the program.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        fn make_name(s: String) -> &'static str {
+            Box::leak(s.into_boxed_str())
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        fn make_name(s: String) -> std::sync::Arc<str> {
+            std::sync::Arc::from(s)
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, memory, resource-management]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/memory.html#MEM-LEAK

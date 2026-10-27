@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern11:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-11
+    title: Consider a Close method where close is the usual term
+    statement:
+        If close is the familiar word in the domain, offer Close in addition
+        to Dispose, make it behave exactly the same, and think about
+        implementing Dispose explicitly.
+    rationale:
+        Users of files and connections expect to close them, and identical
+        behavior avoids confusion.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class Session : IDisposable
+        {
+            public void Close() { Dispose(true); GC.SuppressFinalize(this); }
+            void IDisposable.Dispose() => Close();
+            protected virtual void Dispose(bool disposing) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, dispose, resources]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern#basic-dispose-pattern

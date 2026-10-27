@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem20:
+    standard: @{EffectiveJava}
+    ruleId: item-20
+    title: Define types with interfaces rather than abstract classes
+    statement:
+        Use interfaces to declare types that several implementations may
+        share, and pair them with a skeletal abstract implementation or
+        default methods when that helps implementors.
+    rationale:
+        A class can implement many interfaces but extend only one class, so
+        interfaces are easier to retrofit and allow mixins.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public abstract class Shape {
+            public abstract double area();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public interface Shape {
+            double area();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [classes-and-interfaces, interfaces, api-design]
+    source: https://www.informit.com/store/effective-java-9780134686097

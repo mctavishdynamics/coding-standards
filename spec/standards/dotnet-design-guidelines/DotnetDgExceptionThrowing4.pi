@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExceptionThrowing4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: exception-throwing-4
+    title: Keep exceptions out of ordinary program logic
+    statement:
+        Design APIs so callers can avoid exceptions in ordinary situations,
+        for example with a tester method that checks a precondition or a Try
+        method that returns a Boolean.
+    rationale:
+        Exceptions are slow and make normal logic hard to follow when used
+        as branches.
+    exceptions:
+        System failures and operations subject to race conditions may still
+        throw.
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        try { quantity = int.Parse(input); }
+        catch (FormatException) { quantity = 1; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        if (!int.TryParse(input, out quantity)) quantity = 1;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, exceptions, control-flow, performance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/exception-throwing

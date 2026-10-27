@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiDescribeWhatSubscriptAccesses:
+    standard: @{SwiftApiDesign}
+    ruleId: describe-what-subscript-accesses
+    title: Summarise what a subscript accesses
+    statement:
+        Begin the summary of a subscript by saying what it accesses.
+    rationale:
+        A subscript is an access path, so naming what it reaches is the most
+        useful description.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        /// Subscript taking a row and column.
+        subscript(row: Int, column: Int) -> Cell { get set }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// Accesses the cell at `row` and `column`.
+        subscript(row: Int, column: Int) -> Cell { get set }
+        \\\
+        ```
+    languages: [swift]
+    tags: [documentation]
+    source: https://www.swift.org/documentation/api-design-guidelines/#write-doc-comment

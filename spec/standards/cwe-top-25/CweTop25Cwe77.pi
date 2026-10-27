@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe77:
+    standard: @{CweTop25}
+    ruleId: CWE-77
+    title: Prevent command injection
+    statement:
+        Prefer library calls to external commands. When a command is needed,
+        build it statically, pass input only as separate arguments, validate
+        those arguments against an allow list, and use run-time policy and
+        file permissions to limit what the command can do.
+    rationale:
+        Input that reaches a command interpreter can change the command
+        itself and run arbitrary actions on the host. It is ranked 23 of 25
+        in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const { exec } = require("child_process");
+        exec(`convert ${upload} -resize 200x200 thumb.png`);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const { execFile } = require("child_process");
+        execFile("convert", [upload, "-resize", "200x200", "thumb.png"]);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [rank-23, injection, command]
+    source: https://cwe.mitre.org/data/definitions/77.html

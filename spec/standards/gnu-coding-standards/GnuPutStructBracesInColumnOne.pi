@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuPutStructBracesInColumnOne:
+    standard: @{GnuCodingStandards}
+    ruleId: formatting-struct-braces
+    title: Put struct and enum braces in column one unless it fits on one line
+    statement:
+        For struct and enum definitions, place the braces at the start of
+        their own lines, unless the whole body fits on a single line.
+    rationale:
+        This matches the function layout and lets tools treat the definition
+        as a top-level unit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct span {
+          size_t start;
+          size_t end;
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct span
+        {
+          size_t start;
+          size_t end;
+        };
+
+        struct pair { int a, b; };
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, braces, types]
+    source: https://www.gnu.org/prep/standards/standards.html#Formatting

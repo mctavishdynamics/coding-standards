@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem33:
+    standard: @{EffectiveJava}
+    ruleId: item-33
+    title: Key a container by type to hold values of many types safely
+    statement:
+        When a container must hold values of different types, use a Class
+        object as the key and cast values with Class.cast, so each key fixes
+        the type of its value.
+    rationale:
+        This gives a type-safe map from types to values that the compiler
+        and runtime both check, instead of an untyped map of Object.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Map<String, Object> prefs = new HashMap<>();
+        Integer size = (Integer) prefs.get("size");
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private final Map<Class<?>, Object> values = new HashMap<>();
+
+        public <T> void put(Class<T> type, T value) { values.put(type, type.cast(value)); }
+        public <T> T get(Class<T> type) { return type.cast(values.get(type)); }
+        \\\
+        ```
+    languages: [java]
+    tags: [generics, type-safety, collections]
+    source: https://www.informit.com/store/effective-java-9780134686097

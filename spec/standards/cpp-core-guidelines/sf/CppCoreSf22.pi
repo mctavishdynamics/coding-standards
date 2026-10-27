@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSf22:
     standard: @{CppCoreGuidelines}
     ruleId: SF.22
-    title: Use an unnamed (anonymous) namespace for all internal/non-exported entities
+    title: Put internal names of a source file in an unnamed namespace
     statement:
-        In an implementation file, put every helper that is not part of the
-        exported interface in an unnamed namespace, rather than marking it
-        static or leaving it global.
+        Wrap the helpers of a source file that are not part of its public interface
+        in an unnamed namespace. Prefer this to static functions or leaving them at
+        namespace scope.
     rationale:
-        Nothing outside the file can depend on entities in an unnamed
-        namespace, which keeps them truly internal.
+        Entities in an unnamed namespace cannot be referred to from any other file,
+        so no outside code can come to depend on them.
     exceptions: null
     severity: null
     noncompliant:

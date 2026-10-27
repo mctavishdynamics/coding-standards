@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoNullDefault:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-an-explicit-default-value-of-null
+    title: Do not write null as a parameter default
+    statement:
+        Omit the default value of an optional nullable parameter instead of
+        writing `= null`. The avoid_init_to_null lint checks this.
+    rationale:
+        An optional nullable parameter with no default already defaults to
+        null.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        void log(String message, [String? tag = null]) {}
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        void log(String message, [String? tag]) {}
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, null-safety, parameters]
+    source: https://dart.dev/effective-dart/usage#dont-use-an-explicit-default-value-of-null

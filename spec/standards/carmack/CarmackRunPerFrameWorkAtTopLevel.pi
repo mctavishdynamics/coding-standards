@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackRunPerFrameWorkAtTopLevel:
+    standard: @{Carmack}
+    ruleId: run-per-frame-work-at-top-level
+    title: Put work that happens every frame in the outermost loop
+    statement:
+        When something must happen once per frame, call it from the top of
+        the frame loop rather than from deep inside a chain of subsystem
+        calls.
+    rationale:
+        Work buried in nested calls can be skipped by accident or run in the
+        wrong order, which adds hidden frames of latency.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Server::Frame() {
+            if (clientsConnected) {
+                BuildUserCommands();   // input sampled only here
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Common::Frame() {
+            BuildUserCommands();
+            server.Frame();
+            renderer.Frame();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [control-flow, latency, game-loop]
+    source: http://number-none.com/blow/john_carmack_on_inlined_code.html

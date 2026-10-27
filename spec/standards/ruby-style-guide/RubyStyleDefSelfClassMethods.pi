@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleDefSelfClassMethods:
+    standard: @{RubyStyleGuide}
+    ruleId: def-self-class-methods
+    title: Define class methods with def self
+    statement:
+        Define class methods as def self.name rather than repeating the
+        class name.
+    rationale:
+        Not repeating the class name makes renaming and moving the code
+        easier.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Report
+          def Report.generate = new.build
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Report
+          def self.generate = new.build
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, methods]
+    source: https://rubystyle.guide/#def-self-class-methods

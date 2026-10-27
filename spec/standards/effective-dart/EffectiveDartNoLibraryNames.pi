@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoLibraryNames:
+    standard: @{EffectiveDart}
+    ruleId: dont-explicitly-name-libraries
+    title: Do not give the library directive a name
+    statement:
+        Write a bare `library;` directive, if you need one at all, instead
+        of adding a name after `library`.
+    rationale:
+        Named libraries are a legacy feature. A name replaces the URI Dart
+        derives from the file path, which makes it harder for tools to find
+        the library's main file.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        library shop.checkout.cart;
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Shopping cart state and totals.
+        library;
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, libraries, naming]
+    source: https://dart.dev/effective-dart/style#dont-explicitly-name-libraries

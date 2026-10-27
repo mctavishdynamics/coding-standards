@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuHandleOutOfMemoryByContext:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-malloc-failure
+    title: Make allocation failure fatal, or abort only the command if interactive
+    statement:
+        In a non-interactive program, treat running out of memory as a fatal
+        error. An interactive program should instead give up on the command
+        in progress and go back to waiting for the next one.
+    rationale:
+        An interactive user can free memory elsewhere and retry, while a
+        batch program has no sensible way to continue.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* Interactive shell: one big command kills the session. */
+        if ((buf = malloc (n)) == NULL)
+          exit (EXIT_FAILURE);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if ((buf = malloc (n)) == NULL)
+          {
+            report ("memory exhausted");
+            longjmp (command_loop, 1);
+          }
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, error-handling]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

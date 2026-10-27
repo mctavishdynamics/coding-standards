@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiInputPtr:
+    standard: @{AnssiRust}
+    ruleId: FFI-INPUT-PTR
+    title: Receive foreign pointers as raw pointers
+    statement:
+        Represent pointers coming from foreign code as Rust raw pointers
+        rather than references.
+    rationale:
+        A reference promises non-null, aligned and valid data, which foreign
+        code cannot guarantee; a raw pointer makes the needed checks
+        explicit.
+    exceptions:
+        Rust references that are opaque to the foreign side and only used
+        from Rust, Option-wrapped references, and references bound to safe
+        references in the foreign language.
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub extern "C" fn sum(values: &[i32; 4]) -> i32 { values.iter().sum() }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub unsafe extern "C" fn sum(values: *const [i32; 4]) -> i32 {
+            match unsafe { values.as_ref() } {
+                Some(v) => v.iter().sum(),
+                None => 0,
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [recommendation, ffi, pointers]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-INPUT-PTR

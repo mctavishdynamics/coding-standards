@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbCgoBuildTags:
+    standard: @{GoProverbs}
+    ruleId: cgo-must-always-be-guarded-with-build-tags
+    title: Guard cgo code with build constraints
+    statement:
+        Place files that import C behind build constraints, and provide a
+        fallback where the package must also build without cgo.
+    rationale:
+        cgo depends on a C toolchain and platform libraries that are not
+        always present, for example when cross-compiling or when cgo is
+        disabled.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package clock
+
+        // #include <time.h>
+        import "C"
+
+        func Ticks() int64 { return int64(C.clock()) }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        //go:build cgo
+
+        package clock
+
+        // #include <time.h>
+        import "C"
+
+        func Ticks() int64 { return int64(C.clock()) }
+        \\\
+        ```
+    languages: [go]
+    tags: [cgo, portability, build]
+    source: https://go-proverbs.github.io/

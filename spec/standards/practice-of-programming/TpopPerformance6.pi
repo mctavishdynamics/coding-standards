@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance6:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-6
+    title: Let the optimizer run on release builds
+    statement:
+        Build production code with the compiler's optimizer enabled before
+        trying manual speedups.
+    rationale:
+        The optimizer often gives large gains for free.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```sh
+        \\\
+        cc -o prog prog.c
+        \\\
+        ```
+    compliant:
+        ```sh
+        \\\
+        cc -O2 -o prog prog.c
+        \\\
+        ```
+    languages: [any]
+    tags: [performance, compilers]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

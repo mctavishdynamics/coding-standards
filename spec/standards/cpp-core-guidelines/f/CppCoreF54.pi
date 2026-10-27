@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF54:
     standard: @{CppCoreGuidelines}
     ruleId: F.54
-    title: When a lambda captures this or a data member, do not use [=] default capture
+    title: Capture this explicitly instead of relying on a value default capture
     statement:
-        In member functions, list captures explicitly, writing this when you
-        mean to capture it, instead of relying on the [=] default. To copy
-        the whole object, capture *this.
+        Inside a member function, name the captures, and write this explicitly
+        when you mean it. Do not rely on the value default capture. Capture
+        *this if the lambda needs its own copy of the object.
     rationale:
-        The [=] default looks like capture by value, but data members are
-        reached through the captured this pointer, so they are in effect
-        captured by reference.
+        The value default looks as if it copies everything. In fact members are
+        reached through a copied this pointer, so they behave as if captured by
+        reference.
     exceptions: null
     severity: null
     noncompliant:

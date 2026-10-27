@@ -5,47 +5,45 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT3:
     standard: @{CppCoreGuidelines}
     ruleId: T.3
-    title: Use templates to express containers and ranges
+    title: Write containers and ranges as templates
     statement:
-        Make the element type of a container or range a template parameter
-        rather than storing untyped void pointers and element sizes.
+        Express the element type of a container or range as a template parameter. Do
+        not store untyped void pointers together with an element size.
     rationale:
-        A typed container is general, reusable and type safe, and it lets
-        the type system and optimizer see the structure of the program.
-        Void-pointer containers hide intent and need casts at every use.
+        A typed container is general, reusable and type safe, and it lets the
+        compiler check and optimize uses. A container of void pointers hides what it
+        holds and forces a cast at every access.
     exceptions:
-        An ABI-stable interface may need a non-template base implementation
-        with a type-safe template layered over it.
+        Where a stable ABI is required, it can make sense to put a non-template
+        implementation underneath and layer a type-safe template interface over it.
     severity: null
     noncompliant:
         ```cpp
         \\\
-        class Buffer {
+        class Queue {
         public:
-            Buffer(int n, int elem_size);
-            void* data;
-            int size;
+            void push(void* item);
+            void* pop();
         };
 
-        Buffer b(16, sizeof(float));
-        static_cast<float*>(b.data)[3] = 1.5f;
+        Queue q;
+        q.push(new Order{42});
+        auto* o = static_cast<Order*>(q.pop());   // cast on every use
         \\\
         ```
     compliant:
         ```cpp
         \\\
         template<typename T>
-        class Buffer {
+        class Queue {
         public:
-            explicit Buffer(int n);
-            T& operator[](int i);
-        private:
-            T* data;
-            int size;
+            void push(T item);
+            T pop();
         };
 
-        Buffer<float> b(16);
-        b[3] = 1.5f;
+        Queue<Order> q;
+        q.push(Order{42});
+        Order o = q.pop();
         \\\
         ```
     languages: [cpp]

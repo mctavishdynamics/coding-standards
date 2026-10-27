@@ -5,14 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC181:
     standard: @{CppCoreGuidelines}
     ruleId: C.181
-    title: Avoid naked unions
+    title: Wrap every union together with the tag that says what it holds
     statement:
-        Do not use a union without something that records which member it
-        currently holds. Wrap it in a class with a type field, or use the
-        standard variant type.
+        Never use a bare union. Keep a tag next to it that records which member
+        is active, inside a class, or use std::variant.
     rationale:
-        With a naked union the programmer must track the active member,
-        which is a source of type errors.
+        With a bare union the programmer alone must remember which member is
+        live. Getting that wrong produces type errors.
     exceptions: null
     severity: null
     noncompliant:

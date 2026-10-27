@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV8x2x2:
+    standard: @{OwaspAsvs}
+    ruleId: V8.2.2
+    title: Restrict data access to explicitly permitted consumers
+    statement:
+        Check, for each data item requested, that the consumer has explicit
+        permission for that specific item.
+    rationale:
+        Without per-object checks, changing an id in a request exposes other
+        users' data, known as IDOR or BOLA.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def get_invoice(request, invoice_id):
+            return Invoice.objects.get(id=invoice_id)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def get_invoice(request, invoice_id):
+            return Invoice.objects.get(id=invoice_id, owner=request.user)
+        \\\
+        ```
+    languages: [any]
+    tags: [level-1, authorization, idor]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x17-V8-Authorization.md#v82-general-authorization-design

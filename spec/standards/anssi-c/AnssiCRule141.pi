@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule141:
+    standard: @{AnssiC}
+    ruleId: rule-141
+    title: Check the validity of every function parameter
+    statement:
+        Systematically check parameters, including that pointers are
+        non-null and properly aligned and that values lie in their expected
+        domain. This applies to the program's own functions and to standard
+        library calls.
+    rationale:
+        Invalid parameters make the function's behaviour undefined.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int percent(int part, int whole) { return (part * 100) / whole; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int percent(int part, int whole, int *out) {
+            if ((NULL == out) || (whole <= 0) || (part < 0) || (part > whole)) {
+                return -1;
+            }
+            *out = (part * 100) / whole;
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, functions, input-validation]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=112

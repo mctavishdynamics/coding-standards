@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProtectedMembers1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: protected-members-1
+    title: Consider protected members as advanced extension points
+    statement:
+        Use protected members to give subclasses deeper customization points
+        without cluttering the public API.
+    rationale:
+        Protected members are visible only to inheritors, so ordinary users
+        never see them.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class CsvWriter
+        {
+            public void WriteRow(IEnumerable<string> cells) { /* uses EscapeCell */ }
+            protected virtual string EscapeCell(string cell) => cell.Contains(',') ? $"\"{cell}\"" : cell;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, extensibility, inheritance, accessibility]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/protected-members

@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF22:
     standard: @{CppCoreGuidelines}
     ruleId: F.22
-    title: Use T* or owner<T*> to designate a single object
+    title: Use a plain pointer to refer to one object
     statement:
-        Use a plain T* only to refer to a single object you do not own, and
-        owner from the GSL for a pointer that owns. Use other types for
-        arrays, strings and positions.
+        Let a plain T* mean exactly one thing: a non-owning pointer to a single
+        object. Use GSL owner for owning pointers and other types such as span
+        or string_view for arrays and text.
     rationale:
-        Plain pointers are used for many unrelated purposes in C and older
-        C++, which makes code hard to understand and to check. Giving T* a
-        single meaning enables tool support.
+        Old C and C++ code used raw pointers for ownership, arrays, strings and
+        iterators alike. When T* has one meaning, both readers and analysis
+        tools can understand it.
     exceptions: null
     severity: null
     noncompliant:

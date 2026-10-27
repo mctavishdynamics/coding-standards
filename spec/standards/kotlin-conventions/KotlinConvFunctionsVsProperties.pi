@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvFunctionsVsProperties:
+    standard: @{KotlinConventions}
+    ruleId: functions-vs-properties
+    title: Use a property when the computation is cheap and stable
+    statement:
+        Prefer a read-only property to a function without arguments when the
+        computation does not throw, is cheap or cached after the first call,
+        and returns the same result while the object state is unchanged.
+    rationale:
+        Readers expect property access to be cheap, safe and repeatable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        class Rectangle(val w: Int, val h: Int) {
+            fun area(): Int = w * h
+            val pixels: ByteArray get() = renderFromDisk()
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        class Rectangle(val w: Int, val h: Int) {
+            val area: Int get() = w * h
+            fun loadPixels(): ByteArray = renderFromDisk()
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [properties, functions]
+    source: https://kotlinlang.org/docs/coding-conventions.html#functions-vs-properties

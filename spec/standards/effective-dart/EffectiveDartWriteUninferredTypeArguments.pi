@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartWriteUninferredTypeArguments:
+    standard: @{EffectiveDart}
+    ruleId: do-write-type-arguments-on-generic-invocations-that-arent-inferred
+    title: Write type arguments that inference cannot fill in
+    statement:
+        When context and arguments do not determine a generic invocation's
+        type arguments, write them out. For a non-local variable, a type
+        annotation on the declaration also works.
+    rationale:
+        Otherwise the type arguments silently become dynamic.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final pending = [];
+        final lookup = {};
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final pending = <Task>[];
+        final Map<String, User> lookup = {};
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, types, generics]
+    source: https://dart.dev/effective-dart/design#do-write-type-arguments-on-generic-invocations-that-arent-inferred

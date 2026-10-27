@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-8
+    title: Consider Booleans for two-state constructor parameters
+    statement:
+        A bool constructor parameter is fine when it is a true two-state
+        value that simply initializes a Boolean property.
+    rationale:
+        In that case the parameter maps directly to the property and its
+        meaning is clear.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public Checkbox(string label, bool isChecked)
+        {
+            Label = label;
+            IsChecked = isChecked;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, parameters, constructors]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#choosing-between-enum-and-boolean-parameters

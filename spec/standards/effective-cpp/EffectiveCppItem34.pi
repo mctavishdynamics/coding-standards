@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem34:
+    standard: @{EffectiveCpp}
+    ruleId: item-34
+    title: Choose consciously between inheriting an interface and an implementation
+    statement:
+        Use a pure virtual function to inherit only the interface, a plain
+        virtual for an interface with a default, and a non-virtual function
+        for an interface with a mandatory implementation.
+    rationale:
+        The kind of function you declare tells derived classes what they
+        must, may or must not change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Codec {
+        public:
+            virtual void encode();   // default silently used by new codecs
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Codec {
+        public:
+            virtual void encode() = 0;
+        protected:
+            void defaultEncode();
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance-and-oo-design, inheritance, interfaces]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

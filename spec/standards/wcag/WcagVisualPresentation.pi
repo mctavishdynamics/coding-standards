@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagVisualPresentation:
+    standard: @{Wcag22}
+    ruleId: 1.4.8
+    title: Let users control how blocks of text are presented
+    statement:
+        For blocks of text, make it possible for users to choose colors,
+        keep lines to 80 characters or fewer, avoid justified text, use line
+        spacing of at least 1.5 with larger paragraph spacing, and resize
+        text to 200 percent without horizontal scrolling.
+    rationale:
+        These settings help readers with low vision and reading or cognitive
+        disabilities keep their place in the text.
+    exceptions:
+        The content need not use these values itself; a mechanism, which may
+        be the browser, only has to make them achievable.
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        article p { text-align: justify; line-height: 1.1; max-width: none; }
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        article p { text-align: start; line-height: 1.5; margin-block-end: 1.5em; max-width: 70ch; }
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aaa, typography, readability]
+    source: https://www.w3.org/TR/WCAG22/#visual-presentation

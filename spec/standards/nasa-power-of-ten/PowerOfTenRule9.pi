@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./PowerOfTen import PowerOfTen
+
+export coding-rule PowerOfTenRule9:
+    standard: @{PowerOfTen}
+    ruleId: rule-9
+    title: Keep pointer use shallow and visible
+    statement:
+        Each expression may dereference a pointer at most once. Keep
+        dereference operations out of macros and typedef declarations, and
+        avoid function pointers entirely.
+    rationale:
+        Pointers are easy to misuse and make data flow hard to follow for
+        people and analyzers. Function pointers can stop a tool from proving
+        the absence of recursion or working out the call graph.
+    exceptions:
+        Function pointers should be used only with strong justification, and
+        then with other means that help tools work out the control flow.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        typedef struct sensor *sensor_ref;
+        int read_first(struct bus **buses) {
+            return (**buses).sensors->value;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int read_first(struct bus *bus) {
+            struct sensor *s = bus->sensors;
+            return s->value;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [pointers, function-pointers]
+    source: https://spinroot.com/gerard/pdf/P10.pdf

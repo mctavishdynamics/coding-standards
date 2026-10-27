@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule159:
+    standard: @{AnssiC}
+    ruleId: rule-159
+    title: Clear sensitive memory before freeing it
+    statement:
+        Overwrite memory that held sensitive data before releasing it, and
+        make sure the compiler does not remove the clearing as dead code.
+    rationale:
+        Freed memory can be handed out again or read later, exposing the
+        secret.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        memset(key, 0, KEY_LEN); /* may be optimised away */
+        free(key);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        explicit_bzero(key, KEY_LEN); /* or memset_s where available */
+        free(key);
+        key = NULL;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, memory, sensitive-data]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=127

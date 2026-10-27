@@ -5,13 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSf3:
     standard: @{CppCoreGuidelines}
     ruleId: SF.3
-    title: Use header files for all declarations used in multiple source files
+    title: Put declarations shared by several source files in a header
     statement:
-        Declare anything used from more than one source file in a header and
-        include it, instead of repeating extern declarations.
+        When several source files use the same entity, declare it once in a header
+        and include that header in each of them. Do not copy extern declarations
+        into each file.
     rationale:
-        Scattered copies of a declaration cannot all be found when the type
-        changes, and mismatches surface late, if at all, from the linker.
+        Copies scattered across files drift apart when the entity changes. Nothing
+        checks them against each other, so a mismatch shows up late as a link error
+        or as wrong behavior at run time.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbShareMemoryByCommunicating:
+    standard: @{GoProverbs}
+    ruleId: share-memory-by-communicating
+    title: Pass data over channels instead of guarding shared variables
+    statement:
+        Let goroutines hand values to each other through channels, so that
+        one goroutine owns a value at a time, rather than having several
+        goroutines read and write the same variables under locks.
+    rationale:
+        When ownership moves with the message there is nothing left to race
+        on, and the flow of data is visible in the code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var mu sync.Mutex
+        var results []int
+
+        for _, n := range inputs {
+            go func(n int) {
+                mu.Lock()
+                results = append(results, square(n))
+                mu.Unlock()
+            }(n)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        out := make(chan int)
+        for _, n := range inputs {
+            go func(n int) { out <- square(n) }(n)
+        }
+        results := make([]int, 0, len(inputs))
+        for range inputs {
+            results = append(results, <-out)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, channels]
+    source: https://go-proverbs.github.io/

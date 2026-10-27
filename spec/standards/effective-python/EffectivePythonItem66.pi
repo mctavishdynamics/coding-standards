@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem66:
+    standard: @{EffectivePython}
+    ruleId: item-66
+    title: Modify classes with decorators so extensions can stack
+    statement:
+        To modify or wrap the methods of a class, use a class decorator
+        rather than a metaclass.
+    rationale:
+        Class decorators compose freely, while a class can have only one
+        metaclass and metaclasses conflict.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        def trace_methods(cls):
+            for name, value in list(vars(cls).items()):
+                if callable(value) and not name.startswith("__"):
+                    setattr(cls, name, traced(value))
+            return cls
+
+        @trace_methods
+        class Service: ...
+        \\\
+        ```
+    languages: [python]
+    tags: [metaclasses-and-attributes, metaprogramming, decorators]
+    source: https://effectivepython.com/

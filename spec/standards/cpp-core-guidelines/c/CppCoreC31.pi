@@ -5,13 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC31:
     standard: @{CppCoreGuidelines}
     ruleId: C.31
-    title: Release every resource a class acquires in its destructor
+    title: Free everything an object acquires before the object goes away
     statement:
-        Any resource a class takes ownership of, such as memory, files,
-        locks or sockets, must be released when the object is destroyed.
+        A class must release every resource it takes over, such as memory, file
+        handles, locks and sockets, by the time its object is destroyed.
     rationale:
-        This prevents leaks, especially on error paths where cleanup code
-        written by callers is easily skipped.
+        Releasing in the destructor stops leaks. This matters most on error
+        paths, where cleanup written at each call site is easily missed.
     exceptions: null
     severity: null
     noncompliant:

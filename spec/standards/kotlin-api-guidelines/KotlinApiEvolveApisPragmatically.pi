@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiEvolveApisPragmatically:
+    standard: @{KotlinApiGuidelines}
+    ruleId: evolve-apis-pragmatically
+    title: Remove APIs through a deprecation cycle
+    statement:
+        Do not remove public declarations outright. Mark them Deprecated
+        with a message explaining the change and a replaceWith where
+        possible, raise the level from warning to error to hidden over
+        several minor releases, and remove only in a major release, or
+        communicate your own policy clearly.
+    rationale:
+        Users get time and tooling to migrate instead of finding unresolved
+        references after an upgrade.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        // v2.3: fetchAll() deleted without notice
+        public fun fetchPage(page: Int): List<Item>
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        @Deprecated(
+            "Loads everything into memory; use fetchPage instead",
+            ReplaceWith("fetchPage(0)"),
+            DeprecationLevel.WARNING,
+        )
+        public fun fetchAll(): List<Item> = fetchPage(0)
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [compatibility, deprecation]
+    source: https://kotlinlang.org/docs/api-guidelines-backward-compatibility.html#evolve-apis-pragmatically

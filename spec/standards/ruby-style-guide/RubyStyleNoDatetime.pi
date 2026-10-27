@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoDatetime:
+    standard: @{RubyStyleGuide}
+    ruleId: no-datetime
+    title: Avoid DateTime except for historical dates
+    statement:
+        Use Time for moments and Date for calendar dates. Use DateTime only
+        when you must handle historical calendar reform, and then pass the
+        start argument explicitly. RuboCop checks this with Style/DateTime.
+    rationale:
+        DateTime is meant for calendar-reform edge cases; Time and Date
+        cover ordinary needs and are clearer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        now = DateTime.now
+        due = DateTime.parse('2024-03-01')
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        now = Time.now
+        due = Date.parse('2024-03-01')
+        signed = DateTime.parse('1700-02-11', Date::ITALY)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [date-time]
+    source: https://rubystyle.guide/#no-datetime

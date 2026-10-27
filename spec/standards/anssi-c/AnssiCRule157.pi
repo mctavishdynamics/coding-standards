@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule157:
+    standard: @{AnssiC}
+    ruleId: rule-157
+    title: Allocate enough memory for the object
+    statement:
+        Size allocations from the object they hold; where possible write the
+        size as sizeof the dereferenced target pointer.
+    rationale:
+        Computing the size from a different type easily allocates too little
+        and causes overflows.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct conn *c = malloc(sizeof(struct conn *));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct conn *c = malloc(sizeof(*c));
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, memory, allocation]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=127

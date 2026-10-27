@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando180:
+    standard: @{ZalandoApi}
+    ruleId: 180
+    title: Use Location instead of Content-Location
+    statement:
+        Tell clients where a created or moved resource lives with the
+        Location header, and avoid Content-Location.
+    rationale:
+        Content-Location is hard to use correctly because of its caching and
+        method-specific meaning, while Location is simple and well
+        understood.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        HTTP/1.1 201 Created
+        Content-Location: https://orders.example.com/orders/so-4471
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        HTTP/1.1 201 Created
+        Location: https://orders.example.com/orders/so-4471
+        \\\
+        ```
+    languages: [any]
+    tags: [should, http, headers]
+    source: https://opensource.zalando.com/restful-api-guidelines/#180

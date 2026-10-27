@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDependencyProperties11:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dependency-properties-11
+    title: Use the built-in coercion callback instead of wrapper logic
+    statement:
+        Clamp or adjust dependency property values with a coerce-value
+        callback in PropertyMetadata, not in the wrapper.
+    rationale:
+        Coercion in the wrapper would be bypassed when WPF sets the value
+        itself.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        new PropertyMetadata(0.0, null, (d, value) =>
+            Math.Min((double)value, ((Gauge)d).Maximum));
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, dependency-properties, wpf, validation]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dependency-properties#dependency-property-value-coercion

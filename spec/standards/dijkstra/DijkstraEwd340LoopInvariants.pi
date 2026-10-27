@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Dijkstra import Dijkstra
+
+export coding-rule DijkstraEwd340LoopInvariants:
+    standard: @{Dijkstra}
+    ruleId: EWD340-loop-invariants
+    title: Justify every loop with an invariant and a termination argument
+    statement:
+        For every loop, write down the condition its body preserves and an
+        argument that it terminates.
+    rationale:
+        The invariant and the termination proof are what make a loop's
+        correctness evident.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def gcd(a, b):
+            while b:
+                a, b = b, a % b
+            return a
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def gcd(a, b):
+            # Invariant: gcd(a, b) equals the gcd of the original inputs.
+            # Termination: b is a non-negative int that strictly decreases.
+            while b:
+                a, b = b, a % b
+            return a
+        \\\
+        ```
+    languages: [any]
+    tags: [loops, correctness, invariants]
+    source: https://www.cs.utexas.edu/~EWD/transcriptions/EWD03xx/EWD340.html

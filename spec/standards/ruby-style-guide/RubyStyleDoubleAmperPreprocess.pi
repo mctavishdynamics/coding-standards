@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleDoubleAmperPreprocess:
+    standard: @{RubyStyleGuide}
+    ruleId: double-amper-preprocess
+    title: Use the and-equals operator to transform values that may be missing
+    statement:
+        To change a variable only when it holds a value, use the and-equals
+        operator instead of an if test.
+    rationale:
+        The operator leaves a nil or false value untouched, which removes
+        the explicit existence check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        email = email.strip.downcase if email
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        email &&= email.strip.downcase
+        \\\
+        ```
+    languages: [ruby]
+    tags: [assignment, nil-safety]
+    source: https://rubystyle.guide/#double-amper-preprocess

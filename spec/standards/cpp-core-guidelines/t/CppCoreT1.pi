@@ -5,39 +5,36 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT1:
     standard: @{CppCoreGuidelines}
     ruleId: T.1
-    title: Use templates to raise the level of abstraction of code
+    title: Write templates to make code more abstract and general
     statement:
-        Write templates against meaningful concepts such as an arithmetic
-        type or a range, not against the single operator one implementation
-        happens to use.
+        Constrain a template by a concept that names a real idea, such as an ordered
+        type or a number, rather than by the one operator the current body happens
+        to call.
     rationale:
-        Abstract templates are general, reusable and efficient, and they
-        push user types toward complete, consistent definitions.
-        Requirements that only list one low-level operator overconstrain
-        implementers and miss chances to generalize.
+        Templates written at that level serve many types, are easy to reuse and cost
+        nothing at run time. They also nudge authors of user types to supply a full,
+        consistent set of operations. Requiring a single operator ties callers to
+        implementation details and blocks later generalization.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
         template<typename T>
-            requires Incrementable<T>   // only += is allowed
-        T total(const std::vector<T>& v, T init)
+            requires requires(T a, T b) { a < b; }   // one operator, no meaning
+        const T& largest(const std::vector<T>& v)
         {
-            for (const auto& x : v) init += x;
-            return init;
+            return *std::max_element(v.begin(), v.end());
         }
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        template<typename T>
-            requires Arithmetic<T>      // a complete numeric type
-        T total(const std::vector<T>& v, T init)
+        template<std::totally_ordered T>          // a real notion: ordered values
+        const T& largest(const std::vector<T>& v)
         {
-            for (const auto& x : v) init += x;
-            return init;
+            return *std::max_element(v.begin(), v.end());
         }
         \\\
         ```

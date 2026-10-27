@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC49:
     standard: @{CppCoreGuidelines}
     ruleId: C.49
-    title: Prefer initialization to assignment in constructors
+    title: Initialize members in the initializer list instead of assigning in the body
     statement:
-        Set members in the member initializer list rather than assigning
-        them in the constructor body.
+        Give members their values in the member initializer list, not through
+        assignments in the constructor body.
     rationale:
-        Initialization says what is meant, can be more efficient, and avoids
-        using a member before it has a value.
+        Initializing directly states the intent and can be faster than building
+        then reassigning. It also leaves no window in which a member is used
+        before it holds a value.
     exceptions: null
     severity: null
     noncompliant:

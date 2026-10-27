@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopInterfaces3:
+    standard: @{PracticeOfProgramming}
+    ruleId: interfaces-3
+    title: Do not surprise callers with hidden actions
+    statement:
+        An interface should not change global state, data it was handed or
+        the environment unless that is its documented purpose.
+    rationale:
+        Hidden side effects break callers' assumptions and are hard to track
+        down.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* splits the caller's string in place and also closes stdin
+           when it reaches end of input */
+        int split(char *line, char **fields);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* splits a copy of line; the caller's string is untouched */
+        int split(const char *line, char ***fields);
+        \\\
+        ```
+    languages: [any]
+    tags: [interfaces, api-design, side-effects]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

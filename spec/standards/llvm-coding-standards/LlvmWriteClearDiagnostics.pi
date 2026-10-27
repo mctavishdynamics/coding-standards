@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmWriteClearDiagnostics:
+    standard: @{LlvmCodingStandards}
+    ruleId: error-and-warning-messages
+    title: Write diagnostics in lowercase with context and no final period
+    statement:
+        Make error and warning text short but precise, telling the user
+        enough to fix the problem. Start with a lowercase letter and leave
+        off a closing period, though other final punctuation such as a
+        question mark stays. Emit them through the shared WithColor handlers
+        or existing project functions rather than writing to stderr
+        directly.
+    rationale:
+        Matching the style of other command-line tools makes output
+        consistent, and specific messages save users from guessing.
+    exceptions:
+        A project with an established, consistent message style keeps it.
+        Assertion and unreachable messages need not follow this style.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        WithColor::error() << "Bad relocation.\n";
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        WithColor::error() << Path << ": relocation 7 targets section 12, but "
+                           << "the file has only 9 sections\n";
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-messages, diagnostics]
+    source: https://llvm.org/docs/CodingStandards.html#error-and-warning-messages

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdUseNullConstant:
+    standard: @{OpenBsdStyle}
+    ruleId: null-pointer
+    title: Use NULL as the null pointer constant
+    statement:
+        Write NULL rather than a cast zero or cast NULL. The one exception
+        is a variadic argument, whose type the compiler cannot infer, so it
+        needs the cast.
+    rationale:
+        NULL is clearest, but variadic calls need the cast to pass the right
+        type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (p == (char *)0)
+        execl(path, name, NULL);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (p == NULL)
+        execl(path, name, (char *)NULL);
+        \\\
+        ```
+    languages: [c]
+    tags: [pointers, null-safety]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

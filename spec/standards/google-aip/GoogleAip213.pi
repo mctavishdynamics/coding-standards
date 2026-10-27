@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip213:
+    standard: @{GoogleAip}
+    ruleId: AIP-213
+    title: Depend only on approved common component packages
+    statement:
+        Share types across APIs only through common component packages, such
+        as google.type, and organization-wide packages ending in .type
+        created with the API design team. Never remove or move fields,
+        values or messages from a common component.
+    rationale:
+        Common components are effectively unversioned and used by many APIs
+        at once, so they must only change in backward-compatible ways.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        import "example/orders/v1/money.proto";
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        import "google/type/money.proto";
+        \\\
+        ```
+    languages: [any]
+    tags: [packages, dependencies]
+    source: https://google.aip.dev/213

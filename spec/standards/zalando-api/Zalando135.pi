@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando135:
+    standard: @{ZalandoApi}
+    ruleId: 135
+    title: Do not use /api as the base path
+    statement:
+        Serve the public resources of a service under the root path rather
+        than under /api. Put the base path in the server object, and give
+        internal operational endpoints their own specification with its own
+        audience.
+    rationale:
+        The base path belongs to the deployment configuration, and a fixed
+        /api prefix adds nothing but length to every URL.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        servers:
+          - url: https://checkout-orders.example-apis.com/api
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        servers:
+          - url: https://checkout-orders.example-apis.com
+        \\\
+        ```
+    languages: [any]
+    tags: [should, urls]
+    source: https://opensource.zalando.com/restful-api-guidelines/#135

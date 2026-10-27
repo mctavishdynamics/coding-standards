@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem7:
+    standard: @{EffectiveCpp}
+    ruleId: item-7
+    title: Make the destructor virtual in base classes used polymorphically
+    statement:
+        A class intended to be deleted through a pointer to its base needs a
+        virtual destructor. Do not add one to classes that are not meant as
+        polymorphic bases.
+    rationale:
+        Deleting a derived object through a base pointer without a virtual
+        destructor is undefined behaviour and usually leaks the derived
+        part.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Shape {
+        public:
+            virtual double area() const = 0;
+        };
+        Shape* s = new Circle(2.0);
+        delete s;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Shape {
+        public:
+            virtual ~Shape() = default;
+            virtual double area() const = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors-destructors-assignment, inheritance, destructors]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

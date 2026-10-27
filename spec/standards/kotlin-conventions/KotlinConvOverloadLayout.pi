@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvOverloadLayout:
+    standard: @{KotlinConventions}
+    ruleId: overload-layout
+    title: Keep overloads next to each other
+    statement:
+        Always place the overloads of a function together in a class.
+    rationale:
+        Readers can compare the variants in one place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        class Printer {
+            fun print(text: String) { }
+            fun reset() { }
+            fun print(image: Image) { }
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        class Printer {
+            fun print(text: String) { }
+            fun print(image: Image) { }
+            fun reset() { }
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [organization, overloading]
+    source: https://kotlinlang.org/docs/coding-conventions.html#overload-layout

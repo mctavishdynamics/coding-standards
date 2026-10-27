@@ -1,0 +1,25 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule43:
+    standard: @{AnssiC}
+    ruleId: rule-43
+    title: Enable stack canaries
+    statement:
+        Build with fstack-protector-strong on GCC and Clang.
+    rationale:
+        Canaries detect many linear stack overflows before a corrupted
+        return address is used, and stop the program.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        gcc -O2 -fstack-protector-strong -c handler.c
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, compilation, hardening, buffer-overflow]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=36

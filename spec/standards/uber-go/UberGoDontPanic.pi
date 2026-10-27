@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoDontPanic:
+    standard: @{UberGo}
+    ruleId: dont-panic
+    title: Return errors instead of panicking
+    statement:
+        Production code must not panic to report errors; return an error and
+        let the caller decide. Panic only for truly unrecoverable
+        situations, and in tests use t.Fatal or t.FailNow.
+    rationale:
+        Panics cause cascading failures, and recover is not a substitute for
+        error handling.
+    exceptions:
+        Failures during program initialization that should stop the program
+        may panic.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func ParsePort(s string) int {
+            p, err := strconv.Atoi(s)
+            if err != nil {
+                panic(err)
+            }
+            return p
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func ParsePort(s string) (int, error) {
+            p, err := strconv.Atoi(s)
+            if err != nil {
+                return 0, fmt.Errorf("parse port %q: %w", s, err)
+            }
+            return p, nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, panics]
+    source: https://github.com/uber-go/guide/blob/master/style.md#dont-panic

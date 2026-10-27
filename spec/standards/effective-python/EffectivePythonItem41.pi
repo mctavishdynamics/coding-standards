@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem41:
+    standard: @{EffectivePython}
+    ruleId: item-41
+    title: Limit comprehensions to two loops or conditions
+    statement:
+        Keep each comprehension to at most two for clauses or conditions.
+        Use ordinary loops or helper functions for anything more complex.
+    rationale:
+        Comprehensions with many clauses are very hard to read and debug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        cells = [c for row in grid if row for c in row if c for _ in range(c.repeat) if c.ok]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        cells = [c for row in grid for c in row if c and c.ok]
+        \\\
+        ```
+    languages: [python]
+    tags: [comprehensions-and-generators, comprehensions, readability]
+    source: https://effectivepython.com/

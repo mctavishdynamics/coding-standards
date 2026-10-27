@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartPureMixinOrClass:
+    standard: @{EffectiveDart}
+    ruleId: prefer-defining-a-pure-mixin-or-pure-class-to-a-mixin-class
+    title: Declare a plain mixin or a plain class, not a mixin class
+    statement:
+        In new code, declare a type as either `mixin` or `class`. Keep
+        `mixin class` mainly for migrating pre-3.0 classes used as mixins.
+        The prefer_mixin lint checks this.
+    rationale:
+        A mixin class mixes two roles and blurs what its author intends.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        mixin class Disposable {
+          void dispose() {}
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        mixin Disposable {
+          void dispose() {}
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, classes, mixins]
+    source: https://dart.dev/effective-dart/design#prefer-defining-a-pure-mixin-or-pure-class-to-a-mixin-class

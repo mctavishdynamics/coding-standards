@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackMarkSectionsInLongFunctions:
+    standard: @{Carmack}
+    ruleId: mark-sections-in-long-functions
+    title: Mark the sections of a long function with comments and scopes
+    statement:
+        In a large function made of inlined steps, head each step with a
+        prominent comment block and wrap it in a bare braced scope.
+    rationale:
+        The comments make the function easy to scan, and the scopes keep
+        local variables from leaking into later steps and let an editor fold
+        each section.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Frame() {
+            float dt = timer.Delta();
+            int n = particles.Count();
+            // ... 300 lines with every local visible to the end
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Frame() {
+            // ============ particles ============
+            {
+                const int n = particles.Count();
+                // ...
+            }
+            // ============ audio ============
+            {
+                // ...
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [readability, scope, inlining]
+    source: http://number-none.com/blow/john_carmack_on_inlined_code.html

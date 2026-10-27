@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiDoNotConfuseABeginner:
+    standard: @{SwiftApiDesign}
+    ruleId: do-not-confuse-a-beginner
+    title: Do not mislead learners with a new meaning
+    statement:
+        Keep terms to their traditional meaning, because people new to a
+        term will look it up and learn that meaning.
+    rationale:
+        A beginner who finds a different definition elsewhere will be
+        confused by the API.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        // "hash" here returns a random identifier, not a hash of the contents.
+        func hash() -> String
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        func makeRandomIdentifier() -> String
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, terminology]
+    source: https://www.swift.org/documentation/api-design-guidelines/#do-not-confuse-a-beginner

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiAvoidArithmeticTypesForIdentifiers:
+    standard: @{KotlinApiGuidelines}
+    ruleId: avoid-arithmetic-types-for-identifiers
+    title: Wrap non-arithmetic numbers such as IDs in their own type
+    statement:
+        Do not expose identifiers and other non-arithmetic values as raw
+        numbers. Define a dedicated type, for example an inline value class.
+    rationale:
+        Raw numbers invite comparisons and arithmetic that mean nothing and
+        tie users to implementation details.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun findOrder(id: Long): Order?
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        @JvmInline
+        public value class OrderId(private val raw: Long)
+
+        public fun findOrder(id: OrderId): Order?
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [types, numbers]
+    source: https://kotlinlang.org/docs/api-guidelines-readability.html#use-numeric-types-appropriately

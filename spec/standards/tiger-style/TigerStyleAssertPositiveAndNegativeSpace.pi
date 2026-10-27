@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleAssertPositiveAndNegativeSpace:
+    standard: @{TigerStyle}
+    ruleId: assert-positive-and-negative-space
+    title: Assert both what you expect and what you do not
+    statement:
+        Assert the states you expect and also the states you rule out. Many
+        interesting bugs sit where data crosses from valid to invalid.
+    rationale:
+        Checking only the expected side leaves the boundary unguarded, which
+        is where corrupt data most often slips through.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        if (state == .open) {
+            process(request);
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        if (state == .open) {
+            process(request);
+        } else {
+            assert(state == .closed or state == .draining);
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [assertions, invariants]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

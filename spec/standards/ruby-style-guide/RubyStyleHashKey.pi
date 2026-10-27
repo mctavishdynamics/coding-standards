@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHashKey:
+    standard: @{RubyStyleGuide}
+    ruleId: hash-key
+    title: Use key? and value? on hashes
+    statement:
+        Call key? instead of has_key?, and value? instead of has_value?.
+        RuboCop checks this with Style/PreferredHashMethods.
+    rationale:
+        The shorter names are the preferred spellings of the same methods.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        config.has_key?(:timeout)
+        config.has_value?(30)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        config.key?(:timeout)
+        config.value?(30)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes]
+    source: https://rubystyle.guide/#hash-key

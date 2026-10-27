@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdWriteVariadicFunctionsWithStdarg:
+    standard: @{FreeBsdStyle}
+    ruleId: variadic-functions
+    title: Write variadic functions with stdarg.h
+    statement:
+        Implement functions with variable arguments using stdarg.h, calling
+        va_start before use and va_end afterwards. A void function needs no
+        return statement at the end.
+    rationale:
+        The standard interface is portable and the matched start and end
+        calls avoid undefined behavior.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        #include <stdarg.h>
+
+        void
+        logmsg(const char *fmt, ...)
+        {
+                va_list ap;
+
+                va_start(ap, fmt);
+                vfprintf(stderr, fmt, ap);
+                va_end(ap);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, portability]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

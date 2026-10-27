@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ReferenceVariadicNoSpace:
+    standard: @{Psr12}
+    ruleId: 4.5i
+    title: Write a by-reference variadic parameter without spaces
+    statement:
+        When a parameter is both by-reference and variadic, write the
+        ampersand and the three dots together with no space between them.
+    rationale:
+        The combined operator reads as one unit only when nothing separates
+        its parts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        function resetAll(& ...$counters)
+        {
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        function resetAll(&...$counters)
+        {
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [parameters, whitespace]
+    source: https://www.php-fig.org/psr/psr-12/#45-method-and-function-arguments

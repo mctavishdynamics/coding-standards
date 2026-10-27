@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando183:
+    standard: @{ZalandoApi}
+    ruleId: 183
+    title: Use only the specified proprietary headers
+    statement:
+        Avoid proprietary headers and express business intent through the
+        path, query, method and body. Use only the X- headers the guidelines
+        define, which carry generic context such as the sales channel or
+        flow id.
+    rationale:
+        Headers are meant for protocol concerns, and a fixed list keeps
+        custom context consistent across all services.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        POST /orders
+        X-Order-Action: cancel
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        POST /orders/so-4471/cancellations
+        X-Flow-ID: r7Tq2WmZx0cVb8yN4kLp1A
+        \\\
+        ```
+    languages: [any]
+    tags: [should, http, headers]
+    source: https://opensource.zalando.com/restful-api-guidelines/#183

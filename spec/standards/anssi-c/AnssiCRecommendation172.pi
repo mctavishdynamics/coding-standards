@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation172:
+    standard: @{AnssiC}
+    ruleId: recommendation-172
+    title: Limit calls to exit
+    statement:
+        Call exit rarely and comment each call; prefer returning an error
+        code to main.
+    rationale:
+        Exits scattered through the code make it hard to see how the program
+        can end.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void load_config(void) {
+            if (read_file() != 0) { exit(1); }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int load_config(void) {
+            if (read_file() != 0) { return -1; }
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, error-handling, termination]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=139

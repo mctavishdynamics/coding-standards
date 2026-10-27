@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopTesting2:
+    standard: @{PracticeOfProgramming}
+    ruleId: testing-2
+    title: Check what must hold before and after code runs
+    statement:
+        Verify that inputs meet a routine's assumptions before it starts and
+        that results are sensible when it ends.
+    rationale:
+        Explicit checks of preconditions and postconditions catch misuse and
+        faulty logic close to the source.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        double average(const double *a, int n)
+        {
+            double sum = 0;
+            for (int i = 0; i < n; i++) sum += a[i];
+            return sum / n;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        double average(const double *a, int n)
+        {
+            if (n <= 0)
+                return 0.0;
+            double sum = 0;
+            for (int i = 0; i < n; i++) sum += a[i];
+            return sum / n;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, contracts]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

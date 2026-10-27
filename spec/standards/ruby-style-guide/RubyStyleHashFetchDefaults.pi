@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHashFetchDefaults:
+    standard: @{RubyStyleGuide}
+    ruleId: hash-fetch-defaults
+    title: Give hash defaults through fetch
+    statement:
+        Supply a default for a missing key with the second argument of
+        fetch, not with your own logic such as the or operator.
+    rationale:
+        An or-based default also replaces stored false or nil values, while
+        fetch only applies the default when the key is absent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        flags = { beta: false }
+        flags[:beta] || true # => true
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        flags = { beta: false }
+        flags.fetch(:beta, true) # => false
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes]
+    source: https://rubystyle.guide/#hash-fetch-defaults

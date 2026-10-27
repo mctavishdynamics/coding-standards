@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackMakeNearPureFunctionsPure:
+    standard: @{Carmack}
+    ruleId: make-near-pure-functions-pure
+    title: Make nearly pure functions completely pure
+    statement:
+        If a function touches only one or two pieces of global state, pass
+        that state in as parameters so the function depends only on its
+        inputs.
+    rationale:
+        Functions that read only their arguments and return a result cannot
+        be broken by changes elsewhere in the execution environment.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        extern float g_gravity;
+
+        Vec3 Fall(Vec3 v, float dt) { return v + Vec3(0, -g_gravity * dt, 0); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Vec3 Fall(Vec3 v, float gravity, float dt) {
+            return v + Vec3(0, -gravity * dt, 0);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [purity, global-state, functions]
+    source: http://number-none.com/blow/john_carmack_on_inlined_code.html

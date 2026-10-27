@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdAlignCaseWithSwitch:
+    standard: @{FreeBsdStyle}
+    ruleId: switch-indentation
+    title: Indent the switch body but not the case labels
+    statement:
+        Case labels line up with the switch keyword itself rather than being
+        indented, and the statements under each label are indented by one
+        level.
+    rationale:
+        Keeping labels at the switch level avoids a double indent for every
+        case body.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        switch (cmd) {
+                case 'r':
+                        do_read();
+                        break;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        switch (cmd) {
+        case 'r':
+                do_read();
+                break;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, indentation, switch]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

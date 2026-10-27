@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoWaitForGoroutinesToExit:
+    standard: @{UberGo}
+    ruleId: wait-for-goroutines-to-exit
+    title: Provide a way to wait for goroutines to finish
+    statement:
+        For every goroutine you start, make it possible to wait for it to
+        exit. Use a sync.WaitGroup for several goroutines, or a done channel
+        the goroutine closes when there is just one.
+    rationale:
+        Without a wait, shutdown can race with work still in progress and
+        tests cannot tell when the goroutine has finished.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        for _, f := range files {
+            go upload(f)
+        }
+        return nil
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var wg sync.WaitGroup
+        for _, f := range files {
+            wg.Add(1)
+            go func(f string) {
+                defer wg.Done()
+                upload(f)
+            }(f)
+        }
+        wg.Wait()
+        return nil
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, goroutines]
+    source: https://github.com/uber-go/guide/blob/master/style.md#wait-for-goroutines-to-exit

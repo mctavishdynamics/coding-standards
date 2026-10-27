@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule5:
+    standard: @{CppCodingStandards}
+    ruleId: rule-5
+    title: Let each function, class and module do one job
+    statement:
+        Design every function, class, module and library to do one
+        well-defined job, and give it a name that says what that job is.
+    rationale:
+        Entities with one responsibility are easier to understand, reuse and
+        change than those mixing several concerns.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Report {
+        public:
+            void load(const std::string& path);
+            void render();
+            void email(const std::string& to);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Report { /* data only */ };
+        Report loadReport(const std::string& path);
+        std::string render(const Report& r);
+        void sendMail(const std::string& to, const std::string& body);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [design-style, design, cohesion]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

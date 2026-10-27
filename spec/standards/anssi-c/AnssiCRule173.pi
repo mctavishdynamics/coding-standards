@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule173:
+    standard: @{AnssiC}
+    ruleId: rule-173
+    title: Do not use setjmp and longjmp
+    statement:
+        Do not use setjmp and longjmp.
+    rationale:
+        Non-local jumps easily cause undefined behaviour and skip cleanup of
+        the frames they jump over.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static jmp_buf on_error;
+        if (setjmp(on_error) != 0) { return -1; }
+        parse(input); /* calls longjmp on failure */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (parse(input) != 0) { return -1; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, error-handling, control-flow]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=140

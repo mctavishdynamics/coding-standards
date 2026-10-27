@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSingleLineClasses:
+    standard: @{RubyStyleGuide}
+    ruleId: single-line-classes
+    title: Write empty class definitions on two lines
+    statement:
+        Define a class without a body as a class line followed by an end
+        line, not with a semicolon or Class.new.
+    rationale:
+        The two-line form is easiest to read and change, can be found by
+        searching for the class keyword, and passes the class name to the
+        parent's inherited hook.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class TimeoutError < StandardError; end
+        RetryError = Class.new(StandardError)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class TimeoutError < StandardError
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, formatting]
+    source: https://rubystyle.guide/#single-line-classes

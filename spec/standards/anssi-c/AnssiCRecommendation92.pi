@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation92:
+    standard: @{AnssiC}
+    ruleId: recommendation-92
+    title: Limit pointer indirection to two levels
+    statement:
+        Do not use more than two levels of pointer indirection.
+    rationale:
+        Deep indirection is hard to read and easy to get wrong; temporary
+        pointers or typedefs keep it manageable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void fill(char ***table);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        typedef char *row_t;
+        void fill(row_t **table);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, pointers, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=75

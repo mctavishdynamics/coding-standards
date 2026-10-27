@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem31:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-31
+    title: List lambda captures explicitly
+    statement:
+        List captured variables explicitly instead of writing a default
+        by-reference or by-value capture.
+    rationale:
+        Default reference capture invites dangling, and default value
+        capture seems to copy this-bound members and statics when it does
+        not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Filter::install() {
+            int limit = compute();
+            filters.push_back([&](int v) { return v < limit; });   // dangles
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Filter::install() {
+            int limit = compute();
+            filters.push_back([limit](int v) { return v < limit; });
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [lambda-expressions, lambdas, lifetime]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiPreferFileidInProduction:
+    standard: @{SwiftApiDesign}
+    ruleId: prefer-fileid-in-production
+    title: Prefer the fileID literal in production APIs
+    statement:
+        For APIs that run in production, default source-location parameters
+        to the fileID literal. Use filePath only in code end users never
+        run, such as test helpers and scripts, and the file literal only to
+        stay compatible with Swift 5.2 or earlier.
+    rationale:
+        The short file ID takes less space and does not leak developers'
+        local paths into shipped binaries.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func log(_ message: String, file: StaticString = #filePath) {
+            print("\(file): \(message)")
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        func log(_ message: String, file: StaticString = #fileID) {
+            print("\(file): \(message)")
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [parameters, privacy]
+    source: https://www.swift.org/documentation/api-design-guidelines/#parameter-names

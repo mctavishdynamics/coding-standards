@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdAvoidStructTypedefs:
+    standard: @{FreeBsdStyle}
+    ruleId: struct-typedefs
+    title: Avoid typedefs for structure types
+    statement:
+        Refer to structures by their tag rather than through a typedef.
+    rationale:
+        A typedef hides whether it names the structure or a pointer, must be
+        declared exactly once, and forces header ordering, while an
+        incomplete struct can be declared anywhere.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        typedef struct session session_t;
+        void close_session(session_t *);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct session;
+        void close_session(struct session *);
+        \\\
+        ```
+    languages: [c]
+    tags: [types, structs, headers]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

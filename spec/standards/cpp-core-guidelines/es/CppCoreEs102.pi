@@ -5,16 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs102:
     standard: @{CppCoreGuidelines}
     ruleId: ES.102
-    title: Use signed types for arithmetic
+    title: Do ordinary arithmetic on signed types
     statement:
-        Use signed integer types for quantities you calculate with.
+        Choose signed integer types for numbers you do arithmetic on, such
+        as counts, offsets and differences.
     rationale:
-        Most arithmetic assumes signed behavior, where x minus y is negative
-        when y is larger. Unsigned types silently wrap instead.
+        People expect subtracting a larger number from a smaller one to give
+        a negative answer. Unsigned types instead wrap around to a huge
+        value without any warning.
     exceptions:
-        Use unsigned types when you really want modular arithmetic, and add
-        a comment noting the reliance on wraparound because it surprises
-        many programmers.
+        Modular arithmetic is the legitimate case for unsigned types. When
+        code depends on wraparound, say so in a comment, since many readers
+        will not expect it.
     severity: null
     noncompliant:
         ```cpp

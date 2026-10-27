@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoReduceScopeOfVariables:
+    standard: @{UberGo}
+    ruleId: reduce-scope-of-variables
+    title: Declare variables in the narrowest scope
+    statement:
+        Keep variables and constants in the smallest scope that works, for
+        instance declaring them in the if statement that uses them. Make
+        constants global only when several functions or files use them or
+        they form part of the package contract.
+    rationale:
+        A narrow scope limits where a name can be misused and makes code
+        easier to follow.
+    exceptions:
+        Do not narrow scope when it would add nesting, or when a result is
+        needed after the if statement.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        err := os.MkdirAll(dir, 0o755)
+        if err != nil {
+            return err
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if err := os.MkdirAll(dir, 0o755); err != nil {
+            return err
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [scope, declarations]
+    source: https://github.com/uber-go/guide/blob/master/style.md#reduce-scope-of-variables

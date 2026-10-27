@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule107:
+    standard: @{AnssiC}
+    ruleId: rule-107
+    title: Rule out division by zero
+    statement:
+        Check the divisor before every division and every remainder
+        operation.
+    rationale:
+        Dividing by zero is undefined behaviour and usually crashes the
+        program.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int avg = sum / count;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int avg = 0;
+        if (count != 0) { avg = sum / count; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, arithmetic, input-validation]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=85

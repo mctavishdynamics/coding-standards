@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./OwaspTop10 import OwaspTop10
+
+export coding-rule OwaspTop10A09:
+    standard: @{OwaspTop10}
+    ruleId: A09:2025
+    title: Prevent security logging and alerting failures
+    statement:
+        Log login, access control and validation failures, and every
+        security control's outcome, with enough user context and retention
+        for later investigation, in a format log tools can read. Encode log
+        data to prevent injection, keep tamper-proof audit trails, fail
+        closed and roll back on error, alert on suspicious behaviour,
+        consider honeytokens, and keep a tested incident response plan.
+    rationale:
+        Without useful logs and alerts, attacks go unnoticed and breaches
+        cannot be investigated or contained in time. It is the ninth
+        category in the OWASP Top 10 for 2025.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        log.info("login failed for " + username)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        log.warning("login_failed user=%r ip=%s", username, request.remote_addr)
+        \\\
+        ```
+    languages: [any]
+    tags: [rank-9, logging, monitoring, incident-response]
+    source: https://owasp.org/Top10/2025/A09_2025-Security_Logging_and_Alerting_Failures/

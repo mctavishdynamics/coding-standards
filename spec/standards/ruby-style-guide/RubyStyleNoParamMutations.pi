@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoParamMutations:
+    standard: @{RubyStyleGuide}
+    ruleId: no-param-mutations
+    title: Leave caller-supplied objects unchanged
+    statement:
+        Leave the objects passed to a method unchanged, unless changing them
+        is the method's stated purpose.
+    rationale:
+        Callers do not expect their objects to change, and hidden mutation
+        causes bugs far from the call.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def active_only(accounts)
+          accounts.select!(&:active?)
+          accounts
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def active_only(accounts)
+          accounts.select(&:active?)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, mutability]
+    source: https://rubystyle.guide/#no-param-mutations

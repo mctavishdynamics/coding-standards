@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiUseObjectOrientedDesignForDataAndState:
+    standard: @{KotlinApiGuidelines}
+    ruleId: use-object-oriented-design-for-data-and-state
+    title: Use classes for state and functions for stateless work
+    statement:
+        Represent data and state with classes, using inheritance for
+        hierarchical state. When everything needed can be passed in as
+        parameters, prefer top-level functions, written as extensions if
+        calls will be chained.
+    rationale:
+        Matching the style to the problem keeps the API consistent and
+        readable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public object TemperatureConverter {
+            public var input: Double = 0.0
+            public fun toFahrenheit(): Double = input * 9 / 5 + 32
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun Double.celsiusToFahrenheit(): Double = this * 9 / 5 + 32
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [consistency, api-design]
+    source: https://kotlinlang.org/docs/api-guidelines-consistency.html#use-object-oriented-design-for-data-and-state

@@ -7,13 +7,14 @@ export coding-rule GoogleGoCopying:
     ruleId: decisions/copying
     title: Do not copy values whose methods use pointer receivers
     statement:
-        Be careful copying structs from other packages. Never copy
-        synchronisation types such as sync.Mutex, and do not copy a value of
-        type T when its methods are defined on pointer type T. When
-        authoring such a type, take and return pointers.
+        Take care when copying structs that come from other packages. Never
+        copy sync.Mutex or other synchronisation types, and avoid copying a
+        T value whose methods use a pointer receiver. If you write such a
+        type, accept and return it by pointer.
     rationale:
-        Copies can alias internal state, as with bytes.Buffer, or break
-        locking, and a value receiver can hide the copy.
+        A copy may share internal buffers with the original, as bytes.Buffer
+        does, or defeat a lock, and value receivers make that copying
+        invisible at the call site.
     exceptions: null
     severity: null
     noncompliant:

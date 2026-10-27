@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmStartFilesWithStandardHeader:
+    standard: @{LlvmCodingStandards}
+    ruleId: file-headers
+    title: Begin every source file with the standard license and purpose header
+    statement:
+        Each source file starts with the project header comment: the license
+        notice, left unchanged, followed by a Doxygen comment with the file
+        command that briefly states what the file is for. Separate any
+        further detail with a blank comment line, and cite papers or other
+        sources an algorithm is based on.
+    rationale:
+        The license lines make the distribution terms unambiguous, and the
+        summary tells a reader what the file contains before they read it.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```cpp
+        \\\
+        //===----------------------------------------------------------------------===//
+        //
+        // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+        // See https://llvm.org/LICENSE.txt for license information.
+        // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+        //
+        //===----------------------------------------------------------------------===//
+        ///
+        /// \file
+        /// Defines the RegionTracker helper used by the loop unroller.
+        ///
+        //===----------------------------------------------------------------------===//
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, file-structure, licensing]
+    source: https://llvm.org/docs/CodingStandards.html#file-headers

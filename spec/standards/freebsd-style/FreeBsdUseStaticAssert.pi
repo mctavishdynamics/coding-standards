@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdUseStaticAssert:
+    standard: @{FreeBsdStyle}
+    ruleId: static-assert
+    title: Use _Static_assert instead of CTASSERT
+    statement:
+        Write compile-time assertions in new code with _Static_assert rather
+        than the older CTASSERT macro.
+    rationale:
+        The standard construct is portable and gives a clear message.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        CTASSERT(sizeof(struct hdr) == 16);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        _Static_assert(sizeof(struct hdr) == 16, "hdr must be 16 bytes");
+        \\\
+        ```
+    languages: [c]
+    tags: [assertions, language-version]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

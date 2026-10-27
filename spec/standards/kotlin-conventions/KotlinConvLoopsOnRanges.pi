@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvLoopsOnRanges:
+    standard: @{KotlinConventions}
+    ruleId: loops-on-ranges
+    title: Use the open-ended range operator
+    statement:
+        Loop over an open-ended range with the ..< operator rather than
+        subtracting one from the end.
+    rationale:
+        The operator states the exclusive bound directly and avoids
+        off-by-one mistakes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        for (i in 0..items.size - 1) show(items[i])
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        for (i in 0..<items.size) show(items[i])
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [loops, ranges]
+    source: https://kotlinlang.org/docs/coding-conventions.html#loops-on-ranges

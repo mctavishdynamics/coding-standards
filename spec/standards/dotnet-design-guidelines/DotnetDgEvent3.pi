@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEvent3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: event-3
+    title: Consider a dedicated EventArgs subclass for event data
+    statement:
+        Use a subclass of EventArgs for an event's argument, even an empty
+        one, unless you are certain the event will never carry data.
+    rationale:
+        An event shipped with plain EventArgs can never gain data without a
+        breaking change, while a subclass can gain properties later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public event EventHandler<EventArgs> SyncFinished;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class SyncFinishedEventArgs : EventArgs { }
+
+        public event EventHandler<SyncFinishedEventArgs> SyncFinished;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, events, versioning]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/event

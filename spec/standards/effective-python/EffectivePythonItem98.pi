@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem98:
+    standard: @{EffectivePython}
+    ruleId: item-98
+    title: Import heavy modules lazily to start faster
+    statement:
+        If a large module is needed only on some paths, import it inside the
+        function that uses it, or use importlib lazy loading.
+    rationale:
+        Imports run code and can dominate startup, and many runs never need
+        the heavy dependency.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import pandas
+
+        def export(rows, path):
+            pandas.DataFrame(rows).to_csv(path)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def export(rows, path):
+            import pandas
+
+            pandas.DataFrame(rows).to_csv(path)
+        \\\
+        ```
+    languages: [python]
+    tags: [performance, imports, startup]
+    source: https://effectivepython.com/

@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance1:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-1
+    title: Script your timing runs
+    statement:
+        Build timing into scripts or test harnesses so performance can be
+        measured repeatably.
+    rationale:
+        Automated measurements are consistent and easy to rerun after every
+        change.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```sh
+        \\\
+        for n in 1000 10000 100000; do
+            /usr/bin/time -f "$n %e s" ./prog -n "$n" > /dev/null
+        done
+        \\\
+        ```
+    languages: [any]
+    tags: [performance, measurement]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

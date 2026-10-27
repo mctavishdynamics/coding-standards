@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgOperatorOverloads9:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: operator-overloads-9
+    title: Keep conversion operators within the type's domain
+    statement:
+        Do not define conversions between types from different domains; use
+        a constructor or factory method for those.
+    rationale:
+        A conversion implies the types represent the same kind of value,
+        which is untrue across domains.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static explicit operator Duration(Temperature temperature) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static explicit operator Celsius(Fahrenheit value) => new((value.Degrees - 32) * 5 / 9);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, operators, conversions]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/operator-overloads#conversion-operators

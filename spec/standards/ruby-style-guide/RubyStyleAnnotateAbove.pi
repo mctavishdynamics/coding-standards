@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAnnotateAbove:
+    standard: @{RubyStyleGuide}
+    ruleId: annotate-above
+    title: Place annotations on the line above the code
+    statement:
+        Put an annotation comment on its own line, directly above the code
+        it refers to, rather than at the end of the line.
+    rationale:
+        An annotation above the code is easy to spot and does not make the
+        code line long.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def sync
+          client.push(records) # FIXME: Times out on large batches.
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def sync
+          # FIXME: Times out on large batches.
+          client.push(records)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comments, annotations]
+    source: https://rubystyle.guide/#annotate-above

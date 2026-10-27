@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleCaseVsIfElse:
+    standard: @{RubyStyleGuide}
+    ruleId: case-vs-if-else
+    title: Prefer case to if and elsif that test the same value
+    statement:
+        When every branch compares the same value, write a case expression
+        instead of a chain of if and elsif.
+    rationale:
+        A case states the shared subject once and lists only what differs
+        between branches.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        if status == :draft
+          edit
+        elsif status == :published
+          view
+        else
+          archive
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        case status
+        when :draft then edit
+        when :published then view
+        else archive
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals]
+    source: https://rubystyle.guide/#case-vs-if-else

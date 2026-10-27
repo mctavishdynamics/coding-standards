@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./PowerOfTen import PowerOfTen
+
+export coding-rule PowerOfTenRule5:
+    standard: @{PowerOfTen}
+    ruleId: rule-5
+    title: Assert liberally, about twice per function
+    statement:
+        Aim for an average of two or more assertions per function.
+        Assertions must be side-effect free Boolean tests, a failed
+        assertion must trigger an explicit recovery such as returning an
+        error, and an assertion a tool can prove always true or always false
+        does not count.
+    rationale:
+        Defects are common even in tested code, and each extra check raises
+        the chance of catching one early. Because the checks change nothing,
+        they can be turned off after testing where speed matters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int set_speed(int rpm) {
+            motor_rpm = rpm;
+            return OK;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int set_speed(int rpm) {
+            if (!check(rpm >= 0 && rpm <= MAX_RPM)) {
+                return ERR_RANGE;
+            }
+            motor_rpm = rpm;
+            if (!check(motor_rpm == rpm)) {
+                return ERR_STATE;
+            }
+            return OK;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [assertions, defensive-programming]
+    source: https://spinroot.com/gerard/pdf/P10.pdf

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmQualifyOutOfLineDefinitions:
+    standard: @{LlvmCodingStandards}
+    ruleId: use-namespace-qualifiers-to-define-previously-declared-symbols
+    title: Define previously declared symbols with namespace qualifiers
+    statement:
+        In a source file, define functions and variables that a header
+        declares by writing their qualified name, not by reopening the
+        namespace around the definition.
+    rationale:
+        A qualified definition with a mismatched signature fails to compile
+        at once; inside a reopened namespace it silently creates a new
+        overload and only fails at link time.
+    exceptions:
+        Class member definitions already name their class and cannot add
+        overloads, so this does not apply to them.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Hash.cpp
+        namespace llvm {
+        uint64_t hashName(std::string Name) { /* ... */ }  // header takes StringRef
+        } // namespace llvm
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Hash.cpp
+        uint64_t llvm::hashName(StringRef Name) { /* ... */ }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces, definitions]
+    source: https://llvm.org/docs/CodingStandards.html#use-namespace-qualifiers-to-define-previously-declared-symbols

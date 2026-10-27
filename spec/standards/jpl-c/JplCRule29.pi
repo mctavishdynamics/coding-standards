@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule29:
+    standard: @{JplC}
+    ruleId: rule-29
+    title: Make any function pointer const
+    statement:
+        Function pointers that can be changed at run time should not be
+        used; if a function pointer is needed, make it const.
+    rationale:
+        Indirect calls hide which code runs, which weakens static analysis
+        and can defeat proofs that there is no recursion. Any use needs a
+        separate way to show the possible call targets.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void (*handler)(int);
+
+        void set_handler(void (*h)(int)) {
+            handler = h;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static void on_reset(int code);
+
+        static void (*const reset_handler)(int) = on_reset;
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-4, function-pointers, pointers]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

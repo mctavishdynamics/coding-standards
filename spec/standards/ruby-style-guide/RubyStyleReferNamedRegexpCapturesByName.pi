@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleReferNamedRegexpCapturesByName:
+    standard: @{RubyStyleGuide}
+    ruleId: refer-named-regexp-captures-by-name
+    title: Refer to named captures by name
+    statement:
+        When a regexp has named captures, read them by name rather than by
+        position.
+    rationale:
+        Names say what each part holds and keep working if the groups are
+        reordered.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        m = /(?<hour>\d+):(?<minute>\d+)/.match(clock)
+        hour = m[1]
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        m = /(?<hour>\d+):(?<minute>\d+)/.match(clock)
+        hour = m[:hour]
+        \\\
+        ```
+    languages: [ruby]
+    tags: [regex, readability]
+    source: https://rubystyle.guide/#refer-named-regexp-captures-by-name

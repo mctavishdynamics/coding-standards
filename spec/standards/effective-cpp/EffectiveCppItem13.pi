@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem13:
+    standard: @{EffectiveCpp}
+    ruleId: item-13
+    title: Tie every resource to an owning object
+    statement:
+        Acquire resources in the constructor of a managing object and
+        release them in its destructor, using smart pointers and similar
+        types.
+    rationale:
+        Manual release is skipped by early returns and exceptions;
+        destructors always run.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void report() {
+            Data* d = loadData();
+            if (!d->valid()) return;   // leak
+            print(*d);
+            delete d;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void report() {
+            std::unique_ptr<Data> d(loadData());
+            if (!d->valid()) return;
+            print(*d);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [resource-management, raii, memory]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

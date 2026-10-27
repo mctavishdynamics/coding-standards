@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem29:
+    standard: @{EffectiveJava}
+    ruleId: item-29
+    title: Write your own types as generics
+    statement:
+        When a class stores or returns values of a caller-chosen type, give
+        it a type parameter instead of using Object and making callers cast.
+    rationale:
+        Generic types are safer and easier to use, and existing clients keep
+        working when a class is generified.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class Box {
+            private Object value;
+            public Object get() { return value; }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class Box<T> {
+            private T value;
+            public T get() { return value; }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [generics, type-safety]
+    source: https://www.informit.com/store/effective-java-9780134686097

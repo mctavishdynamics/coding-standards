@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgUsingStandardExceptionTypes9:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: using-standard-exception-types-9
+    title: Do not let public APIs throw runtime-reserved exceptions
+    statement:
+        Validate arguments so that public members never throw
+        NullReferenceException, AccessViolationException or
+        IndexOutOfRangeException, either directly or by accident.
+    rationale:
+        These are raised by the runtime and usually signal a bug, and they
+        leak implementation details that may change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public string GetLine(int number) => _lines[number];
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public string GetLine(int number)
+        {
+            if ((uint)number >= (uint)_lines.Length)
+                throw new ArgumentOutOfRangeException(nameof(number));
+            return _lines[number];
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, exceptions, exception-types, validation]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/using-standard-exception-types#nullreferenceexception-indexoutofrangeexception-and-accessviolationexception

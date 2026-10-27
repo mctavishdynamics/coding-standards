@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHeredocMethodCalls:
+    standard: @{RubyStyleGuide}
+    ruleId: heredoc-method-calls
+    title: Call methods on a heredoc from its opening line
+    statement:
+        When you call a method on a heredoc, attach the call to the opening
+        line rather than after the closing delimiter. RuboCop checks this
+        with Lint/HeredocMethodCallPosition.
+    rationale:
+        A call placed after the delimiter breaks easily when lines are added
+        or removed around it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        banner = <<~TEXT
+          Maintenance tonight
+        TEXT
+        .upcase
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        banner = <<~TEXT.upcase
+          Maintenance tonight
+        TEXT
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, heredocs, formatting]
+    source: https://rubystyle.guide/#heredoc-method-calls

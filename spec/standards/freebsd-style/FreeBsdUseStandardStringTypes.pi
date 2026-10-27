@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdUseStandardStringTypes:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-strings
+    title: Use std::string and std::string_view instead of char pointers
+    statement:
+        Manage strings with standard library string types rather than char
+        pointers. C types are fine at interfaces with C code.
+    rationale:
+        Standard strings track their length and memory, removing a class of
+        overflow and leak bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void set_name(const char *name);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void set_name(std::string_view name);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, strings, memory]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

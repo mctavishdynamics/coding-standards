@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEqualityOperators4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: equality-operators-4
+    title: Give value types equality operators when comparing them is meaningful
+    statement:
+        Define the equality and inequality operators on structs for which
+        comparing values is meaningful.
+    rationale:
+        Most languages provide no default equality operator for value types.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public readonly struct Rgb : IEquatable<Rgb>
+        {
+            /* ... */
+            public static bool operator ==(Rgb left, Rgb right) => left.Equals(right);
+            public static bool operator !=(Rgb left, Rgb right) => !left.Equals(right);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, equality, structs]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/equality-operators#equality-operators-on-value-types

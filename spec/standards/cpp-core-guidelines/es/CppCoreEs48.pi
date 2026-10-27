@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs48:
     standard: @{CppCoreGuidelines}
     ruleId: ES.48
-    title: Avoid casts
+    title: Keep casts to a minimum
     statement:
-        Write code that does not need casts. A cast should be rare and its
-        need should be a signal to reconsider the design.
+        Aim for designs that need no casts. If you find yourself writing
+        one, take that as a hint to revisit the types involved.
     rationale:
-        Casts are a well-known source of errors, defeat type checking and
-        make some optimizations unreliable.
+        A cast tells the compiler to stop checking, which is how many hard
+        bugs get in. Reinterpreting objects can also invalidate assumptions
+        the optimizer makes, giving undefined behavior.
     exceptions: null
     severity: null
     noncompliant:

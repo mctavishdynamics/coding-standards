@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleUtf8:
+    standard: @{RubyStyleGuide}
+    ruleId: utf-8
+    title: Save source files as UTF-8
+    statement:
+        Save Ruby source files in UTF-8. Since Ruby 2.0 this is the default
+        source encoding, so no magic encoding comment is needed.
+    rationale:
+        One shared encoding lets every tool and contributor read the file
+        the same way, and UTF-8 needs no extra declaration.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        # encoding: iso-8859-1
+        GREETING = "Ol\xE1"
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        GREETING = "Olá"
+        \\\
+        ```
+    languages: [ruby]
+    tags: [encoding, files]
+    source: https://rubystyle.guide/#utf-8

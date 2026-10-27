@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSlStr3:
     standard: @{CppCoreGuidelines}
     ruleId: SL.str.3
-    title: Use zstring or czstring to refer to a C-style, zero-terminated, sequence of characters
+    title: Mark pointers to null-terminated strings with zstring or czstring
     statement:
-        Mark parameters that point to zero-terminated strings with the GSL
-        zstring or czstring aliases instead of plain char pointers. Like
-        other plain pointers, they do not own.
+        Declare a pointer to a zero-terminated string as gsl::zstring
+        or gsl::czstring instead of a bare char pointer. Neither alias
+        owns its characters.
     rationale:
-        A plain char pointer may mean a single character, an array, a C
-        string or even a small integer. Naming the intent prevents
-        misunderstandings and a major class of bugs.
+        A bare char pointer could refer to one character, a raw array, a C string or
+        even a tiny integer. Naming the meaning removes guesswork and a large family
+        of bugs.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem9:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-9
+    title: Write type aliases with using
+    statement:
+        Declare type aliases with using, especially alias templates.
+    rationale:
+        Alias templates need no nested typedef and no typename at the point
+        of use, and the syntax reads naturally for function pointers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class T>
+        struct Table { typedef std::map<std::string, T> type; };
+        typename Table<T>::type rows;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T>
+        using Table = std::map<std::string, T>;
+        Table<T> rows;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [moving-to-modern-cpp, types, templates]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

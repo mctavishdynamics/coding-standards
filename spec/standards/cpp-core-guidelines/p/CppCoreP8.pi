@@ -5,18 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreP8:
     standard: @{CppCoreGuidelines}
     ruleId: P.8
-    title: Do not leak any resources
+    title: Release every resource you acquire
     statement:
-        Release every resource you acquire, such as memory, files, locks and
-        sockets, preferably by tying it to an object whose destructor
-        releases it.
+        Every acquired resource must be given back, whether it is memory, a file
+        handle, a lock or a socket. The simplest way is an owning object whose
+        destructor does the release.
     rationale:
-        Even slow leaks eventually exhaust a resource, which matters most in
-        long-running programs.
+        Small leaks add up. A server that runs for weeks will eventually run out
+        of the leaked resource and fail.
     exceptions:
-        Allocations held by long-lived objects need not be released
-        explicitly at shutdown; relying on the system to reclaim memory and
-        close files at process exit is acceptable.
+        Memory and handles owned by objects that live until the program ends may
+        be left for the operating system to reclaim at exit.
     severity: null
     noncompliant:
         ```cpp

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule162:
+    standard: @{AnssiC}
+    ruleId: rule-162
+    title: Use sizeof correctly
+    statement:
+        Do not put an assignment, a pointer dereference that matters, or a
+        pointer standing for an array inside sizeof. Remember it gives the
+        storage size, not the logical size.
+    rationale:
+        sizeof does not evaluate its operand, and applied to a pointer it
+        gives the pointer size, not the array size.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void clear(int arr[16]) {
+            memset(arr, 0, sizeof(arr)); /* size of a pointer */
+        }
+        size_t n = sizeof(x = 5);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void clear(int arr[16]) {
+            memset(arr, 0, 16U * sizeof(arr[0]));
+        }
+        x = 5;
+        size_t n = sizeof(x);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, memory, sizeof]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=130

@@ -5,15 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR11:
     standard: @{CppCoreGuidelines}
     ruleId: R.11
-    title: Avoid calling new and delete explicitly
+    title: Leave new and delete to owning types
     statement:
-        Do not write naked new and delete in ordinary code. Let a resource
-        handle such as a container or smart pointer do the allocation and
-        release.
+        Application code should not contain bare new and delete expressions.
+        Allocation and release belong to a container, a smart pointer or
+        another resource handle.
     rationale:
-        A pointer returned by new that lands in a plain pointer can be
-        leaked by an early return or an exception. Resource handles call
-        delete for you.
+        Every bare delete is something a reader has to verify on every path,
+        and a missing or doubled one is a bug that may surface only later.
+        Storing the result of new in a plain pointer means any early exit
+        leaks it.
     exceptions: null
     severity: null
     noncompliant:

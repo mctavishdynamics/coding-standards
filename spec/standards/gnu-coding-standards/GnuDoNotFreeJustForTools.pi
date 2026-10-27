@@ -1,0 +1,21 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDoNotFreeJustForTools:
+    standard: @{GnuCodingStandards}
+    ruleId: memory-usage-valgrind
+    title: Do not complicate code just to silence memory checkers
+    statement:
+        If memory stays in use until shortly before the process exits, do
+        not add code to free it only to quiet tools such as valgrind.
+    rationale:
+        The extra code adds complexity without benefit; the operating system
+        reclaims the memory anyway.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [c]
+    tags: [memory, tooling, simplicity]
+    source: https://www.gnu.org/prep/standards/standards.html#Memory-Usage

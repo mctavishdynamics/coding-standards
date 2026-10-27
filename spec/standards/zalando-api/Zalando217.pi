@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando217:
+    standard: @{ZalandoApi}
+    ruleId: 217
+    title: Use full absolute URIs for links
+    statement:
+        Always link to resources with full absolute URIs. Links to the same
+        API should use the scheme, host and port of the original request.
+    rationale:
+        Relative URIs need a known base and add work for clients, and
+        linking to another host can break authorization or network
+        reachability.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        { "customer": { "href": "/customers/c-90" } }
+        \\\
+        ```
+    compliant:
+        ```json
+        \\\
+        { "customer": { "href": "https://customers.example.com/customers/c-90" } }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, hypermedia, urls]
+    source: https://opensource.zalando.com/restful-api-guidelines/#217

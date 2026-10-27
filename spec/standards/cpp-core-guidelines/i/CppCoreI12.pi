@@ -5,13 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreI12:
     standard: @{CppCoreGuidelines}
     ruleId: I.12
-    title: Declare a pointer that must not be null as not_null
+    title: Mark parameters that may not be null with not_null
     statement:
-        When a pointer parameter or result must never be null, give it the
-        GSL type not_null.
+        Use the GSL not_null wrapper for a pointer parameter or return value
+        that must always point to something.
     rationale:
-        It prevents null dereference errors and removes redundant null
-        checks, because the guarantee is part of the type.
+        The type then carries the guarantee. Callers cannot pass null by
+        accident, and the callee need not test for it again.
     exceptions: null
     severity: null
     noncompliant:

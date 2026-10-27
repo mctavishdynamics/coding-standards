@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEventsAndCallbacks1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: events-and-callbacks-1
+    title: Consider callbacks for running user code inside the framework
+    statement:
+        Accept delegates when users need to plug their own logic into
+        something the framework does.
+    rationale:
+        Callbacks are a simple way to let users customize one step without
+        subclassing.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public IReadOnlyList<Order> Filter(Func<Order, bool> predicate) => _orders.Where(predicate).ToList();
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, extensibility, callbacks, delegates]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/events-and-callbacks

@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./Dijkstra import Dijkstra
+
+export coding-rule DijkstraEwd215AvoidGoTo:
+    standard: @{Dijkstra}
+    ruleId: EWD215-avoid-go-to
+    title: Use structured control flow instead of go to
+    statement:
+        Express control flow with conditionals, case selection, loops and
+        procedure calls rather than unrestricted jumps.
+    rationale:
+        With structured constructs, the point a computation has reached can
+        be described by the position in the text, the call stack and loop
+        counters. Free use of jumps destroys any such helpful description,
+        which makes the meaning of variables at a given moment very hard to
+        establish.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int find(const int *a, int n, int key) {
+            int i = 0;
+        again:
+            if (i >= n) goto missing;
+            if (a[i] == key) goto found;
+            i++;
+            goto again;
+        found:
+            return i;
+        missing:
+            return -1;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int find(const int *a, int n, int key) {
+            for (int i = 0; i < n; i++) {
+                if (a[i] == key)
+                    return i;
+            }
+            return -1;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [control-flow, structured-programming]
+    source: https://www.cs.utexas.edu/~EWD/transcriptions/EWD02xx/EWD215.html

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleMapFindSelectReduceIncludeSize:
+    standard: @{RubyStyleGuide}
+    ruleId: map-find-select-reduce-include-size
+    title: Prefer map, find, select, reduce, include? and size
+    statement:
+        Among the paired collection methods, prefer these names: map rather
+        than collect, find rather than detect, select rather than find_all,
+        reduce rather than inject, include? rather than member?, and size
+        rather than length. Use the other name only where it truly reads
+        more naturally. The RuboCop cop Style/CollectionMethods enforces
+        this.
+    rationale:
+        These names are more common across languages, and select pairs
+        naturally with reject.
+    exceptions:
+        An alias is acceptable when it makes a particular piece of code
+        clearer.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        names = users.collect(&:name)
+        admin = users.detect(&:admin?)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        names = users.map(&:name)
+        admin = users.find(&:admin?)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, naming]
+    source: https://rubystyle.guide/#map-find-select-reduce-include-size

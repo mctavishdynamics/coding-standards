@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule66:
+    standard: @{AnssiC}
+    ruleId: rule-66
+    title: State the type of every variable and avoid K and R declarations
+    statement:
+        Declare every variable explicitly with its type before use, and do
+        not write old-style function definitions with separate parameter
+        type lists.
+    rationale:
+        Implicit int and K and R syntax are obsolete, hide mistakes and
+        reduce what the compiler can check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static count = 0;
+        int scale(v, f) int v; int f; { return v * f; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int count = 0;
+        int scale(int v, int f) { return v * f; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, declarations, types]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=48

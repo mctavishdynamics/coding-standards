@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoNestedMethods:
+    standard: @{RubyStyleGuide}
+    ruleId: no-nested-methods
+    title: Do not define methods inside methods
+    statement:
+        Do not put a def inside another method; use a lambda for local
+        helper logic.
+    rationale:
+        A nested def defines a method on the enclosing class, not a local
+        one, and it is redefined each time the outer method runs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def report(rows)
+          def format_row(row) = row.join(', ')
+          rows.map { |row| format_row(row) }
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def report(rows)
+          format_row = ->(row) { row.join(', ') }
+          rows.map(&format_row)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, blocks]
+    source: https://rubystyle.guide/#no-nested-methods

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoFunctionGroupingAndOrdering:
+    standard: @{UberGo}
+    ruleId: function-grouping-and-ordering
+    title: Order functions by receiver and rough call order
+    statement:
+        Group functions by receiver and sort them roughly in call order. Put
+        type, const and var declarations first, then exported functions,
+        with a constructor after its type, and plain helpers near the end of
+        the file.
+    rationale:
+        A predictable layout lets readers find the main entry points first
+        and follow the code from top to bottom.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (s *Shop) checkout() {}
+
+        func calcTax(v int) int { return v / 5 }
+
+        type Shop struct{}
+
+        func NewShop() *Shop { return &Shop{} }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Shop struct{}
+
+        func NewShop() *Shop { return &Shop{} }
+
+        func (s *Shop) checkout() {}
+
+        func calcTax(v int) int { return v / 5 }
+        \\\
+        ```
+    languages: [go]
+    tags: [organization, functions]
+    source: https://github.com/uber-go/guide/blob/master/style.md#function-grouping-and-ordering

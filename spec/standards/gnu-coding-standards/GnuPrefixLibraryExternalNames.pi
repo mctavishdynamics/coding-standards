@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuPrefixLibraryExternalNames:
+    standard: @{GnuCodingStandards}
+    ruleId: libraries-name-prefix
+    title: Give every external library symbol a common prefix
+    statement:
+        Choose a prefix longer than two characters for the library and start
+        every external function and variable name with it. Put each external
+        symbol in its own source file unless two are always used together.
+    rationale:
+        A distinctive prefix prevents clashes with programs and other
+        libraries, and one symbol per file lets the linker pull in only what
+        is used.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int parse (const char *s);
+        int lookup (const char *key);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int cfgx_parse (const char *s);
+        int cfgx_lookup (const char *key);
+        \\\
+        ```
+    languages: [c]
+    tags: [libraries, naming, linkage]
+    source: https://www.gnu.org/prep/standards/standards.html#Libraries

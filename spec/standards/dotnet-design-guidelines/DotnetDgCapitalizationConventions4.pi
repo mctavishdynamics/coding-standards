@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgCapitalizationConventions4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: capitalization-conventions-4
+    title: Keep public names distinct beyond letter case
+    statement:
+        Two public names in the same scope must differ in more than their
+        capitalization, because not every .NET language distinguishes case.
+    rationale:
+        A case-insensitive language such as Visual Basic sees both names as
+        one and cannot call either reliably.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class Invoice
+        {
+            public decimal Total { get; }
+            public decimal total(decimal taxRate) => Total * (1 + taxRate);
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class Invoice
+        {
+            public decimal Total { get; }
+            public decimal TotalWithTax(decimal taxRate) => Total * (1 + taxRate);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, naming, capitalization, interoperability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/capitalization-conventions#case-sensitivity

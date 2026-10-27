@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem12:
+    standard: @{EffectiveCpp}
+    ruleId: item-12
+    title: Copy every member and every base in copying functions
+    statement:
+        A hand-written copy constructor or copy assignment must copy all
+        data members and invoke the base class copy operations. Share common
+        code through a private helper, not by calling one copying function
+        from the other.
+    rationale:
+        Compilers do not warn when a member or base is left out, so the copy
+        is silently partial.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Manager::Manager(const Manager& o)
+            : reports_(o.reports_) {}   // base Employee is default-built
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Manager::Manager(const Manager& o)
+            : Employee(o), reports_(o.reports_) {}
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors-destructors-assignment, special-members, inheritance]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

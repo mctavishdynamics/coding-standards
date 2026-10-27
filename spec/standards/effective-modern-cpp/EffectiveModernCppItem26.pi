@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem26:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-26
+    title: Keep forwarding-reference templates free of sibling overloads
+    statement:
+        Avoid providing overloads alongside a function template taking a
+        forwarding reference, and avoid forwarding constructors.
+    rationale:
+        The template matches almost everything more exactly than the other
+        overloads, including copy construction from non-const objects.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Person {
+        public:
+            template <class T> explicit Person(T&& name);
+            explicit Person(int id);
+        };
+        short id = 7;
+        Person p(id);   // picks the template
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Person {
+        public:
+            explicit Person(std::string name);
+            explicit Person(int id);
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [rvalue-references-move-semantics-forwarding, overloading, templates]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

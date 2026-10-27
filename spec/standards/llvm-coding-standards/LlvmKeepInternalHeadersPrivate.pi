@@ -1,0 +1,24 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmKeepInternalHeadersPrivate:
+    standard: @{LlvmCodingStandards}
+    ruleId: keep-internal-headers-private
+    title: Keep a module's internal interfaces out of its public header
+    statement:
+        When several .cpp files of a module share helper classes or
+        functions, put them in a private header next to those sources, not
+        in the public header.
+    rationale:
+        The internal interface stays private, and outside code cannot come
+        to depend on it.
+    exceptions:
+        Extra private or protected methods on a public class are fine in the
+        public header.
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [cpp]
+    tags: [headers, encapsulation]
+    source: https://llvm.org/docs/CodingStandards.html#keep-internal-headers-private

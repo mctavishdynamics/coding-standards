@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp110:
     standard: @{CppCoreGuidelines}
     ruleId: CP.110
-    title: Do not write your own double-checked locking for initialization
+    title: Leave lazy initialization locking to the language and library
     statement:
-        For one-time initialization, use a function-local static
-        or std::call_once instead of a hand-written double-checked locking
-        scheme.
+        Initialize shared data once with a function-local static or
+        with std::call_once. Do not build your own double-checked lock
+        for this.
     rationale:
-        Since C++11, local statics are initialized in a thread-safe way,
-        and std::call_once gives the same guarantee, so hand-rolled versions
-        only add risk.
+        The language has guaranteed thread-safe initialization of local statics
+        since C++11, and std::call_once offers the same. A home-made scheme only
+        adds a chance for races.
     exceptions: null
     severity: null
     noncompliant:

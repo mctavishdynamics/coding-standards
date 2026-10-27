@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation168:
+    standard: @{AnssiC}
+    ruleId: recommendation-168
+    title: Structure return codes
+    statement:
+        Design return codes so that callers can tell easily whether the call
+        failed, the kind of error, whether there is a warning and of what
+        kind, or whether it succeeded.
+    rationale:
+        A plain number often carries too little information; a structured
+        scheme such as bit masks keeps it readable.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        #define RC_OK          0x0000U
+        #define RC_ERROR       0x8000U
+        #define RC_WARNING     0x4000U
+        #define RC_KIND_IO     0x0001U
+        #define RC_KIND_PARSE  0x0002U
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, error-handling, api-design]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=137

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle19:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-19
+    title: Let the compiler compute object sizes
+    statement:
+        Use sizeof and similar language features to get sizes and element
+        counts instead of writing them as numbers.
+    rationale:
+        Computed sizes stay right when a type or array length changes.
+        Hard-coded ones silently go wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        double samples[256];
+        read_samples(fp, samples, 256);
+        memcpy(copy, samples, 256 * 8);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        double samples[256];
+        read_samples(fp, samples, sizeof samples / sizeof samples[0]);
+        memcpy(copy, samples, sizeof samples);
+        \\\
+        ```
+    languages: [any]
+    tags: [style, magic-numbers, sizeof]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

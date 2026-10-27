@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoUseTimeTimeForInstants:
+    standard: @{UberGo}
+    ruleId: use-timetime-for-instants-of-time
+    title: Represent points in time with time.Time
+    statement:
+        Use time.Time for instants, and use its methods to compare, add to
+        or subtract from them.
+    rationale:
+        Integers or strings for instants lose time zone and monotonic
+        information and invite comparison bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func isOpen(nowHour, openHour, closeHour int) bool {
+            return nowHour >= openHour && nowHour < closeHour
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func isOpen(now, opens, closes time.Time) bool {
+            return !now.Before(opens) && now.Before(closes)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [time, types]
+    source: https://github.com/uber-go/guide/blob/master/style.md#use-timetime-for-instants-of-time

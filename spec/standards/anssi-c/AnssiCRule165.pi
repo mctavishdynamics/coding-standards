@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule165:
+    standard: @{AnssiC}
+    ruleId: rule-165
+    title: Reset errno before and check it after library calls that set it
+    statement:
+        Clear errno to zero just before calling a standard function that may
+        change it, and read it right after the call.
+    rationale:
+        A stale errno from an earlier call can be taken for an error, or a
+        real error can be missed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        long v = strtol(text, NULL, 10);
+        if (v == LONG_MAX) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        errno = 0;
+        long v = strtol(text, NULL, 10);
+        if ((errno == ERANGE) && (v == LONG_MAX)) { /* ... */ }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, error-handling, errno]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=135

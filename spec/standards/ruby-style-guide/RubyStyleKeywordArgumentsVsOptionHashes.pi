@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleKeywordArgumentsVsOptionHashes:
+    standard: @{RubyStyleGuide}
+    ruleId: keyword-arguments-vs-option-hashes
+    title: Replace options hashes with keyword parameters
+    statement:
+        Accept named options as keyword arguments rather than a trailing
+        options hash.
+    rationale:
+        Keyword arguments are checked by Ruby, show the accepted names in
+        the signature and need no manual lookup or defaults.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def connect(host, options = {})
+          timeout = options.fetch(:timeout, 5)
+          ssl = options.fetch(:ssl, true)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def connect(host, timeout: 5, ssl: true)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, parameters, keyword-arguments]
+    source: https://rubystyle.guide/#keyword-arguments-vs-option-hashes

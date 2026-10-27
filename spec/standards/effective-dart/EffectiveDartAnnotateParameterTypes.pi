@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartAnnotateParameterTypes:
+    standard: @{EffectiveDart}
+    ruleId: do-annotate-parameter-types-on-function-declarations
+    title: Annotate parameter types on function declarations
+    statement:
+        Write a type for every parameter of a function declaration. Default
+        values do not infer an optional parameter's type.
+    rationale:
+        The parameter list is the function's boundary, and types make that
+        boundary explicit.
+    exceptions:
+        Function expressions and initializing formals follow their own
+        conventions.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        void resize(width, height, [scale = 1.0]) {}
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        void resize(int width, int height, [double scale = 1.0]) {}
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, types, parameters]
+    source: https://dart.dev/effective-dart/design#do-annotate-parameter-types-on-function-declarations

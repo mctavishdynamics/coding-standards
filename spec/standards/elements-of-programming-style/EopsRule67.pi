@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule67:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-67
+    title: Improve the algorithm rather than micro-tuning
+    statement:
+        When code is too slow, look for a better algorithm before fiddling
+        with individual statements.
+    rationale:
+        A better algorithm can give gains of orders of magnitude.
+        Statement-level tweaks rarely give more than a few percent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def has_duplicates(xs):
+            for i in range(len(xs)):
+                for j in range(i + 1, len(xs)):
+                    if xs[i] == xs[j]:
+                        return True
+            return False
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def has_duplicates(xs):
+            return len(set(xs)) != len(xs)
+        \\\
+        ```
+    languages: [any]
+    tags: [efficiency-and-instrumentation, algorithms, performance]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

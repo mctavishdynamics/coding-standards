@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdParseOptionsWithGetopt:
+    standard: @{OpenBsdStyle}
+    ruleId: getopt
+    title: Parse options with getopt, keep them sorted and check numbers
+    statement:
+        Use getopt(3) to parse options. Sort the options in the getopt
+        string and the switch unless cases cascade, mark cascading cases
+        with a FALLTHROUGH comment, and check numeric arguments for
+        validity.
+    rationale:
+        Consistent parsing and order make option handling predictable, and
+        validation catches bad input.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        case 't':
+                timeout = atoi(optarg);
+                break;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        case 't':
+                timeout = strtonum(optarg, 1, 3600, &errstr);
+                if (errstr != NULL)
+                        errx(1, "timeout is %s: %s", errstr, optarg);
+                break;
+        \\\
+        ```
+    languages: [c]
+    tags: [command-line, parsing, switch]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem24:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-24
+    title: Tell forwarding references apart from rvalue references
+    statement:
+        A parameter of the form T&& with deduced T, or auto&&, is a
+        forwarding reference that binds to anything. Any other T&& is an
+        rvalue reference.
+    rationale:
+        Applying the wrong cast to one of them either fails to move or moves
+        from caller lvalues.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class T>
+        void add(std::vector<T>&& items);   // not a forwarding reference
+        add(myItems);   // error
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T>
+        void add(T&& items);   // forwarding reference
+        \\\
+        ```
+    languages: [cpp]
+    tags: [rvalue-references-move-semantics-forwarding, move-semantics, templates]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

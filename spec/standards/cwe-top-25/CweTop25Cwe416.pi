@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe416:
+    standard: @{CweTop25}
+    ruleId: CWE-416
+    title: Prevent use after free
+    statement:
+        Finish every use of a block of memory before releasing it, and set
+        the pointer to NULL right after freeing it so stale use fails
+        loudly. Keep ownership of each allocation clear, and prefer
+        languages or abstractions that manage memory automatically.
+    rationale:
+        Freed memory is soon reused, so reading or writing through a stale
+        pointer corrupts other data and is a common path to code execution.
+        It is ranked 7 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        free(session);
+        log_info("closed session %d", session->id);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int id = session->id;
+        free(session);
+        session = NULL;
+        log_info("closed session %d", id);
+        \\\
+        ```
+    languages: [c]
+    tags: [rank-7, memory, pointers, lifetime]
+    source: https://cwe.mitre.org/data/definitions/416.html

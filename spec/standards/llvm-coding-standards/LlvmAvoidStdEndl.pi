@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmAvoidStdEndl:
+    standard: @{LlvmCodingStandards}
+    ruleId: avoid-std-endl
+    title: Write a newline character instead of std::endl
+    statement:
+        Use a plain newline character rather than std::endl.
+    rationale:
+        The endl manipulator also flushes the stream, which is almost never
+        needed and slows output.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        OS << "done" << std::endl;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        OS << "done\n";
+        \\\
+        ```
+    languages: [cpp]
+    tags: [streams, performance]
+    source: https://llvm.org/docs/CodingStandards.html#avoid-std-endl

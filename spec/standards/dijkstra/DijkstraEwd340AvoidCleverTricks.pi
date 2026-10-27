@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Dijkstra import Dijkstra
+
+export coding-rule DijkstraEwd340AvoidCleverTricks:
+    standard: @{Dijkstra}
+    ruleId: EWD340-avoid-clever-tricks
+    title: Stay away from clever tricks
+    statement:
+        Work with humility about the limits of your own mind, and avoid
+        clever tricks entirely.
+    rationale:
+        Tricks make programs harder to reason about, which is exactly what a
+        competent programmer, aware of those limits, cannot afford.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void swap(int *a, int *b) {
+            *a ^= *b;
+            *b ^= *a;
+            *a ^= *b;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void swap(int *a, int *b) {
+            int t = *a;
+            *a = *b;
+            *b = t;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [readability, simplicity]
+    source: https://www.cs.utexas.edu/~EWD/transcriptions/EWD03xx/EWD340.html

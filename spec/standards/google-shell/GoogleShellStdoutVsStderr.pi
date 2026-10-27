@@ -17,8 +17,8 @@ export coding-rule GoogleShellStdoutVsStderr:
     noncompliant:
         ```bash
         \\\
-        if ! cp "${src}" "${dest}"; then
-          echo "Copy failed"
+        if ! tar -czf "${archive}" "${dir}"; then
+          echo "Archive step failed"
           exit 1
         fi
         \\\
@@ -26,12 +26,12 @@ export coding-rule GoogleShellStdoutVsStderr:
     compliant:
         ```bash
         \\\
-        err() {
-          echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $*" >&2
+        log_error() {
+          printf '%s %s\n' "$(date -u +%FT%TZ)" "$*" >&2
         }
 
-        if ! cp "${src}" "${dest}"; then
-          err "Copy of ${src} failed"
+        if ! tar -czf "${archive}" "${dir}"; then
+          log_error "could not archive ${dir}"
           exit 1
         fi
         \\\

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleMagicCommentsFirst:
+    standard: @{RubyStyleGuide}
+    ruleId: magic-comments-first
+    title: Put magic comments before all code and documentation
+    statement:
+        Place magic comments at the top of a file, ahead of any code or
+        documentation comments; only a shebang may come before them. RuboCop
+        checks this with Lint/MisplacedMagicComment.
+    rationale:
+        Ruby reads magic comments only at the start of a file, so a magic
+        comment placed lower is silently ignored.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        # Parses shipping labels.
+
+        # frozen_string_literal: true
+        module LabelParser
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        # frozen_string_literal: true
+
+        # Parses shipping labels.
+        module LabelParser
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comments, magic-comments]
+    source: https://rubystyle.guide/#magic-comments-first

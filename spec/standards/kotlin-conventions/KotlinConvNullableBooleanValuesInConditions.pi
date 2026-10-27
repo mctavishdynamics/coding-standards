@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvNullableBooleanValuesInConditions:
+    standard: @{KotlinConventions}
+    ruleId: nullable-boolean-values-in-conditions
+    title: Compare nullable Booleans with true or false
+    statement:
+        When a condition uses a nullable Boolean, write an explicit
+        comparison such as value == true or value == false.
+    rationale:
+        The comparison states how null is treated and compiles where a bare
+        nullable value would not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        if (settings?.darkMode ?: false) applyDark()
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        if (settings?.darkMode == true) applyDark()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [null-safety, control-flow]
+    source: https://kotlinlang.org/docs/coding-conventions.html#nullable-boolean-values-in-conditions

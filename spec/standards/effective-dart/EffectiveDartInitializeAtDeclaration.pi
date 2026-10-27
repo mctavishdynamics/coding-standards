@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartInitializeAtDeclaration:
+    standard: @{EffectiveDart}
+    ruleId: do-initialize-fields-at-their-declaration-when-possible
+    title: Initialize fields where they are declared when possible
+    statement:
+        Give a field that does not depend on constructor parameters its
+        value in its declaration. A `late` field initializer may refer to
+        `this`.
+    rationale:
+        It takes less code and avoids repeating the value in every
+        constructor.
+    exceptions:
+        Fields that depend on constructor parameters, or that different
+        constructors set differently, are not covered.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Inbox {
+          final List<Message> messages;
+          Inbox() : messages = [];
+          Inbox.withCapacity(int n) : messages = [];
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Inbox {
+          final List<Message> messages = [];
+          Inbox();
+          Inbox.withCapacity(int n);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, classes, initialization]
+    source: https://dart.dev/effective-dart/usage#do-initialize-fields-at-their-declaration-when-possible

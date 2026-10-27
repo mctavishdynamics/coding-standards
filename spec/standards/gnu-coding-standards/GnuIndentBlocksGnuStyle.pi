@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuIndentBlocksGnuStyle:
+    standard: @{GnuCodingStandards}
+    ruleId: formatting-body-style
+    title: Indent braces and bodies in the GNU layout
+    statement:
+        Indent by two columns. Put the braces of a compound statement on
+        their own lines, indented two columns from the controlling
+        statement, and indent the body a further two columns.
+    rationale:
+        This is the layout GNU tools and indent produce by default, so code
+        stays uniform across GNU packages.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (n > limit) {
+            n = limit;
+            warn_user ();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (n > limit)
+          {
+            n = limit;
+            warn_user ();
+          }
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, indentation, braces]
+    source: https://www.gnu.org/prep/standards/standards.html#Formatting

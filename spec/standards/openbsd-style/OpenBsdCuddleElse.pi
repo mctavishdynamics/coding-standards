@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdCuddleElse:
+    standard: @{OpenBsdStyle}
+    ruleId: else-braces
+    title: Cuddle else between its surrounding braces
+    statement:
+        Write closing and opening braces on the same line as else. Unneeded
+        braces may be left out unless that causes a compiler warning.
+    rationale:
+        The compact form is the KNF convention and keeps chains short.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (fd == -1) {
+                warn("open");
+        }
+        else {
+                close(fd);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (fd == -1) {
+                warn("open");
+                nerrors++;
+        } else
+                close(fd);
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, braces]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

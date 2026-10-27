@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem113:
+    standard: @{EffectivePython}
+    ruleId: item-113
+    title: Compare floats in tests with assertAlmostEqual
+    statement:
+        Check floating point results with assertAlmostEqual, choosing places
+        or delta, rather than exact equality.
+    rationale:
+        Rounding makes exact comparisons of floats fail for results that are
+        correct.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        self.assertEqual(mean([0.1, 0.2]), 0.15)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        self.assertAlmostEqual(mean([0.1, 0.2]), 0.15, places=9)
+        \\\
+        ```
+    languages: [python]
+    tags: [testing-and-debugging, testing, numbers]
+    source: https://effectivepython.com/

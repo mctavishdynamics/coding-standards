@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleVisibility:
+    standard: @{RubyStyleGuide}
+    ruleId: visibility
+    title: Give methods the visibility they need
+    statement:
+        Mark methods private or protected according to how they are meant to
+        be used instead of leaving everything public by default.
+    rationale:
+        A small public interface is easier to understand and leaves
+        internals free to change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Exporter
+          def run = write(rows)
+          def write(rows) = File.write(path, rows.join)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Exporter
+          def run = write(rows)
+
+          private
+
+          def write(rows) = File.write(path, rows.join)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, visibility, encapsulation]
+    source: https://rubystyle.guide/#visibility

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSquigglyHeredocs:
+    standard: @{RubyStyleGuide}
+    ruleId: squiggly-heredocs
+    title: Use squiggly heredocs for indented text
+    statement:
+        Write indented multi-line strings with the squiggly heredoc
+        introduced in Ruby 2.3. RuboCop checks this with
+        Layout/HeredocIndentation.
+    rationale:
+        The squiggly heredoc strips the common indentation, so the text can
+        follow the code's indentation without helper methods.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+            template = <<-HTML
+        <p>Hello</p>
+        <p>Goodbye</p>
+            HTML
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        template = <<~HTML
+          <p>Hello</p>
+          <p>Goodbye</p>
+        HTML
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, heredocs]
+    source: https://rubystyle.guide/#squiggly-heredocs

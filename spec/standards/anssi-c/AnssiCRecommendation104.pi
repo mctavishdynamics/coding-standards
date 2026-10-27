@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation104:
+    standard: @{AnssiC}
+    ruleId: recommendation-104
+    title: Do not use unions
+    statement:
+        Avoid storing different types in the same memory with unions. If one
+        is truly needed, for example to parse a network frame, check the
+        active type by other means and justify it in a comment.
+    rationale:
+        Reading a member other than the last one written gives unspecified
+        results and invites type confusion.
+    exceptions:
+        Necessary cases such as frame parsing, where the type is verified
+        separately and a comment justifies the union.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        union value { int32_t i; float f; };
+        union value v;
+        v.f = 1.5f;
+        int32_t bits = v.i;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        float f = 1.5f;
+        int32_t bits = 0;
+        memcpy(&bits, &f, sizeof bits);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, structs, types]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=83

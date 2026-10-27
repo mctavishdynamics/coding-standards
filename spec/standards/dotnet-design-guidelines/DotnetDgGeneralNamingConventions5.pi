@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgGeneralNamingConventions5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: general-naming-conventions-5
+    title: Avoid names that are keywords in common languages
+    statement:
+        Steer clear of identifiers that are reserved words in widely used
+        .NET languages.
+    rationale:
+        Languages offer an escape for such names, like the @ prefix in C#,
+        but every caller is then stuck writing the escaped form.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Archive(string @namespace, bool @fixed) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Archive(string folderName, bool isPinned) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, naming, interoperability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/general-naming-conventions#word-choice

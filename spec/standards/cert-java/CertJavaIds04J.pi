@@ -21,23 +21,27 @@ export coding-rule CertJavaIds04J:
     noncompliant:
         ```java
         \\\
-        ZipEntry entry;
-        while ((entry = zis.getNextEntry()) != null) {
-            File out = new File(destDir, entry.getName());
-            Files.copy(zis, out.toPath());
+        try (ZipInputStream archive = new ZipInputStream(upload)) {
+            for (ZipEntry e; (e = archive.getNextEntry()) != null; ) {
+                Path target = Paths.get(unpackRoot, e.getName());
+                Files.copy(archive, target);
+            }
         }
         \\\
         ```
     compliant:
         ```java
         \\\
-        ZipEntry entry;
-        int count = 0;
-        while ((entry = zis.getNextEntry()) != null) {
-            if (++count > MAX_ENTRIES) throw new IOException("Too many entries");
-            Path out = destDir.resolve(entry.getName()).normalize();
-            if (!out.startsWith(destDir)) throw new IOException("Bad entry path");
-            copyWithLimit(zis, out, MAX_ENTRY_BYTES);
+        try (ZipInputStream archive = new ZipInputStream(upload)) {
+            Path root = Paths.get(unpackRoot).toRealPath();
+            int seen = 0;
+            long written = 0;
+            for (ZipEntry e; (e = archive.getNextEntry()) != null; ) {
+                if (++seen > ENTRY_LIMIT) throw new ZipException("too many");
+                Path target = root.resolve(e.getName()).normalize();
+                if (!target.startsWith(root)) throw new ZipException("escape");
+                written += copyBounded(archive, target, BYTE_LIMIT - written);
+            }
         }
         \\\
         ```

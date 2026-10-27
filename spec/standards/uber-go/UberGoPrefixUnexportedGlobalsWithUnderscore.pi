@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoPrefixUnexportedGlobalsWithUnderscore:
+    standard: @{UberGo}
+    ruleId: prefix-unexported-globals-with-_
+    title: Prefix unexported package-level names with an underscore
+    statement:
+        Start unexported top-level variables and constants with an
+        underscore so that uses of them are clearly global.
+    rationale:
+        Package-level names are visible in every file of the package, and a
+        generic name is easy to use by mistake elsewhere.
+    exceptions:
+        Unexported error values use the err prefix without an underscore.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        const timeout = 5 * time.Second
+
+        func dial() (net.Conn, error) {
+            return net.DialTimeout("tcp", addr, timeout)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        const _timeout = 5 * time.Second
+
+        func dial() (net.Conn, error) {
+            return net.DialTimeout("tcp", addr, _timeout)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [naming, globals]
+    source: https://github.com/uber-go/guide/blob/master/style.md#prefix-unexported-globals-with-_

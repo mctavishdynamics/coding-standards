@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem37:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-37
+    title: Join or detach every thread on every exit path
+    statement:
+        Join or detach each thread before its object is destroyed, using a
+        RAII wrapper so that early returns and exceptions are covered.
+    rationale:
+        Destroying a joinable thread terminates the program.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void run() {
+            std::thread t(work);
+            if (!ready()) return;   // terminate
+            t.join();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void run() {
+            std::jthread t(work);   // joins in destructor
+            if (!ready()) return;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [the-concurrency-api, concurrency, raii]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

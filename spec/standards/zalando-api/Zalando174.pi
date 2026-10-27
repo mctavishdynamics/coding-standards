@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando174:
+    standard: @{ZalandoApi}
+    ruleId: 174
+    title: Use common field names and semantics
+    statement:
+        Use the shared field names wherever they apply, such as id for an
+        opaque string identity, a name ending in _id for references to other
+        objects, and the standard names for timestamps, ETags and similar
+        fields.
+    rationale:
+        Common fields make APIs consistent and easier to understand for
+        every consumer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        { "id": 4471, "partner_number": "P-12", "parent": "N-3" }
+        \\\
+        ```
+    compliant:
+        ```json
+        \\\
+        { "id": "so-4471", "partner_id": "P-12", "parent_node_id": "N-3" }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, json, naming]
+    source: https://opensource.zalando.com/restful-api-guidelines/#174

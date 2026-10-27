@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSerialization8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: serialization-8
+    title: Consider serialization callbacks to initialize deserialized objects
+    statement:
+        Put initialization that normally runs in a constructor into a
+        callback such as an OnDeserialized method.
+    rationale:
+        Deserialization usually does not call constructors, so that setup
+        would otherwise be skipped.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        [DataContract]
+        public class Basket
+        {
+            [DataMember] private List<Item> _items;
+            private Dictionary<string, Item> _bySku;
+
+            [OnDeserialized]
+            private void Rebuild(StreamingContext context) => _bySku = _items.ToDictionary(i => i.Sku);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, usage, serialization, initialization]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/serialization#supporting-data-contract-serialization

@@ -5,19 +5,21 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCorePer7:
     standard: @{CppCoreGuidelines}
     ruleId: Per.7
-    title: Design to enable optimization
+    title: Shape designs so they can be optimized later
     statement:
-        Shape interfaces so that a better implementation can be swapped in
-        later. Pass enough information through the interface (types, sizes,
-        comparison criteria), prefer compact data, use conventional argument
-        passing, and wrap messy legacy code behind an interface of your own.
+        Design interfaces that leave room for a faster implementation later.
+        Give them enough information, such as the element type, the size and
+        the comparison to use. Prefer compact data, pass arguments in the
+        usual ways, and hide awkward legacy code behind an interface you
+        control.
     rationale:
-        Designs nearly always need tuning later, and an interface that
-        throws information away, such as one taking untyped memory, is hard
-        to change and starves the compiler of what it needs to optimize.
+        Initial designs almost always need performance work at some point.
+        An interface that discards information, like one working on untyped
+        memory, is hard to evolve and denies the compiler what it needs to
+        optimize.
     exceptions:
-        One-off implementation details do not need a stable,
-        optimization-ready interface.
+        Code that is purely a one-off implementation detail does not need
+        this kind of forward-looking interface.
     severity: null
     noncompliant:
         ```cpp

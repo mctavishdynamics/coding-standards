@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiStickToEstablishedMeaning:
+    standard: @{SwiftApiDesign}
+    ruleId: stick-to-established-meaning
+    title: Use a term of art only in its accepted sense
+    statement:
+        If you use a technical term, use it strictly with the meaning it
+        already has in its field.
+    rationale:
+        A term of art is only worth using for its precision, and redefining
+        it throws that precision away.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        // "map" here mutates the array in place and returns nothing.
+        mutating func map(_ change: (inout Element) -> Void)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        mutating func updateEach(_ change: (inout Element) -> Void)
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, terminology]
+    source: https://www.swift.org/documentation/api-design-guidelines/#stick-to-established-meaning

@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoReceiversAndInterfaces:
+    standard: @{UberGo}
+    ruleId: receivers-and-interfaces
+    title: Choose receivers knowing which types satisfy an interface
+    statement:
+        Remember that value-receiver methods can be called on values and
+        pointers, while pointer-receiver methods need a pointer or an
+        addressable value. A pointer type satisfies an interface through
+        value-receiver methods, but a plain value does not get
+        pointer-receiver methods.
+    rationale:
+        Mixing up method sets leads to compile errors when storing values in
+        interfaces, or to methods that silently modify a copy.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Counter struct{ n int }
+
+        func (c *Counter) Inc() { c.n++ }
+
+        type Incrementer interface{ Inc() }
+
+        var _ Incrementer = Counter{} // does not compile
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Counter struct{ n int }
+
+        func (c *Counter) Inc() { c.n++ }
+
+        type Incrementer interface{ Inc() }
+
+        var _ Incrementer = &Counter{}
+        \\\
+        ```
+    languages: [go]
+    tags: [interfaces, methods, receivers]
+    source: https://github.com/uber-go/guide/blob/master/style.md#receivers-and-interfaces

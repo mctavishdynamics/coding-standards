@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuUseHighLevelSystemInterfaces:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-high-level-interfaces
+    title: Use high-level interfaces instead of raw system data structures
+    statement:
+        Avoid reading directory files, utmp, kernel memory layouts or
+        similar internal structures directly; use readdir and other
+        high-level interfaces.
+    rationale:
+        Low-level formats differ between systems, while the high-level calls
+        are supported compatibly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fd = open (dir, O_RDONLY);
+        read (fd, &raw_entry, sizeof raw_entry);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        DIR *d = opendir (dir);
+        struct dirent *e;
+        while ((e = readdir (d)) != NULL)
+          list_entry (e->d_name);
+        closedir (d);
+        \\\
+        ```
+    languages: [c]
+    tags: [portability, system-calls]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExceptionThrowing8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: exception-throwing-8
+    title: Do not return exceptions from public members
+    statement:
+        Throw exceptions rather than handing them back as a return value or
+        out parameter.
+    rationale:
+        Returned exceptions lose the advantages of exception handling, such
+        as not being ignorable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Exception Validate(Order order) { /* returns null when valid */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Validate(Order order) { /* throws when invalid */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, exceptions, api-design]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/exception-throwing

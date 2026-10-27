@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ClosureKeywordSpacing:
+    standard: @{Psr12}
+    ruleId: 7a
+    title: Space the function and use keywords of closures
+    statement:
+        In a closure declaration, follow the function keyword by one space,
+        and leave one space before and one after the use keyword.
+    rationale:
+        The spacing separates the keywords from the lists they introduce and
+        matches control structures.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        $format = function($amount)use($currency) {
+            return $currency . $amount;
+        };
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        $format = function ($amount) use ($currency) {
+            return $currency . $amount;
+        };
+        \\\
+        ```
+    languages: [php]
+    tags: [closures, whitespace]
+    source: https://www.php-fig.org/psr/psr-12/#7-closures

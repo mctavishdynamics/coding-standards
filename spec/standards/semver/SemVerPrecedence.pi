@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./SemVer import SemVer
+
+export coding-rule SemVerPrecedence:
+    standard: @{SemVer}
+    ruleId: 11
+    title: Compare versions by major, minor, patch and then pre-release
+    statement:
+        Order versions by comparing major, minor and patch numerically from
+        left to right, leaving build metadata out. When those match, a pre-
+        release ranks below the normal version. Two pre-releases are
+        compared identifier by identifier: digits-only identifiers
+        numerically, others in ASCII order, numeric below alphanumeric, and
+        a longer list above a shorter one when all earlier identifiers are
+        equal.
+    rationale:
+        One shared ordering lets package managers pick the same latest
+        version for everyone.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        2.10.0 < 2.9.0              compared as text
+        3.0.0-rc.10 < 3.0.0-rc.9    compared as text
+        3.0.0 < 3.0.0-rc.1
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        2.9.0 < 2.10.0
+        3.0.0-alpha < 3.0.0-alpha.2 < 3.0.0-alpha.dev < 3.0.0-rc.9 < 3.0.0-rc.10 < 3.0.0
+        \\\
+        ```
+    languages: [any]
+    tags: [versioning, precedence]
+    source: https://semver.org/#semantic-versioning-specification-semver

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe787:
+    standard: @{CweTop25}
+    ruleId: CWE-787
+    title: Prevent out-of-bounds writes
+    statement:
+        Check every index, offset and length against the real size of the
+        destination before writing, including inside loops. Prefer memory-
+        safe languages or bounds-checked libraries, and enable compiler and
+        platform defences such as FORTIFY_SOURCE, stack canaries and address
+        randomization as a backstop.
+    rationale:
+        Writing past a buffer corrupts neighbouring memory, which can crash
+        the program or let an attacker take control of it. It is ranked 5 of
+        25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void count_bucket(unsigned *hist, size_t len, int bucket) {
+            hist[bucket]++;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int count_bucket(unsigned *hist, size_t len, int bucket) {
+            if (bucket < 0 || (size_t)bucket >= len) {
+                return -1;
+            }
+            hist[bucket]++;
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rank-5, memory, bounds-checking]
+    source: https://cwe.mitre.org/data/definitions/787.html

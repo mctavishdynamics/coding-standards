@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEnum13:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: enum-13
+    title: Consider named members for common flag combinations
+    statement:
+        Add members that stand for frequently used combinations of flags.
+    rationale:
+        Callers can then handle common cases without having to write bitwise
+        expressions.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        [Flags]
+        public enum Borders
+        {
+            None = 0, Top = 1, Right = 2, Bottom = 4, Left = 8,
+            All = Top | Right | Bottom | Left
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, type-design, enums, flags]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/enum#designing-flag-enums

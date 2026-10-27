@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNounPhraseForPropertyDocs:
+    standard: @{EffectiveDart}
+    ruleId: prefer-starting-a-non-boolean-variable-or-property-comment-with-a-noun-phrase
+    title: Start docs of non-boolean properties with a noun phrase
+    statement:
+        Describe a non-boolean variable or property, including a computed
+        getter, by what it is, opening with a noun phrase.
+    rationale:
+        Callers care about the value, not about the work a getter does to
+        produce it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        /// Calculates and returns how much has been paid so far.
+        double get amountPaid => _payments.fold(0, (a, p) => a + p.amount);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// The total of all payments received so far.
+        double get amountPaid => _payments.fold(0, (a, p) => a + p.amount);
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, documentation, properties]
+    source: https://dart.dev/effective-dart/documentation#prefer-starting-a-non-boolean-variable-or-property-comment-with-a-noun-phrase

@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR22:
     standard: @{CppCoreGuidelines}
     ruleId: R.22
-    title: Use make_shared to make shared_ptrs
+    title: Create shared_ptr objects with make_shared
     statement:
-        Create shared_ptr objects with std::make_shared rather than by
-        passing the result of new to the shared_ptr constructor.
+        Build a shared_ptr with std::make_shared instead of wrapping the
+        result of a new expression.
     rationale:
-        make_shared is shorter, can put the reference counts in the same
-        allocation as the object, and is exception safe in complex
-        expressions in pre-C++17 code.
+        The type appears only once, so the line is shorter. The library can
+        also place the reference count in the same block of memory as the
+        object. In code older than C++17 it also kept compound expressions
+        from leaking.
     exceptions: null
     severity: null
     noncompliant:

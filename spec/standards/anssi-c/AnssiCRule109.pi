@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule109:
+    standard: @{AnssiC}
+    ruleId: rule-109
+    title: Use parentheses to show the order of evaluation
+    statement:
+        Wrap sub-expressions in parentheses so the order of evaluation is
+        explicit and does not depend on remembering precedence.
+    rationale:
+        Precedence mistakes are common and silent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        mask = flags & 0x0F << shift;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        mask = flags & (0x0FU << shift);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, operator-precedence, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=87

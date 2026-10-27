@@ -9,9 +9,10 @@ export coding-rule CertCCon01C:
         Acquire and release synchronization primitives in the same module,
         at the same level of abstraction
     statement:
-        Lock and unlock a mutex in the same module and at the same level of
-        abstraction, ideally in the same function. Do not lock in one
-        function and rely on another to unlock.
+        Keep each mutex lock paired with its unlock inside one module and
+        one layer of the design, and preferably inside one function. A
+        function that takes a lock should not leave it for some other
+        function to give back.
     rationale:
         When the unlock is far from the lock, an early return or error path
         easily skips it, causing deadlocks, double unlocks or race

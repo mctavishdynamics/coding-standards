@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando159:
+    standard: @{ZalandoApi}
+    ruleId: 159
+    title: Support pagination
+    statement:
+        Paginate every list that may grow beyond a few hundred entries,
+        using the standard pagination query parameters.
+    rationale:
+        Pagination protects the service from overload and lets clients
+        process large collections step by step.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /orders
+        # returns all 2.4 million orders
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /orders?limit=50
+        \\\
+        ```
+    languages: [any]
+    tags: [must, pagination]
+    source: https://opensource.zalando.com/restful-api-guidelines/#159

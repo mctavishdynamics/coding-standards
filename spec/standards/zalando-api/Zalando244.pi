@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando244:
+    standard: @{ZalandoApi}
+    ruleId: 244
+    title: Use content negotiation for alternative representations
+    statement:
+        When a resource is available in several representations at the same
+        URL, such as JSON and PDF, let clients choose through the Accept,
+        Accept-Language and Accept-Encoding headers, using standard media
+        types.
+    rationale:
+        Content negotiation is the HTTP way to choose a representation, so
+        no extra URLs or parameters are needed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /invoices/INV-1042?output=pdf
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /invoices/INV-1042 HTTP/1.1
+        Accept: application/pdf
+        Accept-Language: de-DE
+        \\\
+        ```
+    languages: [any]
+    tags: [should, http, content-negotiation]
+    source: https://opensource.zalando.com/restful-api-guidelines/#244

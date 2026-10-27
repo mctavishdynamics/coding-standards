@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoCharacterLiterals:
+    standard: @{RubyStyleGuide}
+    ruleId: no-character-literals
+    title: Write single characters as ordinary strings
+    statement:
+        Write a one-character string with ordinary quotes rather than the
+        question-mark character literal. RuboCop checks this with
+        Style/CharacterLiteral.
+    rationale:
+        Since Ruby 1.9 the character literal is just a one-character string,
+        so the special syntax only adds confusion.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        separator = ?;
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        separator = ';'
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, literals]
+    source: https://rubystyle.guide/#no-character-literals

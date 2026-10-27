@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem87:
+    standard: @{EffectiveJava}
+    ruleId: item-87
+    title: Design a custom serialized form when the default does not fit
+    statement:
+        Accept the default serialized form only if it matches the logical
+        content of the object. Otherwise write writeObject and readObject,
+        mark other fields transient and declare a serialVersionUID.
+    rationale:
+        The default form exposes the physical representation, can be slow
+        and large, and can overflow the stack for linked structures.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public final class Names implements Serializable {
+            private Node head; // linked list serialised node by node
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public final class Names implements Serializable {
+            private static final long serialVersionUID = 1L;
+            private transient List<String> names = new ArrayList<>();
+
+            private void writeObject(ObjectOutputStream stream) throws IOException {
+                stream.defaultWriteObject();
+                stream.writeObject(names.toArray(new String[0]));
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization]
+    source: https://www.informit.com/store/effective-java-9780134686097

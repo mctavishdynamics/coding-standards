@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem90:
+    standard: @{EffectiveJava}
+    ruleId: item-90
+    title: Serialize through a proxy class instead of the object itself
+    statement:
+        For a serializable class that clients cannot extend, write a private
+        static nested proxy that holds the logical state, have writeReplace
+        return it and have its readResolve rebuild the object with public
+        constructors.
+    rationale:
+        The proxy keeps deserialization going through normal constructors,
+        so invariants are checked and forged streams cannot break them.
+    exceptions:
+        It does not work for classes clients can extend or for object graphs
+        with cycles, and it costs a little speed.
+    severity: null
+    noncompliant: null
+    compliant:
+        ```java
+        \\\
+        private Object writeReplace() { return new Proxy(this); }
+
+        private static final class Proxy implements Serializable {
+            private final long start, end;
+            Proxy(Span s) { start = s.start; end = s.end; }
+            private Object readResolve() { return new Span(start, end); }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, security]
+    source: https://www.informit.com/store/effective-java-9780134686097

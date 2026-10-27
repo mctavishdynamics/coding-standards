@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvSourceFileNames:
+    standard: @{KotlinConventions}
+    ruleId: source-file-names
+    title: Name files after their single class or their contents
+    statement:
+        A file holding one class or interface, plus related top-level
+        declarations, takes the class name with a .kt extension. A file with
+        several classes or only top-level declarations gets an
+        UpperCamelCase name that describes its contents, avoiding empty
+        words such as Util.
+    rationale:
+        File names that match or describe their contents make code easy to
+        locate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        // File: Utils.kt
+        fun Money.format(): String = TODO()
+        fun Money.round(): Money = TODO()
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        // File: MoneyFormatting.kt
+        fun Money.format(): String = TODO()
+        fun Money.round(): Money = TODO()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [naming, files]
+    source: https://kotlinlang.org/docs/coding-conventions.html#source-file-names

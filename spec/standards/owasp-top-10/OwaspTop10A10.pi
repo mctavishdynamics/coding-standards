@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./OwaspTop10 import OwaspTop10
+
+export coding-rule OwaspTop10A10:
+    standard: @{OwaspTop10}
+    ruleId: A10:2025
+    title: Prevent mishandling of exceptional conditions
+    statement:
+        Plan for failure, catch errors where they happen and handle them in
+        a meaningful way, and roll back a whole transaction when any part of
+        it fails so the system fails closed. Add rate limits, quotas and
+        throttling, validate input strictly, and use one central place for
+        error handling, logging, monitoring and alerting with a global
+        exception handler.
+    rationale:
+        Unhandled or half-handled errors leave systems in inconsistent
+        states, leak details and open the door to denial of service and
+        logic abuse. It is the tenth category in the OWASP Top 10 for 2025.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def transfer(src, dst, amount):
+            try:
+                debit(src, amount)
+                credit(dst, amount)
+            except Exception:
+                pass
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def transfer(src, dst, amount):
+            with db.transaction():  # rolls back both steps on any error
+                debit(src, amount)
+                credit(dst, amount)
+        \\\
+        ```
+    languages: [any]
+    tags: [rank-10, error-handling, fail-secure, resilience]
+    source: https://owasp.org/Top10/2025/A10_2025-Mishandling_of_Exceptional_Conditions/

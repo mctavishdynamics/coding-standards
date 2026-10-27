@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs34:
     standard: @{CppCoreGuidelines}
     ruleId: ES.34
-    title: Don't define a C-style variadic function
+    title: Do not write variadic functions in the C style
     statement:
-        Do not write functions that take an ellipsis parameter. Use variadic
-        templates, initializer lists or overloading instead.
+        Avoid writing functions with a C-style ellipsis parameter. Use a
+        variadic template, an initializer_list or a set of overloads.
     rationale:
-        C-style variadic functions are not type safe and need messy casts
-        and va_arg macros to work.
+        Arguments passed through an ellipsis lose their types, so the
+        compiler cannot check them. Reading them back needs va_arg and
+        casts, and a wrong guess about a type is undefined behavior.
     exceptions: null
     severity: null
     noncompliant:

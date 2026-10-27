@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustMemIntofromrawalways:
+    standard: @{AnssiRust}
+    ruleId: MEM-INTOFROMRAWALWAYS
+    title: Pair every into_raw with a from_raw
+    statement:
+        Whenever into_raw or into_non_null hands out a pointer from a Box, Rc,
+        Arc, one of their Weak types, a CString or an OsString, convert it
+        back later with the corresponding from_raw so the owner releases the
+        memory.
+    rationale:
+        into_raw hands ownership to the raw pointer; without from_raw
+        nothing ever drops the value and it leaks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        let raw = CString::new("hello")?.into_raw();
+        unsafe { c_log(raw) };
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        let raw = CString::new("hello")?.into_raw();
+        unsafe {
+            c_log(raw);
+            drop(CString::from_raw(raw));
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, memory, pointers, ffi]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/memory.html#MEM-INTOFROMRAWALWAYS

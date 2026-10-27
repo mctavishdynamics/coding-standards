@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF44:
     standard: @{CppCoreGuidelines}
     ruleId: F.44
-    title: Return a T& when copy is undesirable and returning no object is not needed
+    title: Return a reference when a copy is unwanted and a result always exists
     statement:
-        Return a reference when the caller should access an existing object
-        without copying it and there is always an object to return. The
-        reference must not imply ownership.
+        Return T& when the caller should work with an existing object directly,
+        without a copy, and the function always has an object to return. The
+        reference must not suggest the caller now owns it.
     rationale:
-        A reference always refers to an object, so the caller does not need
-        a nullptr check.
+        A reference cannot be null, so callers can use the result without
+        checking for nullptr.
     exceptions: null
     severity: null
     noncompliant:

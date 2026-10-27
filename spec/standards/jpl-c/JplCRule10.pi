@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule10:
+    standard: @{JplC}
+    ruleId: rule-10
+    title: Guard memory so that stray writes are detected
+    statement:
+        Use the operating system's memory protection as fully as possible.
+        Where it is not available, surround stacks, buffers and critical
+        parameters with safety margins filled with a known bit pattern so
+        violations can be detected.
+    rationale:
+        A health task that checks the guard patterns regularly can catch
+        stack overflows, buffer overruns and stray writes that would
+        otherwise corrupt data silently.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static uint32_t task_stack[STACK_WORDS];
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define GUARD_WORD 0xDEADC0DEu
+
+        static uint32_t task_stack[STACK_WORDS + GUARD_WORDS];
+
+        int stack_guard_intact(void) {
+            for (int i = 0; i < GUARD_WORDS; i++) {
+                if (task_stack[i] != GUARD_WORD) {
+                    return 0;
+                }
+            }
+            return 1;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-2, memory, memory-protection]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

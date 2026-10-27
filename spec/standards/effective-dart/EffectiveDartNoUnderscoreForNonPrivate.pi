@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoUnderscoreForNonPrivate:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-a-leading-underscore-for-identifiers-that-arent-private
+    title: Keep leading underscores for private declarations only
+    statement:
+        Do not start the name of a local variable, parameter, local function
+        or import prefix with an underscore.
+    rationale:
+        In Dart a leading underscore means library-private. Locals and
+        prefixes have no privacy, so the underscore sends a false signal.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        int total(List<int> _values) {
+          var _sum = 0;
+          for (final v in _values) _sum += v;
+          return _sum;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        int total(List<int> values) {
+          var sum = 0;
+          for (final v in values) sum += v;
+          return sum;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, naming, privacy]
+    source: https://dart.dev/effective-dart/style#dont-use-a-leading-underscore-for-identifiers-that-arent-private

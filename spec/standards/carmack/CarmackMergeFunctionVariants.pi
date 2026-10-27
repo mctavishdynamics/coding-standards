@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackMergeFunctionVariants:
+    standard: @{Carmack}
+    ruleId: merge-function-variants
+    title: Merge variants of a function into one with extra parameters
+    statement:
+        Replace a family of near-identical functions with one function, and
+        let added parameters, often with default values, select the
+        differences.
+    rationale:
+        One function keeps the behaviour in a single place, so the variants
+        cannot drift apart.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void DrawText(const char* s);
+        void DrawTextColored(const char* s, Color c);
+        void DrawTextScaled(const char* s, Color c, float scale);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void DrawText(const char* s, Color c = Color::White, float scale = 1.0f);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, duplication]
+    source: http://number-none.com/blow/john_carmack_on_inlined_code.html

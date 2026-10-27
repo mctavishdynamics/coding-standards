@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem19:
+    standard: @{EffectivePython}
+    ruleId: item-19
+    title: Skip the else clause that loops allow after their body
+    statement:
+        Do not use the else block after a loop. Put the search in a helper
+        function that returns early instead.
+    rationale:
+        The else runs when the loop finishes without break, the opposite of
+        what many readers expect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        for user in users:
+            if user.is_admin:
+                break
+        else:
+            raise LookupError("no admin")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def find_admin(users):
+            for user in users:
+                if user.is_admin:
+                    return user
+            raise LookupError("no admin")
+        \\\
+        ```
+    languages: [python]
+    tags: [loops-and-iterators, loops, readability]
+    source: https://effectivepython.com/

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem21:
+    standard: @{EffectiveCpp}
+    ruleId: item-21
+    title: Return a new object by value when that is what the function produces
+    statement:
+        When a function computes a fresh result, return it by value rather
+        than returning a reference or pointer to a local, a heap object or a
+        static.
+    rationale:
+        Each alternative either dangles, leaks or breaks when the function
+        is called twice in one expression.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        const Money& operator+(const Money& a, const Money& b) {
+            Money sum(a.cents() + b.cents());
+            return sum;   // dangling
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Money operator+(const Money& a, const Money& b) {
+            return Money(a.cents() + b.cents());
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [designs-and-declarations, functions, lifetime]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

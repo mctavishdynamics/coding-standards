@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC82:
     standard: @{CppCoreGuidelines}
     ruleId: C.82
-    title: Do not call virtual functions in constructors and destructors
+    title: Avoid virtual calls during construction and destruction
     statement:
-        Avoid calling virtual functions, directly or indirectly, from a
-        constructor or destructor.
+        Do not call virtual functions from a constructor or destructor, either
+        directly or through other functions.
     rationale:
-        During construction and destruction the call goes to the version of
-        the class being built, not the derived override, and calling a pure
-        virtual function this way is undefined behavior.
+        While an object is being built or torn down, a virtual call runs the
+        version of the class that is currently active, not the derived override.
+        Reaching a pure virtual function this way is undefined behavior.
     exceptions: null
     severity: null
     noncompliant:

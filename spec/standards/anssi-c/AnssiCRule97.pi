@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule97:
+    standard: @{AnssiC}
+    ruleId: rule-97
+    title: Subtract and compare only pointers into the same array
+    statement:
+        Subtract or compare two pointers only when both point into the same
+        array.
+    rationale:
+        The result for unrelated objects is undefined or meaningless.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        ptrdiff_t gap = &header[0] - &body[0];
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        ptrdiff_t used = cursor - &buf[0]; /* both in buf */
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, pointers, pointer-arithmetic]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=77

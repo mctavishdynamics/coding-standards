@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule40:
+    standard: @{CppCodingStandards}
+    ruleId: rule-40
+    title: Make conversions on your types explicit
+    statement:
+        Mark single-argument constructors explicit and use named conversion
+        functions instead of conversion operators.
+    rationale:
+        Implicit conversions create surprising temporaries and let wrong
+        calls compile.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Seconds { public: Seconds(int s); operator int() const; };
+        void wait(Seconds s);
+        wait(500);   // milliseconds intended?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Seconds { public: explicit Seconds(int s); int count() const; };
+        wait(Seconds(5));
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, conversions, type-safety]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem47:
+    standard: @{EffectivePython}
+    ruleId: item-47
+    title: Track changing iteration state in a class, not with throw
+    statement:
+        When an iteration needs to react to outside events such as a reset,
+        model it with a class that holds the state and exposes methods,
+        instead of injecting exceptions with the generator throw method.
+    rationale:
+        Code built around throw is deeply nested and hard to follow. A
+        stateful class makes the transitions explicit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        timer = countdown(10)
+        next(timer)
+        timer.throw(Reset())
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Countdown:
+            def __init__(self, start):
+                self.start = self.left = start
+            def reset(self):
+                self.left = self.start
+            def __iter__(self):
+                while self.left:
+                    yield self.left
+                    self.left -= 1
+        \\\
+        ```
+    languages: [python]
+    tags: [comprehensions-and-generators, generators, state]
+    source: https://effectivepython.com/

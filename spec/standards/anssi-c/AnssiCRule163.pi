@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule163:
+    standard: @{AnssiC}
+    ruleId: rule-163
+    title: Always check that an allocation succeeded
+    statement:
+        Test the result of every memory allocation before using it.
+    rationale:
+        Allocation can fail, and using the null result crashes or corrupts
+        memory.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct node *n = malloc(sizeof(*n));
+        n->next = NULL;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct node *n = malloc(sizeof(*n));
+        if (NULL == n) { return ERR_NOMEM; }
+        n->next = NULL;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, memory, error-handling]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=131

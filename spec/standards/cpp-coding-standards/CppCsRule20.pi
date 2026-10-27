@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule20:
+    standard: @{CppCodingStandards}
+    ruleId: rule-20
+    title: Keep functions short and nesting shallow
+    statement:
+        Split long functions into well-named helpers and reduce nesting with
+        early returns and algorithms.
+    rationale:
+        Short, flat functions are easier to understand, test and reuse.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void handle(Request r) {
+            if (r.valid()) {
+                if (r.user()) {
+                    if (r.user()->active()) { process(r); }
+                }
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void handle(Request r) {
+            if (!r.valid() || !r.user() || !r.user()->active()) return;
+            process(r);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [coding-style, readability, complexity]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

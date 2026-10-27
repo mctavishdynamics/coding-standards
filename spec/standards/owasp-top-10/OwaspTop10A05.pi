@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./OwaspTop10 import OwaspTop10
+
+export coding-rule OwaspTop10A05:
+    standard: @{OwaspTop10}
+    ruleId: A05:2025
+    title: Prevent injection
+    statement:
+        Keep data apart from commands and queries, ideally with a safe API
+        that avoids the interpreter, takes parameters or works through an
+        ORM, and without concatenation inside stored procedures. Where
+        separation is impossible, validate input on the server against an
+        allow list and escape the remaining dynamic parts with the
+        interpreter's own rules, never trusting user-supplied table or
+        column names.
+    rationale:
+        Hostile data that reaches an interpreter can change the meaning of
+        the command, leading to data theft, data loss or full takeover. It
+        is the fifth category in the OWASP Top 10 for 2025.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const result = await db.query(
+          `SELECT * FROM products WHERE name = '${req.query.name}'`
+        );
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const result = await db.query(
+          "SELECT * FROM products WHERE name = $1",
+          [req.query.name]
+        );
+        \\\
+        ```
+    languages: [any]
+    tags: [rank-5, injection, sql, input-validation]
+    source: https://owasp.org/Top10/2025/A05_2025-Injection/

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNestedTypes5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: nested-types-5
+    title: Do not nest types that client code must instantiate
+    statement:
+        A type that callers create themselves should not be nested; a public
+        constructor is a sign it belongs at namespace level.
+    rationale:
+        A type that can be created and used on its own has a life
+        independent of the outer type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class HttpGateway
+        {
+            public class Options { public TimeSpan Timeout { get; set; } }
+            public HttpGateway(Options options) { }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class HttpGatewayOptions { public TimeSpan Timeout { get; set; } }
+
+        public class HttpGateway
+        {
+            public HttpGateway(HttpGatewayOptions options) { }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, type-design, nested-types]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/nested-types

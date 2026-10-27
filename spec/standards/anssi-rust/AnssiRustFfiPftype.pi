@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiPftype:
+    standard: @{AnssiRust}
+    ruleId: FFI-PFTYPE
+    title: Use portable c_* aliases for platform-dependent C types
+    statement:
+        When foreign code uses platform-dependent types such as int or long,
+        use the portable aliases from std::ffi or the libc crate, not fixed
+        Rust types, unless the bindings are generated per platform.
+    rationale:
+        C int and long change size between platforms, so a hard-coded i32 or
+        i64 is wrong on some targets.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        extern "C" {
+            fn labs(x: i64) -> i64;
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        use std::ffi::c_long;
+
+        extern "C" {
+            fn labs(x: c_long) -> c_long;
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, ffi, portability, types]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-PFTYPE

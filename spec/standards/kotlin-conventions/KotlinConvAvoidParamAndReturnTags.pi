@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvAvoidParamAndReturnTags:
+    standard: @{KotlinConventions}
+    ruleId: avoid-param-and-return-tags
+    title: Describe parameters in the text instead of with tags
+    statement:
+        Generally avoid the param and return tags. Mention parameters and
+        the return value in the main description and link the parameter
+        names; use the tags only when a description is too long for the main
+        text.
+    rationale:
+        Prose that links parameters reads better than a list of tags that
+        repeat the obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        /**
+         * Converts a temperature.
+         * @param celsius the temperature in Celsius
+         * @return the temperature in Fahrenheit
+         */
+        fun toFahrenheit(celsius: Double): Double
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        /**
+         * Returns the Fahrenheit equivalent of [celsius].
+         */
+        fun toFahrenheit(celsius: Double): Double
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [documentation]
+    source: https://kotlinlang.org/docs/coding-conventions.html#documentation-comments

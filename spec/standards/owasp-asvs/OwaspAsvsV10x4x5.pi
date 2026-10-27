@@ -1,0 +1,23 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV10x4x5:
+    standard: @{OwaspAsvs}
+    ruleId: V10.4.5
+    title: Prevent refresh token replay for public clients
+    statement:
+        For public clients, use sender-constrained refresh tokens through
+        DPoP or mTLS. At levels 1 and 2, rotation is acceptable, provided
+        used tokens are invalidated and reuse of an old token revokes all
+        refresh tokens for that authorization.
+    rationale:
+        Public clients cannot keep secrets, so a stolen refresh token would
+        otherwise grant long-lived access.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-1, oauth, refresh-token, replay]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x19-V10-OAuth-and-OIDC.md#v104-oauth-authorization-server

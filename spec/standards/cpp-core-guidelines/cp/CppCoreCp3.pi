@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp3:
     standard: @{CppCoreGuidelines}
     ruleId: CP.3
-    title: Minimize explicit sharing of writable data
+    title: Share as little mutable data between threads as possible
     statement:
-        Share as little mutable data between threads as possible. Pass data
-        that tasks only read as const, and prefer copies or message passing
-        to shared writable state.
+        Keep the amount of writable state that threads share to a minimum. Hand
+        read-only input to tasks as const, and favor copies or passing messages over
+        a shared mutable object.
     rationale:
-        Data that is not written cannot race, and less sharing means fewer
-        places to forget synchronization and less time waiting on locks.
+        Immutable data can never race. Every shared mutable object is another spot
+        where synchronization can be forgotten and where threads may queue up behind
+        a lock.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,24 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdAvoidStandaloneStyleChanges:
+    standard: @{FreeBsdStyle}
+    ruleId: style-only-changes
+    title: Avoid standalone style commits except when reworking a unit
+    statement:
+        Do not make standalone whitespace or style changes, nor spread them
+        across unrelated directories. When you will change about half of a
+        function, file or similar unit, you may restyle the whole unit, but
+        commit the style changes separately and list them in
+        .git-blame-ignore-revs.
+    rationale:
+        Style-only churn complicates merges for downstream users and
+        obscures history in git blame.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [version-control, maintainability]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

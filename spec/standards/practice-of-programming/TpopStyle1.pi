@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle1:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-1
+    title: Scale name length to scope
+    statement:
+        Give globals and other widely visible names full, descriptive names.
+        Keep the names of short-lived locals brief.
+    rationale:
+        A global may be met far from its definition, so its name must
+        explain it. Inside a few lines, a long name for a loop index only
+        adds clutter.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int n;  /* global: number of open connections */
+
+        for (int loop_index_counter = 0; loop_index_counter < n; loop_index_counter++)
+            close_conn(loop_index_counter);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int open_connection_count;
+
+        for (int i = 0; i < open_connection_count; i++)
+            close_conn(i);
+        \\\
+        ```
+    languages: [any]
+    tags: [style, naming]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

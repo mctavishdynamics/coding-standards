@@ -5,15 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp21:
     standard: @{CppCoreGuidelines}
     ruleId: CP.21
-    title: Use std::lock or std::scoped_lock to acquire multiple mutexes
+    title: Take several mutexes together with a deadlock-free acquire
     statement:
-        When a piece of code needs more than one mutex, take them all at
-        once with std::scoped_lock or std::lock rather than locking them one
-        after another.
+        Acquire a group of mutexes in one call to std::scoped_lock or std::lock, not
+        one at a time.
     rationale:
-        Two threads that lock the same mutexes in different orders can
-        deadlock. The standard facilities acquire the set without deadlock
-        whatever order is written.
+        Sequential locking deadlocks as soon as two threads grab the same pair in
+        opposite order. The standard functions use an algorithm that avoids this no
+        matter how the arguments are listed.
     exceptions: null
     severity: null
     noncompliant:

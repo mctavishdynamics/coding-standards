@@ -7,11 +7,11 @@ export coding-rule GoogleGoReturningErrors:
     ruleId: decisions/returning-errors
     title: Return errors as the last result using the error type
     statement:
-        Use error, as the last result, to signal that a function can fail,
-        and return nil on success. Callers must treat other results as
-        unspecified when an error is returned unless documented otherwise.
-        Exported functions return the error interface, not a concrete error
-        type.
+        A function that may fail returns an error as its final result, nil
+        when it succeeds. Unless documented otherwise, callers should ignore
+        the other results whenever the error is non-nil. Exported functions
+        declare the error interface as their result type, not a concrete
+        error type.
     rationale:
         A nil pointer of a concrete error type becomes a non-nil error once
         stored in an interface, a classic subtle bug.

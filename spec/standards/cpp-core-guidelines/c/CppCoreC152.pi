@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC152:
     standard: @{CppCoreGuidelines}
     ruleId: C.152
-    title: Never assign a pointer to an array of derived objects to a base pointer
+    title: Keep arrays of derived objects away from base class pointers
     statement:
-        Do not convert a pointer to the first element of an array of derived
-        class objects into a pointer to the base class.
+        Never let a pointer to an array of derived objects be used as a pointer
+        to the base class.
     rationale:
-        Indexing through the base pointer uses the size of the base class,
-        so it lands in the middle of objects and corrupts memory.
+        Pointer arithmetic through the base pointer steps by the size of the
+        base class. It lands inside objects instead of on them, which corrupts
+        memory.
     exceptions: null
     severity: null
     noncompliant:

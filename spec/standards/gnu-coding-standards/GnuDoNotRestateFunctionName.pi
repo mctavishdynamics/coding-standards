@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDoNotRestateFunctionName:
+    standard: @{GnuCodingStandards}
+    ruleId: comments-no-function-name
+    title: Do not repeat the function name in its comment
+    statement:
+        Leave the function's name out of the comment above it.
+    rationale:
+        Readers can already see the name below the comment.
+    exceptions:
+        A comment so long that the function would scroll off screen may
+        mention the name.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* reset_table: clear every slot.  */
+        void reset_table (struct table *t);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* Clear every slot of T.  */
+        void reset_table (struct table *t);
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, functions]
+    source: https://www.gnu.org/prep/standards/standards.html#Comments

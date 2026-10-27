@@ -5,14 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC81:
     standard: @{CppCoreGuidelines}
     ruleId: C.81
-    title: Use =delete to disable default behavior
+    title: Remove unwanted generated operations with delete
     statement:
-        When a generated operation must not exist and nothing replaces it,
-        declare it =delete.
+        Declare an operation =delete when the compiler would otherwise generate
+        it and the type must not have it.
     rationale:
-        Some types, such as unique owners of a resource, must not get
-        default operations like copy, and =delete states that clearly and
-        makes misuse a compile error.
+        Some types, such as a unique owner of a resource, must never be copied.
+        Deleting the operation documents this and makes misuse fail to compile.
     exceptions: null
     severity: null
     noncompliant:

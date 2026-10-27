@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgGuidelinesForCollections3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: guidelines-for-collections-3
+    title: Keep Hashtable and Dictionary out of public APIs
+    statement:
+        Expose dictionary interfaces or a custom type implementing them
+        instead of Hashtable or Dictionary.
+    rationale:
+        The concrete types are implementation details and lock you into one
+        data structure.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Dictionary<string, string> Headers { get; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public IDictionary<string, string> Headers { get; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, collections, dictionaries]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/guidelines-for-collections

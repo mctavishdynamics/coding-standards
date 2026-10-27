@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule12:
+    standard: @{CppCodingStandards}
+    ruleId: rule-12
+    title: Design deliberately for code that may run concurrently
+    statement:
+        If code may be used from multiple threads, decide which objects are
+        shared, document the guarantees, and lock shared mutable state
+        appropriately.
+    rationale:
+        Thread safety cannot be bolted on later, and unsynchronised access
+        to shared data is undefined behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Counter {
+        public:
+            void hit() { ++n_; }   // called from many threads
+        private:
+            int n_ = 0;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Counter {
+        public:
+            void hit() { n_.fetch_add(1, std::memory_order_relaxed); }
+        private:
+            std::atomic<int> n_{0};
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [design-style, concurrency]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

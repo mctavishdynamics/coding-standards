@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackExecuteAndInhibit:
+    standard: @{Carmack}
+    ruleId: execute-and-inhibit
+    title: Run an operation always and discard unwanted results
+    statement:
+        Prefer doing an operation on every pass and then ignoring or masking
+        some of its results over deciding beforehand whether to do it at
+        all.
+    rationale:
+        Skipping work in some states often skips a state update that other
+        code needed, which breeds bugs. Always running the work also makes
+        frame times steadier.
+    exceptions:
+        The 2014 preface notes that this suits high-reliability systems but
+        is a poorer fit where power and heat are limited, as on mobile
+        devices.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (enemy.IsVisible()) {
+            enemy.UpdateAnimation(dt);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enemy.UpdateAnimation(dt);
+        enemy.SetDrawn(enemy.IsVisible());
+        \\\
+        ```
+    languages: [cpp]
+    tags: [control-flow, reliability, performance]
+    source: http://number-none.com/blow/john_carmack_on_inlined_code.html

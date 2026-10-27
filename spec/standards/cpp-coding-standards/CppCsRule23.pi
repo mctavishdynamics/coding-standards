@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule23:
+    standard: @{CppCodingStandards}
+    ruleId: rule-23
+    title: Make every header compile on its own
+    statement:
+        Each header should include or forward declare everything it needs,
+        so it compiles regardless of what was included before it. Do not
+        include headers you do not need.
+    rationale:
+        Hidden include order dependencies break builds when unrelated files
+        change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // path.h relies on <string> being included first
+        std::string join(const std::string& a, const std::string& b);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // path.h
+        #include <string>
+        std::string join(const std::string& a, const std::string& b);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [coding-style, headers, build]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

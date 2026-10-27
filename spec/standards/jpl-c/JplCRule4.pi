@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule4:
+    standard: @{JplC}
+    ruleId: rule-4
+    title: Keep the call graph free of cycles
+    statement:
+        No function may call itself, either directly or through a chain of
+        other functions.
+    rationale:
+        Without recursion the call graph is acyclic, so stack use can be
+        bounded reliably and runaway execution is prevented. It also lets
+        static tools catch a broader range of defects.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        unsigned long factorial(unsigned int n) {
+            return (n <= 1U) ? 1UL : n * factorial(n - 1U);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        unsigned long factorial(unsigned int n) {
+            unsigned long result = 1UL;
+            for (unsigned int i = 2U; i <= n && i <= MAX_FACT; i++) {
+                result *= i;
+            }
+            return result;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-2, recursion, control-flow]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

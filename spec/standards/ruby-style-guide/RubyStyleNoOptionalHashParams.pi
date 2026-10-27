@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoOptionalHashParams:
+    standard: @{RubyStyleGuide}
+    ruleId: no-optional-hash-params
+    title: Take keyword arguments instead of an options hash
+    statement:
+        Do not take a hash of options as an optional final parameter; use
+        keyword arguments. Needing many options may mean the method does too
+        much.
+    rationale:
+        Keyword arguments document the accepted options and catch misspelt
+        ones, which an options hash does not.
+    exceptions:
+        Object initializers may take an options hash.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def resize(image, opts = {})
+          width = opts[:width]
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def resize(image, width:, height: nil)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, api-design]
+    source: https://rubystyle.guide/#no-optional-hash-params

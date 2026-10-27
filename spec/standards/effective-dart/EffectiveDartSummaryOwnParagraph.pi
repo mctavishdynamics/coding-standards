@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartSummaryOwnParagraph:
+    standard: @{EffectiveDart}
+    ruleId: do-separate-the-first-sentence-of-a-doc-comment-into-its-own-paragraph
+    title: Put the summary sentence in its own paragraph
+    statement:
+        After the opening sentence of a doc comment, leave an empty comment
+        line, and place any additional detail in the paragraphs that follow.
+    rationale:
+        It forces a tight summary, and `dart doc` shows the first paragraph
+        alone in member and class lists.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        /// Removes [path] from disk. Throws an [IOException] if the file
+        /// is locked by another process.
+        void removeFile(String path) {}
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Removes [path] from disk.
+        ///
+        /// Throws an [IOException] if the file is locked by another process.
+        void removeFile(String path) {}
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, documentation]
+    source: https://dart.dev/effective-dart/documentation#do-separate-the-first-sentence-of-a-doc-comment-into-its-own-paragraph

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando116:
+    standard: @{ZalandoApi}
+    ruleId: 116
+    title: Use semantic versioning for the API specification
+    statement:
+        Set info.version as MAJOR.MINOR.PATCH following Semantic Versioning
+        2.0. Raise MAJOR for incompatible changes agreed with consumers,
+        MINOR for compatible new functionality, and optionally PATCH for
+        fixes and editorial changes. Do not use pre-release or build
+        metadata suffixes.
+    rationale:
+        A consistent version scheme tells consumers at a glance whether a
+        new revision of the specification can affect them.
+    exceptions:
+        Version 0.y.z may be used during initial API design.
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        info:
+          version: 2.1.0-beta+build.77
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        info:
+          version: 2.1.0
+        \\\
+        ```
+    languages: [any]
+    tags: [must, versioning, openapi]
+    source: https://opensource.zalando.com/restful-api-guidelines/#116

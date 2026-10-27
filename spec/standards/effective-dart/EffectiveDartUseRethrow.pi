@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartUseRethrow:
+    standard: @{EffectiveDart}
+    ruleId: do-use-rethrow-to-rethrow-a-caught-exception
+    title: Rethrow caught exceptions with rethrow
+    statement:
+        When a caught exception should propagate, write `rethrow` rather
+        than throwing the caught object a second time. The
+        use_rethrow_when_possible lint checks this.
+    rationale:
+        A plain `throw` replaces the stack trace with one pointing at the
+        catch block, so the place where the failure began is lost; `rethrow`
+        keeps it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        try {
+          await upload(file);
+        } on SocketException catch (e) {
+          metrics.count('upload_failed');
+          throw e;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        try {
+          await upload(file);
+        } on SocketException {
+          metrics.count('upload_failed');
+          rethrow;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, error-handling, exceptions]
+    source: https://dart.dev/effective-dart/usage#do-use-rethrow-to-rethrow-a-caught-exception

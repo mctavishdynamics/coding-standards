@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation110:
+    standard: @{AnssiC}
+    ruleId: recommendation-110
+    title: Avoid chained comparison and equality expressions
+    statement:
+        Avoid expressions that chain several relational or equality
+        operators.
+    rationale:
+        In C, a chained comparison compares a boolean result with a number
+        and rarely means what it looks like.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (low < x < high) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if ((low < x) && (x < high)) { /* ... */ }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, comparison]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=88

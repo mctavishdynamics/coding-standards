@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip127:
+    standard: @{GoogleAip}
+    ruleId: AIP-127
+    title: Define an HTTP binding for every RPC
+    statement:
+        Give every RPC, except bidirectional streaming ones, a
+        google.api.http annotation with the HTTP verb the standard method
+        calls for and a URI whose variables use the field equals pattern
+        syntax. Do not nest additional bindings, and keep the body clause
+        the same across all bindings of a method.
+    rationale:
+        HTTP and JSON clients cannot reach an RPC without a binding.
+        Prescribed verbs and path templates let gateways map requests to
+        messages the same way in every API.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        rpc GetRecipe(GetRecipeRequest) returns (Recipe);
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        rpc GetRecipe(GetRecipeRequest) returns (Recipe) {
+          option (google.api.http) = {
+            get: "/v1/{name=kitchens/*/recipes/*}"
+          };
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [http, transcoding, annotations]
+    source: https://google.aip.dev/127

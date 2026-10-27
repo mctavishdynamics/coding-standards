@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCGoodPractice48:
+    standard: @{AnssiC}
+    ruleId: good-practice-48
+    title: Aim for reproducible builds
+    statement:
+        Keep sources of non-determinism out of the build, for example with
+        Wdate-time or a fixed frandom-seed.
+    rationale:
+        Reproducible builds let anyone check that a binary really comes from
+        the stated sources.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        const char *build_stamp = __DATE__ " " __TIME__;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        const char *build_stamp = BUILD_VERSION; /* passed in by the build system */
+        \\\
+        ```
+    languages: [c]
+    tags: [good-practice, build, reproducibility]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=38

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoBracesOptsHash:
+    standard: @{RubyStyleGuide}
+    ruleId: no-braces-opts-hash
+    title: Drop the braces from a trailing options hash
+    statement:
+        When the last argument of a call is an options hash, leave out its
+        surrounding curly braces. Since Ruby 2.7 this matters, because
+        braces there are no longer optional and change how keyword arguments
+        are passed.
+    rationale:
+        The braces add noise, and with keyword arguments a braced hash is
+        treated as a positional argument.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        user.update({ name: 'Ana', admin: false })
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        user.update(name: 'Ana', admin: false)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [method-calls, hashes, keyword-arguments]
+    source: https://rubystyle.guide/#no-braces-opts-hash

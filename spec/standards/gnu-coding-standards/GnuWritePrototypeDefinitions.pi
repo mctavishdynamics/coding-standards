@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuWritePrototypeDefinitions:
+    standard: @{GnuCodingStandards}
+    ruleId: standard-c-prototypes
+    title: Write function definitions in prototype style
+    statement:
+        Define functions with Standard C parameter lists, not old K&R
+        declarations, and also declare each function, usually in a header,
+        so every caller sees the prototype.
+    rationale:
+        Modern compilers are dropping K&R support, so prototype style is now
+        the portable choice, and visible prototypes let the compiler check
+        calls.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int
+        clamp (v, lo, hi)
+             int v, lo, hi;
+        {
+          return v < lo ? lo : v > hi ? hi : v;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int
+        clamp (int v, int lo, int hi)
+        {
+          return v < lo ? lo : v > hi ? hi : v;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, declarations, portability]
+    source: https://www.gnu.org/prep/standards/standards.html#Standard-C

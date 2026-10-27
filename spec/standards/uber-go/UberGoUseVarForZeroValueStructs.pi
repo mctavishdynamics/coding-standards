@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoUseVarForZeroValueStructs:
+    standard: @{UberGo}
+    ruleId: use-var-for-zero-value-structs
+    title: Declare all-zero structs with var
+    statement:
+        When every field of a struct is left at its zero value, declare it
+        with var instead of an empty composite literal.
+    rationale:
+        This sets zero-valued structs apart from those with fields set, as
+        with maps and empty slices.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        buf := bytes.Buffer{}
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var buf bytes.Buffer
+        \\\
+        ```
+    languages: [go]
+    tags: [structs, declarations, zero-value]
+    source: https://github.com/uber-go/guide/blob/master/style.md#use-var-for-zero-value-structs

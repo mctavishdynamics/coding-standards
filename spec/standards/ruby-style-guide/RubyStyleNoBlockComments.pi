@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoBlockComments:
+    standard: @{RubyStyleGuide}
+    ruleId: no-block-comments
+    title: Do not use =begin and =end block comments
+    statement:
+        Write multi-line comments as a series of single-line comments rather
+        than a =begin and =end block. RuboCop checks this with
+        Style/BlockComments.
+    rationale:
+        Block comment markers must start at the beginning of a line and are
+        harder to notice than ordinary comments.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        =begin
+        Imports the nightly feed.
+        Runs after the backup job.
+        =end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        # Imports the nightly feed.
+        # Runs after the backup job.
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comments, documentation]
+    source: https://rubystyle.guide/#no-block-comments

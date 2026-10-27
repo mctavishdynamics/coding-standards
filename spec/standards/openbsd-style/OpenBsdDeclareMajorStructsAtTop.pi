@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdDeclareMajorStructsAtTop:
+    standard: @{OpenBsdStyle}
+    ruleId: struct-placement
+    title: Declare major structures at the top of the file or in headers
+    statement:
+        Declare major structures at the top of the file that uses them, or
+        in a header when several files do. Declare variables of them
+        separately, as extern when in a header.
+    rationale:
+        Readers find the central types first, and extern declarations avoid
+        duplicate definitions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* conf.h */
+        struct conf {
+                int     verbose;
+        } conf;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* conf.h */
+        struct conf {
+                int     verbose;
+        };
+        extern struct conf conf;
+        \\\
+        ```
+    languages: [c]
+    tags: [structs, file-structure, declarations]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

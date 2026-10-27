@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdPreferPrintf:
+    standard: @{FreeBsdStyle}
+    ruleId: use-printf
+    title: Use printf rather than fputs, puts or putchar
+    statement:
+        Write output with printf instead of fputs, puts, putchar and similar
+        functions.
+    rationale:
+        One formatted-output function used everywhere keeps code uniform and
+        tends to be faster.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        puts(name);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        printf("%s\n", name);
+        \\\
+        ```
+    languages: [c]
+    tags: [output, libraries]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoInitToNull:
+    standard: @{EffectiveDart}
+    ruleId: dont-explicitly-initialize-variables-to-null
+    title: Do not initialize variables to null explicitly
+    statement:
+        Leave out `= null` when declaring a nullable variable. The
+        avoid_init_to_null lint checks this.
+    rationale:
+        Nullable variables already start as null, and the compiler stops
+        non-nullable ones from being read before assignment, so the
+        initializer adds nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        String? lastError = null;
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        String? lastError;
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, null-safety, variables]
+    source: https://dart.dev/effective-dart/usage#dont-explicitly-initialize-variables-to-null

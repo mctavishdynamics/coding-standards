@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe120:
+    standard: @{CweTop25}
+    ruleId: CWE-120
+    title: Prevent classic buffer overflows
+    statement:
+        Before copying data into a buffer, check that the whole source fits
+        in the destination, and use copy functions that take the destination
+        size. Prefer a memory-safe language or a safe string library, and
+        build with overflow detection turned on.
+    rationale:
+        An unchecked copy overruns the buffer and can overwrite return
+        addresses or other data, a classic route to remote code execution.
+        It is ranked 11 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void set_name(struct user *u, const char *input) {
+            strcpy(u->name, input);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int set_name(struct user *u, const char *input) {
+            size_t len = strlen(input);
+            if (len >= sizeof u->name) {
+                return -1;
+            }
+            memcpy(u->name, input, len + 1);
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rank-11, memory, buffer-overflow, strings]
+    source: https://cwe.mitre.org/data/definitions/120.html

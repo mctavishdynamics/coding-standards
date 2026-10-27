@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNullDevices:
+    standard: @{RubyStyleGuide}
+    ruleId: null-devices
+    title: Use File::NULL for the null device
+    statement:
+        Refer to the null device through File::NULL instead of writing a
+        platform path such as /dev/null or NUL.
+    rationale:
+        The constant works on every platform, while hardcoded paths do not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        system('make test', out: '/dev/null')
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        system('make test', out: File::NULL)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [files, portability]
+    source: https://rubystyle.guide/#null-devices

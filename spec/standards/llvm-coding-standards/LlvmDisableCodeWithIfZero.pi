@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmDisableCodeWithIfZero:
+    standard: @{LlvmCodingStandards}
+    ruleId: comment-formatting-if-0
+    title: Disable code blocks with #if 0 rather than comments
+    statement:
+        Avoid keeping big stretches of disabled code. When you must keep
+        such a block, for documentation or as a debugging aid, wrap it
+        in #if 0 and #endif instead of a block comment.
+    rationale:
+        Preprocessor conditionals nest properly, while block comments break
+        as soon as the disabled code contains a comment of its own.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        /*
+        dumpState(); /* verbose */
+        verifyAll();
+        */
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #if 0
+        dumpState(); /* verbose */
+        verifyAll();
+        #endif
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, preprocessor]
+    source: https://llvm.org/docs/CodingStandards.html#comment-formatting

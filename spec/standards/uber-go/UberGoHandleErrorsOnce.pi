@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoHandleErrorsOnce:
+    standard: @{UberGo}
+    ruleId: handle-errors-once
+    title: Handle each error exactly once
+    statement:
+        Deal with an error in one way only, for instance by matching it,
+        logging it and degrading gracefully, translating it, or returning
+        it. Do not both log an error and return it.
+    rationale:
+        Callers higher up will usually handle a returned error too, so
+        logging it at every level floods the logs with duplicates.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if err := cache.Put(key, value); err != nil {
+            log.Printf("cache put %q: %v", key, err)
+            return err
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if err := cache.Put(key, value); err != nil {
+            return fmt.Errorf("cache put %q: %w", key, err)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, logging]
+    source: https://github.com/uber-go/guide/blob/master/style.md#handle-errors-once

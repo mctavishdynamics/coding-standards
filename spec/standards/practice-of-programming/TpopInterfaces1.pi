@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopInterfaces1:
+    standard: @{PracticeOfProgramming}
+    ruleId: interfaces-1
+    title: Expose only what callers need
+    statement:
+        Expose only what callers need. Keep data layouts and internal
+        helpers out of the public interface.
+    rationale:
+        Hidden details can change without affecting users, and callers
+        cannot come to depend on them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* stack.h */
+        struct stack { int *items; int top; int cap; };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* stack.h */
+        typedef struct stack Stack;
+        Stack *stack_new(void);
+        int    stack_push(Stack *s, int v);
+        int    stack_pop(Stack *s, int *v);
+        void   stack_free(Stack *s);
+        \\\
+        ```
+    languages: [any]
+    tags: [interfaces, information-hiding, api-design]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

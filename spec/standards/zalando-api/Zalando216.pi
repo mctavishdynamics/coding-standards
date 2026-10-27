@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando216:
+    standard: @{ZalandoApi}
+    ruleId: 216
+    title: Define maps with additionalProperties
+    statement:
+        Model a map from string keys to values as an object whose
+        additionalProperties schema describes the value type, normally with
+        no other properties. Document the key format in the schema
+        description.
+    rationale:
+        This is the standard JSON Schema way to describe maps, and map keys
+        are not bound by the property naming rule.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        StockLevels:
+          description: Units in stock, keyed by warehouse code.
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+        \\\
+        ```
+    languages: [any]
+    tags: [should, json, openapi]
+    source: https://opensource.zalando.com/restful-api-guidelines/#216

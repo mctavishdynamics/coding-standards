@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule31:
+    standard: @{JplC}
+    ruleId: rule-31
+    title: Start each file with its includes
+    statement:
+        Begin a source file with its includes, preceded at most by comments
+        or other directives. After them, a suggested layout is macros, then
+        types, extern and static declarations, and finally function code.
+    rationale:
+        Code placed before an include can change how the header is read, and
+        a fixed file layout makes every file easier to navigate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static int counter;
+        #include "sensors.h"
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* sensors.c */
+        #include "sensors.h"
+
+        static int counter;
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-4, preprocessor, file-organization]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

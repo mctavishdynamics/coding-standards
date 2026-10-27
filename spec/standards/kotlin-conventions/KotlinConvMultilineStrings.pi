@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvMultilineStrings:
+    standard: @{KotlinConventions}
+    ruleId: multiline-strings
+    title: Use trimmed multiline strings instead of newline escapes
+    statement:
+        Prefer multiline string literals to embedded newline escapes. Use
+        trimIndent when the result needs no internal indentation and
+        trimMargin when it does.
+    rationale:
+        The text then looks in the source as it will look in the output.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        val help = "Usage:\n  app run\n  app stop"
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        val help = """
+            |Usage:
+            |  app run
+            |  app stop
+            """.trimMargin()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [strings]
+    source: https://kotlinlang.org/docs/coding-conventions.html#strings

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPortability14:
+    standard: @{PracticeOfProgramming}
+    ruleId: portability-14
+    title: Write code that works with any character encoding
+    statement:
+        Avoid code that assumes characters have particular numeric codes or
+        that only seven-bit characters occur.
+    rationale:
+        Programs meet many character sets and encodings, and ASCII-specific
+        code fails on them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (c >= 'a' && c <= 'z')
+            c = c - 'a' + 'A';
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        c = toupper((unsigned char)c);
+        \\\
+        ```
+    languages: [any]
+    tags: [portability, internationalization]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagLinkPurposeInContext:
+    standard: @{Wcag22}
+    ruleId: 2.4.4
+    title: Make each link's purpose clear from its text or context
+    statement:
+        Make the purpose of every link clear from the link text alone or
+        together with its programmatic context, such as the surrounding
+        sentence, list item or table cell.
+    rationale:
+        Screen reader users often browse a list of links, where text like
+        click here says nothing.
+    exceptions:
+        Links whose purpose would be ambiguous to everyone are exempt.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <p>Our refund policy changed. <a href="/refunds">Click here</a>.</p>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <p>Our <a href="/refunds">refund policy</a> changed.</p>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, links, content]
+    source: https://www.w3.org/TR/WCAG22/#link-purpose-in-context

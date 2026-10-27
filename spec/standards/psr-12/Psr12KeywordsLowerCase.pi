@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12KeywordsLowerCase:
+    standard: @{Psr12}
+    ruleId: 2.5a
+    title: Write keywords and types in lower case
+    statement:
+        Write all PHP reserved keywords and type names in lower case.
+        Keywords and types added in future PHP versions follow the same
+        rule.
+    rationale:
+        A single casing for language words keeps code uniform and makes
+        keywords easy to tell apart from user-defined names.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        FUNCTION isEmpty(Array $items): BOOL
+        {
+            RETURN COUNT($items) === 0 || $items === NULL;
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        function isEmpty(array $items): bool
+        {
+            return count($items) === 0 || $items === null;
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [formatting, keywords]
+    source: https://www.php-fig.org/psr/psr-12/#25-keywords-and-types

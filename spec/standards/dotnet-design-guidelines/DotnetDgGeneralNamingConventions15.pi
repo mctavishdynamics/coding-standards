@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgGeneralNamingConventions15:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: general-naming-conventions-15
+    title: Avoid vague markers like Ex on new API versions
+    statement:
+        Do not tell a new API version apart from an old one with Ex or a
+        similarly meaningless suffix.
+    rationale:
+        Such a suffix hides what changed and invites follow-ups like Ex2
+        when the API changes again.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Report BuildReportEx(ReportOptions options) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public Report BuildReport(ReportOptions options) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, naming, versioning]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/general-naming-conventions#naming-new-versions-of-existing-apis

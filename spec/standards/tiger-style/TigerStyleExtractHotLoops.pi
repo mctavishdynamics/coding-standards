@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleExtractHotLoops:
+    standard: @{TigerStyle}
+    ruleId: extract-hot-loops
+    title: Move hot loops into standalone functions with primitive arguments
+    statement:
+        Do not rely on the compiler to optimize for you. Pull hot loops out
+        into functions that take primitive arguments and no self pointer.
+    rationale:
+        The compiler no longer has to prove it may keep struct fields in
+        registers, and a reader can spot repeated work more easily.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn merge(self: *Compaction) void {
+            for (self.input) |value| self.output_append(value);
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn merge(self: *Compaction) void {
+            self.output_count = merge_values(self.input, self.output);
+        }
+
+        fn merge_values(input: []const Value, output: []Value) u32 {
+            // tight loop over plain slices
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [performance, functions, explicitness]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#performance

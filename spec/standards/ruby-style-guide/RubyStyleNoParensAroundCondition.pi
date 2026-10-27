@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoParensAroundCondition:
+    standard: @{RubyStyleGuide}
+    ruleId: no-parens-around-condition
+    title: Do not put parentheses around a condition
+    statement:
+        Leave the condition of if, unless, while and similar expressions
+        without surrounding parentheses.
+    rationale:
+        Ruby does not need them, so they are only noise.
+    exceptions:
+        Wrapping an assignment used as a condition in parentheses is allowed
+        and intended; see the safe assignment rule.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        if (balance > limit)
+          flag_account
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        if balance > limit
+          flag_account
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals, formatting]
+    source: https://rubystyle.guide/#no-parens-around-condition

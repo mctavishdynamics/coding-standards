@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartDartImportsFirst:
+    standard: @{EffectiveDart}
+    ruleId: do-place-dart-imports-before-other-imports
+    title: Put imports of dart libraries first
+    statement:
+        List `dart:` imports in their own section at the top of the
+        directives, before any package or relative imports. The
+        directives_ordering lint checks this.
+    rationale:
+        A fixed order keeps file preambles tidy and makes the core library
+        dependencies easy to spot.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        import 'package:http/http.dart' as http;
+        import 'dart:convert';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        import 'dart:convert';
+
+        import 'package:http/http.dart' as http;
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, imports, ordering]
+    source: https://dart.dev/effective-dart/style#do-place-dart-imports-before-other-imports

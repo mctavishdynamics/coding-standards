@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp31:
     standard: @{CppCoreGuidelines}
     ruleId: CP.31
-    title: Pass small amounts of data between threads by value
+    title: Copy small data into a thread instead of sharing it
     statement:
-        Give a thread or task its own copy of small data instead of a
-        reference or pointer to data another thread can touch.
+        When a task only needs a little data, pass it by value so the task owns its
+        own copy. Do not give it a pointer or reference to something other threads
+        can change.
     rationale:
-        Copying a small amount of data is cheaper than sharing it under a
-        lock, gives the receiver sole ownership and rules out data races.
-        For large data the copy may cost too much.
+        For small objects a copy costs less than a lock. The task then owns the data
+        outright, so it cannot race with anyone. Large objects may still be worth
+        sharing, because copying them is expensive.
     exceptions: null
     severity: null
     noncompliant:

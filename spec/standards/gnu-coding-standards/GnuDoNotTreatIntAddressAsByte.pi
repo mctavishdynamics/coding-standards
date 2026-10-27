@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDoNotTreatIntAddressAsByte:
+    standard: @{GnuCodingStandards}
+    ruleId: cpu-portability-int-address
+    title: Do not assume an int's address points to its low-order byte
+    statement:
+        When you need one byte of an int, copy it into an unsigned char and
+        use that object's address instead of the int's address.
+    rationale:
+        On big-endian machines the first byte of an int is its most
+        significant one.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int ch = fgetc (in);
+        fwrite (&ch, 1, 1, out);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int ch = fgetc (in);
+        unsigned char byte = ch;
+        fwrite (&byte, 1, 1, out);
+        \\\
+        ```
+    languages: [c]
+    tags: [portability, endianness]
+    source: https://www.gnu.org/prep/standards/standards.html#CPU-Portability

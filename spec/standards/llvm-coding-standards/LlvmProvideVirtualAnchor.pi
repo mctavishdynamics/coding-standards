@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmProvideVirtualAnchor:
+    standard: @{LlvmCodingStandards}
+    ruleId: provide-a-virtual-method-anchor-for-classes-in-headers
+    title: Give header-defined polymorphic classes an out-of-line virtual method
+    statement:
+        A class defined in a header that has a vtable must define at least
+        one virtual method out of line, in a .cpp file.
+    rationale:
+        Without an out-of-line key method, each object file that includes
+        the header gets its own copy of the vtable and type info, making
+        objects larger and links slower.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Shape.h
+        class Shape {
+        public:
+          virtual ~Shape() {}
+          virtual double area() const { return 0; }
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Shape.h
+        class Shape {
+        public:
+          virtual ~Shape();
+          virtual double area() const { return 0; }
+        };
+        // Shape.cpp
+        Shape::~Shape() = default;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, virtual-functions, build-size]
+    source: https://llvm.org/docs/CodingStandards.html#provide-a-virtual-method-anchor-for-classes-in-headers

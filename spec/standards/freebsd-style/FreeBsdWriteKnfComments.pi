@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdWriteKnfComments:
+    standard: @{FreeBsdStyle}
+    ruleId: comment-style
+    title: Format comments as KNF block or single-line comments
+    statement:
+        Write very important single-line comments as a three-line block,
+        other single-line comments on one line, and multi-line comments as a
+        block with a leading asterisk on each line. Make them real sentences
+        filled like paragraphs.
+    rationale:
+        A uniform comment layout makes emphasis and structure obvious at a
+        glance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* the lock must be held
+           by the caller */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /*
+         * The caller must hold the vnode lock.  It is dropped and
+         * reacquired around the sleep below.
+         */
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, formatting]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

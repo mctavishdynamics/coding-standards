@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAvoidHashConstructor:
+    standard: @{RubyStyleGuide}
+    ruleId: avoid-hash-constructor
+    title: Build hashes with to_h or literals, not Hash[]
+    statement:
+        Do not build hashes with the Hash square-bracket constructor. Call
+        to_h on a list of key-value pairs, or write a hash literal when the
+        keys and values are known. RuboCop checks this with
+        Style/HashConversion.
+    rationale:
+        The old constructor has obscure behaviour and reads cryptically, and
+        to_h has been available since Ruby 2.1.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        Hash[pairs]
+        Hash[:north, 0, :south, 180]
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        pairs.to_h
+        { north: 0, south: 180 }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes]
+    source: https://rubystyle.guide/#avoid-hash-constructor

@@ -5,36 +5,35 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreI25:
     standard: @{CppCoreGuidelines}
     ruleId: I.25
-    title: Prefer empty abstract classes as interfaces to class hierarchies
+    title: Use abstract interface classes instead of deep hierarchies
     statement:
-        Use abstract classes with no data members as interfaces, rather than
-        base classes that carry state.
+        Define interfaces as abstract classes that hold no data members. Keep
+        state in the concrete classes that implement them.
     rationale:
-        Abstract classes without data are more stable than stateful base
-        classes, so changing an implementation does not force changes on
-        users.
+        A base class without data rarely needs to change. Users who depend on it
+        are not disturbed when an implementation evolves.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        class Shape {
+        class Logger {
         public:
-            virtual double area() const = 0;
+            virtual void write(std::string_view msg) = 0;
         protected:
-            Point center_;       // state every user now depends on
-            Color color_;
+            std::mutex lock_;          // clients now depend on this layout
+            std::size_t lines_ = 0;
         };
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        class Shape {
+        class Logger {
         public:
-            virtual ~Shape() = default;
-            virtual double area() const = 0;
-            virtual Point center() const = 0;
+            virtual ~Logger() = default;
+            virtual void write(std::string_view msg) = 0;
+            virtual std::size_t lines() const = 0;
         };
         \\\
         ```

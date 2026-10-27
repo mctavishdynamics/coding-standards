@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmNoElseAfterReturn:
+    standard: @{LlvmCodingStandards}
+    ruleId: don-t-use-else-after-a-return
+    title: Do not use else after return, break, continue or goto
+    statement:
+        When a branch ends by leaving the current flow, with return, break,
+        continue or goto, write the following code without an else or
+        else-if.
+    rationale:
+        Dropping the redundant else reduces indentation and the amount of
+        code a reader has to track.
+    exceptions:
+        This does not apply to if constexpr, where removing the else could
+        instantiate a discarded branch.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (Bits > 64) {
+          return Error::tooWide();
+        } else {
+          return encode(Bits);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        if (Bits > 64)
+          return Error::tooWide();
+        return encode(Bits);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [control-flow, readability]
+    source: https://llvm.org/docs/CodingStandards.html#don-t-use-else-after-a-return

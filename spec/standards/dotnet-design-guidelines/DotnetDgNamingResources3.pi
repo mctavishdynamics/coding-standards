@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamingResources3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: naming-resources-3
+    title: Avoid main-language keywords as resource names
+    statement:
+        Do not use keywords of the major CLR languages as resource
+        identifiers.
+    rationale:
+        Strongly typed resource classes turn keys into members, and a
+        keyword key becomes awkward or invalid there.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        string label = Resources.ResourceManager.GetString("Default");
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        string label = Resources.ResourceManager.GetString("DefaultOptionLabel");
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, naming, resources]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/naming-resources

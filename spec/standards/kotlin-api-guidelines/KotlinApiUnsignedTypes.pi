@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiUnsignedTypes:
+    standard: @{KotlinApiGuidelines}
+    ruleId: unsigned-types
+    title: Use unsigned types only for their full range or interop
+    statement:
+        Use UByte, UShort, UInt and ULong when you need the whole positive
+        range of a format or interoperate with native code, not merely
+        because a value cannot be negative.
+    rationale:
+        Unsigned types complicate ordinary arithmetic and are not a way to
+        express that a count is non-negative.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun repeat(text: String, times: UInt): String
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun repeat(text: String, times: Int): String {
+            require(times >= 0) { "times must be non-negative, was $times" }
+            return text.repeat(times)
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [types, numbers]
+    source: https://kotlinlang.org/docs/api-guidelines-readability.html#use-numeric-types-appropriately

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle22:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-22
+    title: Clean up tricky code so it needs no explanation
+    statement:
+        If code is so tricky that it needs a comment to explain it, improve
+        the code.
+    rationale:
+        A comment cannot fix confusing logic. Clearer code removes the need
+        for the explanation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* shift by 3 then subtract the original; this gives 7 times x,
+           which is the scale factor for one week of daily totals */
+        return (x << 3) - x;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum { DAYS_PER_WEEK = 7 };
+        return x * DAYS_PER_WEEK;
+        \\\
+        ```
+    languages: [any]
+    tags: [style, comments, refactoring]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

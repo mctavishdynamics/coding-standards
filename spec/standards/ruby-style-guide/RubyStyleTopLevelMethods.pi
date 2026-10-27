@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleTopLevelMethods:
+    standard: @{RubyStyleGuide}
+    ruleId: top-level-methods
+    title: Keep methods out of the top level
+    statement:
+        Do not define methods at the top level of a file; put them in a
+        module, class or struct.
+    rationale:
+        Top-level methods become private methods of Object, so they leak
+        into every object in the program.
+    exceptions:
+        Top-level methods are fine in standalone scripts.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def slugify(text)
+          text.downcase.gsub(/[^a-z0-9]+/, '-')
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        module TextHelpers
+          def self.slugify(text)
+            text.downcase.gsub(/[^a-z0-9]+/, '-')
+          end
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, modules]
+    source: https://rubystyle.guide/#top-level-methods

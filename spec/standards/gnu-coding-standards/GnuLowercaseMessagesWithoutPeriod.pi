@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuLowercaseMessagesWithoutPeriod:
+    standard: @{GnuCodingStandards}
+    ruleId: errors-capitalization
+    title: Do not capitalize or end with a period a message that follows a name
+    statement:
+        After a program or file name prefix, start the message text in lower
+        case and do not end it with a period. Messages from interactive
+        programs and usage messages start with a capital letter but also
+        have no final period.
+    rationale:
+        The line as a whole is the sentence, so text after the prefix is not
+        a sentence start.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        error (0, 0, "Invalid line count.");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        error (0, 0, "invalid line count");
+        \\\
+        ```
+    languages: [c]
+    tags: [error-messages, style]
+    source: https://www.gnu.org/prep/standards/standards.html#Errors

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoTopLevelVariableDeclarations:
+    standard: @{UberGo}
+    ruleId: top-level-variable-declarations
+    title: Leave out the type in top-level var declarations
+    statement:
+        Declare top-level variables with var and omit the type when it
+        matches the expression. Write the type only when it should differ
+        from the expression's type.
+    rationale:
+        The type is already clear from the value, so repeating it is noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var _retryLimit int = defaultRetries()
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var _retryLimit = defaultRetries()
+
+        var _out io.Writer = os.Stdout
+        \\\
+        ```
+    languages: [go]
+    tags: [declarations, types]
+    source: https://github.com/uber-go/guide/blob/master/style.md#top-level-variable-declarations

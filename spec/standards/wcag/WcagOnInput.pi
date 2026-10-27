@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagOnInput:
+    standard: @{Wcag22}
+    ruleId: 3.2.2
+    title: Do not change context automatically when a setting changes
+    statement:
+        Adjusting a setting on a control, like ticking a checkbox or picking
+        from a list, must not move the user to a new context automatically
+        unless they were warned first. A separate submit button is the safer
+        pattern.
+    rationale:
+        Users who change a select with arrow keys can be sent away before
+        they reach the option they wanted.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <select onchange="location.href = this.value">
+          <option value="/en">English</option>
+          <option value="/th">Thai</option>
+        </select>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <form action="/language">
+          <label for="lang">Language</label>
+          <select id="lang" name="lang">
+            <option value="en">English</option>
+            <option value="th">Thai</option>
+          </select>
+          <button type="submit">Change language</button>
+        </form>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, forms, predictability]
+    source: https://www.w3.org/TR/WCAG22/#on-input

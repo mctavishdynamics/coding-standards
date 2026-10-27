@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip129:
+    standard: @{GoogleAip}
+    ruleId: AIP-129
+    title: Give each field a single owner and expose server-chosen values separately
+    statement:
+        Each field is owned either by the client or by the server, and
+        server-owned fields must be marked OUTPUT_ONLY. The server must
+        return client-owned values unchanged; where the server picks an
+        effective value, add a separate output-only field prefixed with
+        effective_, and declare any allowed normalization with the
+        field_info annotation.
+    rationale:
+        When a server silently rewrites client values, declarative clients
+        cannot tell whether desired and actual state match and may loop
+        forever trying to correct the change. Consistent naming and declared
+        normalizations let clients compare values reliably.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message NodePool {
+          // Server replaces the user's value with its own choice.
+          int32 node_count = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message NodePool {
+          int32 node_count = 1;
+          int32 effective_node_count = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [field-behavior, declarative]
+    source: https://google.aip.dev/129

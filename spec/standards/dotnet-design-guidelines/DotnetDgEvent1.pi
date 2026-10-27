@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEvent1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: event-1
+    title: Say an event is raised, not fired or triggered
+    statement:
+        In names, documentation and comments, describe events as being
+        raised.
+    rationale:
+        One consistent verb across the framework avoids confusion between
+        terms that mean the same thing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        protected virtual void FireCompleted(EventArgs e) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        /// <summary>Raises the <see cref="Completed"/> event.</summary>
+        protected virtual void OnCompleted(EventArgs e) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, events, terminology]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/event

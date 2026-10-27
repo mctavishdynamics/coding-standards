@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEnum8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: enum-8
+    title: Consider Int32 as the enum underlying type by default
+    statement:
+        Keep the default 32-bit integer as the underlying type unless the
+        enum has more than 32 flags, native interop needs another size, or a
+        smaller type saves substantial memory.
+    rationale:
+        Int32 is what tools and callers expect; a smaller size only matters
+        when the enum is stored in many instances or large arrays.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public enum Visibility : long { Hidden, Visible }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public enum Visibility { Hidden, Visible }
+
+        [Flags]
+        public enum FeatureSet : long { None = 0, Search = 1L << 0, Export = 1L << 40 }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, type-design, enums, performance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/enum

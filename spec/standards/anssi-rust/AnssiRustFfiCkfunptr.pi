@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiCkfunptr:
+    standard: @{AnssiRust}
+    ruleId: FFI-CKFUNPTR
+    title: Check foreign function pointers
+    statement:
+        Check every function pointer received from foreign code at the
+        boundary before calling it.
+    rationale:
+        A null or bogus function pointer makes the call jump to an arbitrary
+        address.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub extern "C" fn register(cb: unsafe extern "C" fn(i32)) {
+            unsafe { cb(0) };
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub extern "C" fn register(cb: Option<unsafe extern "C" fn(i32)>) -> i32 {
+            match cb {
+                Some(f) => { unsafe { f(0) }; 0 }
+                None => -1,
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, ffi, function-pointers]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-CKFUNPTR

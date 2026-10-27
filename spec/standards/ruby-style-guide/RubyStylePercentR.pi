@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStylePercentR:
+    standard: @{RubyStyleGuide}
+    ruleId: percent-r
+    title: Use %r only for regexps that contain a slash
+    statement:
+        Write a regexp with %r only when the pattern matches at least one
+        slash character. RuboCop checks this with Style/RegexpLiteral.
+    rationale:
+        The slash-delimited form is the norm, and %r earns its place only by
+        sparing you escaped slashes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        DIGITS = %r{\d+}
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        DIGITS = /\d+/
+        API_PATH = %r{\A/api/v\d+/}
+        \\\
+        ```
+    languages: [ruby]
+    tags: [regex, literals]
+    source: https://rubystyle.guide/#percent-r

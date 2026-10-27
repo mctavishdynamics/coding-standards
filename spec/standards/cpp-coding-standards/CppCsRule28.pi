@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule28:
+    standard: @{CppCodingStandards}
+    ruleId: rule-28
+    title: Build postfix increment on prefix and call prefix by default
+    statement:
+        Implement postfix increment and decrement by calling the prefix
+        version, and call the prefix form when you do not need the old
+        value.
+    rationale:
+        Postfix must make a copy, so prefix is never slower and keeps the
+        two consistent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Iter Iter::operator++(int) { pos_ += 1; return Iter(pos_ - 1); }
+        for (auto it = v.begin(); it != v.end(); it++) {}
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Iter& Iter::operator++() { ++pos_; return *this; }
+        Iter Iter::operator++(int) { Iter old = *this; ++*this; return old; }
+        for (auto it = v.begin(); it != v.end(); ++it) {}
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions-and-operators, operators, performance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

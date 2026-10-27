@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule97:
+    standard: @{CppCodingStandards}
+    ruleId: rule-97
+    title: Reinterpret bits with bit_cast, not unions
+    statement:
+        Read a union only through the member last written; use memcpy or
+        bit_cast to reinterpret bits.
+    rationale:
+        Reading an inactive member is undefined behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        union Bits { float f; uint32_t u; };
+        Bits b; b.f = 1.0f;
+        uint32_t raw = b.u;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        uint32_t raw = std::bit_cast<uint32_t>(1.0f);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-safety, type-safety]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

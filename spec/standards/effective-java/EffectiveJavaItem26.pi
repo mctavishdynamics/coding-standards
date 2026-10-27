@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem26:
+    standard: @{EffectiveJava}
+    ruleId: item-26
+    title: Always supply type arguments to generic types
+    statement:
+        Write List of String, not plain List. Use raw types only in class
+        literals and instanceof checks.
+    rationale:
+        Raw types switch off generic type checking, so type errors show up
+        as ClassCastException far from where they were made.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        List names = new ArrayList();
+        names.add(42);
+        String first = (String) names.get(0);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        List<String> names = new ArrayList<>();
+        names.add("Ada");
+        String first = names.get(0);
+        \\\
+        ```
+    languages: [java]
+    tags: [generics, type-safety]
+    source: https://www.informit.com/store/effective-java-9780134686097

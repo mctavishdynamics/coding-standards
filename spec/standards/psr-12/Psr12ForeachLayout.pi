@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ForeachLayout:
+    standard: @{Psr12}
+    ruleId: 5.5
+    title: Lay out foreach loops with the standard spacing
+    statement:
+        Write a foreach loop with one space after the keyword, spaces around
+        as and the double arrow, and the opening brace on the same line
+        after one space.
+    rationale:
+        The loop then reads like every other control structure in the
+        codebase.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        foreach($prices as $sku=>$price){
+            update($sku, $price);
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        foreach ($prices as $sku => $price) {
+            update($sku, $price);
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [control-structures, loops]
+    source: https://www.php-fig.org/psr/psr-12/#55-foreach

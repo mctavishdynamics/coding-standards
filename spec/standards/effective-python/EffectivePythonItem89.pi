@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem89:
+    standard: @{EffectivePython}
+    ruleId: item-89
+    title: Give generators their resources and let callers clean up
+    statement:
+        Do not open files or connections inside a generator and rely on it
+        to close them. Pass the resource in, and have the caller manage its
+        lifetime with a with statement.
+    rationale:
+        A generator that is abandoned before it finishes may never run its
+        cleanup code at a predictable time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def lines(path):
+            with open(path) as f:
+                yield from f
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def lines(handle):
+            yield from handle
+
+        with open(path) as f:
+            for line in lines(f):
+                handle_line(line)
+        \\\
+        ```
+    languages: [python]
+    tags: [robustness, generators, resources]
+    source: https://effectivepython.com/

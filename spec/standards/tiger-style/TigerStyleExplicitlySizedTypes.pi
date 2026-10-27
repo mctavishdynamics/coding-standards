@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleExplicitlySizedTypes:
+    standard: @{TigerStyle}
+    ruleId: explicitly-sized-types
+    title: Use explicitly sized integer types
+    statement:
+        Choose integer types with a stated width, such as u32 or u64, rather
+        than types like usize whose size depends on the architecture.
+    rationale:
+        A fixed width behaves the same on every platform and makes limits
+        and memory layout predictable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        const Entry = struct { offset: usize, length: usize };
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        const Entry = struct { offset: u64, length: u32 };
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [types, portability]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

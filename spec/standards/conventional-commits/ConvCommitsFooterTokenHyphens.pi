@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./ConventionalCommits import ConventionalCommits
+
+export coding-rule ConvCommitsFooterTokenHyphens:
+    standard: @{ConventionalCommits}
+    ruleId: 9
+    title: Use hyphens instead of spaces in footer tokens
+    statement:
+        Replace whitespace in a footer token with hyphens, as in Acked-by.
+    rationale:
+        Tokens without spaces keep the footer section distinct from a body
+        paragraph that happens to contain a colon.
+    exceptions:
+        BREAKING CHANGE may be used as a token with its space.
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        Signed off by: Lee Park <lee@example.com>
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        Signed-off-by: Lee Park <lee@example.com>
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, footers]
+    source: https://www.conventionalcommits.org/en/v1.0.0/#specification

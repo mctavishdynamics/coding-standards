@@ -5,17 +5,19 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs78:
     standard: @{CppCoreGuidelines}
     ruleId: ES.78
-    title: Don't rely on implicit fallthrough in switch statements
+    title: Mark or avoid every fall-through between switch cases
     statement:
-        End every non-empty case with break, return or throw. When
-        fallthrough is intended, mark it with the fallthrough attribute.
-    rationale:
-        A missing break is a common bug, and a deliberate fallthrough is a
-        maintenance hazard unless it is rare and explicit.
-    exceptions:
-        Several case labels may share one statement, and a case that ends in
-        return needs no break. A rare deliberate fallthrough must use the
+        Close each case that has statements with break, return or throw.
+        Where control is meant to flow into the next case, mark it with the
         fallthrough attribute.
+    rationale:
+        Forgetting a break is one of the most common switch bugs. Intended
+        fall-through confuses later maintainers unless it is rare and
+        clearly labelled.
+    exceptions:
+        Stacking several labels on one statement is fine, and a case that
+        returns does not need a break. When you truly want fall-through,
+        which should be uncommon, mark it with the fallthrough attribute.
     severity: null
     noncompliant:
         ```cpp

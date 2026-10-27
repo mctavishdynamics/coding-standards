@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdCapitalizeAndParenthesizeMacros:
+    standard: @{OpenBsdStyle}
+    ruleId: macro-naming
+    title: Capitalize and parenthesize macros and avoid side effects
+    statement:
+        Write macro names in upper case, parenthesize the expansion and
+        arguments, and avoid side effects. A macro that expands a function
+        inline has the function's lower-case name in upper case.
+    rationale:
+        Upper case flags the name as a macro, and parentheses preserve
+        precedence when the macro is used in expressions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define half(x) x / 2
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define HALF(x) ((x) / 2)
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, naming, macros]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

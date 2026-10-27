@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleProvideAlternateAccessorToCollections:
+    standard: @{RubyStyleGuide}
+    ruleId: provide-alternate-accessor-to-collections
+    title: Offer an indexed form of collection accessors
+    statement:
+        When you expose a collection through a reader, also let callers ask
+        for a single element, so they need not check for nil first.
+    rationale:
+        Callers can then fetch one item safely without guarding against a
+        missing collection.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def attachments
+          @attachments
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def attachments(index = nil)
+          return @attachments unless index && @attachments
+
+          @attachments[index]
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, api-design, nil-safety]
+    source: https://rubystyle.guide/#provide-alternate-accessor-to-collections

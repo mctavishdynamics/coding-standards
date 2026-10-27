@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiAllowOpportunitiesForExtension:
+    standard: @{KotlinApiGuidelines}
+    ruleId: allow-opportunities-for-extension
+    title: Let users plug in their own choices
+    statement:
+        Where you cannot know the right choice, let users specify their
+        preferred approach, supply their own or use third-party extensions.
+        Design types with clear core concepts so that users can extend them.
+    rationale:
+        Extension points keep the library useful for cases you did not
+        foresee.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public class Logger {
+            public fun log(msg: String) { println(msg) }   // output fixed to stdout
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun interface LogSink { public fun write(line: String) }
+
+        public class Logger(private val sink: LogSink = LogSink(::println)) {
+            public fun log(msg: String) { sink.write(msg) }
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [api-design, extensibility]
+    source: https://kotlinlang.org/docs/api-guidelines-predictability.html#allow-opportunities-for-extension

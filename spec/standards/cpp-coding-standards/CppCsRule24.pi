@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule24:
+    standard: @{CppCodingStandards}
+    ruleId: rule-24
+    title: Put include guards inside every header and never around includes
+    statement:
+        Protect each header with a guard using a unique name inside the file
+        itself. Do not wrap include directives in guard checks at the point
+        of inclusion.
+    rationale:
+        Internal guards are self-maintaining; external guards duplicate
+        knowledge of guard names and break when they change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #ifndef ACME_NET_SOCKET_H
+        #include "socket.h"
+        #endif
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // socket.h
+        #ifndef ACME_NET_SOCKET_H
+        #define ACME_NET_SOCKET_H
+        class Socket;
+        #endif
+        \\\
+        ```
+    languages: [cpp]
+    tags: [coding-style, headers, macros]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

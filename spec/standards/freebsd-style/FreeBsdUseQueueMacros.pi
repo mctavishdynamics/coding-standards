@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdUseQueueMacros:
+    standard: @{FreeBsdStyle}
+    ruleId: queue-macros
+    title: Use queue(3) macros instead of hand-made lists
+    statement:
+        Build linked lists and queues with the queue(3) macros whenever
+        possible rather than writing your own link fields and code.
+    rationale:
+        The macros are well tested and make list handling uniform across the
+        tree.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct job {
+                struct job *next;
+                int id;
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <sys/queue.h>
+
+        struct job {
+                TAILQ_ENTRY(job) link;
+                int id;
+        };
+        TAILQ_HEAD(, job) jobs;
+        \\\
+        ```
+    languages: [c]
+    tags: [data-structures, libraries]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

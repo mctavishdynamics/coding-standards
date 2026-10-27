@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem14:
+    standard: @{EffectivePython}
+    ruleId: item-14
+    title: Learn how sequence slicing works
+    statement:
+        Use slices to take parts of lists, strings and bytes. Leave out zero
+        for the start and the length for the end, and remember slices never
+        raise for out-of-range bounds.
+    rationale:
+        Slicing is concise and consistent across sequence types, and
+        assigning to a slice can replace part of a list in place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        first_three = items[0:3]
+        rest = items[3:len(items)]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        first_three = items[:3]
+        rest = items[3:]
+        \\\
+        ```
+    languages: [python]
+    tags: [strings-and-slicing, slicing, sequences]
+    source: https://effectivepython.com/

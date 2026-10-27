@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgOperatorOverloads2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: operator-overloads-2
+    title: Consider operators on types that should feel primitive
+    statement:
+        For a type meant to feel like a built-in value, think about
+        overloading the operators callers would naturally use.
+    rationale:
+        Operators make such types read like the primitives they resemble.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public readonly struct Angle
+        {
+            public double Degrees { get; init; }
+            public static Angle operator +(Angle left, Angle right) => new() { Degrees = left.Degrees + right.Degrees };
+            public static bool operator <(Angle left, Angle right) => left.Degrees < right.Degrees;
+            public static bool operator >(Angle left, Angle right) => left.Degrees > right.Degrees;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, operators]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/operator-overloads

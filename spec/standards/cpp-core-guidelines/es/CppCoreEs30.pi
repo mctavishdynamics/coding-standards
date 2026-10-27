@@ -5,15 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs30:
     standard: @{CppCoreGuidelines}
     ruleId: ES.30
-    title: Don't use macros for program text manipulation
+    title: Avoid macros that rewrite source text
     statement:
-        Do not use macros to generate or rewrite source code. Use language
-        features such as templates, constexpr functions and inline
-        functions.
+        Never use macros to produce or transform program text. Templates,
+        constexpr functions and inline functions do the same jobs within the
+        language.
     rationale:
-        Macros ignore scope and type rules, show the reader something
-        different from what the compiler sees, cause many bugs and
-        complicate tools.
+        Macros sit outside scope and type checking, so the compiler sees
+        code that differs from what the reader sees. They are behind a large
+        share of bugs and make tools harder to write. Macros for
+        configuration control, as with #ifdef, are not covered.
     exceptions: null
     severity: null
     noncompliant:

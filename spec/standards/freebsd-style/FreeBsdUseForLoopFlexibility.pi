@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdUseForLoopFlexibility:
+    standard: @{FreeBsdStyle}
+    ruleId: for-loop-parts
+    title: Leave for-loop parts empty or declare the counter in the loop
+    statement:
+        Any part of a for statement may be left empty, and the loop header
+        may declare its own counter.
+    rationale:
+        Both forms keep a loop's control in one place.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        for (; n < max; n++)
+                consume(n);
+        for (int i = 0; i < nitems; i++)
+                check(items[i]);
+        \\\
+        ```
+    languages: [c]
+    tags: [loops, declarations]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

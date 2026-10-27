@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHeredocLongStrings:
+    standard: @{RubyStyleGuide}
+    ruleId: heredoc-long-strings
+    title: Split long strings without plus
+    statement:
+        Break a long string literal over several lines without joining the
+        parts with plus. Use a heredoc when the text should contain
+        newlines, and a trailing backslash between adjacent literals when it
+        should not. RuboCop checks this with Style/LineEndConcatenation.
+    rationale:
+        Adjacent literals and heredocs are joined by the parser, so there is
+        no runtime concatenation and the layout is clearer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        message = 'Your trial ends soon. ' +
+                  'Add a payment method to keep your projects.'
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        message = 'Your trial ends soon. ' \
+                  'Add a payment method to keep your projects.'
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, formatting]
+    source: https://rubystyle.guide/#heredoc-long-strings

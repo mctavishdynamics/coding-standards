@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleIdentityComparison:
+    standard: @{RubyStyleGuide}
+    ruleId: identity-comparison
+    title: Use equal? for identity comparison
+    statement:
+        Compare object identity with equal? instead of comparing object_id
+        values with double equals, and use Hash#compare_by_identity instead
+        of object_id keys. Set offers compare_by_identity as well.
+    rationale:
+        The identity methods exist for this purpose and say so directly,
+        while double equals is meant for value comparison.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        same = a.object_id == b.object_id
+        seen = {}
+        seen[node.object_id] = true
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        same = a.equal?(b)
+        seen = {}.compare_by_identity
+        seen[node] = true
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comparison]
+    source: https://rubystyle.guide/#identity-comparison

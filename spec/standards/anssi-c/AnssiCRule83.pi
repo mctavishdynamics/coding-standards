@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule83:
+    standard: @{AnssiC}
+    ruleId: rule-83
+    title: Write array accesses with the array first and the index second
+    statement:
+        When reaching an array element, write the array name first, then the
+        index.
+    rationale:
+        The reversed form is legal C but obscures what is being accessed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        value = 3[table];
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        value = table[3];
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, arrays, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=68

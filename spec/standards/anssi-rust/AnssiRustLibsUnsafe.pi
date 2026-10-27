@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLibsUnsafe:
+    standard: @{AnssiRust}
+    ruleId: LIBS-UNSAFE
+    title: Check dependencies for unsafe code
+    statement:
+        Find out whether imported crates contain unsafe blocks, for instance
+        with a dedicated tool. The guide marks this item as still to be
+        completed.
+    rationale:
+        Unsafe code in a dependency can break memory safety for the whole
+        program even when the project itself has none.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        cargo install cargo-geiger
+        cargo geiger
+        \\\
+        ```
+    languages: [rust]
+    tags: [recommendation, dependencies, unsafe]
+    source: https://anssi-fr.github.io/rust-guide/libraries.html#LIBS-UNSAFE

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartModifiersForExtension:
+    standard: @{EffectiveDart}
+    ruleId: do-use-class-modifiers-to-control-if-your-class-can-be-extended
+    title: Mark whether a class may be extended with class modifiers
+    statement:
+        Use modifiers such as `final`, `interface` or `sealed` to stop
+        extension outside the library, instead of relying on documentation.
+    rationale:
+        The compiler enforces modifiers, so the intent cannot be overlooked.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        /// Do not extend this class.
+        class Money {
+          final int cents;
+          const Money(this.cents);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final class Money {
+          final int cents;
+          const Money(this.cents);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, classes, class-modifiers]
+    source: https://dart.dev/effective-dart/design#do-use-class-modifiers-to-control-if-your-class-can-be-extended

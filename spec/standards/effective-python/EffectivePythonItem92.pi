@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem92:
+    standard: @{EffectivePython}
+    ruleId: item-92
+    title: Measure with a profiler before you optimise
+    statement:
+        Find out where a program actually spends its time with cProfile or
+        profile before changing code for speed.
+    rationale:
+        Intuition about slow spots is often wrong in Python, and profiling
+        points to the code that matters.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        import cProfile
+        import pstats
+
+        cProfile.run("main()", "out.prof")
+        pstats.Stats("out.prof").sort_stats("cumulative").print_stats(10)
+        \\\
+        ```
+    languages: [python]
+    tags: [performance, profiling]
+    source: https://effectivepython.com/

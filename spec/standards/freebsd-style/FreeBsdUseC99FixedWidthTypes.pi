@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdUseC99FixedWidthTypes:
+    standard: @{FreeBsdStyle}
+    ruleId: fixed-width-integers
+    title: Use uintXX_t rather than u_intXX_t
+    statement:
+        Write new code with the C99 types such as uint32_t instead of the
+        old BSD u_int32_t forms. Convert old code while doing other major
+        work in the area, but avoid commits that only change these types.
+    rationale:
+        The standard names are portable and familiar; type-only commits
+        create churn like whitespace commits.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        u_int32_t crc;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        uint32_t crc;
+        \\\
+        ```
+    languages: [c]
+    tags: [types, portability]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

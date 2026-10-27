@@ -7,18 +7,18 @@ export coding-rule GoogleObjCMacros:
     ruleId: macros
     title: Avoid macros
     statement:
-        Prefer const variables, enums, Xcode snippets or C functions to
-        macros. When a macro is needed, give it a unique SHOUTY_SNAKE_CASE
-        name or a function-style name, and undefine it after use where
-        practical. Do not write macros that look like keywords, expand to
-        unbalanced constructs, introduce scope, or generate public API,
-        method bodies or variables used outside the macro.
+        Reach for C functions, enums, const values or Xcode snippets before
+        macros. A macro that is truly needed gets a unique SHOUTY_SNAKE_CASE
+        or function-like name and is undefined after use when practical.
+        Macros must not imitate keywords, expand to unbalanced code, open a
+        scope, or produce public API, method bodies or variables visible
+        beyond the macro.
     rationale:
         Macros make the code you read differ from the code the compiler sees
         and hide where things are declared.
     exceptions:
-        Assertion and debug logging macros that are compiled conditionally
-        on build settings are acceptable.
+        Macros for assertions or debug logs that compile in or out depending
+        on build settings are fine.
     severity: null
     noncompliant:
         ```objectivec

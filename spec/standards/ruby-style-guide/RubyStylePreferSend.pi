@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStylePreferSend:
+    standard: @{RubyStyleGuide}
+    ruleId: prefer-__send__
+    title: Call __send__ rather than send
+    statement:
+        Prefer __send__ to send for dynamic dispatch.
+    rationale:
+        Some classes define their own send method, such as sockets, so send
+        may not dispatch the message you meant.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        connection.send(:close)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        connection.__send__(:close)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [metaprogramming]
+    source: https://rubystyle.guide/#prefer-__send__

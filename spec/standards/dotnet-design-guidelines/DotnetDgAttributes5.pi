@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgAttributes5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: attributes-5
+    title: Initialize required attribute properties through matching constructor parameters
+    statement:
+        Take each required argument as a constructor parameter named like
+        its property, differing only in casing.
+    rationale:
+        Required values then must be supplied, and the names show which
+        property each one sets.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public sealed class ColumnMapAttribute : Attribute
+        {
+            public ColumnMapAttribute(string columnName) => ColumnName = columnName;
+            public string ColumnName { get; }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, attributes, constructors]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/attributes

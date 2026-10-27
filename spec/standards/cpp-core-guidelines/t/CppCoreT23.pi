@@ -5,34 +5,32 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT23:
     standard: @{CppCoreGuidelines}
     ruleId: T.23
-    title: Differentiate a refined concept from its more general case by adding new use patterns
+    title: Tell a refined concept apart by the extra operations it needs
     statement:
-        Make a refined concept require at least one operation its base
-        concept does not, so the compiler can tell them apart.
+        Ensure a refined concept requires at least one operation that its base
+        concept does not, so the two can be told apart.
     rationale:
-        The compiler orders concepts by their required operations. Two
-        concepts with identical requirements are logically the same and
-        cannot be distinguished.
+        The compiler decides which concept is more specific by comparing their
+        requirements. If two concepts require exactly the same things, overload
+        resolution sees them as the same concept.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        template<typename I>
-        concept Reader = requires(I i) { ++i; *i; };
-
-        template<typename I>
-        concept Multi_pass_reader = requires(I i) { ++i; *i; };  // same set
+        template<typename B>
+        concept Buffer = requires(B b) { b.data(); b.size(); };
+        template<typename B>
+        concept Growable_buffer = requires(B b) { b.data(); b.size(); };  // nothing extra
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        template<typename I>
-        concept Reader = requires(I i) { ++i; *i; };
-
-        template<typename I>
-        concept Multi_pass_reader = Reader<I> && requires(I i) { i++; i == i; };
+        template<typename B>
+        concept Buffer = requires(B b) { b.data(); b.size(); };
+        template<typename B>
+        concept Growable_buffer = Buffer<B> && requires(B b, std::size_t n) { b.resize(n); };
         \\\
         ```
     languages: [cpp]

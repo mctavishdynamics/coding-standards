@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiDocumentInputsAndExceptions:
+    standard: @{KotlinApiGuidelines}
+    ruleId: document-inputs-and-exceptions
+    title: Describe valid inputs and every exception
+    statement:
+        State the expected values of each input, the valid range and what
+        happens with invalid ones. Document every exception the entry point
+        can throw, covering failure conditions in the general description.
+    rationale:
+        Users need to know where the boundaries are and how failures surface
+        to use the API correctly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        /** Downloads the file at [url]. */
+        public fun download(url: String): ByteArray
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        /**
+         * Downloads the resource at [url], which must be an absolute `http` or
+         * `https` URL. Throws [IllegalArgumentException] for an empty or malformed
+         * URL and [NotFoundException] if the server reports 404.
+         */
+        public fun download(url: String): ByteArray
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [documentation, error-handling]
+    source: https://kotlinlang.org/docs/api-guidelines-informative-documentation.html#thoroughly-document-your-api

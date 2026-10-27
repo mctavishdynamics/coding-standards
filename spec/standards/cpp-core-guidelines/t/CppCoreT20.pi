@@ -5,37 +5,46 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT20:
     standard: @{CppCoreGuidelines}
     ruleId: T.20
-    title: Avoid concepts without meaningful semantics
+    title: Give every concept a real meaning
     statement:
-        Define concepts for semantic notions like a number or a range, not
-        for a single operation such as having a plus operator. Use
-        single-operation constraints only as building blocks inside other
-        concepts.
+        Give a concept a semantic meaning, like a range, a number or an ordered
+        type, not merely the presence of one operation. Constraints that check a
+        single operator are building blocks for real concepts and should not be used
+        on their own in user code.
     rationale:
-        A one-operator constraint matches types by accident; an Addable
-        concept accepts both integers and strings, so an algorithm meant for
-        numbers silently concatenates text.
+        A single-operation check accepts types that have that operation for
+        unrelated reasons. A template meant for one kind of type then compiles for
+        another and quietly does the wrong thing.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        template<typename T>
-        concept Addable = requires(T a, T b) { a + b; };
+        template<typename R>
+        concept Has_begin = requires(R r) { r.begin(); };
 
-        template<Addable T>
-        T mean2(const T& a, const T& b) { return (a + b) / 2; }
+        template<Has_begin R>
+        auto count_items(R& r)            // also needs end(), and begin() may mean anything
+        {
+            return std::distance(r.begin(), r.end());
+        }
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        // +, -, * and / follow the usual arithmetic rules
-        template<typename T>
-        concept Number = requires(T a, T b) { a + b; a - b; a * b; a / b; };
+        // Sequence: begin() and end() delimit the elements, traversable more than once
+        template<typename R>
+        concept Sequence = requires(R r) {
+            { r.begin() } -> std::forward_iterator;
+            { r.end() } -> std::sentinel_for<decltype(r.begin())>;
+        };
 
-        template<Number T>
-        T mean2(const T& a, const T& b) { return (a + b) / 2; }
+        template<Sequence R>
+        auto count_items(R& r)
+        {
+            return std::distance(r.begin(), r.end());
+        }
         \\\
         ```
     languages: [cpp]

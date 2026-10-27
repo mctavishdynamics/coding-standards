@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleRefactorDontComment:
+    standard: @{RubyStyleGuide}
+    ruleId: refactor-dont-comment
+    title: Refactor unclear code instead of commenting it
+    statement:
+        If a passage is hard to follow without a comment, rewrite it until
+        the code is clear by itself instead of explaining it in a comment.
+    rationale:
+        Cleaning up the code removes the confusion at its root, while a
+        comment only papers over it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        # true when the customer has paid and the parcel left the warehouse
+        if order.paid_at && order.shipments.any? { |s| s.left_at }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        if order.paid? && order.shipped?
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comments, refactoring]
+    source: https://rubystyle.guide/#refactor-dont-comment

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartInitializingFormals:
+    standard: @{EffectiveDart}
+    ruleId: do-use-initializing-formals-when-possible
+    title: Use initializing formals when a parameter sets a field
+    statement:
+        When a constructor parameter is assigned straight to a field,
+        declare it as `this.field` in the parameter list. The
+        prefer_initializing_formals lint checks this.
+    rationale:
+        It removes the repeated names of the assignment form.
+    exceptions:
+        It cannot be used when you want a parameter name different from the
+        field name, such as a differently named named parameter.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Point {
+          final double x, y;
+          Point(double x, double y)
+              : x = x,
+                y = y;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Point {
+          final double x, y;
+          Point(this.x, this.y);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, constructors]
+    source: https://dart.dev/effective-dart/usage#do-use-initializing-formals-when-possible

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem11:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-11
+    title: Reject unwanted calls with deleted functions
+    statement:
+        Mark functions that must not be used as deleted, including unwanted
+        overloads and template specialisations.
+    rationale:
+        Deleted functions fail at compile time with clear errors, work for
+        non-members and templates, and cannot be called by friends.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Ticket {
+        private:
+            Ticket(const Ticket&);   // never defined
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Ticket {
+        public:
+            Ticket(const Ticket&) = delete;
+        };
+        void book(int seat);
+        void book(double) = delete;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [moving-to-modern-cpp, special-members]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

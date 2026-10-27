@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./BeckSimpleDesign import BeckSimpleDesign
+
+export coding-rule BeckDesignFewestElements:
+    standard: @{BeckSimpleDesign}
+    ruleId: rule-4
+    title: Keep the fewest classes and methods possible
+    statement:
+        Remove any class, method or other element that does not help the
+        code pass its tests, reveal its intent or avoid duplication.
+    rationale:
+        Elements added for imagined future flexibility make a system harder
+        to change, so in practice they make it less flexible.
+    exceptions:
+        This is the lowest-priority rule. Never remove an element if doing
+        so breaks a test, hides intent or brings back duplication.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class GreetingStrategy:
+            def greet(self, name):
+                raise NotImplementedError
+
+        class DefaultGreetingStrategy(GreetingStrategy):
+            def greet(self, name):
+                return f"Hello, {name}"
+
+        class GreetingStrategyFactory:
+            def create(self):
+                return DefaultGreetingStrategy()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def greet(name):
+            return f"Hello, {name}"
+        \\\
+        ```
+    languages: [any]
+    tags: [design, simplicity, yagni]
+    source: https://martinfowler.com/bliki/BeckDesignRules.html

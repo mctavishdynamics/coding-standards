@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ZenOfPython import ZenOfPython
+
+export coding-rule ZenAphorism2:
+    standard: @{ZenOfPython}
+    ruleId: aphorism-2
+    title: Make behaviour visible in the code instead of hidden
+    statement:
+        State what the code does openly. Avoid hidden side effects, wildcard
+        imports and behaviour that depends on magic the reader cannot see.
+    rationale:
+        When intent is spelled out, readers do not have to guess where names
+        come from or what happens behind the scenes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        from shapes import *
+
+        area = circle_area(2)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from shapes import circle_area
+
+        area = circle_area(2)
+        \\\
+        ```
+    languages: [python]
+    tags: [explicitness, readability]
+    source: https://peps.python.org/pep-0020/#the-zen-of-python

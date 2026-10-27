@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdPrototypeSharedFunctionsInHeaders:
+    standard: @{OpenBsdStyle}
+    ruleId: prototype-location
+    title: Prototype functions shared between files in a header
+    statement:
+        Declare functions used from other files in the relevant include
+        file. Functions shared by several modules of one program go in a
+        separate header such as extern.h.
+    rationale:
+        A single declaration keeps every caller consistent with the
+        definition.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        /* extern.h */
+        void     list_entries(const char *);
+        int      open_db(const char *);
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, headers, declarations]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

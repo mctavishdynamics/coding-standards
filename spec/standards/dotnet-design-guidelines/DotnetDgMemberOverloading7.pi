@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgMemberOverloading7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: member-overloading-7
+    title: Accept null for optional arguments
+    statement:
+        When an argument is optional, let callers pass null to mean the
+        default.
+    rationale:
+        Callers forwarding a value they may not have can then call the full
+        overload without branching.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public Report Generate(DateRange range, ReportStyle? style)
+        {
+            style ??= ReportStyle.Default;
+            /* ... */
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, overloading, null-handling]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/member-overloading

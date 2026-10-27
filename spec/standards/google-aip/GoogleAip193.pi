@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip193:
+    standard: @{GoogleAip}
+    ruleId: AIP-193
+    title: Return google.rpc.Status errors with an ErrorInfo
+    statement:
+        Report errors as google.rpc.Status with canonical codes and a clear
+        developer-facing message that assumes no knowledge of the
+        implementation. Include exactly one ErrorInfo with a stable
+        UPPER_SNAKE_CASE reason, a globally unique domain and metadata
+        holding every dynamic value in the message, with each detail type at
+        most once.
+    rationale:
+        Standard errors let clients build shared handling logic. The small
+        set of status codes cannot distinguish every error, so a machine-
+        readable reason and metadata spare clients from parsing messages.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [errors]
+    source: https://google.aip.dev/193

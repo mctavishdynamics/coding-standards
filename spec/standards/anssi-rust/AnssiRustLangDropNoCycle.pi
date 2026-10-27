@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangDropNoCycle:
+    standard: @{AnssiRust}
+    ruleId: LANG-DROP-NO-CYCLE
+    title: Keep Drop types out of reference-counted cycles
+    statement:
+        Do not put a value whose type implements Drop, directly or
+        indirectly, into a cycle of reference-counted pointers.
+    rationale:
+        Values in an Rc or Arc cycle are never freed, so their destructors
+        never run.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        struct Node { next: RefCell<Option<Rc<Node>>>, file: File }
+        let a = Rc::new(Node { next: RefCell::new(None), file: f1 });
+        let b = Rc::new(Node { next: RefCell::new(Some(a.clone())), file: f2 });
+        *a.next.borrow_mut() = Some(b.clone());
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        struct Node { next: RefCell<Option<Weak<Node>>>, file: File }
+        let a = Rc::new(Node { next: RefCell::new(None), file: f1 });
+        let b = Rc::new(Node { next: RefCell::new(Some(Rc::downgrade(&a))), file: f2 });
+        *a.next.borrow_mut() = Some(Rc::downgrade(&b));
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, destructors, memory]
+    source: https://anssi-fr.github.io/rust-guide/standard.html#LANG-DROP-NO-CYCLE

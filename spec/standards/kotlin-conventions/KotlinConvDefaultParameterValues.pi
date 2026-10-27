@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvDefaultParameterValues:
+    standard: @{KotlinConventions}
+    ruleId: default-parameter-values
+    title: Prefer default arguments to overloads
+    statement:
+        Declare a function with default parameter values instead of a set of
+        overloads.
+    rationale:
+        One function with defaults is shorter and easier to document than
+        several.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        fun connect(host: String) = connect(host, 443)
+        fun connect(host: String, port: Int) { }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        fun connect(host: String, port: Int = 443) { }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [functions, defaults]
+    source: https://kotlinlang.org/docs/coding-conventions.html#default-parameter-values

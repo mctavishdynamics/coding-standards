@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty16:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-16
+    title: Consider notification when external forces change a property
+    statement:
+        When a property's value can change without the caller doing
+        anything, for example through user input, raise events announcing
+        the change.
+    rationale:
+        Without an event, code depending on the value has no way to learn
+        that it changed.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class SliderControl
+        {
+            public event EventHandler ValueChanged;
+            public double Value { get; private set; }
+
+            private void OnUserDragged(double newValue)
+            {
+                Value = newValue;
+                ValueChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, properties, events]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property#property-change-notification-events

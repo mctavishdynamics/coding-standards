@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmAvoidPointerOrderNondeterminism:
+    standard: @{LlvmCodingStandards}
+    ruleId: beware-of-non-determinism-due-to-ordering-of-pointers
+    title: Do not iterate pointer-keyed unordered containers when order matters
+    statement:
+        Iterating a set or map keyed by pointers visits elements in an order
+        that can change between runs. When output depends on order, sort the
+        elements first or use an ordered container such as MapVector or
+        SetVector.
+    rationale:
+        Run-to-run differences in generated code make bugs hard to reproduce
+        even when each output is correct.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        DenseSet<Function *> Pending = collect(M);
+        for (Function *F : Pending)
+          emit(F);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        SetVector<Function *> Pending = collect(M);
+        for (Function *F : Pending)
+          emit(F);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [determinism, containers]
+    source: https://llvm.org/docs/CodingStandards.html#beware-of-non-determinism-due-to-ordering-of-pointers

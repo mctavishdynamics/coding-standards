@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem55:
+    standard: @{EffectiveJava}
+    ruleId: item-55
+    title: Return Optional only when it makes the API clearer
+    statement:
+        Consider returning Optional from a method that may have no result
+        and whose callers must handle that case. Do not wrap collections, do
+        not use it for fields or keys, and use the primitive variants for
+        numbers.
+    rationale:
+        Optional makes absence explicit and forces callers to consider it,
+        but it adds an allocation and can be misused.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public Optional<List<Order>> orders() { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public Optional<User> findByEmail(String email) {
+            return Optional.ofNullable(byEmail.get(email));
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods, optional, null-safety]
+    source: https://www.informit.com/store/effective-java-9780134686097

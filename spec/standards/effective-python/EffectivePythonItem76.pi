@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem76:
+    standard: @{EffectivePython}
+    ruleId: item-76
+    title: Translate blocking thread code into async code one call at a time
+    statement:
+        When porting blocking threaded code to asyncio, replace blocking
+        calls with their async counterparts, mark callers async and await
+        them, and use asyncio streams and tasks in place of threads.
+    rationale:
+        asyncio provides async equivalents for most threaded patterns, and a
+        methodical port keeps behaviour the same.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def handle(conn):
+            data = conn.recv(1024)
+            conn.sendall(data)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        async def handle(reader, writer):
+            data = await reader.read(1024)
+            writer.write(data)
+            await writer.drain()
+        \\\
+        ```
+    languages: [python]
+    tags: [concurrency-and-parallelism, asyncio, migration]
+    source: https://effectivepython.com/

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvLoops:
+    standard: @{KotlinConventions}
+    ruleId: loops
+    title: Prefer higher-order functions to loops, except forEach
+    statement:
+        Prefer functions such as filter and map to hand-written loops. Use a
+        plain for loop instead of forEach unless the receiver is nullable or
+        forEach ends a longer chain, and weigh the cost of long chains
+        against a loop.
+    rationale:
+        Higher-order functions state intent directly, while forEach adds
+        little over a for loop.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        val emails = mutableListOf<String>()
+        for (u in users) { if (u.subscribed) emails.add(u.email) }
+        users.forEach { send(it) }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        val emails = users.filter { it.subscribed }.map { it.email }
+        for (user in users) send(user)
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [loops, idioms]
+    source: https://kotlinlang.org/docs/coding-conventions.html#loops

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV16x5x1:
+    standard: @{OwaspAsvs}
+    ruleId: V16.5.1
+    title: Return generic messages for unexpected errors
+    statement:
+        Give callers only a generic message for unexpected or sensitive
+        failures, without stack traces, queries, keys or tokens.
+    rationale:
+        Detailed errors hand attackers internal information that helps them
+        craft further attacks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        except Exception as exc:
+            return jsonify(error=traceback.format_exc()), 500
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        except Exception:
+            log.exception("order lookup failed")
+            return jsonify(error="Something went wrong"), 500
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, error-handling, information-disclosure]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x25-V16-Security-Logging-and-Error-Handling.md#v165-error-handling

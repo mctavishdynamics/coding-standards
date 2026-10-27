@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoCastWhenNearbyOpWorks:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-cast-when-a-nearby-operation-will-do
+    title: Set the type in an existing operation instead of calling cast
+    statement:
+        When you already transform an iterable or stream, give that step the
+        type you need, such as `List<T>.from` instead of `toList` or an
+        explicit type argument on `map`, rather than adding `cast()`.
+    rationale:
+        An extra `cast` adds a lazy wrapper and checks when the existing
+        call can produce the right type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final prices = rows.map((r) => r['price']).toList().cast<double>();
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final prices = rows.map<double>((r) => r['price'] as double).toList();
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, collections, types]
+    source: https://dart.dev/effective-dart/usage#dont-use-cast-when-a-nearby-operation-will-do

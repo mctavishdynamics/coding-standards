@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem30:
+    standard: @{EffectivePython}
+    ruleId: item-30
+    title: Remember that functions can modify their arguments
+    statement:
+        Arguments are passed by reference, so a function can change a
+        mutable object the caller still holds. Avoid doing so, or document
+        it, and copy inputs when you need a private version.
+    rationale:
+        Unexpected mutation of a caller's list or dict causes bugs far from
+        the function that made the change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def normalized(tags):
+            tags.sort()
+            return tags
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def normalized(tags):
+            return sorted(tags)
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, mutability]
+    source: https://effectivepython.com/

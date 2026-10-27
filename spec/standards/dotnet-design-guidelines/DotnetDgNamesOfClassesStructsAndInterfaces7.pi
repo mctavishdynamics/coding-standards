@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfClassesStructsAndInterfaces7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-classes-structs-and-interfaces-7
+    title: Give generic type parameters descriptive names
+    statement:
+        Name type parameters after their role unless one letter is fully
+        self-explanatory and a longer name would add nothing.
+    rationale:
+        With several type parameters, single letters leave readers guessing
+        which is which.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public interface IConverter<A, B> { B Convert(A input); }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public interface IConverter<TInput, TOutput> { TOutput Convert(TInput input); }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, generics]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces#names-of-generic-type-parameters

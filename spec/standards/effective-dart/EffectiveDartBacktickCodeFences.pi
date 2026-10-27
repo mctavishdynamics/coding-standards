@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartBacktickCodeFences:
+    standard: @{EffectiveDart}
+    ruleId: prefer-backtick-fences-for-code-blocks
+    title: Use backtick fences for code blocks in docs
+    statement:
+        Mark code blocks in doc comments with triple-backtick fences rather
+        than four-space indentation.
+    rationale:
+        Indented blocks break inside lists and with indented code. Fences
+        avoid that, can name the language and match inline backticks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        /// Parses a duration such as 1h30m.
+        ///
+        ///     parseDuration('1h30m');
+        Duration parseDuration(String text);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Parses a duration such as 1h30m.
+        ///
+        /// ```dart
+        /// parseDuration('1h30m');
+        /// ```
+        Duration parseDuration(String text);
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, documentation, markdown]
+    source: https://dart.dev/effective-dart/documentation#prefer-backtick-fences-for-code-blocks

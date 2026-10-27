@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip217:
+    standard: @{GoogleAip}
+    ruleId: AIP-217
+    title: Report unreachable resources in a repeated unreachable field
+    statement:
+        A read method that can partly fail because some resources are
+        temporarily unreachable must list them in a repeated string field
+        named unreachable, holding the most fitting resource names, filled
+        per page and without ordering meaning. If nothing can be returned,
+        fail the whole request; existing APIs adopt the pattern only behind
+        a return_partial_success request flag.
+    rationale:
+        Users need to know as soon as a page is incomplete instead of
+        mistaking it for the full answer. An opt-in flag keeps the existing
+        default behavior compatible.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```protobuf
+        \\\
+        message ListOrdersResponse {
+          repeated Order orders = 1;
+          string next_page_token = 2;
+          // Locations that could not be reached for this page.
+          repeated string unreachable = 3;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [errors, pagination]
+    source: https://google.aip.dev/217

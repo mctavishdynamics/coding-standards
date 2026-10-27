@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem60:
+    standard: @{EffectiveJava}
+    ruleId: item-60
+    title: Keep money and other exact quantities out of binary floating point
+    statement:
+        Do not use binary floating point for money or other values that must
+        be exact. Use BigDecimal, or int or long counting the smallest unit.
+    rationale:
+        float and double cannot represent most decimal fractions exactly, so
+        sums such as 0.1 plus 0.2 come out slightly wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        double total = 0.10 + 0.20; // 0.30000000000000004
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        long totalCents = 10 + 20;
+        BigDecimal total = new BigDecimal("0.10").add(new BigDecimal("0.20"));
+        \\\
+        ```
+    languages: [java]
+    tags: [general-programming, numbers, correctness]
+    source: https://www.informit.com/store/effective-java-9780134686097

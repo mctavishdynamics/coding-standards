@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe862:
+    standard: @{CweTop25}
+    ruleId: CWE-862
+    title: Prevent missing authorization
+    statement:
+        Check on the server, for every request, that the caller is allowed
+        to perform this action on this resource, and deny by default. Map
+        roles to the data and functions they may use, add checks that follow
+        the business rules for each record, and lean on a vetted
+        authorization framework.
+    rationale:
+        An unchecked endpoint gives any user, or any anonymous caller,
+        access to data and actions that were meant for others. It is ranked
+        4 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        @DeleteMapping("/invoices/{id}")
+        public void delete(@PathVariable long id) {
+            invoices.deleteById(id);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @DeleteMapping("/invoices/{id}")
+        public void delete(@PathVariable long id, Principal caller) {
+            Invoice invoice = invoices.findById(id).orElseThrow(NotFound::new);
+            if (!invoice.getOwner().equals(caller.getName())) {
+                throw new AccessDeniedException("not the owner");
+            }
+            invoices.delete(invoice);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [rank-4, authorization, access-control]
+    source: https://cwe.mitre.org/data/definitions/862.html

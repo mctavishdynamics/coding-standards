@@ -5,14 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC84:
     standard: @{CppCoreGuidelines}
     ruleId: C.84
-    title: Do not let a swap function fail
+    title: Keep swap from failing
     statement:
-        Write swap so that it cannot fail, typically by exchanging pointers
-        and built-in values.
+        swap must always succeed. Usually it only exchanges pointers and built-
+        in values, which cannot fail.
     rationale:
-        Swap is used in many places that assume it never fails, and standard
-        containers and algorithms do not work correctly with a failing
-        element swap.
+        Many idioms and the standard containers and algorithms assume that
+        swapping elements never fails. A swap that can fail breaks them.
     exceptions: null
     severity: null
     noncompliant:

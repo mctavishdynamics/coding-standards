@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign14:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-14
+    title: Avoid out and ref parameters
+    statement:
+        Prefer return values over out and ref parameters in APIs aimed at a
+        broad audience.
+    rationale:
+        Using them well requires understanding reference semantics and
+        multiple results, and many developers do not know the difference
+        between the two.
+    exceptions:
+        Established patterns such as the Try pattern use an out parameter by
+        design.
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void GetBounds(out int width, out int height) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public Size GetBounds() { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, member-design, parameters]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#parameter-passing

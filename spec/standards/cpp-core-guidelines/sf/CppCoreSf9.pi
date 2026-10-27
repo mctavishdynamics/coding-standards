@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSf9:
     standard: @{CppCoreGuidelines}
     ruleId: SF.9
-    title: Avoid cyclic dependencies among source files
+    title: Keep source files free of circular dependencies
     statement:
-        Make sure headers and source files do not include each other in a
-        cycle. Remove the cycle rather than merely masking it with include
+        Arrange headers and source files so that no include chain leads back to its
+        starting file. Break such a loop instead of only hiding it behind include
         guards.
     rationale:
-        Cycles make code harder to understand, slow compilation and
-        complicate moving to modules.
+        Include loops make the code harder to follow and slow down builds. They also
+        get in the way of moving the code to modules.
     exceptions: null
     severity: null
     noncompliant:

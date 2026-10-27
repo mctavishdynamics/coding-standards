@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule37:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-37
+    title: Guard program limits against any input
+    statement:
+        Make sure no input can exceed the program's fixed limits, such as
+        array sizes or table capacities.
+    rationale:
+        Overrunning a limit corrupts data or crashes the program. Checking
+        the bound turns a silent failure into a clear message.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int vals[100], n = 0;
+        while (scanf("%d", &vals[n]) == 1) {
+            n++;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int vals[100], n = 0;
+        while (n < 100 && scanf("%d", &vals[n]) == 1) {
+            n++;
+        }
+        if (n == 100) {
+            fprintf(stderr, "too many values, extra ignored\n");
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [input-and-output, input-validation, bounds]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

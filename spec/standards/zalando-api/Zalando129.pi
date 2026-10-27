@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando129:
+    standard: @{ZalandoApi}
+    ruleId: 129
+    title: Use kebab-case for path segments
+    statement:
+        Write path segments in lower-case ASCII kebab-case, starting with a
+        letter and continuing with letters, digits and hyphens.
+    rationale:
+        A single casing style keeps URLs predictable and avoids problems
+        with case-sensitive routing.
+    exceptions:
+        The casing applies to literal path segments, not necessarily to the
+        names of path parameters.
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /shippingAddresses
+        GET /Return_Requests/77
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /shipping-addresses
+        GET /return-requests/77
+        \\\
+        ```
+    languages: [any]
+    tags: [must, urls, naming]
+    source: https://opensource.zalando.com/restful-api-guidelines/#129

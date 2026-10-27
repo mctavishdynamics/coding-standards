@@ -5,29 +5,29 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT13:
     standard: @{CppCoreGuidelines}
     ruleId: T.13
-    title: Prefer the shorthand notation for simple, single-type argument concepts
+    title: Write simple one-parameter constraints in the short form
     statement:
-        When a single type parameter needs a single concept, write it in the
-        template parameter list or as a constrained auto parameter instead
-        of a separate requires clause.
+        If one type parameter needs exactly one concept, put the concept in the
+        template parameter list or write a constrained auto parameter. Save requires
+        clauses for harder cases.
     rationale:
-        The short forms read the way the idea is spoken and express it
-        directly. Many such templates no longer need the template keyword at
-        all.
+        The short form reads naturally and says just what is meant. It often removes
+        the template line entirely.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        template<typename T>
-            requires std::sortable<T>
-        void arrange(T& seq);
+        template<typename N>
+            requires std::integral<N>
+        N round_up(N value, N step);
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        void arrange(std::sortable auto& seq);
+        template<std::integral N>
+        N round_up(N value, N step);
         \\\
         ```
     languages: [cpp]

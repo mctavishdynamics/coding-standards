@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-8
+    title: Consider indexers on collection types
+    statement:
+        Think about providing an indexer on a type that represents a
+        collection of items.
+    rationale:
+        Callers expect collections to support element access with square
+        brackets.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class Playlist : IEnumerable<Track>
+        {
+            private readonly List<Track> _tracks = new();
+            public Track this[int position] => _tracks[position];
+            /* ... */
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, indexers, collections]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property#indexed-property-design

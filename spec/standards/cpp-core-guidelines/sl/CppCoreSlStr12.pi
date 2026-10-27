@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSlStr12:
     standard: @{CppCoreGuidelines}
     ruleId: SL.str.12
-    title: Use the s suffix for string literals meant to be standard-library strings
+    title: Add the s suffix to literals that should be std::string
     statement:
-        When a literal is meant to be a std::string, write it with the s
-        suffix so deduction produces std::string rather than a char pointer.
+        Write a string literal with the s suffix when you want a std::string, so
+        that auto and template deduction produce std::string and not const char
+        pointer.
     rationale:
-        Expressing the idea directly avoids mistakes, such as a deduced pair
-        holding a C string when a std::string was intended.
+        Saying what you mean in the code prevents surprises. Without the suffix, a
+        deduced pair or container ends up holding pointers to C strings.
     exceptions: null
     severity: null
     noncompliant:

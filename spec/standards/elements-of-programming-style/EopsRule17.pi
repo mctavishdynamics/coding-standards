@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule17:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-17
+    title: Express repetition with loop statements
+    statement:
+        Write repeated work with the language's loop constructs so the loop
+        is obvious, not with labels and backward jumps.
+    rationale:
+        A loop statement shows the start, the condition and the body in one
+        place. A backward jump hides that a loop exists at all.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        i = 0;
+        again:
+        if (i < n) {
+            sum += a[i];
+            i++;
+            goto again;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (i = 0; i < n; i++) {
+            sum += a[i];
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [control-structure, loops, goto]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando224:
+    standard: @{ZalandoApi}
+    ruleId: 224
+    title: Follow the hostname naming convention
+    statement:
+        Form API hostnames from the functional name, as functional-name
+        followed by the company API domain. The older application-and-team
+        based hostnames are deprecated and only allowed for
+        component-internal APIs.
+    rationale:
+        Functional hostnames do not change when the team or application
+        behind an API changes, so consumers keep working.
+    exceptions:
+        Some legacy external-partner hostnames are kept for backward
+        compatibility and are on an allow list.
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        servers:
+          - url: https://order-svc.team-checkout.internal-apps.example.com
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        servers:
+          - url: https://checkout-orders.example-apis.com
+        \\\
+        ```
+    languages: [any]
+    tags: [must, naming, urls]
+    source: https://opensource.zalando.com/restful-api-guidelines/#224

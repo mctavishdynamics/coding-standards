@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSystemXmlUsage2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: system-xml-usage-2
+    title: Accept and return XML through reader and navigator abstractions
+    statement:
+        Use XmlReader, IXPathNavigable or XNode subtypes as the parameter
+        and return types of members that handle XML.
+    rationale:
+        These abstractions decouple the member from one in-memory document
+        and also work with virtual XML sources.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Import(XmlDocument document) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Import(XmlReader reader) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, xml, abstraction]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/system-xml-usage

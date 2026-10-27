@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation84:
+    standard: @{AnssiC}
+    ruleId: recommendation-84
+    title: Use square brackets to access array elements
+    statement:
+        Access the elements of an array variable with bracket notation
+        rather than pointer arithmetic.
+    rationale:
+        Brackets make it obvious that the code indexes an array.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (size_t i = 0; i < n; i++) { *(buf + i) = 0; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (size_t i = 0; i < n; i++) { buf[i] = 0; }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, arrays, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=68

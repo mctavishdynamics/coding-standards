@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando176:
+    standard: @{ZalandoApi}
+    ruleId: 176
+    title: Support Problem JSON
+    statement:
+        Make every endpoint able to return RFC 9457 Problem JSON with the
+        application/problem+json media type for 4xx and 5xx errors. Clients
+        must not rely on receiving it and should list it in their Accept
+        header.
+    rationale:
+        A standard error object gives machine and human readable details
+        beyond the status code.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        HTTP/1.1 422 Unprocessable Content
+        Content-Type: application/problem+json
+
+        {
+          "type": "https://example.com/problems/return-period-expired",
+          "title": "Return period expired",
+          "status": 422,
+          "detail": "Order so-4471 was delivered 45 days ago."
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, error-handling, json]
+    source: https://opensource.zalando.com/restful-api-guidelines/#176

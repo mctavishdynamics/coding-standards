@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip149:
+    standard: @{GoogleAip}
+    ruleId: AIP-149
+    title: Use the optional keyword only when unset must differ from the default
+    statement:
+        Mark a primitive field optional only when the API truly needs to
+        tell an unset value from zero, false or empty, which in practice
+        means numbers. Prefer designs that do not need the distinction, and
+        remember that optional is about presence, not about the
+        field_behavior annotation.
+    rationale:
+        Presence tracking adds complexity to generated code and to clients.
+        Field behavior and presence answer different questions, so one does
+        not replace the other.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          optional string notes = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          // Unset means no limit; 0 means none allowed.
+          optional int32 max_servings = 1;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [fields, presence]
+    source: https://google.aip.dev/149

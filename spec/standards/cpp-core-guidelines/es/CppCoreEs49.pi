@@ -5,13 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs49:
     standard: @{CppCoreGuidelines}
     ruleId: ES.49
-    title: If you must use a cast, use a named cast
+    title: Use a named C++ cast when a cast is unavoidable
     statement:
-        Use static_cast, const_cast, reinterpret_cast, dynamic_cast or a GSL
-        cast such as narrow_cast rather than a C-style or functional cast.
+        If a conversion cannot be avoided, use static_cast, const_cast,
+        reinterpret_cast, dynamic_cast or a GSL helper such as narrow_cast.
+        Do not write C-style casts or functional-notation casts.
     rationale:
-        Named casts say what kind of conversion is meant, so the compiler
-        can catch some errors and readers and tools can find them.
+        Each named cast does one specific kind of conversion. The compiler
+        can reject the wrong kind, and people and tools can search for every
+        cast in the code.
     exceptions: null
     severity: null
     noncompliant:

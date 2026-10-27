@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoExitInMain:
+    standard: @{UberGo}
+    ruleId: exit-in-main
+    title: Exit the program only from main
+    statement:
+        Only main may end the program through os.Exit or log.Fatal. Any other
+        function signals failure by returning an error to its caller.
+    rationale:
+        Exiting elsewhere hides control flow, makes functions untestable and
+        skips deferred cleanup.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func readInput(path string) []byte {
+            data, err := os.ReadFile(path)
+            if err != nil {
+                log.Fatal(err)
+            }
+            return data
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func readInput(path string) ([]byte, error) {
+            return os.ReadFile(path)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [program-exit, error-handling]
+    source: https://github.com/uber-go/guide/blob/master/style.md#exit-in-main

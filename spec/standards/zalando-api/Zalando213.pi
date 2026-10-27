@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando213:
+    standard: @{ZalandoApi}
+    ruleId: 213
+    title: Follow the naming convention for event type names
+    statement:
+        Name event types after the functional name and the entity or process
+        they describe, depending on the audience. Use the same naming when
+        one entity appears both in a data change event and in a REST API.
+    rationale:
+        Functional names stay unique and stable across organizational
+        changes.
+    exceptions:
+        The legacy application-based naming is still allowed for internal
+        event types only.
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        logistics-parcels.parcel-scanned
+        checkout-orders.sales-order-placed
+        \\\
+        ```
+    languages: [any]
+    tags: [must, events, naming]
+    source: https://opensource.zalando.com/restful-api-guidelines/#213

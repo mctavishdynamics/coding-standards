@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem100:
+    standard: @{EffectivePython}
+    ruleId: item-100
+    title: Order records on several fields by returning a tuple from the key
+    statement:
+        Pass a key function to sort or sorted. Return a tuple to sort by
+        several fields, negate numbers to reverse one field, or sort several
+        times for mixed directions.
+    rationale:
+        Key functions are simple and fast, and tuples compare item by item.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        people.sort(key=lambda p: str(p.age) + p.name)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        people.sort(key=lambda p: (-p.age, p.name))
+        \\\
+        ```
+    languages: [python]
+    tags: [data-structures-and-algorithms, sorting, algorithms]
+    source: https://effectivepython.com/

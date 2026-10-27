@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation139:
+    standard: @{AnssiC}
+    ruleId: recommendation-139
+    title: Document every function
+    statement:
+        Document each function with what it does, each parameter with its
+        direction and constraints, and its possible return values.
+    rationale:
+        Callers can only use a function correctly if they know its contract.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        /**
+         * Copy at most dst_len - 1 bytes of src into dst and terminate it.
+         * dst      [out] destination buffer, not NULL
+         * dst_len  [in]  size of dst in bytes, greater than 0
+         * src      [in]  null-terminated source, not NULL
+         * Returns 0 on success, -1 if src was truncated.
+         */
+        int copy_str(char *dst, size_t dst_len, const char *src);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, functions, documentation]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=111

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiThoroughlyDocumentYourApi:
+    standard: @{KotlinApiGuidelines}
+    ruleId: thoroughly-document-your-api
+    title: Document every entry point with a real description
+    statement:
+        Write KDoc for every supported entry point and hide unwanted ones by
+        visibility or the suppress directive. Start with a high-level
+        account of what it does instead of restating the signature in words.
+    rationale:
+        A signature in prose adds nothing; users need to know the behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        /** Takes a String and returns a Session. */
+        public fun login(token: String): Session
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        /**
+         * Opens a session for the user identified by [token], or throws
+         * [AuthException] if the token has expired or was revoked.
+         */
+        public fun login(token: String): Session
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [documentation]
+    source: https://kotlinlang.org/docs/api-guidelines-informative-documentation.html#thoroughly-document-your-api

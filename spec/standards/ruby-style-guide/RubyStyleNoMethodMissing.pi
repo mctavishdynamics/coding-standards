@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoMethodMissing:
+    standard: @{RubyStyleGuide}
+    ruleId: no-method-missing
+    title: Reach for define_method or delegation before method_missing
+    statement:
+        Prefer delegation, a proxy or define_method to method_missing. If
+        you do use it, also define respond_to_missing?, handle only names
+        with a clear prefix, call super for everything else, and delegate to
+        ordinary methods. RuboCop checks this with
+        Style/MissingRespondToMissing.
+    rationale:
+        method_missing makes backtraces confusing, hides methods from
+        introspection and can let misspelt calls succeed silently.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def method_missing(name, *args)
+          @settings[name.to_s.chomp('=')] = args.first
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def method_missing(name, *args, &block)
+          return super unless name.start_with?('setting_')
+
+          fetch_setting(name.to_s.delete_prefix('setting_'))
+        end
+
+        def respond_to_missing?(name, include_private = false)
+          name.start_with?('setting_') || super
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [metaprogramming]
+    source: https://rubystyle.guide/#no-method-missing

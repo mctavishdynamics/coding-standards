@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV6x2x6:
+    standard: @{OwaspAsvs}
+    ruleId: V6.2.6
+    title: Mask password fields
+    statement:
+        Use input type password for password fields. Showing the whole
+        password on request, or the last character typed, is acceptable.
+    rationale:
+        Masking keeps passwords from being read by people nearby.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <input name="password" type="text">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <input name="password" type="password" autocomplete="current-password">
+        \\\
+        ```
+    languages: [any]
+    tags: [level-1, passwords, user-interface]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x15-V6-Authentication.md#v62-password-security

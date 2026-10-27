@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem58:
+    standard: @{EffectiveJava}
+    ruleId: item-58
+    title: Use for-each loops instead of index or iterator loops
+    statement:
+        Loop over collections and arrays with the enhanced for statement
+        unless you need the index or iterator itself.
+    rationale:
+        It hides the iterator or index, removing chances for error, and
+        works the same for any Iterable.
+    exceptions:
+        Use a traditional loop when you remove elements while iterating,
+        replace elements, or walk several collections in step.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        for (int i = 0; i < orders.size(); i++) {
+            ship(orders.get(i));
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        for (Order order : orders) {
+            ship(order);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [general-programming, loops, readability]
+    source: https://www.informit.com/store/effective-java-9780134686097

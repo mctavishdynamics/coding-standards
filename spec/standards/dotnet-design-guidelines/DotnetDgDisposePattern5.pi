@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-5
+    title: Implement Dispose as Dispose(true) then SuppressFinalize
+    statement:
+        The public Dispose should just call Dispose(true) and then
+        GC.SuppressFinalize(this), suppressing only after cleanup succeeded.
+    rationale:
+        Suppressing finalization avoids running the finalizer for an object
+        that is already clean.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, dispose, resources, finalizers]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern#basic-dispose-pattern

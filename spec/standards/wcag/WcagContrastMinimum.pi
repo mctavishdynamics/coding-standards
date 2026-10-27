@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagContrastMinimum:
+    standard: @{Wcag22}
+    ruleId: 1.4.3
+    title: Reach a text contrast ratio of 4.5 to 1 or higher
+    statement:
+        Make text and images of text contrast with their background at a
+        ratio of at least 4.5 to 1, or 3 to 1 for large text.
+    rationale:
+        Low contrast text is hard or impossible to read for people with low
+        vision and for anyone in bright light.
+    exceptions:
+        Logos, purely decorative text, text in inactive controls and
+        incidental text inside photos have no contrast requirement.
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        .hint { color: #aaaaaa; background: #ffffff; }
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        .hint { color: #595959; background: #ffffff; }
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, color, contrast]
+    source: https://www.w3.org/TR/WCAG22/#contrast-minimum

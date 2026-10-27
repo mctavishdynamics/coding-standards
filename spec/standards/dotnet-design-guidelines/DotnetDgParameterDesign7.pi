@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-7
+    title: Use a Boolean parameter only for a permanently two-valued choice
+    statement:
+        Choose bool only when you are sure the option will never need a
+        third value; otherwise use an enum, keeping in mind the cost of
+        adding enum values later.
+    rationale:
+        A Boolean cannot be extended, while an enum leaves room for growth.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Export(string path, bool asPdf) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Export(string path, ExportFormat format) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, parameters, enums]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#choosing-between-enum-and-boolean-parameters

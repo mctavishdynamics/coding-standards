@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoNoGoroutinesInInit:
+    standard: @{UberGo}
+    ruleId: no-goroutines-in-init
+    title: Do not start goroutines from init
+    statement:
+        Do not spawn goroutines in init. If a package needs background work,
+        expose an object that starts it on request and provides a method
+        such as Close or Stop that signals it to end and waits for it.
+    rationale:
+        A goroutine started at import time runs whether or not the user
+        wants it, and the user has no way to stop it or free its resources.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func init() {
+            go flushMetricsForever()
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Flusher struct {
+            stop chan struct{}
+            done chan struct{}
+        }
+
+        func StartFlusher() *Flusher {
+            f := &Flusher{stop: make(chan struct{}), done: make(chan struct{})}
+            go f.loop()
+            return f
+        }
+
+        func (f *Flusher) Close() {
+            close(f.stop)
+            <-f.done
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, goroutines, initialization]
+    source: https://github.com/uber-go/guide/blob/master/style.md#no-goroutines-in-init

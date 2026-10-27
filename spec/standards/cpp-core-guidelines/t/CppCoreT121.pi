@@ -5,28 +5,31 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT121:
     standard: @{CppCoreGuidelines}
     ruleId: T.121
-    title: Use template metaprogramming primarily to emulate concepts
+    title: Use metaprogramming mainly to stand in for concepts
     statement:
-        Where concepts are not available, the main legitimate use of
-        metaprogramming is emulating them, for example overloading on
-        iterator category with enable_if.
+        When the language version lacks concepts, use metaprogramming chiefly to
+        imitate them, for example by selecting overloads with enable_if on a type
+        property.
     rationale:
-        Overloading on concepts is one of the most common and simplest needs
-        for metaprogramming, and it becomes much simpler once real concepts
-        are available.
+        Picking an overload according to what a type can do is the most frequent and
+        simplest reason to use metaprogramming. Native concepts make that same task
+        much easier once they are available.
     exceptions: null
     severity: null
     noncompliant: null
     compliant:
         ```cpp
         \\\
-        template<typename It>
-        std::enable_if_t<is_random_access_v<It>> skip(It& it, int n) { it += n; }
-
-        template<typename It>
-        std::enable_if_t<!is_random_access_v<It>> skip(It& it, int n)
+        template<typename T>
+        std::enable_if_t<std::is_floating_point_v<T>, bool> nearly_equal(T a, T b)
         {
-            while (n-- > 0) ++it;
+            return std::abs(a - b) <= std::numeric_limits<T>::epsilon() * 4;
+        }
+
+        template<typename T>
+        std::enable_if_t<std::is_integral_v<T>, bool> nearly_equal(T a, T b)
+        {
+            return a == b;
         }
         \\\
         ```

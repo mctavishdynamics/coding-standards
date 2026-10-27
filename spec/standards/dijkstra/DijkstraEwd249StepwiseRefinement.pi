@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./Dijkstra import Dijkstra
+
+export coding-rule DijkstraEwd249StepwiseRefinement:
+    standard: @{Dijkstra}
+    ruleId: EWD249-stepwise-refinement
+    title: Develop a program by successive refinement
+    statement:
+        Write the program first in terms of a few large abstract actions and
+        data, then refine each one in later steps. At each level describe
+        what that level needs and preferably nothing more.
+    rationale:
+        Each step is small enough to understand and check, and decisions are
+        made one at a time instead of all at once.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def print_primes(n):
+            p, j = [2], 1
+            while len(p) < n:
+                j += 2
+                if all(j % q for q in p if q * q <= j):
+                    p.append(j)
+            for k in range(0, n, 4):
+                print(*p[k:k + 4])
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def print_primes(n):
+            table = first_primes(n)
+            print_in_columns(table, columns=4)
+
+        def first_primes(n):
+            ...
+
+        def print_in_columns(values, columns):
+            ...
+        \\\
+        ```
+    languages: [any]
+    tags: [design, refinement, abstraction]
+    source: https://www.cs.utexas.edu/~EWD/transcriptions/EWD02xx/EWD249/EWD249.html

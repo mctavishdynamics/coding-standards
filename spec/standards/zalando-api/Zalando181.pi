@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando181:
+    standard: @{ZalandoApi}
+    ruleId: 181
+    title: Consider the Prefer header for processing preferences
+    statement:
+        Let clients state processing preferences such as return=minimal or
+        respond-async through the RFC 7240 Prefer header instead of
+        proprietary headers. Document only the preferences the endpoint
+        supports, and confirm applied ones with Preference-Applied.
+    rationale:
+        Prefer is a standard, extensible way to express such directives and
+        saves inventing custom headers.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        PATCH /customers/c-90
+        Prefer: return=minimal
+
+        HTTP/1.1 204 No Content
+        Preference-Applied: return=minimal
+        \\\
+        ```
+    languages: [any]
+    tags: [may, http, headers]
+    source: https://opensource.zalando.com/restful-api-guidelines/#181

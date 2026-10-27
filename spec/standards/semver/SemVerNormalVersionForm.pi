@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./SemVer import SemVer
+
+export coding-rule SemVerNormalVersionForm:
+    standard: @{SemVer}
+    ruleId: 2
+    title: Write normal versions as three non-negative integers
+    statement:
+        Use the form MAJOR.MINOR.PATCH, where each part is a non-negative
+        integer with no leading zeroes, and increase each part numerically.
+    rationale:
+        A strict numeric format lets people and tools parse and order
+        versions the same way, so 1.10.0 correctly follows 1.9.0.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        1.02.0
+        v1.9
+        1.9.0 -> 1.9a.0
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        1.2.0
+        1.9.0 -> 1.10.0 -> 1.11.0
+        \\\
+        ```
+    languages: [any]
+    tags: [versioning, format]
+    source: https://semver.org/#semantic-versioning-specification-semver

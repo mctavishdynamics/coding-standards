@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleBeginImplicit:
+    standard: @{RubyStyleGuide}
+    ruleId: begin-implicit
+    title: Use the implicit begin of method bodies
+    statement:
+        When a whole method body needs rescue or ensure, attach the clauses
+        to the method itself rather than wrapping the body in begin and end.
+    rationale:
+        A method definition already acts as a begin block, so the explicit
+        one only adds a level of indentation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def fetch_rate
+          begin
+            api.rate
+          rescue Timeout::Error
+            cached_rate
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def fetch_rate
+          api.rate
+        rescue Timeout::Error
+          cached_rate
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [error-handling, exceptions, methods]
+    source: https://rubystyle.guide/#begin-implicit

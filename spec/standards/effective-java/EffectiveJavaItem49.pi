@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem49:
+    standard: @{EffectiveJava}
+    ruleId: item-49
+    title: Validate method parameters at the start
+    statement:
+        Check a method's restrictions on its parameters as soon as it
+        starts, throw a suitable exception when they are violated, and
+        document the restrictions.
+    rationale:
+        Failing at once with a clear exception is much easier to debug than
+        a confusing failure later or a silently wrong result.
+    exceptions:
+        Skip a check when it would be costly and the computation performs it
+        implicitly anyway.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public void setRetries(int retries) {
+            this.retries = retries;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public void setRetries(int retries) {
+            if (retries < 0) throw new IllegalArgumentException("retries < 0: " + retries);
+            this.retries = retries;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods, input-validation]
+    source: https://www.informit.com/store/effective-java-9780134686097

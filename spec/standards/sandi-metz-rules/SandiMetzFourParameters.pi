@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./SandiMetzRules import SandiMetzRules
+
+export coding-rule SandiMetzFourParameters:
+    standard: @{SandiMetzRules}
+    ruleId: rule-3
+    title: Pass no more than four parameters to a method
+    statement:
+        Give a method at most four parameters. A hash of options counts as
+        parameters too, so splitting arguments into an options hash does not
+        get around the limit.
+    rationale:
+        Long parameter lists show that a method knows too much about its
+        callers and often hide a missing object that should hold those
+        values.
+    exceptions:
+        Rule zero covers every rule. Break one only when you have a sound
+        reason or when your pair, or whoever reviews the code, agrees to it.
+        The thoughtbot team fell back on this for Rails view helpers when no
+        better design was available.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def book_room(guest, room, check_in, check_out, breakfast, parking)
+          # ...
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def book_room(guest, room, stay)
+          # stay holds the dates and the extras
+        end
+        \\\
+        ```
+    languages: [ruby, any]
+    tags: [parameters, methods]
+    source: https://thoughtbot.com/blog/sandi-metz-rules-for-developers#four-method-arguments

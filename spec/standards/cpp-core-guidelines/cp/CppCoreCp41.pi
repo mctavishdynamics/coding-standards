@@ -5,13 +5,12 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp41:
     standard: @{CppCoreGuidelines}
     ruleId: CP.41
-    title: Minimize thread creation and destruction
+    title: Reuse threads instead of creating and destroying them often
     statement:
-        Reuse threads rather than starting one per unit of work. Use a pool
-        of worker threads fed from a queue, or the thread pool your system
-        provides.
+        Keep a set of long-lived worker threads that take jobs from a queue, or use
+        the platform's thread pool, instead of spawning a thread for each job.
     rationale:
-        Creating and destroying threads is expensive.
+        Starting and tearing down a thread is costly.
     exceptions: null
     severity: null
     noncompliant:

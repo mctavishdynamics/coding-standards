@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuNeverUseTrigraphs:
+    standard: @{GnuCodingStandards}
+    ruleId: standard-c-trigraphs
+    title: Use C99 features freely but never trigraphs
+    statement:
+        Features of ISO C99 are widely available and may be used. Never use
+        trigraph sequences.
+    rationale:
+        Trigraphs are an obsolete misfeature that silently changes the
+        meaning of ordinary-looking text.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        puts ("What??!");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        puts ("What?\?!");
+        \\\
+        ```
+    languages: [c]
+    tags: [language-version, preprocessor]
+    source: https://www.gnu.org/prep/standards/standards.html#Standard-C

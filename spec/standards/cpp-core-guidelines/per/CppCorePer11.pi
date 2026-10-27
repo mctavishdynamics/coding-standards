@@ -5,32 +5,42 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCorePer11:
     standard: @{CppCoreGuidelines}
     ruleId: Per.11
-    title: Move computation from run time to compile time
+    title: Shift work from run time to compile time
     statement:
-        When a value can be computed from constants, compute it at compile
-        time with constexpr functions and variables, or select types at
-        compile time. Do not try to push every computation to compile time.
+        If a value depends only on constants, have the compiler work it out
+        through constexpr functions and variables, or choose between types
+        at compile time. Do not go to extremes trying to move everything
+        there.
     rationale:
-        Compile-time computation removes run-time cost and dynamic
-        initialization, rules out data races on the result because it is a
-        constant, and turns some run-time errors into compile errors.
+        Work done during compilation costs nothing at run time and needs no
+        dynamic initialization. The result is a constant, so threads cannot
+        race on it, and some mistakes are caught as compile errors instead
+        of needing handling code.
     exceptions:
-        Very heavy compile-time computation can blow up build times,
-        complicate debugging and occasionally even slow the program, so keep
-        it proportionate.
+        Pushing large amounts of computation into compile time can lengthen
+        builds a great deal and make debugging harder. In rare cases it even
+        makes the program slower, so use it in moderation.
     severity: null
     noncompliant:
         ```cpp
         \\\
-        int cube(int n) { return n * n * n; }
-        static int table_size = cube(16);   // computed during dynamic initialization
+        std::array<std::uint32_t, 32> powers;
+        void init_powers()   // must be called before first use
+        {
+            for (int i = 0; i < 32; ++i) powers[i] = 1u << i;
+        }
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        constexpr int cube(int n) { return n * n * n; }
-        constexpr int table_size = cube(16);   // computed by the compiler
+        constexpr auto make_powers()
+        {
+            std::array<std::uint32_t, 32> t{};
+            for (int i = 0; i < 32; ++i) t[i] = 1u << i;
+            return t;
+        }
+        constexpr auto powers = make_powers();   // built by the compiler
         \\\
         ```
     languages: [cpp]

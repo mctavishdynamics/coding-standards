@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgAbstractClass1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: abstract-class-1
+    title: Do not give abstract classes public constructors
+    statement:
+        An abstract type should not declare public or protected internal
+        constructors.
+    rationale:
+        Nobody can instantiate an abstract type, so a public constructor
+        suggests something that is impossible and misleads users.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public abstract class Shape
+        {
+            public Shape(string label) { Label = label; }
+            public string Label { get; }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public abstract class Shape
+        {
+            protected Shape(string label) { Label = label; }
+            public string Label { get; }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, type-design, abstract-classes, constructors]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/abstract-class

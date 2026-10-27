@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfTypeMembers10:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-type-members-10
+    title: End event handler delegate names with EventHandler
+    statement:
+        A delegate type used as the type of an event should have a name
+        ending in EventHandler.
+    rationale:
+        The suffix identifies the delegate's purpose and matches the
+        framework's own delegates.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public delegate void TrackChanged(object sender, TrackChangedEventArgs e);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public delegate void TrackChangedEventHandler(object sender, TrackChangedEventArgs e);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, events, delegates]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-type-members#names-of-events

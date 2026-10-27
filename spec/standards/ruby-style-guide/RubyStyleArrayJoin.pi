@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleArrayJoin:
+    standard: @{RubyStyleGuide}
+    ruleId: array-join
+    title: Join arrays with join, not *
+    statement:
+        Use Array#join rather than the star operator with a string argument.
+        RuboCop checks this with Style/ArrayJoin.
+    rationale:
+        Multiplying an array by a string is cryptic, while join says what
+        happens.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        path = segments * '/'
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        path = segments.join('/')
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, readability]
+    source: https://rubystyle.guide/#array-join

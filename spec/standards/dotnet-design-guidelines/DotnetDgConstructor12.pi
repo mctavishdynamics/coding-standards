@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgConstructor12:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: constructor-12
+    title: Consider inline initialization of static fields
+    statement:
+        Initialize static fields where they are declared instead of writing
+        an explicit static constructor.
+    rationale:
+        The runtime can optimize types that have no explicit static
+        constructor.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        private static readonly char[] s_separators;
+        static CsvParser() { s_separators = new[] { ',', ';' }; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        private static readonly char[] s_separators = { ',', ';' };
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, constructors, performance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/constructor#type-constructor-guidelines

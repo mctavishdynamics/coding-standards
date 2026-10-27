@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgAbstractClass2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: abstract-class-2
+    title: Give abstract classes a protected or internal constructor
+    statement:
+        Declare a protected constructor so subclasses can run the base
+        initialization, or an internal one to keep all implementations
+        inside your assembly.
+    rationale:
+        A protected constructor lets the base class set itself up, and an
+        internal one restricts who can derive from it.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public abstract class PaymentMethod
+        {
+            internal PaymentMethod() { }   // only this assembly can derive
+
+            public abstract Task ChargeAsync(decimal amount);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, abstract-classes, constructors]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/abstract-class

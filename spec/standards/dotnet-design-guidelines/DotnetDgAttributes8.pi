@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgAttributes8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: attributes-8
+    title: Seal custom attribute classes where possible
+    statement:
+        Mark custom attribute classes sealed unless they are designed to be
+        derived from.
+    rationale:
+        Lookups of sealed attributes are faster because the runtime need not
+        search for subclasses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class FeatureAttribute : Attribute { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public sealed class FeatureAttribute : Attribute { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, attributes, sealing]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/attributes

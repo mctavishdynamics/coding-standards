@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC140:
     standard: @{CppCoreGuidelines}
     ruleId: C.140
-    title: Use the same default arguments in a virtual function and its overriders
+    title: Keep default argument values identical across an override chain
     statement:
-        Do not give an overrider different default arguments from the
-        virtual function it overrides.
+        An overriding function must use the same default arguments as the
+        virtual function it overrides, or none that differ.
     rationale:
-        Defaults are chosen from the static type of the call, not the
-        overrider, so different defaults produce confusing results.
+        The default is picked from the static type at the call site, not from
+        the function that actually runs. Different defaults therefore give
+        results that depend on how the call was written.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip153:
+    standard: @{GoogleAip}
+    ruleId: AIP-153
+    title: Provide Import and Export methods with sources in a oneof
+    statement:
+        Import and export methods are POST calls whose body is the entire
+        request, and they return a long-running operation unless completion
+        within seconds is guaranteed. Wrap the source or destination
+        settings in a oneof even if there is only one choice today, while
+        settings that describe the data format live directly on the request
+        message.
+    rationale:
+        Bulk import and export reduce lock-in and must handle large data, so
+        they are asynchronous. A oneof leaves room to add new sources and
+        destinations later without breaking changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message ImportRecipesRequest {
+          string parent = 1;
+          string gcs_uri = 2;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message ImportRecipesRequest {
+          string parent = 1;
+          oneof source {
+            GcsSource gcs_source = 2;
+          }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design-patterns, methods]
+    source: https://google.aip.dev/153

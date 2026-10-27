@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign15:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-15
+    title: Avoid ref on parameters of class type
+    statement:
+        Do not declare ref parameters of reference types, apart from rare
+        cases such as a method that swaps references.
+    rationale:
+        Passing a reference by reference lets the method replace the
+        caller's object, which is rarely intended or understood.
+    exceptions:
+        A small number of cases, such as swapping two references, need it.
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Normalize(ref Address address) { address = new Address(/* ... */); }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public Address Normalize(Address address) => new Address(/* ... */);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, parameters]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#parameter-passing

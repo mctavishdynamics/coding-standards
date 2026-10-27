@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagDraggingMovements:
+    standard: @{Wcag22}
+    ruleId: 2.5.7
+    title: Offer a single-pointer alternative to dragging
+    statement:
+        Make any function that uses dragging also work with single pointer
+        actions that do not drag, such as tapping buttons or choosing from a
+        menu.
+    rationale:
+        People with motor impairments may be unable to hold a pointer down
+        while moving it.
+    exceptions:
+        Exempt when dragging is essential or the browser provides the
+        behavior unchanged.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <li draggable="true">Write report</li>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <li draggable="true">Write report
+          <button type="button" aria-label="Move Write report up">Up</button>
+          <button type="button" aria-label="Move Write report down">Down</button>
+        </li>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, pointer, drag-and-drop]
+    source: https://www.w3.org/TR/WCAG22/#dragging-movements

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartFinalFields:
+    standard: @{EffectiveDart}
+    ruleId: prefer-making-fields-and-top-level-variables-final
+    title: Declare fields and top-level variables final unless they must change
+    statement:
+        Declare fields and top-level variables `final` unless they need to
+        change. A field set once after construction can be `late final`.
+        The prefer_final_fields lint checks this.
+    rationale:
+        Values that cannot change after setup remove a whole class of bugs
+        and make code simpler to follow and change safely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Order {
+          String id;
+          DateTime placedAt;
+          Order(this.id, this.placedAt);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Order {
+          final String id;
+          final DateTime placedAt;
+          Order(this.id, this.placedAt);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, immutability, fields]
+    source: https://dart.dev/effective-dart/design#prefer-making-fields-and-top-level-variables-final

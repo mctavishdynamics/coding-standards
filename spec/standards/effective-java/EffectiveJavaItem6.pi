@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem6:
+    standard: @{EffectiveJava}
+    ruleId: item-6
+    title: Reuse objects instead of creating needless new ones
+    statement:
+        Reuse immutable objects and expensive helpers such as compiled
+        patterns instead of building a fresh copy on every call, and watch
+        for accidental autoboxing in hot loops.
+    rationale:
+        Needless allocation wastes time and memory, and hidden boxing can
+        make simple arithmetic many times slower.
+    exceptions:
+        Do not build object pools for cheap objects; modern collectors
+        handle small short-lived objects well, and defensive copies are
+        still needed where safety requires them.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        static boolean isHex(String s) {
+            return s.matches("[0-9a-fA-F]+");
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private static final Pattern HEX = Pattern.compile("[0-9a-fA-F]+");
+
+        static boolean isHex(String s) {
+            return HEX.matcher(s).matches();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [creating-and-destroying-objects, performance, allocation]
+    source: https://www.informit.com/store/effective-java-9780134686097

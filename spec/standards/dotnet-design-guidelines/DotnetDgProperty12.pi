@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty12:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-12
+    title: Do not offer both an indexer and an equivalent method
+    statement:
+        Do not provide an indexer and a method that do the same thing.
+    rationale:
+        Two ways to do one thing make the API larger and leave callers
+        wondering which to use.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Setting this[string key] => Find(key);
+        public Setting Find(string key) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public Setting this[string key] { get { /* ... */ } }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, indexers]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property#indexed-property-design

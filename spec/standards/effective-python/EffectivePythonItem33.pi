@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem33:
+    standard: @{EffectivePython}
+    ruleId: item-33
+    title: Understand how closures see variables and use nonlocal
+    statement:
+        Closures can read variables from enclosing scopes, but assigning to
+        a name creates a new local. Use nonlocal to rebind an enclosing
+        variable, and prefer a small class when the state grows complex.
+    rationale:
+        Without nonlocal, an assignment inside a closure silently fails to
+        update the outer variable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def count_matches(items, target):
+            found = 0
+            def check(x):
+                if x == target:
+                    found = found + 1  # UnboundLocalError
+            for x in items:
+                check(x)
+            return found
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def make_counter():
+            count = 0
+            def increment():
+                nonlocal count
+                count += 1
+                return count
+            return increment
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, closures, scope]
+    source: https://effectivepython.com/

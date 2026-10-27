@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem6:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-6
+    title: Cast explicitly when auto would deduce a proxy or wrong type
+    statement:
+        When an initialiser returns an invisible proxy, such as an element
+        of vector of bool, or you want a different type, write auto with an
+        explicit cast.
+    rationale:
+        auto captures the proxy, which may dangle; the cast documents the
+        intended conversion.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto ready = flags()[3];   // proxy into a destroyed vector
+        if (ready) start();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto ready = static_cast<bool>(flags()[3]);
+        if (ready) start();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [auto, auto, conversions]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

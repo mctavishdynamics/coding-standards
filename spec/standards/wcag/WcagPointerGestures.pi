@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagPointerGestures:
+    standard: @{Wcag22}
+    ruleId: 2.5.1
+    title: Offer single-pointer alternatives to multipoint and path gestures
+    statement:
+        Anything triggered by a multi-finger gesture such as pinch, or a
+        traced gesture such as swipe, must also be possible with one simple
+        pointer action, like tapping or clicking a button.
+    rationale:
+        Many people cannot perform complex gestures because of motor
+        impairments or the input device they use.
+    exceptions:
+        Gestures that are essential, such as a signature, are exempt.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <div id="map"></div>
+        <script>map.enablePinchZoom();</script>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <div id="map"></div>
+        <button type="button" onclick="map.zoomIn()">Zoom in</button>
+        <button type="button" onclick="map.zoomOut()">Zoom out</button>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, pointer, gestures, mobile]
+    source: https://www.w3.org/TR/WCAG22/#pointer-gestures

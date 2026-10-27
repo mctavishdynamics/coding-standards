@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartCatchWithOn:
+    standard: @{EffectiveDart}
+    ruleId: avoid-catches-without-on-clauses
+    title: Give catch clauses an on type
+    statement:
+        Limit each `catch` with an `on` clause to the failures you know how
+        to handle. The avoid_catches_without_on_clauses lint checks this.
+    rationale:
+        A bare catch also swallows programming errors such as ArgumentError,
+        AssertionError and stack overflows that should surface.
+    exceptions:
+        Framework or low-level code that shields itself from arbitrary
+        application code may catch broadly, and even then catching Exception
+        is usually better than catching everything.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        try {
+          config = Config.parse(source);
+        } catch (e) {
+          config = Config.defaults();
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        try {
+          config = Config.parse(source);
+        } on FormatException {
+          config = Config.defaults();
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, error-handling]
+    source: https://dart.dev/effective-dart/usage#avoid-catches-without-on-clauses

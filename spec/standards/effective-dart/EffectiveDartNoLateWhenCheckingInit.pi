@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoLateWhenCheckingInit:
+    standard: @{EffectiveDart}
+    ruleId: avoid-late-variables-if-you-need-to-check-whether-they-are-initialized
+    title: Use a nullable variable when you must test for initialization
+    statement:
+        If code needs to know whether lazily set state has been assigned,
+        make the variable nullable and check it against null instead of
+        declaring it `late`.
+    rationale:
+        Dart cannot report whether a `late` variable is initialized. Adding
+        a separate flag duplicates state Dart tracks internally.
+    exceptions:
+        If null is itself a meaningful assigned value, a separate boolean
+        flag can be the right choice.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        late Connection _connection;
+        bool _connected = false;
+
+        Connection get connection {
+          if (!_connected) {
+            _connection = Connection.open();
+            _connected = true;
+          }
+          return _connection;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        Connection? _connection;
+
+        Connection get connection => _connection ??= Connection.open();
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, null-safety, late]
+    source: https://dart.dev/effective-dart/usage#avoid-late-variables-if-you-need-to-check-whether-they-are-initialized

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuRequirePluginLicenseSymbol:
+    standard: @{GnuCodingStandards}
+    ruleId: dynamic-plug-in-interfaces
+    title: Tie plug-ins closely to the program and check their license
+    statement:
+        If a program loads plug-ins, design the interface so plug-ins work
+        on the program's own data structures, and refuse to load one that
+        does not assert a compatible license through a simple check, such as
+        a required global symbol.
+    rationale:
+        Close coupling makes the plug-in part of one combined program
+        covered by the license, and the symbol records that its author knew
+        it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        handle = dlopen (path, RTLD_NOW);
+        init = dlsym (handle, "plugin_init");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        handle = dlopen (path, RTLD_NOW);
+        if (dlsym (handle, "plugin_is_GPL_compatible") == NULL)
+          error (EXIT_FAILURE, 0, "%s: plugin lacks license assertion", path);
+        init = dlsym (handle, "plugin_init");
+        \\\
+        ```
+    languages: [c]
+    tags: [plugins, licensing]
+    source: https://www.gnu.org/prep/standards/standards.html#Dynamic-Plug_002dIn-Interfaces

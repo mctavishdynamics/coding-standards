@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleStringInterpolation:
+    standard: @{RubyStyleGuide}
+    ruleId: string-interpolation
+    title: Build strings with interpolation or format
+    statement:
+        Prefer string interpolation or a format call to joining pieces with
+        the plus operator. RuboCop checks this with
+        Style/StringConcatenation.
+    rationale:
+        Interpolation shows the shape of the finished string and avoids
+        explicit to_s calls and many small temporary strings.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        label = 'Order ' + order.id.to_s + ' for ' + customer.name
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        label = "Order #{order.id} for #{customer.name}"
+        label = format('Order %d for %s', order.id, customer.name)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings]
+    source: https://rubystyle.guide/#string-interpolation

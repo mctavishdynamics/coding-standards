@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule88:
+    standard: @{CppCodingStandards}
+    ruleId: rule-88
+    title: Pass function objects rather than function pointers to algorithms
+    statement:
+        Give algorithms and associative containers lambdas or function
+        objects instead of plain functions.
+    rationale:
+        Function objects are easier to inline, can be adapted and carry
+        state when needed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        bool byAge(const Person& a, const Person& b);
+        std::sort(people.begin(), people.end(), byAge);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::sort(people.begin(), people.end(),
+                  [](const Person& a, const Person& b) { return a.age < b.age; });
+        \\\
+        ```
+    languages: [cpp]
+    tags: [stl-algorithms, algorithms, performance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

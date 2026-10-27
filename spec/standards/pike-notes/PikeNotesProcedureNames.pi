@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PikeNotes import PikeNotes
+
+export coding-rule PikeNotesProcedureNames:
+    standard: @{PikeNotes}
+    ruleId: procedure-names
+    title: Name procedures for their action and functions for their result
+    statement:
+        Give a routine that performs an action a name for that action. Give
+        a routine that yields a value a name describing the value, so a call
+        reads naturally inside a condition.
+    rationale:
+        A name such as checkx gives no hint whether a true result means
+        success or failure, which invites mistakes at call sites.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (checkdate(d))
+            schedule(d);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (isweekday(d))
+            schedule(d);
+        \\\
+        ```
+    languages: [c]
+    tags: [naming, functions]
+    source: https://www.cs.princeton.edu/courses/archive/spr01/cs217/pike.html

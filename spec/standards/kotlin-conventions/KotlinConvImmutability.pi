@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvImmutability:
+    standard: @{KotlinConventions}
+    ruleId: immutability
+    title: Declare val unless the value changes
+    statement:
+        Prefer immutable data. Declare locals and properties with val
+        instead of var when they are not reassigned after initialization.
+    rationale:
+        Values that cannot change are easier to reason about and safer to
+        share.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        var greeting = "Welcome, ${user.name}"
+        show(greeting)
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        val greeting = "Welcome, ${user.name}"
+        show(greeting)
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [immutability]
+    source: https://kotlinlang.org/docs/coding-conventions.html#immutability

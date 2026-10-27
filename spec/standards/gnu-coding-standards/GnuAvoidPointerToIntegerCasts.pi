@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuAvoidPointerToIntegerCasts:
+    standard: @{GnuCodingStandards}
+    ruleId: cpu-portability-pointer-casts
+    title: Avoid casting pointers to integers
+    statement:
+        Do not convert pointers to integers unless it is essential. Where it
+        is essential, handle different word sizes explicitly and do not
+        assume addresses start near zero.
+    rationale:
+        Such casts are a major source of portability bugs and are usually
+        easy to avoid.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        unsigned key = (unsigned) node;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        uintptr_t key = (uintptr_t) node;
+        \\\
+        ```
+    languages: [c]
+    tags: [portability, pointers]
+    source: https://www.gnu.org/prep/standards/standards.html#CPU-Portability

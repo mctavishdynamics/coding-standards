@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdAvoidStructTypedefs:
+    standard: @{OpenBsdStyle}
+    ruleId: struct-typedefs
+    title: Avoid typedefs for structures, and match the tag when one is required
+    statement:
+        Do not create typedefs for structure types. When convention requires
+        one, give it the struct tag's name, and do not end typedef names in
+        _t unless Standard C or POSIX specifies them.
+    rationale:
+        With a plain struct tag, applications can use pointers to the
+        structure opaquely; the _t suffix belongs to the standards.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        typedef struct peer_s *peer_t;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct peer;
+        struct peer     *peer_lookup(int);
+        \\\
+        ```
+    languages: [c]
+    tags: [types, structs, naming]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

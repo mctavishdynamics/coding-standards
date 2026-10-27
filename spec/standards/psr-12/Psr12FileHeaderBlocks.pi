@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12FileHeaderBlocks:
+    standard: @{Psr12}
+    ruleId: 3a
+    title: Order and separate the blocks of the file header
+    statement:
+        Arrange the file header in this order, omitting blocks you do not
+        need. Start with the opening tag, then the file docblock, declare
+        statements, the namespace, class imports, function imports, constant
+        imports, then the rest of the code. Separate each block with a
+        single blank line and put no blank lines inside a block.
+    rationale:
+        A fixed header layout lets readers find the namespace and imports of
+        any file at once and keeps merges of import lists simple.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        namespace Acme\Shop;
+        use function Acme\Util\slugify;
+
+        use Acme\Shop\Model\Product;
+        declare(strict_types=1);
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+
+        declare(strict_types=1);
+
+        namespace Acme\Shop;
+
+        use Acme\Shop\Model\Product;
+
+        use function Acme\Util\slugify;
+        \\\
+        ```
+    languages: [php]
+    tags: [files, imports, namespaces]
+    source: https://www.php-fig.org/psr/psr-12/#3-declare-statements-namespace-and-import-statements

@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV15x3x1:
+    standard: @{OwaspAsvs}
+    ruleId: V15.3.1
+    title: Return only the needed fields of a data object
+    statement:
+        Respond with the subset of fields the client requires rather than
+        the whole object.
+    rationale:
+        Whole objects often carry fields that the user should never see.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        return jsonify(user.__dict__)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        return jsonify(id=user.id, display_name=user.display_name)
+        \\\
+        ```
+    languages: [any]
+    tags: [level-1, data-exposure, api]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x24-V15-Secure-Coding-and-Architecture.md#v153-defensive-coding

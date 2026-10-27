@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoBlockComments:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-block-comments-for-documentation
+    title: Use line comments instead of block comments
+    statement:
+        Write ordinary comments with `//`. Keep `/* ... */` for temporarily
+        disabling a stretch of code.
+    rationale:
+        Line comments are the Dart convention and stay correct when lines
+        are moved or deleted.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        void flush() {
+          /* Drop entries older than an hour. */
+          _evictStale();
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        void flush() {
+          // Drop entries older than an hour.
+          _evictStale();
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, comments]
+    source: https://dart.dev/effective-dart/documentation#dont-use-block-comments-for-documentation

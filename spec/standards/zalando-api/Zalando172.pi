@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando172:
+    standard: @{ZalandoApi}
+    ruleId: 172
+    title: Use standard media types
+    statement:
+        Use media types registered with IANA in Content-Type and Accept
+        headers, application/json for JSON and application/problem+json for
+        problems. Avoid custom media types.
+    rationale:
+        Custom media types add no value over the standard ones and make
+        automated processing harder.
+    exceptions:
+        A custom media type is acceptable when media type versioning is
+        needed for incompatible changes.
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        Content-Type: application/x.shop.article+json
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        Content-Type: application/json
+        \\\
+        ```
+    languages: [any]
+    tags: [should, media-types, http]
+    source: https://opensource.zalando.com/restful-api-guidelines/#172

@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle13:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-13
+    title: Chain else-if for decisions among many cases
+    statement:
+        Express a choice among several alternatives as a flat if, else if,
+        else sequence rather than deep nesting.
+    rationale:
+        A flat chain reads in order and makes it clear that exactly one
+        branch runs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (bytes < 1024)
+            unit = "B";
+        else {
+            if (bytes < 1024 * 1024)
+                unit = "KiB";
+            else {
+                if (bytes < 1024L * 1024 * 1024)
+                    unit = "MiB";
+                else
+                    unit = "GiB";
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (bytes < 1024)
+            unit = "B";
+        else if (bytes < 1024 * 1024)
+            unit = "KiB";
+        else if (bytes < 1024L * 1024 * 1024)
+            unit = "MiB";
+        else
+            unit = "GiB";
+        \\\
+        ```
+    languages: [any]
+    tags: [style, conditionals, idioms]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

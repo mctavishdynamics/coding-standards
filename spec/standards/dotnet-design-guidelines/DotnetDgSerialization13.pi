@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSerialization13:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: serialization-13
+    title: Consider IXmlSerializable for full control over XML
+    statement:
+        When the XML serialization attributes are not enough, implement
+        IXmlSerializable to write and read the XML yourself, and use
+        XmlSchemaProvider to control the schema.
+    rationale:
+        ReadXml and WriteXml give complete control over the serialized form.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class Money : IXmlSerializable
+        {
+            public XmlSchema GetSchema() => null;
+            public void WriteXml(XmlWriter writer) => writer.WriteString($"{Amount} {Currency}");
+            public void ReadXml(XmlReader reader) { /* parse "12.50 EUR" */ }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, usage, serialization, xml]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/serialization#supporting-xml-serialization

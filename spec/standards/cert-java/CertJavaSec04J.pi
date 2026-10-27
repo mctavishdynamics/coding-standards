@@ -29,9 +29,9 @@ export coding-rule CertJavaSec04J:
         ```java
         \\\
         public void removeEntry(String key) {
-            SecurityManager sm = System.getSecurityManager();
-            if (sm != null) {
-                sm.checkPermission(new StorePermission("remove"));
+            SecurityManager guard = System.getSecurityManager();
+            if (guard != null) {
+                guard.checkPermission(new StorePermission("remove"));
             }
             store.remove(key);
         }

@@ -5,15 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE28:
     standard: @{CppCoreGuidelines}
     ruleId: E.28
-    title: Avoid error handling based on global state such as errno
+    title: Avoid reporting errors through global state
     statement:
-        Do not report errors by setting a global variable for callers to
-        inspect. Return the error, or throw it.
+        Report a failure by returning it or throwing it, not by setting a global
+        flag for callers to look at.
     rationale:
-        Global error state is hard to manage and easy to forget to check.
+        Callers routinely forget to inspect global error state, and it is awkward to
+        manage, especially with threads.
     exceptions:
-        C-style library functions report errors through errno, so this style
-        cannot be avoided completely.
+        C library functions signal errors through errno, so code that calls them
+        cannot avoid this style entirely.
     severity: null
     noncompliant:
         ```cpp

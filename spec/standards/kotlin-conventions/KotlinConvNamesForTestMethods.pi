@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvNamesForTestMethods:
+    standard: @{KotlinConventions}
+    ruleId: names-for-test-methods
+    title: Use backtick names with spaces only in tests
+    statement:
+        In test code, and only there, method names may contain spaces inside
+        backticks, and underscores are allowed. Android supports such names
+        only from API level 30.
+    rationale:
+        Sentence-like names describe test cases well, but they do not belong
+        in production code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        class Cart {
+            fun `add item`(item: Item) { }
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        class CartTest {
+            @Test fun `adding an item increases the total`() { }
+            @Test fun addItem_onAndroid() { }
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [naming, testing]
+    source: https://kotlinlang.org/docs/coding-conventions.html#names-for-test-methods

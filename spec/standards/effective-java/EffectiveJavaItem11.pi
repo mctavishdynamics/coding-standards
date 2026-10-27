@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem11:
+    standard: @{EffectiveJava}
+    ruleId: item-11
+    title: Pair every custom equals with a matching hashCode
+    statement:
+        Every class that overrides equals must also override hashCode, so
+        that equal objects produce the same hash code. Derive it from the
+        same fields equals uses.
+    rationale:
+        Hash-based collections look objects up by hash code first. If equal
+        objects hash differently, a HashMap or HashSet will fail to find
+        them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        @Override
+        public boolean equals(Object o) {
+            return o instanceof Point p && p.x == x && p.y == y;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Override
+        public boolean equals(Object o) {
+            return o instanceof Point p && p.x == x && p.y == y;
+        }
+
+        @Override
+        public int hashCode() {
+            return 31 * Integer.hashCode(x) + Integer.hashCode(y);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods-common-to-all-objects, equality, hashing, contracts]
+    source: https://www.informit.com/store/effective-java-9780134686097

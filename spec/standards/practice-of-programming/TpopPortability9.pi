@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPortability9:
+    standard: @{PracticeOfProgramming}
+    ruleId: portability-9
+    title: Put a common interface over system dependencies
+    statement:
+        Wrap platform-specific operations behind a single interface that the
+        rest of the program uses.
+    rationale:
+        The callers stay portable, and only the implementation behind the
+        interface changes between systems.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        /* sys.h */
+        int  sys_open_serial(const char *name);
+        void sleep_ms(unsigned ms);
+        long sys_clock_ms(void);
+        \\\
+        ```
+    languages: [any]
+    tags: [portability, abstraction]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

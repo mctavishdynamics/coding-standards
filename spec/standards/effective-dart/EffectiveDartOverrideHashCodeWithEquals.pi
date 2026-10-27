@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartOverrideHashCodeWithEquals:
+    standard: @{EffectiveDart}
+    ruleId: do-override-hashcode-if-you-override
+    title: Override hashCode whenever you override ==
+    statement:
+        If a class overrides `==`, override `hashCode` so that equal objects
+        always have equal hash codes. The hash_and_equals lint checks this.
+    rationale:
+        The defaults use identity. Without a matching hash, maps and sets
+        fail to treat equal objects as the same key.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Point {
+          final int x, y;
+          Point(this.x, this.y);
+          @override
+          bool operator ==(Object other) =>
+              other is Point && other.x == x && other.y == y;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Point {
+          final int x, y;
+          Point(this.x, this.y);
+          @override
+          bool operator ==(Object other) =>
+              other is Point && other.x == x && other.y == y;
+          @override
+          int get hashCode => Object.hash(x, y);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, equality]
+    source: https://dart.dev/effective-dart/design#do-override-hashcode-if-you-override

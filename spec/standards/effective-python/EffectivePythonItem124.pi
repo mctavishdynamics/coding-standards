@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem124:
+    standard: @{EffectivePython}
+    ruleId: item-124
+    title: Catch bugs early with type hints and a static checker
+    statement:
+        Add type annotations and run a static type checker such as mypy to
+        find errors before the code runs. Add them where they help, starting
+        at API boundaries.
+    rationale:
+        Static analysis finds many type errors that would otherwise appear
+        only at run time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def total(prices):
+            return sum(prices)
+
+        total("12")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def total(prices: list[float]) -> float:
+            return sum(prices)
+        \\\
+        ```
+    languages: [python]
+    tags: [collaboration, typing, static-analysis]
+    source: https://effectivepython.com/

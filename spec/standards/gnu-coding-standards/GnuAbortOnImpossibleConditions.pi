@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuAbortOnImpossibleConditions:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-impossible-conditions
+    title: Call abort for impossible conditions and explain them in comments
+    statement:
+        When a check detects a condition that can only be a bug, simply call
+        abort. Explain the condition in a source comment rather than
+        printing a message.
+    rationale:
+        Whoever fixes the bug will use a debugger and read the source, where
+        the relevant data and explanation already are.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        default:
+          fprintf (stderr, "internal error: bad state %d\n", state);
+          exit (2);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        default:
+          /* Every state is handled above; reaching here means the table and
+             the enum are out of sync.  */
+          abort ();
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, assertions]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

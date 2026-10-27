@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiLabelAllOtherArguments:
+    standard: @{SwiftApiDesign}
+    ruleId: label-all-other-arguments
+    title: Label every other argument
+    statement:
+        Give a label to every argument not covered by the earlier label
+        rules.
+    rationale:
+        Labels explain each argument's role where the call is read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        client.fetch(url, 30, true)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        client.fetch(url, timeout: 30, cachingResult: true)
+        \\\
+        ```
+    languages: [swift]
+    tags: [argument-labels]
+    source: https://www.swift.org/documentation/api-design-guidelines/#argument-labels

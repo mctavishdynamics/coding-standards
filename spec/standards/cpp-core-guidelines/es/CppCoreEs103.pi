@@ -5,18 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs103:
     standard: @{CppCoreGuidelines}
     ruleId: ES.103
-    title: Don't overflow
+    title: Keep arithmetic within the range of its type
     statement:
-        Make sure arithmetic results fit in their type, checking bounds
-        before an operation when needed.
+        Ensure the result of each arithmetic operation fits its type. Where
+        an operand could be large, test the bounds before computing.
     rationale:
-        Overflow makes numeric results meaningless, and signed overflow or
-        going past a maximum can cause undefined behavior and memory
-        corruption.
+        A value that exceeds its type's range turns a calculation into
+        nonsense. For signed types it is undefined behavior, and an index or
+        size that overflows can damage memory.
     exceptions:
-        Use unsigned types when you really want modular arithmetic. Critical
-        applications that can afford the overhead may use range-checked
-        numeric types.
+        Deliberate wraparound is fine on unsigned types. Where the overhead
+        is acceptable, safety-critical code can switch to numeric types that
+        check their range.
     severity: null
     noncompliant:
         ```cpp

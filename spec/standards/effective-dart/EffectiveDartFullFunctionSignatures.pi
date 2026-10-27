@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartFullFunctionSignatures:
+    standard: @{EffectiveDart}
+    ruleId: prefer-signatures-in-function-type-annotations
+    title: Annotate function types with their full signature
+    statement:
+        Write a complete function type with parameters and return type
+        instead of the bare `Function` type.
+    rationale:
+        Bare `Function` is barely more checked than dynamic.
+    exceptions:
+        `Function` is acceptable when you must accept several different
+        function shapes, since Dart has no union types.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        void onTick(Function callback) {}
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        void onTick(void Function(Duration elapsed) callback) {}
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, types, functions]
+    source: https://dart.dev/effective-dart/design#prefer-signatures-in-function-type-annotations

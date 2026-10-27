@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfNamespaces6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-namespaces-6
+    title: Do not name a type after its own namespace
+    statement:
+        A type must not share its name with the namespace it lives in.
+    rationale:
+        Some compilers then force callers to write the fully qualified name
+        of the type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        namespace Fabrikam.Telemetry
+        {
+            public class Telemetry { }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        namespace Fabrikam.Telemetry
+        {
+            public class TelemetryClient { }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, naming, namespaces]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-namespaces

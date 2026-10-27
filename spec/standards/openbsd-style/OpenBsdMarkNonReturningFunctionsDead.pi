@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdMarkNonReturningFunctionsDead:
+    standard: @{OpenBsdStyle}
+    ruleId: dead-functions
+    title: Mark functions that never return with __dead
+    statement:
+        Declare functions that do not return using __dead from sys/cdefs.h.
+    rationale:
+        The compiler can then optimize calls and avoid spurious warnings
+        about missing returns.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void    fatal(const char *, ...);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        __dead void     fatal(const char *, ...);
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, declarations, warnings]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

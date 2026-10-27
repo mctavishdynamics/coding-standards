@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuWriteElseIfOnOneLine:
+    standard: @{GnuCodingStandards}
+    ruleId: syntactic-else-if
+    title: Write else if on one line or brace the nested if
+    statement:
+        For an if nested in an else, keep else and if together on one line,
+        indenting the body like the branch above, or wrap the inner if in
+        braces.
+    rationale:
+        Both forms make the chain of conditions clear; other layouts drift
+        to the right and obscure it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (c == 'a')
+          add ();
+        else
+          if (c == 'd')
+            del ();
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (c == 'a')
+          add ();
+        else if (c == 'd')
+          del ();
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, control-flow]
+    source: https://www.gnu.org/prep/standards/standards.html#Syntactic-Conventions

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem37:
+    standard: @{EffectiveJava}
+    ruleId: item-37
+    title: Index data by enum with EnumMap rather than by ordinal
+    statement:
+        To associate data with enum constants, use an EnumMap keyed by the
+        enum instead of an array indexed by ordinal.
+    rationale:
+        Ordinal-indexed arrays need unchecked casts and fail silently when
+        the enum changes. EnumMap is just as fast and type safe.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        List<Task>[] byPriority = new List[Priority.values().length];
+        byPriority[task.priority().ordinal()].add(task);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Map<Priority, List<Task>> byPriority = new EnumMap<>(Priority.class);
+        byPriority.computeIfAbsent(task.priority(), p -> new ArrayList<>()).add(task);
+        \\\
+        ```
+    languages: [java]
+    tags: [enums-and-annotations, enums, collections]
+    source: https://www.informit.com/store/effective-java-9780134686097

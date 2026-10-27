@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation126:
+    standard: @{AnssiC}
+    ruleId: recommendation-126
+    title: Do not use complex numbers
+    statement:
+        Do not use the complex number types added in C99.
+    rationale:
+        They add floating-point pitfalls and are rarely needed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include <complex.h>
+        double complex z = 1.0 + 2.0 * I;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct cplx { double re; double im; };
+        struct cplx z = { 1.0, 2.0 };
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, floating-point, types]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=98

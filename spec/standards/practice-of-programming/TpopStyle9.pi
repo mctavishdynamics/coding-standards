@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle9:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-9
+    title: Aim for the most understandable form, not the shortest
+    statement:
+        Write code to be easy to grasp. Brevity or ingenuity that costs
+        understanding is not an improvement.
+    rationale:
+        Compact tricks rarely run faster and often hide errors. The clear
+        version is easier to maintain.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        sub = (sub == 0) ? 1 : sub << 1 | (sub & 0x8000) >> 15;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* rotate the 16-bit value left by one bit */
+        if (sub == 0)
+            sub = 1;
+        else
+            sub = ((sub << 1) | (sub >> 15)) & 0xFFFF;
+        \\\
+        ```
+    languages: [any]
+    tags: [style, clarity]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

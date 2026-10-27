@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoUseGoUberOrgAtomic:
+    standard: @{UberGo}
+    ruleId: use-gouberorgatomic
+    title: Use typed atomic values
+    statement:
+        Use the typed wrappers from go.uber.org/atomic instead of calling
+        sync/atomic functions on raw integer fields.
+    rationale:
+        With raw types it is easy to read or write the field without the
+        atomic call; typed wrappers make every access atomic and add types
+        such as Bool.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Server struct {
+            stopped int32
+        }
+
+        func (s *Server) Stopped() bool {
+            return s.stopped == 1 // not atomic
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Server struct {
+            stopped atomic.Bool
+        }
+
+        func (s *Server) Stopped() bool {
+            return s.stopped.Load()
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, atomics]
+    source: https://github.com/uber-go/guide/blob/master/style.md#use-gouberorgatomic

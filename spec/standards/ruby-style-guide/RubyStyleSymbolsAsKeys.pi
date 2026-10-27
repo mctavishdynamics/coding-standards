@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSymbolsAsKeys:
+    standard: @{RubyStyleGuide}
+    ruleId: symbols-as-keys
+    title: Key hashes with symbols rather than strings
+    statement:
+        Choose symbols over strings when picking the keys of a hash. RuboCop
+        checks this with Style/StringHashKeys.
+    rationale:
+        Symbols are immutable and cheap to compare, and they are the usual
+        key type in Ruby code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        limits = { 'daily' => 50, 'monthly' => 900 }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        limits = { daily: 50, monthly: 900 }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes]
+    source: https://rubystyle.guide/#symbols-as-keys

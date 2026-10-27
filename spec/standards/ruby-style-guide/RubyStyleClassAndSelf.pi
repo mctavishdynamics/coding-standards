@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleClassAndSelf:
+    standard: @{RubyStyleGuide}
+    ruleId: class-and-self
+    title: Omit self and the class name when class methods call each other
+    statement:
+        Inside a class or module method, call other class methods, including
+        new, without a leading self or the class name.
+    rationale:
+        This removes boilerplate, especially in service objects used like
+        functions, and leaves less to update when the class is renamed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class PriceQuote
+          def self.for(product)
+            PriceQuote.new(product).amount + self.surcharge
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class PriceQuote
+          def self.for(product)
+            new(product).amount + surcharge
+          end
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, methods]
+    source: https://rubystyle.guide/#class-and-self

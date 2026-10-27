@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule3:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-3
+    title: Call the standard library instead of reinventing it
+    statement:
+        When a library routine already does the job, use it rather than
+        writing your own version.
+    rationale:
+        Library code is widely used and tested, and readers already know
+        what it does. A home-made copy adds code to read and new places for
+        bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        size_t len = 0;
+        while (name[len] != '\0') {
+            len++;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        size_t len = strlen(name);
+        \\\
+        ```
+    languages: [any]
+    tags: [expression, libraries]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

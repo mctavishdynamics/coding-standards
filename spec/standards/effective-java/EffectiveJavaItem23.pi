@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem23:
+    standard: @{EffectiveJava}
+    ruleId: item-23
+    title: Turn a kind-flag field into one subclass per kind
+    statement:
+        When a class uses a tag field to switch between several kinds of
+        object, turn each kind into its own subclass of a common abstract
+        type.
+    rationale:
+        Tagged classes are cluttered, waste memory on fields only some kinds
+        use, and break when a new kind is added. A hierarchy lets the
+        compiler check each case.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Shape {
+            enum Kind { CIRCLE, SQUARE }
+            Kind kind; double radius; double side;
+            double area() { return kind == Kind.CIRCLE ? Math.PI * radius * radius : side * side; }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        sealed interface Shape permits Circle, Square { double area(); }
+        record Circle(double radius) implements Shape {
+            public double area() { return Math.PI * radius * radius; }
+        }
+        record Square(double side) implements Shape {
+            public double area() { return side * side; }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [classes-and-interfaces, inheritance, design]
+    source: https://www.informit.com/store/effective-java-9780134686097

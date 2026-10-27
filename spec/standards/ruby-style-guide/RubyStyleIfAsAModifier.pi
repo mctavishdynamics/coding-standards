@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleIfAsAModifier:
+    standard: @{RubyStyleGuide}
+    ruleId: if-as-a-modifier
+    title: Prefer the modifier form for single-line if bodies
+    statement:
+        When an if or unless has a body of one line, write it as a trailing
+        modifier. Control flow with and or or is another acceptable option.
+    rationale:
+        The modifier form says the same thing in one short line.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        if cache.stale?
+          cache.refresh
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        cache.refresh if cache.stale?
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals]
+    source: https://rubystyle.guide/#if-as-a-modifier

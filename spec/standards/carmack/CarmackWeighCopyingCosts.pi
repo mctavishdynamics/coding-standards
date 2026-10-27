@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackWeighCopyingCosts:
+    standard: @{Carmack}
+    ruleId: weigh-copying-costs
+    title: Do not force purity where copying data is too expensive
+    statement:
+        Accept output reference parameters for large results, and do not
+        copy whole buffers or containers just to stay pure.
+    rationale:
+        Pure code copies more data, and for large structures such as a
+        framebuffer or a growing list the cost makes a pure version the
+        wrong choice.
+    exceptions:
+        Updating a structure passed in gives up thread safety, so do it only
+        for a clear reason; building a list is one common justified case.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Framebuffer DrawSprite(Framebuffer fb, const Sprite& s);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void DrawSprite(Framebuffer& fb, const Sprite& s);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [performance, purity, memory]
+    source: https://www.gamedeveloper.com/programming/in-depth-functional-programming-in-c-

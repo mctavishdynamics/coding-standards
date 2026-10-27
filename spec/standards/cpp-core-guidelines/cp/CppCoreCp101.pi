@@ -5,15 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp101:
     standard: @{CppCoreGuidelines}
     ruleId: CP.101
-    title: Distrust your hardware and compiler combination
+    title: Do not trust a lock-free design tested on one compiler and machine
     statement:
-        Assume lock-free code may break on a different processor, operating
-        system, compiler or library, and re-test it, often extensively,
-        whenever any of them changes. Check for performance regressions too.
+        Whenever the compiler, standard library, operating system or processor
+        changes, test lock-free code again, thoroughly, for both correctness and
+        speed.
     rationale:
-        The low-level hardware interfaces used by lock-free code are hard to
-        implement well and are where the subtlest portability problems
-        occur, and reordering makes reasoning at this level very hard.
+        The hardware features lock-free code relies on differ from platform to
+        platform and are hard to get right. Reordering of loads and stores makes
+        such code fragile, so a design that passed on one machine can fail or slow
+        down on another.
     exceptions: null
     severity: null
     noncompliant: null

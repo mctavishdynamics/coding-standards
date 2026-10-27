@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoSilentCatchAll:
+    standard: @{EffectiveDart}
+    ruleId: dont-discard-errors-from-catches-without-on-clauses
+    title: Handle what a catch-all catches
+    statement:
+        A handler that catches everything must do something with the error,
+        such as logging it, reporting it to the user, or rethrowing it, and
+        must never swallow it quietly.
+    rationale:
+        Silently discarding every error hides bugs and failures.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        try {
+          await sync();
+        } catch (_) {}
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        try {
+          await sync();
+        } catch (e, stack) {
+          logger.severe('Sync failed', e, stack);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, error-handling]
+    source: https://dart.dev/effective-dart/usage#dont-discard-errors-from-catches-without-on-clauses

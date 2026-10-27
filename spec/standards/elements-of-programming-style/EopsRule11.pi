@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule11:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-11
+    title: Remove branches that serve no purpose
+    statement:
+        Do not add jumps or conditional tests that the logic does not need.
+    rationale:
+        Every branch adds a path that someone must follow while reading and a
+        case that testing must reach. With fewer of them, the program is
+        shorter and simpler to verify.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (count > 0) {
+            total += count;
+        } else {
+            total += 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (count > 0) {
+            total += count;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [expression, control-flow, simplicity]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

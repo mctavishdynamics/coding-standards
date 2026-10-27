@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule26:
+    standard: @{AnssiC}
+    ruleId: rule-26
+    title: Do not put preprocessor directives inside macro arguments
+    statement:
+        Never write define, ifdef or any other directive inside the
+        arguments of a macro call.
+    rationale:
+        The standard makes this undefined behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        LOG(
+        #ifdef VERBOSE
+            "detailed"
+        #else
+            "short"
+        #endif
+        );
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #ifdef VERBOSE
+        #define LOG_MSG "detailed"
+        #else
+        #define LOG_MSG "short"
+        #endif
+        LOG(LOG_MSG);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, macros, undefined-behavior]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=26

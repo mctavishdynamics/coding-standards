@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem83:
+    standard: @{EffectiveJava}
+    ruleId: item-83
+    title: Use lazy initialisation only when it is needed
+    statement:
+        Initialise fields normally in most cases. When lazy initialisation
+        is needed, use a holder class for static fields and double-checked
+        locking with a volatile field for instance fields.
+    rationale:
+        Lazy initialisation adds complexity and can introduce subtle
+        concurrency bugs, and it rarely improves performance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        private Parser parser;
+        Parser parser() {
+            if (parser == null) parser = new Parser(); // racy
+            return parser;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private static class ParserHolder {
+            static final Parser INSTANCE = new Parser();
+        }
+        static Parser parser() { return ParserHolder.INSTANCE; }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, initialization]
+    source: https://www.informit.com/store/effective-java-9780134686097

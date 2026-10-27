@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ConventionalCommits import ConventionalCommits
+
+export coding-rule ConvCommitsIndicateBreakingChanges:
+    standard: @{ConventionalCommits}
+    ruleId: 11
+    title: Mark breaking changes in the prefix or a footer
+    statement:
+        Signal every breaking change, either with an exclamation mark in the
+        type and scope prefix or with a BREAKING CHANGE footer.
+    rationale:
+        Breaking changes trigger a major version bump, so they must be
+        detectable by tools and impossible for readers to miss.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        feat(api): rename the user id field
+
+        Clients must now send userId instead of uid.
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        feat(api)!: rename the user id field
+
+        Clients must now send userId instead of uid.
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, breaking-changes, versioning]
+    source: https://www.conventionalcommits.org/en/v1.0.0/#specification

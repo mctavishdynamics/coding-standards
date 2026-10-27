@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleEmptyLinesAroundAccessModifier:
+    standard: @{RubyStyleGuide}
+    ruleId: empty-lines-around-access-modifier
+    title: Surround access modifiers with blank lines
+    statement:
+        Leave an empty line before and after private, protected and public
+        when used without arguments.
+    rationale:
+        A visible gap around the modifier shows that it applies to every
+        method below it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Invoice
+          def total = subtotal + tax
+          private
+          def subtotal = lines.sum
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Invoice
+          def total = subtotal + tax
+
+          private
+
+          def subtotal = lines.sum
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, whitespace, visibility]
+    source: https://rubystyle.guide/#empty-lines-around-access-modifier

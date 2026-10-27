@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem39:
+    standard: @{EffectivePython}
+    ruleId: item-39
+    title: Bind arguments with functools.partial instead of a lambda
+    statement:
+        When you only need to fix some arguments of an existing function,
+        use functools.partial rather than writing a lambda.
+    rationale:
+        partial says exactly what it does, keeps a readable repr and avoids
+        late-binding surprises.
+    exceptions:
+        A lambda is still the right choice when the glue reorders arguments
+        or adds logic.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        to_int = lambda s: int(s, base=16)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from functools import partial
+
+        to_int = partial(int, base=16)
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, functools]
+    source: https://effectivepython.com/

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip144:
+    standard: @{GoogleAip}
+    ruleId: AIP-144
+    title: Give repeated fields plural names and update them through Update
+    statement:
+        Name repeated fields with the plural dictionary word and keep their
+        size bounded. Declarative-friendly resources must change lists
+        through the standard Update method; other APIs may add Add and
+        Remove methods for primitive values, named Add or Remove plus the
+        singular field.
+    rationale:
+        Lists inside resources are awkward to edit and to paginate. Using
+        Update keeps declarative tools working, while explicit Add and
+        Remove methods help imperative clients avoid read-modify-write
+        races.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          repeated string tag = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          // At most 50 entries.
+          repeated string tags = 1;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [fields, collections]
+    source: https://google.aip.dev/144

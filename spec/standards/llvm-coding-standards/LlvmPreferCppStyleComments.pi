@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmPreferCppStyleComments:
+    standard: @{LlvmCodingStandards}
+    ruleId: comment-formatting
+    title: Use line comments, and inline C comments to name literal arguments
+    statement:
+        Prefer // for ordinary comments and /// for documentation comments.
+        Use C-style block comments only for C89 code, headers that C files
+        include, tools that accept only that style, or to label a literal
+        argument with its parameter name in a call.
+    rationale:
+        One comment style keeps code uniform, while a named literal such as
+        a bare boolean or nullptr argument makes the call self-explanatory.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        /* Rebuild the cache. */
+        Cache.rebuild(true, nullptr);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Rebuild the cache.
+        Cache.rebuild(/*Force=*/true, /*Observer=*/nullptr);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, formatting]
+    source: https://llvm.org/docs/CodingStandards.html#comment-formatting

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty9:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-9
+    title: Prefer a single index parameter
+    statement:
+        Prefer a single index parameter. If several are needed, check
+        whether the type is really a logical collection, and if not use Get
+        or Set methods.
+    rationale:
+        Multi-parameter indexers rarely describe simple element access and
+        are easy to misuse.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public decimal this[string currency, DateTime date, string provider] { get { /* ... */ } }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public decimal GetExchangeRate(string currency, DateTime date, string provider) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, member-design, indexers]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property#indexed-property-design

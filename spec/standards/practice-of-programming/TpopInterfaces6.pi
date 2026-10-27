@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopInterfaces6:
+    standard: @{PracticeOfProgramming}
+    ruleId: interfaces-6
+    title: Find errors deep down and decide what to do about them higher up
+    statement:
+        Low-level code should detect a failure and report it. Code at a
+        higher level, which knows the context, should decide how to respond.
+    rationale:
+        A library cannot know whether to retry, ask the user or quit.
+        Reporting upward keeps that choice where it can be made well.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void *xget(Table *t, const char *key)
+        {
+            void *v = lookup(t, key);
+            if (v == NULL) {
+                fprintf(stderr, "missing key %s\n", key);
+                exit(1);
+            }
+            return v;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* returns NULL if key is absent; the caller decides what that means */
+        void *table_get(Table *t, const char *key)
+        {
+            return lookup(t, key);
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [interfaces, error-handling, api-design]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

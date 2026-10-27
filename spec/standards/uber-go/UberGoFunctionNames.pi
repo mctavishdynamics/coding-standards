@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoFunctionNames:
+    standard: @{UberGo}
+    ruleId: function-names
+    title: Name functions in MixedCaps
+    statement:
+        Use MixedCaps for function names, as the Go community does.
+    rationale:
+        Following the common convention keeps code familiar to every Go
+        reader.
+    exceptions:
+        Test function names may contain underscores to group related cases,
+        such as TestParse_EmptyInput.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func parse_header(line string) Header {
+            // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func parseHeader(line string) Header {
+            // ...
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [naming, functions]
+    source: https://github.com/uber-go/guide/blob/master/style.md#function-names

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmIsolateNonPortableCode:
+    standard: @{LlvmCodingStandards}
+    ruleId: write-portable-code
+    title: Hide non-portable code behind a documented interface
+    statement:
+        Write portable code wherever possible. When you must rely on
+        platform specifics, put them behind a clear, documented interface.
+    rationale:
+        Isolating platform details keeps the rest of the code base portable
+        and puts porting work in one place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void warmCache(const char *P) {
+          __builtin_prefetch(P);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Support/Prefetch.h: no-op where the compiler has no prefetch builtin.
+        void warmCache(const char *P) { llvm::prefetchForRead(P); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [portability]
+    source: https://llvm.org/docs/CodingStandards.html#write-portable-code

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem70:
+    standard: @{EffectiveJava}
+    ruleId: item-70
+    title: Pick checked or unchecked exceptions by whether the caller can recover
+    statement:
+        Use checked exceptions when the caller can reasonably recover, and
+        runtime exceptions to signal programming errors such as broken
+        preconditions. Do not throw Error subclasses yourself.
+    rationale:
+        A checked exception tells callers they must deal with the condition,
+        while a runtime exception says the code itself is wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public void withdraw(long cents) throws Exception { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public void withdraw(long cents) throws InsufficientFundsException {
+            if (cents < 0) throw new IllegalArgumentException("negative amount");
+            if (cents > balance) throw new InsufficientFundsException(cents - balance);
+            balance -= cents;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, error-handling]
+    source: https://www.informit.com/store/effective-java-9780134686097

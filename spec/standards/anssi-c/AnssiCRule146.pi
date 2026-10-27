@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule146:
+    standard: @{AnssiC}
+    ruleId: rule-146
+    title: Return a value explicitly on every path of a non-void function
+    statement:
+        Make every path through a function with a non-void return type end
+        in an explicit return statement.
+    rationale:
+        Using the value of a function that fell off its end is undefined
+        behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int sign(int v) {
+            if (v > 0) { return 1; }
+            if (v < 0) { return -1; }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int sign(int v) {
+            int s = 0;
+            if (v > 0) { s = 1; }
+            else if (v < 0) { s = -1; }
+            return s;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, functions, undefined-behavior]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=117

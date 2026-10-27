@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamingResources4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: naming-resources-4
+    title: Use only letters, digits and underscores in resource names
+    statement:
+        Resource identifiers may contain alphanumeric characters and
+        underscores, nothing else.
+    rationale:
+        Other characters cannot be mapped to member names in generated
+        resource classes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        string text = Resources.ResourceManager.GetString("Error.Disk-Full");
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        string text = Resources.ResourceManager.GetString("ErrorDiskFull");
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, resources]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/naming-resources

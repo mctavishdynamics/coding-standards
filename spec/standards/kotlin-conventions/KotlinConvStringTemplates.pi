@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvStringTemplates:
+    standard: @{KotlinConventions}
+    ruleId: string-templates
+    title: Brace template expressions only when needed
+    statement:
+        In a string template, write a plain variable as a dollar sign plus
+        its name, and add braces only around more complex expressions.
+    rationale:
+        Unneeded braces make templates harder to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        println("Hello, ${name}! You have ${count} messages")
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        println("Hello, $name! You have ${inbox.size} messages")
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [redundancy, strings]
+    source: https://kotlinlang.org/docs/coding-conventions.html#string-templates

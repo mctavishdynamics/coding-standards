@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule22:
+    standard: @{CppCodingStandards}
+    ruleId: rule-22
+    title: Depend on declarations and keep dependencies acyclic
+    statement:
+        Forward declare where a declaration suffices, and avoid modules or
+        classes that depend on each other in a cycle; break cycles with an
+        interface.
+    rationale:
+        Fewer dependencies mean faster builds and components that can be
+        understood and tested on their own.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // parent.h
+        #include "child.h"
+        // child.h
+        #include "parent.h"
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // child.h
+        class Parent;
+        class Child { Parent* owner_; };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [coding-style, dependencies, design]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp20:
     standard: @{CppCoreGuidelines}
     ruleId: CP.20
-    title: Use RAII and never plain lock and unlock calls
+    title: Hold mutexes through scoped lock objects
     statement:
-        Acquire a mutex through a lock object such
-        as std::lock_guard, std::unique_lock or std::scoped_lock instead of
-        calling lock() and unlock() by hand.
+        Lock a mutex through an RAII guard like std::scoped_lock, std::lock_guard
+        or std::unique_lock. Avoid paired lock() and unlock() calls.
     rationale:
-        A manual unlock is easily skipped by an early return, an exception
-        or a later edit, leaving the mutex locked forever.
+        With manual calls, any early return, thrown exception or careless edit can
+        skip the unlock and leave the mutex held, which stalls every other thread
+        waiting for it.
     exceptions: null
     severity: null
     noncompliant:

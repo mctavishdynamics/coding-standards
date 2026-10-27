@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdCommentMajorRoutines:
+    standard: @{FreeBsdStyle}
+    ruleId: routine-comments
+    title: Describe every major routine, and the program before main
+    statement:
+        Put a comment before each major function briefly saying what it
+        does, and before main describe what the program does.
+    rationale:
+        Readers understand a file faster when its main pieces state their
+        purpose.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int
+        main(int argc, char *argv[])
+        {
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /*
+         * Print the lines common to two sorted files.
+         */
+        int
+        main(int argc, char *argv[])
+        {
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, functions]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

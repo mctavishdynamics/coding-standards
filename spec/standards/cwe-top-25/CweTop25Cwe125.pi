@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe125:
+    standard: @{CweTop25}
+    ruleId: CWE-125
+    title: Prevent out-of-bounds reads
+    statement:
+        Validate every length, offset and index used to read a buffer
+        against the buffer's real size, and do not assume untrusted data
+        contains a terminator or other sentinel. Use bounds-checked access
+        or a memory-safe language where you can.
+    rationale:
+        Reading past a buffer leaks adjacent memory, such as keys or
+        passwords, and can crash the program. It is ranked 8 of 25 in the
+        2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        uint8_t field_at(const uint8_t *pkt, size_t pkt_len, size_t offset) {
+            return pkt[offset];
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        bool field_at(const uint8_t *pkt, size_t pkt_len, size_t offset, uint8_t *out) {
+            if (offset >= pkt_len) {
+                return false;
+            }
+            *out = pkt[offset];
+            return true;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rank-8, memory, bounds-checking]
+    source: https://cwe.mitre.org/data/definitions/125.html

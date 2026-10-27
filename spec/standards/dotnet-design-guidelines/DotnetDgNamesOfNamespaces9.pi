@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfNamespaces9:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-namespaces-9
+    title: Avoid type names already used in core System namespaces
+    statement:
+        Do not reuse the name of a type from the core System namespaces for
+        your own type.
+    rationale:
+        Core namespaces are imported nearly everywhere, so a duplicate name
+        causes ambiguity in almost every file that uses yours.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        namespace Fabrikam.Workflow
+        {
+            public class Task { }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        namespace Fabrikam.Workflow
+        {
+            public class WorkflowStep { }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, naming, namespaces, conflicts]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-namespaces#namespaces-and-type-name-conflicts

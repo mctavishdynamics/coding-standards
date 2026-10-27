@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgConstructor5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: constructor-5
+    title: Do minimal work in constructors
+    statement:
+        Constructors should mostly store their arguments; postpone expensive
+        work until it is actually needed.
+    rationale:
+        Costly or failure-prone work in a constructor penalizes callers who
+        never use the result and makes failures hard to handle.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public CatalogClient(Uri endpoint)
+        {
+            _endpoint = endpoint;
+            _products = DownloadAllProducts(endpoint);
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public CatalogClient(Uri endpoint) => _endpoint = endpoint;
+
+        public Task<IReadOnlyList<Product>> GetProductsAsync() => DownloadAllProductsAsync(_endpoint);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, constructors, performance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/constructor

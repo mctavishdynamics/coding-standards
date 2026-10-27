@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem77:
+    standard: @{EffectiveJava}
+    ruleId: item-77
+    title: Never swallow an exception silently
+    statement:
+        Do not leave a catch block empty. Handle the exception, rethrow it,
+        or, if ignoring it is truly right, name the variable ignored and add
+        a comment saying why.
+    rationale:
+        An empty catch block hides failures and lets the program carry on in
+        a bad state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        try {
+            config.load();
+        } catch (IOException e) { }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        try {
+            cache.warm();
+        } catch (IOException ignored) {
+            // Warming is optional; requests fall back to the database.
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, error-handling]
+    source: https://www.informit.com/store/effective-java-9780134686097

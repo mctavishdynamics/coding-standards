@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoRedundantDocs:
+    standard: @{EffectiveDart}
+    ruleId: avoid-redundancy-with-the-surrounding-context
+    title: Do not repeat what the declaration already shows
+    statement:
+        Leave out what the reader can already see, such as the class name,
+        its interfaces or the member's signature. Explain only context,
+        caveats and usage that are not obvious.
+    rationale:
+        Restating the signature wastes the reader's time and hides the
+        information that matters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Invoice {
+          /// Takes an int called days and returns a DateTime for the Invoice.
+          DateTime dueDate(int days) => issued.add(Duration(days: days));
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Invoice {
+          /// The date payment is due, counting [days] from the issue date.
+          DateTime dueDate(int days) => issued.add(Duration(days: days));
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, documentation]
+    source: https://dart.dev/effective-dart/documentation#avoid-redundancy-with-the-surrounding-context

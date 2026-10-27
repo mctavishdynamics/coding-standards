@@ -5,13 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs61:
     standard: @{CppCoreGuidelines}
     ruleId: ES.61
-    title: Delete arrays using delete[] and non-arrays using delete
+    title: Match array new with delete[] and single new with delete
     statement:
-        Release memory from new[] with delete[] and memory from new with
-        delete, never the other way around.
+        Memory obtained with new[] must be released with delete[]. Memory
+        obtained with plain new must be released with plain delete.
     rationale:
-        The language requires the match, and a mismatch can corrupt memory
-        or fail to release resources.
+        The language requires the forms to match. Mixing them is undefined
+        behavior that may corrupt the heap or skip destructors.
     exceptions: null
     severity: null
     noncompliant:

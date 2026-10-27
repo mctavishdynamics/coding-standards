@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgOperatorOverloads6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: operator-overloads-6
+    title: Overload operators in symmetric pairs
+    statement:
+        Overload matching operators together, such as equality with
+        inequality and less-than with greater-than.
+    rationale:
+        Callers expect the counterpart to exist and behave consistently.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static bool operator ==(Sku left, Sku right) => left.Equals(right);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static bool operator ==(Sku left, Sku right) => left.Equals(right);
+        public static bool operator !=(Sku left, Sku right) => !left.Equals(right);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, operators, equality]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/operator-overloads

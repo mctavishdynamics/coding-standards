@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmNoUsingNamespaceStd:
+    standard: @{LlvmCodingStandards}
+    ruleId: do-not-use-using-namespace-std
+    title: Never write using namespace std
+    statement:
+        Qualify standard library names with std:: rather than importing the
+        namespace. A .cpp file may import the namespace it implements, and
+        its parents, after its includes, but no other.
+    rationale:
+        Importing std pollutes the global namespace and risks clashes as
+        library implementations and new standards add names; in headers it
+        affects every includer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #include <vector>
+        using namespace std;
+        vector<int> Offsets;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #include <vector>
+        using namespace llvm;
+        std::vector<int> Offsets;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces, portability]
+    source: https://llvm.org/docs/CodingStandards.html#do-not-use-using-namespace-std

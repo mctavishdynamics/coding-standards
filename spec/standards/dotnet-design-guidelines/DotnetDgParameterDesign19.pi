@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign19:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-19
+    title: Consider params on the simple overload alone
+    statement:
+        Offer params on a simple overload when it helps callers, even if
+        more complex overloads cannot use it.
+    rationale:
+        Callers benefit from the convenient form in the common case
+        regardless of the other overloads.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public string Join(params string[] parts) => Join(", ", parts);
+        public string Join(string separator, string[] parts, int start, int count) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, parameters, params]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#members-with-variable-number-of-parameters

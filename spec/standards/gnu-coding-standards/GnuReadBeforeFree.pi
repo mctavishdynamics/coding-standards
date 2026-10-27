@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuReadBeforeFree:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-free
+    title: Read anything you need from a block before freeing it
+    statement:
+        Treat a block as gone the moment it is passed to free, and copy out
+        any field you still need beforehand.
+    rationale:
+        Reading freed memory is undefined and often returns garbage.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        free (node);
+        next = node->next;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        next = node->next;
+        free (node);
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, use-after-free]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem101:
+    standard: @{EffectivePython}
+    ruleId: item-101
+    title: Decide whether to reorder in place or get a new sorted list
+    statement:
+        Use list.sort to reorder a list in place when the original order is
+        no longer needed, and sorted to get a new list from any iterable.
+    rationale:
+        Sorting in place saves memory, while sorted keeps the input
+        unchanged and works on any iterable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        ranked = scores
+        ranked.sort()  # caller's list changed too
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        ranked = sorted(scores)
+        \\\
+        ```
+    languages: [python]
+    tags: [data-structures-and-algorithms, sorting]
+    source: https://effectivepython.com/

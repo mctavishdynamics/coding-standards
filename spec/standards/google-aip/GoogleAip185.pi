@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip185:
+    standard: @{GoogleAip}
+    ruleId: AIP-185
+    title: Put the major version in the package and URI
+    statement:
+        Every API interface must carry a major version such as v1 at the end
+        of its proto package and at the start of its REST path, never minor
+        or patch numbers. Alpha and beta channels append the stability level
+        and a release number, as in v1beta1, and must be supersets of the
+        channels above them.
+    rationale:
+        Users only need to know about breaking changes, which the major
+        version signals. Running versions side by side gives clients time to
+        migrate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        package example.cooking.v1_2;
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        package example.cooking.v1beta1;
+        \\\
+        ```
+    languages: [any]
+    tags: [versioning, packages]
+    source: https://google.aip.dev/185

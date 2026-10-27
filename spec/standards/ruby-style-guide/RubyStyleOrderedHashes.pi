@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleOrderedHashes:
+    standard: @{RubyStyleGuide}
+    ruleId: ordered-hashes
+    title: Rely on hashes keeping insertion order
+    statement:
+        Count on Ruby hashes preserving the order in which keys were
+        inserted, as they have since Ruby 1.9.
+    rationale:
+        Insertion order is guaranteed, so extra sorting or ordered-hash
+        helpers are unnecessary.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```ruby
+        \\\
+        steps = { fetch: 1, parse: 2, store: 3 }
+        steps.keys # => [:fetch, :parse, :store]
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes]
+    source: https://rubystyle.guide/#ordered-hashes

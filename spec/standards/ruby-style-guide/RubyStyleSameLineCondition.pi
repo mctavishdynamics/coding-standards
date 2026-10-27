@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSameLineCondition:
+    standard: @{RubyStyleGuide}
+    ruleId: same-line-condition
+    title: Write the condition right after if or unless
+    statement:
+        When an if or unless spans several lines, the condition still goes
+        on the first line, directly after the keyword.
+    rationale:
+        Splitting the keyword from its condition makes the start of the
+        branch hard to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        if
+          user.admin? && user.active?
+          grant_access
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        if user.admin? && user.active?
+          grant_access
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals, formatting]
+    source: https://rubystyle.guide/#same-line-condition

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./PikeNotes import PikeNotes
+
+export coding-rule PikeNotesConsistentNaming:
+    standard: @{PikeNotes}
+    ruleId: variable-names-consistency
+    title: Name related variables by one convention
+    statement:
+        Use a single naming scheme across related variables, so that a short
+        name such as a pointer abbreviation can be decoded from the
+        convention. Variables that belong together should look as if they
+        belong together.
+    rationale:
+        A convention lets a short name carry its meaning. Mixing styles for
+        sibling variables makes the reader stop and wonder whether they
+        differ.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static unsigned long maxheapaddr;
+        static unsigned long lowest_stack_address;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static unsigned long maxheapaddr;
+        static unsigned long minstackaddr;
+        \\\
+        ```
+    languages: [c]
+    tags: [naming, consistency]
+    source: https://www.cs.princeton.edu/courses/archive/spr01/cs217/pike.html

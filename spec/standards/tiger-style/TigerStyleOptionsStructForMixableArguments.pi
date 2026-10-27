@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleOptionsStructForMixableArguments:
+    standard: @{TigerStyle}
+    ruleId: options-struct-for-mixable-arguments
+    title: Use an options struct when arguments could be swapped
+    statement:
+        When arguments of the same type could be passed in the wrong order,
+        take them through an options struct; a function with two u64
+        parameters must do so. Name nullable arguments so a null at the call
+        site is clear.
+    rationale:
+        Named fields make the call site self-explanatory and turn argument
+        mix-ups into compile errors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn transfer(debit_account: u64, credit_account: u64) void {}
+        transfer(a, b);
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn transfer(options: struct { debit_account: u64, credit_account: u64 }) void {}
+        transfer(.{ .debit_account = a, .credit_account = b });
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [parameters, api-design]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#naming-things

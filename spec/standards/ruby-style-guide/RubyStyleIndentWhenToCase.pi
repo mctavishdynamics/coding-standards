@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleIndentWhenToCase:
+    standard: @{RubyStyleGuide}
+    ruleId: indent-when-to-case
+    title: Align when with its case keyword
+    statement:
+        Align the when and else keywords of a case expression with the case
+        keyword itself.
+    rationale:
+        This is the style of the classic Ruby books. A case is not a block,
+        and its when branches behave like labels, so they need no extra
+        indentation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        case status
+          when :ok then render_page
+          when :missing then not_found
+          else server_error
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        case status
+        when :ok then render_page
+        when :missing then not_found
+        else server_error
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, indentation, conditionals]
+    source: https://rubystyle.guide/#indent-when-to-case

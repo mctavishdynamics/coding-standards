@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgChoosingBetweenClassAndStruct2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: choosing-between-class-and-struct-2
+    title: Avoid structs unless the type is a small immutable single value
+    statement:
+        Only choose a struct when the type represents one logical value like
+        a primitive, takes under 16 bytes, is immutable and will rarely be
+        boxed. Otherwise make it a class.
+    rationale:
+        Structs that are large, mutable or often boxed cost more in copying
+        and allocation than they save, and they behave surprisingly when
+        copied.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public struct CustomerRecord
+        {
+            public string Name;
+            public string Email;
+            public List<Order> Orders;
+            public decimal Balance;
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public sealed class CustomerRecord
+        {
+            public string Name { get; set; }
+            public string Email { get; set; }
+            public List<Order> Orders { get; } = new();
+            public decimal Balance { get; set; }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, type-design, structs]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/choosing-between-class-and-struct

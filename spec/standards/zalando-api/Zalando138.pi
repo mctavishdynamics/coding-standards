@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando138:
+    standard: @{ZalandoApi}
+    ruleId: 138
+    title: Model resources instead of actions
+    statement:
+        Design the API around the domain entities involved and use the
+        standard HTTP methods as the operations on them. For example, record
+        a voucher redemption as a new resource rather than calling a redeem
+        action.
+    rationale:
+        Turning actions into resources makes them readable, listable and
+        filterable through the same uniform interface.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        POST /vouchers/SPRING24/redeem
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        POST /voucher-redemptions
+        Content-Type: application/json
+
+        { "voucher_code": "SPRING24", "order_id": "so-4471" }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, resources, api-design]
+    source: https://opensource.zalando.com/restful-api-guidelines/#138

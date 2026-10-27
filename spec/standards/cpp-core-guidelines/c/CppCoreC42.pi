@@ -5,17 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC42:
     standard: @{CppCoreGuidelines}
     ruleId: C.42
-    title: Throw if a constructor cannot construct a valid object
+    title: Signal a failed construction by throwing
     statement:
-        If a constructor cannot establish the class invariant, report the
-        failure by throwing an exception instead of leaving a half-built
-        object behind.
+        If a constructor cannot make the invariant true, throw an exception. Do
+        not hand back an object that only looks valid.
     rationale:
-        An invalid object that looks constructed invites misuse later.
+        A half-built object that appears to be fine will be misused later, far
+        from the real failure.
     exceptions:
-        In some hard real-time domains exceptions are not predictable
-        enough. There an is_valid check may be used, but it must be called
-        consistently and immediately after construction.
+        In some hard real-time systems exception timing is too unpredictable.
+        There an is_valid style check may be used, as long as every caller tests
+        it right after construction.
     severity: null
     noncompliant:
         ```cpp

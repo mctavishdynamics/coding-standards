@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoNestedConditionals:
+    standard: @{RubyStyleGuide}
+    ruleId: no-nested-conditionals
+    title: Avoid nested conditionals by using guard clauses
+    statement:
+        Do not nest conditionals to control flow. Leave a method early with
+        a guard clause as soon as the input is invalid, and use next inside
+        loops instead of wrapping the body in a conditional.
+    rationale:
+        Guard clauses keep the main path at one indentation level and deal
+        with special cases up front.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def ship(order)
+          if order
+            if order.paid?
+              carrier.dispatch(order)
+            end
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def ship(order)
+          return unless order
+          return unless order.paid?
+
+          carrier.dispatch(order)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals]
+    source: https://rubystyle.guide/#no-nested-conditionals

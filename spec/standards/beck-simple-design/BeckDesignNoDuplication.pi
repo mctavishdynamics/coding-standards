@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./BeckSimpleDesign import BeckSimpleDesign
+
+export coding-rule BeckDesignNoDuplication:
+    standard: @{BeckSimpleDesign}
+    ruleId: rule-3
+    title: Remove duplicated logic
+    statement:
+        Express each piece of logic in one place only. Look out for
+        duplication that is not textual, such as two class hierarchies that
+        must change in step.
+    rationale:
+        Once-and-only-once keeps a change in one place, and the act of
+        removing duplication tends to push the code toward a better design.
+    exceptions:
+        Fowler treats this rule and the previous one as equals that refine
+        each other; adding duplication for clarity usually hides a problem
+        worth solving instead.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def shipping_cost_eu(weight_kg):
+            return 5.0 + weight_kg * 1.2 if weight_kg > 0 else 0.0
+
+        def shipping_cost_us(weight_kg):
+            return 7.0 + weight_kg * 1.2 if weight_kg > 0 else 0.0
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        BASE_FEE = {"eu": 5.0, "us": 7.0}
+
+        def shipping_cost(region, weight_kg):
+            if weight_kg <= 0:
+                return 0.0
+            return BASE_FEE[region] + weight_kg * 1.2
+        \\\
+        ```
+    languages: [any]
+    tags: [design, duplication]
+    source: https://martinfowler.com/bliki/BeckDesignRules.html

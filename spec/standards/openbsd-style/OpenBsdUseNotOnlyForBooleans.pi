@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdUseNotOnlyForBooleans:
+    standard: @{OpenBsdStyle}
+    ruleId: boolean-tests
+    title: Use the not operator only on boolean values
+    statement:
+        Do not apply the not operator to values that are not booleans;
+        compare them explicitly instead.
+    rationale:
+        An explicit comparison says what kind of value is being tested.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (!*name)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (*name == '\0')
+        \\\
+        ```
+    languages: [c]
+    tags: [expressions, readability]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

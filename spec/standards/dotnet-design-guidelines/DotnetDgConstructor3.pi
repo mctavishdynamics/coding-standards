@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgConstructor3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: constructor-3
+    title: Let constructor arguments stand in for setting key properties
+    statement:
+        Constructor parameters should set the main properties, and the
+        result must be the same as constructing empty and then setting those
+        properties.
+    rationale:
+        Callers can then choose either style without any change in behavior.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class Timer
+        {
+            public Timer() { }
+            public Timer(TimeSpan interval) { Interval = interval; }
+            public TimeSpan Interval { get; set; }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, constructors, properties]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/constructor

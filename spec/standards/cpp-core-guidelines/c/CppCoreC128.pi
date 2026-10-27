@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC128:
     standard: @{CppCoreGuidelines}
     ruleId: C.128
-    title: Mark virtual functions with exactly one of virtual, override or final
+    title: Choose one of virtual, override or final for each virtual function
     statement:
-        Use virtual only for a new virtual function, override for an
-        overrider that can be overridden further, and final for a last
-        overrider. Never combine them.
+        Write exactly one of virtual, override or final on a virtual function.
+        Use virtual to introduce a new one, override when replacing one that may
+        be replaced again, and final for the last replacement.
     rationale:
-        One keyword documents intent and lets the compiler catch signature
-        and name mismatches, while writing more than one is redundant and
-        error-prone.
+        Each keyword carries one meaning. The compiler can then reject a
+        supposed override whose signature does not match. Writing two or three
+        keywords adds clutter and can contradict itself.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopTesting11:
+    standard: @{PracticeOfProgramming}
+    ruleId: testing-11
+    title: Measure how much code the tests reach
+    statement:
+        Use coverage tools to find statements and branches that the tests
+        never execute.
+    rationale:
+        Code that is never run by a test is code whose bugs will be found by
+        users.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```sh
+        \\\
+        cc --coverage -o prog prog.c
+        ./run-tests.sh
+        gcov prog.c
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, coverage]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

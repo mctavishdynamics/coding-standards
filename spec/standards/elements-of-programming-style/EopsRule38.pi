@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule38:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-38
+    title: End input with end-of-file or a sentinel, not a count
+    statement:
+        Let input finish at end of file or at a marker value, instead of
+        requiring the user to state in advance how many items follow.
+    rationale:
+        People miscount. A leading count that is wrong makes the program
+        read too little or too much.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        n = int(input())
+        items = [input() for _ in range(n)]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import sys
+        items = [line.rstrip("\n") for line in sys.stdin]
+        \\\
+        ```
+    languages: [any]
+    tags: [input-and-output, input]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

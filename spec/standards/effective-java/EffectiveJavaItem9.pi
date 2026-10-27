@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem9:
+    standard: @{EffectiveJava}
+    ruleId: item-9
+    title: Let the compiler close resources by opening them in a resource try
+    statement:
+        Whenever you work with an object that must be closed, open it in a
+        try-with-resources statement instead of closing it by hand in a
+        finally block.
+    rationale:
+        The statement is shorter, handles several resources cleanly, and
+        keeps the original exception while recording failures from close as
+        suppressed exceptions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        BufferedReader in = Files.newBufferedReader(path);
+        try {
+            return in.readLine();
+        } finally {
+            in.close();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        try (BufferedReader in = Files.newBufferedReader(path)) {
+            return in.readLine();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [creating-and-destroying-objects, resources, exceptions]
+    source: https://www.informit.com/store/effective-java-9780134686097

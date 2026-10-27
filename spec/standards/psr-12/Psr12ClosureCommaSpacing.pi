@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ClosureCommaSpacing:
+    standard: @{Psr12}
+    ruleId: 7d
+    title: Space closure lists after commas only
+    statement:
+        In a closure's argument and variable lists, put no space before a
+        comma and one space after it.
+    rationale:
+        Uniform comma spacing keeps closure signatures consistent with
+        functions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        $clamp = function ($value ,$min,$max) {
+            return max($min, min($max, $value));
+        };
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        $clamp = function ($value, $min, $max) {
+            return max($min, min($max, $value));
+        };
+        \\\
+        ```
+    languages: [php]
+    tags: [closures, whitespace]
+    source: https://www.php-fig.org/psr/psr-12/#7-closures

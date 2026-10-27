@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation70:
+    standard: @{AnssiC}
+    ruleId: recommendation-70
+    title: Initialise variables when they are declared
+    statement:
+        Give every variable a value at its declaration, or right after it in
+        the case of a multiple declaration.
+    rationale:
+        Compiler warnings do not find every missing initialisation, and
+        reading an uninitialised variable is undefined behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        uint32_t total;
+        for (size_t i = 0; i < n; i++) { total += v[i]; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        uint32_t total = 0;
+        for (size_t i = 0; i < n; i++) { total += v[i]; }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, initialization, declarations]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=52

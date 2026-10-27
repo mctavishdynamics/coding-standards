@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartConsistentTerms:
+    standard: @{EffectiveDart}
+    ruleId: do-use-terms-consistently
+    title: Call the same thing by the same name everywhere
+    statement:
+        Use one name for one concept across your API, and follow names users
+        already know from the domain, the core libraries and the rest of
+        your code.
+    rationale:
+        Reusing familiar terms means users learn less before they can be
+        productive.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Cart {
+          int get itemCount => _items.length;
+          void removeEntry(Item item) {}
+          bool hasProduct(Item item) => _items.contains(item);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Cart {
+          int get length => _items.length;
+          void remove(Item item) {}
+          bool contains(Item item) => _items.contains(item);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, naming, api-design]
+    source: https://dart.dev/effective-dart/design#do-use-terms-consistently

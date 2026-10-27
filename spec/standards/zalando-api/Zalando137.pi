@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando137:
+    standard: @{ZalandoApi}
+    ruleId: 137
+    title: Stick to conventional query parameters
+    statement:
+        Use the standard names for common query features, such as q for the
+        default query, sort with plus or minus prefixes, fields for field
+        filtering, embed for embedding, offset, cursor and limit for
+        pagination.
+    rationale:
+        Shared parameter names give every API the same look and feel, so
+        clients need not learn a new vocabulary for each one.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /sales-orders?search=shirt&orderBy=created&pageSize=20
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /sales-orders?q=shirt&sort=-created_at&limit=20
+        \\\
+        ```
+    languages: [any]
+    tags: [must, query-parameters, naming]
+    source: https://opensource.zalando.com/restful-api-guidelines/#137

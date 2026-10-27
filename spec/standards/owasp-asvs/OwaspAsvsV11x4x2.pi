@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV11x4x2:
+    standard: @{OwaspAsvs}
+    ruleId: V11.4.2
+    title: Store passwords with an approved slow password hash
+    statement:
+        Hash stored passwords with an approved, computationally expensive
+        key derivation function, tuned to current guidance on cost
+        parameters.
+    rationale:
+        Slow, tuned hashing makes cracking a stolen password database too
+        costly to be practical.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        stored = hashlib.sha256(password.encode()).hexdigest()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        stored = argon2.PasswordHasher().hash(password)
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, passwords, hashing]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x20-V11-Cryptography.md#v114-hashing-and-hash-based-functions

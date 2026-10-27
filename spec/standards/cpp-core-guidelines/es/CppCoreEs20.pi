@@ -5,17 +5,19 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs20:
     standard: @{CppCoreGuidelines}
     ruleId: ES.20
-    title: Always initialize an object
+    title: Give every object an initial value
     statement:
-        Give every variable an initial value at its declaration.
+        Every variable should receive a value in its declaration.
     rationale:
-        It rules out use-before-set bugs and their undefined behavior, makes
-        complex initialization easier to follow and simplifies refactoring.
+        Reading an unset variable is undefined behavior, and initializing at
+        the point of declaration removes that risk. It also makes
+        complicated setup easier to follow and code easier to restructure
+        later.
     exceptions:
-        An object about to be filled from input, such as a large buffer, may
-        be left uninitialized to avoid double initialization, but treat that
-        with suspicion. Simple variables that are targets of input
-        operations are not exempt.
+        A large buffer that input is about to overwrite may be left
+        uninitialized to avoid paying twice, though such cases deserve
+        suspicion. A plain variable that receives input is not covered by
+        this exemption.
     severity: null
     noncompliant:
         ```cpp

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule8:
+    standard: @{CppCodingStandards}
+    ruleId: rule-8
+    title: Do not optimise before measurements show a need
+    statement:
+        Write clear code first and optimise only parts that profiling proves
+        to be bottlenecks.
+    rationale:
+        Premature optimisation complicates code, introduces bugs and usually
+        targets the wrong place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // hand-unrolled loop in code that runs once at startup
+        for (int i = 0; i < n; i += 4) { sum += a[i] + a[i+1] + a[i+2] + a[i+3]; }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int sum = std::accumulate(a.begin(), a.end(), 0);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [design-style, performance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

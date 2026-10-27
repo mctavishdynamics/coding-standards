@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDoNotDeclareSystemFunctions:
+    standard: @{GnuCodingStandards}
+    ruleId: system-functions-no-own-declarations
+    title: Use standard interfaces and never declare system functions yourself
+    statement:
+        Use standard C and POSIX interfaces where possible, and GNU
+        extensions when they make the program better. Get declarations from
+        the system headers rather than writing your own.
+    rationale:
+        Hand-written declarations of system functions conflict with the real
+        ones.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        extern char *getenv ();
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+        \\\
+        ```
+    languages: [c]
+    tags: [portability, declarations, system-calls]
+    source: https://www.gnu.org/prep/standards/standards.html#System-Functions

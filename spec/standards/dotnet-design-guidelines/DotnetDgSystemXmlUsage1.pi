@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSystemXmlUsage1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: system-xml-usage-1
+    title: Do not expose XmlNode or XmlDocument for XML data
+    statement:
+        Represent XML in public APIs with IXPathNavigable, XmlReader,
+        XmlWriter or XNode subtypes, not XmlNode or XmlDocument.
+    rationale:
+        XmlNode and XmlDocument were not designed for use in public API
+        surfaces.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public XmlDocument Manifest { get; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public XDocument Manifest { get; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, usage, xml]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/system-xml-usage

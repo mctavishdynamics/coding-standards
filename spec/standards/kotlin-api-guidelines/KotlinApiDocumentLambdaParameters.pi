@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiDocumentLambdaParameters:
+    standard: @{KotlinApiGuidelines}
+    ruleId: document-lambda-parameters
+    title: Document how lambda parameters are run
+    statement:
+        When a function accepts a lambda, state in its docs how an exception
+        thrown by the lambda is handled. For a function that is not inline,
+        also state the thread the lambda runs on, whether several
+        invocations may overlap, and the order in which multiple lambdas are
+        called.
+    rationale:
+        The library runs user code on the user's behalf, so failure and
+        concurrency behaviour must be spelled out.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        /** Calls [onEvent] for each event. */
+        public fun subscribe(onEvent: (Event) -> Unit)
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        /**
+         * Calls [onEvent] for each event, one at a time and in arrival order, on
+         * the library's single event thread. If [onEvent] throws, the subscription
+         * is cancelled and the exception is passed to the error handler.
+         */
+        public fun subscribe(onEvent: (Event) -> Unit)
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [documentation, concurrency, lambdas]
+    source: https://kotlinlang.org/docs/api-guidelines-informative-documentation.html#document-lambda-parameters

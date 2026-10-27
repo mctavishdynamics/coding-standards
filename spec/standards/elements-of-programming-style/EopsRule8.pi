@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule8:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-8
+    title: Add parentheses where precedence is unclear
+    statement:
+        If a reader might be unsure how operators group, add parentheses to
+        make the grouping explicit.
+    rationale:
+        Precedence rules differ between languages and are easy to
+        misremember. Parentheses cost nothing and remove the doubt.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (flags & MASK == 0) {
+            reset();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if ((flags & MASK) == 0) {
+            reset();
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [expression, expressions, operators]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoDoubleIndent:
+    standard: @{RubyStyleGuide}
+    ruleId: no-double-indent
+    title: Align the arguments of a multi-line method call
+    statement:
+        When a method call's arguments span several lines, align them with
+        the first argument. If that makes the lines too long, put the
+        arguments on the following lines with a single indent instead.
+    rationale:
+        Aligned arguments read as one list, while arguments indented
+        arbitrarily look like separate statements.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        send_invoice(customer,
+            invoice,
+                copy_to: accounts)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        send_invoice(customer,
+                     invoice,
+                     copy_to: accounts)
+
+        send_invoice(
+          customer,
+          invoice,
+          copy_to: accounts
+        )
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, indentation, method-calls]
+    source: https://rubystyle.guide/#no-double-indent

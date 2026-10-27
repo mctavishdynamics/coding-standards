@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe78:
+    standard: @{CweTop25}
+    ruleId: CWE-78
+    title: Prevent OS command injection
+    statement:
+        Use a library call instead of starting an external program when one
+        exists. When you must run a program, keep the command fixed, pass
+        input as separate arguments without a shell, validate those
+        arguments against an allow list, and run with the least privilege
+        possible or inside a sandbox.
+    rationale:
+        Shell metacharacters in input let an attacker run any command with
+        the application's privileges. It is ranked 9 of 25 in the 2025 CWE
+        Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def ping(host):
+            return subprocess.run(f"ping -c 1 {host}", shell=True).returncode
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        HOST = re.compile(r"[A-Za-z0-9.-]{1,253}")
+
+        def ping(host):
+            if not HOST.fullmatch(host):
+                raise ValueError("bad host")
+            return subprocess.run(["ping", "-c", "1", "--", host]).returncode
+        \\\
+        ```
+    languages: [python]
+    tags: [rank-9, injection, os-command]
+    source: https://cwe.mitre.org/data/definitions/78.html

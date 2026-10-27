@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance5:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-5
+    title: Change the algorithm or data structure first
+    statement:
+        When code is too slow, look for a more efficient algorithm or a
+        better data structure before tuning statements.
+    rationale:
+        Reducing the order of growth gives far larger gains than any local
+        tweak.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* linear search on every lookup */
+        for (i = 0; i < n; i++)
+            if (strcmp(tab[i].name, key) == 0)
+                return &tab[i];
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* table sorted once; each lookup is O(log n) */
+        return bsearch(&key, tab, n, sizeof tab[0], cmp_name);
+        \\\
+        ```
+    languages: [any]
+    tags: [performance, algorithms]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

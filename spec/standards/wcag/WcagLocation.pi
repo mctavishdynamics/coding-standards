@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagLocation:
+    standard: @{Wcag22}
+    ruleId: 2.4.8
+    title: Show users where they are in a site
+    statement:
+        Show users where the current page sits among related pages, for
+        instance with a breadcrumb trail or a marked current item in the
+        menu.
+    rationale:
+        Knowing where they are helps people with cognitive disabilities and
+        screen reader users stay oriented.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <nav><a href="/">Home</a> <a href="/docs">Docs</a> <a href="/docs/api">API</a></nav>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <nav aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/docs">Docs</a></li>
+            <li><a href="/docs/api" aria-current="page">API</a></li>
+          </ol>
+        </nav>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aaa, navigation, breadcrumbs]
+    source: https://www.w3.org/TR/WCAG22/#location

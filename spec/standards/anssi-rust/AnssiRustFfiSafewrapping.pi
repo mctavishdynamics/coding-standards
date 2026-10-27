@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiSafewrapping:
+    standard: @{AnssiRust}
+    ruleId: FFI-SAFEWRAPPING
+    title: Wrap foreign libraries in a safe layer
+    statement:
+        Bind a foreign library in two layers: a low-level, possibly private
+        module of extern declarations that mirrors the C API, and a safe
+        module on top that upholds memory safety and invariants. Publish the
+        low-level layer only in a crate named something-sys.
+    rationale:
+        Keeping the unsafe bindings in one place means callers use a safe
+        API and the risky code can be reviewed on its own.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub extern "C" {
+            pub fn zlib_compress(dst: *mut u8, dst_len: *mut usize,
+                                 src: *const u8, src_len: usize) -> i32;
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        mod sys {
+            extern "C" {
+                pub fn zlib_compress(dst: *mut u8, dst_len: *mut usize,
+                                     src: *const u8, src_len: usize) -> i32;
+            }
+        }
+
+        pub fn compress(src: &[u8], dst: &mut [u8]) -> Result<usize, i32> {
+            let mut len = dst.len();
+            let rc = unsafe { sys::zlib_compress(dst.as_mut_ptr(), &mut len, src.as_ptr(), src.len()) };
+            if rc == 0 { Ok(len) } else { Err(rc) }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [recommendation, ffi, encapsulation]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-SAFEWRAPPING

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmNoInlineInClassBody:
+    standard: @{LlvmCodingStandards}
+    ruleId: don-t-use-inline-when-defining-a-function-in-a-class-definition
+    title: Do not mark member functions defined in a class body inline
+    statement:
+        Leave off the inline keyword on member functions defined inside the
+        class definition.
+    rationale:
+        Such functions are already implicitly inline, so the keyword is
+        noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Timer {
+        public:
+          inline bool running() const { return Running; }
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Timer {
+        public:
+          bool running() const { return Running; }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, functions]
+    source: https://llvm.org/docs/CodingStandards.html#don-t-use-inline-when-defining-a-function-in-a-class-definition

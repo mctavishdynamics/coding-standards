@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12TryCatchLayout:
+    standard: @{Psr12}
+    ruleId: 5.6
+    title: Put catch and finally on the closing brace line
+    statement:
+        Open a try body with a brace after the keyword, and follow the usual
+        control-structure spacing. Each catch and the finally clause begin
+        on the line of the brace that ends the block before them.
+    rationale:
+        Joined clauses show that the try, its catches and its finally form
+        one statement.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        try {
+            $client->send($request);
+        }
+        catch(TimeoutException $e) {
+            retryLater($request);
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        try {
+            $client->send($request);
+        } catch (TimeoutException $e) {
+            retryLater($request);
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [control-structures, error-handling]
+    source: https://www.php-fig.org/psr/psr-12/#56-try-catch-finally

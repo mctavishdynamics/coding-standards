@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip123:
+    standard: @{GoogleAip}
+    ruleId: AIP-123
+    title: Declare a resource type and name patterns for every resource
+    statement:
+        Annotate each resource with a type of the form service name, slash,
+        singular UpperCamelCase type that matches the message name, together
+        with its singular and plural forms. Name patterns must mirror the
+        resource name, use snake_case variables without an _id suffix, stay
+        unique, and keep their order when new patterns are added.
+    rationale:
+        A matching type and message name keeps generated code, documentation
+        and lookups aligned. Declared singular and plural forms tell tools
+        which word to use, and camelCase converts cleanly into other casing
+        styles.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          option (google.api.resource) = {
+            type: "cooking.example.com/recipe_item"
+            pattern: "kitchens/{kitchen_id}/recipes/{recipe_id}"
+          };
+          string name = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          option (google.api.resource) = {
+            type: "cooking.example.com/Recipe"
+            pattern: "kitchens/{kitchen}/recipes/{recipe}"
+            singular: "recipe"
+            plural: "recipes"
+          };
+          string name = 1;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [naming, resource-design, annotations]
+    source: https://google.aip.dev/123

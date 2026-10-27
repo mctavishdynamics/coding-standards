@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV3x2x2:
+    standard: @{OwaspAsvs}
+    ruleId: V3.2.2
+    title: Render plain text with text-only DOM functions
+    statement:
+        Insert content that should appear as text through safe functions
+        such as textContent or createTextNode rather than through HTML
+        parsing.
+    rationale:
+        HTML insertion APIs execute markup and script hidden in the value,
+        while text APIs display it literally.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        commentEl.innerHTML = comment.body;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        commentEl.textContent = comment.body;
+        \\\
+        ```
+    languages: [any]
+    tags: [level-1, xss, dom]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x12-V3-Web-Frontend-Security.md#v32-unintended-content-interpretation

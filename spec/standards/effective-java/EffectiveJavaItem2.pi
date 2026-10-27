@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem2:
+    standard: @{EffectiveJava}
+    ruleId: item-2
+    title: Use a builder for classes that take many optional parameters
+    statement:
+        When a constructor or static factory would need more than a handful
+        of parameters, most of them optional, give the class a builder that
+        sets each value by name and creates the object at the end.
+    rationale:
+        Long chains of overloaded constructors are hard to read and easy to
+        call with arguments in the wrong order. Setting fields one by one on
+        a mutable object leaves it half built and rules out immutability.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Request r = new Request("GET", "/users", null, null, 30, true, false);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Request r = new Request.Builder("GET", "/users")
+                .timeoutSeconds(30)
+                .followRedirects(true)
+                .build();
+        \\\
+        ```
+    languages: [java]
+    tags: [creating-and-destroying-objects, api-design, construction, builder]
+    source: https://www.informit.com/store/effective-java-9780134686097

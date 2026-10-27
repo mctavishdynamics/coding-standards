@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation53:
+    standard: @{AnssiC}
+    ruleId: recommendation-53
+    title: Group declarations at the start of their scope
+    statement:
+        Declare variables in one group at the top of the file, function or
+        block that matches their scope. Declaring a loop counter in its for
+        statement is accepted if it shadows nothing.
+    rationale:
+        Grouped declarations are easy to find and make accidental
+        redefinitions visible.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void report(void) {
+            print_header();
+            int lines = count_lines();
+            print_body(lines);
+            int errors = count_errors();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void report(void) {
+            int lines = 0;
+            int errors = 0;
+            print_header();
+            lines = count_lines();
+            print_body(lines);
+            errors = count_errors();
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=41

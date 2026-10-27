@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign20:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-20
+    title: Order parameters so params can be used
+    statement:
+        Arrange parameters so that the array that could be params comes
+        last.
+    rationale:
+        params only works on the final parameter.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Notify(string[] recipients, string subject) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Notify(string subject, params string[] recipients) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, parameters, params]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#members-with-variable-number-of-parameters

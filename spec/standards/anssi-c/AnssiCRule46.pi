@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule46:
+    standard: @{AnssiC}
+    ruleId: rule-46
+    title: Link in relro mode
+    statement:
+        Ask the linker to make relocated sections read-only after loading,
+        for example with z relro for BFD and gold.
+    rationale:
+        Writable relocation tables are a useful target for an attacker who
+        has a write primitive.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        gcc -O2 -fPIE -pie -Wl,-z,relro main.c -o server
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, linking, hardening]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=37

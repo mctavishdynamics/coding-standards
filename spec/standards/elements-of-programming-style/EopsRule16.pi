@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule16:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-16
+    title: Use if-else when exactly one of two paths runs
+    statement:
+        When only one of two actions should happen, write them as the two
+        arms of a single if-else.
+    rationale:
+        An if-else tells the reader the cases are exclusive. Two separate
+        ifs make the reader check whether both could run.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (n >= 0) {
+            puts("non-negative");
+        }
+        if (n < 0) {
+            puts("negative");
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (n >= 0) {
+            puts("non-negative");
+        } else {
+            puts("negative");
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [control-structure, conditionals]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

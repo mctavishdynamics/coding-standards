@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoParallelTests:
+    standard: @{UberGo}
+    ruleId: parallel-tests
+    title: Bind loop variables explicitly in parallel subtests
+    statement:
+        In parallel table tests, and other loops that start goroutines or
+        capture references, assign the loop variable to a new variable
+        scoped to the iteration.
+    rationale:
+        Otherwise the subtests may all see the same or a changing value of
+        the loop variable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        for _, tt := range tests {
+            t.Run(tt.name, func(t *testing.T) {
+                t.Parallel()
+                check(t, tt)
+            })
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        for _, tt := range tests {
+            tt := tt
+            t.Run(tt.name, func(t *testing.T) {
+                t.Parallel()
+                check(t, tt)
+            })
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [testing, concurrency]
+    source: https://github.com/uber-go/guide/blob/master/style.md#parallel-tests

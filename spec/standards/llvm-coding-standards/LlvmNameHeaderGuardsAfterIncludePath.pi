@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmNameHeaderGuardsAfterIncludePath:
+    standard: @{LlvmCodingStandards}
+    ruleId: header-guard
+    title: Derive header guard names from the include path
+    statement:
+        Name a header guard after the path a user writes in the include
+        directive, in upper case, with path separators and the extension dot
+        replaced by underscores.
+    rationale:
+        A guard built from the unique include path cannot collide with
+        another header's guard, and its name is predictable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // llvm/include/llvm/Support/Timer.h
+        #ifndef TIMER_H
+        #define TIMER_H
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // llvm/include/llvm/Support/Timer.h
+        #ifndef LLVM_SUPPORT_TIMER_H
+        #define LLVM_SUPPORT_TIMER_H
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, naming, preprocessor]
+    source: https://llvm.org/docs/CodingStandards.html#header-guard

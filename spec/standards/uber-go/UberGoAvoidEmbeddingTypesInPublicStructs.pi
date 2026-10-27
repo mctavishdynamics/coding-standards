@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoAvoidEmbeddingTypesInPublicStructs:
+    standard: @{UberGo}
+    ruleId: avoid-embedding-types-in-public-structs
+    title: Do not embed types in exported structs
+    statement:
+        In exported structs, hold shared implementation in a named field and
+        write the delegating methods you need, rather than embedding the
+        type.
+    rationale:
+        An embedded type exposes implementation details and locks the API in
+        place, because growing an embedded interface, or dropping or swapping
+        the embedded type, breaks callers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type LinkedList struct {
+            *baseList
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type LinkedList struct {
+            list *baseList
+        }
+
+        func (l *LinkedList) Add(v int) {
+            l.list.Add(v)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [embedding, api-design]
+    source: https://github.com/uber-go/guide/blob/master/style.md#avoid-embedding-types-in-public-structs

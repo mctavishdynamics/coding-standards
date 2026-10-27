@@ -5,19 +5,20 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs23:
     standard: @{CppCoreGuidelines}
     ruleId: ES.23
-    title: Prefer the \ {} \ initializer syntax
+    title: Use brace initialization by default
     statement:
-        Initialize objects with braces by default. Use the equals form only
-        when no narrowing is possible, and for built-in arithmetic types
-        only with auto. Avoid parenthesis initialization, which can be
-        parsed ambiguously.
+        Make braces the default way to initialize. Fall back to the equals
+        sign only where narrowing cannot occur, and for built-in arithmetic
+        types only together with auto. Avoid initializing with parentheses,
+        since the parser can misread them.
     rationale:
-        Brace initialization has simpler and more general rules than the
-        other forms, forbids narrowing conversions and avoids the most
-        vexing parse.
+        The brace form follows fewer and more uniform rules. It rejects
+        narrowing conversions and cannot be mistaken for a function
+        declaration.
     exceptions:
-        For containers, braces conventionally list elements while
-        parentheses give a size, so use parentheses when you mean a count.
+        Containers are a known exception. By convention braces give the
+        element list and parentheses give a size, so write parentheses when
+        you mean an element count.
     severity: null
     noncompliant:
         ```cpp

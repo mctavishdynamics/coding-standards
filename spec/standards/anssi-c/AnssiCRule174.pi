@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule174:
+    standard: @{AnssiC}
+    ruleId: rule-174
+    title: Do not use setjmp.h or stdarg.h
+    statement:
+        Keep the setjmp.h and stdarg.h headers out of the code.
+    rationale:
+        Non-local jumps and variadic argument handling bypass type checking
+        and are frequent sources of undefined behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include <stdarg.h>
+        int sum(int n, ...);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int sum(const int values[], size_t n);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, standard-library, functions]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=142

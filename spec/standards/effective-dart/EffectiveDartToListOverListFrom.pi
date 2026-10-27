@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartToListOverListFrom:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-list-from-unless-you-intend-to-change-the-type-of-the-result
+    title: Copy iterables with toList unless the type should change
+    statement:
+        Use `toList()` to copy an iterable into a list. Reach for
+        `List.from()` only when you want a list with a different element
+        type.
+    rationale:
+        `toList()` is shorter and keeps the original type argument, whereas
+        `List.from()` infers `List<dynamic>` without one.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final ids = List.from(selectedIds);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final ids = selectedIds.toList();
+        final ints = List<int>.from(numbers);
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, collections, types]
+    source: https://dart.dev/effective-dart/usage#dont-use-list-from-unless-you-intend-to-change-the-type-of-the-result

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip165:
+    standard: @{GoogleAip}
+    ruleId: AIP-165
+    title: Delete by criteria with a Purge method that requires force
+    statement:
+        Bulk deletion by filter uses a method named Purge plus the plural
+        resource that returns a long-running operation. Its request must
+        include a filter in the standard syntax and a force flag, so that
+        without force it only reports what would be deleted.
+    rationale:
+        Deleting many resources by criteria is dangerous. A preview by
+        default lets users check the scope before anything is removed.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```protobuf
+        \\\
+        message PurgeOrdersRequest {
+          string parent = 1;
+          bool force = 2;
+          string filter = 3 [(google.api.field_behavior) = REQUIRED];
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design-patterns, deletion]
+    source: https://google.aip.dev/165

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule134:
+    standard: @{AnssiC}
+    ruleId: rule-134
+    title: Do not jump backwards with goto
+    statement:
+        Do not use a goto whose label appears earlier in the function; write
+        a loop instead.
+    rationale:
+        Backward jumps build hidden loops that are hard to read and reason
+        about.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        retry:
+            rc = try_send(msg);
+            if (rc == EAGAIN) { goto retry; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        do {
+            rc = try_send(msg);
+        } while (rc == EAGAIN);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, control-flow, goto]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=106

@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs24:
     standard: @{CppCoreGuidelines}
     ruleId: ES.24
-    title: Use a unique_ptr to hold pointers
+    title: Hold owning pointers in unique_ptr
     statement:
-        Hold the result of an allocation in a std::unique_ptr rather than a
-        raw pointer.
+        Store a newly allocated object in a std::unique_ptr, not in a raw
+        pointer.
     rationale:
-        unique_ptr is the simplest way to avoid leaks. The type system
-        checks ownership, readers see who owns the object, and the cost is
-        zero or near zero.
+        This is the simplest defence against leaks, since the object is
+        freed automatically. The type documents who owns the object and lets
+        the compiler police it, and the run-time cost is zero or close to
+        it.
     exceptions: null
     severity: null
     noncompliant:

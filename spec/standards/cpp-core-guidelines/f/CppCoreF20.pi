@@ -5,18 +5,19 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF20:
     standard: @{CppCoreGuidelines}
     ruleId: F.20
-    title: For out values, prefer return values to output parameters
+    title: Return results instead of writing them through parameters
     statement:
-        Return results by value instead of writing them through reference or
-        pointer parameters. This holds for large objects such as containers
-        too.
+        Hand results back through the return value, not through a reference or
+        pointer parameter. Even large objects such as vectors should be
+        returned.
     rationale:
-        A return value documents itself, whereas a reference parameter may
-        be read as in-out. Move semantics and return value optimization make
-        returning containers cheap.
+        The return type tells readers what comes out, while an out parameter
+        could just as well be read as input. Return value optimization and move
+        semantics keep returning a container cheap.
     exceptions:
-        A struct of many members can be expensive to move in total, and
-        reusing an existing object can avoid repeated allocation.
+        Moving a struct with many members can add up, and refilling an existing
+        object may save repeated allocation. In such cases an out parameter can
+        be justified.
     severity: null
     noncompliant:
         ```cpp

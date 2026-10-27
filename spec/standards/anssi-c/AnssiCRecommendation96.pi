@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation96:
+    standard: @{AnssiC}
+    ruleId: recommendation-96
+    title: Keep array pointer arithmetic inside the array
+    statement:
+        When doing arithmetic on a pointer into an array, make sure the
+        result still lands on an element of that array.
+    rationale:
+        A pointer that leaves its array is undefined behaviour and leads to
+        out-of-bounds access.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int *p = &arr[0];
+        p += n; /* n not checked */
+        *p = 1;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int *p = &arr[0];
+        if (n < ARR_LEN) {
+            p += n;
+            *p = 1;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, pointers, pointer-arithmetic, bounds-checking]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=77

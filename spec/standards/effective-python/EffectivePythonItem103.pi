@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem103:
+    standard: @{EffectivePython}
+    ruleId: item-103
+    title: Feed FIFO work through a double-ended queue
+    statement:
+        Use collections.deque when items are added at one end and removed
+        from the other, rather than a list with pop at index zero.
+    rationale:
+        Removing the first item of a list is linear time, while deque does
+        it in constant time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        pending = []
+        pending.append(job)
+        next_job = pending.pop(0)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from collections import deque
+
+        pending = deque()
+        pending.append(job)
+        next_job = pending.popleft()
+        \\\
+        ```
+    languages: [python]
+    tags: [data-structures-and-algorithms, data-structures, performance]
+    source: https://effectivepython.com/

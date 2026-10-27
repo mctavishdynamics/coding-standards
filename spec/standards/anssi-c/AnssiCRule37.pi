@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule37:
+    standard: @{AnssiC}
+    ruleId: rule-37
+    title: Enable security-focused warnings and fix what they report
+    statement:
+        Turn on warnings aimed at security bugs, such as Wformat=2 for GCC
+        and Clang, and deal with each reported issue.
+    rationale:
+        These warnings catch format string bugs and similar errors that
+        often lead to vulnerabilities.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        gcc -O2 -Wall -Wextra -Wformat=2 -Wformat-overflow=2 -Wformat-truncation=2 -c log.c
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, compilation, warnings]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=33

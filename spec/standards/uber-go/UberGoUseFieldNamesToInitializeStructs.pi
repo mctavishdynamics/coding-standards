@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoUseFieldNamesToInitializeStructs:
+    standard: @{UberGo}
+    ruleId: use-field-names-to-initialize-structs
+    title: Name fields in struct literals
+    statement:
+        Almost always name the fields when initializing a struct. go vet
+        enforces this.
+    rationale:
+        Positional literals break silently when fields are reordered or
+        added, and do not show which value is which.
+    exceptions:
+        Test tables with three or fewer fields may omit field names.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        srv := Server{":8080", 30 * time.Second, logger}
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        srv := Server{
+            Addr:    ":8080",
+            Timeout: 30 * time.Second,
+            Logger:  logger,
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [structs, initialization]
+    source: https://github.com/uber-go/guide/blob/master/style.md#use-field-names-to-initialize-structs

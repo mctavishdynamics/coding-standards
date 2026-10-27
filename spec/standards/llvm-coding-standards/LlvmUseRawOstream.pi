@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmUseRawOstream:
+    standard: @{LlvmCodingStandards}
+    ruleId: use-raw-ostream
+    title: Write output through raw_ostream
+    statement:
+        Use raw_ostream instead of std::ostream in new code. Public headers
+        should forward declare it and take references to it rather than
+        including its header.
+    rationale:
+        raw_ostream is lighter and faster, and since it is not a template it
+        can be forward declared, keeping headers cheap.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #include <ostream>
+        void print(std::ostream &OS) const;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace llvm { class raw_ostream; }
+        void print(llvm::raw_ostream &OS) const;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [streams, performance, headers]
+    source: https://llvm.org/docs/CodingStandards.html#use-raw-ostream

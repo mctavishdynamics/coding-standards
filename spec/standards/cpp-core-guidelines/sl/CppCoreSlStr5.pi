@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSlStr5:
     standard: @{CppCoreGuidelines}
     ruleId: SL.str.5
-    title: Use std::byte to refer to byte values that do not necessarily represent characters
+    title: Use std::byte for raw bytes that are not text
     statement:
-        Use std::byte, available since C++17, for raw memory and byte values
-        that are not text.
+        Represent raw bytes and memory that is not text with std::byte, which C++17
+        introduced.
     rationale:
-        Using char pointers for things that are not characters causes
-        confusion and disables valuable optimizations.
+        When a char pointer stands for something other than characters, readers are
+        misled. Character types may alias any object, so the compiler also has to
+        forgo some optimizations.
     exceptions: null
     severity: null
     noncompliant:

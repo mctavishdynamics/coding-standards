@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmDocumentPublicApisInHeaderOnce:
+    standard: @{LlvmCodingStandards}
+    ruleId: doxygen-use-in-documentation-comments-no-duplicate
+    title: Keep an API's doc comment in one place, the header
+    statement:
+        Put documentation comments for public APIs in the header and do not
+        repeat them in the implementation file. Private APIs may be
+        documented in the implementation file, which can also carry extra
+        notes about implementation details.
+    rationale:
+        Two copies of the same comment drift apart, leaving readers unsure
+        which one is true.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Parser.h
+        /// Parses one statement and advances the lexer.
+        Stmt *parseStatement();
+
+        // Parser.cpp
+        /// Parses one statement and advances the lexer.
+        Stmt *Parser::parseStatement() { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Parser.h
+        /// Parses one statement and advances the lexer.
+        Stmt *parseStatement();
+
+        // Parser.cpp
+        // Uses one token of lookahead to choose the statement kind.
+        Stmt *Parser::parseStatement() { /* ... */ }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [documentation, comments, headers]
+    source: https://llvm.org/docs/CodingStandards.html#doxygen-use-in-documentation-comments

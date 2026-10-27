@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle12:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-12
+    title: Write common tasks in their customary form
+    statement:
+        Use the idioms experienced programmers expect, such as the standard
+        loop shapes and allocation patterns.
+    rationale:
+        Idiomatic code is recognized at a glance, and a departure from the
+        idiom stands out as a likely bug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        p = list;
+        for (;;) {
+            if (p == NULL) break;
+            visit(p);
+            p = p->next;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (p = list; p != NULL; p = p->next)
+            visit(p);
+        \\\
+        ```
+    languages: [any]
+    tags: [style, idioms, consistency]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

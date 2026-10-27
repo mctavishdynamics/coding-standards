@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartSettersForProperties:
+    standard: @{EffectiveDart}
+    ruleId: do-use-setters-for-operations-that-conceptually-change-properties
+    title: Use a setter for field-like updates
+    statement:
+        Make an operation a setter when it takes one argument, returns
+        nothing, changes the object's state and is idempotent from the
+        caller's view. The use_setters_to_change_properties lint checks
+        this.
+    rationale:
+        A setter tells callers the operation behaves like assigning a field.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Player {
+          double _volume = 1;
+          void setVolume(double value) => _volume = value;
+          double get volume => _volume;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Player {
+          double _volume = 1;
+          set volume(double value) => _volume = value;
+          double get volume => _volume;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, properties, api-design]
+    source: https://dart.dev/effective-dart/design#do-use-setters-for-operations-that-conceptually-change-properties

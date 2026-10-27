@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiDescribeWhatEntityIs:
+    standard: @{SwiftApiDesign}
+    ruleId: describe-what-entity-is
+    title: Summarise what other declarations are
+    statement:
+        For types, properties and any other declaration that is not a
+        function, subscript or initializer, describe what the entity is.
+    rationale:
+        A noun phrase is the natural description of a thing, and it matches
+        how the name itself should read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        /// Holds stuff for later.
+        struct RetryQueue {
+            /// Gets set when we fail.
+            var lastError: Error?
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// A queue of requests waiting to be retried.
+        struct RetryQueue {
+            /// The most recent failure, or `nil` if none has occurred.
+            var lastError: Error?
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [documentation]
+    source: https://www.swift.org/documentation/api-design-guidelines/#write-doc-comment

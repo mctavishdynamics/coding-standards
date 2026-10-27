@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdBraceSingleStatementsConsistently:
+    standard: @{FreeBsdStyle}
+    ruleId: single-statement-braces
+    title: Choose one brace style for single statements and keep to it
+    statement:
+        Either brace every single-statement body or only those where braces
+        aid clarity; use the same choice throughout a function.
+    rationale:
+        Consistency within a function avoids a patchwork appearance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (a)
+                x = 1;
+        if (b) {
+                y = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (a)
+                x = 1;
+        if (b)
+                y = 1;
+        \\\
+        ```
+    languages: [c]
+    tags: [braces, consistency]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

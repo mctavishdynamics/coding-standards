@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgAttributes2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: attributes-2
+    title: Apply AttributeUsage to custom attributes
+    statement:
+        Declare where and how a custom attribute may be used with the
+        AttributeUsage attribute.
+    rationale:
+        It stops the attribute from being applied to targets where it has no
+        effect.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+        public sealed class RateLimitAttribute : Attribute { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, attributes]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/attributes

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule164:
+    standard: @{AnssiC}
+    ruleId: rule-164
+    title: Isolate sensitive data in memory
+    statement:
+        Keep sensitive data in dedicated memory, limit its exposure and
+        copies, and wipe it as soon as it is no longer needed.
+    rationale:
+        Every copy or reuse of a buffer is another place a secret can leak,
+        for example through side channels.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        uint8_t work[32];
+        derive_key(work);
+        use_key(work);
+        generate_iv(work); /* reuses key buffer */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        uint8_t key[32];
+        uint8_t iv[16];
+        derive_key(key);
+        use_key(key);
+        explicit_bzero(key, sizeof key);
+        generate_iv(iv);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, memory, sensitive-data]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=132

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiParameterWithDefaultsTowardsTheEnd:
+    standard: @{SwiftApiDesign}
+    ruleId: parameter-with-defaults-towards-the-end
+    title: Put defaulted parameters last
+    statement:
+        Place parameters that have default values towards the end of the
+        parameter list.
+    rationale:
+        Parameters without defaults are usually central to the meaning and
+        give calls a stable opening shape.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func send(retries: Int = 3, _ message: Message, to peer: Peer)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        func send(_ message: Message, to peer: Peer, retries: Int = 3)
+        \\\
+        ```
+    languages: [swift]
+    tags: [parameters, defaults]
+    source: https://www.swift.org/documentation/api-design-guidelines/#parameter-with-defaults-towards-the-end

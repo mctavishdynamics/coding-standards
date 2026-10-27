@@ -19,9 +19,10 @@ export coding-rule CleanCodeG35:
     noncompliant:
         ```java
         \\\
-        class Connection {
-            void open() {
-                socket.connect(address, 5000); // timeout chosen down here
+        class ReportMailer {
+            void send(Report report) {
+                smtp.retry(3); // retry count fixed deep inside
+                smtp.deliver(report.toMessage());
             }
         }
         \\\
@@ -29,9 +30,13 @@ export coding-rule CleanCodeG35:
     compliant:
         ```java
         \\\
-        public static void main(String[] args) {
-            Config config = Config.fromArgs(args, Defaults.TIMEOUT_MILLIS);
-            new Server(config.timeoutMillis()).start();
+        class App {
+            static final int MAIL_RETRIES = 3;
+
+            void boot(Settings settings) {
+                int retries = settings.intOr("mail.retries", MAIL_RETRIES);
+                new ReportMailer(retries).sendDaily();
+            }
         }
         \\\
         ```

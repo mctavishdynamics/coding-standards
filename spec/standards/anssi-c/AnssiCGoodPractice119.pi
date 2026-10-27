@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCGoodPractice119:
+    standard: @{AnssiC}
+    ruleId: good-practice-119
+    title: Place the constant on the left in comparisons
+    statement:
+        When comparing a variable with a constant, consider writing the
+        constant as the left operand. This is advice, not a requirement.
+    rationale:
+        A mistyped single equals sign then fails to compile instead of
+        assigning. Strict warnings also catch it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (state == READY) { start(); }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (READY == state) { start(); }
+        \\\
+        ```
+    languages: [c]
+    tags: [good-practice, expressions, comparison]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=93

@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDoNotExitWithErrorCount:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-exit-status
+    title: Do not return an error count as the exit status
+    statement:
+        Exit with a fixed failure status rather than the count of errors.
+    rationale:
+        Exit statuses keep only eight bits, so 256 errors would look like
+        success.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        return n_errors;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        return n_errors ? EXIT_FAILURE : EXIT_SUCCESS;
+        \\\
+        ```
+    languages: [c]
+    tags: [exit-status, error-handling]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

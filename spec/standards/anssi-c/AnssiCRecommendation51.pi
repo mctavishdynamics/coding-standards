@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation51:
+    standard: @{AnssiC}
+    ruleId: recommendation-51
+    title: Declare several variables together only if simple and of the same type
+    statement:
+        Only combine several variables in one declaration when they are
+        plain variables of the same type; keep pointers and arrays in their
+        own declarations.
+    rationale:
+        Mixing kinds in one declaration hides which names are pointers or
+        arrays.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char *name, initial, buf[16];
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *name;
+        char initial;
+        char buf[16];
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=40

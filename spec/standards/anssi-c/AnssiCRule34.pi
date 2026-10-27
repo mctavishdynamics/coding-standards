@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule34:
+    standard: @{AnssiC}
+    ruleId: rule-34
+    title: Enable at least the O1 optimisation level
+    statement:
+        With GCC and Clang, build with optimisation level O1 at least,
+        preferably O2 or Os, and check that optimisation does not remove
+        defensive code.
+    rationale:
+        Many warnings depend on analyses that only run when optimisation is
+        on.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```shell
+        \\\
+        gcc -O0 -Wall -c auth.c
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        gcc -O2 -Wall -Wextra -c auth.c
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, compilation, optimization]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=31

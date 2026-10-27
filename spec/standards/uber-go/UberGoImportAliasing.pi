@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoImportAliasing:
+    standard: @{UberGo}
+    ruleId: import-aliasing
+    title: Alias imports only when needed
+    statement:
+        Use an import alias when the package name differs from the last
+        element of its import path. Otherwise avoid aliases unless two
+        imports would clash.
+    rationale:
+        Unneeded aliases make readers look up which package a name refers
+        to.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        import (
+            nethttp "net/http"
+
+            client "example.com/payments/client-go.v2"
+        )
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        import (
+            "net/http"
+
+            client "example.com/payments/client-go.v2"
+        )
+        \\\
+        ```
+    languages: [go]
+    tags: [imports, naming]
+    source: https://github.com/uber-go/guide/blob/master/style.md#import-aliasing

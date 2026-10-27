@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdNoUsrIncludeInKernel:
+    standard: @{FreeBsdStyle}
+    ruleId: no-userland-includes-in-kernel
+    title: Do not include /usr/include headers in the kernel
+    statement:
+        Kernel sources must never include headers from /usr/include.
+    rationale:
+        Userland headers describe the C library environment, which does not
+        exist inside the kernel.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* sys/dev/foo/foo.c */
+        #include <stdio.h>
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* sys/dev/foo/foo.c */
+        #include <sys/systm.h>
+        \\\
+        ```
+    languages: [c]
+    tags: [includes, kernel]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

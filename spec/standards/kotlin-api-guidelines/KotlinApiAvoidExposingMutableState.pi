@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiAvoidExposingMutableState:
+    standard: @{KotlinApiGuidelines}
+    ruleId: avoid-exposing-mutable-state
+    title: Accept and return read-only collections
+    statement:
+        Take and return read-only collections where possible. Avoid arrays
+        in the API, and if you must use one, make defensive copies before
+        sharing it.
+    rationale:
+        A mutable collection handed out by an API can be changed from
+        several threads without protection, and callers cannot tell whether
+        editing it also edits the library's own data.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public class Roster {
+            public val members: MutableList<String> = mutableListOf()
+            public fun scores(): IntArray = scoreArray
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public class Roster {
+            private val _members = mutableListOf<String>()
+            public val members: List<String> get() = _members.toList()
+            public fun scores(): List<Int> = scoreArray.toList()
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [immutability, collections]
+    source: https://kotlinlang.org/docs/api-guidelines-predictability.html#avoid-exposing-mutable-state

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoChannelSizeIsOneOrNone:
+    standard: @{UberGo}
+    ruleId: channel-size-is-one-or-none
+    title: Make channels unbuffered or of size one
+    statement:
+        Give channels a buffer of one or no buffer at all. Scrutinise any
+        larger size, working out how it was chosen, what keeps it from
+        filling under load and what happens when writers block.
+    rationale:
+        A large buffer only postpones blocking and hides capacity problems
+        until production load exposes them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        jobs := make(chan Job, 256)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        jobs := make(chan Job)
+        // or
+        results := make(chan Result, 1)
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, channels]
+    source: https://github.com/uber-go/guide/blob/master/style.md#channel-size-is-one-or-none

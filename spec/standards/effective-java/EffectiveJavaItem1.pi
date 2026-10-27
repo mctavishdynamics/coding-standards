@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem1:
+    standard: @{EffectiveJava}
+    ruleId: item-1
+    title: Offer named static creation methods as an alternative to constructors
+    statement:
+        Think about giving a class public static methods that return
+        instances, either instead of or alongside its public constructors.
+    rationale:
+        A static method can carry a descriptive name, can hand back a cached
+        object, and can return any subtype of its declared type. A
+        constructor can do none of those things.
+    exceptions:
+        A class that has only static creation methods and no public or
+        protected constructor cannot be subclassed. Such methods are also
+        harder to find in documentation than constructors.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Temperature t = new Temperature(98.6, true);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public static Temperature ofFahrenheit(double degrees) {
+            return new Temperature((degrees - 32) * 5 / 9);
+        }
+
+        Temperature t = Temperature.ofFahrenheit(98.6);
+        \\\
+        ```
+    languages: [java]
+    tags: [creating-and-destroying-objects, api-design, construction]
+    source: https://www.informit.com/store/effective-java-9780134686097

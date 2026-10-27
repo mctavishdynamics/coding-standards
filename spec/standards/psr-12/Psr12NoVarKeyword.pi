@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12NoVarKeyword:
+    standard: @{Psr12}
+    ruleId: 4.3c
+    title: Do not declare properties with var
+    statement:
+        Never use the var keyword to declare a property; use a visibility
+        keyword instead.
+    rationale:
+        The var keyword is a leftover from PHP 4 that hides the actual
+        visibility of the property.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Session
+        {
+            var $userId;
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Session
+        {
+            public $userId;
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [visibility, properties]
+    source: https://www.php-fig.org/psr/psr-12/#43-properties-and-constants

@@ -5,17 +5,19 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreI13:
     standard: @{CppCoreGuidelines}
     ruleId: I.13
-    title: Do not pass an array as a single pointer
+    title: Pass arrays with their length, not as a lone pointer
     statement:
-        Pass a sequence as a span, a container or another object that
-        carries its size, not as a bare pointer with a separate or implied
-        length.
+        Hand a range to a function as one object that knows its length, such as
+        a span or a container. Avoid a lone pointer whose size the callee must
+        guess or receive separately.
     rationale:
-        Pointer and size interfaces are error-prone, and a bare pointer
-        forces the callee to rely on a convention to learn the size.
+        Separate pointer and count arguments are easy to get out of step. With
+        only a pointer, the callee depends on an unwritten convention to find
+        the end.
     exceptions:
-        Use zstring and czstring for C-style zero-terminated strings, and
-        prefer string_view or span of char to prevent range errors.
+        A C-style string ending in a zero byte may be marked with zstring or
+        czstring. Prefer string_view or a span of char where you can, since they
+        guard against range errors.
     severity: null
     noncompliant:
         ```cpp

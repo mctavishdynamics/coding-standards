@@ -7,9 +7,10 @@ export coding-rule GoCrcCryptoRand:
     ruleId: crypto-rand
     title: Generate keys with crypto/rand, not math/rand
     statement:
-        Never use math/rand or math/rand/v2 to generate keys, even throwaway
-        ones. Use crypto/rand.Reader, and for text use crypto/rand.Text or
-        encode random bytes with encoding/hex or encoding/base64.
+        Keys, including short-lived ones, must come from crypto/rand, never from
+        math/rand or its v2 variant. Read bytes from crypto/rand.Reader; when
+        you need a string, call crypto/rand.Text or hex or base64 encode the
+        bytes.
     rationale:
         A math/rand generator seeded from the clock has only a few bits of
         entropy, so its output is predictable.

@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCon5:
     standard: @{CppCoreGuidelines}
     ruleId: Con.5
-    title: Use constexpr for values that can be computed at compile time
+    title: Mark values computable during compilation constexpr
     statement:
-        Define a value constexpr when its initializer can be evaluated at
-        compile time.
+        Use constexpr for values whose initializer can be worked out during
+        compilation.
     rationale:
-        constexpr gives better performance, better compile-time checking,
-        guaranteed compile-time evaluation and no possibility of race
-        conditions; const alone still allows run-time evaluation.
+        A constexpr value is guaranteed to be computed by the compiler. Mistakes
+        surface at build time, the program does no work for it at run time and no
+        thread can race on it. A const value, in contrast, may still be initialized
+        at run time.
     exceptions: null
     severity: null
     noncompliant:

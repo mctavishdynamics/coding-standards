@@ -5,16 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp52:
     standard: @{CppCoreGuidelines}
     ruleId: CP.52
-    title: Do not hold locks across coroutine suspension points
+    title: Release locks before a coroutine suspends
     statement:
-        Release every lock and other synchronization primitive before a
-        co_await or other suspension point, typically by limiting the lock
-        object to a block.
+        Make sure no lock or other synchronization object is held at a co_await or
+        any other suspension point. Scope the guard to a block that ends before the
+        suspension.
     rationale:
-        A coroutine suspended with a lock held can deadlock if the same
-        thread does other work needing that lock, resuming on another thread
-        makes the unlock undefined behavior, and the lock blocks other
-        threads for the whole suspension.
+        A thread that does other work while the coroutine waits can try to take the
+        same lock and deadlock. If the coroutine resumes on a different thread, the
+        unlock is undefined behavior. In every case the lock keeps others waiting
+        for the whole suspension.
     exceptions: null
     severity: null
     noncompliant:

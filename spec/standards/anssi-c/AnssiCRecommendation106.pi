@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation106:
+    standard: @{AnssiC}
+    ruleId: recommendation-106
+    title: Detect every possible unsigned wrap-around
+    statement:
+        Check for wrap-around in unsigned arithmetic wherever it can happen.
+    rationale:
+        Unsigned wrap is defined but usually unintended, and can turn a size
+        check into a buffer overflow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        size_t need = header_len + body_len;
+        char *p = malloc(need);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (body_len > SIZE_MAX - header_len) { return NULL; }
+        size_t need = header_len + body_len;
+        char *p = malloc(need);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, integer-overflow, arithmetic]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=84

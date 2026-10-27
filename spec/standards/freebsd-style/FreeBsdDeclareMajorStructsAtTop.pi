@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdDeclareMajorStructsAtTop:
+    standard: @{FreeBsdStyle}
+    ruleId: struct-placement
+    title: Declare major structures at the top of the file or in a header
+    statement:
+        Put major structures at the top of the file that uses them, or in a
+        header if several files use them. Declare variables of the structure
+        separately, as extern in headers.
+    rationale:
+        Readers find the central data types first, and extern declarations
+        in headers avoid multiple definitions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* foo.h */
+        struct foo {
+                int bar;
+        } foohead;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* foo.h */
+        struct foo {
+                int bar;
+        };
+        extern struct foo foohead;
+        \\\
+        ```
+    languages: [c]
+    tags: [structs, file-structure, declarations]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

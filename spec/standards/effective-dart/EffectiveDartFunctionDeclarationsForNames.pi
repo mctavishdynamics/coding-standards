@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartFunctionDeclarationsForNames:
+    standard: @{EffectiveDart}
+    ruleId: do-use-a-function-declaration-to-bind-a-function-to-a-name
+    title: Declare named local functions instead of assigning lambdas
+    statement:
+        When a local function needs a name, write a function declaration
+        rather than storing a function expression in a variable. The
+        prefer_function_declarations_over_variables lint checks this.
+    rationale:
+        A declaration is shorter, reads as a function and can be recursive.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        void report(List<Sale> sales) {
+          final format = (Sale s) => '${s.item}: ${s.total}';
+          sales.map(format).forEach(print);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        void report(List<Sale> sales) {
+          String format(Sale s) => '${s.item}: ${s.total}';
+          sales.map(format).forEach(print);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, functions]
+    source: https://dart.dev/effective-dart/usage#do-use-a-function-declaration-to-bind-a-function-to-a-name

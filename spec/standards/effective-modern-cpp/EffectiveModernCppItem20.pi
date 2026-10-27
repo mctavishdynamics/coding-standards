@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem20:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-20
+    title: Observe shared objects through weak_ptr
+    statement:
+        When you need to observe a shared object without keeping it alive,
+        hold a weak_ptr and lock it before use.
+    rationale:
+        It is the safe tool for caches, observer lists and breaking
+        shared_ptr cycles.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Child { std::shared_ptr<Parent> parent; };   // cycle leaks
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Child { std::weak_ptr<Parent> parent; };
+        if (auto p = child.parent.lock()) p->notify();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, smart-pointers, lifetime]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

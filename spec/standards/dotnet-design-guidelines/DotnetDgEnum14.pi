@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEnum14:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: enum-14
+    title: Avoid flags enums with invalid combinations
+    statement:
+        Do not design a flags enum where some combinations of its flags make
+        no sense.
+    rationale:
+        Callers expect every combination of flags to be legal, and invalid
+        ones must be checked and rejected everywhere.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        [Flags]
+        public enum TextCase { None = 0, Upper = 1, Lower = 2 }   // Upper | Lower is meaningless
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public enum TextCase { Unchanged, Upper, Lower }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, type-design, enums, flags]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/enum#designing-flag-enums

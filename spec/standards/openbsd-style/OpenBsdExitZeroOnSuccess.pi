@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdExitZeroOnSuccess:
+    standard: @{OpenBsdStyle}
+    ruleId: exit-status
+    title: Exit with 0 on success and non-zero on error
+    statement:
+        Return 0 from the program on success and a non-zero status on error.
+    rationale:
+        Shells and scripts depend on this convention.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (failed)
+                exit(0);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (failed)
+                exit(1);
+        exit(0);
+        \\\
+        ```
+    languages: [c]
+    tags: [exit-status, error-handling]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleObjectYieldSelfVsObjectThen:
+    standard: @{RubyStyleGuide}
+    ruleId: object-yield-self-vs-object-then
+    title: Call then instead of yield_self
+    statement:
+        Prefer Object#then to its alias Object#yield_self. RuboCop checks
+        this with Style/ObjectThen.
+    rationale:
+        The name then says what the code intends rather than how it works,
+        so it reads better.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        input.yield_self { |raw| JSON.parse(raw) }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        input.then { |raw| JSON.parse(raw) }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, readability]
+    source: https://rubystyle.guide/#object-yield-self-vs-object-then

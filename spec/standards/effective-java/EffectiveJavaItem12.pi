@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem12:
+    standard: @{EffectiveJava}
+    ruleId: item-12
+    title: Give every class a useful toString
+    statement:
+        Override toString to return a concise, informative description that
+        includes the object's interesting state. Document whether the format
+        is fixed, and provide accessors for every value it shows.
+    rationale:
+        The default class-name-at-hash output is useless in logs, debuggers
+        and error messages. A good string makes the class pleasant to use
+        and failures easy to diagnose.
+    exceptions:
+        Static utility classes and most enums do not need one.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        System.out.println(order); // Order@1b6d3586
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Override
+        public String toString() {
+            return "Order[id=" + id + ", total=" + total + "]";
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods-common-to-all-objects, debugging, readability]
+    source: https://www.informit.com/store/effective-java-9780134686097

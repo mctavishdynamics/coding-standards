@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule2:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-2
+    title: State intent directly in code
+    statement:
+        Write the computation you actually want, in its most direct form,
+        instead of an indirect route that happens to give the same answer.
+    rationale:
+        When the code mirrors the intent, a reader can confirm it is right
+        at a glance and a maintainer is less likely to break it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def is_even(n):
+            return (n // 2) * 2 == n
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def is_even(n):
+            return n % 2 == 0
+        \\\
+        ```
+    languages: [any]
+    tags: [expression, clarity]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

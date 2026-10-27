@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule72:
+    standard: @{AnssiC}
+    ruleId: rule-72
+    title: Initialise every element of a structured variable explicitly
+    statement:
+        Initialise arrays and structures explicitly, naming each element
+        with no extra values, or use the all-zero initialiser. Give arrays
+        an explicit size when initialising them.
+    rationale:
+        Partial or excess initialisers look complete but silently zero or
+        drop values.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int weights[4] = { 3, 1 };
+        int flags[2] = { 1, 0, 1 };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int weights[4] = { 3, 1, 0, 0 };
+        int flags[2] = { 1, 0 };
+        int counters[8] = { 0 };
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, initialization, arrays]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=54

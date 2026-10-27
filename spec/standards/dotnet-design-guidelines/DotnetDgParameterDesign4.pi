@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-4
+    title: Place out parameters after value and ref parameters
+    statement:
+        Put out parameters at the end of the list, after ordinary and ref
+        parameters but before a params array, even when this makes overloads
+        order their parameters differently.
+    rationale:
+        Out parameters act as extra results, and grouping them at the end
+        makes the signature easier to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public bool TryParse(out Version result, string text, IFormatProvider provider);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public bool TryParse(string text, IFormatProvider provider, out Version result);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, parameters]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design

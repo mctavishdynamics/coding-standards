@@ -21,20 +21,20 @@ export coding-rule CertJavaSer09J:
     noncompliant:
         ```java
         \\\
-        private void readObject(ObjectInputStream in)
-                throws IOException, ClassNotFoundException {
-            in.defaultReadObject();
-            validate();   // public, overridable
+        private void readObject(ObjectInputStream s)
+                throws ClassNotFoundException, IOException {
+            s.defaultReadObject();
+            rebuildIndex();   // protected, a subclass may override it
         }
         \\\
         ```
     compliant:
         ```java
         \\\
-        private void readObject(ObjectInputStream in)
-                throws IOException, ClassNotFoundException {
-            in.defaultReadObject();
-            checkInvariants();   // private
+        private void readObject(ObjectInputStream s)
+                throws ClassNotFoundException, IOException {
+            s.defaultReadObject();
+            rebuildIndexInternal();   // private helper
         }
         \\\
         ```

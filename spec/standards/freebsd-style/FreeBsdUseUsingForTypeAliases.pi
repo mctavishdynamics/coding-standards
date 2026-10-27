@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdUseUsingForTypeAliases:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-type-aliases
+    title: Define type aliases with using instead of typedef
+    statement:
+        Declare C++ type aliases with a using declaration.
+    rationale:
+        The using form reads left to right and also works for templates.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        typedef std::map<int, job> job_map;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        using job_map = std::map<int, job>;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, types]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

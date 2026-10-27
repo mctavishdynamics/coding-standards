@@ -5,17 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSf7:
     standard: @{CppCoreGuidelines}
     ruleId: SF.7
-    title: Don't write using namespace at global scope in a header file
+    title: Never put a global using namespace directive in a header
     statement:
-        Never put a using namespace directive at global scope in a header.
+        Keep using namespace directives out of the global namespace of every header.
     rationale:
-        It strips every including file of the ability to disambiguate names,
-        and it makes headers order-dependent because their meaning changes
-        with what was included before.
+        Everyone who includes the header loses control over which names their code
+        refers to. The header's meaning can also shift with the order in which
+        headers are included.
     exceptions:
-        using namespace std::literals is acceptable, since users must give
-        their own literal suffixes names that cannot collide with the
-        standard ones.
+        A using namespace std::literals directive is fine, because user-defined
+        literal suffixes must avoid the names the standard reserves and therefore
+        cannot clash with it.
     severity: null
     noncompliant:
         ```cpp

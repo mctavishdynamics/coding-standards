@@ -5,17 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF51:
     standard: @{CppCoreGuidelines}
     ruleId: F.51
-    title: Where there is a choice, prefer default arguments over overloading
+    title: Prefer a default argument to an extra overload when either would work
     statement:
-        When overloads would differ only by omitting trailing arguments of
-        the same types, use one function with default arguments.
+        If a set of overloads would only drop trailing parameters of the same
+        types, write a single function with default arguments instead.
     rationale:
-        Default arguments give alternative calls to a single implementation,
-        avoiding duplicated code. A set of overloads may drift apart in
-        behavior.
+        All calls then reach one body, so there is no duplicated code. Separate
+        overloads can slowly start behaving differently.
     exceptions:
-        When the functions perform the same operation on different types,
-        overloading is the only option.
+        Overloads remain necessary when the same operation must accept different
+        parameter types.
     severity: null
     noncompliant:
         ```cpp

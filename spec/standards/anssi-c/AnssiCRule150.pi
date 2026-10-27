@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule150:
+    standard: @{AnssiC}
+    ruleId: rule-150
+    title: Do not pass NULL to variadic functions
+    statement:
+        Never give NULL as an argument to a variadic function such as
+        printf.
+    rationale:
+        Printing a null string is undefined behaviour, and NULL may not have
+        the type the function expects.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        printf("user=%s\n", name); /* name may be NULL */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        printf("user=%s\n", (name != NULL) ? name : "(none)");
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, functions, null-safety]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=121

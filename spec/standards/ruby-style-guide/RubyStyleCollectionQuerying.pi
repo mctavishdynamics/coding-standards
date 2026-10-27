@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleCollectionQuerying:
+    standard: @{RubyStyleGuide}
+    ruleId: collection-querying
+    title: Use predicate methods to query collections
+    statement:
+        Where possible, ask questions of a collection with any?, none? or
+        one? rather than comparing count, length or size with a number.
+        RuboCop checks this with Style/CollectionQuerying.
+    rationale:
+        Predicates state the question directly and can stop early, while
+        count walks every element. Note that the forms without a block treat
+        nil and false elements as absent.
+    exceptions:
+        A predicate called without a block cannot replace a count when the
+        collection may hold nil or false elements.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        orders.count(&:late?) > 0
+        orders.count(&:late?) == 0
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        orders.any?(&:late?)
+        orders.none?(&:late?)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, readability, performance]
+    source: https://rubystyle.guide/#collection-querying

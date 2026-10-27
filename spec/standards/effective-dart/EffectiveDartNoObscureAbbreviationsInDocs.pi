@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoObscureAbbreviationsInDocs:
+    standard: @{EffectiveDart}
+    ruleId: avoid-abbreviations-and-acronyms-unless-they-are-obvious
+    title: Spell out abbreviations that are not obvious
+    statement:
+        Avoid abbreviations such as "i.e.", "e.g." and field-specific
+        acronyms in documentation unless every reader will know them.
+    rationale:
+        Many readers do not know Latin abbreviations, and jargon acronyms
+        are less familiar than their users assume.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        /// Recomputes the TTL, i.e. the max age per the RFC.
+        void refreshExpiry() {}
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Recomputes how long the cached response stays valid.
+        void refreshExpiry() {}
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, documentation, writing]
+    source: https://dart.dev/effective-dart/documentation#avoid-abbreviations-and-acronyms-unless-they-are-obvious

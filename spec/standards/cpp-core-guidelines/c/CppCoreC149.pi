@@ -5,13 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC149:
     standard: @{CppCoreGuidelines}
     ruleId: C.149
-    title: Use unique_ptr or shared_ptr so new objects are deleted
+    title: Let a smart pointer own each heap object so it is always freed
     statement:
-        Hold objects created with new in a unique_ptr or shared_ptr rather
-        than a raw owning pointer.
+        Put each object made with new straight into a unique_ptr or shared_ptr.
+        Do not keep it in a raw owning pointer.
     rationale:
-        Smart pointers delete the object automatically and avoid leaks,
-        including on early returns and exceptions.
+        The smart pointer deletes the object for you, including on early returns
+        and when an exception is thrown, so nothing leaks.
     exceptions: null
     severity: null
     noncompliant:

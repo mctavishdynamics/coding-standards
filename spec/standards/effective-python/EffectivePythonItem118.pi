@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem118:
+    standard: @{EffectivePython}
+    ruleId: item-118
+    title: Document every public module, class and function in a docstring
+    statement:
+        Document each module, class and public function with a docstring
+        that explains its purpose, arguments, return value and the
+        exceptions it raises.
+    rationale:
+        Docstrings are available at run time through help and feed
+        documentation tools, so readers do not have to study the code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def retry(fn, attempts):
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def retry(fn, attempts):
+            """Call fn until it succeeds or attempts runs out.
+
+            Returns the result of the first successful call and re-raises the last
+            exception if every attempt fails.
+            """
+        \\\
+        ```
+    languages: [python]
+    tags: [collaboration, documentation]
+    source: https://effectivepython.com/

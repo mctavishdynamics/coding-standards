@@ -5,17 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF55:
     standard: @{CppCoreGuidelines}
     ruleId: F.55
-    title: Do not use va_arg arguments
+    title: Avoid C varargs for passing arguments
     statement:
-        Do not write functions that take C-style variadic arguments. Use
-        variadic templates, overloads or an initializer list instead.
+        Do not define functions with C-style ... argument lists. Use a variadic
+        template, overloads or an initializer_list.
     rationale:
-        Reading a va_arg assumes the caller passed the right type, and the
-        language cannot check it, so correctness depends entirely on
-        discipline.
+        With va_arg, the callee guesses the type of each argument and nothing in
+        the language checks the guess. Safety rests entirely on the programmer.
     exceptions:
-        A ... parameter is acceptable where no arguments are actually read,
-        such as a catch-all overload or in template metaprogramming.
+        A ... parameter is fine when no argument is ever read from it, as in a
+        catch-all overload or a metaprogramming trick.
     severity: null
     noncompliant:
         ```cpp

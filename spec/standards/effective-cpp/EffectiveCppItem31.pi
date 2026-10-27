@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem31:
+    standard: @{EffectiveCpp}
+    ruleId: item-31
+    title: Reduce how much each file depends on others at compile time
+    statement:
+        Depend on declarations rather than definitions: use forward
+        declarations, reference or pointer members, and the pimpl idiom or
+        interface classes. Ship headers that contain only declarations.
+    rationale:
+        A change to a widely included definition otherwise forces a large
+        part of the project to recompile.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // order.h
+        #include "customer.h"
+        #include "address.h"
+        class Order { Customer c_; Address a_; };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // order.h
+        class Customer;
+        class Order {
+        public:
+            explicit Order(const Customer& c);
+        private:
+            struct Impl;
+            std::unique_ptr<Impl> impl_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [implementations, dependencies, build]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

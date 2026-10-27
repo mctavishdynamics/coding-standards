@@ -21,13 +21,16 @@ export coding-rule CertCEnv31C:
     noncompliant:
         ```c
         \\\
-        int main(int argc, char *argv[], char *envp[]) {
-            if (setenv("APP_MODE", "safe", 1) != 0) {
+        int main(int count, char **args, char **env) {
+            (void)count; (void)args;
+            if (putenv("TZ=UTC") != 0) {
                 return 1;
             }
-            for (char **e = envp; *e != NULL; e++) {
-                puts(*e);
+            size_t n = 0;
+            while (env[n] != NULL) {
+                n++;
             }
+            printf("%zu entries\n", n);
             return 0;
         }
         \\\
@@ -38,12 +41,14 @@ export coding-rule CertCEnv31C:
         extern char **environ;
 
         int main(void) {
-            if (setenv("APP_MODE", "safe", 1) != 0) {
+            if (putenv("TZ=UTC") != 0) {
                 return 1;
             }
-            for (char **e = environ; *e != NULL; e++) {
-                puts(*e);
+            size_t n = 0;
+            while (environ[n] != NULL) {
+                n++;
             }
+            printf("%zu entries\n", n);
             return 0;
         }
         \\\

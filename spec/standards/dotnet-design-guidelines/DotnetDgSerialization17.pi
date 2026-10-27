@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSerialization17:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: serialization-17
+    title: Implement ISerializable members explicitly
+    statement:
+        Implement GetObjectData as an explicit interface member.
+    rationale:
+        It is plumbing for the serializer and should not appear in the
+        type's public surface.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(Name), Name);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, serialization, interfaces]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/serialization#supporting-runtime-serialization

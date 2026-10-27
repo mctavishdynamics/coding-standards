@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgCapitalizationConventions3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: capitalization-conventions-3
+    title: Case a one-word compound as a single word
+    statement:
+        When a dictionary spells a compound term as one word, such as
+        checkbox or timestamp, capitalize only its first letter.
+    rationale:
+        Upper-casing the middle of a single word gives forms like CheckBox
+        and TimeStamp, and different authors then spell the same term in
+        different ways.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public DateTime TimeStamp { get; }
+        public bool IsCheckBoxVisible { get; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public DateTime Timestamp { get; }
+        public bool IsCheckboxVisible { get; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, naming, capitalization]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/capitalization-conventions#capitalizing-compound-words-and-common-terms

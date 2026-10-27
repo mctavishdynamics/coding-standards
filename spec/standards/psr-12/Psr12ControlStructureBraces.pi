@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ControlStructureBraces:
+    standard: @{Psr12}
+    ruleId: 5b
+    title: Always brace the body of a control structure
+    statement:
+        Enclose the body of every control structure in braces, even when it
+        is a single statement.
+    rationale:
+        Braces give every structure the same look and stop bugs when a
+        second line is added to a body that seemed to need none.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        if ($cart->isEmpty())
+            return;
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        if ($cart->isEmpty()) {
+            return;
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [control-structures, braces]
+    source: https://www.php-fig.org/psr/psr-12/#5-control-structures

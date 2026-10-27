@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiDoNotSurpriseAnExpert:
+    standard: @{SwiftApiDesign}
+    ruleId: do-not-surprise-an-expert
+    title: Do not surprise experts with a new meaning
+    statement:
+        Do not give a familiar term a meaning that people who already know
+        it would not expect.
+    rationale:
+        Experts will misread the API and lose trust in it if a known term
+        behaves differently.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        // A "stack" that removes the oldest item first.
+        struct Stack<Element> {
+            mutating func pop() -> Element?
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        struct Queue<Element> {
+            mutating func dequeue() -> Element?
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, terminology]
+    source: https://www.swift.org/documentation/api-design-guidelines/#do-not-surprise-an-expert

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ClosureWrappedClosing:
+    standard: @{Psr12}
+    ruleId: 7h
+    title: Join the closing parenthesis and brace of a wrapped closure
+    statement:
+        If the final parenthesised list of a closure, its parameters or its
+        use variables, wraps across lines, the final parenthesis and the
+        brace share a line of their own, separated by a single space. The
+        same layout holds for a closure written inline as a call argument.
+    rationale:
+        The joined line marks where the closure signature ends and its body
+        starts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        $log = function ($message) use (
+            $logger,
+            $context)
+        {
+            $logger->info($message, $context);
+        };
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        $log = function ($message) use (
+            $logger,
+            $context
+        ) {
+            $logger->info($message, $context);
+        };
+        \\\
+        ```
+    languages: [php]
+    tags: [closures, braces]
+    source: https://www.php-fig.org/psr/psr-12/#7-closures

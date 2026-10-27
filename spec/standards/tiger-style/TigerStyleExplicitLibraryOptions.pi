@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleExplicitLibraryOptions:
+    standard: @{TigerStyle}
+    ruleId: explicit-library-options
+    title: Pass library options explicitly at the call site
+    statement:
+        Spell out the options you rely on when calling a library function
+        instead of accepting its defaults.
+    rationale:
+        Explicit options read better and protect you from latent bugs if the
+        library later changes a default.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        const file = try dir.createFile(path, .{});
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        const file = try dir.createFile(path, .{ .read = true, .truncate = false, .exclusive = true });
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [api-usage, explicitness]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

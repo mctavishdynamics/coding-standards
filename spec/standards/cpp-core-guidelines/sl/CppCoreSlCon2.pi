@@ -5,20 +5,21 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSlCon2:
     standard: @{CppCoreGuidelines}
     ruleId: SL.con.2
-    title: Prefer using STL vector by default unless you have a reason to use a different container
+    title: Use std::vector as the default container
     statement:
-        Make std::vector the default container, std::array when the size is
-        fixed, and pick another container only for a good reason. Do not use
-        a std::string as a general container of characters.
+        Choose std::vector unless you have a reason not to, and std::array when the
+        size is known in advance. Pick a different container only when a measured
+        need calls for it, and do not use std::string as a generic character
+        container.
     rationale:
-        Contiguous storage gives the fastest access, prefetch-friendly
-        traversal and no per-element overhead, so a vector usually beats
-        lists and maps even for operations they are designed for, up to a
-        few kilobytes.
+        Elements stored side by side are reached quickly, are walked in an order the
+        cache prefetcher likes and carry no per-element bookkeeping. Because of
+        this, a vector often outperforms a list or a map, even at their own
+        specialties, for data up to a few kilobytes.
     exceptions:
-        Use a map or unordered_map when you need guaranteed lookup
-        complexity on a large container with frequent inserts, where keeping
-        a sorted vector is infeasible.
+        A large collection that changes often and needs guaranteed fast lookup may
+        call for map or unordered_map, since keeping a vector sorted would cost too
+        much.
     severity: null
     noncompliant:
         ```cpp

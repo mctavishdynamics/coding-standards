@@ -5,16 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCon2:
     standard: @{CppCoreGuidelines}
     ruleId: Con.2
-    title: By default, make member functions const
+    title: Mark member functions const unless they change the object
     statement:
-        Mark a member function const unless it changes the object's
-        observable state. Internal caches may still be updated through
+        Mark a member function const whenever calling it leaves the object's
+        observable state unchanged. Internal caches can still be updated through
         mutable members.
     rationale:
-        It states the design intent precisely, improves readability, lets
-        the compiler catch more errors and sometimes allows more
-        optimization. A non-const getter also cannot be called on a const
-        object.
+        A const member function tells readers and the compiler exactly what the
+        design intends. More mistakes are caught at compile time, and the optimizer
+        sometimes has more room. Leaving const off also makes the function unusable
+        on const objects.
     exceptions: null
     severity: null
     noncompliant:

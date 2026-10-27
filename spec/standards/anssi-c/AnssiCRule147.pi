@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule147:
+    standard: @{AnssiC}
+    ruleId: rule-147
+    title: Pass structures to functions by pointer
+    statement:
+        Do not pass structures by value; pass a pointer to them instead.
+    rationale:
+        Copying large structures wastes stack space and time, and copies of
+        sensitive data spread through memory.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int store_user(struct user u);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int store_user(const struct user *u);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, functions, structs]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=118

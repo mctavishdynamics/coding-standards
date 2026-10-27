@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem36:
+    standard: @{EffectivePython}
+    ruleId: item-36
+    title: Use None as the default for mutable or dynamic values
+    statement:
+        Never use a mutable object or a call such as datetime.now as a
+        default argument. Default to None and compute the real value inside
+        the function, documenting the behaviour.
+    rationale:
+        Defaults are evaluated once when the function is defined, so every
+        call shares the same list or timestamp.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def add_tag(tag, tags=[]):
+            tags.append(tag)
+            return tags
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def add_tag(tag, tags=None):
+            """Return tags with tag added; a new list is used if tags is None."""
+            if tags is None:
+                tags = []
+            tags.append(tag)
+            return tags
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, arguments, defaults]
+    source: https://effectivepython.com/

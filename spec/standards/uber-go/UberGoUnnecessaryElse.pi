@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoUnnecessaryElse:
+    standard: @{UberGo}
+    ruleId: unnecessary-else
+    title: Drop the else when both branches set the same variable
+    statement:
+        When a variable is assigned in both branches of an if and else,
+        assign the default first and override it in a single if.
+    rationale:
+        The shorter form removes a branch and makes the default value
+        obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var fee int
+        if member {
+            fee = 0
+        } else {
+            fee = 5
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        fee := 5
+        if member {
+            fee = 0
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [control-flow, readability]
+    source: https://github.com/uber-go/guide/blob/master/style.md#unnecessary-else

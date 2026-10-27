@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem22:
+    standard: @{EffectivePython}
+    ruleId: item-22
+    title: Do not change a container while looping over it
+    statement:
+        Never add or remove items in a list, dict or set while iterating
+        over it. Loop over a copy, or collect changes and apply them
+        afterwards.
+    rationale:
+        Mutation during iteration raises errors for dicts and sets and
+        silently skips items in lists.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        for key in settings:
+            if settings[key] is None:
+                del settings[key]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        for key in list(settings):
+            if settings[key] is None:
+                del settings[key]
+        \\\
+        ```
+    languages: [python]
+    tags: [loops-and-iterators, iteration, bugs]
+    source: https://effectivepython.com/

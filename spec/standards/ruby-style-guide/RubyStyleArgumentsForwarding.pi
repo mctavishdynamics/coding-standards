@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleArgumentsForwarding:
+    standard: @{RubyStyleGuide}
+    ruleId: arguments-forwarding
+    title: Use argument forwarding
+    statement:
+        When a method passes all of its arguments straight to another
+        method, use the triple-dot forwarding syntax from Ruby 2.7.
+    rationale:
+        Forwarding passes positional, keyword and block arguments without
+        spelling each kind out.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def log(*args, **opts, &block)
+          logger.info(*args, **opts, &block)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def log(...)
+          logger.info(...)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, parameters]
+    source: https://rubystyle.guide/#arguments-forwarding

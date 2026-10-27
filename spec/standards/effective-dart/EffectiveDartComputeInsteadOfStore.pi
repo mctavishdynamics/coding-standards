@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartComputeInsteadOfStore:
+    standard: @{EffectiveDart}
+    ruleId: avoid-storing-what-you-can-calculate
+    title: Compute derived values instead of storing them
+    statement:
+        Expose values derived from other state through getters instead of
+        computing and storing them up front.
+    rationale:
+        Stored copies waste memory and go stale when the source changes, and
+        keeping them in sync is error-prone.
+    exceptions:
+        Cache a slow calculation only once you have measured a real
+        performance problem, and leave a comment explaining it.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Rectangle {
+          double width, height;
+          double area;
+          Rectangle(this.width, this.height) : area = width * height;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Rectangle {
+          double width, height;
+          Rectangle(this.width, this.height);
+          double get area => width * height;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, state, classes]
+    source: https://dart.dev/effective-dart/usage#avoid-storing-what-you-can-calculate

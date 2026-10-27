@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando187:
+    standard: @{ZalandoApi}
+    ruleId: 187
+    title: Reflect deprecation in API specifications
+    statement:
+        Mark deprecated operations, parameters, schemas and properties with
+        deprecated set to true and explain in the description what to use
+        instead. If a shutdown is planned, give the sunset date and a
+        migration path.
+    rationale:
+        The specification is where consumers look, so deprecation must be
+        visible there.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        parameters:
+          - name: zip_code
+            in: query
+            deprecated: true
+            description: Deprecated, use postal_code. Sunset on 2026-12-31.
+        \\\
+        ```
+    languages: [any]
+    tags: [must, deprecation, openapi]
+    source: https://opensource.zalando.com/restful-api-guidelines/#187

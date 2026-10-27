@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartConsistentVarFinal:
+    standard: @{EffectiveDart}
+    ruleId: do-follow-a-consistent-rule-for-var-and-final-on-local-variables
+    title: Pick one rule for var and final on locals and keep to it
+    statement:
+        Either use `final` for locals that are never reassigned and `var`
+        for the rest, or use `var` for all locals. Choose one and apply it
+        throughout.
+    rationale:
+        A consistent choice lets readers know from `var` alone whether the
+        variable may change later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final width = box.width;
+        var height = box.height;
+        var area = width * height;
+        final label = '$area m2';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final width = box.width;
+        final height = box.height;
+        var area = width * height;
+        if (hasMargin) area += margin;
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, variables, consistency]
+    source: https://dart.dev/effective-dart/usage#do-follow-a-consistent-rule-for-var-and-final-on-local-variables

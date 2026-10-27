@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartErrorOnlyForBugs:
+    standard: @{EffectiveDart}
+    ruleId: do-throw-objects-that-implement-error-only-for-programmatic-errors
+    title: Throw Error types only to signal bugs
+    statement:
+        Throw `Error` or its subtypes, such as `ArgumentError`, only when
+        the caller has misused the API. For runtime failures that are not
+        bugs, throw an `Exception` or another type.
+    rationale:
+        An Error tells the caller there is a bug in their code; using it for
+        ordinary failures sends the wrong signal.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        Future<String> readConfig(File file) async {
+          if (!await file.exists()) throw StateError('config missing');
+          return file.readAsString();
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        Future<String> readConfig(File file) async {
+          if (!await file.exists()) {
+            throw FileSystemException('Config missing', file.path);
+          }
+          return file.readAsString();
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, error-handling, exceptions]
+    source: https://dart.dev/effective-dart/usage#do-throw-objects-that-implement-error-only-for-programmatic-errors

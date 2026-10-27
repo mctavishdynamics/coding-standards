@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEnum17:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: enum-17
+    title: Consider extending existing enums even though callers may be affected
+    statement:
+        Growing an existing enum is normally fine. If real data shows that
+        new members break applications, introduce a new member that can
+        return the larger set and deprecate the old one, which keeps
+        returning only the original values.
+    rationale:
+        Most code handles unknown values gracefully, so the benefit of
+        extending the enum normally outweighs the risk.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public enum PaymentKind { Card, BankTransfer, Wallet }   // Wallet added in v2
+
+        string Describe(PaymentKind kind) => kind switch
+        {
+            PaymentKind.Card => "card",
+            PaymentKind.BankTransfer => "bank transfer",
+            _ => "other"
+        };
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, type-design, enums, versioning]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/enum#adding-value-to-enums

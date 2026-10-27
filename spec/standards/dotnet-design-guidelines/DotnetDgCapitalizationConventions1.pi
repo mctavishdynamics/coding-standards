@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgCapitalizationConventions1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: capitalization-conventions-1
+    title: Capitalize every word of public multi-word names
+    statement:
+        Public and protected types, members and namespaces whose names join
+        several words get a capital letter at the start of each word, with
+        no separators.
+    rationale:
+        When every public name follows one casing scheme, callers can guess
+        names correctly and the library fits in with the rest of .NET.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class shipment_tracker
+        {
+            public int deliveredCount { get; set; }
+            public void markdelivered() { }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class ShipmentTracker
+        {
+            public int DeliveredCount { get; set; }
+            public void MarkDelivered() { }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, capitalization]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/capitalization-conventions#capitalization-rules-for-identifiers

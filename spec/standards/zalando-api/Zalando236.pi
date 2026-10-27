@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando236:
+    standard: @{ZalandoApi}
+    ruleId: 236
+    title: Design simple query languages with query parameters
+    statement:
+        For most APIs, express queries as name and value query parameters
+        that are combined with and. Specify for each parameter the property
+        it refers to, its value range, the comparison it applies and how it
+        combines with others.
+    rationale:
+        Every HTTP client and framework already handles query parameters,
+        and new ones can be added without breaking anything.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /items?price=gt:10
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /items?min_price=10&color=BLUE
+        \\\
+        ```
+    languages: [any]
+    tags: [should, query-parameters, api-design]
+    source: https://opensource.zalando.com/restful-api-guidelines/#236

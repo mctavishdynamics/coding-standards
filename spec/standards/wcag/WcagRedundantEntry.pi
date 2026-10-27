@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagRedundantEntry:
+    standard: @{Wcag22}
+    ruleId: 3.3.7
+    title: Do not ask users to re-enter information in the same process
+    statement:
+        When a process needs information the user already entered or was
+        given, fill it in automatically or let the user select it.
+    rationale:
+        Re-entering data burdens people with memory or motor disabilities
+        and invites mistakes.
+    exceptions:
+        Re-entry is allowed when essential, as in memory games, when needed
+        for security, such as confirming a password, or when the earlier
+        data is no longer valid.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <h2>Billing address</h2>
+        <input name="billing_street" autocomplete="off">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <h2>Billing address</h2>
+        <label><input type="checkbox" name="same_as_shipping" checked> Same as shipping address</label>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, forms, cognitive]
+    source: https://www.w3.org/TR/WCAG22/#redundant-entry

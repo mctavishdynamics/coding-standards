@@ -5,15 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSf8:
     standard: @{CppCoreGuidelines}
     ruleId: SF.8
-    title: Use #include guards for all header files
+    title: Protect every header with an include guard
     statement:
-        Protect every header with an include guard whose name includes a
-        distinguishing key such as the library or component name, not just
-        the file name.
+        Wrap every header in an include guard. Build the guard's macro name from the
+        project or component name as well as the file name.
     rationale:
-        Guards prevent a header from being processed more than once. pragma
-        once is non-standard and ties the program to a vendor and to file
-        system details.
+        Guards make a second inclusion of the same header harmless, and a
+        distinctive name stops two headers from sharing one guard. The pragma once
+        directive is not standard and depends on how a compiler identifies files.
     exceptions: null
     severity: null
     noncompliant:

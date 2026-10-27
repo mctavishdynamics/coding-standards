@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule59:
+    standard: @{CppCodingStandards}
+    ruleId: rule-59
+    title: Never put using directives in headers or before includes
+    statement:
+        Do not write using namespace or using declarations at namespace
+        scope in headers or before an include directive. Use them freely in
+        source files after all includes.
+    rationale:
+        They change the meaning of code in every file that includes the
+        header.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // util.h
+        using namespace std;
+        string trim(const string& s);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // util.h
+        std::string trim(const std::string& s);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces-and-modules, namespaces, headers]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

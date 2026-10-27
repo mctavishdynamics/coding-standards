@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleContingencyMethods:
+    standard: @{RubyStyleGuide}
+    ruleId: contingency-methods
+    title: Reduce repeated begin blocks with contingency methods
+    statement:
+        When the same rescue logic appears around many calls, move it into
+        one method that takes a block and handles the error, an approach
+        Avdi Grimm calls a contingency method.
+    rationale:
+        Centralising the handling removes duplicated begin and rescue blocks
+        and keeps the policy in one place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        begin
+          sync_orders
+        rescue Net::OpenTimeout => e
+          report(e)
+        end
+
+        begin
+          sync_refunds
+        rescue Net::OpenTimeout => e
+          report(e)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def reporting_timeouts
+          yield
+        rescue Net::OpenTimeout => e
+          report(e)
+        end
+
+        reporting_timeouts { sync_orders }
+        reporting_timeouts { sync_refunds }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [error-handling, exceptions, duplication]
+    source: https://rubystyle.guide/#contingency-methods

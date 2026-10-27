@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando218:
+    standard: @{ZalandoApi}
+    ruleId: 218
+    title: Include API meta information
+    statement:
+        Fill in the OpenAPI info object with a unique functional title, the
+        specification version, a proper description and the owning team's
+        contact name, url and email. Also provide the x-api-id and
+        x-audience extension properties.
+    rationale:
+        The meta information lets people and tools find the API, see who
+        owns it, track its versions and apply the right review standard.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        info:
+          title: service
+          version: '1'
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        info:
+          title: Parcel Tracking API
+          version: 1.4.0
+          description: Lets carriers and shops follow parcels from pickup to delivery.
+          contact:
+            name: Logistics Tracking Team
+            url: https://wiki.example.com/teams/tracking
+            email: tracking-team@example.com
+          x-api-id: 3f6b2a7e-1c44-4d1e-9a0c-6a2f8e1b5d90
+          x-audience: company-internal
+        \\\
+        ```
+    languages: [any]
+    tags: [must, openapi, metadata]
+    source: https://opensource.zalando.com/restful-api-guidelines/#218

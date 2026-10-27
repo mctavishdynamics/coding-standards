@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagContentOnHoverOrFocus:
+    standard: @{Wcag22}
+    ruleId: 1.4.13
+    title: Make hover and focus popups dismissible, hoverable and persistent
+    statement:
+        When hover or focus reveals extra content such as a tooltip, let
+        users dismiss it without moving the pointer or focus, let them move
+        the pointer onto it without it vanishing, and keep it visible until
+        they move away, dismiss it or it stops being relevant.
+    rationale:
+        Screen magnifier users need to move onto the popup to read it, and
+        popups that cover content must be easy to clear.
+    exceptions:
+        Does not apply when the browser alone controls the popup, as with
+        the title attribute.
+    severity: null
+    noncompliant:
+        ```js
+        \\\
+        trigger.addEventListener("mouseenter", () => tip.hidden = false);
+        trigger.addEventListener("mouseleave", () => tip.hidden = true);
+        \\\
+        ```
+    compliant:
+        ```js
+        \\\
+        const show = () => { tip.hidden = false; };
+        const hide = () => { tip.hidden = true; };
+        for (const el of [trigger, tip]) {
+          el.addEventListener("mouseenter", show);
+          el.addEventListener("mouseleave", hide);
+        }
+        trigger.addEventListener("focus", show);
+        trigger.addEventListener("blur", hide);
+        document.addEventListener("keydown", e => { if (e.key === "Escape") hide(); });
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, tooltips, keyboard, pointer]
+    source: https://www.w3.org/TR/WCAG22/#content-on-hover-or-focus

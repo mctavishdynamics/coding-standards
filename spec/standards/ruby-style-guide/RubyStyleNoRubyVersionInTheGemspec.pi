@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoRubyVersionInTheGemspec:
+    standard: @{RubyStyleGuide}
+    ruleId: no-ruby-version-in-the-gemspec
+    title: Do not switch dependencies on RUBY_VERSION in a gemspec
+    statement:
+        Do not use RUBY_VERSION in a gemspec to decide which dependencies to
+        declare. Use a post-install message, depend on both gems if that is
+        acceptable, or move development dependencies to the Gemfile. RuboCop
+        checks this with Gemspec/RubyVersionGlobalsUsage.
+    rationale:
+        The value comes from the Ruby that ran the release task, so users on
+        other versions can get the wrong dependencies.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        Gem::Specification.new do |spec|
+          if RUBY_VERSION < '3.0'
+            spec.add_dependency 'json_legacy'
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        Gem::Specification.new do |spec|
+          spec.required_ruby_version = '>= 3.0'
+          spec.add_dependency 'json'
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [gems, dependencies]
+    source: https://rubystyle.guide/#no-ruby-version-in-the-gemspec

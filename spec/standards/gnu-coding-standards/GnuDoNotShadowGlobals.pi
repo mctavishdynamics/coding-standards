@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDoNotShadowGlobals:
+    standard: @{GnuCodingStandards}
+    ruleId: syntactic-no-shadowing
+    title: Do not let locals or parameters shadow global names
+    statement:
+        Choose names for local variables and parameters that do not hide a
+        global identifier; -Wshadow detects violations.
+    rationale:
+        A shadowing name makes readers and maintainers think they are
+        touching the global when they are not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int verbose;
+
+        void
+        log_line (const char *s, int verbose)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int verbose;
+
+        void
+        log_line (const char *s, int level)
+        \\\
+        ```
+    languages: [c]
+    tags: [naming, scope]
+    source: https://www.gnu.org/prep/standards/standards.html#Syntactic-Conventions

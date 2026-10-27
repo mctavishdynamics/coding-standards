@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDependencyProperties7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dependency-properties-7
+    title: Keep dependency property wrappers free of extra logic
+    statement:
+        Put nothing in the CLR wrapper's accessors besides the GetValue or
+        SetValue call.
+    rationale:
+        WPF sets values through the static field directly, for example when
+        styling, so extra wrapper code does not run then.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        set
+        {
+            SetValue(MaximumProperty, value);
+            UpdateTicks();
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        set => SetValue(MaximumProperty, value);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, dependency-properties, wpf, properties]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dependency-properties#dependency-property-design

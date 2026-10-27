@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustMemForget:
+    standard: @{AnssiRust}
+    ruleId: MEM-FORGET
+    title: Do not call mem::forget
+    statement:
+        Never use std::mem::forget or core::mem::forget in secure code.
+    rationale:
+        Forgetting a value skips its destructor, so memory, file handles,
+        locks and secret-wiping code are never released or run.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        let file = std::fs::File::open(path)?;
+        std::mem::forget(file);
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        let file = std::fs::File::open(path)?;
+        drop(file);
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, memory, resource-management]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/memory.html#MEM-FORGET

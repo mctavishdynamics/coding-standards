@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmUseEarlyExits:
+    standard: @{LlvmCodingStandards}
+    ruleId: use-early-exits-and-continue-to-simplify-code
+    title: Return early and continue early to reduce nesting
+    statement:
+        Handle the cases that need no work first, with an early return in a
+        function or continue in a loop, so the main logic is not nested
+        inside conditions.
+    rationale:
+        Less nesting means less context to keep in mind, room to comment
+        each condition, and no wondering whether an else branch is coming.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (GlobalVariable &GV : M.globals()) {
+          if (GV.hasInitializer()) {
+            if (!GV.isConstant()) {
+              promote(GV);
+            }
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (GlobalVariable &GV : M.globals()) {
+          if (!GV.hasInitializer() || GV.isConstant())
+            continue;
+          promote(GV);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [control-flow, readability, nesting]
+    source: https://llvm.org/docs/CodingStandards.html#use-early-exits-and-continue-to-simplify-code

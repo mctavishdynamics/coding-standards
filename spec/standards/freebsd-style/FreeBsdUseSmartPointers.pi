@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdUseSmartPointers:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-smart-pointers
+    title: Own heap objects through smart pointers from make_unique
+    statement:
+        Let a std::unique_ptr, or a std::shared_ptr where ownership is shared,
+        own each heap object, created through make_unique or make_shared,
+        instead of raw new and delete. Reserve malloc for code that talks to
+        C.
+    rationale:
+        Smart pointers release memory automatically and safely on every
+        path.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        session *s = new session(fd);
+        run(s);
+        delete s;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto s = std::make_unique<session>(fd);
+        run(s.get());
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, memory, ownership]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

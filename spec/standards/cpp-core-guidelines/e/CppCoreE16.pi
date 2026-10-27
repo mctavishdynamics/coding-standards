@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE16:
     standard: @{CppCoreGuidelines}
     ruleId: E.16
-    title: Never let destructors, deallocation, swap or exception copy and move construction fail
+    title: Keep destructors, deallocation, swap and exception copies from failing
     statement:
-        Write destructors, deallocation functions, swap and the copy and
-        move constructors of exception types so they never throw or fail,
-        and mark them noexcept.
+        Destructors, deallocation functions, swap operations and the copy and move
+        constructors of exception classes must not fail or throw. Declare them
+        noexcept.
     rationale:
-        Nobody knows how to write reliable programs if these operations can
-        fail, and the standard library assumes they do not; if they throw,
-        its basic invariants break.
+        Reliable error handling depends on these operations always succeeding. The
+        standard library is built on that assumption, and its guarantees fall apart
+        when one of them throws.
     exceptions: null
     severity: null
     noncompliant:

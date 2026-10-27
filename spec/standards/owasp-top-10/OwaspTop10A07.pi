@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./OwaspTop10 import OwaspTop10
+
+export coding-rule OwaspTop10A07:
+    standard: @{OwaspTop10}
+    ruleId: A07:2025
+    title: Prevent authentication failures
+    statement:
+        Offer and enforce multi-factor authentication, ship no default
+        credentials, and check new passwords against weak and breached
+        password lists in line with NIST 800-63b, without forced rotation.
+        Give the same response for every login, recovery and registration
+        outcome, limit or slow failed attempts, use a trusted server-side
+        session manager with fresh random session ids kept out of URLs and
+        expired on logout and timeout, and validate token audience, issuer
+        and scope.
+    rationale:
+        Weak authentication lets attackers take over accounts through
+        credential stuffing, brute force or stolen sessions. It is the
+        seventh category in the OWASP Top 10 for 2025.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def login(username, password):
+            user = users.get(username)
+            if user is None:
+                return "No account with that username"
+            if not verify(user.password_hash, password):
+                return "Wrong password"
+            return start_session(user)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def login(username, password):
+            user = users.get(username)
+            if user is None or not verify(user.password_hash, password):
+                record_failed_login(username)
+                return "Invalid username or password."
+            return start_session(user)
+        \\\
+        ```
+    languages: [any]
+    tags: [rank-7, authentication, passwords, session]
+    source: https://owasp.org/Top10/2025/A07_2025-Authentication_Failures/

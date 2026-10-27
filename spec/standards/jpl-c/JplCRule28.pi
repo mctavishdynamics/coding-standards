@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule28:
+    standard: @{JplC}
+    ruleId: rule-28
+    title: Keep pointer dereferences visible
+    statement:
+        Keep every pointer dereference visible in the code; do not bury it
+        in a macro definition or a typedef.
+    rationale:
+        A hidden dereference makes a pointer look like a plain value, so
+        readers and tools miss the risk of following an invalid pointer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        typedef struct packet *packet_ref;
+        #define PAYLOAD(p) (*(p)->data)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct packet *pkt = next_packet();
+        uint8_t first = pkt->data[0];
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-4, pointers, macros]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

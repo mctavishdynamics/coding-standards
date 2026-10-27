@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule52:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-52
+    title: Check which way the equal case goes
+    statement:
+        When a comparison could be strict or inclusive, make sure the equal
+        case takes the branch you intend.
+    rationale:
+        Choosing less-than where less-than-or-equal was meant is a quiet
+        error that passes most tests.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* minors are under 18; this treats 18 as a minor */
+        if (age <= 18) {
+            minor = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (age < 18) {
+            minor = 1;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [common-blunders, conditionals, bounds]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiAvoidUsingDataClassesInYourApi:
+    standard: @{KotlinApiGuidelines}
+    ruleId: avoid-using-data-classes-in-your-api
+    title: Avoid data classes in public APIs
+    statement:
+        Do not expose data classes in a public API. Adding a property
+        changes the generated constructor and copy signatures, and
+        reordering properties changes the componentN functions used for
+        destructuring.
+    rationale:
+        The generated members that make data classes convenient also make
+        them impossible to evolve compatibly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public data class Contact(val name: String, val phone: String)
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public class Contact(public val name: String, public val phone: String) {
+            override fun equals(other: Any?): Boolean =
+                other is Contact && name == other.name && phone == other.phone
+            override fun hashCode(): Int = 31 * name.hashCode() + phone.hashCode()
+            override fun toString(): String = "Contact(name=$name, phone=$phone)"
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [compatibility, data-classes]
+    source: https://kotlinlang.org/docs/api-guidelines-backward-compatibility.html#avoid-using-data-classes-in-your-api

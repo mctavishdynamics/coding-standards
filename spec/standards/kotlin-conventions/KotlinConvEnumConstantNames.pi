@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvEnumConstantNames:
+    standard: @{KotlinConventions}
+    ruleId: enum-constant-names
+    title: Name enum constants in one of two styles
+    statement:
+        Name enum constants either in screaming snake case or in upper camel
+        case, choosing by how they are used.
+    rationale:
+        Both styles are accepted, and the choice can follow whether the
+        constants act like plain values or like named objects.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        enum class Level { low, Medium, HIGH_ }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        enum class Level { LOW, MEDIUM, HIGH }
+        enum class Screen { Home, Settings, Profile }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [naming, enums]
+    source: https://kotlinlang.org/docs/coding-conventions.html#property-names

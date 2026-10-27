@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule6:
+    standard: @{CppCodingStandards}
+    ruleId: rule-6
+    title: Value working, simple, readable code above cleverness
+    statement:
+        Write code that is correct and easy to read before making it clever
+        or fast. Choose the clearest way to express an idea.
+    rationale:
+        Simple code has fewer bugs and is cheaper to change; programs are
+        read far more often than written.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        bool p2(unsigned v){return v&&!(v&(v-1));}
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // True when exactly one bit is set.
+        bool isPowerOfTwo(unsigned v) { return std::has_single_bit(v); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [design-style, readability, design]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

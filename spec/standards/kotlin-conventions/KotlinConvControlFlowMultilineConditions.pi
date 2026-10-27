@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvControlFlowMultilineConditions:
+    standard: @{KotlinConventions}
+    ruleId: control-flow-multiline-conditions
+    title: Brace bodies of multiline if and when conditions
+    statement:
+        When an if or when condition spans several lines, always brace the
+        body, indent continuation lines by four spaces, and put the closing
+        parenthesis with the opening brace on a line of its own.
+    rationale:
+        This keeps the condition and the body visually separate and aligned.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        if (user.isVerified &&
+                user.hasPaid)
+            grantAccess(user)
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        if (user.isVerified &&
+            user.hasPaid
+        ) {
+            grantAccess(user)
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, control-flow]
+    source: https://kotlinlang.org/docs/coding-conventions.html#control-flow-statements

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvReturnsInALambda:
+    standard: @{KotlinConventions}
+    ruleId: returns-in-a-lambda
+    title: Avoid several labeled returns in a lambda
+    statement:
+        A lambda should not contain more than one labeled return; rework it
+        so it exits in one place, or rewrite it as an anonymous function.
+        The final statement of a lambda never needs a labeled return.
+    rationale:
+        Many exits make lambda control flow hard to follow, and a final
+        labeled return is redundant.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        items.forEach {
+            if (it.isHidden) return@forEach
+            render(it)
+            return@forEach
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        items.forEach {
+            if (!it.isHidden) render(it)
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [lambdas, control-flow]
+    source: https://kotlinlang.org/docs/coding-conventions.html#returns-in-a-lambda

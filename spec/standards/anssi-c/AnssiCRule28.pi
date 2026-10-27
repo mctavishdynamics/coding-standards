@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule28:
+    standard: @{AnssiC}
+    ruleId: rule-28
+    title: Do not use trigraphs
+    statement:
+        Never write trigraph sequences in the code.
+    rationale:
+        Trigraphs are replaced before any other processing, even in strings
+        and comments, so they silently change the text.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        printf("Ready??!\n"); /* ??! may become | */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        printf("Ready?!\n");
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, preprocessor, portability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=28

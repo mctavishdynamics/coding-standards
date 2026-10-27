@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC32:
     standard: @{CppCoreGuidelines}
     ruleId: C.32
-    title: Decide whether a raw pointer or reference member owns its target
+    title: Decide and document ownership for every raw pointer or reference member
     statement:
-        When a class holds a T* or T& member, determine whether it owns the
-        object. Make ownership explicit, for example with a smart pointer or
-        owner, rather than leaving it implied.
+        For every pointer or reference member, decide whether the class owns
+        what it refers to. State the answer in the type, for instance with
+        unique_ptr or GSL owner, rather than leaving it to guesswork.
     rationale:
-        Much code is vague about ownership, which leads to leaks or double
-        deletes.
+        Unclear ownership is common in old code. It causes both leaks and
+        objects deleted twice.
     exceptions: null
     severity: null
     noncompliant:

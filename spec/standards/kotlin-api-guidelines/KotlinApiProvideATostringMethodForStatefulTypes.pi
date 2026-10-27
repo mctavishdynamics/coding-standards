@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiProvideATostringMethodForStatefulTypes:
+    standard: @{KotlinApiGuidelines}
+    ruleId: provide-a-tostring-method-for-stateful-types
+    title: Give stateful types a meaningful toString
+    statement:
+        Implement toString for every type that holds state, including
+        internal ones, so it shows the current contents. Keep the format
+        consistent across the library, document it if it is part of the
+        contract, and never include sensitive user data.
+    rationale:
+        Readable toString output helps in logs and debuggers, where the
+        default class-and-hash text tells nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public class Upload(public val file: String, public val sent: Long, public val size: Long)
+        // prints Upload@6d06d69c
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public class Upload(public val file: String, public val sent: Long, public val size: Long) {
+            override fun toString(): String = "Upload(file=$file, progress=$sent/$size)"
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [debugging, logging]
+    source: https://kotlinlang.org/docs/api-guidelines-debuggability.html#provide-a-tostring-method-for-stateful-types

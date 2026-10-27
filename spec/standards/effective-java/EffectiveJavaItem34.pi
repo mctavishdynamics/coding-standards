@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem34:
+    standard: @{EffectiveJava}
+    ruleId: item-34
+    title: Represent fixed sets of constants with enums, not ints
+    statement:
+        Use an enum type wherever a variable can take one of a fixed set of
+        values known at compile time, rather than int or String constants.
+    rationale:
+        Enums are type safe, print meaningful names, can carry fields and
+        behaviour, and can be iterated. Int constants are compiled into
+        clients and offer none of that.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public static final int STATUS_OPEN = 0;
+        public static final int STATUS_CLOSED = 1;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public enum Status { OPEN, CLOSED }
+        \\\
+        ```
+    languages: [java]
+    tags: [enums-and-annotations, enums, type-safety]
+    source: https://www.informit.com/store/effective-java-9780134686097

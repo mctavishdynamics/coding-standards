@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdUseAnsiDefinitions:
+    standard: @{FreeBsdStyle}
+    ruleId: no-kr-definitions
+    title: Use prototype syntax, never K&R style, for functions
+    statement:
+        Use ANSI prototype syntax for all function declarations and
+        definitions. When converting old K&R definitions, keep any comments
+        that described the parameters.
+    rationale:
+        K&R style is obsolete, removed from C23, and warned about or
+        rejected by compilers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int
+        scale(v, factor)
+                int v;
+                int factor;     /* percent */
+        {
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int
+        scale(int v, int factor /* percent */)
+        {
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, declarations]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

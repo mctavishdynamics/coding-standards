@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation154:
+    standard: @{AnssiC}
+    ruleId: recommendation-154
+    title: Avoid compound assignment operators
+    statement:
+        Prefer writing the full assignment over operators such as
+        plus-equals, and-equals or shift-equals.
+    rationale:
+        The full form is more explicit about the operation and the
+        conversions involved.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        flags &= ~MASK;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        flags = flags & ~MASK;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=124

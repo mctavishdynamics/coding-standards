@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe918:
+    standard: @{CweTop25}
+    ruleId: CWE-918
+    title: Prevent server-side request forgery
+    statement:
+        When the server fetches a URL that input can influence, make sure
+        the request goes only to an expected destination, ideally by
+        checking the scheme and host against an allow list before the
+        request is made.
+    rationale:
+        Attackers can use the server as a proxy to reach internal services,
+        cloud metadata endpoints or hosts behind the firewall. It is ranked
+        22 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def fetch_preview(url):
+            return requests.get(url, timeout=5).content
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        ALLOWED_HOSTS = {"images.example.com", "cdn.example.com"}
+
+        def fetch_preview(url):
+            parts = urlparse(url)
+            if parts.scheme != "https" or parts.hostname not in ALLOWED_HOSTS:
+                raise ValueError("destination not allowed")
+            return requests.get(url, timeout=5, allow_redirects=False).content
+        \\\
+        ```
+    languages: [python]
+    tags: [rank-22, ssrf, network, input-validation]
+    source: https://cwe.mitre.org/data/definitions/918.html

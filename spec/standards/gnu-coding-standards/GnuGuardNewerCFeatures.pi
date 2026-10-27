@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuGuardNewerCFeatures:
+    standard: @{GnuCodingStandards}
+    ruleId: standard-c-newer-features
+    title: Use newer C features only conditionally when other compilers matter
+    statement:
+        If the program should build with compilers other than GCC, do not
+        rely unconditionally on recent Standard C additions or on GNU C
+        extensions like variable-length arrays; test for them first. A
+        GCC-only program may use whatever GCC supports.
+    rationale:
+        Other compilers lag behind on recent features, so an unconditional
+        use stops the program from building there.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void
+        fill (size_t n)
+        {
+          double buf[n];
+          /* ... */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void
+        fill (size_t n)
+        {
+          double *buf = xmalloc (n * sizeof *buf);
+          /* ... */
+          free (buf);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [portability, language-version]
+    source: https://www.gnu.org/prep/standards/standards.html#Standard-C

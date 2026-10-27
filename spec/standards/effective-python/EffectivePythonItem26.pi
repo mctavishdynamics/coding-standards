@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem26:
+    standard: @{EffectivePython}
+    ruleId: item-26
+    title: Look up dict keys that may be missing with get
+    statement:
+        When a key may be absent, use dict.get with a default rather than an
+        in check followed by indexing, or catching KeyError.
+    rationale:
+        get does a single lookup and needs fewer lines.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if word in counts:
+            n = counts[word]
+        else:
+            n = 0
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        n = counts.get(word, 0)
+        \\\
+        ```
+    languages: [python]
+    tags: [dictionaries]
+    source: https://effectivepython.com/

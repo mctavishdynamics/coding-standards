@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem60:
+    standard: @{EffectivePython}
+    ruleId: item-60
+    title: Use descriptors to reuse property logic
+    statement:
+        When the same property behaviour is needed on several attributes or
+        classes, write a descriptor class instead of repeating the property
+        methods.
+    rationale:
+        Descriptors package getter and setter logic once, and __set_name__
+        lets each one store its value under its own name.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        class Percentage:
+            def __set_name__(self, owner, name):
+                self.name = "_" + name
+            def __get__(self, obj, objtype=None):
+                return getattr(obj, self.name, 0)
+            def __set__(self, obj, value):
+                if not 0 <= value <= 100:
+                    raise ValueError("out of range")
+                setattr(obj, self.name, value)
+        \\\
+        ```
+    languages: [python]
+    tags: [metaclasses-and-attributes, attributes, descriptors]
+    source: https://effectivepython.com/

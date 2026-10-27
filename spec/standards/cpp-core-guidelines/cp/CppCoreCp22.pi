@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp22:
     standard: @{CppCoreGuidelines}
     ruleId: CP.22
-    title: Never call unknown code while holding a lock
+    title: Release locks before calling code you do not control
     statement:
-        Do not invoke callbacks, virtual functions or other code you do not
-        control while a lock is held. Copy what the callback needs, release
-        the lock, then call it.
+        While holding a lock, do not call callbacks, virtual functions or other code
+        whose behavior you cannot see. Take a copy of what you need under the lock,
+        unlock, and then make the call.
     rationale:
-        Unknown code may try to take the same lock, take other locks, or
-        block for a long time, risking deadlock or long delays for every
-        other thread.
+        Foreign code might lock the same mutex again, grab locks of its own or run
+        for a long time. Each of these can deadlock the program or keep other
+        threads waiting.
     exceptions: null
     severity: null
     noncompliant:

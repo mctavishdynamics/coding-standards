@@ -18,21 +18,29 @@ export coding-rule CertJavaErr50J:
     noncompliant:
         ```java
         \\\
-        int i = 0;
-        try {
-            while (true) {
-                process(items[i++]);
+        static boolean isNumber(String text) {
+            try {
+                Long.parseLong(text);
+                return true;
+            } catch (NumberFormatException notANumber) {
+                return false;
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            // end of array
+        }
+
+        Iterator<Task> it = queue.iterator();
+        try {
+            for (;;) run(it.next());
+        } catch (NoSuchElementException done) {
+            // queue drained
         }
         \\\
         ```
     compliant:
         ```java
         \\\
-        for (Item item : items) {
-            process(item);
+        Iterator<Task> it = queue.iterator();
+        while (it.hasNext()) {
+            run(it.next());
         }
         \\\
         ```

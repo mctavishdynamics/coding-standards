@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagLanguageOfParts:
+    standard: @{Wcag22}
+    ruleId: 3.1.2
+    title: Mark passages written in another language
+    statement:
+        Mark up the language of any passage or phrase that differs from the
+        page language.
+    rationale:
+        Without it, a screen reader reads foreign words with the wrong
+        pronunciation.
+    exceptions:
+        Proper names, technical terms, words of unclear language and words
+        that have become part of the surrounding language are exempt.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <p>The restaurant's motto is ร้านอร่อย ราคาเป็นกันเอง.</p>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <p>The restaurant's motto is <span lang="th">ร้านอร่อย ราคาเป็นกันเอง</span>.</p>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, language, i18n]
+    source: https://www.w3.org/TR/WCAG22/#language-of-parts

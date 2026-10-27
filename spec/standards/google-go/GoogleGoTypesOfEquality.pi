@@ -21,16 +21,17 @@ export coding-rule GoogleGoTypesOfEquality:
     noncompliant:
         ```go
         \\\
-        if !reflect.DeepEqual(got, want) {
-            t.Errorf("Load() = %v, want %v", got, want)
+        if !reflect.DeepEqual(gotCfg, wantCfg) {
+            t.Errorf("Parse(%q) = %+v, want %+v", input, gotCfg, wantCfg)
         }
         \\\
         ```
     compliant:
         ```go
         \\\
-        if diff := cmp.Diff(want, got, protocmp.Transform()); diff != "" {
-            t.Errorf("Load() mismatch (-want +got):\n%s", diff)
+        opts := cmpopts.IgnoreFields(Config{}, "LoadedAt")
+        if d := cmp.Diff(wantCfg, gotCfg, opts); d != "" {
+            t.Errorf("Parse(%q) diff (-want +got):\n%s", input, d)
         }
         \\\
         ```

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiTypeConversion:
+    standard: @{SwiftApiDesign}
+    ruleId: type-conversion
+    title: Omit the first label in value-preserving conversions
+    statement:
+        In an initializer that performs a value-preserving type conversion,
+        leave off the first argument label and make that argument the
+        source. For a narrowing conversion, use a label that describes how
+        the value is narrowed.
+    rationale:
+        A widening conversion needs no explanation, while a lossy one should
+        say what happens to the value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        extension Int64 {
+            init(from value: Int32)
+            init(_ source: Double)            // silently drops the fraction
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        extension Int64 {
+            init(_ value: Int32)              // widening, no label
+            init(clamping source: Double)     // narrowing, labelled
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [argument-labels, conversions]
+    source: https://www.swift.org/documentation/api-design-guidelines/#type-conversion

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuHonorTmpdir:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-tmpdir
+    title: Create temporary files in TMPDIR when it is set
+    statement:
+        When making temporary files, use the directory named by the TMPDIR
+        environment variable if it is defined, and fall back to /tmp
+        otherwise.
+    rationale:
+        Users and administrators rely on TMPDIR to put scratch files on a
+        suitable file system.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        snprintf (path, sizeof path, "/tmp/sortXXXXXX");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        const char *dir = getenv ("TMPDIR");
+        if (dir == NULL || *dir == '\0')
+          dir = "/tmp";
+        snprintf (path, sizeof path, "%s/sortXXXXXX", dir);
+        \\\
+        ```
+    languages: [c]
+    tags: [files, environment]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

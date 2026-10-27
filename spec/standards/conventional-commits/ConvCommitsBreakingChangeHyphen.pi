@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ConventionalCommits import ConventionalCommits
+
+export coding-rule ConvCommitsBreakingChangeHyphen:
+    standard: @{ConventionalCommits}
+    ruleId: 16
+    title: Treat BREAKING-CHANGE as a synonym for BREAKING CHANGE
+    statement:
+        When used as a footer token, BREAKING-CHANGE with a hyphen means
+        exactly the same as BREAKING CHANGE.
+    rationale:
+        The hyphenated form matches the usual footer token shape, so tools
+        must accept both spellings.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        feat: switch the session store to Redis
+
+        BREAKING_CHANGE: in-memory sessions are no longer supported.
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        feat: switch the session store to Redis
+
+        BREAKING-CHANGE: in-memory sessions are no longer supported.
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, breaking-changes, parsing]
+    source: https://www.conventionalcommits.org/en/v1.0.0/#specification

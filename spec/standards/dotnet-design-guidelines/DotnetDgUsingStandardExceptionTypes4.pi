@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgUsingStandardExceptionTypes4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: using-standard-exception-types-4
+    title: Leave ApplicationException unused
+    statement:
+        Neither throw ApplicationException nor use it as a base class for
+        your own exceptions.
+    rationale:
+        It adds no value as a category and only lengthens the hierarchy.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class QuotaExceededException : ApplicationException { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class QuotaExceededException : Exception { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, exceptions, exception-types]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/using-standard-exception-types#applicationexception

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem8:
+    standard: @{EffectiveJava}
+    ruleId: item-8
+    title: Do not rely on finalizers or cleaners
+    statement:
+        Avoid finalizers entirely and use cleaners only as a safety net.
+        Release resources explicitly by implementing AutoCloseable and
+        having callers close the object.
+    rationale:
+        There is no guarantee when, or whether, a finalizer or cleaner runs.
+        They slow down collection, can hide exceptions and open the class to
+        finalizer attacks.
+    exceptions:
+        A cleaner can serve as a backstop in case the owner forgets to call
+        close, or to release memory held by a native peer object.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        @Override
+        protected void finalize() {
+            socket.close();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public final class Connection implements AutoCloseable {
+            @Override
+            public void close() throws IOException {
+                socket.close();
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [creating-and-destroying-objects, resources, finalization]
+    source: https://www.informit.com/store/effective-java-9780134686097

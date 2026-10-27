@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando241:
+    standard: @{ZalandoApi}
+    ruleId: 241
+    title: Allow compound keys as resource identifiers
+    statement:
+        A resource that is naturally identified by several other identifiers
+        may use that compound key, including slashes, in its path. Treat the
+        compound key consistently as one identifier in all requests and
+        responses, and use its parts separately only in search and create
+        requests.
+    rationale:
+        Natural keys can be clearer than technical ids, but exposing them
+        gives up an opaque identifier, so they must be handled as a single
+        unit.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        GET /stock-levels/sku-551/wh-07
+        GET /stock-levels?skus=sku-551&warehouses=wh-07
+        \\\
+        ```
+    languages: [any]
+    tags: [may, urls, identifiers]
+    source: https://opensource.zalando.com/restful-api-guidelines/#241

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdOrderStructMembers:
+    standard: @{OpenBsdStyle}
+    ruleId: struct-member-order
+    title: Order struct members by use, size and name, one per line
+    statement:
+        Declare structure members sorted by use, then from largest to
+        smallest, then alphabetically, and give each its own line.
+    rationale:
+        Size ordering limits padding and one member per line keeps the
+        structure readable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct entry {
+                short   kind;
+                int     a, b;
+                long    size;
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct entry {
+                long    size;
+                int     a;
+                int     b;
+                short   kind;
+        };
+        \\\
+        ```
+    languages: [c]
+    tags: [structs, declarations]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

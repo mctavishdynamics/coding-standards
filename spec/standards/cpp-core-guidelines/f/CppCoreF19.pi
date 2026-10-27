@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF19:
     standard: @{CppCoreGuidelines}
     ruleId: F.19
-    title: For forward parameters, pass by TP&& and only std::forward the parameter
+    title: Take forwarding parameters as forwarding references and forward them once
     statement:
-        When a function only passes an argument on to other code, take it as
-        a forwarding reference of a template parameter and pass it on with a
-        call to std::forward, and do nothing else with it.
+        If a function only relays an argument to another call, declare the
+        parameter as a forwarding reference TP&& on a template parameter. Pass
+        it along once with std::forward and use it for nothing else.
     rationale:
-        A forwarding reference preserves the argument's constness and value
-        category so the final callee sees exactly what the caller passed.
+        Forwarding keeps the argument's const qualification and its lvalue or
+        rvalue nature intact. The final callee therefore receives exactly what
+        the original caller gave.
     exceptions: null
     severity: null
     noncompliant:

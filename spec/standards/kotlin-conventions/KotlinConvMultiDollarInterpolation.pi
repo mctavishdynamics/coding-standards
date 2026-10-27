@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvMultiDollarInterpolation:
+    standard: @{KotlinConventions}
+    ruleId: multi-dollar-interpolation
+    title: Use multi-dollar strings for literal dollar signs
+    statement:
+        When a string needs literal dollar signs, use multi-dollar string
+        interpolation so that a single dollar is plain text.
+    rationale:
+        It avoids escaping every dollar sign in text such as JSON schemas or
+        shell snippets.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        val script = "echo ${'$'}HOME is $home"
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        val script = $$"echo $HOME is $$home"
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [strings]
+    source: https://kotlinlang.org/docs/coding-conventions.html#string-templates

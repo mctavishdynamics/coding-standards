@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdDeclareCppVariablesWhereUsed:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-declarations-anywhere
+    title: Declare C++ variables at any point in a function
+    statement:
+        In C++ variables may be declared anywhere in a function, not only at
+        the start of a block.
+    rationale:
+        Declaring at first use is normal C++ and supports initialization
+        with constructors.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```cpp
+        \\\
+        void
+        load(const std::string &path)
+        {
+                open_file(path);
+                std::vector<char> buf(read_size(path));
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, declarations, scope]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

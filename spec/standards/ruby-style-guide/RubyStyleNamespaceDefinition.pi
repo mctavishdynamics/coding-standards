@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNamespaceDefinition:
+    standard: @{RubyStyleGuide}
+    ruleId: namespace-definition
+    title: Define namespaced classes with explicit nesting
+    statement:
+        Define and reopen classes and modules inside a namespace by nesting
+        module and class blocks rather than with one class line that spells
+        out the full constant path.
+    rationale:
+        Constant lookup depends on the lexical nesting, so the compact form
+        can resolve names in surprising ways.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Billing::Invoice
+          def tax = TaxRate.current
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        module Billing
+          class Invoice
+            def tax = TaxRate.current
+          end
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [modules, namespaces]
+    source: https://rubystyle.guide/#namespace-definition

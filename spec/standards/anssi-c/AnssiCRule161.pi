@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule161:
+    standard: @{AnssiC}
+    ruleId: rule-161
+    title: Do not resize allocations with realloc
+    statement:
+        Do not use realloc to change an existing allocation. Allocate a new
+        block, copy, and free the old one.
+    rationale:
+        realloc may move or free the block, leaving stale pointers, and on
+        failure the old block is kept, which is often mishandled and leaks
+        or exposes data.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        buf = realloc(buf, new_len);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *bigger = malloc(new_len);
+        if (NULL == bigger) { return -1; }
+        memcpy(bigger, buf, old_len);
+        free(buf);
+        buf = bigger;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, memory, allocation]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=128

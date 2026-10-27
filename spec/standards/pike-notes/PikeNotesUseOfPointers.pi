@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./PikeNotes import PikeNotes
+
+export coding-rule PikeNotesUseOfPointers:
+    standard: @{PikeNotes}
+    ruleId: the-use-of-pointers
+    title: Use pointers to simplify repeated element expressions
+    statement:
+        When code keeps writing similar compound expressions that reach into
+        a data structure, walk it with a pointer or keep a temporary pointer
+        to the element instead.
+    rationale:
+        One pointer identifies a single object, whereas an array plus an index
+        are two things the reader has to keep consistent. Stepping a pointer
+        updates one value, its type lets the compiler spot misuse, and the
+        code is more compact.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (i = 0; i < table->nrows; i++) {
+            table->rows[i].total = table->rows[i].price * table->rows[i].qty;
+            table->rows[i].dirty = 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (rp = table->rows; rp < table->rows + table->nrows; rp++) {
+            rp->total = rp->price * rp->qty;
+            rp->dirty = 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [pointers, readability]
+    source: https://www.cs.princeton.edu/courses/archive/spr01/cs217/pike.html

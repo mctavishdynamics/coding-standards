@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagAudioDescriptionOrMediaAlternativePrerecorded:
+    standard: @{Wcag22}
+    ruleId: 1.2.3
+    title: Give recorded video an audio description or a full text alternative
+    statement:
+        For recorded synchronized media, provide either an audio description
+        of the visual content or a complete text alternative that covers
+        both what is seen and what is heard.
+    rationale:
+        Blind users miss actions, scene changes and on-screen text that the
+        soundtrack does not mention.
+    exceptions:
+        Not required when the media is a clearly labelled alternative to
+        text already on the page.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <video src="/media/assembly-guide.mp4" controls></video>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <video src="/media/assembly-guide.mp4" controls>
+          <track kind="descriptions" src="/media/assembly-guide.desc.vtt" srclang="en">
+        </video>
+        <a href="/media/assembly-guide-text.html">Text version of the assembly guide</a>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, media, audio-description]
+    source: https://www.w3.org/TR/WCAG22/#audio-description-or-media-alternative-prerecorded

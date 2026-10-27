@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV1x2x5:
+    standard: @{OwaspAsvs}
+    ruleId: V1.2.5
+    title: Prevent OS command injection
+    statement:
+        Call operating system commands through interfaces that take
+        arguments separately rather than through a shell string, or apply
+        encoding made for the command line when that is impossible.
+    rationale:
+        A shell interprets metacharacters in untrusted text, so a single
+        semicolon or backtick can run any command the attacker chooses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        subprocess.run(f"convert {upload_name} out.png", shell=True)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        subprocess.run(["convert", "--", upload_name, "out.png"], check=True)
+        \\\
+        ```
+    languages: [any]
+    tags: [level-1, injection, os-command]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x10-V1-Encoding-and-Sanitization.md#v12-injection-prevention

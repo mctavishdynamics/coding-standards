@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoLocalTypeAnnotations:
+    standard: @{EffectiveDart}
+    ruleId: dont-redundantly-type-annotate-initialized-local-variables
+    title: Let inference type initialized locals
+    statement:
+        Omit the type on local variables that have an initializer.
+        The omit_local_variable_types lint checks this.
+    rationale:
+        Locals have small scopes, and leaving the type out puts the focus on
+        the name and value.
+    exceptions:
+        Annotate when you want a different type than the initializer gives,
+        for example to assign other values later.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        List<String> names = users.map((u) => u.name).toList();
+        int total = 0;
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        var names = users.map((u) => u.name).toList();
+        var total = 0;
+        num ratio = 1;
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, types, variables]
+    source: https://dart.dev/effective-dart/design#dont-redundantly-type-annotate-initialized-local-variables

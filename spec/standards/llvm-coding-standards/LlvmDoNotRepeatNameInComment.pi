@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmDoNotRepeatNameInComment:
+    standard: @{LlvmCodingStandards}
+    ruleId: doxygen-use-in-documentation-comments-no-name
+    title: Do not start a doc comment with the entity's name
+    statement:
+        Begin a documentation comment with what the function or class does,
+        not with its name followed by a dash.
+    rationale:
+        Readers and documentation tools already know which declaration the
+        comment belongs to, so the name is noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        /// flushQueue - Writes all pending records to disk.
+        void flushQueue();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        /// Writes all pending records to disk.
+        void flushQueue();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [documentation, comments]
+    source: https://llvm.org/docs/CodingStandards.html#doxygen-use-in-documentation-comments

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHashLiteralAsLastArrayItem:
+    standard: @{RubyStyleGuide}
+    ruleId: hash-literal-as-last-array-item
+    title: Brace a hash that ends an array
+    statement:
+        When a hash literal is the last item of an array literal, wrap it in
+        braces. RuboCop checks this with Style/HashAsLastArrayItem.
+    rationale:
+        Without braces the hash keys look like extra array elements and the
+        structure is hard to see.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        row = ['ada', 36, admin: true, active: false]
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        row = ['ada', 36, { admin: true, active: false }]
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes, syntax]
+    source: https://rubystyle.guide/#hash-literal-as-last-array-item

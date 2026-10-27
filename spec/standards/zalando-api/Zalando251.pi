@@ -1,0 +1,24 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando251:
+    standard: @{ZalandoApi}
+    ruleId: 251
+    title: Do not use redirection codes
+    statement:
+        Avoid 3xx redirects in APIs, except 304. Move clients to a new
+        location, redirect behind the API layer, or deprecate the endpoint
+        instead. For an idempotent POST that finds an existing resource,
+        return 200 with a Location header, and for a non-repeatable creation
+        return 409.
+    rationale:
+        Redirects add round trips and are handled inconsistently by API
+        clients, while explicit codes make the outcome clear.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [should, http, status-codes]
+    source: https://opensource.zalando.com/restful-api-guidelines/#251

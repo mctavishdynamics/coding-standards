@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12PreferElseif:
+    standard: @{Psr12}
+    ruleId: 5.1b
+    title: Write elseif rather than else if
+    statement:
+        Use the elseif keyword instead of the two words else if.
+    rationale:
+        This way every control keyword reads as a single word.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        if ($age < 13) {
+            $group = 'child';
+        } else if ($age < 18) {
+            $group = 'teen';
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        if ($age < 13) {
+            $group = 'child';
+        } elseif ($age < 18) {
+            $group = 'teen';
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [control-structures, keywords]
+    source: https://www.php-fig.org/psr/psr-12/#51-if-elseif-else

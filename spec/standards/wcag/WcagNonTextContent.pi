@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagNonTextContent:
+    standard: @{Wcag22}
+    ruleId: 1.1.1
+    title: Give non-text content a text alternative
+    statement:
+        Give every image, icon, chart and other non-text item a text
+        alternative that does the same job. Controls need a name stating
+        their purpose, media, tests and sensory content need at least a
+        descriptive label, and decoration must be hidden from assistive
+        technology.
+    rationale:
+        Screen reader users and anyone who cannot see an image only get its
+        meaning through the text alternative.
+    exceptions:
+        CAPTCHAs need a text description of their purpose plus an
+        alternative form using another sense. Purely decorative or invisible
+        content only needs to be ignorable.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <img src="/img/chart-q3.png">
+        <button><svg class="icon-search"></svg></button>
+        <img src="/img/divider.png" alt="divider">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <img src="/img/chart-q3.png" alt="Sales rose 12 percent in the third quarter">
+        <button aria-label="Search"><svg class="icon-search" aria-hidden="true"></svg></button>
+        <img src="/img/divider.png" alt="">
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, images, alt-text]
+    source: https://www.w3.org/TR/WCAG22/#non-text-content

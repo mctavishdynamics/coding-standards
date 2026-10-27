@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartPartOfUsesUri:
+    standard: @{EffectiveDart}
+    ruleId: do-use-strings-in-part-of-directives
+    title: Point part of directives at the library URI
+    statement:
+        In a part file, name the owning library with a URI string in the
+        `part of` directive, not with a library name. The
+        use_string_in_part_of_directives lint checks this.
+    rationale:
+        Library names are a discouraged legacy feature and can make it
+        unclear which library a part belongs to. A URI points straight at
+        the file.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        // In lib/src/cart_totals.dart:
+        part of shop.cart;
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        // In lib/src/cart_totals.dart:
+        part of '../cart.dart';
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, libraries, parts]
+    source: https://dart.dev/effective-dart/usage#do-use-strings-in-part-of-directives

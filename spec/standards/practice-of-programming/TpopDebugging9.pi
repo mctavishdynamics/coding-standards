@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopDebugging9:
+    standard: @{PracticeOfProgramming}
+    ruleId: debugging-9
+    title: Narrow the failure by halving the search space
+    statement:
+        Cut the input or the code in half repeatedly to isolate the smallest
+        case that still fails.
+    rationale:
+        Binary search finds the faulty part in a few steps, even in large
+        inputs or long histories.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```sh
+        \\\
+        head -n 5000 big.txt | ./prog   # fails?
+        head -n 2500 big.txt | ./prog   # fails? keep halving
+        \\\
+        ```
+    languages: [any]
+    tags: [debugging, bisection]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

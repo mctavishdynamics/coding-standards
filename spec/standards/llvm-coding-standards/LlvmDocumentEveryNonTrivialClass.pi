@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmDocumentEveryNonTrivialClass:
+    standard: @{LlvmCodingStandards}
+    ruleId: class-overviews
+    title: Give each non-trivial class a doc comment explaining its purpose
+    statement:
+        Put a Doxygen comment block before every non-trivial class that says
+        what the class is for and how it works.
+    rationale:
+        Classes are the main units of the design; a reader needs their role
+        before the member list makes sense.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class LiveRangeCache {
+          // ...
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        /// Caches live ranges per virtual register so repeated queries during
+        /// allocation do not recompute them. Entries are invalidated on any edit
+        /// to the owning function.
+        class LiveRangeCache {
+          // ...
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, documentation, classes]
+    source: https://llvm.org/docs/CodingStandards.html#class-overviews

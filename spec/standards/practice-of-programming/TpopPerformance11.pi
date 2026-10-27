@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance11:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-11
+    title: Reduce loop overhead by unrolling or removing loops
+    statement:
+        For short loops with a fixed count, consider writing out the
+        iterations, or restructure to avoid the loop.
+    rationale:
+        Loop control has a cost that matters in tight code, and unrolling
+        can expose further optimizations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (i = 0; i < 3; i++)
+            out[i] = a[i] + b[i];
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        out[0] = a[0] + b[0];
+        out[1] = a[1] + b[1];
+        out[2] = a[2] + b[2];
+        \\\
+        ```
+    languages: [any]
+    tags: [performance, loops]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

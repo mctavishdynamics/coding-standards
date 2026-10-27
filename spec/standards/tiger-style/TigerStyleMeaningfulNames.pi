@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleMeaningfulNames:
+    standard: @{TigerStyle}
+    ruleId: meaningful-names
+    title: Make names say how a thing is used
+    statement:
+        Prefer names that carry extra meaning about a value's role, such as
+        gpa or arena for an allocator rather than a generic name.
+    rationale:
+        A meaningful name tells the reader things the type cannot, for
+        example whether memory must be freed explicitly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn parse(allocator: Allocator, input: []const u8) !Ast {}
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn parse(arena: Allocator, input: []const u8) !Ast {}
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [naming]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#naming-things

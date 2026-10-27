@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule71:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-71
+    title: Fix confusing code instead of explaining it
+    statement:
+        If code needs a long comment to be understood, rewrite the code so
+        it is clear on its own.
+    rationale:
+        A comment cannot make bad code correct or maintainable. Clear code
+        needs fewer words.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* returns 1 if y is a leap year: divisible by 4 except
+           centuries, unless divisible by 400 */
+        int leap(int y) { return !(y % 4) & !!(y % 100) | !(y % 400); }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int is_leap_year(int y)
+        {
+            return (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [documentation, comments, refactoring]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

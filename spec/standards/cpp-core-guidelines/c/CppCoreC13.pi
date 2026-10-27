@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC13:
     standard: @{CppCoreGuidelines}
     ruleId: C.13
-    title: Declare a data member before the members that use it
+    title: Order data members so each is ready before members that depend on it
     statement:
-        If initializing or destroying member B relies on member A, declare A
-        earlier in the class than B.
+        Declare a member before any other member whose construction or
+        destruction uses it.
     rationale:
-        Members are initialized in declaration order and destroyed in
-        reverse order, whatever the order of the initializer list, so a
-        wrong order uses an object outside its lifetime.
+        Members are always built in declaration order and torn down in reverse,
+        regardless of how the initializer list is written. The wrong order means
+        one member uses another that is not yet alive or already gone.
     exceptions: null
     severity: null
     noncompliant:

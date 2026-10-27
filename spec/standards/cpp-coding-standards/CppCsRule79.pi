@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule79:
+    standard: @{CppCodingStandards}
+    ruleId: rule-79
+    title: Put only values and smart pointers into containers
+    statement:
+        Store objects by value or through smart pointers that manage their
+        lifetime, never through owning raw pointers.
+    rationale:
+        Containers copy and destroy elements; owning raw pointers leak and
+        auto_ptr-like types break.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::vector<Widget*> widgets;
+        widgets.push_back(new Widget);   // who deletes it?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<std::unique_ptr<Widget>> widgets;
+        widgets.push_back(std::make_unique<Widget>());
+        \\\
+        ```
+    languages: [cpp]
+    tags: [stl-containers, containers, memory]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

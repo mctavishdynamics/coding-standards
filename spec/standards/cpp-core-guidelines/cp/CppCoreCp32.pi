@@ -5,18 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp32:
     standard: @{CppCoreGuidelines}
     ruleId: CP.32
-    title: Use shared_ptr to share ownership between unrelated threads
+    title: Use shared_ptr when unrelated threads jointly own an object
     statement:
-        When threads with unrelated lifetimes share a free-store object that
-        must be deleted, hold it through std::shared_ptr or an equivalent.
+        Use std::shared_ptr, or something with the same semantics, for a heap object
+        that several threads with independent lifetimes need and that must be freed
+        eventually.
     rationale:
-        If no thread is known to outlive the others, shared ownership is the
-        only safe way to make sure the object is deleted exactly once and
-        only after its last user.
+        When no thread is guaranteed to finish last, reference counting is the only
+        reliable way to free the object once, after its final user is done.
     exceptions:
-        Statics that no thread owns, free-store objects that are never
-        deleted, and objects owned by a thread that outlives every other
-        user can be shared without shared_ptr.
+        Sharing without a shared_ptr is fine for statics that belong to no thread,
+        for heap objects that are deliberately never freed, and for objects whose
+        owning thread is known to outlive every user.
     severity: null
     noncompliant:
         ```cpp

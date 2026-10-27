@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem27:
+    standard: @{EffectiveJava}
+    ruleId: item-27
+    title: Remove every unchecked warning you can
+    statement:
+        Fix each unchecked warning the compiler reports. When one cannot be
+        fixed and you have proved the code safe, suppress it on the smallest
+        possible scope and comment why.
+    rationale:
+        Each unchecked warning is a possible ClassCastException. Clearing
+        them, or narrowly silencing proven ones, lets real problems stand
+        out.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        @SuppressWarnings("unchecked")
+        public class Cache { /* whole class silenced */ }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        // Safe: the array only ever holds elements of type T.
+        @SuppressWarnings("unchecked")
+        T[] copy = (T[]) Arrays.copyOf(items, size, items.getClass());
+        \\\
+        ```
+    languages: [java]
+    tags: [generics, warnings]
+    source: https://www.informit.com/store/effective-java-9780134686097

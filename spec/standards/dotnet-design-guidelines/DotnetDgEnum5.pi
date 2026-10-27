@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEnum5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: enum-5
+    title: Avoid public enums with a single value
+    statement:
+        Do not expose enums that have only one member, for example as a
+        reserved parameter for future use.
+    rationale:
+        Overloading lets a managed API add parameters later, so a one-value
+        placeholder enum buys nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public enum ExportOptions { Default }
+
+        public void Export(string path, ExportOptions options) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Export(string path) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, type-design, enums]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/enum

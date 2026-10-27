@@ -5,15 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF24:
     standard: @{CppCoreGuidelines}
     ruleId: F.24
-    title: Use a span<T> or a span_p<T> to designate a half-open sequence
+    title: Pass ranges of elements as a span
     statement:
-        Represent a range of elements with span, or span_p for a sequence
-        ended by a predicate, rather than a pointer and a count.
+        Pass a sequence of elements as a span, or as span_p if a predicate marks
+        its end. Do not pass a pointer with a separate element count.
     rationale:
-        Implicit ranges are a common source of errors because it is
-        generally impossible to know whether a pointer really has the given
-        number of elements behind it. A span is non-owning and as cheap to
-        pass as two pointers.
+        Given just a pointer and a number, nobody can verify that that many
+        elements really exist there. A span keeps the two together, owns nothing
+        and costs about the same as two pointers to pass.
     exceptions: null
     severity: null
     noncompliant:

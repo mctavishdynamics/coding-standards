@@ -5,16 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF16:
     standard: @{CppCoreGuidelines}
     ruleId: F.16
-    title: For in parameters, pass cheaply-copied types by value and others by reference to const
+    title: Pass small inputs by value and larger ones by const reference
     statement:
-        Pass small, cheap-to-copy types, roughly two or three machine words,
-        by value. Pass larger types by const reference.
+        A small type that is cheap to copy, about two or three words in size,
+        goes by value. Anything bigger goes by reference to const.
     rationale:
-        Both forms tell the caller the argument will not be modified and
-        accept rvalues. Copying small objects is simple, safe and faster
-        than an indirection.
+        Either way the caller knows the argument stays unchanged, and
+        temporaries can be passed. Copying a small value is safe and often
+        faster than going through a reference.
     exceptions:
-        For shared ownership with shared_ptr, follow R.34 or R.36.
+        For shared ownership with shared_ptr, see R.34 and R.36 instead.
     severity: null
     noncompliant:
         ```cpp

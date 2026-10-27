@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle17:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-17
+    title: Declare numeric constants with the language, not the preprocessor
+    statement:
+        Use enum or const objects for named numbers rather than preprocessor
+        definitions.
+    rationale:
+        Language-level constants have types and scope, show up in debuggers
+        and are checked by the compiler.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define PORT 8080
+        #define TIMEOUT 2.5
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum { PORT = 8080 };
+        static const double TIMEOUT = 2.5;
+        \\\
+        ```
+    languages: [any]
+    tags: [style, constants, macros]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

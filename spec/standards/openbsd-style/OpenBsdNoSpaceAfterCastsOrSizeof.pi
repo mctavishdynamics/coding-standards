@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdNoSpaceAfterCastsOrSizeof:
+    standard: @{OpenBsdStyle}
+    ruleId: cast-and-sizeof
+    title: Do not put a space after casts or sizeof
+    statement:
+        Write casts and sizeof calls directly against their operand, with no
+        space.
+    rationale:
+        It keeps the operand visibly attached to the operation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        n = (int) sizeof (buf);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        n = (int)sizeof(buf);
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, expressions]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

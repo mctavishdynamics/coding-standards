@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfTypeMembers12:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-type-members-12
+    title: End event data class names with EventArgs
+    statement:
+        Classes that carry event data should have names ending in EventArgs.
+    rationale:
+        The suffix tells readers which type holds the data for an event.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class DownloadProgressInfo : EventArgs { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class DownloadProgressEventArgs : EventArgs { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, events]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-type-members#names-of-events

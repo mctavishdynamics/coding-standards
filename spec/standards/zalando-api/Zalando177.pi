@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando177:
+    standard: @{ZalandoApi}
+    ruleId: 177
+    title: Do not expose stack traces
+    statement:
+        Never include stack traces in API responses.
+    rationale:
+        A trace shows how the service is built inside, which is no part of
+        the contract. It may also carry data that the caller has no right to
+        see and gives an attacker a map of the code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        { "title": "Internal error",
+          "detail": "NullPointerException at OrderService.java:212" }
+        \\\
+        ```
+    compliant:
+        ```json
+        \\\
+        { "title": "Internal error", "status": 500 }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, security, error-handling]
+    source: https://opensource.zalando.com/restful-api-guidelines/#177

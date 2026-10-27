@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStylePercentQ:
+    standard: @{RubyStyleGuide}
+    ruleId: percent-q
+    title: Avoid %q unless the string has both kinds of quote
+    statement:
+        Do not use %q or the bare percent-parenthesis form unless the string
+        contains both single and double quotes. RuboCop checks this with
+        Style/RedundantPercentQ.
+    rationale:
+        Regular quoted strings read more easily and should be used whenever
+        they need little escaping.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        greeting = %q(Good morning)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        greeting = 'Good morning'
+        remark = %q(She said "it's fine")
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, literals]
+    source: https://rubystyle.guide/#percent-q

@@ -5,13 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR34:
     standard: @{CppCoreGuidelines}
     ruleId: R.34
-    title: Take a shared_ptr parameter to express shared ownership
+    title: Take a shared_ptr by value when the function becomes a co-owner
     statement:
-        When a function will keep a share of ownership, take a shared_ptr by
-        value.
+        Pass a shared_ptr by value to a function that will hold on to a
+        share of the object, such as by storing it in a member.
     rationale:
-        This makes it explicit that the function shares ownership of the
-        object with the caller.
+        Seeing a by-value shared_ptr in the signature tells the caller that
+        the function joins in owning the object.
     exceptions: null
     severity: null
     noncompliant:

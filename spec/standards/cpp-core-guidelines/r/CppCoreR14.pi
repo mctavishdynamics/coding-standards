@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR14:
     standard: @{CppCoreGuidelines}
     ruleId: R.14
-    title: Avoid array parameters and prefer span
+    title: Pass a span instead of an array parameter
     statement:
-        Do not declare parameters with array syntax such as int a[]. Take a
-        span so that the size travels with the data.
+        Avoid parameters written with brackets, like int a[]. Accept a span,
+        which bundles the pointer with the element count.
     rationale:
-        An array parameter decays to a pointer and loses its size, which
-        opens the door to range errors.
+        In a parameter list the brackets mean only a pointer, and the length
+        is silently dropped. Without the length the callee can easily read
+        or write past the end.
     exceptions: null
     severity: null
     noncompliant:

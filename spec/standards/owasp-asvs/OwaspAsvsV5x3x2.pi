@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV5x3x2:
+    standard: @{OwaspAsvs}
+    ruleId: V5.3.2
+    title: Build file paths from trusted data, not user filenames
+    statement:
+        Use internally generated or trusted names when creating file paths.
+        If a user filename or metadata must be used, validate and sanitize
+        it strictly.
+    rationale:
+        Letting users steer file paths opens the door to directory
+        traversal, inclusion of local or remote files, and server-side
+        request forgery.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        path = os.path.join(UPLOAD_DIR, request.form["filename"])
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        path = os.path.join(UPLOAD_DIR, f"{uuid.uuid4().hex}.pdf")
+        \\\
+        ```
+    languages: [any]
+    tags: [level-1, file-storage, path-traversal]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x14-V5-File-Handling.md#v53-file-storage

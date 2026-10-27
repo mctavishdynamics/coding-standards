@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem7:
+    standard: @{EffectivePython}
+    ruleId: item-7
+    title: Keep inline if-else expressions to trivial two-way picks
+    statement:
+        A conditional expression is fine for choosing between two simple
+        values. When the logic grows, write a full if statement or a helper
+        function.
+    rationale:
+        Nested or long conditional expressions are hard to read and harder
+        to change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        label = "high" if x > 10 else "mid" if x > 5 else "low" if x > 0 else "none"
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        label = "even" if n % 2 == 0 else "odd"
+        \\\
+        ```
+    languages: [python]
+    tags: [pythonic-thinking, readability, expressions]
+    source: https://effectivepython.com/

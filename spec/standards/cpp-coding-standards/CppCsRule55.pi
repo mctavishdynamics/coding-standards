@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule55:
+    standard: @{CppCodingStandards}
+    ruleId: rule-55
+    title: Give copy assignment the standard signature and a copy-and-swap body
+    statement:
+        Declare copy assignment as a non-virtual member taking a const
+        reference or a value and returning a non-const reference, typically
+        implemented with copy and swap.
+    rationale:
+        The canonical form handles self assignment and gives strong
+        exception safety.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Matrix::operator=(Matrix& o);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Matrix& Matrix::operator=(Matrix o) noexcept {
+            swap(o);
+            return *this;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [construction-destruction-copying, operators, special-members]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiProtocolsDescribingCapabilityShouldUseSuffixes:
+    standard: @{SwiftApiDesign}
+    ruleId: protocols-describing-capability-should-use-suffixes
+    title: Name capability protocols with able, ible or ing
+    statement:
+        A protocol that describes a capability should end in able, ible or
+        ing, as in Hashable or ProgressReporting.
+    rationale:
+        The suffix tells readers that conforming types gain an ability
+        rather than become a kind of thing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        protocol Cancel {
+            func cancel()
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        protocol Cancellable {
+            func cancel()
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, protocols]
+    source: https://www.swift.org/documentation/api-design-guidelines/#protocols-describing-capability-should-use-suffixes

@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT60:
     standard: @{CppCoreGuidelines}
     ruleId: T.60
-    title: Minimize a template's context dependencies
+    title: Keep templates independent of their surrounding context
     statement:
-        Make a template depend on its arguments and on names it deliberately
-        qualifies, not on whatever helpers, types or functions happen to be
-        visible where it is defined or instantiated.
+        A template should depend on its arguments and on names it qualifies on
+        purpose. It should not pick up helper functions, types or variables that
+        merely happen to be visible where it is defined or used.
     rationale:
-        Fewer hidden dependencies make templates easier to understand and to
-        tool, and avoid surprises from include order, since templates
-        usually live in headers.
+        Hidden dependencies make templates harder to understand and to analyse with
+        tools. Templates usually live in headers, so such dependencies can change
+        meaning with include order and cause surprising errors.
     exceptions: null
     severity: null
     noncompliant:

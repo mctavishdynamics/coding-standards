@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule91:
+    standard: @{AnssiC}
+    ruleId: rule-91
+    title: Do not use the restrict qualifier
+    statement:
+        Do not write restrict yourself. Calling standard functions that use
+        it is allowed, but make sure their arguments do not overlap.
+    rationale:
+        If restrict pointers alias, the behaviour is undefined, and the
+        compiler rarely warns.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void add_into(int *restrict dst, const int *restrict src, size_t n);
+        add_into(buf, buf + 1, 4);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void add_into(int *dst, const int *src, size_t n);
+        add_into(buf, buf + 1, 4);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, pointers, undefined-behavior]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=74

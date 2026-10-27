@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdInitializeDeclarationsSimply:
+    standard: @{FreeBsdStyle}
+    ruleId: declaration-initialization
+    title: Declare locals before statements and avoid complex initializers
+    statement:
+        Initializing a variable in its declaration is fine, above all when
+        it never changes afterwards, and any block may hold declarations,
+        provided they come before its statements. Avoid calling complicated
+        functions in initializers.
+    rationale:
+        Keeping declarations together and simple makes the start of a block
+        easy to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int n = recompute_all_tables(sc, flags, &err);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        const int max = sc->sc_max;
+        int n;
+
+        n = recompute_all_tables(sc, flags, &err);
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, initialization]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

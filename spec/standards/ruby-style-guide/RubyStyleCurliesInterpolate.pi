@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleCurliesInterpolate:
+    standard: @{RubyStyleGuide}
+    ruleId: curlies-interpolate
+    title:
+        Keep braces when interpolating instance and global variables
+    statement:
+        When interpolating an instance, class or global variable into a
+        string, always write the full interpolation with braces rather than
+        the short hash-sigil form. RuboCop checks this with
+        Style/VariableInterpolation.
+    rationale:
+        The short form is legal but easy to miss and looks like a typo.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def greeting
+          "Welcome back, #@nickname"
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def greeting
+          "Welcome back, #{@nickname}"
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, interpolation]
+    source: https://rubystyle.guide/#curlies-interpolate

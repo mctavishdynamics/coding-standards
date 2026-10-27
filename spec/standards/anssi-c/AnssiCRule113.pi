@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule113:
+    standard: @{AnssiC}
+    ruleId: rule-113
+    title: Do not test against zero implicitly
+    statement:
+        Write an explicit comparison in every condition instead of relying
+        on a value being zero or non-zero.
+    rationale:
+        Explicit comparisons state the intent and avoid confusion between
+        counts, pointers and flags.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (count) { process(); }
+        if (!ptr) { return; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (count != 0U) { process(); }
+        if (NULL == ptr) { return; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, expressions, comparison]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=90

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdWrapCompoundMacrosInDoWhile:
+    standard: @{OpenBsdStyle}
+    ruleId: macro-multiline
+    title: Wrap compound macros in do-while (0) without a final semicolon
+    statement:
+        Use braces for a macro that spans several lines and right-justify
+        the backslashes. Wrap a macro whose body is a compound statement in
+        do and while (0), and end the macro without a semicolon so callers
+        add it.
+    rationale:
+        The do-while form is safe in if statements, and leaving out the
+        semicolon helps editors and pretty-printers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define RESET(s) (s)->len = 0; (s)->buf[0] = '\0';
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define RESET(s) do {                                           \
+                (s)->len = 0;                                           \
+                (s)->buf[0] = '\0';                                     \
+        } while (0)
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, macros]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

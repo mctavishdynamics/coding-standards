@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgUsingStandardExceptionTypes2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: using-standard-exception-types-2
+    title: Rethrow if library code catches the root exception types
+    statement:
+        Library code should not catch the general exception base types
+        except to rethrow them.
+    rationale:
+        Swallowing every exception hides bugs and conditions the library
+        cannot really handle.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        try { _cache.Refresh(); }
+        catch (Exception) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        try { _cache.Refresh(); }
+        catch (Exception ex)
+        {
+            _log.Error(ex, "Cache refresh failed.");
+            throw;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, exceptions, exception-handling]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/using-standard-exception-types#exception-and-systemexception

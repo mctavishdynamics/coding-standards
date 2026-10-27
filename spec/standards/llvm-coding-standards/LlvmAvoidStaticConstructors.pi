@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmAvoidStaticConstructors:
+    standard: @{LlvmCodingStandards}
+    ruleId: do-not-use-static-constructors
+    title: Do not add globals with non-trivial constructors or destructors
+    statement:
+        Do not introduce global or static objects whose types run a
+        constructor or destructor, and remove existing ones where possible.
+        Make global constants, including function-local statics, constexpr
+        when you can.
+    rationale:
+        Static initializers run in an unspecified order across files and
+        slow the startup of every program that links LLVM as a library.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        static std::vector<std::string> DefaultPasses = {"inline", "gvn"};
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        static constexpr llvm::StringLiteral DefaultPasses[] = {"inline", "gvn"};
+        \\\
+        ```
+    languages: [cpp]
+    tags: [globals, initialization, performance]
+    source: https://llvm.org/docs/CodingStandards.html#do-not-use-static-constructors

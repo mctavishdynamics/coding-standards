@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoSpecifyingMapCapacityHints:
+    standard: @{UberGo}
+    ruleId: specifying-map-capacity-hints
+    title: Give make a size hint for maps
+    statement:
+        When you know roughly how many entries a map will hold, pass that
+        number to make.
+    rationale:
+        A size hint lets the runtime allocate close to the right size up
+        front, reducing growth and allocations, although it does not
+        guarantee that no allocation occurs later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        index := make(map[string]*User)
+        for _, u := range users {
+            index[u.Email] = u
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        index := make(map[string]*User, len(users))
+        for _, u := range users {
+            index[u.Email] = u
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [performance, maps, allocation]
+    source: https://github.com/uber-go/guide/blob/master/style.md#specifying-map-capacity-hints

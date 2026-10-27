@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuBraceNestedIfElse:
+    standard: @{GnuCodingStandards}
+    ruleId: syntactic-nested-if-else
+    title: Put braces around an if-else nested inside an if
+    statement:
+        When an if-else statement is the body of another if, always enclose
+        it in braces.
+    rationale:
+        Without braces the reader may attach the else to the wrong if.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (have_input)
+          if (is_binary)
+            skip ();
+          else
+            parse ();
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (have_input)
+          {
+            if (is_binary)
+              skip ();
+            else
+              parse ();
+          }
+        \\\
+        ```
+    languages: [c]
+    tags: [braces, control-flow]
+    source: https://www.gnu.org/prep/standards/standards.html#Syntactic-Conventions

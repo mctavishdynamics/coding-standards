@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty11:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-11
+    title: Name indexed properties Item unless a better name is obvious
+    statement:
+        Keep the default name Item for indexers, unless a clearly more
+        descriptive name exists, which you can set with the IndexerName
+        attribute.
+    rationale:
+        Languages that see the indexer as a named property expect the
+        conventional name.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class Sentence
+        {
+            [IndexerName("Words")]
+            public string this[int index] => _words[index];
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, indexers, naming]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property#indexed-property-design

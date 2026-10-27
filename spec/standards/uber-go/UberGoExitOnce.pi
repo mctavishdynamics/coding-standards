@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoExitOnce:
+    standard: @{UberGo}
+    ruleId: exit-once
+    title: Exit from main at most once
+    statement:
+        Prefer a single call to os.Exit or log.Fatal in main. Put the
+        program logic in a separate function that returns an error, and let
+        main exit based on its result.
+    rationale:
+        This keeps main short and moves the logic into a function that tests
+        can call.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func main() {
+            cfg, err := loadConfig()
+            if err != nil {
+                log.Fatal(err)
+            }
+            if err := serve(cfg); err != nil {
+                log.Fatal(err)
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func main() {
+            if err := run(); err != nil {
+                log.Fatal(err)
+            }
+        }
+
+        func run() error {
+            cfg, err := loadConfig()
+            if err != nil {
+                return err
+            }
+            return serve(cfg)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [program-exit, testing]
+    source: https://github.com/uber-go/guide/blob/master/style.md#exit-once

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoTrivialGettersSetters:
+    standard: @{EffectiveDart}
+    ruleId: dont-wrap-a-field-in-a-getter-and-setter-unnecessarily
+    title: Expose fields directly instead of trivial accessors
+    statement:
+        Do not hide a field behind a getter and setter that only forward to
+        it; make the field public. The unnecessary_getters_setters lint
+        checks this.
+    rationale:
+        In Dart fields and accessors look the same to callers, so a field
+        can be wrapped later without changing any call sites.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Player {
+          String _nickname = '';
+          String get nickname => _nickname;
+          set nickname(String value) => _nickname = value;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Player {
+          String nickname = '';
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, classes, properties]
+    source: https://dart.dev/effective-dart/usage#dont-wrap-a-field-in-a-getter-and-setter-unnecessarily

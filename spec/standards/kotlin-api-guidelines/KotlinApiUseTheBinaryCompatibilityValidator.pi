@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiUseTheBinaryCompatibilityValidator:
+    standard: @{KotlinApiGuidelines}
+    ruleId: use-the-binary-compatibility-validator
+    title: Check binary compatibility in the build
+    statement:
+        Use the binary compatibility validator, or the equivalent support in
+        the Kotlin Gradle plugin, to keep a dump of the public API under
+        version control and fail the build when the API changes
+        unexpectedly. Review the diff and update the dump only for intended
+        changes.
+    rationale:
+        Binary breaks are easy to miss in review, and an automated check
+        catches them before release.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        plugins {
+            kotlin("jvm") version "2.2.0"
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        plugins {
+            kotlin("jvm") version "2.2.0"
+            id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.17.0"
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [compatibility, tooling]
+    source: https://kotlinlang.org/docs/api-guidelines-backward-compatibility.html#use-the-binary-compatibility-validator

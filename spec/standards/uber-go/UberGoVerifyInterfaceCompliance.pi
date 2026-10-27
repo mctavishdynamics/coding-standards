@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoVerifyInterfaceCompliance:
+    standard: @{UberGo}
+    ruleId: verify-interface-compliance
+    title: Check interface satisfaction at compile time
+    statement:
+        Where a type must implement an interface, for example as part of an
+        exported API or a family of interchangeable types, add a
+        blank-identifier assignment that fails to compile if it stops
+        matching. Use the zero value of the type on the right-hand side.
+    rationale:
+        The compiler then catches a broken contract immediately rather than
+        at the call site of some distant user.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type JSONHandler struct{}
+
+        func (h *JSONHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+            // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type JSONHandler struct{}
+
+        var _ http.Handler = (*JSONHandler)(nil)
+
+        func (h *JSONHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+            // ...
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [interfaces, compile-time-checks]
+    source: https://github.com/uber-go/guide/blob/master/style.md#verify-interface-compliance

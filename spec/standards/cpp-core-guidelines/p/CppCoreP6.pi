@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreP6:
     standard: @{CppCoreGuidelines}
     ruleId: P.6
-    title: Make what cannot be checked at compile time checkable at run time
+    title: Make the checks the compiler cannot do possible at run time
     statement:
-        Design code so that errors the compiler cannot catch can still be
-        detected while the program runs, for example by keeping sizes
-        together with the data they describe.
+        Some mistakes slip past the compiler. Shape the code so those mistakes
+        can still be caught at run time, for instance by keeping a length next
+        to the buffer it belongs to.
     rationale:
-        Hard-to-detect errors lead to crashes and wrong results. Not every
-        check is affordable, but a program should at least be checkable in
-        principle.
+        An error that no check can see turns into a crash or into wrong output.
+        Even when you skip a check for speed, the data to perform it should
+        remain available.
     exceptions: null
     severity: null
     noncompliant:

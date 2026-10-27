@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgField1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: field-1
+    title: Do not expose public or protected instance fields
+    statement:
+        Keep instance fields private and expose data through properties.
+    rationale:
+        Properties can later add validation, change notification or a
+        different storage without breaking callers, while fields cannot.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class Account
+        {
+            public decimal Balance;
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class Account
+        {
+            private decimal _balance;
+            public decimal Balance => _balance;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, fields, encapsulation]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/field

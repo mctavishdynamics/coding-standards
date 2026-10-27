@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoStaticOnlyClasses:
+    standard: @{EffectiveDart}
+    ruleId: avoid-defining-a-class-that-contains-only-static-members
+    title: Do not make classes that hold only static members
+    statement:
+        Declare unrelated helpers as top-level functions, variables and
+        constants, and use a library with an import prefix as a namespace.
+        The avoid_classes_with_only_static_members lint checks this.
+    rationale:
+        A class that nobody ever instantiates is not modelling anything.
+        Top-level declarations need no wrapper, and importers can resolve
+        name clashes themselves with prefixes and show or hide.
+    exceptions:
+        Grouping constants or enum-like values in a class can be natural.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class StringUtils {
+          static String capitalize(String s) =>
+              s.isEmpty ? s : s[0].toUpperCase() + s.substring(1);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        String capitalize(String s) =>
+            s.isEmpty ? s : s[0].toUpperCase() + s.substring(1);
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, classes, libraries]
+    source: https://dart.dev/effective-dart/design#avoid-defining-a-class-that-contains-only-static-members

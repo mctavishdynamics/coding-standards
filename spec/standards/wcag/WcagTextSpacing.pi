@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagTextSpacing:
+    standard: @{Wcag22}
+    ruleId: 1.4.12
+    title: Survive user overrides of text spacing
+    statement:
+        Make sure no content or function is lost when users set line height
+        to 1.5 times the font size, paragraph spacing to 2 times, letter
+        spacing to 0.12 times and word spacing to 0.16 times.
+    rationale:
+        Many readers with dyslexia or low vision apply custom spacing, which
+        breaks layouts with fixed heights.
+    exceptions:
+        Languages and scripts that do not use one of these properties only
+        need to support the ones they use.
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        .badge { height: 20px; overflow: hidden; white-space: nowrap; }
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        .badge { min-height: 1.25rem; padding-block: 0.25rem; }
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, typography, layout]
+    source: https://www.w3.org/TR/WCAG22/#text-spacing

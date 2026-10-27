@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem46:
+    standard: @{EffectiveCpp}
+    ruleId: item-46
+    title: Define friend functions inside class templates when operands need conversion
+    statement:
+        When a class template needs a non-member function that supports
+        implicit conversions on all arguments, define it as a friend inside
+        the template.
+    rationale:
+        Template argument deduction ignores implicit conversions, so an
+        out-of-class function template is never chosen for mixed arguments.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class T>
+        Ratio<T> operator*(const Ratio<T>& a, const Ratio<T>& b);
+        Ratio<int> r = half * 2;   // no match
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T>
+        class Ratio {
+        public:
+            Ratio(T n, T d = 1);
+            friend Ratio operator*(const Ratio& a, const Ratio& b) {
+                return Ratio(a.n_ * b.n_, a.d_ * b.d_);
+            }
+        private:
+            T n_, d_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates-and-generic-programming, templates, operators]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

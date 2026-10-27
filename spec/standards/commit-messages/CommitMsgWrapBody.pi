@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CommitMessages import CommitMessages
+
+export coding-rule CommitMsgWrapBody:
+    standard: @{CommitMessages}
+    ruleId: 6
+    title: Hard-wrap body lines at 72 characters
+    statement:
+        Break the lines of the commit body by hand so none is longer than 72
+        characters.
+    rationale:
+        Git does not rewrap text, and indenting a 72-column body still
+        leaves the output under 80 columns in a terminal.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        The nightly export failed whenever a customer name contained a comma, because the writer joined fields without quoting them.
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        The nightly export failed whenever a customer name contained a
+        comma, because the writer joined fields without quoting them.
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, line-length, format]
+    source: https://cbea.ms/git-commit/#wrap-72

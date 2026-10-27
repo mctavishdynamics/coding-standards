@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem16:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-16
+    title: Synchronise mutable state touched by const member functions
+    statement:
+        If a const member function modifies mutable state, protect that
+        state with a mutex or an atomic unless the class will never be
+        shared between threads.
+    rationale:
+        Callers assume const operations are read-only and may run them in
+        parallel without locking.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Mesh {
+        public:
+            double area() const {
+                if (!cached_) { area_ = compute(); cached_ = true; }
+                return area_;
+            }
+        private:
+            mutable bool cached_ = false;
+            mutable double area_ = 0;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Mesh {
+        public:
+            double area() const {
+                std::lock_guard<std::mutex> g(m_);
+                if (!cached_) { area_ = compute(); cached_ = true; }
+                return area_;
+            }
+        private:
+            mutable std::mutex m_;
+            mutable bool cached_ = false;
+            mutable double area_ = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [moving-to-modern-cpp, concurrency, const-correctness]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

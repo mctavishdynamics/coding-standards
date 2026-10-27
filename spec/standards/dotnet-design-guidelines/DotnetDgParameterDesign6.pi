@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-6
+    title: Replace multiple Boolean parameters with enums
+    statement:
+        If a member would need two or more Boolean parameters, use enums
+        instead.
+    rationale:
+        Call sites full of true and false are unreadable and easy to get in
+        the wrong order.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        archive.Extract(destination, true, false);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        archive.Extract(destination, OverwriteMode.Replace, PathMode.Flatten);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, parameters, enums]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#choosing-between-enum-and-boolean-parameters

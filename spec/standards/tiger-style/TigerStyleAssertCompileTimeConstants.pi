@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleAssertCompileTimeConstants:
+    standard: @{TigerStyle}
+    ruleId: assert-compile-time-constants
+    title: Assert relationships between compile-time constants
+    statement:
+        Use compile-time assertions to check how constants relate to each
+        other and to pin down type sizes and other subtle invariants.
+    rationale:
+        These checks confirm the integrity of the design before the program
+        ever runs, and they document the reasoning behind the numbers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        const block_size = 64 * 1024;
+        const blocks_per_segment = 100;
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        const block_size = 64 * 1024;
+        const segment_size = 4 * 1024 * 1024;
+        comptime assert(segment_size % block_size == 0);
+        comptime assert(@sizeOf(BlockHeader) == 128);
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [assertions, compile-time]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

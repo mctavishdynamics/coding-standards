@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe122:
+    standard: @{CweTop25}
+    ruleId: CWE-122
+    title: Prevent heap-based buffer overflows
+    statement:
+        Size each heap allocation for everything it must hold, including
+        terminators, and guard size calculations against overflow; then
+        bounds-check every write into it. Use bounds-checking languages or
+        abstraction libraries over risky APIs, and enable address
+        randomization and similar hardening.
+    rationale:
+        Overrunning a heap block corrupts allocator metadata and nearby
+        objects, which attackers can turn into code execution. It is ranked
+        16 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char *dup_string(const char *s) {
+            char *copy = malloc(strlen(s));
+            strcpy(copy, s);
+            return copy;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *dup_string(const char *s) {
+            size_t size = strlen(s) + 1;
+            char *copy = malloc(size);
+            if (copy != NULL) {
+                memcpy(copy, s, size);
+            }
+            return copy;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rank-16, memory, buffer-overflow, heap]
+    source: https://cwe.mitre.org/data/definitions/122.html

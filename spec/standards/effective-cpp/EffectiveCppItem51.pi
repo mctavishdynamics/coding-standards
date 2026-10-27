@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem51:
+    standard: @{EffectiveCpp}
+    ruleId: item-51
+    title: Make custom allocation functions behave like the global ones
+    statement:
+        A custom operator new should loop calling the new-handler, cope with
+        zero-byte requests and pass mismatched sizes to the standard
+        version. operator delete must accept a null pointer.
+    rationale:
+        Clients and derived classes rely on the same behaviour as the global
+        functions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void* Pool::operator new(std::size_t n) {
+            return arena.take(n);   // wrong size for derived classes
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void* Pool::operator new(std::size_t n) {
+            if (n != sizeof(Pool)) return ::operator new(n);
+            return arena.take(n);
+        }
+        void Pool::operator delete(void* p, std::size_t n) noexcept {
+            if (!p) return;
+            if (n != sizeof(Pool)) { ::operator delete(p); return; }
+            arena.give(p);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [customizing-new-and-delete, memory, allocation]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

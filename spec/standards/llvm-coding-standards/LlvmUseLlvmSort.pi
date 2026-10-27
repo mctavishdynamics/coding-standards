@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmUseLlvmSort:
+    standard: @{LlvmCodingStandards}
+    ruleId: beware-of-non-deterministic-sorting-order-of-equal-elements
+    title: Use llvm::sort instead of std::sort
+    statement:
+        The standard sort may order equal elements differently from run to
+        run. Call llvm::sort, which shuffles the input first in
+        expensive-checks builds to expose code that depends on such an
+        order.
+    rationale:
+        Hidden dependence on the order of equal elements causes
+        non-deterministic output.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::sort(Blocks.begin(), Blocks.end(), byWeight);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        llvm::sort(Blocks, byWeight);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [determinism, sorting]
+    source: https://llvm.org/docs/CodingStandards.html#beware-of-non-deterministic-sorting-order-of-equal-elements

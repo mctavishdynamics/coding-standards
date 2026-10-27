@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem69:
+    standard: @{EffectiveJava}
+    ruleId: item-69
+    title: Never drive ordinary control flow with exceptions
+    statement:
+        Never use exceptions for normal control flow. A well-designed API
+        should not force callers to catch exceptions in ordinary use; give
+        them a state-testing method or an optional result instead.
+    rationale:
+        Exception-driven loops are hard to read, slower and can hide real
+        bugs that throw the same exception.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        try {
+            int i = 0;
+            while (true) total += prices[i++];
+        } catch (ArrayIndexOutOfBoundsException e) { }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        for (int price : prices) total += price;
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, control-flow]
+    source: https://www.informit.com/store/effective-java-9780134686097

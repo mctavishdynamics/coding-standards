@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule65:
+    standard: @{AnssiC}
+    ruleId: rule-65
+    title: Access volatile objects only through volatile pointers
+    statement:
+        Read or write a volatile object only through a pointer that is
+        itself volatile-qualified.
+    rationale:
+        Accessing a volatile object through a plain pointer is undefined
+        behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        volatile int flag;
+        int *p = (int *)&flag;
+        *p = 1;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        volatile int flag;
+        volatile int *p = &flag;
+        *p = 1;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, volatile, pointers, undefined-behavior]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=47

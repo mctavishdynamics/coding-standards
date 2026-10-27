@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfNamespaces2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-namespaces-2
+    title: Make the second namespace level a lasting product name
+    statement:
+        After the company, use a product name that will not change between
+        releases and contains no version number.
+    rationale:
+        Renaming a namespace breaks every caller, so anything temporary in
+        it causes breaking changes later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        namespace Fabrikam.InventoryV3.Stock;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        namespace Fabrikam.Inventory.Stock;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, namespaces, versioning]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-namespaces

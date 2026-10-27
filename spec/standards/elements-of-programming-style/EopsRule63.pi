@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule63:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-63
+    title: Trust the compiler with routine optimizations
+    statement:
+        Do not hand-apply transformations such as constant folding or moving
+        invariant code out of loops when the compiler already does them.
+    rationale:
+        Compilers do these reliably and keep the source readable. Manual
+        versions add clutter for no benefit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* precomputed by hand: 60 * 60 * 24 */
+        long secs = days * 86400L;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        long secs = days * (60L * 60 * 24);
+        \\\
+        ```
+    languages: [any]
+    tags: [efficiency-and-instrumentation, performance, compilers]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

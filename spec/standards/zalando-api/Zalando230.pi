@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando230:
+    standard: @{ZalandoApi}
+    ruleId: 230
+    title: Consider the Idempotency-Key header
+    statement:
+        Let clients send a unique Idempotency-Key with create or update
+        requests. Store the key with the first response for a limited time
+        and replay that response for retries instead of running the request
+        again.
+    rationale:
+        Clients can then retry after timeouts or network failures and get
+        the same result without duplicate effects.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        POST /payments
+        Idempotency-Key: 5b1c0e5e-2f8a-4c4e-9d3b-71b0f2a6c8d1
+        Content-Type: application/json
+
+        { "order_id": "so-4471", "amount": { "amount": 19.99, "currency": "EUR" } }
+        \\\
+        ```
+    languages: [any]
+    tags: [may, http, idempotency]
+    source: https://opensource.zalando.com/restful-api-guidelines/#230

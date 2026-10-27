@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule19:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-19
+    title: Write multi-way decisions as an else-if chain
+    statement:
+        When one of several alternatives applies, write a flat chain of if,
+        else if and a final else.
+    rationale:
+        The chain reads as a list of cases tested in order, with exactly one
+        taken. Deep nesting of the same logic is harder to follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (score >= 90) {
+            grade = 'A';
+        } else {
+            if (score >= 80) {
+                grade = 'B';
+            } else {
+                grade = 'C';
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (score >= 90) {
+            grade = 'A';
+        } else if (score >= 80) {
+            grade = 'B';
+        } else {
+            grade = 'C';
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [control-structure, conditionals]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

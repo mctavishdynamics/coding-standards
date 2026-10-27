@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdPreferUnderscoresInIdentifiers:
+    standard: @{FreeBsdStyle}
+    ruleId: identifier-case
+    title: Separate words with underscores, not camelCase
+    statement:
+        Prefer internal underscores in identifiers over camelCase or
+        TitleCase.
+    rationale:
+        It matches the existing code base and keeps names consistent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static int bufferCount;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int buffer_count;
+        \\\
+        ```
+    languages: [c]
+    tags: [naming]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleFloatDivision:
+    standard: @{RubyStyleGuide}
+    ruleId: float-division
+    title: Convert only one operand for float division
+    statement:
+        To divide two integers as floats, convert one of them with to_f or
+        call fdiv, rather than converting both. RuboCop checks this with
+        Style/FloatDivision.
+    rationale:
+        One conversion is enough to get a float result, and fdiv states the
+        intent outright.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        ratio = hits.to_f / total.to_f
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        ratio = hits.to_f / total
+        ratio = hits.fdiv(total)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [numbers]
+    source: https://rubystyle.guide/#float-division

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdSortLocalDeclarations:
+    standard: @{FreeBsdStyle}
+    ruleId: local-variable-order
+    title: Sort local declarations by size then name
+    statement:
+        Declare a function's local variables sorted by size, then
+        alphabetically. Several may share a line; if a line gets too long,
+        repeat the type keyword on a new line.
+    rationale:
+        A predictable order makes it easy to find a variable's declaration.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int i;
+        struct proc *p;
+        char c;
+        long count;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct proc *p;
+        long count;
+        int i;
+        char c;
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, formatting]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

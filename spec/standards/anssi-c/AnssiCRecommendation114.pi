@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation114:
+    standard: @{AnssiC}
+    ruleId: recommendation-114
+    title: Use the bool type for boolean values in C99
+    statement:
+        In C99 code, declare variables that hold true or false as bool. Such
+        variables may be tested directly in a condition.
+    rationale:
+        bool documents the intent and restricts the variable to two values.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int done = 0;
+        while (done == 0) { done = step(); }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdbool.h>
+        bool done = false;
+        while (!done) { done = step(); }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, types, booleans]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=91

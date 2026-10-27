@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando252:
+    standard: @{ZalandoApi}
+    ruleId: 252
+    title: Use one schema for reading and writing a resource
+    statement:
+        Share one model for reading and writing a resource type. Mark
+        properties that only appear in requests as writeOnly and those that
+        only appear in responses as readOnly.
+    rationale:
+        One schema keeps the specification smaller and easier to understand
+        than parallel request and response models.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        Account:
+          type: object
+          properties:
+            id:
+              type: string
+              readOnly: true
+            email:
+              type: string
+            password:
+              type: string
+              writeOnly: true
+        \\\
+        ```
+    languages: [any]
+    tags: [should, json, openapi]
+    source: https://opensource.zalando.com/restful-api-guidelines/#252

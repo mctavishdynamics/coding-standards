@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuUseSeparateVariablesPerPurpose:
+    standard: @{GnuCodingStandards}
+    ruleId: syntactic-one-variable-per-purpose
+    title: Use a separate, well-named local for each purpose in the narrowest scope
+    statement:
+        Do not reuse one temporary variable for unrelated values. Declare a
+        local for each distinct purpose, give it a meaningful name, and
+        place it in the smallest scope covering its uses.
+    rationale:
+        The code becomes easier to understand and compilers can optimize it
+        better.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int tem;
+        tem = count_words (buf);
+        report (tem);
+        tem = strlen (buf);
+        report (tem);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int words = count_words (buf);
+        report (words);
+        size_t len = strlen (buf);
+        report (len);
+        \\\
+        ```
+    languages: [c]
+    tags: [variables, naming, scope]
+    source: https://www.gnu.org/prep/standards/standards.html#Syntactic-Conventions

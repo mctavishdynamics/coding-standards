@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoInitializingStructReferences:
+    standard: @{UberGo}
+    ruleId: initializing-struct-references
+    title: Use an address-of literal rather than new for structs
+    statement:
+        Create pointers to structs with an address-of composite literal
+        instead of new.
+    rationale:
+        The literal form matches ordinary struct initialization and lets
+        fields be set in the same expression.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        cfg := new(Config)
+        cfg.Port = 8080
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        cfg := &Config{Port: 8080}
+        \\\
+        ```
+    languages: [go]
+    tags: [structs, initialization, pointers]
+    source: https://github.com/uber-go/guide/blob/master/style.md#initializing-struct-references

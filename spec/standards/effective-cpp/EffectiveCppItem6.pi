@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem6:
+    standard: @{EffectiveCpp}
+    ruleId: item-6
+    title: Forbid generated operations your class should not support
+    statement:
+        When copying or assignment makes no sense for a class, prevent the
+        compiler from providing it, in modern code by declaring it deleted.
+    rationale:
+        Otherwise clients can silently copy objects that represent unique
+        resources.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Mutex {
+        public:
+            Mutex();
+            ~Mutex();
+        };
+        Mutex copy = existing;   // compiles
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Mutex {
+        public:
+            Mutex();
+            ~Mutex();
+            Mutex(const Mutex&) = delete;
+            Mutex& operator=(const Mutex&) = delete;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors-destructors-assignment, special-members]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

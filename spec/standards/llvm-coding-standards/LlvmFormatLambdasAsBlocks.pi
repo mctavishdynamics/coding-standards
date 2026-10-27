@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmFormatLambdasAsBlocks:
+    standard: @{LlvmCodingStandards}
+    ruleId: format-lambdas-like-blocks-of-code
+    title: Format multi-line lambdas like ordinary code blocks
+    statement:
+        When a statement has a single multi-line lambda as its last part,
+        indent the lambda body two spaces like an if block. When there are
+        several multi-line lambdas or arguments follow the lambda, indent
+        each body two spaces from its capture list. Design APIs so a
+        callback is the last parameter.
+    rationale:
+        Block-style indentation keeps callback bodies readable and avoids
+        deep rightward drift.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        llvm::erase_if(Uses,
+                       [&](Use *U) {
+                         auto *I = cast<Instruction>(U->getUser());
+                         return Dead.count(I);
+                       });
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        llvm::erase_if(Uses, [&](Use *U) {
+          auto *I = cast<Instruction>(U->getUser());
+          return Dead.count(I);
+        });
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, lambdas, indentation]
+    source: https://llvm.org/docs/CodingStandards.html#format-lambdas-like-blocks-of-code

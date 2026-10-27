@@ -5,17 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreI24:
     standard: @{CppCoreGuidelines}
     ruleId: I.24
-    title: Avoid adjacent parameters that can be invoked by the same arguments in either order with different meaning
+    title: Avoid neighbouring parameters of the same type that are easy to swap
     statement:
-        Do not place parameters of the same or convertible types next to
-        each other when swapping them would change the meaning. Use distinct
-        types, a range object or a struct with named fields.
+        If two neighbouring parameters share a type, a caller can swap them
+        silently. Use distinct types, a range object or a struct with named
+        members instead.
     rationale:
-        Adjacent arguments of the same type are easily swapped by mistake,
-        and the compiler cannot catch it.
+        The compiler sees nothing wrong with arguments in the wrong order. The
+        mistake surfaces only as wrong behavior at run time.
     exceptions:
-        If the order of the parameters does not matter, as in a max of two
-        values, there is no problem.
+        When the order does not change the result, as in a function that returns
+        the smaller of two values, adjacent same-typed parameters are harmless.
     severity: null
     noncompliant:
         ```cpp

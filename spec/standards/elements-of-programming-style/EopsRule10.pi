@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule10:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-10
+    title: Avoid three-way arithmetic branches
+    statement:
+        Do not jump to one of three places based on the sign of a value, as
+        the old Fortran arithmetic IF did. Use ordinary conditional
+        statements.
+    rationale:
+        A three-way jump scatters the cases across labels and hides which
+        case leads where. Structured tests keep each case beside its action.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+            if (d < 0) goto neg;
+            if (d == 0) goto zero;
+            goto pos;
+        neg:  sign = -1; goto done;
+        zero: sign = 0;  goto done;
+        pos:  sign = 1;
+        done: ;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (d < 0) {
+            sign = -1;
+        } else if (d == 0) {
+            sign = 0;
+        } else {
+            sign = 1;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [expression, control-flow, goto]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

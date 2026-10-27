@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiChooseTheAppropriateErrorHandlingMechanism:
+    standard: @{KotlinApiGuidelines}
+    ruleId: choose-the-appropriate-error-handling-mechanism
+    title: Return null for missing data and use errors for failures
+    statement:
+        Use one error strategy across the API. A nullable return type with
+        null signals that a value could not be found or computed; any other
+        kind of failure is reported by throwing or by returning a Result.
+    rationale:
+        A consistent policy lets users handle absence and failure without
+        checking each function's habits.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun findUser(id: UserId): User   // throws NotFoundException
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun findUser(id: UserId): User?  // null when no such user
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [consistency, error-handling]
+    source: https://kotlinlang.org/docs/api-guidelines-consistency.html#choose-the-appropriate-error-handling-mechanism

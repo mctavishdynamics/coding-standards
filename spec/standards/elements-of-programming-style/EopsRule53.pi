@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule53:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-53
+    title: Limit the number of ways a loop can exit
+    statement:
+        Avoid loops that can be left from several places. Prefer a single
+        exit condition, or make each extra exit obvious.
+    rationale:
+        With many exits it becomes hard to know what is true after the loop,
+        and code after it may assume the wrong case.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (i = 0; i < n; i++) {
+            if (a[i] < 0) break;
+            if (a[i] == key) break;
+            if (a[i] > limit) return -1;
+        }
+        /* why did we stop? */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        i = 0;
+        while (i < n && a[i] != key && a[i] >= 0 && a[i] <= limit) {
+            i++;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [common-blunders, loops, control-flow]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

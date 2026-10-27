@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem106:
+    standard: @{EffectivePython}
+    ruleId: item-106
+    title: Use decimal when exact precision matters
+    statement:
+        For money and other values that need exact decimal results and
+        controlled rounding, use decimal.Decimal built from strings.
+    rationale:
+        Binary floats cannot represent most decimal fractions exactly, and
+        rounding errors add up.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        total = 0.1 + 0.2  # 0.30000000000000004
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from decimal import Decimal, ROUND_HALF_UP
+
+        total = (Decimal("0.1") + Decimal("0.2")).quantize(Decimal("0.01"), ROUND_HALF_UP)
+        \\\
+        ```
+    languages: [python]
+    tags: [data-structures-and-algorithms, numbers, precision]
+    source: https://effectivepython.com/

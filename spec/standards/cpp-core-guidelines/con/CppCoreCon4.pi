@@ -5,14 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCon4:
     standard: @{CppCoreGuidelines}
     ruleId: Con.4
-    title: Use const to define objects whose values do not change after construction
+    title: Mark objects const when their value is fixed after creation
     statement:
-        Declare an object const when its value is fixed once it has been
-        initialized.
+        Add const to any object that keeps the value it was initialized with.
     rationale:
-        It prevents surprises from unexpectedly changed values; a reader
-        must otherwise assume a non-const variable is modified somewhere,
-        for example inside a long loop.
+        Without const, a reader has to scan the rest of the scope, perhaps a long
+        loop, to be sure the value never changes. With it, an unexpected change
+        cannot happen.
     exceptions: null
     severity: null
     noncompliant:

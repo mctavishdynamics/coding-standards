@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando156:
+    standard: @{ZalandoApi}
+    ruleId: 156
+    title: Use gzip compression
+    statement:
+        Support gzip content encoding in servers and clients unless the
+        content is already compressed or the server lacks resources. Still
+        serve unencoded content on request, and declare Accept-Encoding and
+        Content-Encoding in the specification.
+    rationale:
+        Compression reduces the data sent over the network and speeds up
+        responses.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        GET /articles HTTP/1.1
+        Accept-Encoding: gzip
+
+        HTTP/1.1 200 OK
+        Content-Encoding: gzip
+        \\\
+        ```
+    languages: [any]
+    tags: [should, performance, http]
+    source: https://opensource.zalando.com/restful-api-guidelines/#156

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmAssertWithMessages:
+    standard: @{LlvmCodingStandards}
+    ruleId: assert-liberally
+    title: Assert preconditions liberally and give each assert a message
+    statement:
+        Use assert to check every precondition and assumption you rely on,
+        and combine the condition with a string that explains what went
+        wrong.
+    rationale:
+        Assertions catch bugs close to their cause, and the message tells
+        the person debugging why the check exists.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Value *getArg(unsigned N) {
+          return Args[N];
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Value *getArg(unsigned N) {
+          assert(N < Args.size() && "argument index past end of call");
+          return Args[N];
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [assertions, debugging]
+    source: https://llvm.org/docs/CodingStandards.html#assert-liberally

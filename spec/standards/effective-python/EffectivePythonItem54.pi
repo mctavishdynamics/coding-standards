@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem54:
+    standard: @{EffectivePython}
+    ruleId: item-54
+    title: Share behaviour with small mix-in classes
+    statement:
+        When several classes need the same generic capability, put it in a
+        mix-in class that has no instance state of its own and inherit it
+        where needed.
+    rationale:
+        Mix-ins provide reusable behaviour while avoiding the problems of
+        multiple inheritance with stateful classes.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        class ToDictMixin:
+            def to_dict(self):
+                return dict(vars(self))
+
+        class User(ToDictMixin):
+            def __init__(self, name):
+                self.name = name
+        \\\
+        ```
+    languages: [python]
+    tags: [classes-and-interfaces, classes, inheritance, mixins]
+    source: https://effectivepython.com/

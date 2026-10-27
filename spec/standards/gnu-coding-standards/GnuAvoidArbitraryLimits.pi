@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuAvoidArbitraryLimits:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-arbitrary-limits
+    title: Avoid arbitrary limits on sizes and counts
+    statement:
+        Size data structures at run time so that file names, lines, files,
+        symbols and similar items can be as long or as numerous as the input
+        requires.
+    rationale:
+        Silently truncating long input is unacceptable; a GNU tool should
+        handle whatever the user gives it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char line[256];
+        while (fgets (line, sizeof line, fp))
+          process (line);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *line = NULL;
+        size_t cap = 0;
+        while (getline (&line, &cap, fp) != -1)
+          process (line);
+        free (line);
+        \\\
+        ```
+    languages: [c]
+    tags: [robustness, memory]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

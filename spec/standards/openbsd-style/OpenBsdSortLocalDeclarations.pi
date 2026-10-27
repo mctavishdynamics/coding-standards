@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdSortLocalDeclarations:
+    standard: @{OpenBsdStyle}
+    ruleId: local-variable-order
+    title: Sort local declarations by size, then alphabetically
+    statement:
+        Declare a function's local variables from largest to smallest type,
+        then alphabetically. Several per line are fine; on overflow, repeat
+        the type keyword on the next line.
+    rationale:
+        A predictable order makes declarations easy to find.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char c;
+        struct stat sb;
+        int fd;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct stat sb;
+        int fd;
+        char c;
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, formatting]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

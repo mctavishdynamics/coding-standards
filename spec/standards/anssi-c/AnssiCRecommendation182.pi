@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation182:
+    standard: @{AnssiC}
+    ruleId: recommendation-182
+    title: Indent long expressions to show their structure
+    statement:
+        When a statement or expression spans several lines, indent the
+        continuation lines so that its structure is clear.
+    rationale:
+        Poorly indented long conditions hide how the operands group.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if ((mode == MODE_A) || ((len > min) &&
+        (len < max) && (NULL != buf))) {
+            run();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if ((mode == MODE_A)
+            || ((len > min)
+                && (len < max)
+                && (NULL != buf))) {
+            run();
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, formatting, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=146

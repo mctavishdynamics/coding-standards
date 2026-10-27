@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSealing2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: sealing-2
+    title: Leave sealed types without protected or new virtual members
+    statement:
+        A sealed type should have neither protected nor new virtual members.
+    rationale:
+        Nothing can derive from it, so such members can never be called or
+        overridden.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public sealed class Token
+        {
+            protected virtual string Format() => _value;
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public sealed class Token
+        {
+            private string Format() => _value;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, extensibility, sealing]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/sealing

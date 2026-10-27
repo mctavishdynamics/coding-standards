@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleOptionalArguments:
+    standard: @{RubyStyleGuide}
+    ruleId: optional-arguments
+    title: Place parameters with defaults after the required ones
+    statement:
+        Place parameters with default values after the required ones.
+    rationale:
+        Ruby assigns arguments to optional parameters at the front in ways
+        that surprise callers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def greet(greeting = 'Hello', name)
+          "#{greeting}, #{name}"
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def greet(name, greeting = 'Hello')
+          "#{greeting}, #{name}"
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, parameters]
+    source: https://rubystyle.guide/#optional-arguments

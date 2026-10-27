@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule133:
+    standard: @{AnssiC}
+    ruleId: rule-133
+    title: Do not modify a for loop counter inside the body
+    statement:
+        Never change the counter of a for loop in its body; use break to
+        stop early.
+    rationale:
+        Changing the counter makes the number of iterations hard to predict
+        and can skip the stop condition entirely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (i = 0; i != LEN; i++) {
+            if (skip_next(i)) { i++; }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (i = 0; i < LEN; i++) {
+            if (should_stop(i)) { break; }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, control-flow, loops]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=104

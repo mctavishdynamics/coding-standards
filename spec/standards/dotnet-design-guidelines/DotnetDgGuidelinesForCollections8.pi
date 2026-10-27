@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgGuidelinesForCollections8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: guidelines-for-collections-8
+    title: Do not make collection properties settable
+    statement:
+        Give collection properties only a getter. If replacing the whole
+        contents is common, add an AddRange-style method to the collection.
+    rationale:
+        Callers can clear and refill the existing collection, and a setter
+        would let them swap out the object the owner relies on.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Collection<Tag> Tags { get; set; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public Collection<Tag> Tags { get; } = new();
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, collections, properties]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/guidelines-for-collections#collection-properties-and-return-values

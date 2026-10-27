@@ -1,0 +1,21 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV4x2x3:
+    standard: @{OwaspAsvs}
+    ruleId: V4.2.3
+    title: Reject connection-specific headers in HTTP/2 and HTTP/3
+    statement:
+        Refuse to produce or receive HTTP/2 and HTTP/3 messages with
+        connection-specific fields, Transfer-Encoding being one example.
+    rationale:
+        Such fields are invalid in these versions and can cause response
+        splitting or header injection when messages are downgraded.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-3, http, header-injection]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x13-V4-API-and-Web-Service.md#v42-http-message-structure-validation

@@ -5,19 +5,20 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR3:
     standard: @{CppCoreGuidelines}
     ruleId: R.3
-    title: Treat a raw pointer as non-owning
+    title: Assume a raw pointer does not own what it points to
     statement:
-        A plain T* never owns the object it points to. When a pointer must
-        own, use a smart pointer or mark it with gsl::owner.
+        Treat a bare T* as an observer that never deletes its target. If a
+        pointer has to own, make it a smart pointer or tag it
+        with gsl::owner.
     rationale:
-        Most raw pointers are non-owning and nothing in the language says
-        otherwise. Owners must be identifiable so that the objects they hold
-        are deleted reliably.
+        Most pointers in typical code do not own, and the language offers no
+        way to tell the two kinds apart. Marking the owning ones lets people
+        and tools confirm that each owned object gets deleted.
     exceptions:
-        Legacy code, especially code that must stay compilable as C or that
-        crosses C-style ABIs, still uses owning raw pointers. Resource
-        handle implementations such as vector also need owning raw pointers
-        internally; annotate them with owner where possible.
+        Older code may still rely on owning raw pointers, in particular code
+        shared with C or exposed through C-style ABIs. Handle classes like
+        vector also hold owning raw pointers inside, and those should carry
+        the owner annotation where practical.
     severity: null
     noncompliant:
         ```cpp

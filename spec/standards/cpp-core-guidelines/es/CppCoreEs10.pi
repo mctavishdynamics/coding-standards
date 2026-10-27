@@ -5,15 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs10:
     standard: @{CppCoreGuidelines}
     ruleId: ES.10
-    title: Declare one name only per declaration
+    title: Introduce a single name in each declaration
     statement:
-        Put each variable in its own declaration statement.
+        Write a separate declaration statement for each name you introduce.
     rationale:
-        One name per declaration reads more easily, avoids mistakes caused
-        by the C declarator grammar and leaves room for a comment.
+        Packing several names into one line makes the declarator rules of C
+        easy to misread, as with pointers and arrays declared together. A
+        line per name is clearer and has space for a short trailing comment.
     exceptions:
-        A function declaration lists several parameters, and a structured
-        binding is meant to introduce several names at once.
+        Function parameter lists naturally declare several names. So do
+        structured bindings, which exist precisely to unpack several values
+        in one declaration.
     severity: null
     noncompliant:
         ```cpp

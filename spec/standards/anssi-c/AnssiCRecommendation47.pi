@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation47:
+    standard: @{AnssiC}
+    ruleId: recommendation-47
+    title: Disable lazy binding
+    statement:
+        Ask the linker to resolve all symbols at start-up, for example with
+        z now, so the whole relocation area can be made read-only.
+    rationale:
+        With lazy binding some sections stay writable during execution even
+        in relro mode.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        gcc -O2 -fPIE -pie -Wl,-z,relro -Wl,-z,now main.c -o server
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, linking, hardening]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=37

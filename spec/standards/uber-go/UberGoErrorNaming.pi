@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoErrorNaming:
+    standard: @{UberGo}
+    ruleId: error-naming
+    title: Name error variables with Err and error types with Error
+    statement:
+        Prefix global error variables with Err when exported and err when
+        not. Give custom error types the suffix Error.
+    rationale:
+        The naming makes errors recognisable at a glance and matches the
+        standard library. It overrides the underscore prefix for unexported
+        globals.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var NotFound = errors.New("not found")
+        var _timeout = errors.New("timeout")
+
+        type ValidationErr struct{ Field string }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var ErrNotFound = errors.New("not found")
+        var errTimeout = errors.New("timeout")
+
+        type ValidationError struct{ Field string }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, naming]
+    source: https://github.com/uber-go/guide/blob/master/style.md#error-naming

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem23:
+    standard: @{EffectivePython}
+    ruleId: item-23
+    title: Feed iterators to any and all so they stop early
+    statement:
+        Pass generator expressions to any and all instead of building a full
+        list first.
+    rationale:
+        any and all stop as soon as the answer is known, but only if they
+        receive items lazily.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        has_error = any([check(row) for row in rows])
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        has_error = any(check(row) for row in rows)
+        \\\
+        ```
+    languages: [python]
+    tags: [loops-and-iterators, iterators, performance]
+    source: https://effectivepython.com/

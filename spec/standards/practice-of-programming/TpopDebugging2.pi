@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopDebugging2:
+    standard: @{PracticeOfProgramming}
+    ruleId: debugging-2
+    title: Look first at what changed last
+    statement:
+        If a program worked and now fails, start by examining the most
+        recent changes.
+    rationale:
+        The newest code is the likeliest culprit. Version control makes it
+        easy to compare against a working state.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```sh
+        \\\
+        git diff HEAD~1 -- src/parser.c
+        git bisect start HEAD v1.4
+        \\\
+        ```
+    languages: [any]
+    tags: [debugging, version-control]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

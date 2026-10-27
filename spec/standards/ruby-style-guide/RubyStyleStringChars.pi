@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleStringChars:
+    standard: @{RubyStyleGuide}
+    ruleId: string-chars
+    title: Use chars to split a string into characters
+    statement:
+        Call chars rather than split with an empty string or empty regexp.
+        RuboCop checks this with Style/StringChars.
+    rationale:
+        chars states the intent directly, and the results have been the same
+        since Ruby 2.0.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        letters = word.split('')
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        letters = word.chars
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings]
+    source: https://rubystyle.guide/#string-chars

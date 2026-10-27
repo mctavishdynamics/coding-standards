@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance2:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-2
+    title: Profile to see where time is spent
+    statement:
+        Use a profiler to find which functions and lines consume the running
+        time.
+    rationale:
+        Profiles often contradict intuition, and they show exactly where
+        effort will pay off.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```sh
+        \\\
+        cc -O2 -pg -o prog prog.c
+        ./prog < input
+        gprof prog gmon.out | less
+        \\\
+        ```
+    languages: [any]
+    tags: [performance, profiling]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvLibraryExplicitVisibility:
+    standard: @{KotlinConventions}
+    ruleId: library-explicit-visibility
+    title: State member visibility explicitly in libraries
+    statement:
+        In library code, always write the visibility of members explicitly.
+    rationale:
+        It prevents a declaration from becoming public API by accident.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        class Tokenizer {
+            fun tokenize(text: String): List<Token> = TODO()
+            fun nextChar(): Char = TODO()
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public class Tokenizer {
+            public fun tokenize(text: String): List<Token> = TODO()
+            private fun nextChar(): Char = TODO()
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [libraries, visibility]
+    source: https://kotlinlang.org/docs/coding-conventions.html#coding-conventions-for-libraries

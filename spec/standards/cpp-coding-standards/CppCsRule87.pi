@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule87:
+    standard: @{CppCodingStandards}
+    ruleId: rule-87
+    title: Keep predicates free of changing state
+    statement:
+        Make predicates depend only on their arguments, with no state that
+        changes between calls.
+    rationale:
+        Algorithms may copy predicates and call them any number of times in
+        any order.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int calls = 0;
+        std::remove_if(v.begin(), v.end(), [&](int) { return ++calls == 3; });
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        v.erase(v.begin() + 2);   // remove the third element directly
+        \\\
+        ```
+    languages: [cpp]
+    tags: [stl-algorithms, algorithms, functional]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

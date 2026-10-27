@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdKeepPathnamesInHeaders:
+    standard: @{FreeBsdStyle}
+    ruleId: pathnames
+    title: Take global paths from paths.h and local paths from pathnames.h
+    statement:
+        Use the global pathnames defined in paths.h, and put pathnames
+        specific to the program in a pathnames.h file in its own directory.
+    rationale:
+        Central definitions keep file locations easy to find and change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fd = open("/var/run/mydaemon.pid", O_WRONLY | O_CREAT, 0644);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include "pathnames.h"      /* defines _PATH_MYDAEMON_PID */
+
+        fd = open(_PATH_MYDAEMON_PID, O_WRONLY | O_CREAT, 0644);
+        \\\
+        ```
+    languages: [c]
+    tags: [file-structure, constants]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

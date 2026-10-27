@@ -5,18 +5,19 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR2:
     standard: @{CppCoreGuidelines}
     ruleId: R.2
-    title: In interfaces, use raw pointers only to denote individual objects
+    title: Let raw pointers in interfaces refer to single objects only
     statement:
-        A raw pointer parameter should point at a single object. Pass arrays
-        as a container or a span, which carry their size.
+        In an interface, a raw pointer parameter should stand for one
+        object. A sequence of elements should arrive as a container or a
+        span, so its length comes along.
     rationale:
-        A pointer to the first element loses the length, so the callee
-        cannot check its range. Containers and spans hold enough information
-        for range checking.
+        Given only a pointer to the first element, the function has no way
+        to know where the data ends. Containers and spans carry the size and
+        so allow bounds checks.
     exceptions:
-        C-style strings are passed as a single pointer to a zero-terminated
-        sequence. Use zstring rather than char* to show that the code relies
-        on that convention.
+        Zero-terminated C strings are still passed as one pointer. Spell the
+        type as zstring instead of char* so the reliance on the terminator
+        is visible.
     severity: null
     noncompliant:
         ```cpp

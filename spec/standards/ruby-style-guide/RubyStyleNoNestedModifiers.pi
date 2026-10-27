@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoNestedModifiers:
+    standard: @{RubyStyleGuide}
+    ruleId: no-nested-modifiers
+    title: Do not nest modifier conditionals
+    statement:
+        Avoid stacking modifier if, unless, while or until on one statement.
+        Combine the conditions with the logical operators where that fits.
+    rationale:
+        Chained modifiers must be read from right to left and are easy to
+        misread.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        notify(user) unless user.opted_out? if user.active?
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        notify(user) if user.active? && !user.opted_out?
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals]
+    source: https://rubystyle.guide/#no-nested-modifiers

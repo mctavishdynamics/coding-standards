@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando154:
+    standard: @{ZalandoApi}
+    ruleId: 154
+    title: State how array values are encoded in headers and query strings
+    statement:
+        When a header or query parameter takes several values, state in the
+        specification whether they are comma separated or repeated, using
+        the style and explode settings.
+    rationale:
+        OpenAPI cannot express both forms at once, so without an explicit
+        choice clients do not know how to send multiple values.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        parameters:
+          - name: status
+            in: query
+            style: form
+            explode: false
+            schema:
+              type: array
+              items:
+                type: string
+        \\\
+        ```
+    languages: [any]
+    tags: [must, openapi, query-parameters]
+    source: https://opensource.zalando.com/restful-api-guidelines/#154

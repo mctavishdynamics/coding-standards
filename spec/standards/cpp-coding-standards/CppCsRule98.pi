@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule98:
+    standard: @{CppCodingStandards}
+    ruleId: rule-98
+    title: Replace C variadic functions with type-safe alternatives
+    statement:
+        Avoid ellipsis parameters; use variadic templates, overloading or
+        containers instead.
+    rationale:
+        Variadic arguments lose all type information and cannot pass class
+        objects safely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void logAll(int count, ...);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class... Args>
+        void logAll(const Args&... args);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-safety, type-safety, functions]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

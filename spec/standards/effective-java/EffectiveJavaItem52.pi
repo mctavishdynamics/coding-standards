@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem52:
+    standard: @{EffectiveJava}
+    ruleId: item-52
+    title: Overload methods sparingly
+    statement:
+        Avoid overloads with the same number of parameters, and never
+        overload a method taking a functional interface with another one in
+        the same argument position. Prefer distinct method names.
+    rationale:
+        Overload resolution happens at compile time from static types, so
+        the chosen method can surprise readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        static String describe(Set<?> s) { return "set"; }
+        static String describe(Collection<?> c) { return "collection"; }
+        // describe((Collection<?>) someSet) returns "collection"
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        static String describe(Collection<?> c) {
+            return c instanceof Set ? "set" : "collection";
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods, overloading]
+    source: https://www.informit.com/store/effective-java-9780134686097

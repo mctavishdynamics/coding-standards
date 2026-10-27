@@ -5,18 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp100:
     standard: @{CppCoreGuidelines}
     ruleId: CP.100
-    title: Do not use lock-free programming unless you absolutely have to
+    title: Reserve lock-free algorithms for cases with no workable alternative
     statement:
-        Avoid writing lock-free algorithms with atomics and compare-and-swap
-        loops. Use mutexes, or lock-free data structures from a well-tested
-        library.
+        Prefer a mutex or a proven lock-free container from a trusted library over
+        hand-written atomics with compare-and-swap loops.
     rationale:
-        Lock-free code is error-prone and needs expert knowledge of the
-        language, the machine and data structures; bugs such as the ABA
-        problem rarely show up in testing.
+        Correct lock-free code demands deep knowledge of the memory model, the
+        hardware and the data structure. Its failures, such as ABA, are timing
+        dependent and almost never appear in tests.
     exceptions:
-        Simple use of atomic variables with the default sequentially
-        consistent memory order is safe.
+        Ordinary std::atomic variables left at their default sequentially consistent
+        ordering are not a problem. Experts are not needed for those.
     severity: null
     noncompliant:
         ```cpp

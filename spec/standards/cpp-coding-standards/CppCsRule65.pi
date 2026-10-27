@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule65:
+    standard: @{CppCodingStandards}
+    ruleId: rule-65
+    title: Document and control how users customise a template
+    statement:
+        When a template calls user code, document the customisation point
+        and choose one mechanism: an unqualified call found by lookup, a
+        traits specialisation, or a required member. Qualify calls that are
+        not meant to be customised.
+    rationale:
+        Accidental customisation points make templates pick up unexpected
+        functions, and missing ones make them hard to extend.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class T>
+        void sortAll(std::vector<T>& v) { helper(v); }   // unintentional ADL hook
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T>
+        void sortAll(std::vector<T>& v) { detail::helper(v); }
+        template <class T>
+        std::string describe(const T& x) { using lib::toString; return toString(x); }   // documented hook
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates-and-genericity, templates, namespaces]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

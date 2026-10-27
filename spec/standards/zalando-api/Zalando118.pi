@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando118:
+    standard: @{ZalandoApi}
+    ruleId: 118
+    title: Use snake_case for property names
+    statement:
+        Name JSON properties in ASCII snake_case, starting with a lower-case
+        letter or underscore and continuing with letters, digits and
+        underscores. Never use camelCase.
+    rationale:
+        One naming convention makes all payloads look as if written by the
+        same hand.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        { "customerNumber": "C-1", "ShippingAddress": {} }
+        \\\
+        ```
+    compliant:
+        ```json
+        \\\
+        { "customer_number": "C-1", "shipping_address": {} }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, json, naming]
+    source: https://opensource.zalando.com/restful-api-guidelines/#118

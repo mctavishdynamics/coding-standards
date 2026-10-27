@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe352:
+    standard: @{CweTop25}
+    ruleId: CWE-352
+    title: Prevent cross-site request forgery
+    statement:
+        Make every state-changing request carry an unpredictable token tied
+        to the user's session or form, and reject the request on the server
+        when the token is missing or wrong; a framework's built-in CSRF
+        protection does this for you. Never change state on GET, ask for
+        explicit confirmation before dangerous actions, and remove cross-
+        site scripting, which defeats most CSRF defences.
+    rationale:
+        Without a check, any site the victim visits can make their browser
+        send authenticated requests that transfer money, change passwords or
+        delete data. It is ranked 3 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        @app.post("/transfer")
+        def transfer():
+            move_funds(session["user_id"], request.form["to"], request.form["amount"])
+            return redirect("/account")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        @app.post("/transfer")
+        def transfer():
+            sent = request.form.get("csrf_token", "")
+            if not hmac.compare_digest(sent, session["csrf_token"]):
+                abort(403)
+            move_funds(session["user_id"], request.form["to"], request.form["amount"])
+            return redirect("/account")
+        \\\
+        ```
+    languages: [python]
+    tags: [rank-3, csrf, web, session]
+    source: https://cwe.mitre.org/data/definitions/352.html

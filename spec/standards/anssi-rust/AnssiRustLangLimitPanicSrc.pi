@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangLimitPanicSrc:
+    standard: @{AnssiRust}
+    ruleId: LANG-LIMIT-PANIC-SRC
+    title: Restrict unwrap, expect and assert to forbidden cases
+    statement:
+        Use unwrap, expect and assert! only for situations that the
+        function's specification explicitly rules out.
+    rationale:
+        Each of these panics when it fails, so using them on reachable error
+        paths makes the program crash on inputs it should handle.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        let user = users.get(&id).unwrap();
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        let user = users.get(&id).ok_or(Error::UnknownUser(id))?;
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, error-handling, panic]
+    source: https://anssi-fr.github.io/rust-guide/errors.html#LANG-LIMIT-PANIC-SRC

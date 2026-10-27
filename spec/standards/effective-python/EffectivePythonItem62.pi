@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem62:
+    standard: @{EffectivePython}
+    ruleId: item-62
+    title: Check subclass definitions with __init_subclass__
+    statement:
+        To validate that subclasses are defined correctly, such as having
+        required class attributes, implement __init_subclass__ on the base
+        class instead of writing a metaclass.
+    rationale:
+        It runs when each subclass is created, is simpler than a metaclass
+        and composes across hierarchies.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        class Plugin:
+            def __init_subclass__(cls, **kwargs):
+                super().__init_subclass__(**kwargs)
+                if not getattr(cls, "name", None):
+                    raise TypeError(f"{cls.__name__} must define name")
+        \\\
+        ```
+    languages: [python]
+    tags: [metaclasses-and-attributes, metaprogramming, inheritance, validation]
+    source: https://effectivepython.com/

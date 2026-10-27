@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando168:
+    standard: @{ZalandoApi}
+    ruleId: 168
+    title: Pass non-JSON media types in standard formats
+    statement:
+        Offer non-JSON payloads only in a standard format for that kind of
+        object, such as PNG images, PDF documents or ZIP archives. Generic
+        formats like XML or CSV may be added only alongside JSON through
+        content negotiation.
+    rationale:
+        Standard formats can be processed by existing tools, and keeping
+        JSON as the default preserves one consistent interface.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        GET /invoices/INV-1042 HTTP/1.1
+        Accept: application/pdf
+        \\\
+        ```
+    languages: [any]
+    tags: [may, payload, media-types]
+    source: https://opensource.zalando.com/restful-api-guidelines/#168

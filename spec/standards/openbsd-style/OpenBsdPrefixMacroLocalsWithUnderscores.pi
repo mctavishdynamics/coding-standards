@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdPrefixMacroLocalsWithUnderscores:
+    standard: @{OpenBsdStyle}
+    ruleId: macro-locals
+    title: Begin local variable names in macros with two underscores
+    statement:
+        Locals declared inside a function-like macro get names with a double
+        underscore prefix. Macros that implement C or POSIX interfaces must
+        do this, and others should for consistency.
+    rationale:
+        Reserved-looking names cannot clash with the caller's variables
+        passed as arguments.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define SWAP(a, b) do { int t = (a); (a) = (b); (b) = t; } while (0)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define SWAP(a, b) do { int __t = (a); (a) = (b); (b) = __t; } while (0)
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, macros, naming]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

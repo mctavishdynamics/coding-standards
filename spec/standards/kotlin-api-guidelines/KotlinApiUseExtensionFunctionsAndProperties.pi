@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiUseExtensionFunctionsAndProperties:
+    standard: @{KotlinApiGuidelines}
+    ruleId: use-extension-functions-and-properties
+    title: Keep types minimal and add the rest as extensions
+    statement:
+        Let classes and interfaces define only the core of a type, and write
+        extra functionality and derived information as extension functions
+        and properties. By default only plain properties, overrides and
+        overloaded operators are members.
+    rationale:
+        Extensions show that the extra behaviour is built from the core and
+        can be computed from the type's data.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public interface Matrix {
+            public val rows: Int
+            public val cols: Int
+            public operator fun get(r: Int, c: Int): Double
+            public val isSquare: Boolean
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public interface Matrix {
+            public val rows: Int
+            public val cols: Int
+            public operator fun get(r: Int, c: Int): Double
+        }
+        public val Matrix.isSquare: Boolean get() = rows == cols
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [api-design, extensions]
+    source: https://kotlinlang.org/docs/api-guidelines-readability.html#use-extension-functions-and-properties

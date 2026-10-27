@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-3
+    title: Keep pointers and multidimensional arrays out of public parameters
+    statement:
+        Methods visible to callers should not have parameters that are
+        pointers, pointer arrays or rectangular arrays.
+    rationale:
+        These types are hard to use correctly, and the API can nearly always
+        be designed without them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void LoadHeightMap(float[,] heights) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void LoadHeightMap(IReadOnlyList<float> heights, int width) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, parameters, usability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design

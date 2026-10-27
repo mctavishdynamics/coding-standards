@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip134:
+    standard: @{GoogleAip}
+    ruleId: AIP-134
+    title: Provide an Update method that uses PATCH and a field mask
+    statement:
+        Name the method Update plus the resource, take the resource as the
+        PATCH body, and return the resource. Partial updates must use a
+        google.protobuf.FieldMask named update_mask; state fields must not
+        be writable through Update, a mismatched etag must fail with
+        ABORTED, and a missing resource returns NOT_FOUND unless
+        allow_missing is set.
+    rationale:
+        Field masks let clients change only what they mean to change, so new
+        fields they do not know about are not wiped. Consistent error and
+        etag behavior lets clients handle conflicts the same way everywhere.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        rpc UpdateRecipe(UpdateRecipeRequest) returns (Recipe) {
+          option (google.api.http) = {
+            put: "/v1/{recipe.name=kitchens/*/recipes/*}"
+            body: "*"
+          };
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        rpc UpdateRecipe(UpdateRecipeRequest) returns (Recipe) {
+          option (google.api.http) = {
+            patch: "/v1/{recipe.name=kitchens/*/recipes/*}"
+            body: "recipe"
+          };
+        }
+        message UpdateRecipeRequest {
+          Recipe recipe = 1 [(google.api.field_behavior) = REQUIRED];
+          google.protobuf.FieldMask update_mask = 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [methods, standard-methods, field-masks]
+    source: https://google.aip.dev/134

@@ -5,17 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs56:
     standard: @{CppCoreGuidelines}
     ruleId: ES.56
-    title:
-        Write std::move only when you need to explicitly move an object to
-        another scope
+    title: Call std::move only to hand an object on to another scope
     statement:
-        Use std::move only to hand an lvalue you no longer need to another
-        scope. Do not write it on return values, temporaries or const
-        objects.
+        Write std::move only to pass an lvalue that you are finished with
+        into another scope. Leave it off return statements, temporaries and
+        const objects.
     rationale:
-        A move typically leaves an empty object behind, which is surprising
-        if the variable is used later, and needless moves can block copy
-        elision.
+        Moving from an object usually leaves it empty, which surprises
+        anyone who reads it later. Returns and temporaries already move on
+        their own, and an explicit move there can even prevent copy elision.
     exceptions: null
     severity: null
     noncompliant:

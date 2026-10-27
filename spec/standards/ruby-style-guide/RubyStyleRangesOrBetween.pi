@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleRangesOrBetween:
+    standard: @{RubyStyleGuide}
+    ruleId: ranges-or-between
+    title: Use ranges or between? for bounds checks
+    statement:
+        Test whether a value lies within bounds with a range or
+        Comparable#between? rather than two joined comparisons. RuboCop
+        checks this with Style/ComparableBetween.
+    rationale:
+        One call states the bounds clearly and cannot get the comparison
+        operators mixed up.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        accept if age >= 18 && age <= 65
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        accept if age.between?(18, 65)
+        accept if (18..65).cover?(age)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, readability]
+    source: https://rubystyle.guide/#ranges-or-between

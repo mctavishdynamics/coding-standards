@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign21:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-21
+    title: Consider small-count overloads in very hot params APIs
+    statement:
+        In APIs where performance is critical, add overloads that take one,
+        two or three arguments directly, named like the singular array name
+        plus a number. Only do this if each overload has its own code path.
+    rationale:
+        Dedicated overloads avoid allocating an array on every call;
+        forwarding to the array version would not.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public static int Max(int value0, int value1) => value0 > value1 ? value0 : value1;
+        public static int Max(params int[] values) { /* loop */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, parameters, performance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#members-with-variable-number-of-parameters

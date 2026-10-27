@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando223:
+    standard: @{ZalandoApi}
+    ruleId: 223
+    title: Use the functional naming schema
+    statement:
+        Build names for hosts, permissions and event types from a functional
+        name, made of the functional group's domain and a short identifier
+        of the component. Whether this is a must, a should or a may depends
+        on the audience, and it is required for external-public and
+        external-partner APIs.
+    rationale:
+        Names based on function rather than team or application stay stable
+        when the organization or the technical setup changes, and they stay
+        unique.
+    exceptions:
+        Functional naming is only optional for component-internal APIs and
+        only recommended for company-internal and business-unit-internal
+        APIs.
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        # functional-name = functional-domain "-" functional-component
+        servers:
+          - url: https://checkout-payments.example-apis.com
+        \\\
+        ```
+    languages: [any]
+    tags: [must, naming]
+    source: https://opensource.zalando.com/restful-api-guidelines/#223

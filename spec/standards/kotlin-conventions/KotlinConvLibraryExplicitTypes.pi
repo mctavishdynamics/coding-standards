@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvLibraryExplicitTypes:
+    standard: @{KotlinConventions}
+    ruleId: library-explicit-types
+    title: State return and property types explicitly in libraries
+    statement:
+        In library code, always declare function return types and property
+        types.
+    rationale:
+        Inferred types can change silently when the implementation changes,
+        breaking clients.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun defaultHeaders() = mapOf("Accept" to "application/json")
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun defaultHeaders(): Map<String, String> =
+            mapOf("Accept" to "application/json")
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [libraries, types]
+    source: https://kotlinlang.org/docs/coding-conventions.html#coding-conventions-for-libraries

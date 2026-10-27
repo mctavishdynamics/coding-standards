@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PikeNotes import PikeNotes
+
+export coding-rule PikeNotesRule3:
+    standard: @{PikeNotes}
+    ruleId: rule-3
+    title: Prefer simple algorithms while inputs are small
+    statement:
+        Start with a plain algorithm. Move to an elaborate one only once you
+        know inputs are regularly large, and only after profiling confirms
+        the need.
+    rationale:
+        Sophisticated algorithms have high fixed overheads, so they often
+        lose on the modest input sizes that most code handles.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* a skip list for a table that never holds more than 20 entries */
+        struct skiplist *opts = skiplist_new(cmpopt);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* 20 entries: a linear scan of an array is enough */
+        struct opt opts[20];
+        int nopts;
+        \\\
+        ```
+    languages: [c]
+    tags: [algorithms, simplicity, performance]
+    source: https://www.cs.princeton.edu/courses/archive/spr01/cs217/pike.html

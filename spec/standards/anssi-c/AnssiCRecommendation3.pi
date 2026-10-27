@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation3:
+    standard: @{AnssiC}
+    ruleId: recommendation-3
+    title: Keep header-to-header inclusions minimal and justified
+    statement:
+        A header should include another header only when it needs it, and
+        each such inclusion should have a reason.
+    rationale:
+        Includes inside a header spread to every file that uses it, adding
+        hidden dependencies and slowing builds.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* net.h */
+        #include <stdio.h>
+        #include <string.h>
+        void net_send(const unsigned char *buf, size_t len);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* net.h */
+        #include <stddef.h> /* size_t */
+        void net_send(const unsigned char *buf, size_t len);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, headers, preprocessor]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=13

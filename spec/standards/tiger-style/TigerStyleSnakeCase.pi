@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleSnakeCase:
+    standard: @{TigerStyle}
+    ruleId: snake-case
+    title: Use snake_case for functions, variables and files
+    statement:
+        Name functions, variables and files in snake_case, including files
+        that define a single struct.
+    rationale:
+        The underscore acts as a space between words, which encourages
+        descriptive names, and one convention for all files keeps things
+        simple.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn readSector(sectorIndex: u64) void {}
+        // file: SuperBlock.zig
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn read_sector(sector_index: u64) void {}
+        // file: superblock.zig
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [naming, case]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#naming-things

@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdUseNullptr:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-nullptr
+    title: Use nullptr instead of NULL or 0
+    statement:
+        Write nullptr for null pointers in C++.
+    rationale:
+        nullptr has pointer type and cannot be mistaken for an integer in
+        overload resolution.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        widget *w = NULL;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        widget *w = nullptr;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, pointers, null-safety]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDoNotContortCodeForLint:
+    standard: @{GnuCodingStandards}
+    ruleId: syntactic-no-lint-ugliness
+    title: Do not make code uglier just to silence static analysis
+    statement:
+        Do not add needless casts, wrappers, void casts or dummy calls just
+        to quiet lint, clang or extra GCC warnings. Whether to build with
+        -Wall is the maintainer's choice.
+    rationale:
+        Such tools find real bugs, but silencing every false alarm with
+        clutter hurts readability.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        (void) printf ("%s\n", name);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        printf ("%s\n", name);
+        \\\
+        ```
+    languages: [c]
+    tags: [warnings, readability, tooling]
+    source: https://www.gnu.org/prep/standards/standards.html#Syntactic-Conventions

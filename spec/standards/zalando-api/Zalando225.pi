@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando225:
+    standard: @{ZalandoApi}
+    ruleId: 225
+    title: Follow the permission naming convention
+    statement:
+        Name permissions as application-id followed by read or write, or
+        application-id, resource name and access mode for finer access
+        control. Use uid when access is not restricted.
+    rationale:
+        A predictable pattern makes it obvious which application and access
+        level a permission grants, and keeps the permission registry
+        consistent.
+    exceptions:
+        The convention covers platform IAM service-to-service scopes; other
+        IAM systems keep their own naming rules.
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        security:
+          - BearerAuth: [ ReadParcels, parcels_admin ]
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        security:
+          - BearerAuth: [ parcel-tracking.read, parcel-tracking.label.write ]
+        \\\
+        ```
+    languages: [any]
+    tags: [must, security, naming]
+    source: https://opensource.zalando.com/restful-api-guidelines/#225

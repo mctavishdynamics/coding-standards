@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleArrayCoercion:
+    standard: @{RubyStyleGuide}
+    ruleId: array-coercion
+    title: Coerce values to arrays with Array()
+    statement:
+        When a variable may or may not be an array and you want to treat it
+        as one, wrap it with Array() instead of checking its class or
+        splatting it into a literal. RuboCop checks this with
+        Style/ArrayCoercion.
+    rationale:
+        Array() handles single values, arrays and nil in one readable call.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        recipients = [recipients] unless recipients.is_a?(Array)
+        recipients.each { |r| deliver(r) }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        Array(recipients).each { |r| deliver(r) }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, types]
+    source: https://rubystyle.guide/#array-coercion

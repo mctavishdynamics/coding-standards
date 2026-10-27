@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoMultilineWhileDo:
+    standard: @{RubyStyleGuide}
+    ruleId: no-multiline-while-do
+    title: Do not use do with multi-line while or until
+    statement:
+        Leave out the do keyword when a while or until loop spans several
+        lines.
+    rationale:
+        The line break already ends the condition, so do adds nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        while queue.any? do
+          process(queue.shift)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        while queue.any?
+          process(queue.shift)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, loops]
+    source: https://rubystyle.guide/#no-multiline-while-do

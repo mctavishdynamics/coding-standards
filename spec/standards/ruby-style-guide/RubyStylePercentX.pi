@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStylePercentX:
+    standard: @{RubyStyleGuide}
+    ruleId: percent-x
+    title: Avoid %x unless the command contains backquotes
+    statement:
+        Run shell commands with backquotes rather than %x, except when the
+        command itself contains backquotes. RuboCop checks this with
+        Style/CommandLiteral.
+    rationale:
+        Backquotes are the familiar form, so %x should be kept for the rare
+        case it helps.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        branch = %x(git branch --show-current)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        branch = `git branch --show-current`
+        \\\
+        ```
+    languages: [ruby]
+    tags: [literals, shell]
+    source: https://rubystyle.guide/#percent-x

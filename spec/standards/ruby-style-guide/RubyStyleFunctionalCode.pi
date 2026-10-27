@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleFunctionalCode:
+    standard: @{RubyStyleGuide}
+    ruleId: functional-code
+    title: Prefer a functional style that avoids mutation
+    statement:
+        Write code in a functional style, transforming collections with
+        methods such as map and each_with_object instead of mutating
+        accumulators, where that makes sense. RuboCop checks this with
+        Style/MapIntoArray.
+    rationale:
+        Code without mutation is easier to reason about and test.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        squares = []
+        numbers.each { |n| squares << n * n }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        squares = numbers.map { |n| n * n }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [functional, mutability]
+    source: https://rubystyle.guide/#functional-code

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoExtendingClosedClasses:
+    standard: @{EffectiveDart}
+    ruleId: avoid-extending-a-class-that-isnt-intended-to-be-subclassed
+    title: Extend only classes designed for subclassing
+    statement:
+        Do not subclass a class unless its docs, name or modifiers say it
+        supports that.
+    rationale:
+        Turning a constructor into a factory, or changing which of its own
+        methods a class calls, breaks subclasses that the author did not
+        plan for.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class TimestampedClient extends http.Client {
+          // Overrides internals the package never promised to keep.
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class TimestampedClient extends http.BaseClient {
+          final http.Client _inner;
+          TimestampedClient(this._inner);
+          @override
+          Future<http.StreamedResponse> send(http.BaseRequest request) =>
+              _inner.send(request..headers['x-sent-at'] = '${DateTime.now()}');
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, classes, inheritance]
+    source: https://dart.dev/effective-dart/design#avoid-extending-a-class-that-isnt-intended-to-be-subclassed

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExtensionMethods2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: extension-methods-2
+    title: Consider extension methods for interface helpers and dependency control
+    statement:
+        Extension methods are a good fit for helpers that work for every
+        implementation of an interface using only its core members, and for
+        adding a method whose dependency would otherwise break layering
+        rules.
+    rationale:
+        Interfaces cannot carry implementation for all implementers, and
+        extensions in another assembly keep the core type free of unwanted
+        dependencies.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public interface IClock { DateTimeOffset UtcNow { get; } }
+
+        public static class ClockExtensions
+        {
+            public static DateOnly Today(this IClock clock) => DateOnly.FromDateTime(clock.UtcNow.Date);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, extension-methods, interfaces]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/extension-methods

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuUseGnulibForPortability:
+    standard: @{GnuCodingStandards}
+    ruleId: system-functions-gnulib
+    title: Use Gnulib to cover library portability problems
+    statement:
+        Rely on Gnulib, integrated with Autoconf and Automake, to replace or
+        fix standard and GNU functions that are missing or broken on some
+        systems, and for its common helpers such as checked allocation.
+    rationale:
+        Nearly every library function misbehaves somewhere, and Gnulib
+        already contains the workarounds.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        p = malloc (n);
+        if (!p) { fputs ("out of memory\n", stderr); exit (1); }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include "xalloc.h"
+        p = xmalloc (n);
+        \\\
+        ```
+    languages: [c]
+    tags: [portability, libraries]
+    source: https://www.gnu.org/prep/standards/standards.html#System-Functions

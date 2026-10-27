@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoAndOrOr:
+    standard: @{RubyStyleGuide}
+    ruleId: no-and-or-or
+    title: Use and and or only for control flow
+    statement:
+        Do not use the and and or keywords inside boolean expressions; use
+        the double ampersand and double pipe operators there. Reserve and
+        and or for control flow, such as raising or returning early, and
+        avoid more than one of them in a single expression.
+    rationale:
+        The keywords bind more loosely than assignment and share a single
+        precedence level, unlike the symbolic operators, which causes subtle
+        bugs when they are treated as logical operators.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        ready = loaded? and valid?
+        if admin? or owner? then edit end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        ready = loaded? && valid?
+        record.save or raise "could not save record"
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, operators, booleans]
+    source: https://rubystyle.guide/#no-and-or-or

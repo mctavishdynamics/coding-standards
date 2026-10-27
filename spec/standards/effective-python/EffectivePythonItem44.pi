@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem44:
+    standard: @{EffectivePython}
+    ruleId: item-44
+    title: Produce big result streams lazily with parenthesised comprehensions
+    statement:
+        When a comprehension would process a lot of data, write it as a
+        generator expression in parentheses so items are produced on demand.
+    rationale:
+        A list comprehension holds every result in memory at once and can
+        exhaust it. Generator expressions can also be chained cheaply.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        lengths = [len(line) for line in open("huge.log")]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        lengths = (len(line) for line in open("huge.log"))
+        longest = max(lengths)
+        \\\
+        ```
+    languages: [python]
+    tags: [comprehensions-and-generators, generators, memory]
+    source: https://effectivepython.com/

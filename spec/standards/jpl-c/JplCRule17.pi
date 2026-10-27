@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule17:
+    standard: @{JplC}
+    ruleId: rule-17
+    title: Prefer fixed-width named integer types
+    statement:
+        Use typedefs that show size and signedness, such as I32 or U16,
+        instead of the basic types int, short and long.
+    rationale:
+        The width of the basic types varies between platforms. Named
+        fixed-size types make the code clearer and safer when sizes matter.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        unsigned short checksum;
+        long timestamp;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        typedef uint16_t U16;
+        typedef int32_t I32;
+
+        U16 checksum;
+        I32 timestamp;
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-3, types, portability]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

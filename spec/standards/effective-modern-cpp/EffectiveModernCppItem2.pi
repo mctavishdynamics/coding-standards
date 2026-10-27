@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem2:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-2
+    title: Learn how auto deduces types
+    statement:
+        auto follows template deduction rules, except that a braced
+        initialiser deduces an initializer_list. A function return type or
+        lambda parameter declared auto uses template rules and does not.
+    rationale:
+        The braced case is the one place where auto and templates differ,
+        and it causes unexpected types.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto count = { 3 };   // initializer_list<int>
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto count = 3;       // int
+        \\\
+        ```
+    languages: [cpp]
+    tags: [deducing-types, auto, type-deduction]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

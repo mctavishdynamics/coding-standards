@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ConventionalCommits import ConventionalCommits
+
+export coding-rule ConvCommitsBreakingChangeFooter:
+    standard: @{ConventionalCommits}
+    ruleId: 12
+    title: Write a breaking change footer as uppercase BREAKING CHANGE
+    statement:
+        A breaking change footer uses the uppercase words BREAKING CHANGE,
+        then a colon, a space and a description of the change.
+    rationale:
+        An exact, uppercase token is easy for tools to find and stands out
+        to people reading the log.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        feat: drop support for Node 16
+
+        breaking change - Node 18 is now the minimum
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        feat: drop support for Node 16
+
+        BREAKING CHANGE: Node 18 is now the minimum supported version.
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, breaking-changes, footers]
+    source: https://www.conventionalcommits.org/en/v1.0.0/#specification

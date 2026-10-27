@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando204:
+    standard: @{ZalandoApi}
+    ruleId: 204
+    title: Partition data change events by hashing their key
+    statement:
+        Partition data change events by hashing fields that identify the
+        entity, so all changes to one entity land in the same partition. Do
+        not partition on the event id or a timestamp.
+    rationale:
+        Order is only guaranteed within a partition, so keying by entity
+        keeps its changes in sequence.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        partition_strategy: hash
+        partition_key_fields: [ "data.parcel_id" ]
+        \\\
+        ```
+    languages: [any]
+    tags: [should, events, ordering]
+    source: https://opensource.zalando.com/restful-api-guidelines/#204

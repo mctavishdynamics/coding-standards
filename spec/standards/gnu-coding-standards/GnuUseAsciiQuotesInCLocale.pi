@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuUseAsciiQuotesInCLocale:
+    standard: @{GnuCodingStandards}
+    ruleId: quote-characters
+    title: Use plain ASCII quotes in messages in the C locale
+    statement:
+        In the C locale, quote things in messages with the ASCII double
+        quote or apostrophe for both opening and closing. Locale-specific
+        quotes in other locales are allowed, best handled by translating
+        whole strings.
+    rationale:
+        The old backquote-apostrophe pairing renders unevenly in modern
+        fonts, while symmetric ASCII quotes look right everywhere.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        error (0, 0, _("cannot find `%s'"), name);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        error (0, 0, _("cannot find '%s'"), name);
+        \\\
+        ```
+    languages: [c]
+    tags: [messages, internationalization]
+    source: https://www.gnu.org/prep/standards/standards.html#Quote-Characters

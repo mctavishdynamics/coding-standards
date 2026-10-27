@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./Dijkstra import Dijkstra
+
+export coding-rule DijkstraEwd249LocalScope:
+    standard: @{Dijkstra}
+    ruleId: EWD249-local-scope
+    title: Keep variables local to where they are relevant
+    statement:
+        Make a variable accessible only in the part of the program that
+        needs it, such as the body of the procedure that uses it.
+    rationale:
+        Variables that are irrelevant outside a procedure are its private
+        concern; hiding them keeps the rest of the program from depending on
+        them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static int tmp;
+
+        int sum(const int *a, int n) {
+            tmp = 0;
+            for (int i = 0; i < n; i++)
+                tmp += a[i];
+            return tmp;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int sum(const int *a, int n) {
+            int total = 0;
+            for (int i = 0; i < n; i++)
+                total += a[i];
+            return total;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [scope, encapsulation]
+    source: https://www.cs.utexas.edu/~EWD/transcriptions/EWD02xx/EWD249/EWD249.html

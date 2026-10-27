@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartAnnotateUninitializedVariables:
+    standard: @{EffectiveDart}
+    ruleId: do-type-annotate-variables-without-initializers
+    title: Annotate variables declared without an initializer
+    statement:
+        Write a type on any variable, local or not, that has no initializer.
+        The prefer_typing_uninitialized_variables lint checks this.
+    rationale:
+        Without an initializer inference has nothing to work from, so the
+        variable becomes dynamic.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        var label;
+        if (count == 1) {
+          label = 'item';
+        } else {
+          label = 'items';
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        String label;
+        if (count == 1) {
+          label = 'item';
+        } else {
+          label = 'items';
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, types, variables]
+    source: https://dart.dev/effective-dart/design#do-type-annotate-variables-without-initializers

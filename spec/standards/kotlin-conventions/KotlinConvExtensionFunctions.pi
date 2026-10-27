@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvExtensionFunctions:
+    standard: @{KotlinConventions}
+    ruleId: extension-functions
+    title: Use extension functions with narrow visibility
+    statement:
+        Use extension functions freely for functions that work mainly on one
+        object, and restrict their visibility as far as sensible, using
+        local, member or private top-level extensions where they fit.
+    rationale:
+        Extensions read naturally on the receiver, and limited visibility
+        avoids polluting the API.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        fun formatPrice(order: Order): String = "%.2f".format(order.total)
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        private fun Order.formattedPrice(): String = "%.2f".format(total)
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [extensions, visibility]
+    source: https://kotlinlang.org/docs/coding-conventions.html#extension-functions

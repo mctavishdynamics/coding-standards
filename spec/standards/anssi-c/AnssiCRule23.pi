@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule23:
+    standard: @{AnssiC}
+    ruleId: rule-23
+    title: Parenthesise macro parameters in the macro body
+    statement:
+        Put every use of a macro parameter inside parentheses in the macro
+        body.
+    rationale:
+        Without them, an argument that is an expression can bind to
+        neighbouring operators and change the order of evaluation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define TWICE(x) x * 2
+        int y = TWICE(a + 1); /* a + 2 */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define TWICE(x) ((x) * 2)
+        int y = TWICE(a + 1); /* (a + 1) * 2 */
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, macros, operator-precedence]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=26

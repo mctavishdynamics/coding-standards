@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem62:
+    standard: @{EffectiveJava}
+    ruleId: item-62
+    title: Do not use strings in place of better types
+    statement:
+        Do not keep numbers, enums, aggregates or capabilities in String
+        form. Parse input into a proper type as soon as it arrives.
+    rationale:
+        Strings are clumsy, slow and error prone as stand-ins for other
+        types, and the compiler cannot check them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String key = userId + "#" + region;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        record AccountKey(long userId, Region region) { }
+        \\\
+        ```
+    languages: [java]
+    tags: [general-programming, types, strings]
+    source: https://www.informit.com/store/effective-java-9780134686097

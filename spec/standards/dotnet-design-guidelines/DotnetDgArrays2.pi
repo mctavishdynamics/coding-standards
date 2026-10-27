@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgArrays2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: arrays-2
+    title: Do not use readonly array fields
+    statement:
+        Do not expose array fields marked readonly as a way to provide fixed
+        data.
+    rationale:
+        readonly prevents replacing the array but not changing its elements,
+        so callers can still alter the contents.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static readonly string[] Weekdays = { "Mon", "Tue", "Wed", "Thu", "Fri" };
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static ReadOnlyCollection<string> Weekdays { get; } =
+            Array.AsReadOnly(new[] { "Mon", "Tue", "Wed", "Thu", "Fri" });
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, usage, arrays, immutability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/arrays

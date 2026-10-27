@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation61:
+    standard: @{AnssiC}
+    ruleId: recommendation-61
+    title: Do not use octal constants
+    statement:
+        Do not write octal literals or octal escape sequences. Tolerated
+        cases such as Unix file modes must be marked and commented.
+    rationale:
+        A leading zero turns a number into octal, so 010 means eight, which
+        is easy to misread.
+    exceptions:
+        Unix file permission modes, provided each use is identified and
+        commented.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int code = 010; /* eight, not ten */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int code = 10;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, constants, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=44

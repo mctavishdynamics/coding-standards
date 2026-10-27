@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule90:
+    standard: @{AnssiC}
+    ruleId: rule-90
+    title: Set a pointer to NULL after freeing it
+    statement:
+        Assign NULL to a pointer right after freeing the memory it points
+        to.
+    rationale:
+        A dangling pointer can be freed twice or used after free; a null
+        pointer fails in a detectable way.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        free(session);
+        /* session still holds the old address */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        free(session);
+        session = NULL;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, pointers, memory, use-after-free]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=72

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiOverloadsBehaveIdentically:
+    standard: @{KotlinApiGuidelines}
+    ruleId: overloads-behave-identically
+    title: Make overloads behave the same for equivalent input
+    statement:
+        Overloads of one function should produce the same result when given
+        semantically identical input in different types.
+    rationale:
+        Users expect that changing only the type of an argument does not
+        change behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun Money(amount: Int): Money       // whole units
+        public fun Money(amount: String): Money    // parsed as cents
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun Money(amount: Int): Money       // whole units
+        public fun Money(amount: String): Money    // also whole units, e.g. "12"
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [consistency, overloading]
+    source: https://kotlinlang.org/docs/api-guidelines-consistency.html#preserve-parameter-order-naming-and-usage

@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule16:
+    standard: @{JplC}
+    ruleId: rule-16
+    title: Guard code with run-time and compile-time checks
+    statement:
+        Check for impossible conditions with assertions throughout the code,
+        and give each function over ten lines one or more of them. An
+        assertion must not have side effects, its failure must trigger
+        explicit recovery, and static assertions are preferred when the check
+        can happen at compile time.
+    rationale:
+        Assertions catch defects that tests miss and can check
+        preconditions, postconditions, parameters, return values and loop
+        invariants. An assertion that a tool can prove always passes or
+        always fails adds nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int set_gain(int gain) {
+            current_gain = gain;
+            apply_gain();
+            return OK;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        _Static_assert(sizeof(int) == 4, "expects 32-bit int");
+
+        int set_gain(int gain) {
+            if (!check(gain >= MIN_GAIN && gain <= MAX_GAIN)) {
+                return ERR_RANGE;
+            }
+            current_gain = gain;
+            apply_gain();
+            return OK;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-3, assertions, defensive-programming]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

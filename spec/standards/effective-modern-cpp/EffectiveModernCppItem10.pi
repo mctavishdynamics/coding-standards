@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem10:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-10
+    title: Declare enumerations as enum class
+    statement:
+        Declare enumerations as scoped enums unless implicit conversion to
+        integers is wanted.
+    rationale:
+        Scoped enumerators do not leak names into the enclosing scope, do
+        not convert implicitly and can be forward declared.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        enum Color { red, green };
+        enum Alert { green };   // error, green redeclared
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum class Color { red, green };
+        enum class Alert { green };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [moving-to-modern-cpp, enums, type-safety]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

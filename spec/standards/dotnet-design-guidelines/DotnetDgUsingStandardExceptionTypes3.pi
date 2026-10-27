@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgUsingStandardExceptionTypes3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: using-standard-exception-types-3
+    title: Avoid catching Exception outside top-level handlers
+    statement:
+        Catch the general exception types only in top-level handlers, such
+        as the outermost loop of an application.
+    rationale:
+        Lower down, catching everything masks failures that should reach the
+        top.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public static int Main(string[] args)
+        {
+            try { return new App().Run(args); }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Fatal: {ex.Message}");
+                return 1;
+            }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, exceptions, exception-handling]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/using-standard-exception-types#exception-and-systemexception

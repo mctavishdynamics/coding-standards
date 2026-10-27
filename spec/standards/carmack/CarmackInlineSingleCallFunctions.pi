@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackInlineSingleCallFunctions:
+    standard: @{Carmack}
+    ruleId: inline-single-call-functions
+    title: Fold a function with a single caller into that caller
+    statement:
+        When exactly one call site uses a function, weigh moving the body
+        directly into that call site.
+    rationale:
+        A function that does not exist cannot be called from somewhere else
+        under the wrong conditions, and the caller's reader sees all the
+        code that runs.
+    exceptions:
+        Inlining runs into modularity and object boundaries, and practical
+        costs such as more merge conflicts and longer rebuilds must be
+        weighed.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        static void ResetHud(Hud& h) { h.flash = 0; h.ammoWarn = false; }
+
+        void OnRespawn(Player& p) {
+            ResetHud(p.hud);   // only caller
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void OnRespawn(Player& p) {
+            // reset HUD
+            p.hud.flash = 0;
+            p.hud.ammoWarn = false;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inlining, functions]
+    source: http://number-none.com/blow/john_carmack_on_inlined_code.html

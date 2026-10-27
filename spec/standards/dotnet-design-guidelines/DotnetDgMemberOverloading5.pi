@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgMemberOverloading5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: member-overloading-5
+    title: Do not overload on ref or out alone
+    statement:
+        Do not create overloads that differ only by a ref or out modifier on
+        a parameter.
+    rationale:
+        Some languages cannot choose between them, and such pairs usually do
+        different things and deserve separate names.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Read(Buffer buffer);
+        public void Read(out Buffer buffer);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Fill(Buffer buffer);
+        public Buffer ReadNew();
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, overloading, parameters]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/member-overloading

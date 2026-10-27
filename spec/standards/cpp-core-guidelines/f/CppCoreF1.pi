@@ -5,18 +5,19 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF1:
     standard: @{CppCoreGuidelines}
     ruleId: F.1
-    title: Package meaningful operations as carefully named functions
+    title: Wrap each meaningful step in a well-named function
     statement:
-        When a piece of code performs a well-defined action, move it into
-        its own function with a descriptive name. A non-trivial lambda that
-        could be reused should also get a name.
+        If a block of code does one clear task, move it into a function and name
+        the function after that task. Give a name to a lambda too once it is big
+        enough to reuse.
     rationale:
-        Factoring out common code makes it easier to read, more likely to be
-        reused and less prone to the errors of long complex code.
+        Named functions read like a summary of the work. They can be called from
+        other places, and short pieces are easier to get right than one long
+        stretch of logic.
     exceptions:
-        Loop bodies, including lambdas used as loop bodies, and one-off
-        callback lambdas rarely need names, though large loop bodies are a
-        problem of their own.
+        A loop body, a lambda that serves as one, or a callback written for a
+        single call usually needs no name of its own. Very long loop bodies are
+        a different problem and should be shortened.
     severity: null
     noncompliant:
         ```cpp

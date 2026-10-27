@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDependencyProperties5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dependency-properties-5
+    title: Name the static field after the property plus Property
+    statement:
+        Name the DependencyProperty field with the CLR property's name
+        followed by Property.
+    rationale:
+        WPF tooling and XAML rely on this convention to link the field to
+        its property.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static readonly DependencyProperty MaximumDP = /* ... */;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static readonly DependencyProperty MaximumProperty = /* ... */;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, dependency-properties, wpf, naming]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dependency-properties#dependency-property-design

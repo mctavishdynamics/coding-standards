@@ -5,14 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC147:
     standard: @{CppCoreGuidelines}
     ruleId: C.147
-    title: Use dynamic_cast to a reference when failure is an error
+    title: Cast to a reference type when a failed downcast is a bug
     statement:
-        If the object must be of the target class and anything else is a
-        bug, cast to a reference type.
+        Use a dynamic_cast to a reference type when the object has to be of the
+        target class and anything else would be a bug.
     rationale:
-        A reference cast says you expect a valid object, and on failure it
-        throws a bad_cast exception instead of returning something that must
-        be checked.
+        The reference form shows that you expect success. If the cast fails it
+        throws bad_cast, so there is no result to check.
     exceptions: null
     severity: null
     noncompliant:

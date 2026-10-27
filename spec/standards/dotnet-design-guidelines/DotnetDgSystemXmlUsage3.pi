@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSystemXmlUsage3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: system-xml-usage-3
+    title: Do not subclass XmlDocument to present an XML view of other data
+    statement:
+        To expose an object model or data source as XML, do not derive from
+        XmlDocument.
+    rationale:
+        XmlDocument is an in-memory store; an XmlReader or XPathNavigator
+        implementation is the right way to present virtual XML.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class OrdersXmlView : XmlDocument { /* builds nodes from Orders */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class OrdersXPathNavigator : XPathNavigator { /* walks Orders on demand */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, usage, xml, inheritance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/system-xml-usage

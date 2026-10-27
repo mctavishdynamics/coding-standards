@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem25:
+    standard: @{EffectiveJava}
+    ruleId: item-25
+    title: Put only one top-level class in each source file
+    statement:
+        Never declare more than one top-level class or interface in a single
+        source file. Use static member classes if you want them together.
+    rationale:
+        With several top-level classes per file, which definition the
+        compiler picks can depend on the order files are passed to it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        // Shapes.java
+        class Circle { }
+        class Square { }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        // Shapes.java
+        public final class Shapes {
+            private Shapes() { }
+            static class Circle { }
+            static class Square { }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [classes-and-interfaces, source-files, organization]
+    source: https://www.informit.com/store/effective-java-9780134686097

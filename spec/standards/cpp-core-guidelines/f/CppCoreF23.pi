@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF23:
     standard: @{CppCoreGuidelines}
     ruleId: F.23
-    title: Use a not_null<T> to indicate that null is not a valid value
+    title: Mark pointers that can never be null with not_null
     statement:
-        Wrap pointer parameters and return values that must never be null in
-        not_null.
+        Declare a pointer parameter or return type as not_null when it must
+        always refer to an object.
     rationale:
-        It states that the caller must ensure a non-null argument, or that
-        callers need not check a result for nullptr. It has no run-time
-        overhead and also works with smart pointers.
+        For a parameter, it puts the burden of avoiding null on the caller. For
+        a result, it tells callers they need not check. The wrapper adds no run-
+        time cost and works with smart pointers too.
     exceptions: null
     severity: null
     noncompliant:

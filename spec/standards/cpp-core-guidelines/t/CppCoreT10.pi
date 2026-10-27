@@ -5,15 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT10:
     standard: @{CppCoreGuidelines}
     ruleId: T.10
-    title: Specify concepts for all template arguments
+    title: Constrain every template parameter with a concept
     statement:
-        Constrain every template type parameter with a concept that states
-        what the template assumes about it. Use plain typename only when
-        nothing more than being a type can be assumed.
+        Give each template type parameter a concept that says what the template
+        expects from it. Fall back to plain typename only when any type at all will
+        do.
     rationale:
-        The assumed meaning of a template argument is part of the template's
-        interface. A concept documents it and turns deep instantiation
-        errors into clear messages at the call site.
+        What a template assumes about its arguments, in syntax and in meaning,
+        belongs to its interface. Writing that down as a concept documents it, and a
+        bad argument then produces a short error at the call instead of a long one
+        deep inside the instantiation.
     exceptions: null
     severity: null
     noncompliant:

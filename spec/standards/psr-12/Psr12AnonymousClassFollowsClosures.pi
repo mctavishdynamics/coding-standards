@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12AnonymousClassFollowsClosures:
+    standard: @{Psr12}
+    ruleId: 8a
+    title: Format anonymous classes like closures
+    statement:
+        Apply the same guidelines and principles to anonymous classes that
+        the closure section sets out.
+    rationale:
+        Anonymous classes appear in the same expression positions as
+        closures, so they should look alike.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        $clock = new class{
+            public function now() { return time(); }
+        };
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        $clock = new class {
+            public function now()
+            {
+                return time();
+            }
+        };
+        \\\
+        ```
+    languages: [php]
+    tags: [classes, closures]
+    source: https://www.php-fig.org/psr/psr-12/#8-anonymous-classes

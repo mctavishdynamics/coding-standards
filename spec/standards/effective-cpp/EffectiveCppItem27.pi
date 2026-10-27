@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem27:
+    standard: @{EffectiveCpp}
+    ruleId: item-27
+    title: Use as few casts as you can
+    statement:
+        Avoid casts, especially dynamic_cast in hot code; prefer designs
+        that need none. When a cast is necessary, hide it in a function and
+        use the C++ cast keywords, not C-style casts.
+    rationale:
+        Casts defeat the type system, can have runtime cost and are easy to
+        get wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (Animal* a : zoo) {
+            if (auto* d = dynamic_cast<Dog*>(a)) d->bark();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (Animal* a : zoo) {
+            a->speak();   // virtual
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [implementations, casting, type-safety]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

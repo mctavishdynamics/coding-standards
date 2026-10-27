@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmCommentIntentInProse:
+    standard: @{LlvmCodingStandards}
+    ruleId: commenting
+    title: Write comments as English prose that explain what and why
+    statement:
+        Write comments as proper English sentences with normal
+        capitalization and punctuation. Explain the goal of the code and the
+        reason for it instead of narrating each low-level step.
+    rationale:
+        Comments are a large part of readability and maintenance; intent is
+        what a reader cannot recover from the code itself.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // increment i
+        ++Idx;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Skip the implicit 'this' argument; callers only pass explicit ones.
+        ++Idx;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, readability]
+    source: https://llvm.org/docs/CodingStandards.html#commenting

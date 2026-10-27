@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando210:
+    standard: @{ZalandoApi}
+    ruleId: 210
+    title: Avoid additionalProperties in event type schemas
+    statement:
+        Do not declare additionalProperties in event schemas that promise
+        compatibility. Add new optional fields to the schema before
+        publishing them, and have consumers ignore fields they do not know.
+    rationale:
+        Event schemas drift between producers and consumers over long
+        periods, and defining fields first keeps evolution safe.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        type: object
+        additionalProperties: true
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        type: object
+        properties:
+          parcel_id:
+            type: string
+          carrier_code:
+            type: string
+        \\\
+        ```
+    languages: [any]
+    tags: [should, events, schema]
+    source: https://opensource.zalando.com/restful-api-guidelines/#210

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleOtherArg:
+    standard: @{RubyStyleGuide}
+    ruleId: other-arg
+    title: Name the parameter of symmetric operators other
+    statement:
+        When defining a binary operator or operator-like method whose two
+        operands have the same kind of meaning, such as plus, equality or
+        comparison, call its parameter other.
+    rationale:
+        The name other is the convention for such operators and makes the
+        symmetry clear.
+    exceptions:
+        Do not use other when the operands play different roles, as with
+        shovel, element access or case equality, or when the right side is a
+        different kind of value, as in Array#* taking an integer.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def +(money)
+          Money.new(cents + money.cents)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def +(other)
+          Money.new(cents + other.cents)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [naming, operators]
+    source: https://rubystyle.guide/#other-arg

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiMemOwner:
+    standard: @{AnssiRust}
+    ruleId: FFI-MEM-OWNER
+    title: Give data shared across FFI a single owner
+    statement:
+        When data crosses the FFI boundary without a copy, one language must
+        both allocate and free it. The other side must not allocate or free
+        it directly but call functions supplied by the owner.
+    rationale:
+        Freeing memory with a different allocator than the one that created
+        it corrupts the heap.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub extern "C" fn make_label() -> *mut c_char {
+            CString::new("ok").unwrap().into_raw()
+        }
+        // C caller then calls free() on the result
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub extern "C" fn make_label() -> *mut c_char {
+            CString::new("ok").unwrap().into_raw()
+        }
+
+        #[no_mangle]
+        pub unsafe extern "C" fn free_label(p: *mut c_char) {
+            if !p.is_null() { drop(unsafe { CString::from_raw(p) }); }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, ffi, memory, ownership]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-MEM-OWNER

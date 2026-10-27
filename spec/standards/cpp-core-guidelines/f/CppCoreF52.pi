@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF52:
     standard: @{CppCoreGuidelines}
     ruleId: F.52
-    title: Prefer capturing by reference in lambdas that will be used locally
+    title: Capture by reference in lambdas that do not outlive the scope
     statement:
-        Capture by reference in lambdas that are used only during the
-        current scope, including those passed to algorithms and to local
-        parallel algorithms that join before returning.
+        A lambda that only runs while the current scope is alive may capture by
+        reference. This covers lambdas passed to algorithms and to local
+        parallel work that finishes before the function returns.
     rationale:
-        Capturing by reference avoids copies and lets the lambda update
-        local state, and it is safe while the lambda cannot outlive the
-        scope.
+        Reference capture avoids copying and lets the lambda change local
+        variables. It is safe because the lambda cannot outlive what it refers
+        to.
     exceptions: null
     severity: null
     noncompliant:

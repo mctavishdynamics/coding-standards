@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdIncludeKernelHeadersFirst:
+    standard: @{OpenBsdStyle}
+    ruleId: include-order-kernel
+    title: Include kernel headers first, with types.h or param.h but not both
+    statement:
+        Put the sys headers at the top. One of sys/param.h and sys/types.h is
+        usually required, but never pull in both; counting on sys/types.h to
+        bring in sys/cdefs.h is acceptable.
+    rationale:
+        The basic system types must come first, and param.h already includes
+        types.h.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include <sys/param.h>
+        #include <sys/types.h>
+        #include <sys/cdefs.h>
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <sys/types.h>
+        #include <sys/stat.h>
+        \\\
+        ```
+    languages: [c]
+    tags: [includes, file-structure]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

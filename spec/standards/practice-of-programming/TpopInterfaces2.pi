@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopInterfaces2:
+    standard: @{PracticeOfProgramming}
+    ruleId: interfaces-2
+    title: Offer a small set of independent operations
+    statement:
+        Give an interface just enough primitives to do its job, with little
+        overlap between them.
+    rationale:
+        A compact, orthogonal interface is easier to learn, document, test
+        and keep stable than a sprawling one.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int buf_put(Buf *b, int c);
+        int buf_put_char(Buf *b, char c);
+        int buf_put_two(Buf *b, int c1, int c2);
+        int buf_put_str_and_newline(Buf *b, const char *s);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int buf_put(Buf *b, int c);
+        int buf_write(Buf *b, const char *s, size_t n);
+        \\\
+        ```
+    languages: [any]
+    tags: [interfaces, api-design, simplicity]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

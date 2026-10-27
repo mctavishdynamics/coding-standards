@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiDescribeWhatFunctionDoesAndReturns:
+    standard: @{SwiftApiDesign}
+    ruleId: describe-what-function-does-and-returns
+    title: Summarise what a function does and returns
+    statement:
+        For a function or method, say what it does and what it returns.
+        Leave out effects that do nothing and returns of Void.
+    rationale:
+        Callers need the action and the result; mentioning a Void return
+        only adds noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        /// Takes a track and returns nothing.
+        mutating func enqueue(_ track: Track)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// Adds `track` to the end of the queue.
+        mutating func enqueue(_ track: Track)
+        \\\
+        ```
+    languages: [swift]
+    tags: [documentation]
+    source: https://www.swift.org/documentation/api-design-guidelines/#write-doc-comment

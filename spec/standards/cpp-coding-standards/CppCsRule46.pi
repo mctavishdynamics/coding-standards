@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule46:
+    standard: @{CppCodingStandards}
+    ruleId: rule-46
+    title: Supply every standard form when you customise class new
+    statement:
+        If a class provides any operator new, also provide or re-expose the
+        plain, placement and nothrow forms.
+    rationale:
+        Declaring one form hides the others, so clients lose the ones they
+        rely on.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Node {
+            static void* operator new(std::size_t n, Pool& p);
+        };
+        new Node;   // error, plain form hidden
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Node {
+            static void* operator new(std::size_t n, Pool& p);
+            static void* operator new(std::size_t n) { return ::operator new(n); }
+            static void* operator new(std::size_t n, void* where) noexcept { return where; }
+            static void* operator new(std::size_t n, const std::nothrow_t& t) noexcept { return ::operator new(n, t); }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, memory, allocation]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

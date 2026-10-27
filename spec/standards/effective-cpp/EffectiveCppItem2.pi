@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem2:
+    standard: @{EffectiveCpp}
+    ruleId: item-2
+    title: Replace #define constants and macros with language features
+    statement:
+        Express named values as const or constexpr objects or enumerators,
+        and function-like macros as inline functions or templates.
+    rationale:
+        Macros ignore scope and types, never reach the debugger by name and
+        can evaluate their arguments more than once.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #define MAX_USERS 64
+        #define SQUARE(x) ((x) * (x))
+        int n = SQUARE(next());   // next() runs twice
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr int maxUsers = 64;
+        inline int square(int x) { return x * x; }
+        int n = square(next());   // next() runs once
+        \\\
+        ```
+    languages: [cpp]
+    tags: [accustoming-yourself-to-cpp, macros, constants]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

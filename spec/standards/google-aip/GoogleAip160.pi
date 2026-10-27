@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip160:
+    standard: @{GoogleAip}
+    ruleId: AIP-160
+    title: Accept filters in the standard filtering language
+    statement:
+        Take a string filter field whose syntax follows the shared filtering
+        grammar, with field names on the left of comparisons, the has
+        operator, both NOT and minus for negation, and dot traversal that
+        never passes through repeated fields. Document which fields and
+        functions are supported, reject invalid filters with
+        INVALID_ARGUMENT, and document any relaxed validation.
+    rationale:
+        A common filter syntax lets users and tools write queries once and
+        use them across many APIs, rather than learning a new language for
+        each service.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message ListOrdersRequest {
+          string parent = 1;
+          string status_equals = 2;
+          string min_total = 3;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message ListOrdersRequest {
+          string parent = 1;
+          // Example: status = SHIPPED AND total > 100
+          string filter = 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [filtering, design-patterns]
+    source: https://google.aip.dev/160

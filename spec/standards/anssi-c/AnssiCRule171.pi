@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule171:
+    standard: @{AnssiC}
+    ruleId: rule-171
+    title: Do not call abort or _Exit
+    statement:
+        Never terminate the program with abort or _Exit.
+    rationale:
+        They stop the program without normal cleanup, so buffers are not
+        flushed and resources are not released.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (NULL == cfg) { abort(); }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (NULL == cfg) { return ERR_CONFIG; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, error-handling, termination]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=139

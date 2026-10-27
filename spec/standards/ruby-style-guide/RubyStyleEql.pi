@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleEql:
+    standard: @{RubyStyleGuide}
+    ruleId: eql
+    title: Do not use eql? where double equals will do
+    statement:
+        Compare values with double equals unless you really need the
+        stricter semantics of eql?.
+    rationale:
+        Those stricter semantics, such as treating 1 and 1.0 as different,
+        are rarely what the code needs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        'paid'.eql?(status)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        status == 'paid'
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comparison]
+    source: https://rubystyle.guide/#eql

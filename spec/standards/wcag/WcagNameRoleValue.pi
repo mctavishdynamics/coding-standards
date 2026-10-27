@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagNameRoleValue:
+    standard: @{Wcag22}
+    ruleId: 4.1.2
+    title: Expose name, role, state and value for every component
+    statement:
+        For every user interface component, make its name and role
+        determinable by software, let user-settable states, properties and
+        values be set by software, and notify assistive technology when they
+        change. Native HTML controls do this already; custom widgets need
+        ARIA.
+    rationale:
+        Assistive technology can only present and operate controls whose
+        purpose and state it can read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <span class="toggle on" onclick="toggleDarkMode(this)"></span>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <button type="button" aria-pressed="true" onclick="toggleDarkMode(this)">Dark mode</button>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, aria, controls, semantics]
+    source: https://www.w3.org/TR/WCAG22/#name-role-value

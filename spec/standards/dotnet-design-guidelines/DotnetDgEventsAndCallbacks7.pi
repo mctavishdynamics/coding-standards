@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEventsAndCallbacks7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: events-and-callbacks-7
+    title: Remember that invoking a delegate runs arbitrary code
+    statement:
+        When you call a user-supplied delegate, expect it to do anything,
+        and consider the security, correctness and compatibility
+        consequences.
+    rationale:
+        The callback may throw, re-enter your object, take a long time or
+        run with permissions you did not intend.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public void Process(Func<Item, bool> shouldKeep)
+        {
+            Item[] snapshot = _items.ToArray();      // callback may modify _items
+            foreach (Item item in snapshot)
+                if (!shouldKeep(item)) _items.Remove(item);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, extensibility, callbacks, security]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/events-and-callbacks

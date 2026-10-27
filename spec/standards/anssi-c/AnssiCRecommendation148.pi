@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation148:
+    standard: @{AnssiC}
+    ruleId: recommendation-148
+    title: Mark array parameters as arrays
+    statement:
+        When a function takes an array through a pointer, say so in its
+        documentation and use array notation in the parameter. For
+        multi-dimensional arrays, give every dimension after the first.
+    rationale:
+        A bare pointer does not tell the reader it refers to several
+        elements.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void scale(int *values, size_t n);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* values: array of n elements */
+        void scale(int values[], size_t n);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, functions, arrays]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=119

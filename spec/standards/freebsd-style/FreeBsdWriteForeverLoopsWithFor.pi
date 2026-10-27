@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdWriteForeverLoopsWithFor:
+    standard: @{FreeBsdStyle}
+    ruleId: forever-loops
+    title: Write infinite loops with for, not while
+    statement:
+        Write a forever loop as for with all three parts empty.
+    rationale:
+        It is the established idiom and does not rely on a constant
+        condition.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        while (1) {
+                poll_events();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (;;) {
+                poll_events();
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loops]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

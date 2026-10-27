@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando226:
+    standard: @{ZalandoApi}
+    ruleId: 226
+    title: Document implicit response filtering
+    statement:
+        When an endpoint returns only the items or fields the caller is
+        authorized to see, state that in the endpoint description.
+    rationale:
+        Clients otherwise cannot tell that a response depends on who asks,
+        and caching may then mix up results.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        paths:
+          /supplier-contracts:
+            get:
+              description: >
+                Lists only the contracts of the supplier the caller works for.
+                Two callers may see different results.
+        \\\
+        ```
+    languages: [any]
+    tags: [must, documentation, security]
+    source: https://opensource.zalando.com/restful-api-guidelines/#226

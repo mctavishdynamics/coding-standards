@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando114:
+    standard: @{ZalandoApi}
+    ruleId: 114
+    title: Use media type versioning
+    statement:
+        When versioning cannot be avoided, version the payload through a
+        custom media type with a version parameter, negotiated with Accept
+        and Content-Type.
+    rationale:
+        Media type versioning works with content negotiation and couples
+        releases less tightly than other approaches.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        GET /carts/cart-7 HTTP/1.1
+        Accept: application/x.shop.cart+json;version=2
+
+        HTTP/1.1 200 OK
+        Content-Type: application/x.shop.cart+json;version=2
+        \\\
+        ```
+    languages: [any]
+    tags: [must, versioning, media-types]
+    source: https://opensource.zalando.com/restful-api-guidelines/#114

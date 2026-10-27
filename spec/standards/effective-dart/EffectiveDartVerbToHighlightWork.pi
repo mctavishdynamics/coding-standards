@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartVerbToHighlightWork:
+    standard: @{EffectiveDart}
+    ruleId: consider-an-imperative-verb-phrase-for-a-function-or-method-if-you-want-to-draw-attention-to-the-work-it-performs
+    title: Consider a verb name when the work itself matters
+    statement:
+        Give a side-effect-free member a verb name when callers should
+        notice its cost or risk, such as network or file access. Most of the
+        time, name members for what they give the caller instead.
+    rationale:
+        A verb name warns callers that a call is heavy or may fail, though
+        such details change over time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final profile = await api.profile(userId);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final profile = await api.downloadProfile(userId);
+        \\\
+        ```
+    languages: [dart]
+    tags: [consider, naming, functions]
+    source: https://dart.dev/effective-dart/design#consider-an-imperative-verb-phrase-for-a-function-or-method-if-you-want-to-draw-attention-to-the-work-it-performs

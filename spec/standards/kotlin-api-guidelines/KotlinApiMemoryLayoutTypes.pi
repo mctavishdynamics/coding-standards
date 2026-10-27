@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiMemoryLayoutTypes:
+    standard: @{KotlinApiGuidelines}
+    ruleId: memory-layout-types
+    title: Reserve Byte, Short and Float for memory layout
+    statement:
+        Use Byte, Short and Float only to limit storage, such as in caches
+        or wire formats, when the data reliably fits and no calculation is
+        needed.
+    rationale:
+        These types exist to save memory, not for arithmetic, where they
+        lose range or precision.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun applyDiscount(price: Float, percent: Short): Float
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun applyDiscount(price: Double, percent: Int): Double
+
+        public class PixelBuffer(public val channels: ByteArray)
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [types, numbers]
+    source: https://kotlinlang.org/docs/api-guidelines-readability.html#use-numeric-types-appropriately

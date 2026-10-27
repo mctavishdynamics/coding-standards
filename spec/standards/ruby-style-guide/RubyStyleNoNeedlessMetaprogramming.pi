@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoNeedlessMetaprogramming:
+    standard: @{RubyStyleGuide}
+    ruleId: no-needless-metaprogramming
+    title: Do not use metaprogramming when plain code will do
+    statement:
+        Avoid metaprogramming when ordinary methods or built-in helpers
+        achieve the same result.
+    rationale:
+        Plain code is easier to read, search and debug than generated
+        methods.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Point
+          %i[x y].each do |name|
+            define_method(name) { instance_variable_get("@#{name}") }
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Point
+          attr_reader :x, :y
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [metaprogramming, simplicity]
+    source: https://rubystyle.guide/#no-needless-metaprogramming

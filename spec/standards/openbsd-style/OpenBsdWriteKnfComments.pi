@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdWriteKnfComments:
+    standard: @{OpenBsdStyle}
+    ruleId: comment-style
+    title: Format comments in the KNF block and single-line forms
+    statement:
+        Write very important single-line comments as a three-line block,
+        most single-line comments on one line, and multi-line comments as a
+        block with an asterisk on each line, written as real sentences
+        filled like paragraphs.
+    rationale:
+        A fixed set of comment shapes signals importance and keeps comments
+        readable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        // check the buffer
+        /* the caller must hold
+           the lock */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* Check the buffer. */
+
+        /*
+         * The caller must hold the lock.  It is released before
+         * returning.
+         */
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, formatting]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

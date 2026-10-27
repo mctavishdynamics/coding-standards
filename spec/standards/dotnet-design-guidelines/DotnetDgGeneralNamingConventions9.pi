@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgGeneralNamingConventions9:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: general-naming-conventions-9
+    title: Use CLR type names when a name only reflects its type
+    statement:
+        If a member's name has no meaning beyond the type it works with,
+        build it from the CLR type name, such as Int16 or Double, rather
+        than a language alias.
+    rationale:
+        Aliases vary between C#, Visual Basic and C++, whereas CLR names
+        mean the same in all of them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public short ReadShort() { /* ... */ }
+        public ulong ReadULong() { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public short ReadInt16() { /* ... */ }
+        public ulong ReadUInt64() { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, interoperability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/general-naming-conventions#avoiding-language-specific-names

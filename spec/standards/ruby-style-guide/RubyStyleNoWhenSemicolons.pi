@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoWhenSemicolons:
+    standard: @{RubyStyleGuide}
+    ruleId: no-when-semicolons
+    title: Do not write when with a semicolon
+    statement:
+        Do not separate a when condition from its body with a semicolon; use
+        then for one-line branches.
+    rationale:
+        A semicolon hides the boundary between condition and body, while
+        then makes it explicit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        case code
+        when 200; :ok
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        case code
+        when 200 then :ok
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals]
+    source: https://rubystyle.guide/#no-when-semicolons

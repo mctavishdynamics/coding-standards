@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagErrorIdentification:
+    standard: @{Wcag22}
+    ruleId: 3.3.1
+    title: Identify input errors and describe them in text
+    statement:
+        When an input error is detected automatically, identify the field in
+        error and describe the problem to the user in text.
+    rationale:
+        A red border alone tells blind and color blind users nothing about
+        what went wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <input id="email" type="email" class="invalid">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <input id="email" type="email" aria-invalid="true" aria-describedby="email-error">
+        <p id="email-error">The email address is missing an @ sign.</p>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, forms, errors]
+    source: https://www.w3.org/TR/WCAG22/#error-identification

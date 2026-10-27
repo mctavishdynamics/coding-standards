@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiDocumentByExampleWheneverPossible:
+    standard: @{KotlinApiGuidelines}
+    ruleId: document-by-example-whenever-possible
+    title: Explain with small code examples
+    statement:
+        Include short, clear code examples in documentation and KDoc
+        wherever they help, with their context made clear. A folder of
+        uncommented samples is not documentation.
+    rationale:
+        Examples are a cheap way to show inputs, outputs and failures that
+        would otherwise need long prose.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        /** Formats a duration. */
+        public fun Duration.format(): String
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        /**
+         * Formats this duration for display. For example,
+         * `90.seconds.format()` returns `"1m 30s"`.
+         */
+        public fun Duration.format(): String
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [documentation, examples]
+    source: https://kotlinlang.org/docs/api-guidelines-informative-documentation.html#document-by-example-whenever-possible

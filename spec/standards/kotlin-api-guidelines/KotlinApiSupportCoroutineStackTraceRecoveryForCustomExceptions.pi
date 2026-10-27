@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiSupportCoroutineStackTraceRecoveryForCustomExceptions:
+    standard: @{KotlinApiGuidelines}
+    ruleId: support-coroutine-stack-trace-recovery-for-custom-exceptions
+    title: Support coroutine stack trace recovery in custom exceptions
+    statement:
+        If a custom exception needs constructor arguments beyond a message
+        and a cause, implement StackTraceRecoverable and override
+        copyForStackTraceRecovery to return a copy, or null to opt out.
+    rationale:
+        kotlinx.coroutines can only copy simple exception shapes on its own,
+        and the copy restores the stack frames that led to the suspending
+        call.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public class QuotaExceededException(public val limit: Int) :
+            IllegalStateException("Quota of $limit exceeded")
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        @OptIn(ExperimentalStdlibCoroutineSupportApi::class)
+        public class QuotaExceededException private constructor(
+            public val limit: Int,
+            cause: Throwable?,
+        ) : IllegalStateException("Quota of $limit exceeded", cause),
+            StackTraceRecoverable<QuotaExceededException> {
+
+            public constructor(limit: Int) : this(limit, null)
+
+            override fun copyForStackTraceRecovery(): QuotaExceededException =
+                QuotaExceededException(limit, this)
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [coroutines, debugging, error-handling]
+    source: https://kotlinlang.org/docs/api-guidelines-debuggability.html#support-coroutine-stack-trace-recovery-for-custom-exceptions

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbLittleCopying:
+    standard: @{GoProverbs}
+    ruleId: a-little-copying-is-better-than-a-little-dependency
+    title: Copy a few lines rather than take on a dependency
+    statement:
+        When you need only a small piece of another package, copy those few
+        lines instead of importing the whole package.
+    rationale:
+        Each dependency brings its own updates, transitive imports and build
+        cost, which can outweigh a small amount of duplication.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        import "github.com/example/bigutils"
+
+        func clamp(x int) int { return bigutils.ClampInt(x, 0, 100) }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func clamp(x int) int {
+            return min(max(x, 0), 100)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [dependencies, simplicity]
+    source: https://go-proverbs.github.io/

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleCommentRegexes:
+    standard: @{RubyStyleGuide}
+    ruleId: comment-regexes
+    title: Comment complex regexps using the x modifier
+    statement:
+        Write complicated regexps in free-spacing mode so that each part can
+        carry a comment.
+    rationale:
+        Spacing and comments make a dense pattern much easier to understand.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        PHONE = /\A\+?(\d{1,3})?[ -]?(\d{3})[ -]?(\d{4})\z/
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        PHONE = /
+          \A
+          \+?(\d{1,3})?  # optional country code
+          [ -]?
+          (\d{3})        # area code
+          [ -]?
+          (\d{4})        # line number
+          \z
+        /x
+        \\\
+        ```
+    languages: [ruby]
+    tags: [regex, comments]
+    source: https://rubystyle.guide/#comment-regexes

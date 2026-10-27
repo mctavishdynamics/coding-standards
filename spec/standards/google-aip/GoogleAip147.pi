@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip147:
+    standard: @{GoogleAip}
+    ruleId: AIP-147
+    title: Accept sensitive values as input only and never echo them back
+    statement:
+        Take secrets such as private keys as input-only fields that are not
+        returned. If the secret is optional, add an output-only boolean with
+        a _set suffix to show whether one exists, or an obfuscated_ field
+        that reveals only enough to identify it.
+    rationale:
+        Secrets stored by a service should not be readable afterwards. An
+        indicator field still tells users whether the value is present
+        without exposing it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Webhook {
+          string signing_secret = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Webhook {
+          string signing_secret = 1 [(google.api.field_behavior) = INPUT_ONLY];
+          bool signing_secret_set = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [fields, security]
+    source: https://google.aip.dev/147

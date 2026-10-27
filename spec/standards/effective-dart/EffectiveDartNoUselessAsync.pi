@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoUselessAsync:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-async-when-it-has-no-useful-effect
+    title: Leave off async when it changes nothing
+    statement:
+        Remove `async` from a function if the behaviour stays the same
+        without it. Keep it when you use `await`, throw an error
+        asynchronously or want a value wrapped in a future implicitly.
+    rationale:
+        Needless `async` adds noise and suggests asynchronous work that is
+        not there.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        Future<User> loadUser(String id) async {
+          return api.fetchUser(id);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        Future<User> loadUser(String id) {
+          return api.fetchUser(id);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, async]
+    source: https://dart.dev/effective-dart/usage#dont-use-async-when-it-has-no-useful-effect

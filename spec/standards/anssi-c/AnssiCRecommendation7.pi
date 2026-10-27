@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation7:
+    standard: @{AnssiC}
+    ruleId: recommendation-7
+    title: Include system headers before project headers
+    statement:
+        List includes of system headers first, then the project's own
+        headers.
+    rationale:
+        A fixed order makes the include list predictable and keeps project
+        headers from silently changing how system headers are read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include "parser.h"
+        #include <stdlib.h>
+        #include "log.h"
+        #include <stdio.h>
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdio.h>
+        #include <stdlib.h>
+        #include "log.h"
+        #include "parser.h"
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, headers, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=14

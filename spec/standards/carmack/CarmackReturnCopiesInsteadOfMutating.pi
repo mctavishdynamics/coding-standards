@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackReturnCopiesInsteadOfMutating:
+    standard: @{Carmack}
+    ruleId: return-copies-instead-of-mutating
+    title: Return modified copies instead of mutating objects in place
+    statement:
+        Give value types and utility classes const methods that return a new
+        result, such as a normalized vector or lowercased string, alongside
+        or instead of methods that change the object itself.
+    rationale:
+        Telling objects to change themselves is the opposite of functional
+        style and lets them be nudged into unexpected states.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Vec3 dir = target - origin;
+        dir.Normalize();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        const Vec3 dir = (target - origin).Normalized();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [immutability, objects, purity]
+    source: https://www.gamedeveloper.com/programming/in-depth-functional-programming-in-c-

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleBelowShebang:
+    standard: @{RubyStyleGuide}
+    ruleId: below-shebang
+    title: Put magic comments after the shebang
+    statement:
+        When a file starts with a shebang line, place the magic comments
+        directly below it.
+    rationale:
+        A shebang has an effect only on line one, and Ruby still recognises
+        a magic comment placed directly beneath it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        # frozen_string_literal: true
+        #!/usr/bin/env ruby
+
+        Importer.run(ARGV)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        #!/usr/bin/env ruby
+        # frozen_string_literal: true
+
+        Importer.run(ARGV)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comments, magic-comments]
+    source: https://rubystyle.guide/#below-shebang

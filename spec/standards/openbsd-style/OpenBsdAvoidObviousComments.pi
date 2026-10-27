@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdAvoidObviousComments:
+    standard: @{OpenBsdStyle}
+    ruleId: obvious-comments
+    title: Do not write comments that only restate the code
+    statement:
+        Leave out comments that merely repeat what an obvious statement
+        does.
+    rationale:
+        They add noise and distract from comments that explain something.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* Return zero. */
+        return 0;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        return 0;
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, readability]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

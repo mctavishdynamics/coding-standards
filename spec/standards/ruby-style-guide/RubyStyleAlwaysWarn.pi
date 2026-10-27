@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAlwaysWarn:
+    standard: @{RubyStyleGuide}
+    ruleId: always-warn
+    title: Write code that runs cleanly with ruby -w
+    statement:
+        Make sure your code produces no warnings when run with warnings
+        enabled.
+    rationale:
+        Warnings point to likely bugs such as unused variables or redefined
+        methods, and a quiet run keeps real problems visible.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def total
+          discount = 5
+          price
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def total
+          price
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [correctness, tooling]
+    source: https://rubystyle.guide/#always-warn

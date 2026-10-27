@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./SandiMetzRules import SandiMetzRules
+
+export coding-rule SandiMetzMethodLength:
+    standard: @{SandiMetzRules}
+    ruleId: rule-2
+    title: Keep methods to at most five lines
+    statement:
+        Write methods of five lines or fewer. Lines such as if, else and end
+        count, so a two-branch conditional leaves room for one line per
+        branch.
+    rationale:
+        Short methods push work into small private methods whose names
+        document what the code does, and they rule out else combined with
+        elsif.
+    exceptions:
+        Rule zero covers every rule. Break one only when you have a sound
+        reason or when your pair, or whoever reviews the code, agrees to it.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def shipping_label
+          if international?
+            address = customs_address
+            "#{address} (customs: #{customs_code})"
+          else
+            domestic_address
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def shipping_label
+          if international?
+            international_label
+          else
+            domestic_address
+          end
+        end
+        \\\
+        ```
+    languages: [ruby, any]
+    tags: [size, methods, readability]
+    source: https://thoughtbot.com/blog/sandi-metz-rules-for-developers#five-lines-per-method

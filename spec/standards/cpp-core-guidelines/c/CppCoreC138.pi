@@ -5,15 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC138:
     standard: @{CppCoreGuidelines}
     ruleId: C.138
-    title: Bring base overloads into a derived class with using
+    title: Keep base class overloads visible in the derived class
     statement:
-        When a derived class adds or overrides an overload, add a using
-        declaration for the base function so the whole overload set remains
-        visible.
+        When a derived class declares a function with the same name as a base
+        function, add a using declaration for the base name so the full set of
+        overloads stays available.
     rationale:
-        A member function in the derived class hides every base function of
-        the same name, which makes calls quietly pick the wrong overload or
-        fail.
+        A name in the derived class hides every base function with that name.
+        Calls may then quietly choose a different overload or fail to compile.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleMaxLineLength:
+    standard: @{RubyStyleGuide}
+    ruleId: max-line-length
+    title: Wrap code before column 80
+    statement:
+        Keep each line at 80 characters or fewer.
+    rationale:
+        People read short lines faster, and narrow code fits side by side in
+        editors and review tools without being wrapped and losing its visual
+        structure.
+    exceptions:
+        A team that agrees on it may raise the limit to 100 or at most 120
+        characters for code it maintains itself.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        notify_customer(order.customer, subject: "Your order has shipped", deliver_at: Time.now + 3600)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        notify_customer(
+          order.customer,
+          subject: "Your order has shipped",
+          deliver_at: Time.now + 3600
+        )
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, line-length]
+    source: https://rubystyle.guide/#max-line-length

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoReturnEnsure:
+    standard: @{RubyStyleGuide}
+    ruleId: no-return-ensure
+    title: Keep return statements out of ensure
+    statement:
+        Never use return inside an ensure clause.
+    rationale:
+        An explicit return there overrides any exception in flight, so the
+        method returns normally and the error is silently lost.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def import(path)
+          parse(File.read(path))
+        ensure
+          return :done
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def import(path)
+          parse(File.read(path))
+        ensure
+          log_import(path)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [error-handling, exceptions]
+    source: https://rubystyle.guide/#no-return-ensure

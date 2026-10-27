@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbUnsafeNoGuarantees:
+    standard: @{GoProverbs}
+    ruleId: with-the-unsafe-package-there-are-no-guarantees
+    title: Assume nothing holds once you use package unsafe
+    statement:
+        Avoid package unsafe. Code that uses it gives up the type and memory
+        safety guarantees and the compatibility promise of the language.
+    rationale:
+        Such code can break silently on a new Go release or a different
+        architecture, and the compiler cannot protect it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func bytesToString(b []byte) string {
+            return *(*string)(unsafe.Pointer(&b))
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func bytesToString(b []byte) string {
+            return string(b)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [safety, unsafe]
+    source: https://go-proverbs.github.io/

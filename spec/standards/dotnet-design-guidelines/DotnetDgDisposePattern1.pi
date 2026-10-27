@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-1
+    title: Implement the dispose pattern on types that own disposable objects
+    statement:
+        If a type holds instances of disposable types it is responsible for,
+        implement the basic dispose pattern so callers can release them.
+    rationale:
+        The owner's Dispose is the natural single place for callers to clean
+        up everything the object holds.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class ReportExporter
+        {
+            private readonly FileStream _output = File.Create("report.csv");
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class ReportExporter : IDisposable
+        {
+            private readonly FileStream _output = File.Create("report.csv");
+
+            public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (disposing) _output.Dispose();
+            }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, dispose, resources]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern

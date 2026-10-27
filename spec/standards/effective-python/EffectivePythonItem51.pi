@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem51:
+    standard: @{EffectivePython}
+    ruleId: item-51
+    title: Define simple data classes with dataclasses
+    statement:
+        For classes that mainly hold data, use the dataclasses module to
+        generate __init__, __repr__ and comparisons instead of writing them
+        by hand.
+    rationale:
+        Generated methods remove boilerplate and mistakes, and options like
+        keyword-only fields and defaults are declared in one place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Item:
+            def __init__(self, name, price):
+                self.name = name
+                self.price = price
+            def __repr__(self):
+                return f"Item({self.name!r}, {self.price!r})"
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from dataclasses import dataclass
+
+        @dataclass
+        class Item:
+            name: str
+            price: float
+        \\\
+        ```
+    languages: [python]
+    tags: [classes-and-interfaces, classes, dataclasses]
+    source: https://effectivepython.com/

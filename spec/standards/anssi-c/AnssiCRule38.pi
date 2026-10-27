@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule38:
+    standard: @{AnssiC}
+    ruleId: rule-38
+    title: Enable hardened variants of unsafe library functions
+    statement:
+        Turn on compiler-supported hardening of memory and string functions,
+        for example by defining _FORTIFY_SOURCE with glibc and building with
+        at least O1.
+    rationale:
+        The added checks detect many buffer overflows at compile time or
+        stop the program when one happens at run time.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        gcc -O2 -D_FORTIFY_SOURCE=2 -c copy.c
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, compilation, hardening, buffer-overflow]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=33

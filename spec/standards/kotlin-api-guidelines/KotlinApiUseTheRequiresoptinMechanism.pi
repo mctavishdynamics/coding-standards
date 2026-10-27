@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiUseTheRequiresoptinMechanism:
+    standard: @{KotlinApiGuidelines}
+    ruleId: use-the-requiresoptin-mechanism
+    title: Mark unstable APIs with RequiresOptIn annotations
+    statement:
+        Use marker annotations annotated with RequiresOptIn for APIs whose
+        compatibility you do not yet guarantee, with documented categories
+        such as experimental or delicate. Propagate opt-in requirements of
+        APIs you depend on, and do not use opt-in in place of Deprecated.
+    rationale:
+        Explicit consent sets users' expectations about source and
+        behavioural stability.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        /** Experimental: may change. */
+        public fun streamUpdates(): Flow<Update>
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        @RequiresOptIn("Streaming API may change without notice.")
+        public annotation class ExperimentalStreaming
+
+        @ExperimentalStreaming
+        public fun streamUpdates(): Flow<Update>
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [compatibility, opt-in]
+    source: https://kotlinlang.org/docs/api-guidelines-backward-compatibility.html#use-the-requiresoptin-mechanism

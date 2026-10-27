@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando132:
+    standard: @{ZalandoApi}
+    ruleId: 132
+    title: Use kebab-case with capitalized words for headers
+    statement:
+        Write header names as hyphen-separated words, each starting with a
+        capital letter, as most standard headers do.
+    rationale:
+        HTTP header names are case-insensitive, but one style keeps
+        definitions readable and consistent.
+    exceptions:
+        Common abbreviations such as ID may stay in capitals.
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        x-sales-channel: web
+        accept_language: de
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        X-Sales-Channel: web
+        Accept-Language: de
+        \\\
+        ```
+    languages: [any]
+    tags: [should, http, headers]
+    source: https://opensource.zalando.com/restful-api-guidelines/#132

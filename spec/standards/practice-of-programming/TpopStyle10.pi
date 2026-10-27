@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle10:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-10
+    title: Keep side effects out of complicated expressions
+    statement:
+        Be careful with operators like increment and assignment inside
+        larger expressions, especially when the order of evaluation is not
+        defined.
+    rationale:
+        Several side effects on the same object in one expression can give
+        undefined or surprising results.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        out[k] = in[k++];
+        printf("%d %d\n", pop(), pop());
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        out[k] = in[k];
+        k++;
+        int top = pop();
+        int below = pop();
+        printf("%d %d\n", top, below);
+        \\\
+        ```
+    languages: [any]
+    tags: [style, expressions, side-effects]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

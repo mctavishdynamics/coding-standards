@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackConstOnSharedFunctions:
+    standard: @{Carmack}
+    ruleId: const-on-shared-functions
+    title: Use const parameters and methods on functions with many callers
+    statement:
+        Mark the parameters, and the method itself where that applies, const
+        on any function that has to stay shared between several callers.
+    rationale:
+        Const rules out a class of side-effect bugs, and places where it
+        cannot be added reveal hidden state changes. It does not protect
+        against global state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        float Distance(Vec3& a, Vec3& b);
+        float Mesh::Area();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        float Distance(const Vec3& a, const Vec3& b);
+        float Mesh::Area() const;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [const, side-effects]
+    source: http://number-none.com/blow/john_carmack_on_inlined_code.html

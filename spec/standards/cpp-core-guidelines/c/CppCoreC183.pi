@@ -5,13 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC183:
     standard: @{CppCoreGuidelines}
     ruleId: C.183
-    title: Do not use a union for type punning
+    title: Never reinterpret bytes by writing one union member and reading another
     statement:
-        Do not write one member of a union and read another to reinterpret
-        the bits. Use std::bit_cast or memcpy for that.
+        Do not use a union to reinterpret a value by writing one member and
+        reading another. Use std::bit_cast or memcpy for that.
     rationale:
-        Reading a member other than the one last written is undefined
-        behavior, and the punning is harder to spot than a named cast.
+        Reading a member other than the one last written is undefined behavior.
+        It is also harder to spot than an explicit named conversion.
     exceptions: null
     severity: null
     noncompliant:

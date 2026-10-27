@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartLinesOf80OrFewer:
+    standard: @{EffectiveDart}
+    ruleId: prefer-lines-80-characters-or-fewer
+    title: Keep lines to 80 characters or fewer
+    statement:
+        Aim for lines no longer than 80 characters. The formatter does not
+        split long string literals, so break those by hand. The
+        lines_longer_than_80_chars lint checks this.
+    rationale:
+        Long lines make the eye travel further to the next line. A wish for
+        longer lines usually signals overly verbose names.
+    exceptions:
+        A URI or file path in a comment or string, such as in an import, may
+        run past 80 columns so it stays searchable. Lines inside a
+        multi-line string may also be longer, since breaking them changes
+        the value.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        throw StateError('The shopping cart cannot be checked out because it contains no items.');
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        throw StateError(
+          'The shopping cart cannot be checked out '
+          'because it contains no items.',
+        );
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, formatting, line-length]
+    source: https://dart.dev/effective-dart/style#prefer-lines-80-characters-or-fewer

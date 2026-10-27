@@ -5,14 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCorePer10:
     standard: @{CppCoreGuidelines}
     ruleId: Per.10
-    title: Rely on the static type system
+    title: Let the type system carry information for the optimizer
     statement:
-        Keep data strongly typed. Avoid untyped pointers, type violations
-        and treating objects as raw bytes when a typed interface will do.
+        Let types describe your data. Stay away from void pointers, type
+        punning and byte-by-byte handling of objects where a typed interface
+        is available.
     rationale:
-        Weak types and byte-level manipulation make the optimizer's job much
-        harder, while simple typed code usually optimizes better than
-        hand-crafted code.
+        The optimizer relies on type information, and weak typing or raw
+        memory tricks take that away. Plain, well-typed code tends to be
+        compiled into faster machine code than elaborate hand-tuned
+        versions.
     exceptions: null
     severity: null
     noncompliant:

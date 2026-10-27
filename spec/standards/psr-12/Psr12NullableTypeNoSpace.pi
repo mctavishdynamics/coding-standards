@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12NullableTypeNoSpace:
+    standard: @{Psr12}
+    ruleId: 4.5f
+    title:
+        Write nullable types without a space after the question mark
+    statement:
+        In a nullable type declaration, put the question mark directly
+        before the type with no space.
+    rationale:
+        The question mark is part of the type, and keeping them together
+        shows that.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        function findUser(? int $id): ? User
+        {
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        function findUser(?int $id): ?User
+        {
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [types, whitespace]
+    source: https://www.php-fig.org/psr/psr-12/#45-method-and-function-arguments

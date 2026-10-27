@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEnum3:
     standard: @{CppCoreGuidelines}
     ruleId: Enum.3
-    title: Prefer class enums over plain enums
+    title: Choose scoped enums over unscoped ones
     statement:
-        Declare enumerations as enum class unless there is a specific reason
-        to use a plain enum.
+        Use enum class by default. Fall back to a plain enum only for a
+        concrete need.
     rationale:
-        Plain enums convert to int too readily and leak their enumerator
-        names into the surrounding scope, which causes surprises.
+        A plain enum quietly turns into an int and dumps its enumerators
+        into the enclosing scope. Both behaviours let unrelated values mix
+        without any warning.
     exceptions: null
     severity: null
     noncompliant:

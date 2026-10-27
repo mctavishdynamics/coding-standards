@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip135:
+    standard: @{GoogleAip}
+    ruleId: AIP-135
+    title: Provide a Delete method with predictable errors
+    statement:
+        Name the method Delete plus the resource, take only the resource
+        name, bind it to HTTP DELETE and normally return
+        google.protobuf.Empty. Check permission before existence and return
+        PERMISSION_DENIED for unauthorized callers, NOT_FOUND for a missing
+        resource unless allow_missing is set, FAILED_PRECONDITION when
+        children exist without force, and ABORTED on an etag mismatch.
+    rationale:
+        Uniform delete behavior lets clients clean up resources without per-
+        API special cases. Checking permission first avoids revealing
+        whether a resource exists to callers who may not see it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        rpc RemoveRecipe(RemoveRecipeRequest) returns (RemoveRecipeResponse) {
+          option (google.api.http) = {
+            post: "/v1/{name=kitchens/*/recipes/*}:remove"
+          };
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        rpc DeleteRecipe(DeleteRecipeRequest) returns (google.protobuf.Empty) {
+          option (google.api.http) = {
+            delete: "/v1/{name=kitchens/*/recipes/*}"
+          };
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [methods, standard-methods, errors]
+    source: https://google.aip.dev/135

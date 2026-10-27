@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvNamedArguments:
+    standard: @{KotlinConventions}
+    ruleId: named-arguments
+    title: Name arguments of same-typed primitives and Booleans
+    statement:
+        Name the arguments at a call site when a function has several
+        parameters sharing one primitive type, or takes a Boolean, unless
+        the surrounding code already makes each value's role clear.
+    rationale:
+        Bare literals such as true or 10 say nothing about what they
+        control.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        resize(image, 640, 480, true)
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        resize(image, width = 640, height = 480, keepAspectRatio = true)
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [calls, readability]
+    source: https://kotlinlang.org/docs/coding-conventions.html#named-arguments

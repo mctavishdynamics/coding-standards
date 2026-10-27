@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando212:
+    standard: @{ZalandoApi}
+    ruleId: 212
+    title: Make event consumers idempotent and tolerant of reordering
+    statement:
+        Design events so they can be processed idempotently in any order, by
+        including the entity id, a monotonic ordering key and the resulting
+        state, or by making order irrelevant in the domain.
+    rationale:
+        Consumers can then skip, delay or retry events without stopping or
+        corrupting the result.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```json
+        \\\
+        { "parcel_id": "p-4", "version": 12, "status": "DELIVERED" }
+        \\\
+        ```
+    languages: [any]
+    tags: [should, events, idempotency]
+    source: https://opensource.zalando.com/restful-api-guidelines/#212

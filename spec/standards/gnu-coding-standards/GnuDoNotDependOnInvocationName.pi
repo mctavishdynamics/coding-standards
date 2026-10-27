@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDoNotDependOnInvocationName:
+    standard: @{GnuCodingStandards}
+    ruleId: user-interfaces-invocation-name
+    title: Do not change behavior based on the name the program was run as
+    statement:
+        A program must behave the same whatever name was used to invoke it.
+        Select alternate behaviors with options or build-time switches, or
+        build separate programs.
+    rationale:
+        Users make links under other names and should not get different
+        behavior by doing so.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (strcmp (base_name (argv[0]), "zcat") == 0)
+          decompress = true;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (opt_decompress)
+          decompress = true;
+        \\\
+        ```
+    languages: [c]
+    tags: [command-line, interface-design]
+    source: https://www.gnu.org/prep/standards/standards.html#User-Interfaces

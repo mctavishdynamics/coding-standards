@@ -5,17 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR5:
     standard: @{CppCoreGuidelines}
     ruleId: R.5
-    title: Prefer scoped objects and do not heap-allocate unnecessarily
+    title: Use local objects and avoid needless heap allocation
     statement:
-        Make objects local variables, members or globals when their lifetime
-        matches a scope, instead of allocating them on the free store.
+        When an object only needs to live as long as some scope, make it a
+        local, a member or a global. Do not put it on the heap for no
+        reason.
     rationale:
-        A scoped object costs no separate allocation and its lifetime is
-        managed by the enclosing scope or object, so there is nothing to
-        leak.
+        Such an object needs no extra allocation, and the scope or
+        containing object ends its life for you. Nothing can leak, and the
+        code is shorter.
     exceptions:
-        If stack space is limited, a local const unique_ptr may hold a large
-        object on the heap instead of the stack.
+        For a very large object when stack space is tight, keep it on the
+        heap through a local const unique_ptr.
     severity: null
     noncompliant:
         ```cpp

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoBeginBlocks:
+    standard: @{RubyStyleGuide}
+    ruleId: no-BEGIN-blocks
+    title: Avoid BEGIN blocks
+    statement:
+        Do not use BEGIN blocks.
+    rationale:
+        Code in a BEGIN block runs before the rest of the program in a way
+        that is hard to follow; ordinary top-down code is clearer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        BEGIN { puts 'starting' }
+        run
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        puts 'starting'
+        run
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow]
+    source: https://rubystyle.guide/#no-BEGIN-blocks

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartInitializerListOverLate:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-late-when-a-constructor-initializer-list-will-do
+    title: Use the initializer list instead of late fields
+    statement:
+        Initialize a non-nullable field in the constructor initializer list
+        instead of marking it `late` and setting it in the body.
+    rationale:
+        `late` trades a compile-time error for a runtime one and costs some
+        performance. The initializer list can use the parameters and runs
+        before the field can be read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Range {
+          late final int length;
+          Range(int start, int end) {
+            length = end - start;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Range {
+          final int length;
+          Range(int start, int end) : length = end - start;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, constructors, late]
+    source: https://dart.dev/effective-dart/usage#dont-use-late-when-a-constructor-initializer-list-will-do

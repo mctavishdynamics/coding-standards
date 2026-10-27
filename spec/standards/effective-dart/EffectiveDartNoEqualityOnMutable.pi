@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoEqualityOnMutable:
+    standard: @{EffectiveDart}
+    ruleId: avoid-defining-custom-equality-for-mutable-classes
+    title: Avoid value equality on mutable classes
+    statement:
+        Do not override `==` and `hashCode` for classes whose fields can
+        change. The avoid_equals_and_hash_code_on_mutable_classes lint
+        checks this.
+    rationale:
+        The hash code follows the fields, and hash-based collections
+        misbehave when an element's hash changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Cursor {
+          int line = 0;
+          @override
+          bool operator ==(Object other) => other is Cursor && other.line == line;
+          @override
+          int get hashCode => line.hashCode;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        @immutable
+        class Cursor {
+          final int line;
+          const Cursor(this.line);
+          @override
+          bool operator ==(Object other) => other is Cursor && other.line == line;
+          @override
+          int get hashCode => line.hashCode;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, equality, immutability]
+    source: https://dart.dev/effective-dart/design#avoid-defining-custom-equality-for-mutable-classes

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem17:
+    standard: @{EffectivePython}
+    ruleId: item-17
+    title: Loop with enumerate when you need the index
+    statement:
+        When a loop needs both the position and the item, use enumerate
+        instead of looping over range of the length.
+    rationale:
+        enumerate is shorter, clearer and works on any iterable, not just
+        sequences.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        for i in range(len(names)):
+            print(i + 1, names[i])
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        for i, name in enumerate(names, 1):
+            print(i, name)
+        \\\
+        ```
+    languages: [python]
+    tags: [loops-and-iterators, loops, iteration]
+    source: https://effectivepython.com/

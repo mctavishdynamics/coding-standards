@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackReduceParameterComplexity:
+    standard: @{Carmack}
+    ruleId: reduce-parameter-complexity
+    title: Refactor functions that need many parameters
+    statement:
+        Expect purer code to pass more parameters, but treat a function that
+        needs about a dozen as a sign to restructure the code.
+    rationale:
+        Refactoring toward purity moves state from the environment into
+        parameters, and a very long list shows that the computation is still
+        tangled.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Color Shade(Vec3 p, Vec3 n, Vec3 eye, Vec3 light, Color lc, float li,
+                    Color albedo, float rough, float metal, float ao, float fog, Color fc);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Color Shade(const SurfacePoint& surface, const Material& material,
+                    const LightSet& lights, const ViewParams& view);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [parameters, purity]
+    source: https://www.gamedeveloper.com/programming/in-depth-functional-programming-in-c-

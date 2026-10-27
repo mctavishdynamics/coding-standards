@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiUseDsls:
+    standard: @{KotlinApiGuidelines}
+    ruleId: use-dsls
+    title: Offer builder DSLs for configuration
+    statement:
+        A builder DSL is worth considering when users declare structured
+        domain data. Its builder functions accept a receiver lambda in the
+        final parameter position, and its factory functions carry the
+        capitalized name of the type they return.
+    rationale:
+        A DSL reads concisely, and adding a new property to a builder is a
+        compatible change that can be documented on its own.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun Mailer(host: String, port: Int, useTls: Boolean, retries: Int): Mailer
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public class MailerConfig {
+            public var useTls: Boolean = true
+            public var retries: Int = 3
+        }
+        public fun Mailer(host: String, configure: MailerConfig.() -> Unit = {}): Mailer
+
+        val mailer = Mailer("smtp.example.com") { retries = 5 }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [api-design, dsl]
+    source: https://kotlinlang.org/docs/api-guidelines-readability.html#use-dsls

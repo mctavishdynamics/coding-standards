@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamingParameters5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: naming-parameters-5
+    title: Call a meaningless unary operator parameter value
+    statement:
+        When the single operand of a unary operator overload has no special
+        meaning, name it value.
+    rationale:
+        It is the established convention and needs no explanation.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public static Money operator -(Money value)
+            => new Money(-value.Amount, value.Currency);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, parameters, operators]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/naming-parameters#naming-operator-overload-parameters

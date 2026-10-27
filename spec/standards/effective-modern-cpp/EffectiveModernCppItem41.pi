@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem41:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-41
+    title: Take always-stored, cheaply movable parameters by value
+    statement:
+        For a copyable parameter that the function always stores and that is
+        cheap to move, taking it by value and moving it can replace a pair
+        of overloads.
+    rationale:
+        It produces one function with nearly the same cost, but adds a move
+        and can slice or be slower for assignment.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void addTag(const std::string& t) { tags_.push_back(t); }
+        void addTag(std::string&& t) { tags_.push_back(std::move(t)); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void addTag(std::string t) { tags_.push_back(std::move(t)); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [tweaks, parameters, move-semantics]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

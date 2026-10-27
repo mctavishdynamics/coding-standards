@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation192:
+    standard: @{AnssiC}
+    ruleId: recommendation-192
+    title: Erase sensitive data when an integrity assertion fails
+    statement:
+        Keep integrity assertions in production, and when one fails, erase
+        sensitive data as an emergency measure.
+    rationale:
+        A failed integrity check may mean an attack, so secrets should not
+        stay available.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        if (!table_checksum_ok(&keys)) {
+            explicit_bzero(&keys, sizeof keys);
+            enter_safe_state();
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, assertions, sensitive-data]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=153

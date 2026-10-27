@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmDoNotIncludeIostream:
+    standard: @{LlvmCodingStandards}
+    ruleId: include-iostream-is-forbidden
+    title: Do not include iostream in library code
+    statement:
+        Library files must not include the iostream header. Use raw_ostream
+        for output and MemoryBuffer for reading files.
+    rationale:
+        Many standard library implementations make each including file run a
+        static initializer at startup; the other stream headers lack this
+        cost.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #include <iostream>
+        void dump(const Graph &G) { std::cerr << G.size() << '\n'; }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #include "llvm/Support/raw_ostream.h"
+        void dump(const Graph &G) { llvm::errs() << G.size() << '\n'; }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [includes, streams, performance]
+    source: https://llvm.org/docs/CodingStandards.html#include-iostream-is-forbidden

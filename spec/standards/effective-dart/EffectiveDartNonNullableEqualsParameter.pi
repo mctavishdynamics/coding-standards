@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNonNullableEqualsParameter:
+    standard: @{EffectiveDart}
+    ruleId: dont-make-the-parameter-to-nullable
+    title: Do not make the parameter of == nullable
+    statement:
+        Declare the parameter of `operator ==` as `Object`, not `Object?`,
+        and do not check it for null. The
+        avoid_null_checks_in_equality_operators lint checks this.
+    rationale:
+        Dart deals with null before your operator runs and invokes `==` only
+        when the other operand is non-null.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        @override
+        bool operator ==(Object? other) =>
+            other != null && other is Tag && other.name == name;
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        @override
+        bool operator ==(Object other) => other is Tag && other.name == name;
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, equality, null-safety]
+    source: https://dart.dev/effective-dart/design#dont-make-the-parameter-to-nullable

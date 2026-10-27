@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiMethodsAndFunctionsReadAsPhrases:
+    standard: @{SwiftApiDesign}
+    ruleId: methods-and-functions-read-as-phrases
+    title: Make calls read as English phrases
+    statement:
+        Favor names that make each use read like a grammatical English phrase.
+        Past the first one or two arguments, the phrase may break down if the
+        remaining arguments matter less to the call's meaning.
+    rationale:
+        Calls that read like sentences are easier to understand at a glance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        canvas.drawShape(circle, location: center)
+        users.filterAge(over: 18)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        canvas.draw(circle, at: center)
+        users.filter(olderThan: 18)
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, fluency]
+    source: https://www.swift.org/documentation/api-design-guidelines/#methods-and-functions-read-as-phrases

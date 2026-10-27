@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdPreferStandardContainers:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-containers
+    title: Use standard library containers instead of queue(3) or tree(3)
+    statement:
+        In C++ use standard containers in preference to the queue and tree
+        macros.
+    rationale:
+        Standard containers are type-safe and manage their own memory.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        TAILQ_HEAD(, job) jobs;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::list<job> jobs;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, containers]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

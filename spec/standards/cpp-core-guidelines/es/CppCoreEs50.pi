@@ -5,17 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs50:
     standard: @{CppCoreGuidelines}
     ruleId: ES.50
-    title: Don't cast away const
+    title: Never strip const with a cast
     statement:
-        Do not use const_cast or other casts to remove const and then modify
-        the object.
+        Do not remove const with const_cast or any other cast in order to
+        modify an object.
     rationale:
-        It makes the const promise false, and modifying an object that was
-        declared const is undefined behavior.
+        Code that takes a const reference promises not to change the object,
+        and casting breaks that promise. If the object was really defined
+        const, writing to it is undefined behavior.
     exceptions:
-        You may need to cast away const to call a function that is not
-        const-correct. Wrap that function in a const-correct inline wrapper
-        so the cast lives in one place.
+        Calling a function that is not const-correct may force a cast. Put
+        the cast in a small inline wrapper with a correct const signature,
+        so it appears in exactly one place.
     severity: null
     noncompliant:
         ```cpp

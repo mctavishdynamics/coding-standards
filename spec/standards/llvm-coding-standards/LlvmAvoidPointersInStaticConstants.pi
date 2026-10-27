@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmAvoidPointersInStaticConstants:
+    standard: @{LlvmCodingStandards}
+    ruleId: avoid-pointers-in-global-static-constants
+    title: Avoid non-null pointers inside global or static constants
+    statement:
+        Do not build static constant tables that hold pointers, such as
+        arrays of string pointers or StringRefs, especially when they are
+        large or heavily used. Store the data in a pointer-free form, for
+        example one character array addressed by offsets.
+    rationale:
+        Position-independent builds have to patch each such pointer when the
+        program loads, which slows startup and dirties memory pages.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        static const char *const Suffixes[] = {".o", ".obj", ".a"};
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // One pointer-free blob; entries are addressed by offset.
+        static constexpr char SuffixData[] = ".o\0.obj\0.a";
+        static constexpr unsigned SuffixOffsets[] = {0, 3, 8};
+        \\\
+        ```
+    languages: [cpp]
+    tags: [globals, performance, memory]
+    source: https://llvm.org/docs/CodingStandards.html#avoid-pointers-in-global-static-constants

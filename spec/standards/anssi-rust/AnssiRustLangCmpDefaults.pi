@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangCmpDefaults:
+    standard: @{AnssiRust}
+    ruleId: LANG-CMP-DEFAULTS
+    title: Implement only the required comparison methods
+    statement:
+        When implementing comparison traits, define only the methods that
+        have no default implementation and keep the provided defaults for
+        the rest.
+    rationale:
+        Overriding the defaults gives more chances to make them disagree
+        with each other and break the trait invariants.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl PartialEq for Id {
+            fn eq(&self, other: &Self) -> bool { self.0 == other.0 }
+            fn ne(&self, other: &Self) -> bool { self.0 == other.0 }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl PartialEq for Id {
+            fn eq(&self, other: &Self) -> bool { self.0 == other.0 }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [recommendation, traits, comparison]
+    source: https://anssi-fr.github.io/rust-guide/standard.html#LANG-CMP-DEFAULTS

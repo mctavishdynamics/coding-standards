@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip126:
+    standard: @{GoogleAip}
+    ruleId: AIP-126
+    title: Use UPPER_SNAKE_CASE enums with an unspecified zero value
+    statement:
+        Write enum values in UPPER_SNAKE_CASE and normally start with a zero
+        value named after the enum with an _UNSPECIFIED suffix. Enums shared
+        across APIs must keep identical value numbers; a frequently changing
+        value set should be a documented string field, and a boolean field
+        must default to false.
+    rationale:
+        A dedicated zero value tells the server the client did not choose
+        anything, which protobuf otherwise cannot express. Consistent casing
+        and numbering keep generated code predictable across languages and
+        APIs.
+    exceptions:
+        When an enum has an obviously useful zero value, such as UNKNOWN,
+        that value can take the zero slot instead of an _UNSPECIFIED value.
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        enum Spiciness {
+          mild = 0;
+          Hot = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        enum Spiciness {
+          SPICINESS_UNSPECIFIED = 0;
+          MILD = 1;
+          HOT = 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [enums, naming]
+    source: https://google.aip.dev/126

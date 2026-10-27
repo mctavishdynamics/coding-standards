@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs22:
     standard: @{CppCoreGuidelines}
     ruleId: ES.22
-    title: Don't declare a variable until you have a value to initialize it with
+    title: Delay a declaration until its initial value is known
     statement:
-        Delay a declaration until you can initialize the variable with its
-        real value.
+        Hold off declaring a variable until the point where its proper value
+        is available.
     rationale:
-        It limits scope, removes the risk of use-before-set and is often
-        cheaper than default construction followed by assignment.
+        This narrows the scope and makes reading an unset value impossible.
+        Constructing the object with its final value is usually also cheaper
+        than default construction plus a later assignment.
     exceptions: null
     severity: null
     noncompliant:

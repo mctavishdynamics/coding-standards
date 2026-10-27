@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiMemNodrop:
+    standard: @{AnssiRust}
+    ruleId: FFI-MEM-NODROP
+    title: Do not pass Drop types by value across FFI
+    statement:
+        Do not implement Drop for types handed directly by value to foreign
+        code, rather than through a pointer or reference.
+    rationale:
+        Foreign code does not run Rust destructors, so the value would be
+        leaked or dropped at the wrong time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[repr(C)]
+        pub struct Buffer { ptr: *mut u8, len: usize }
+        impl Drop for Buffer { fn drop(&mut self) { /* free ptr */ } }
+
+        #[no_mangle]
+        pub extern "C" fn make_buffer() -> Buffer { todo!() }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[repr(C)]
+        pub struct Buffer { ptr: *mut u8, len: usize }
+
+        #[no_mangle]
+        pub extern "C" fn make_buffer() -> Buffer { todo!() }
+        #[no_mangle]
+        pub extern "C" fn free_buffer(b: Buffer) { /* free b.ptr */ }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, ffi, memory]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-MEM-NODROP

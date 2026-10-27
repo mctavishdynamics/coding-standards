@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe863:
+    standard: @{CweTop25}
+    ruleId: CWE-863
+    title: Prevent incorrect authorization
+    statement:
+        Base each authorization decision on trusted server-side data and
+        test the exact permission the operation requires rather than a loose
+        stand-in for it. Map roles to data and functions, enforce business
+        rules per record, and use a vetted authorization framework.
+    rationale:
+        A check that exists but tests the wrong thing gives a false sense of
+        safety while still letting users reach data or actions they should
+        not. It is ranked 17 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        app.delete("/reports/:id", async (req, res) => {
+          if (req.get("X-Role") === "admin") {
+            await Reports.remove(req.params.id);
+          }
+          res.sendStatus(204);
+        });
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        app.delete("/reports/:id", async (req, res) => {
+          const user = await Users.get(req.session.userId);
+          if (!user || !user.permissions.includes("reports:delete")) {
+            return res.sendStatus(403);
+          }
+          await Reports.remove(req.params.id);
+          res.sendStatus(204);
+        });
+        \\\
+        ```
+    languages: [javascript]
+    tags: [rank-17, authorization, access-control]
+    source: https://cwe.mitre.org/data/definitions/863.html

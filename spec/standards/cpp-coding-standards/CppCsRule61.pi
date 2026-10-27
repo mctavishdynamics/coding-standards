@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule61:
+    standard: @{CppCodingStandards}
+    ruleId: rule-61
+    title: Keep definitions with external linkage out of header files
+    statement:
+        Headers should declare, not define, entities with linkage, except
+        inline functions, templates and inline variables.
+    rationale:
+        Each including file gets its own definition, causing link errors or
+        duplicated state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // config.h
+        int retryCount = 3;
+        void reset() { retryCount = 3; }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // config.h
+        extern int retryCount;
+        void reset();
+        inline constexpr int defaultRetries = 3;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces-and-modules, headers, linkage]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoInPatternSemicolons:
+    standard: @{RubyStyleGuide}
+    ruleId: no-in-pattern-semicolons
+    title: Do not write in patterns with a semicolon
+    statement:
+        In pattern matching, do not end a one-line in branch with a
+        semicolon; write in pattern then result instead.
+    rationale:
+        As with when, then marks the end of the pattern clearly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        case point
+        in [x, 0]; :on_x_axis
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        case point
+        in [x, 0] then :on_x_axis
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, pattern-matching]
+    source: https://rubystyle.guide/#no-in-pattern-semicolons

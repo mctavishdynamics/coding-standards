@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip215:
+    standard: @{GoogleAip}
+    ruleId: AIP-215
+    title: Keep API-specific protos in their own versioned package
+    statement:
+        Keep every API-specific proto in a package with a major version, and
+        refer to resources in other APIs by resource name, not by their
+        messages. Duplicate shared messages in each version rather than
+        creating API-specific common packages.
+    rationale:
+        Depending on another API's protos raises questions about versioning
+        and client library packaging that have no good answers. Isolated
+        APIs with a few common components avoid them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Delivery {
+          example.kitchens.v1.Kitchen kitchen = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Delivery {
+          // Format: kitchens/main-hall
+          string kitchen = 1 [(google.api.resource_reference) = {
+            type: "kitchens.example.com/Kitchen"
+          }];
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [packages, dependencies]
+    source: https://google.aip.dev/215

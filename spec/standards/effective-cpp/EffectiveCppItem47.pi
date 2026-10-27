@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem47:
+    standard: @{EffectiveCpp}
+    ruleId: item-47
+    title: Query type properties at compile time with traits
+    statement:
+        Supply compile-time facts about types through traits templates, and
+        choose behaviour by overloading on those traits.
+    rationale:
+        Traits work for built-in and third-party types that you cannot
+        change and make the decision at compile time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class It>
+        void skip(It& it, int n) {
+            if (typeid(It) == typeid(int*)) it += n;
+            else while (n--) ++it;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class It>
+        void skip(It& it, int n) {
+            using Cat = typename std::iterator_traits<It>::iterator_category;
+            if constexpr (std::is_base_of_v<std::random_access_iterator_tag, Cat>) it += n;
+            else while (n--) ++it;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates-and-generic-programming, templates, type-traits]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

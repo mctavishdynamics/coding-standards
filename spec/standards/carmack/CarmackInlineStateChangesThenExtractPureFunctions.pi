@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackInlineStateChangesThenExtractPureFunctions:
+    standard: @{Carmack}
+    ruleId: inline-state-changes-then-extract-pure-functions
+    title: Keep heavy state mutation inline and extract pure functions from it
+    statement:
+        When code must change a lot of state, let those changes happen in
+        plain sight in one place. When that becomes unbearable, pull blocks
+        out as pure functions and keep them pure afterwards.
+    rationale:
+        The 2014 preface names unexpected dependencies and mutation as the
+        real problem that inlining fights, and pure functions solve it more
+        directly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Tick(World& w) {
+            UpdateInput(w);      // also touches w.camera
+            UpdatePhysics(w);    // also resets w.input
+            UpdateCamera(w);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Tick(World& w) {
+            const Input in = ReadInput(w.device);
+            w.bodies = StepBodies(w.bodies, in, w.dt);
+            w.camera = FollowTarget(w.camera, w.bodies[w.player]);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [state, purity, inlining]
+    source: http://number-none.com/blow/john_carmack_on_inlined_code.html

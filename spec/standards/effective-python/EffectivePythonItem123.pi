@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem123:
+    standard: @{EffectivePython}
+    ruleId: item-123
+    title: Steer callers to new APIs with warnings
+    statement:
+        When you change or remove an API, issue a DeprecationWarning with
+        warnings.warn, using stacklevel so it points at the caller.
+    rationale:
+        Warnings tell callers what to change without breaking them, and
+        tests can turn warnings into errors to find remaining uses.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        import warnings
+
+        def fetch(url, timeout=None):
+            if timeout is None:
+                warnings.warn("pass timeout explicitly", DeprecationWarning, stacklevel=2)
+                timeout = 30
+        \\\
+        ```
+    languages: [python]
+    tags: [collaboration, api-design, migration]
+    source: https://effectivepython.com/

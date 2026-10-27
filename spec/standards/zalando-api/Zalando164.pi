@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando164:
+    standard: @{ZalandoApi}
+    ruleId: 164
+    title: Use common hypertext controls
+    statement:
+        Embed links to other resources as objects with an href attribute
+        holding the URI, and reserve href for that purpose. Name the
+        attribute after the relation, using IANA link relation names
+        converted to snake_case.
+    rationale:
+        A single link structure makes links easy to recognise and extend
+        with extra attributes.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```json
+        \\\
+        {
+          "id": "so-4471",
+          "customer": { "href": "https://customers.example.com/customers/c-90" },
+          "predecessor_version": { "href": "https://orders.example.com/orders/so-4471/versions/3" }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, hypermedia, json]
+    source: https://opensource.zalando.com/restful-api-guidelines/#164

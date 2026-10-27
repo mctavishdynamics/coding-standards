@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem30:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-30
+    title: Watch for arguments that forwarding cannot pass through
+    statement:
+        Forwarding fails for braced initialisers, 0 or NULL as null
+        pointers, declaration-only static const members, overloaded function
+        names and bit-fields. Work around each case explicitly.
+    rationale:
+        In these cases the template deduces the wrong type or cannot take a
+        reference.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class... A> void emit(A&&... a) { sink(std::forward<A>(a)...); }
+        emit({1, 2, 3});   // cannot deduce
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto values = {1, 2, 3};
+        emit(values);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [rvalue-references-move-semantics-forwarding, templates, move-semantics]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

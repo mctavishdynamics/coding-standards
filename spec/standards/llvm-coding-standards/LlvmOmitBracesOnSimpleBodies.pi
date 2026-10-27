@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmOmitBracesOnSimpleBodies:
+    standard: @{LlvmCodingStandards}
+    ruleId: don-t-use-braces-on-simple-single-statement-bodies-of-if-else-loop-statements
+    title: Omit braces around simple single-statement bodies
+    statement:
+        Leave out braces when an if, else or loop body is one simple
+        statement with no comment attached, and any else also qualifies. Use
+        braces for multi-statement or complex bodies, bodies with comments
+        that cannot be hoisted, chains where any branch needs braces, and an
+        outer if whose body is an if without else.
+    rationale:
+        Skipping braces on trivial bodies reduces line noise, while the
+        listed cases need braces to stay clear and avoid a dangling else.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (Ty->isVoidTy()) {
+          return nullptr;
+        }
+        if (Strict)
+          if (!verify(F))
+            report(F);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        if (Ty->isVoidTy())
+          return nullptr;
+        if (Strict) {
+          if (!verify(F))
+            report(F);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, braces, control-flow]
+    source: https://llvm.org/docs/CodingStandards.html#don-t-use-braces-on-simple-single-statement-bodies-of-if-else-loop-statements

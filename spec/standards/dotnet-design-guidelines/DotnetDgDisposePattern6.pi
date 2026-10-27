@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-6
+    title: Keep the public Dispose method non-virtual
+    statement:
+        Keep Dispose() non-virtual; subclasses override Dispose(bool)
+        instead.
+    rationale:
+        A virtual Dispose() would let subclasses skip the base logic or the
+        finalization suppression.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public virtual void Dispose() { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+        protected virtual void Dispose(bool disposing) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, dispose, resources, virtual-members]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern#basic-dispose-pattern

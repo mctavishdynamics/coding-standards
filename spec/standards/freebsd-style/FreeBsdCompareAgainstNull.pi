@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdCompareAgainstNull:
+    standard: @{FreeBsdStyle}
+    ruleId: pointer-tests
+    title: Compare pointers with NULL explicitly
+    statement:
+        Test pointers against NULL instead of using them as truth values or
+        applying the not operator.
+    rationale:
+        An explicit comparison shows that the value is a pointer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (!(fp = fopen(path, "r")))
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if ((fp = fopen(path, "r")) == NULL)
+        \\\
+        ```
+    languages: [c]
+    tags: [pointers, expressions]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

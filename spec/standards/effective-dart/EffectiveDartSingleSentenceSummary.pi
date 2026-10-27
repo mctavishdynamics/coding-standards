@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartSingleSentenceSummary:
+    standard: @{EffectiveDart}
+    ruleId: do-start-doc-comments-with-a-single-sentence-summary
+    title: Open each doc comment with a one-sentence summary
+    statement:
+        Open each doc comment with a brief, reader-focused description that
+        closes with a full stop. A fragment rather than a complete sentence
+        usually suffices.
+    rationale:
+        The summary lets readers decide quickly whether this is the API they
+        need or whether to look elsewhere.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        /// This is the function for when you want removal of something,
+        /// depending on the path and whether it exists or not.
+        void removeFile(String path) {}
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Removes [path] from disk, doing nothing if it is already gone.
+        void removeFile(String path) {}
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, documentation]
+    source: https://dart.dev/effective-dart/documentation#do-start-doc-comments-with-a-single-sentence-summary

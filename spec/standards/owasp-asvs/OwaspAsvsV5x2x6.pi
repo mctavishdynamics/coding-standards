@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV5x2x6:
+    standard: @{OwaspAsvs}
+    ruleId: V5.2.6
+    title: Reject images with too many pixels
+    statement:
+        Refuse uploaded images whose dimensions exceed the allowed maximum.
+    rationale:
+        A small image file can declare enormous dimensions and exhaust
+        memory when decoded, a pixel flood attack.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        image = Image.open(upload)
+        image.thumbnail((256, 256))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        image = Image.open(upload)
+        if image.width * image.height > MAX_PIXELS:
+            raise UploadRejected("image dimensions too large")
+        image.thumbnail((256, 256))
+        \\\
+        ```
+    languages: [any]
+    tags: [level-3, file-upload, images, denial-of-service]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x14-V5-File-Handling.md#v52-file-upload-and-content

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStylePredicateMethods:
+    standard: @{RubyStyleGuide}
+    ruleId: predicate-methods
+    title: Prefer predicate methods to == comparisons
+    statement:
+        Use predicate methods such as even?, odd?, nil? and zero? instead of
+        comparing with the equality operator. Plain numeric comparisons are
+        acceptable. RuboCop checks this with Style/EvenOdd,
+        Style/NilComparison and Style/NumericPredicate.
+    rationale:
+        A predicate reads as a question and states the intent directly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        skip if page % 2 == 0
+        retry_later if response == nil
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        skip if page.even?
+        retry_later if response.nil?
+        \\\
+        ```
+    languages: [ruby]
+    tags: [readability]
+    source: https://rubystyle.guide/#predicate-methods

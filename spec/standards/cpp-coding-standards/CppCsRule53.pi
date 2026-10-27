@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule53:
+    standard: @{CppCodingStandards}
+    ruleId: rule-53
+    title: Decide explicitly whether a class is copyable
+    statement:
+        Either allow copying with correct semantics or disable it; do not
+        leave it to whatever the compiler generates.
+    rationale:
+        Generated copying is wrong for many classes that hold resources or
+        identity.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Session { Socket sock_; };   // copyable by accident?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Session {
+        public:
+            Session(const Session&) = delete;
+            Session& operator=(const Session&) = delete;
+        private:
+            Socket sock_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [construction-destruction-copying, special-members]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem12:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-12
+    title: Put override on every function that overrides a virtual
+    statement:
+        Write override on every member function meant to override a virtual
+        function.
+    rationale:
+        Without it, a small mismatch in constness, reference qualifiers or
+        parameters silently creates a new function.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Task { public: virtual void run() const; };
+        class Upload : public Task { public: virtual void run(); };   // new function
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Upload : public Task { public: void run() const override; };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [moving-to-modern-cpp, inheritance]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

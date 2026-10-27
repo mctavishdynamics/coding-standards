@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule21:
+    standard: @{CppCodingStandards}
+    ruleId: rule-21
+    title: Do not rely on initialisation order across translation units
+    statement:
+        Avoid namespace-scope objects whose initialisation uses objects
+        defined in other source files. Use function-local statics instead.
+    rationale:
+        The order of dynamic initialisation between translation units is
+        unspecified, so the dependency may read an unbuilt object.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // a.cpp
+        Registry registry;
+        // b.cpp
+        Plugin p(registry);   // registry may not exist yet
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Registry& registry() {
+            static Registry r;
+            return r;
+        }
+        Plugin p(registry());
+        \\\
+        ```
+    languages: [cpp]
+    tags: [coding-style, initialization, global-state]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

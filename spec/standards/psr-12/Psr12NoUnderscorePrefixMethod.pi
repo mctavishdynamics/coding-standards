@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12NoUnderscorePrefixMethod:
+    standard: @{Psr12}
+    ruleId: 4.4b
+    title: Do not mark private methods with a leading underscore
+    statement:
+        Do not start method names with a single underscore to signal
+        protected or private access; the prefix has no meaning.
+    rationale:
+        The visibility keyword is the real statement of access, and the
+        prefix only adds noise that can disagree with it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Parser
+        {
+            private function _tokenize(string $input)
+            {
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Parser
+        {
+            private function tokenize(string $input)
+            {
+            }
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [naming, methods, visibility]
+    source: https://www.php-fig.org/psr/psr-12/#44-methods-and-functions

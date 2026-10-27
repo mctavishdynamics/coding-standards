@@ -1,0 +1,24 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiCkInputRefValid:
+    standard: @{AnssiRust}
+    ruleId: FFI-CK-INPUT-REF-VALID
+    title: Have foreign code check references passed to Rust
+    statement:
+        Every reference that foreign code passes to Rust must already have
+        been validated by the foreign code, either by its compiler or
+        manually.
+    rationale:
+        Rust trusts a reference to be valid without checking, so validity
+        has to be established before it crosses the boundary.
+    exceptions:
+        References in an opaque wrapper that are created and used only from
+        Rust, and Option-wrapped references.
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [rust]
+    tags: [rule, ffi, pointers]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-CK-INPUT-REF-VALID

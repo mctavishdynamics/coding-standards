@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleRegexpStringIndex:
+    standard: @{RubyStyleGuide}
+    ruleId: regexp-string-index
+    title: Use string indexing with a regexp for simple extraction
+    statement:
+        For simple cases, pull out a match or a capture group by indexing
+        the string with the regexp, and you may also assign through that
+        index.
+    rationale:
+        Indexing is short and avoids juggling match objects for a one-off
+        lookup.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```ruby
+        \\\
+        code = header[/[A-Z]{3}-\d+/]
+        year = stamp[/(\d{4})-\d{2}/, 1]
+        stamp[/(\d{4})-/, 1] = '2025'
+        \\\
+        ```
+    languages: [ruby]
+    tags: [regex, strings]
+    source: https://rubystyle.guide/#regexp-string-index

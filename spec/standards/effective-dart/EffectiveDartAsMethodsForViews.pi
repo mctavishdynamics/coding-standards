@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartAsMethodsForViews:
+    standard: @{EffectiveDart}
+    ruleId: prefer-naming-a-method-as___-if-it-returns-a-different-representation-backed-by-the-original-object
+    title: Start view-returning methods with as
+    statement:
+        Name a method that returns a different view still backed by the
+        original object `asSomething()`. The use_to_and_as_if_applicable
+        lint checks this.
+    rationale:
+        As in asMap or asStream, the prefix tells callers that later changes
+        to the original show through.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        List<int> readOnlyCopy() => UnmodifiableListView(_values);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        List<int> asUnmodifiable() => UnmodifiableListView(_values);
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, naming, conversion]
+    source: https://dart.dev/effective-dart/design#prefer-naming-a-method-as___-if-it-returns-a-different-representation-backed-by-the-original-object

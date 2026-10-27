@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiCknonrobust:
+    standard: @{AnssiRust}
+    ruleId: FFI-CKNONROBUST
+    title: Check foreign values of non-robust types before use
+    statement:
+        Do not use a value of a non-robust type, one where some bit patterns
+        are invalid such as bool, char or enums, received from foreign code
+        unless it has been checked or the foreign side guarantees validity.
+    rationale:
+        An invalid bit pattern in such a type is undefined behaviour the
+        moment Rust reads it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub extern "C" fn set_enabled(flag: bool) { STATE.set(flag); }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub extern "C" fn set_enabled(flag: u8) -> i32 {
+            match flag {
+                0 => STATE.set(false),
+                1 => STATE.set(true),
+                _ => return -1,
+            }
+            0
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, ffi, input-validation]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-CKNONROBUST

@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSf21:
     standard: @{CppCoreGuidelines}
     ruleId: SF.21
-    title: Don't use an unnamed (anonymous) namespace in a header
+    title: Keep unnamed namespaces out of headers
     statement:
-        Do not open an unnamed namespace in a header file. Use a named
-        namespace and inline functions instead.
+        Never write an unnamed namespace in a header. Use a named namespace, and
+        inline functions where a definition must live in the header.
     rationale:
-        Each file including the header gets its own separate copy of the
-        entities, which is almost always a bug.
+        Every translation unit that includes the header gets a distinct private copy
+        of what the unnamed namespace holds. That is nearly never what the author
+        wanted.
     exceptions: null
     severity: null
     noncompliant:

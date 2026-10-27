@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDefineGnuSource:
+    standard: @{GnuCodingStandards}
+    ruleId: system-portability-gnu-source
+    title: Define _GNU_SOURCE and do not reuse GNU library names
+    statement:
+        Compile with _GNU_SOURCE defined, and do not give your own functions
+        the names of GNU library extensions, whether or not you call those
+        extensions.
+    rationale:
+        The macro exposes the extension declarations, so the compiler
+        reports any conflicting definition, and avoiding the names keeps
+        code movable into other GNU programs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* Our own helper, but clashes with the GNU extension. */
+        char *strchrnul (const char *s, int c);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define _GNU_SOURCE 1
+        #include <string.h>
+
+        char *find_char_or_end (const char *s, int c);
+        \\\
+        ```
+    languages: [c]
+    tags: [portability, naming, preprocessor]
+    source: https://www.gnu.org/prep/standards/standards.html#System-Portability

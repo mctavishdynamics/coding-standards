@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiInitFactoryPhraseEndsWithBasename:
+    standard: @{SwiftApiDesign}
+    ruleId: init-factory-phrase-ends-with-basename
+    title: Do not continue the base name into the first argument of a constructor
+    statement:
+        In calls to initializers and factory methods, the first argument
+        should not form a phrase that continues from the base name. Combined
+        with the label rules, this means the first argument has a label
+        unless the call is a value-preserving conversion.
+    rationale:
+        Forcing grammatical continuity produces long, awkward labels that do
+        not help the reader.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let size = Size(withWidthOf: 40, andHeightOf: 30)
+        let tile = factory.makeTile(havingColumn: 2, andRow: 5)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let size = Size(width: 40, height: 30)
+        let tile = factory.makeTile(column: 2, row: 5)
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, initializers]
+    source: https://www.swift.org/documentation/api-design-guidelines/#init-factory-phrase-ends-with-basename

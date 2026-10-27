@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdPrototypeSharedFunctionsInHeaders:
+    standard: @{FreeBsdStyle}
+    ruleId: prototype-location
+    title: Declare shared functions in the relevant header, in a logical order
+    statement:
+        Put prototypes of functions that other kernel code calls in the
+        matching header, listed in a logical order, normally alphabetical.
+        Functions shared between modules of one program go in a separate
+        header such as extern.h.
+    rationale:
+        One authoritative declaration keeps callers and the definition in
+        agreement, and a sorted list is easy to search.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        /* extern.h */
+        void    print_entry(const struct entry *);
+        int     read_config(const char *);
+        void    usage(void);
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, headers, declarations]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiROpaque:
+    standard: @{AnssiRust}
+    ruleId: FFI-R-OPAQUE
+    title: Bind foreign opaque types to dedicated Rust types
+    statement:
+        When binding an opaque foreign type, use pointers to a dedicated
+        Rust opaque type instead of c_void pointers.
+    rationale:
+        A distinct type per handle lets the compiler stop one kind of handle
+        being passed where another is expected.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        extern "C" {
+            fn db_open() -> *mut std::ffi::c_void;
+            fn db_close(db: *mut std::ffi::c_void);
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[repr(C)]
+        pub struct Db { _private: [u8; 0] }
+
+        extern "C" {
+            fn db_open() -> *mut Db;
+            fn db_close(db: *mut Db);
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [recommendation, ffi, types]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-R-OPAQUE

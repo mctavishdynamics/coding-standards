@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvPlatformTypes:
+    standard: @{KotlinConventions}
+    ruleId: platform-types
+    title: Declare Kotlin types for platform-typed public values
+    statement:
+        If a public function's result is an expression with a platform type,
+        or a top-level or member property is initialized from one, write out
+        its Kotlin type explicitly. Local values do not need this.
+    rationale:
+        An explicit type fixes the nullability at the boundary instead of
+        leaking the uncertain Java type into the API.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        fun currentUserName() = JavaSession.getUserName()
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        fun currentUserName(): String? = JavaSession.getUserName()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [interop, null-safety]
+    source: https://kotlinlang.org/docs/coding-conventions.html#platform-types

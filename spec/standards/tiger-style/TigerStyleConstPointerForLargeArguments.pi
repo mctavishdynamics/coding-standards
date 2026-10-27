@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleConstPointerForLargeArguments:
+    standard: @{TigerStyle}
+    ruleId: const-pointer-for-large-arguments
+    title: Pass large arguments by const pointer
+    statement:
+        When an argument is larger than sixteen bytes and you do not intend
+        a copy, pass it as a const pointer.
+    rationale:
+        This catches cases where a caller accidentally copies the value onto
+        the stack before the call.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn checksum(header: Header) u128 {}
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn checksum(header: *const Header) u128 {}
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [memory, parameters, performance]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#cache-invalidation

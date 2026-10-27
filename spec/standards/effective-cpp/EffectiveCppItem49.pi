@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem49:
+    standard: @{EffectiveCpp}
+    ruleId: item-49
+    title: Write new-handlers that make progress
+    statement:
+        Understand that operator new calls the installed new-handler
+        repeatedly on failure, so a handler must free memory, install
+        another handler, throw, or end the program.
+    rationale:
+        A handler that does none of these loops forever, and nothrow new
+        only covers the allocation, not the constructor.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void onOom() { log("out of memory"); }   // returns, retried forever
+        std::set_new_handler(onOom);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void onOom() {
+            if (!cache.releaseSome()) throw std::bad_alloc();
+        }
+        std::set_new_handler(onOom);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [customizing-new-and-delete, memory, allocation]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

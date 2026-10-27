@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEnum7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: enum-7
+    title: Give simple enums a member with value zero
+    statement:
+        Make sure an ordinary enum has a member whose value is zero, such as
+        None. If no such member makes sense, give zero to the most common
+        default.
+    rationale:
+        Fields and arrays of an enum type start at zero, so zero should be a
+        meaningful member.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public enum Compression { Fast = 1, Balanced = 2, Smallest = 3 }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public enum Compression { None = 0, Fast = 1, Balanced = 2, Smallest = 3 }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, enums, defaults]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/enum

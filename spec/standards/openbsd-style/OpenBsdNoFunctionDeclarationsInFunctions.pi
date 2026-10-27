@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdNoFunctionDeclarationsInFunctions:
+    standard: @{OpenBsdStyle}
+    ruleId: nested-function-declarations
+    title: Keep function declarations out of function bodies
+    statement:
+        Keep function declarations at file scope or in headers.
+    rationale:
+        Declarations inside a function body still have file scope and only
+        mislead readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void
+        run(void)
+        {
+                void    cleanup(void);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void    cleanup(void);
+
+        void
+        run(void)
+        {
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, functions]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

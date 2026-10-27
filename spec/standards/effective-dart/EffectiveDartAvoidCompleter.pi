@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartAvoidCompleter:
+    standard: @{EffectiveDart}
+    ruleId: avoid-using-completer-directly
+    title: Avoid Completer outside low-level code
+    statement:
+        Produce futures with `async`/`await` or `then` instead of a
+        `Completer`. Keep Completer for new async primitives or wrapping
+        callback-based APIs.
+    rationale:
+        The higher-level forms are clearer and handle errors with less
+        effort.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        Future<int> total() {
+          final completer = Completer<int>();
+          fetchPrices().then((prices) {
+            completer.complete(prices.reduce((a, b) => a + b));
+          });
+          return completer.future;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        Future<int> total() async {
+          final prices = await fetchPrices();
+          return prices.reduce((a, b) => a + b);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, async]
+    source: https://dart.dev/effective-dart/usage#avoid-using-completer-directly

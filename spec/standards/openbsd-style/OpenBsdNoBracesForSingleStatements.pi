@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdNoBracesForSingleStatements:
+    standard: @{OpenBsdStyle}
+    ruleId: single-statement-braces
+    title: Omit braces around a single-line body
+    statement:
+        Leave braces off a control statement whose body is empty or one
+        statement; braces are allowed only when that one statement takes
+        several lines.
+    rationale:
+        Leaving out unneeded braces keeps code compact.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (verbose) {
+                printf("%s\n", name);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (verbose)
+                printf("%s\n", name);
+        \\\
+        ```
+    languages: [c]
+    tags: [braces, formatting]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule9:
+    standard: @{CppCodingStandards}
+    ruleId: rule-9
+    title: Do not make code needlessly slow either
+    statement:
+        When two equally clear options exist, choose the efficient one: pass
+        large objects by reference, prefer prefix increment, use initialiser
+        lists.
+    rationale:
+        Habitual small inefficiencies add up and cost nothing to avoid.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void print(std::vector<std::string> lines);
+        for (auto it = m.begin(); it != m.end(); it++) {}
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void print(const std::vector<std::string>& lines);
+        for (auto it = m.begin(); it != m.end(); ++it) {}
+        \\\
+        ```
+    languages: [cpp]
+    tags: [design-style, performance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

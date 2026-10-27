@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagInfoAndRelationships:
+    standard: @{Wcag22}
+    ruleId: 1.3.1
+    title: Expose structure in markup, not only in appearance
+    statement:
+        Make information, structure and relationships that are shown
+        visually available in code or in text. Use real headings, lists,
+        tables with header cells and labelled form fields rather than
+        styling alone.
+    rationale:
+        Assistive technology reads the markup, not the visual layout, so
+        structure that exists only in CSS is lost.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <div class="heading-large">Shipping</div>
+        <div class="row"><span class="bold">Name</span> <input id="name"></div>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <h2>Shipping</h2>
+        <label for="name">Name</label> <input id="name" name="name">
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, semantics, structure, forms]
+    source: https://www.w3.org/TR/WCAG22/#info-and-relationships

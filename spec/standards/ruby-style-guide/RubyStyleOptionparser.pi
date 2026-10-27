@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleOptionparser:
+    standard: @{RubyStyleGuide}
+    ruleId: optionparser
+    title: Parse command-line options with OptionParser
+    statement:
+        Parse elaborate command-line options with OptionParser; for very
+        simple switches, the ruby -s flag is enough.
+    rationale:
+        OptionParser handles parsing, validation and help text, so you do
+        not hand-roll argument handling.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        verbose = ARGV.include?('--verbose')
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        require 'optparse'
+
+        options = {}
+        OptionParser.new do |opts|
+          opts.on('-v', '--verbose', 'Print progress') { options[:verbose] = true }
+        end.parse!
+        \\\
+        ```
+    languages: [ruby]
+    tags: [cli]
+    source: https://rubystyle.guide/#optionparser

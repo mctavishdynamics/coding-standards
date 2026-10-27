@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem61:
+    standard: @{EffectivePython}
+    ruleId: item-61
+    title: Provide lazy or dynamic attributes with attribute hooks
+    statement:
+        Use __getattr__ to supply attributes that are missing, such as
+        lazily loaded fields, and __getattribute__ or __setattr__ only when
+        every access must be intercepted. Call super inside them to avoid
+        recursion.
+    rationale:
+        These hooks enable lazy loading and proxies, but careless use causes
+        infinite recursion and slow code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Record:
+            def __getattribute__(self, name):
+                return self.data[name]  # recurses forever
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Record:
+            def __getattr__(self, name):
+                value = load_field(name)
+                setattr(self, name, value)
+                return value
+        \\\
+        ```
+    languages: [python]
+    tags: [metaclasses-and-attributes, attributes, metaprogramming]
+    source: https://effectivepython.com/

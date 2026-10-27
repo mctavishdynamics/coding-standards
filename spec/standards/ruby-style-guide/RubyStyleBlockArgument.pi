@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleBlockArgument:
+    standard: @{RubyStyleGuide}
+    ruleId: block-argument
+    title: Pass a block through with an explicit block argument
+    statement:
+        Consider accepting the block as an explicit argument and passing it
+        on, instead of writing a block literal that only forwards its
+        arguments to yield.
+    rationale:
+        Forwarding the block directly avoids an extra block and makes the
+        pass-through obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def each_line(&block)
+          @lines.each { |line| yield line }
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def each_line(&block)
+          @lines.each(&block)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [blocks, methods]
+    source: https://rubystyle.guide/#block-argument

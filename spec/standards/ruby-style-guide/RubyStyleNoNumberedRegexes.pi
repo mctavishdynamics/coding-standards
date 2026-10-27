@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoNumberedRegexes:
+    standard: @{RubyStyleGuide}
+    ruleId: no-numbered-regexes
+    title: Prefer named groups to numbered ones
+    statement:
+        Avoid numbered groups in regexps whose captures you use later, and
+        give the groups names instead.
+    rationale:
+        Numbers make it hard to follow which group holds what, especially
+        once the code that uses them is far from the regexp.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        /(\w+)=(\w+)/ =~ pair
+        store(Regexp.last_match(1), Regexp.last_match(2))
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        /(?<key>\w+)=(?<value>\w+)/ =~ pair
+        store(key, value)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [regex, readability]
+    source: https://rubystyle.guide/#no-numbered-regexes

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12AnonymousClassBrace:
+    standard: @{Psr12}
+    ruleId: 8b
+    title:
+        Place the anonymous class brace according to the interface list
+    statement:
+        For an anonymous class whose implemented interfaces fit on a single
+        line, the opening brace can sit at the end of that line, after the
+        class keyword. If the interfaces wrap across lines, the brace starts
+        the line that follows the final interface.
+    rationale:
+        This mirrors named classes and keeps the body visually separate from
+        a long signature.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        $store = new class implements
+            \Countable,
+            \ArrayAccess {
+            // members
+        };
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        $store = new class implements
+            \Countable,
+            \ArrayAccess
+        {
+            // members
+        };
+        \\\
+        ```
+    languages: [php]
+    tags: [classes, braces]
+    source: https://www.php-fig.org/psr/psr-12/#8-anonymous-classes

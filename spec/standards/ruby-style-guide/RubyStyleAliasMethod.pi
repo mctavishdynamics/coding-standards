@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAliasMethod:
+    standard: @{RubyStyleGuide}
+    ruleId: alias-method
+    title: Use alias_method when aliasing at runtime
+    statement:
+        Choose alias_method when an alias is defined dynamically on a
+        module, class or singleton class, for instance from within a method
+        body or a hook.
+    rationale:
+        The lexical scoping of alias makes its target unpredictable in those
+        cases, while alias_method acts on the receiver it is called on.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        module Legacy
+          def self.included(base)
+            base.class_eval { alias old_save save }
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        module Legacy
+          def self.included(base)
+            base.alias_method :old_save, :save
+          end
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, methods, aliases]
+    source: https://rubystyle.guide/#alias-method

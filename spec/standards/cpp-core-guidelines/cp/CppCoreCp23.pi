@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp23:
     standard: @{CppCoreGuidelines}
     ruleId: CP.23
-    title: Think of a joining thread as a scoped container
+    title: Treat a thread that is joined at scope exit like a local object
     statement:
-        Treat a thread that is joined at the end of its scope like a local
-        object. It may safely use pointers to objects in its own scope and
-        in enclosing scopes.
+        Think of a thread that is joined before its scope ends as an ordinary local
+        variable. It may use pointers to objects that live in that scope or any
+        outer one.
     rationale:
-        A joining thread cannot outlive the scope that created it, so the
-        objects it points to stay alive for as long as it can use them,
-        keeping lifetimes easy to check.
+        Because the join happens before the scope closes, everything the thread
+        refers to is still alive while it runs. That makes its lifetimes as easy to
+        reason about as a local's.
     exceptions: null
     severity: null
     noncompliant: null

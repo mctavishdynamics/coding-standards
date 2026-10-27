@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem45:
+    standard: @{EffectivePython}
+    ruleId: item-45
+    title: Delegate to a nested generator with yield from
+    statement:
+        When a generator passes through all the values of another generator,
+        use yield from instead of a loop that re-yields each one.
+    rationale:
+        yield from is shorter, clearer and somewhat faster.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def walk(tree):
+            for child in tree.children:
+                for node in walk(child):
+                    yield node
+            yield tree
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def walk(tree):
+            for child in tree.children:
+                yield from walk(child)
+            yield tree
+        \\\
+        ```
+    languages: [python]
+    tags: [comprehensions-and-generators, generators]
+    source: https://effectivepython.com/

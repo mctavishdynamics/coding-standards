@@ -5,13 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC148:
     standard: @{CppCoreGuidelines}
     ruleId: C.148
-    title: Use dynamic_cast to a pointer when failure is a valid outcome
+    title: Cast to a pointer type when a failed downcast is an expected case
     statement:
-        If the object may or may not be of the target class and both cases
-        are normal, cast to a pointer type and test the result.
+        Use a dynamic_cast to a pointer type when the object may or may not be
+        of the target class and both outcomes are normal. Then test the pointer.
     rationale:
-        A pointer cast returns null on failure, which lets the code choose
-        between alternative paths at run time.
+        A failed pointer cast just gives nullptr, which fits naturally into an
+        if statement that chooses a branch.
     exceptions: null
     severity: null
     noncompliant:

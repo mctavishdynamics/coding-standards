@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV7x2x3:
+    standard: @{OwaspAsvs}
+    ruleId: V7.2.3
+    title: Generate reference session tokens with 128 bits from a CSPRNG
+    statement:
+        Make reference tokens unique and generate them with a
+        cryptographically secure random generator, with at least 128 bits of
+        entropy.
+    rationale:
+        Predictable or short tokens can be guessed, giving attackers other
+        users' sessions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        session_id = hashlib.md5(f"{user.id}{time.time()}".encode()).hexdigest()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        session_id = secrets.token_urlsafe(32)
+        \\\
+        ```
+    languages: [any]
+    tags: [level-1, session, randomness]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x16-V7-Session-Management.md#v72-fundamental-session-management-security

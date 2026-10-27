@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule95:
+    standard: @{CppCodingStandards}
+    ruleId: rule-95
+    title: Write casts with the named cast operators
+    statement:
+        Use the named casts, static_cast, const_cast, dynamic_cast and
+        reinterpret_cast, instead of the C cast syntax.
+    rationale:
+        C casts silently pick a dangerous conversion and are hard to search
+        for.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        double ratio = (double)hits / total;
+        auto* p = (Derived*)base;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        double ratio = static_cast<double>(hits) / total;
+        auto* p = dynamic_cast<Derived*>(base);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-safety, casting]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

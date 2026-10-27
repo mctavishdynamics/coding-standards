@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem17:
+    standard: @{EffectiveCpp}
+    ruleId: item-17
+    title: Wrap a new allocation in its smart pointer in its own statement
+    statement:
+        Hand a freshly allocated object to its smart pointer in a separate
+        statement, or use a make function, rather than doing it inside a
+        larger expression.
+    rationale:
+        Inside a function call's argument list another argument may be
+        evaluated and throw before the pointer is owned, leaking it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        submit(std::shared_ptr<Job>(new Job), priority());
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::shared_ptr<Job> job(new Job);
+        submit(job, priority());
+        \\\
+        ```
+    languages: [cpp]
+    tags: [resource-management, memory, exceptions]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

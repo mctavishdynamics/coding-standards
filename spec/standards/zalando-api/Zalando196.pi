@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando196:
+    standard: @{ZalandoApi}
+    ruleId: 196
+    title: Make event schemas conform to the OpenAPI schema object
+    statement:
+        Write event schemas as OpenAPI Schema Objects. Do not use JSON
+        Schema keywords that OpenAPI drops, such as oneOf, not, const,
+        contains or patternProperties.
+    rationale:
+        Using the same schema language as the APIs keeps events aligned with
+        the resources they describe.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        properties:
+          status:
+            const: SCANNED
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        properties:
+          status:
+            type: string
+            examples: [ SCANNED ]
+        \\\
+        ```
+    languages: [any]
+    tags: [must, events, schema]
+    source: https://opensource.zalando.com/restful-api-guidelines/#196

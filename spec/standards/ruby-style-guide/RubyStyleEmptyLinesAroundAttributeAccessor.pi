@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleEmptyLinesAroundAttributeAccessor:
+    standard: @{RubyStyleGuide}
+    ruleId: empty-lines-around-attribute-accessor
+    title: Surround attribute declarations with blank lines
+    statement:
+        Leave an empty line before and after a group of attribute accessor
+        declarations.
+    rationale:
+        Blank lines make the accessors stand out as their own section of the
+        class.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Invoice
+          attr_reader :total
+          def initialize(total)
+            @total = total
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Invoice
+          attr_reader :total
+
+          def initialize(total)
+            @total = total
+          end
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, whitespace, classes]
+    source: https://rubystyle.guide/#empty-lines-around-attribute-accessor

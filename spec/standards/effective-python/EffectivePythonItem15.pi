@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem15:
+    standard: @{EffectivePython}
+    ruleId: item-15
+    title: Do not stride and slice in one expression
+    statement:
+        Avoid combining a start, end and step in one slice, and avoid
+        negative steps. Split the work into a stride and a separate slice,
+        or use itertools.islice.
+    rationale:
+        Three-part slices are hard to read, and negative strides behave in
+        surprising ways.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        picked = data[-2:2:-2]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        evens = data[::2]
+        picked = evens[1:-1]
+        \\\
+        ```
+    languages: [python]
+    tags: [strings-and-slicing, slicing, readability]
+    source: https://effectivepython.com/

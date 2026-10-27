@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdOrderKernelIncludes:
+    standard: @{FreeBsdStyle}
+    ruleId: include-order-kernel
+    title: Include kernel headers first, with types or param before the rest
+    statement:
+        Leave a blank line before the include block. Kernel headers come
+        first, opening with exactly one of sys/param.h and sys/types.h, then
+        sys/systm.h when required, then the remaining kernel headers in
+        alphabetical order.
+    rationale:
+        Other headers depend on these basic types, and a fixed order makes
+        missing or duplicate includes easy to spot.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include <sys/lock.h>
+        #include <sys/param.h>
+        #include <sys/types.h>
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <sys/param.h>
+        #include <sys/systm.h>
+        #include <sys/lock.h>
+        #include <sys/mutex.h>
+        \\\
+        ```
+    languages: [c]
+    tags: [includes, file-structure]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

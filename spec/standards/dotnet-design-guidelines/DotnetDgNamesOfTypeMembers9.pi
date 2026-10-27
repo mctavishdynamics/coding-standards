@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfTypeMembers9:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-type-members-9
+    title: Signal event timing by tense rather than with Before or After
+    statement:
+        Mark pre- and post-events by tense, not with Before or After added
+        to the name.
+    rationale:
+        The tense convention is already established across .NET, and Before
+        and After variants break it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public event EventHandler BeforeUpload;
+        public event EventHandler AfterUpload;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public event EventHandler Uploading;
+        public event EventHandler Uploaded;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, naming, events]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-type-members#names-of-events

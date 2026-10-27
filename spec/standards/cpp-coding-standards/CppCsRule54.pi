@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule54:
+    standard: @{CppCodingStandards}
+    ruleId: rule-54
+    title: Copy polymorphic objects through a virtual clone
+    statement:
+        Do not copy polymorphic bases by value; disable public copying in
+        the base and provide a virtual clone function instead.
+    rationale:
+        Copying through the base type keeps only the base part and loses the
+        derived behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void store(Shape s);   // slices Circle
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Shape {
+        public:
+            virtual std::unique_ptr<Shape> clone() const = 0;
+            virtual ~Shape() = default;
+        protected:
+            Shape(const Shape&) = default;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [construction-destruction-copying, inheritance, special-members]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

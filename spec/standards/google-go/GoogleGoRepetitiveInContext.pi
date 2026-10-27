@@ -7,9 +7,9 @@ export coding-rule GoogleGoRepetitiveInContext:
     ruleId: decisions/repetitive-in-context
     title: Do not repeat context in local names
     statement:
-        Drop information from a name that the package, type, method,
-        function, import path or file name already supplies. Judge
-        repetition from the point of view of the code that uses the symbol.
+        Strip from a name whatever its package, type, method, function,
+        import path or file already conveys. Decide what counts as
+        repetitive by reading the name where callers use it.
     rationale:
         Context already qualifies every name inside it, so restating it adds
         noise without benefit.
@@ -18,24 +18,24 @@ export coding-rule GoogleGoRepetitiveInContext:
     noncompliant:
         ```go
         \\\
-        func (db *DB) UserCount() (userCount int, err error) {
-            var userCountInt64 int64
-            if dbLoadError := db.LoadFromDatabase("count(distinct users)", &userCountInt64); dbLoadError != nil {
-                return 0, fmt.Errorf("failed to load user count: %s", dbLoadError)
+        func (q *Queue) PendingJobs() (pendingJobList []Job, err error) {
+            pendingJobRows, queueQueryErr := q.queryQueue("state = 'pending'")
+            if queueQueryErr != nil {
+                return nil, fmt.Errorf("pending jobs: %w", queueQueryErr)
             }
-            return int(userCountInt64), nil
+            return toJobs(pendingJobRows), nil
         }
         \\\
         ```
     compliant:
         ```go
         \\\
-        func (db *DB) UserCount() (int, error) {
-            var count int64
-            if err := db.Load("count(distinct users)", &count); err != nil {
-                return 0, fmt.Errorf("failed to load user count: %s", err)
+        func (q *Queue) PendingJobs() ([]Job, error) {
+            rows, err := q.query("state = 'pending'")
+            if err != nil {
+                return nil, fmt.Errorf("pending jobs: %w", err)
             }
-            return int(count), nil
+            return toJobs(rows), nil
         }
         \\\
         ```

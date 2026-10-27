@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleSimpleReturnTypes:
+    standard: @{TigerStyle}
+    ruleId: simple-return-types
+    title: Prefer the simplest possible return type
+    statement:
+        Choose signatures and return types that give the caller as few cases
+        as possible to handle; void beats bool, bool beats an integer, and a
+        plain value beats an optional or an error union.
+    rationale:
+        Every extra case must be handled at each call site, and that
+        complexity spreads up the call chain.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn reset(self: *Pool) !bool {}
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn reset(self: *Pool) void {}
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [api-design, functions]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#cache-invalidation

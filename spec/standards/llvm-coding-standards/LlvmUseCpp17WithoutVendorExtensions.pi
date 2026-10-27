@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmUseCpp17WithoutVendorExtensions:
+    standard: @{LlvmCodingStandards}
+    ruleId: c-standard-versions
+    title: Target C++17 and avoid needless vendor extensions
+    statement:
+        Write code against standard C++17 unless a subproject documents
+        otherwise. Use only features that all supported host toolchains
+        accept, and avoid compiler-specific extensions you do not need.
+    rationale:
+        The project must build with several compilers and standard
+        libraries, so code has to stay inside the feature set they all
+        share.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // GNU statement expression: not standard C++.
+        int Twice = ({ int T = compute(); T * 2; });
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int T = compute();
+        int Twice = T * 2;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [portability, language-version]
+    source: https://llvm.org/docs/CodingStandards.html#c-standard-versions

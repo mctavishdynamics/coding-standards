@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoUseFieldTagsInMarshaledStructs:
+    standard: @{UberGo}
+    ruleId: use-field-tags-in-marshaled-structs
+    title: Tag every field of a serialized struct
+    statement:
+        Annotate each struct field that is marshaled to JSON, YAML or
+        another tag-aware format with an explicit tag naming it.
+    rationale:
+        The serialized form is a contract with other systems; explicit tags
+        stop a field rename in Go from silently changing that contract.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Product struct {
+            Name  string
+            Price int
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Product struct {
+            Name  string `json:"name"`
+            Price int    `json:"price"`
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [serialization, api-design]
+    source: https://github.com/uber-go/guide/blob/master/style.md#use-field-tags-in-marshaled-structs

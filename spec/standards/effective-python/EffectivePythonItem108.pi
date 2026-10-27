@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem108:
+    standard: @{EffectivePython}
+    ruleId: item-108
+    title: Collect tests for one behaviour in a single test class
+    statement:
+        Write tests as methods of unittest.TestCase subclasses, one class
+        per area of behaviour, and use helper methods and subTest for
+        repeated cases.
+    rationale:
+        Grouped tests are easy to run together, and the specialised
+        assertion methods give clear failure messages.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        class ParseTests(unittest.TestCase):
+            def test_valid(self):
+                for text, expected in [("1", 1), ("-2", -2)]:
+                    with self.subTest(text=text):
+                        self.assertEqual(parse(text), expected)
+        \\\
+        ```
+    languages: [python]
+    tags: [testing-and-debugging, testing, unittest]
+    source: https://effectivepython.com/

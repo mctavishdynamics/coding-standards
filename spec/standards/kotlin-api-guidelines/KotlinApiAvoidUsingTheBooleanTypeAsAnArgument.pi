@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiAvoidUsingTheBooleanTypeAsAnArgument:
+    standard: @{KotlinApiGuidelines}
+    ruleId: avoid-using-the-boolean-type-as-an-argument
+    title: Avoid Boolean parameters in public APIs
+    statement:
+        Do not take Boolean arguments that switch behaviour. Provide
+        separately named functions for each behaviour, or an enum when there
+        are several modes or the modes may grow.
+    rationale:
+        A bare true at a call site does not explain itself, and you cannot
+        force callers to use named arguments.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun Report.export(compress: Boolean): File
+        report.export(true)
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun Report.export(): File
+        public fun Report.exportCompressed(): File
+        report.exportCompressed()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [api-design, booleans]
+    source: https://kotlinlang.org/docs/api-guidelines-readability.html#avoid-using-the-boolean-type-as-an-argument

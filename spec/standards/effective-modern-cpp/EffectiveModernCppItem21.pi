@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem21:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-21
+    title: Create smart pointers with make_unique and make_shared
+    statement:
+        Prefer the make functions to calling new directly, except when you
+        need custom deleters, braced initialisation, or must release memory
+        before all weak pointers are gone.
+    rationale:
+        They avoid repeating the type, are exception safe and make_shared
+        allocates once.
+    exceptions:
+        Use direct construction for custom deleters, braced initialiser
+        lists, classes with their own operator new, or very large objects
+        with long-lived weak pointers.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        process(std::shared_ptr<Job>(new Job), priority());
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        process(std::make_shared<Job>(), priority());
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, smart-pointers, memory]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

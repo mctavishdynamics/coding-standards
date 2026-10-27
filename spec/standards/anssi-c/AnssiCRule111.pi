@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule111:
+    standard: @{AnssiC}
+    ruleId: rule-111
+    title: Parenthesise expressions with several comparisons
+    statement:
+        Do not write a boolean expression containing two or more relational
+        operators without parentheses that split it into separate
+        comparisons.
+    rationale:
+        Without parentheses such conditions are always true or always false.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (0 <= idx <= 9) { use(idx); }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if ((0 <= idx) && (idx <= 9)) { use(idx); }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, expressions, comparison]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=89

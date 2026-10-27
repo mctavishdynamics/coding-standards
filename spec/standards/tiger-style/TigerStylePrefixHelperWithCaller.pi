@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStylePrefixHelperWithCaller:
+    standard: @{TigerStyle}
+    ruleId: prefix-helper-with-caller
+    title: Prefix helper names with the name of their caller
+    statement:
+        When a function calls its own helper or callback, start the helper's
+        name with the caller's name.
+    rationale:
+        The name then records where the helper is called from, as with a
+        function and its callback.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn compact() void { done(); }
+        fn done() void {}
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn compact() void { compact_done(); }
+        fn compact_done() void {}
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [naming, functions]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#naming-things

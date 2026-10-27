@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfClassesStructsAndInterfaces11:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-classes-structs-and-interfaces-11
+    title: Use the conventional suffixes for types derived from common framework types
+    statement:
+        Types deriving from well-known framework types take their family
+        suffix. Attributes end in Attribute, event delegates in
+        EventHandler, other delegates in Callback (never Delegate), event
+        data in EventArgs, exceptions in Exception and streams in Stream. Do
+        not derive from System.Enum directly or add Enum or Flag to enum
+        names.
+    rationale:
+        Consistent suffixes tell a reader what kind of type it is before
+        they look at its declaration.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class Retired : Attribute { }
+        public delegate void ProgressDelegate(int percent);
+        public class UploadFailure : Exception { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class RetiredAttribute : Attribute { }
+        public delegate void ProgressCallback(int percent);
+        public class UploadFailedException : Exception { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, types]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces#names-of-common-types

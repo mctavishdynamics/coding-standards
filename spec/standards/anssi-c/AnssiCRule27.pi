@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule27:
+    standard: @{AnssiC}
+    ruleId: rule-27
+    title: Do not use the undef directive
+    statement:
+        Do not undefine macros with undef.
+    rationale:
+        A macro that changes meaning partway through the code makes it hard
+        to know which definition applies where.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define BUF_SIZE 64
+        /* ... */
+        #undef BUF_SIZE
+        #define BUF_SIZE 128
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define SMALL_BUF_SIZE 64
+        #define LARGE_BUF_SIZE 128
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, macros, preprocessor]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=27

@@ -5,47 +5,46 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE27:
     standard: @{CppCoreGuidelines}
     ruleId: E.27
-    title: If you cannot throw exceptions, use error codes systematically
+    title: Return error codes consistently when exceptions are unavailable
     statement:
-        Without exceptions, report errors in one consistent way, for example
-        a result type with named value and error members or a valid()
-        indicator, check it at every call, and release resources on every
-        error exit.
+        When exceptions are unavailable, choose a single error-reporting convention,
+        such as a result struct with value and error members or a validity flag.
+        Check it after every call and free resources on every failing path.
     rationale:
-        Systematic use of any error-handling strategy minimizes the chance
-        of forgetting to handle an error.
+        A uniform convention tells each caller exactly what to test, and a missing
+        check stands out during review.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        Gadget make_gadget(int n);   // failure indicated sometimes by -1, sometimes by null
+        Connection open_connection(const std::string& host);   // failure: empty object or id() == -1
 
-        void user()
+        void sync(const std::string& host)
         {
-            Gadget g = make_gadget(17);
-            g.start();   // never checked
+            Connection c = open_connection(host);
+            c.send(snapshot());   // failure never checked
         }
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        struct GadgetResult {
-            Gadget value;
-            ErrorCode error;
+        struct OpenResult {
+            Connection conn;
+            Status status;
         };
 
-        [[nodiscard]] GadgetResult make_gadget(int n);
+        [[nodiscard]] OpenResult open_connection(const std::string& host);
 
-        void user()
+        void sync(const std::string& host)
         {
-            auto r = make_gadget(17);
-            if (r.error != ErrorCode::none) {
-                report(r.error);
+            auto res = open_connection(host);
+            if (res.status != Status::ok) {
+                log_failure(res.status);
                 return;
             }
-            r.value.start();
+            res.conn.send(snapshot());
         }
         \\\
         ```

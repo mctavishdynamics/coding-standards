@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuCheckSystemCallErrors:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-check-system-calls
+    title: Check every system call and report errors fully
+    statement:
+        Check the result of every system call unless you deliberately ignore
+        errors. Each resulting error message should name the utility, the
+        file if there is one, and include the errno description, for example
+        from strerror.
+    rationale:
+        A message like a bare cannot-open gives the user nothing to act on.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fd = open (name, O_RDONLY);
+        if (fd < 0)
+          fputs ("cannot open file\n", stderr);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        fd = open (name, O_RDONLY);
+        if (fd < 0)
+          error (EXIT_FAILURE, errno, "%s", name);
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, error-messages]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

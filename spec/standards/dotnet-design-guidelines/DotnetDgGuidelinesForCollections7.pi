@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgGuidelinesForCollections7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: guidelines-for-collections-7
+    title: Avoid ICollection parameters used only for Count
+    statement:
+        Do not require ICollection just to read Count; accept IEnumerable
+        and check at run time whether the argument also implements
+        ICollection.
+    rationale:
+        The wider parameter type serves more callers while still allowing
+        the fast path.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Preallocate(ICollection<Row> rows) => _buffer = new Row[rows.Count];
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Preallocate(IEnumerable<Row> rows)
+        {
+            int count = rows is ICollection<Row> c ? c.Count : rows.Count();
+            _buffer = new Row[count];
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, collections, parameters]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/guidelines-for-collections#collection-parameters

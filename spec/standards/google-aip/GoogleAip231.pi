@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip231:
+    standard: @{GoogleAip}
+    ruleId: AIP-231
+    title: Provide an atomic BatchGet method
+    statement:
+        A batch get method is named BatchGet plus the plural resource, bound
+        to GET with a :batchGet URI and no body. It takes the names in a
+        repeated field, must succeed or fail as a whole, and returns
+        resources in the same order as the requested names.
+    rationale:
+        Some clients need a consistent snapshot of several resources at
+        once. Atomic, ordered results make the response easy to match to the
+        request.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```protobuf
+        \\\
+        rpc BatchGetRecipes(BatchGetRecipesRequest)
+            returns (BatchGetRecipesResponse) {
+          option (google.api.http) = {
+            get: "/v1/{parent=kitchens/*}/recipes:batchGet"
+          };
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [batch-methods, methods]
+    source: https://google.aip.dev/231

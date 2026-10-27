@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule89:
+    standard: @{AnssiC}
+    ruleId: rule-89
+    title: Never dereference a null pointer
+    statement:
+        Make sure a pointer is not NULL before dereferencing it.
+    rationale:
+        Dereferencing NULL is undefined behaviour and usually crashes the
+        program.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        size_t name_len(const char *name) { return strlen(name); }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        size_t name_len(const char *name) {
+            if (NULL == name) { return 0; }
+            return strlen(name);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, pointers, null-safety]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=71

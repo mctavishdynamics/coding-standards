@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV1x5x2:
+    standard: @{OwaspAsvs}
+    ruleId: V1.5.2
+    title: Deserialize untrusted data only in a safe way
+    statement:
+        Restrict what deserialization of untrusted data can create, for
+        example with an allowlist of types or by refusing client-chosen
+        types. Never use mechanisms documented as unsafe on untrusted input.
+    rationale:
+        Deserialization has a long record of code injection flaws, and some
+        mechanisms cannot be made safe when the data is untrusted.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        profile = pickle.loads(request.body)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        profile = Profile.from_dict(json.loads(request.body))
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, deserialization]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x10-V1-Encoding-and-Sanitization.md#v15-safe-deserialization

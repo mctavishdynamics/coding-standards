@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem24:
+    standard: @{EffectivePython}
+    ruleId: item-24
+    title: Reach for itertools when combining iterators
+    statement:
+        Use the itertools module for linking, filtering, grouping and
+        combining iterators instead of writing that logic by hand.
+    rationale:
+        The functions are fast, well tested and express common patterns
+        clearly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        pairs = []
+        for i in range(len(items)):
+            for j in range(i + 1, len(items)):
+                pairs.append((items[i], items[j]))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import itertools
+
+        pairs = list(itertools.combinations(items, 2))
+        \\\
+        ```
+    languages: [python]
+    tags: [loops-and-iterators, iterators, standard-library]
+    source: https://effectivepython.com/

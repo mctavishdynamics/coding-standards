@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem73:
+    standard: @{EffectiveJava}
+    ruleId: item-73
+    title: Throw exceptions that fit the current level of abstraction
+    statement:
+        Translate low-level exceptions into ones that make sense for your
+        API, chaining the original as the cause.
+    rationale:
+        Leaking implementation exceptions confuses callers and ties the API
+        to details that may change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public User load(long id) throws SQLException { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public User load(long id) {
+            try {
+                return dao.find(id);
+            } catch (SQLException e) {
+                throw new UserStoreException("cannot load user " + id, e);
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, abstraction]
+    source: https://www.informit.com/store/effective-java-9780134686097

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSealing3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: sealing-3
+    title: Consider sealing your overrides
+    statement:
+        Mark members you override as sealed when further overriding is not
+        intended.
+    rationale:
+        Overrides carry the same compatibility risks as virtual members, and
+        sealing them stops those risks at that level.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class AuditedRepository : Repository
+        {
+            protected sealed override void SaveCore(Entity entity)
+            {
+                _audit.Record(entity);
+                base.SaveCore(entity);
+            }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, extensibility, sealing, virtual-members]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/sealing

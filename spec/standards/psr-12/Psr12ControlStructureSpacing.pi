@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ControlStructureSpacing:
+    standard: @{Psr12}
+    ruleId: 5a
+    title: Follow the common layout for control structures
+    statement:
+        Follow a control keyword with one space and keep the parentheses
+        free of inner padding. A single space separates the condition's
+        final parenthesis from the brace. The body starts on a new line, is
+        indented one level, and is followed by the closing brace on the next
+        line.
+    rationale:
+        All control structures share one shape, so readers can recognise
+        them instantly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        while( $queue->valid() ){ $queue->next();
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        while ($queue->valid()) {
+            $queue->next();
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [control-structures, formatting]
+    source: https://www.php-fig.org/psr/psr-12/#5-control-structures

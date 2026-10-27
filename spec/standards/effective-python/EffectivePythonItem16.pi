@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem16:
+    standard: @{EffectivePython}
+    ruleId: item-16
+    title: Take the rest of a sequence with starred unpacking
+    statement:
+        When you need the first or last items of a sequence plus the
+        remainder, use starred unpacking rather than indexes and slices.
+    rationale:
+        Starred assignment is clearer and avoids off-by-one errors in the
+        slice arithmetic.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        head = rows[0]
+        body = rows[1:]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        head, *body = rows
+        \\\
+        ```
+    languages: [python]
+    tags: [strings-and-slicing, unpacking, slicing]
+    source: https://effectivepython.com/

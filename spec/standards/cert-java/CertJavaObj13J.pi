@@ -7,9 +7,10 @@ export coding-rule CertJavaObj13J:
     ruleId: OBJ13-J
     title: Ensure that references to mutable objects are not exposed
     statement:
-        Do not expose references to mutable objects to client code. Do not
-        store a client-supplied mutable object as a field, return such a
-        field from an accessor, or make it public static final.
+        Client code should never get hold of a mutable object that the class
+        relies on. That means not keeping a mutable argument as a field
+        without copying it, not handing such a field back from a getter, and
+        not publishing one through a public static final reference.
     rationale:
         A final reference to a mutable object still lets clients change its
         contents, such as the elements of a public static final array. CERT

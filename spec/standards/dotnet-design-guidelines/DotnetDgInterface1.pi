@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgInterface1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: interface-1
+    title: Use an interface for an API shared by value types too
+    statement:
+        Choose an interface when structs as well as classes need to offer
+        the same set of members.
+    rationale:
+        Structs cannot inherit from classes, so an interface is the only way
+        for them to share a contract.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public interface IMeasurable
+        {
+            double Magnitude { get; }
+        }
+
+        public readonly struct Distance : IMeasurable { /* ... */ }
+        public readonly struct Duration : IMeasurable { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, interfaces, structs]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/interface

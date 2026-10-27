@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdDoNotCastVoidPointerReturns:
+    standard: @{FreeBsdStyle}
+    ruleId: void-pointer-casts
+    title: Do not cast the result of functions returning void *
+    statement:
+        Assign the result of a function that returns void * without casting
+        it to another pointer type.
+    rationale:
+        C converts void * implicitly, and a cast can hide a missing
+        prototype.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        sc = (struct softc *)malloc(sizeof(*sc), M_DEVBUF, M_WAITOK);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        sc = malloc(sizeof(*sc), M_DEVBUF, M_WAITOK);
+        \\\
+        ```
+    languages: [c]
+    tags: [casting, pointers]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackTestFinickyCodeAsPureFunctions:
+    standard: @{Carmack}
+    ruleId: test-finicky-code-as-pure-functions
+    title: Split fiddly code into pure functions and test them
+    statement:
+        When a piece of code looks tricky, move it into its own pure
+        function and write tests that feed it inputs and check its outputs.
+    rationale:
+        A pure function needs no harness to test, and Carmack reports that
+        doing this often uncovered errors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Hud::Draw() {
+            int mins = (frames / 60) / 60;
+            int secs = (frames / 60) % 60;
+            DrawString(Format("%d:%02d", mins, secs));
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string FormatClock(int frames) {
+            const int seconds = frames / 60;
+            return Format("%d:%02d", seconds / 60, seconds % 60);
+        }
+
+        TEST(FormatClock, RollsOverMinutes) { EXPECT_EQ(FormatClock(3600), "1:00"); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [testing, purity]
+    source: https://www.gamedeveloper.com/programming/in-depth-functional-programming-in-c-

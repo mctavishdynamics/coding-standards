@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiUseExplicitLinksInDocumentation:
+    standard: @{KotlinApiGuidelines}
+    ruleId: use-explicit-links-in-documentation
+    title: Link related entry points in documentation
+    statement:
+        Link related entry points to each other in KDoc with see tags or
+        bracketed references, for instance paired operations or calls that
+        must be made one after another.
+    rationale:
+        Links help readers group related functions into one mental map of
+        the library.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        /** Serialises the value to text. */
+        public fun encode(value: Config): String
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        /**
+         * Serialises [value] to text that [decode] can read back.
+         *
+         * @see decode
+         */
+        public fun encode(value: Config): String
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [documentation]
+    source: https://kotlinlang.org/docs/api-guidelines-informative-documentation.html#use-explicit-links-in-documentation

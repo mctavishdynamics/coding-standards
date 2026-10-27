@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip124:
+    standard: @{GoogleAip}
+    ruleId: AIP-124
+    title: Give each resource at most one canonical parent
+    statement:
+        A resource may have only one canonical parent, and a List method
+        must not require more than one parent to work. Express other
+        associations as reference fields that accept the referenced
+        resource's name format, and let users filter on them rather than
+        adding more required arguments.
+    rationale:
+        A single ownership path keeps resource names, permissions and
+        listing simple. Secondary relationships are still available through
+        references and filters without bending the hierarchy.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message ListOrdersRequest {
+          string customer = 1 [(google.api.field_behavior) = REQUIRED];
+          string store = 2 [(google.api.field_behavior) = REQUIRED];
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message ListOrdersRequest {
+          // Format: stores/42
+          string parent = 1 [(google.api.field_behavior) = REQUIRED];
+          // For example: customer = "customers/7"
+          string filter = 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [resource-design, hierarchy]
+    source: https://google.aip.dev/124

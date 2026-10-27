@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagNoKeyboardTrap:
+    standard: @{Wcag22}
+    ruleId: 2.1.2
+    title: Never trap keyboard focus inside a component
+    statement:
+        If keyboard focus can move into a component, make sure it can also
+        move out with the keyboard alone. If leaving needs more than Tab,
+        arrow keys or another standard method, tell the user how.
+    rationale:
+        A keyboard user caught in a widget, such as an embedded player,
+        cannot reach the rest of the page.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```js
+        \\\
+        editor.addEventListener("keydown", e => {
+          if (e.key === "Tab") e.preventDefault();
+        });
+        \\\
+        ```
+    compliant:
+        ```js
+        \\\
+        editor.addEventListener("keydown", e => {
+          if (e.key === "Tab" && !e.ctrlKey) { e.preventDefault(); insertIndent(); }
+          // Ctrl+Tab and Escape still leave the editor; the hint below says so.
+        });
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, keyboard, focus]
+    source: https://www.w3.org/TR/WCAG22/#no-keyboard-trap

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./ConventionalCommits import ConventionalCommits
+
+export coding-rule ConvCommitsBodyAfterBlankLine:
+    standard: @{ConventionalCommits}
+    ruleId: 6
+    title: Start an optional body one blank line after the description
+    statement:
+        When more context is needed, add a body below the description,
+        separated from it by exactly one blank line.
+    rationale:
+        The blank line is how parsers and Git tell the summary from the
+        longer explanation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        feat(api): add pagination to the orders endpoint
+        Clients can now pass page and size query parameters.
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        feat(api): add pagination to the orders endpoint
+
+        Clients can now pass page and size query parameters.
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, format]
+    source: https://www.conventionalcommits.org/en/v1.0.0/#specification

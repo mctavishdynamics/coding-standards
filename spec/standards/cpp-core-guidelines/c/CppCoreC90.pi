@@ -5,16 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC90:
     standard: @{CppCoreGuidelines}
     ruleId: C.90
-    title: Use constructors and assignment, not memset and memcpy
+    title: Set up and copy objects with their own members instead of raw byte functions
     statement:
-        Initialize and copy objects with their constructors and assignment
-        operators. Do not use memset or memcpy on types that are not
-        trivially copyable.
+        Rely on constructors and assignment to set up and copy objects. Never
+        apply memset or memcpy to a type that is not trivially copyable.
     rationale:
-        A constructor should produce a fully initialized object and copy
-        operations preserve invariants. Using memcpy on a
-        non-trivially-copyable type is undefined behavior and often corrupts
-        or slices data.
+        Constructors and copy operations keep the invariant and maintain
+        internal pointers such as a vtable. Raw byte copies of such types are
+        undefined behavior and often corrupt the object.
     exceptions: null
     severity: null
     noncompliant:

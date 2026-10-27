@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12SwitchCaseIndentation:
+    standard: @{Psr12}
+    ruleId: 5.2a
+    title: Indent case labels once and break with the case body
+    statement:
+        Each case label sits one indent level deeper than its switch. A
+        break or other statement that ends the case lines up with the
+        statements in that case's body.
+    rationale:
+        The indentation shows which code belongs to each case and where it
+        ends.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        switch ($status) {
+        case 'paid':
+            ship();
+        break;
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        switch ($status) {
+            case 'paid':
+                ship();
+                break;
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [control-structures, indentation]
+    source: https://www.php-fig.org/psr/psr-12/#52-switch-case

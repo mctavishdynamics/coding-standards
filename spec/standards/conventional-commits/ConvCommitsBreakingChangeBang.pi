@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ConventionalCommits import ConventionalCommits
+
+export coding-rule ConvCommitsBreakingChangeBang:
+    standard: @{ConventionalCommits}
+    ruleId: 13
+    title: Put the exclamation mark immediately before the colon
+    statement:
+        When the prefix marks a breaking change, place the exclamation mark
+        directly before the colon. The footer may then be left out, and the
+        description describes the breaking change.
+    rationale:
+        A fixed position for the marker keeps the prefix parseable and makes
+        the subject line alone enough to flag the break.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        feat!(config): remove the legacy settings file
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        feat(config)!: remove the legacy settings file
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, breaking-changes, format]
+    source: https://www.conventionalcommits.org/en/v1.0.0/#specification

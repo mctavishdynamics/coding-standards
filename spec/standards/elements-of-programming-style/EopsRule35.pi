@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule35:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-35
+    title: Walk self-referential data with recursion
+    statement:
+        When a data structure is defined in terms of itself, such as a tree,
+        write the code that walks it recursively.
+    rationale:
+        A recursive routine follows the shape of the data, so it is shorter
+        and easier to check than an iterative version with an explicit
+        stack.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int count_nodes(struct node *root)
+        {
+            struct node *stack[100];
+            int top = 0, n = 0;
+            if (root) stack[top++] = root;
+            while (top > 0) {
+                struct node *p = stack[--top];
+                n++;
+                if (p->left)  stack[top++] = p->left;
+                if (p->right) stack[top++] = p->right;
+            }
+            return n;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int count_nodes(struct node *p)
+        {
+            if (p == NULL) {
+                return 0;
+            }
+            return 1 + count_nodes(p->left) + count_nodes(p->right);
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [program-structure, recursion, data-structures]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

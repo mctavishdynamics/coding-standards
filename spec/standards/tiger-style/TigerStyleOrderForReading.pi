@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleOrderForReading:
+    standard: @{TigerStyle}
+    ruleId: order-for-reading
+    title: Order code so the important parts come first
+    statement:
+        Put main and other important code near the top of a file. In structs
+        put fields first, then types, then methods, and lift complex nested
+        types to the top level.
+    rationale:
+        Readers go from top to bottom on a first pass, so order shapes how
+        easily they understand the file.
+    exceptions:
+        Not everything has one right order; when unsure, sort
+        alphabetically.
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        const Cache = struct {
+            pub fn get(self: *Cache, key: u64) ?Value {}
+            const Entry = struct { key: u64, value: Value };
+            entries: []Entry,
+        };
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        const Cache = struct {
+            entries: []Entry,
+
+            const Entry = struct { key: u64, value: Value };
+
+            pub fn get(self: *Cache, key: u64) ?Value {}
+        };
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [layout, readability]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#naming-things

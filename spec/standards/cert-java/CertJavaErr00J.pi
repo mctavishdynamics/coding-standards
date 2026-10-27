@@ -16,11 +16,11 @@ export coding-rule CertJavaErr00J:
         CERT rates likelihood probable, detectable yes, repairable no,
         priority P4, level L3.
     exceptions:
-        Exceptions while freeing a resource may be suppressed when the
-        failure cannot affect later behavior, code that cannot recover
-        should simply let the exception propagate, and InterruptedException
-        may be suppressed by code that implements a thread's interruption
-        policy.
+        Three cases are allowed. A failure while releasing a resource can be
+        swallowed if it has no effect on what happens next. Code with no way
+        to recover should not catch the exception at all and should let it
+        travel upward. An InterruptedException may be swallowed when the
+        code doing so is the thread's own interruption policy.
     severity: low
     noncompliant:
         ```java

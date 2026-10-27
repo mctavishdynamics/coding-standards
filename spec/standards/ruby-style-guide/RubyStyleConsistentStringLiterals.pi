@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleConsistentStringLiterals:
+    standard: @{RubyStyleGuide}
+    ruleId: consistent-string-literals
+    title: Pick one string quoting style and keep to it
+    statement:
+        Choose a default quote style for string literals and use it
+        everywhere. With single quotes by default, use double quotes only
+        when you need interpolation, escapes or an embedded single quote;
+        with double quotes by default, use single quotes only to avoid
+        escaping double quotes or backslashes. RuboCop checks this with
+        Style/StringLiterals.
+    rationale:
+        Both styles are common in the community, and either works as long as
+        a codebase is consistent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        city = "Lisbon"
+        note = 'It\'s late'
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        city = 'Lisbon'
+        note = "It's late"
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, consistency]
+    source: https://rubystyle.guide/#consistent-string-literals

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem121:
+    standard: @{EffectivePython}
+    ruleId: item-121
+    title: Give an API a root exception class
+    statement:
+        Define one base exception for your module or package and derive all
+        the exceptions it raises from it.
+    rationale:
+        Callers can catch everything the API raises in one place, tell API
+        errors from bugs, and the API can add exceptions without breaking
+        them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class NotFound(Exception): ...
+        class Timeout(Exception): ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class StoreError(Exception):
+            """Base class for every error raised by this package."""
+
+        class NotFound(StoreError): ...
+        class Timeout(StoreError): ...
+        \\\
+        ```
+    languages: [python]
+    tags: [collaboration, exceptions, api-design]
+    source: https://effectivepython.com/

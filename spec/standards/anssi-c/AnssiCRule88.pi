@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule88:
+    standard: @{AnssiC}
+    ruleId: rule-88
+    title: Check every array index before use
+    statement:
+        Before accessing an element, check that the index is at least zero
+        and below the declared size, counting the terminating null for
+        character arrays.
+    rationale:
+        An out-of-bounds index reads or writes other memory and is a classic
+        source of vulnerabilities.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void set_slot(int *slots, size_t idx, int v) { slots[idx] = v; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define SLOT_COUNT 16U
+        int set_slot(int slots[SLOT_COUNT], size_t idx, int v) {
+            if (idx >= SLOT_COUNT) { return -1; }
+            slots[idx] = v;
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, arrays, bounds-checking]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=70

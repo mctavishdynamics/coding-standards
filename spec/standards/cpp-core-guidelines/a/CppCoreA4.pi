@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreA4:
     standard: @{CppCoreGuidelines}
     ruleId: A.4
-    title: There should be no cycles among libraries
+    title: Keep the library dependency graph acyclic
     statement:
-        Do not let a library depend on another library that depends on it.
-        Cyclic references inside one library are acceptable.
+        Make sure no two libraries depend on each other, directly or through a chain
+        of others. Mutual references inside a single library are fine.
     rationale:
-        Cycles complicate the build, are hard to understand and can
-        introduce unspecified behavior.
+        A dependency loop between libraries makes builds harder to set up and the
+        structure harder to grasp. It can also lead to unspecified behavior, for
+        example around initialization order.
     exceptions: null
     severity: null
     noncompliant: null

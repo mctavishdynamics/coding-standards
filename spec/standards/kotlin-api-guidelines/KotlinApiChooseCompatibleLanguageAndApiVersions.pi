@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiChooseCompatibleLanguageAndApiVersions:
+    standard: @{KotlinApiGuidelines}
+    ruleId: choose-compatible-language-and-api-versions
+    title: Choose language and API versions with consumers in mind
+    statement:
+        Set the library's language version, which limits the compilers that
+        can use it, and API version, which sets the minimum standard library
+        at runtime, deliberately and usually to the same value. Newer
+        versions bring features; older ones reach more consumers.
+    rationale:
+        Versions that are too new can stop consumers from upgrading,
+        especially where they do not control the runtime.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        kotlin {
+            compilerOptions { languageVersion = KotlinVersion.KOTLIN_2_3 }  // chosen by default
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        kotlin {
+            compilerOptions {
+                languageVersion = KotlinVersion.KOTLIN_2_1
+                apiVersion = KotlinVersion.KOTLIN_2_1
+            }
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [compatibility, build]
+    source: https://kotlinlang.org/docs/api-guidelines-backward-compatibility.html#choose-compatible-language-and-api-versions

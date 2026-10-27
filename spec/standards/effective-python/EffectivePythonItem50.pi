@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem50:
+    standard: @{EffectivePython}
+    ruleId: item-50
+    title: Use functools.singledispatch to dispatch on type from outside classes
+    statement:
+        When you want type-specific behaviour but prefer to keep it out of
+        the classes, for example to group one operation for many types in
+        one module, use functools.singledispatch.
+    rationale:
+        It gives polymorphic behaviour without isinstance chains and without
+        tying every operation to the data classes.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        from functools import singledispatch
+
+        @singledispatch
+        def to_json(value):
+            raise TypeError(type(value))
+
+        @to_json.register
+        def _(value: Point):
+            return {"x": value.x, "y": value.y}
+        \\\
+        ```
+    languages: [python]
+    tags: [classes-and-interfaces, classes, polymorphism, functools]
+    source: https://effectivepython.com/

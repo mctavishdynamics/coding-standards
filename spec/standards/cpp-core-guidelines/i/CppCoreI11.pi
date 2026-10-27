@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreI11:
     standard: @{CppCoreGuidelines}
     ruleId: I.11
-    title: Never transfer ownership by a raw pointer or reference
+    title: Never pass ownership through a plain pointer or reference
     statement:
-        Do not pass or return ownership through T* or T&. Use a value, a
-        smart pointer such as unique_ptr, or owner from the GSL.
+        Raw pointers and references must not carry ownership across an
+        interface. Return by value, use a smart pointer such as unique_ptr, or
+        mark the pointer with GSL owner.
     rationale:
-        When it is unclear whether caller or callee owns an object, the
-        result is leaks or premature destruction. Raw pointers are assumed
-        not to own.
+        Readers treat a plain pointer as non-owning. If ownership is unclear,
+        the object is either leaked or deleted while still in use.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiReuseExistingConcepts:
+    standard: @{KotlinApiGuidelines}
+    ruleId: reuse-existing-concepts
+    title: Reuse existing types where they fit
+    statement:
+        Use existing standard types, such as kotlin.time.Duration, rather
+        than defining your own equivalents. Be wary of tying the API to
+        third-party or platform types, and still create domain types when
+        they capture domain logic better.
+    rationale:
+        Reuse keeps the API small and interoperable with other libraries.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public class Timeout(public val millis: Long)
+        public fun connect(host: String, timeout: Timeout)
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun connect(host: String, timeout: Duration)
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [api-design, types]
+    source: https://kotlinlang.org/docs/api-guidelines-simplicity.html#reuse-existing-concepts

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleBooleanKeywordArguments:
+    standard: @{RubyStyleGuide}
+    ruleId: boolean-keyword-arguments
+    title: Pass boolean arguments as keyword arguments
+    statement:
+        When a method takes a boolean flag, make it a keyword argument.
+    rationale:
+        A bare true or false at the call site says nothing about what it
+        controls.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def export(records, compress)
+        end
+
+        export(records, true)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def export(records, compress: false)
+        end
+
+        export(records, compress: true)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, parameters, keyword-arguments]
+    source: https://rubystyle.guide/#boolean-keyword-arguments

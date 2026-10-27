@@ -7,9 +7,10 @@ export coding-rule GoogleGoSynchronousFunctions:
     ruleId: decisions/synchronous-functions
     title: Prefer synchronous functions
     statement:
-        Write functions that return their results directly and finish any
-        callbacks or channel work before returning. Let the caller add
-        concurrency by calling the function in a goroutine if needed.
+        A function should hand back its result as a return value and
+        complete all of its callback or channel activity before it exits. If
+        a caller wants the work to run concurrently, the caller can start
+        the goroutine.
     rationale:
         Synchronous functions keep goroutines local, avoid leaks and races,
         and are easy to test. Removing unneeded concurrency at the call site

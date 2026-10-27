@@ -1,0 +1,23 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV3x5x3:
+    standard: @{OwaspAsvs}
+    ruleId: V3.5.3
+    title: Use unsafe HTTP methods for sensitive operations
+    statement:
+        Expose sensitive actions through POST, PUT, PATCH or DELETE rather
+        than GET, HEAD or OPTIONS, or else strictly check Sec-Fetch headers
+        to rule out unexpected cross-origin, navigation or resource-load
+        requests.
+    rationale:
+        Safe methods can be triggered by links and image tags on any site,
+        so state changes behind them are easy to forge.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-1, csrf, http-methods]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x12-V3-Web-Frontend-Security.md#v35-browser-origin-separation

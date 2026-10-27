@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleKeywordArgumentsOrder:
+    standard: @{RubyStyleGuide}
+    ruleId: keyword-arguments-order
+    title: List mandatory keywords ahead of defaulted ones
+    statement:
+        List the required keyword parameters first and the keyword
+        parameters with defaults after them.
+    rationale:
+        Optional keywords hidden among required ones are hard to spot in the
+        signature.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def schedule(at:, timezone: 'UTC', job:)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def schedule(at:, job:, timezone: 'UTC')
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, parameters, keyword-arguments]
+    source: https://rubystyle.guide/#keyword-arguments-order

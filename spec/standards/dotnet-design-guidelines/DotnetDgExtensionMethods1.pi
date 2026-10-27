@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExtensionMethods1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: extension-methods-1
+    title: Do not add extension methods casually, above all on others' types
+    statement:
+        Define extension methods only for a good reason. On your own types
+        use instance methods; on types you do not own be especially careful.
+    rationale:
+        Extension methods show up on every instance of the extended type and
+        can clutter APIs that were never designed for them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static class StringExtensions
+        {
+            public static void SaveToDatabase(this string text) { /* ... */ }
+        }
+        \\\
+        ```
+    compliant: null
+    languages: [csharp]
+    tags: [avoid, member-design, extension-methods]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/extension-methods

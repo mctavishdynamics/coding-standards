@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip136:
+    standard: @{GoogleAip}
+    ruleId: AIP-136
+    title: Name custom methods as verb-noun actions bound to a resource
+    statement:
+        Use a custom method only for actions the standard methods cannot
+        express, name it with a verb and noun without prepositions, Async or
+        standard method verbs, and attach it to a resource or collection.
+        Bind it with a colon and the camelCase verb after the resource path,
+        take the resource as name or the collection as parent as the only
+        path variable, and use POST, or GET for read-only methods.
+    rationale:
+        Attaching custom methods to resources tells clients what they act on
+        and keeps the vocabulary close to user intent. Prepositions in a
+        name usually mean a field or a different verb is the better design.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        rpc CreateRecipeFromPhotoAsync(CreateRecipeFromPhotoAsyncRequest)
+            returns (Recipe) {
+          option (google.api.http) = {
+            post: "/v1/photoRecipes"
+            body: "*"
+          };
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        rpc ArchiveRecipe(ArchiveRecipeRequest) returns (Recipe) {
+          option (google.api.http) = {
+            post: "/v1/{name=kitchens/*/recipes/*}:archive"
+            body: "*"
+          };
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [methods, custom-methods, naming]
+    source: https://google.aip.dev/136

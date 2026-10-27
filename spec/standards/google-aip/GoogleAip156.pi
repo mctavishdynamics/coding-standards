@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip156:
+    standard: @{GoogleAip}
+    ruleId: AIP-156
+    title: Model one-per-parent resources as singletons
+    statement:
+        A singleton exists exactly once for each parent and only because its
+        parent exists, so it has no ID of its own; its name is the parent
+        name plus one fixed segment. It supports Get and usually Update, but
+        not Create or Delete, and its resource definition must still declare
+        both singular and plural forms.
+    rationale:
+        Settings objects tied to a parent are cleaner as their own resource
+        than as fields on the parent. Declaring the plural ahead of time
+        helps when the singleton later appears in list results.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        rpc CreateKitchenSettings(CreateKitchenSettingsRequest)
+            returns (KitchenSettings);
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message KitchenSettings {
+          option (google.api.resource) = {
+            type: "cooking.example.com/KitchenSettings"
+            pattern: "kitchens/{kitchen}/settings"
+            singular: "kitchenSettings"
+            plural: "kitchenSettings"
+          };
+          string name = 1;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [resource-design, design-patterns]
+    source: https://google.aip.dev/156

@@ -5,18 +5,19 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR10:
     standard: @{CppCoreGuidelines}
     ruleId: R.10
-    title: Avoid malloc and free
+    title: Keep malloc and free out of C++ code
     statement:
-        Do not use malloc() and free() to create C++ objects. Use
-        containers, smart pointers or, if needed, new and delete inside a
-        resource handle.
+        Keep malloc() and free() out of C++ code that creates objects.
+        Prefer containers and smart pointers, and if raw allocation is
+        unavoidable, use new and delete hidden inside a handle class.
     rationale:
-        malloc() and free() do not run constructors and destructors, and
-        memory from them must not be mixed with new and delete.
+        The C allocation functions hand back raw bytes and never call a
+        constructor or destructor. Memory obtained one way also cannot be
+        released the other way, so mixing them breaks programs.
     exceptions:
-        Where exceptions are not acceptable, such as some hard-real-time
-        code, use the nothrow forms of new rather than falling back to
-        malloc().
+        Code that cannot tolerate exceptions, as in some hard real-time
+        systems, should switch to the nothrow overloads of new instead of
+        returning to malloc().
     severity: null
     noncompliant:
         ```cpp

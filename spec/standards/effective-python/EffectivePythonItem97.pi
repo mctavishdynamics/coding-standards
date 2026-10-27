@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem97:
+    standard: @{EffectivePython}
+    ruleId: item-97
+    title: Speed up startup with precompiled bytecode and caching
+    statement:
+        Let Python cache compiled bytecode, precompile it with compileall
+        for deployments, and keep files on fast or cached storage to cut
+        startup time.
+    rationale:
+        Compiling sources at every start is wasted work, especially for
+        command-line tools and large apps.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        import compileall
+
+        # Run at build time so deployed hosts start from cached bytecode.
+        compileall.compile_dir("src", quiet=1)
+        \\\
+        ```
+    languages: [python]
+    tags: [performance, startup]
+    source: https://effectivepython.com/

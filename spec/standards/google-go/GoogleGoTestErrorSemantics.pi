@@ -7,10 +7,10 @@ export coding-rule GoogleGoTestErrorSemantics:
     ruleId: decisions/test-error-semantics
     title: Test error semantics, not error strings
     statement:
-        Do not check what kind of error was returned by comparing its
-        message. Test only whether an error occurred, or use errors.Is or
-        cmp with cmpopts.EquateErrors for semantic matches. If wantErr
-        values are only nil or any error, use a bool.
+        Never identify an error by matching on its message text. Either
+        check only that some error happened, or match semantically with
+        errors.Is, or with cmp and cmpopts.EquateErrors. When wantErr can
+        only be nil or any error, make it a bool.
     rationale:
         Message text is for humans and changes, turning string-matching
         tests into change detectors.

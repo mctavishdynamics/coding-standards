@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule7:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-7
+    title: Factor repeated expressions into one function
+    statement:
+        When the same expression appears in several places, move it into a
+        single function and call that instead.
+    rationale:
+        One definition means one place to read, test and fix. Copies drift
+        apart when only some of them are updated.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        double d1 = sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+        double d2 = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        double dist(double ax, double ay, double bx, double by)
+        {
+            return hypot(bx - ax, by - ay);
+        }
+
+        double d1 = dist(x0, y0, x1, y1);
+        double d2 = dist(x1, y1, x2, y2);
+        \\\
+        ```
+    languages: [any]
+    tags: [expression, duplication, functions]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdPlaceNetworkIncludesNext:
+    standard: @{OpenBsdStyle}
+    ruleId: include-order-network
+    title: Put network headers right after the kernel headers
+    statement:
+        In a network program, include the network headers next, after the
+        sys headers.
+    rationale:
+        They depend on the system types included before them.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        #include <netinet/in.h>
+        #include <arpa/inet.h>
+        \\\
+        ```
+    languages: [c]
+    tags: [includes, file-structure]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

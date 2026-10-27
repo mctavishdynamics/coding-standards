@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleAssertionsAsDocumentation:
+    standard: @{TigerStyle}
+    ruleId: assertions-as-documentation
+    title: Prefer an obvious assertion to a comment for critical facts
+    statement:
+        Where a condition is both important and surprising, you may state it
+        as an assertion that is plainly true instead of writing it in a
+        comment.
+    rationale:
+        An assertion documents the fact and is also checked, so it cannot
+        silently go out of date like a comment.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        // The header always fits in the first sector.
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        comptime assert(@sizeOf(Header) <= sector_size);
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [assertions, documentation]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

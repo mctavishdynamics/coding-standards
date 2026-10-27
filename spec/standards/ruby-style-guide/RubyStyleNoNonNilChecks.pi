@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoNonNilChecks:
+    standard: @{RubyStyleGuide}
+    ruleId: no-non-nil-checks
+    title: Skip explicit non-nil checks except for booleans
+    statement:
+        Do not compare with nil or call nil? just to test that a value is
+        present; test the value itself. Explicit checks are fine when the
+        value is a boolean. RuboCop checks this with Style/NonNilCheck.
+    rationale:
+        Every value other than nil and false is truthy, so the explicit
+        check only adds noise.
+    exceptions:
+        An explicit check is appropriate when the value is a boolean and
+        false must be told apart from nil.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        notify(user) if !user.nil?
+        notify(user) if user != nil
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        notify(user) if user
+
+        def opted_in_known?
+          !@opted_in.nil?
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, nil-safety]
+    source: https://rubystyle.guide/#no-non-nil-checks

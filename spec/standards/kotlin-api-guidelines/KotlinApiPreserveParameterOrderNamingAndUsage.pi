@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiPreserveParameterOrderNamingAndUsage:
+    standard: @{KotlinApiGuidelines}
+    ruleId: preserve-parameter-order-naming-and-usage
+    title: Keep parameter names and order consistent across the API
+    statement:
+        Use the same parameter order, the same names and the same terms
+        throughout the library, and do not switch to synonyms for the same
+        concept without a strong reason. Name related functions in
+        predictable pairs, such as first and firstOrNull.
+    rationale:
+        Users infer how new functions work from the ones they know;
+        inconsistency leads them to wrong assumptions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun copyRange(from: Int, count: Int)
+        public fun clearRange(startIndex: Int, endIndex: Int)
+        public fun addEntry(item: Item)
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun copyRange(fromIndex: Int, toIndex: Int)
+        public fun clearRange(fromIndex: Int, toIndex: Int)
+        public fun addItem(item: Item)
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [consistency, naming, parameters]
+    source: https://kotlinlang.org/docs/api-guidelines-consistency.html#preserve-parameter-order-naming-and-usage

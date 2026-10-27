@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule38:
+    standard: @{CppCodingStandards}
+    ruleId: rule-38
+    title: Keep the base contract when overriding
+    statement:
+        When overriding, keep the base contract: accept at least what the
+        base accepts, promise at least what it promises, keep the same
+        default arguments, and bring hidden base overloads into scope.
+    rationale:
+        Callers using the base interface must not be surprised by the
+        derived behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Shape { public: virtual void scale(double f); virtual void scale(int f); };
+        class Circle : public Shape { public: void scale(double f) override; };   // hides int version
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Circle : public Shape {
+        public:
+            using Shape::scale;
+            void scale(double f) override;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, inheritance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvIndentation:
+    standard: @{KotlinConventions}
+    ruleId: indentation
+    title: Indent with four spaces and use end-of-line braces
+    statement:
+        Indent by four spaces and never use tab characters. The opening
+        brace ends the line that begins a construct, and the closing brace
+        sits alone on a line, lined up with the start of that construct.
+    rationale:
+        Line breaks matter in Kotlin because semicolons are optional, and
+        the language assumes this Java-style brace layout.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        if (user.isActive)
+        {
+          notify(user)
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        if (user.isActive) {
+            notify(user)
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, indentation]
+    source: https://kotlinlang.org/docs/coding-conventions.html#indentation

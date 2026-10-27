@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE3:
     standard: @{CppCoreGuidelines}
     ruleId: E.3
-    title: Use exceptions for error handling only
+    title: Throw exceptions only for errors, not for ordinary control flow
     statement:
-        Do not use exceptions for normal control flow, such as reporting
-        that a search found its value or that a loop has ended.
+        Keep exceptions for real errors. Do not throw to signal that a search found
+        its target, that input ran out or that a loop is done.
     rationale:
-        Keeping exceptions for errors separates error handling from ordinary
-        code, and implementations are optimized on the assumption that
-        exceptions are rare.
+        This keeps failure handling apart from the regular logic. Compilers also
+        assume exceptions are uncommon and make the normal path fast at the expense
+        of the throwing one.
     exceptions: null
     severity: null
     noncompliant:

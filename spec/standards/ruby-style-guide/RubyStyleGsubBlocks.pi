@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleGsubBlocks:
+    standard: @{RubyStyleGuide}
+    ruleId: gsub-blocks
+    title: Pass sub and gsub a block or hash for complex replacements
+    statement:
+        For replacements that depend on the matched text, give sub or gsub a
+        hash of replacements or a block.
+    rationale:
+        A hash or block keeps the replacement logic in one call rather than
+        in several chained substitutions.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```ruby
+        \\\
+        ESCAPES = { '<' => '&lt;', '>' => '&gt;' }
+        safe = text.gsub(/[<>]/, ESCAPES)
+        slug = title.gsub(/\s+/) { '-' }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [regex, strings]
+    source: https://rubystyle.guide/#gsub-blocks

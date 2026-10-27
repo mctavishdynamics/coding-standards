@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule20:
+    standard: @{JplC}
+    ruleId: rule-20
+    title: Keep preprocessor use minimal
+    statement:
+        Reserve the preprocessor for includes and plain constant or
+        expression macros. Leave out ## pasting, variadic and
+        self-referencing macros, make each expansion a well-formed piece of
+        C, and explain in a comment any conditional build switch other than
+        an include guard.
+    rationale:
+        Complex preprocessor code is hard for people and tools to decipher.
+        Each conditional compilation directive multiplies the code versions
+        to test; ten of them can produce up to 1024.
+    exceptions:
+        The standard boilerplate that guards a header against multiple
+        inclusion is allowed.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define FIELD(n) int field_##n
+        #define TRACE(...) printf(__VA_ARGS__)
+        #define BEGIN_LOOP for (int i = 0; i < N; i++) {
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #ifndef RADIO_H
+        #define RADIO_H
+
+        #define RADIO_CHANNELS 4
+        #define MIN(a, b) (((a) < (b)) ? (a) : (b))
+
+        #endif
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-4, preprocessor, macros]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

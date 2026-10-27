@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdPlaceNetworkIncludesNext:
+    standard: @{FreeBsdStyle}
+    ruleId: include-order-network
+    title: Put network headers after the kernel headers
+    statement:
+        In a networking program, include the network headers immediately
+        after the kernel headers.
+    rationale:
+        Network headers rely on the system types included before them.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        #include <sys/types.h>
+        #include <sys/socket.h>
+
+        #include <net/if.h>
+        #include <netinet/in.h>
+        \\\
+        ```
+    languages: [c]
+    tags: [includes, file-structure]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

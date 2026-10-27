@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem22:
+    standard: @{EffectiveJava}
+    ruleId: item-22
+    title: Do not create interfaces just to hold constants
+    statement:
+        An interface should say what its implementors can do. Do not use an
+        interface merely to hold constants.
+    rationale:
+        A constant interface leaks implementation details into a class's
+        exported API and binds it forever. Put constants in the related
+        class, an enum or a noninstantiable utility class.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public interface Units {
+            double METERS_PER_FOOT = 0.3048;
+        }
+        public class Converter implements Units { }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public final class Units {
+            private Units() { }
+            public static final double METERS_PER_FOOT = 0.3048;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [classes-and-interfaces, interfaces, constants]
+    source: https://www.informit.com/store/effective-java-9780134686097

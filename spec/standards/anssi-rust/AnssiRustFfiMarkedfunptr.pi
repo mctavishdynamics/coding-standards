@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiMarkedfunptr:
+    standard: @{AnssiRust}
+    ruleId: FFI-MARKEDFUNPTR
+    title: Mark FFI function pointer types extern and unsafe
+    statement:
+        Declare every function pointer type used at the FFI boundary as
+        extern, with its ABI where needed, and as unsafe.
+    rationale:
+        The extern marker gives the right calling convention, and unsafe
+        reminds callers that Rust cannot check what the foreign function
+        does.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        type Callback = fn(i32) -> i32;
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        type Callback = unsafe extern "C" fn(i32) -> i32;
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, ffi, function-pointers]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-MARKEDFUNPTR

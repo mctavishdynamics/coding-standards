@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC61:
     standard: @{CppCoreGuidelines}
     ruleId: C.61
-    title: Make a copy operation copy
+    title: Make copying produce an equal and independent object
     statement:
-        After a copy, the two objects must compare equal. They may be
-        independent, as with value types, or share one object, as with
-        pointers, but the copy must not do anything else.
+        A copy must give two objects that compare equal and has no other effect.
+        With value semantics they are independent, and with pointer semantics
+        they refer to the same thing.
     rationale:
-        Everyone assumes copy means copy, and code built on that assumption
-        breaks when it does not.
+        All code assumes that copying gives an equal object. A copy that does
+        something else breaks that code.
     exceptions: null
     severity: null
     noncompliant:

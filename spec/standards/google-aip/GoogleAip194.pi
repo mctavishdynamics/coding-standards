@@ -1,0 +1,24 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip194:
+    standard: @{GoogleAip}
+    ruleId: AIP-194
+    title: Retry only safe requests on retryable status codes
+    statement:
+        Clients should automatically retry idempotent, non-transactional
+        unary requests that fail with UNAVAILABLE, and not retry codes that
+        need a change in state, such as NOT_FOUND or PERMISSION_DENIED.
+        Cancellation and deadlines must be honoured, and DATA_LOSS must be
+        surfaced to the application at once.
+    rationale:
+        Consistent use of status codes lets clients decide safely whether a
+        failed call can be retried without causing unintended changes.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [errors, retries]
+    source: https://google.aip.dev/194

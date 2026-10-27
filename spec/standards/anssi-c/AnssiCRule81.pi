@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule81:
+    standard: @{AnssiC}
+    ruleId: rule-81
+    title: Convert explicitly, especially between signed and unsigned
+    statement:
+        Do not rely on implicit conversions. Write explicit casts, in
+        particular between signed and unsigned types, and between integer
+        and floating types.
+    rationale:
+        Comparing a negative signed value with an unsigned one converts it
+        to a huge number and flips the result.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int offset = -1;
+        size_t len = 10;
+        if (offset < len) { /* false: offset becomes SIZE_MAX */ }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int offset = -1;
+        size_t len = 10;
+        if ((offset >= 0) && ((size_t)offset < len)) { /* ... */ }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, types, conversions]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=62

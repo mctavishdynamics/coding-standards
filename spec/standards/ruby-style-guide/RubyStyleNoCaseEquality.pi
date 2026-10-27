@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoCaseEquality:
+    standard: @{RubyStyleGuide}
+    ruleId: no-case-equality
+    title: Leave triple equals to case expressions
+    statement:
+        Do not call the triple equals operator directly; use is_a?, a regex
+        match or include? as appropriate.
+    rationale:
+        The operator is designed to be used implicitly by case, and called
+        explicitly it produces confusing code.
+    exceptions:
+        For direct subclasses of BasicObject, which lack is_a?, explicit
+        triple equals is acceptable.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        Integer === value
+        (1..10) === score
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        value.is_a?(Integer)
+        (1..10).include?(score)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comparison, operators]
+    source: https://rubystyle.guide/#no-case-equality

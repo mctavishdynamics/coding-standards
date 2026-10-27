@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule35:
+    standard: @{CppCodingStandards}
+    ruleId: rule-35
+    title: Derive only from classes built to be bases
+    statement:
+        Do not publicly derive from concrete classes such as standard
+        containers or strings that lack virtual destructors and were not
+        meant for extension.
+    rationale:
+        Such classes give no polymorphic behaviour, and deleting through the
+        base pointer is undefined behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Path : public std::string {};
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Path {
+        public:
+            const std::string& str() const { return s_; }
+        private:
+            std::string s_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, inheritance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

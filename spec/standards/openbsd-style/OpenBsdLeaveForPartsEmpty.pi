@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdLeaveForPartsEmpty:
+    standard: @{OpenBsdStyle}
+    ruleId: for-loop-parts
+    title: Leave unneeded parts of a for loop empty
+    statement:
+        Any part of a for statement may be left empty when it is not needed,
+        and an empty-bodied loop uses continue.
+    rationale:
+        It keeps loop control together without inventing dummy expressions.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        for (; i < len; i++)
+                sum += v[i];
+        for (p = s; *p != '\0'; p++)
+                continue;
+        \\\
+        ```
+    languages: [c]
+    tags: [loops]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

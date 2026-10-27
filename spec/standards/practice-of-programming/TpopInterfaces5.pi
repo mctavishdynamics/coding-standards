@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopInterfaces5:
+    standard: @{PracticeOfProgramming}
+    ruleId: interfaces-5
+    title: Release resources at the level that acquired them
+    statement:
+        The code layer that allocates memory, opens a file or takes a lock
+        should be the one that frees it.
+    rationale:
+        Clear ownership prevents leaks and double frees, because each
+        resource has one obvious owner.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char *read_line(FILE *fp)
+        {
+            static char buf[256];
+            if (fgets(buf, sizeof buf, fp) == NULL) {
+                fclose(fp);          /* closes the caller's file */
+                return NULL;
+            }
+            return buf;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *read_line(FILE *fp, char *buf, size_t n)
+        {
+            return fgets(buf, n, fp);
+        }
+        /* the caller that opened fp also closes it */
+        \\\
+        ```
+    languages: [any]
+    tags: [interfaces, resource-management, ownership]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

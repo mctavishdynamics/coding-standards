@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12OneTraitPerUse:
+    standard: @{Psr12}
+    ruleId: 4.2b
+    title: Use a separate statement for each trait
+    statement:
+        Import each trait on its own line, each with its own use statement.
+    rationale:
+        Separate statements keep the trait list easy to scan and give clean
+        diffs when traits are added or removed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Order
+        {
+            use Timestamps, SoftDeletes;
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Order
+        {
+            use Timestamps;
+            use SoftDeletes;
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [traits, imports]
+    source: https://www.php-fig.org/psr/psr-12/#42-using-traits

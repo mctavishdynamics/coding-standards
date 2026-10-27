@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando134:
+    standard: @{ZalandoApi}
+    ruleId: 134
+    title: Pluralize resource names
+    statement:
+        Name resources in the plural, since an endpoint usually serves a
+        collection. Model a singleton as a collection of exactly one item
+        with minItems and maxItems both set to 1.
+    rationale:
+        Plural collection names keep paths uniform and leave room for more
+        than one instance later.
+    exceptions:
+        The pseudo identifier self, used when the identity comes from the
+        authorization token, is not pluralized.
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /order/5531/item
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /orders/5531/items
+        \\\
+        ```
+    languages: [any]
+    tags: [must, urls, naming]
+    source: https://opensource.zalando.com/restful-api-guidelines/#134

@@ -20,18 +20,23 @@ export coding-rule CertJavaIds01J:
     noncompliant:
         ```java
         \\\
-        if (Pattern.compile("[<>]").matcher(input).find()) {
-            throw new IllegalArgumentException("Invalid input");
+        static String checkedName(String raw) {
+            if (raw.contains("..") || raw.indexOf('/') >= 0) {
+                throw new SecurityException("bad name");
+            }
+            return Normalizer.normalize(raw, Normalizer.Form.NFKC);
         }
-        String text = Normalizer.normalize(input, Form.NFKC);
         \\\
         ```
     compliant:
         ```java
         \\\
-        String text = Normalizer.normalize(input, Form.NFKC);
-        if (Pattern.compile("[<>]").matcher(text).find()) {
-            throw new IllegalArgumentException("Invalid input");
+        static String checkedName(String raw) {
+            String name = Normalizer.normalize(raw, Normalizer.Form.NFKC);
+            if (name.contains("..") || name.indexOf('/') >= 0) {
+                throw new SecurityException("bad name");
+            }
+            return name;
         }
         \\\
         ```

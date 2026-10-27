@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdFitCodeIn80Columns:
+    standard: @{OpenBsdStyle}
+    ruleId: line-width
+    title: Keep all code within 80 columns
+    statement:
+        Make every line of code fit in 80 columns.
+    rationale:
+        Narrow code is readable in standard terminals and side-by-side
+        views.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        error = vn_rdwr(UIO_READ, vp, buf, len, off, UIO_SYSSPACE, 0, cred, &resid, p);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        error = vn_rdwr(UIO_READ, vp, buf, len, off, UIO_SYSSPACE, 0,
+            cred, &resid, p);
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, line-length]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

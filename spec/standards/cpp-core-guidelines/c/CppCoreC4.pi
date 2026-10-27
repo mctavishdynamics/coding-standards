@@ -5,20 +5,19 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC4:
     standard: @{CppCoreGuidelines}
     ruleId: C.4
-    title: Make a function a member only if it needs the representation
+    title: Keep functions that do not need private access outside the class
     statement:
-        If a function can be written using only the public interface of a
-        class, make it a non-member. Reserve member functions for operations
-        that need direct access to private state.
+        Make a function a member only if it needs the private representation. A
+        function that can do its job through the public interface should be a
+        free function.
     rationale:
-        Fewer members means less coupling, fewer functions that can break
-        the invariant, and fewer functions to revisit when the
-        representation changes.
+        Every member can break the invariant and must be reviewed when the
+        representation changes. Fewer members means looser coupling and less to
+        recheck.
     exceptions:
-        Virtual functions and the operators =, (), [] and -> must be
-        members. Some members of an overload set or of a chainable set of
-        functions may be members for consistency even if they do not touch
-        private data.
+        Virtual functions and the operators =, (), [] and -> have to be members.
+        A function may also stay a member for consistency with an overload set
+        or a chain of calls, even if it touches no private data.
     severity: null
     noncompliant:
         ```cpp

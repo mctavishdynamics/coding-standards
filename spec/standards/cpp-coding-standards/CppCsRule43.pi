@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule43:
+    standard: @{CppCodingStandards}
+    ruleId: rule-43
+    title: Use the pimpl idiom where its benefits justify it
+    statement:
+        Hide private members behind a pointer to an implementation class
+        when you need compilation firewalls, binary stability or strong
+        exception safety, not everywhere.
+    rationale:
+        Pimpl reduces dependencies and recompilation but adds an allocation
+        and indirection.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // engine.h exposes all internals
+        #include "physics.h"
+        #include "audio.h"
+        class Engine { Physics p_; Audio a_; };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // engine.h
+        class Engine {
+        public:
+            Engine(); ~Engine();
+        private:
+            struct Impl;
+            std::unique_ptr<Impl> impl_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, pimpl, dependencies]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

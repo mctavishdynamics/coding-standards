@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem44:
+    standard: @{EffectiveCpp}
+    ruleId: item-44
+    title: Share code that every instantiation would repeat
+    statement:
+        Factor code that is the same for every instantiation into
+        non-template functions or bases, and share implementations between
+        types with identical representations.
+    rationale:
+        Each instantiation otherwise duplicates the code and bloats the
+        binary.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class T, std::size_t N>
+        class Matrix {
+        public:
+            void invert();   // full copy for every N
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T>
+        class MatrixBase { protected: void invert(T* data, std::size_t n); };
+        template <class T, std::size_t N>
+        class Matrix : private MatrixBase<T> {
+        public:
+            void invert() { MatrixBase<T>::invert(data_, N); }
+        private:
+            T data_[N * N];
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates-and-generic-programming, templates, performance]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

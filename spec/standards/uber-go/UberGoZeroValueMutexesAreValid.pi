@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoZeroValueMutexesAreValid:
+    standard: @{UberGo}
+    ruleId: zero-value-mutexes-are-valid
+    title: Use mutexes as plain non-embedded fields
+    statement:
+        A zero sync.Mutex or sync.RWMutex is ready to use, so do not
+        allocate one with new or hold it by pointer. Make it a named field
+        of the struct rather than embedding it, even in unexported types.
+    rationale:
+        Embedding puts Lock and Unlock in the API of the outer type,
+        exposing an implementation detail to callers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Registry struct {
+            sync.Mutex
+            items map[string]string
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Registry struct {
+            mu    sync.Mutex
+            items map[string]string
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, mutex]
+    source: https://github.com/uber-go/guide/blob/master/style.md#zero-value-mutexes-are-valid

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNamedOverSkippablePositional:
+    standard: @{EffectiveDart}
+    ruleId: avoid-optional-positional-parameters-if-the-user-may-want-to-omit-earlier-parameters
+    title: Use named parameters when callers may skip earlier ones
+    statement:
+        Order optional positional parameters so earlier ones are passed more
+        often. If callers would need to skip one to reach a later one, make
+        them named.
+    rationale:
+        Passing a placeholder to fill a gap is awkward and error-prone.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        void connect(String host, [int? port, Duration? timeout]) {}
+        connect('db.local', null, Duration(seconds: 5));
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        void connect(String host, {int? port, Duration? timeout}) {}
+        connect('db.local', timeout: Duration(seconds: 5));
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, parameters]
+    source: https://dart.dev/effective-dart/design#avoid-optional-positional-parameters-if-the-user-may-want-to-omit-earlier-parameters

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoRelativeImportsAcrossLib:
+    standard: @{EffectiveDart}
+    ruleId: dont-allow-an-import-path-to-reach-into-or-out-of-lib
+    title: Do not use relative paths that cross the lib boundary
+    statement:
+        Never put `/lib/` in an import path or use `../` to climb out of
+        `lib`. Code outside `lib`, such as tests, imports from `lib` with a
+        `package:` URI, and code in `lib` never imports from outside it.
+        The avoid_relative_lib_imports lint checks this.
+    rationale:
+        Dart treats a relative import and a `package:` import of the same
+        file as two different libraries, which leads to confusing type
+        errors and broken programs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        // In test/cart_test.dart:
+        import '../lib/cart.dart';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        // In test/cart_test.dart:
+        import 'package:shop/cart.dart';
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, imports, packages]
+    source: https://dart.dev/effective-dart/usage#dont-allow-an-import-path-to-reach-into-or-out-of-lib

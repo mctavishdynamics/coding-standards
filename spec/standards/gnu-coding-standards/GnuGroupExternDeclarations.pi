@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuGroupExternDeclarations:
+    standard: @{GnuCodingStandards}
+    ruleId: syntactic-extern-declarations
+    title: Collect extern declarations in one place at the start of the file
+    statement:
+        Place declarations of external functions, and of functions defined
+        later in the file, in one place before the first function definition
+        or in a header. Never declare extern inside a function.
+    rationale:
+        A single location makes dependencies visible and avoids hidden,
+        conflicting declarations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void
+        flush_all (void)
+        {
+          extern int pending_writes (void);
+          /* ... */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include "writer.h"   /* declares pending_writes */
+
+        void
+        flush_all (void)
+        {
+          /* ... */
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, file-structure]
+    source: https://www.gnu.org/prep/standards/standards.html#Syntactic-Conventions

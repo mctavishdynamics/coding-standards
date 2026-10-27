@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule120:
+    standard: @{AnssiC}
+    ruleId: rule-120
+    title: Do not chain assignments
+    statement:
+        Assign each variable in its own statement.
+    rationale:
+        Chained assignments hide conversions between the types involved and
+        are harder to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        x = y = z = 0;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        x = 0;
+        y = 0;
+        z = 0;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, expressions, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=94

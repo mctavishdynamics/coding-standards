@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEvent9:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: event-9
+    title: Consider letting users cancel pre-events
+    statement:
+        For events raised before an action, think about allowing handlers to
+        cancel the action by using CancelEventArgs or a subclass.
+    rationale:
+        Cancellable pre-events let callers veto operations such as closing
+        or deleting without extra APIs.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public event EventHandler<CancelEventArgs> Deleting;
+
+        public void Delete()
+        {
+            var e = new CancelEventArgs();
+            Deleting?.Invoke(this, e);
+            if (e.Cancel) return;
+            /* ... */
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, events, cancellation]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/event

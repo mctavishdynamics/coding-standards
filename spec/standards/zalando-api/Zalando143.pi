@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando143:
+    standard: @{ZalandoApi}
+    ruleId: 143
+    title: Identify resources and sub-resources by path segments
+    statement:
+        Address sub-resources through the parent name and identifier
+        followed by the sub-resource name and identifier. Every prefix of a
+        valid path should itself be a valid resource or collection.
+    rationale:
+        Hierarchical paths are intuitive, and making every sub-path valid
+        lets clients navigate the API predictably.
+    exceptions:
+        When the identifier comes from the authorization context, the pseudo
+        identifier self may stand in for it in the path.
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /warehouse-bins?warehouse=w-2&bin=b-17
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /warehouses/w-2/bins/b-17
+        GET /warehouses/w-2/bins
+        GET /warehouses/w-2
+        GET /couriers/self/shifts
+        \\\
+        ```
+    languages: [any]
+    tags: [must, urls, resources]
+    source: https://opensource.zalando.com/restful-api-guidelines/#143

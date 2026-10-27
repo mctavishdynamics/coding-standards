@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule91:
+    standard: @{CppCodingStandards}
+    ruleId: rule-91
+    title: Work through a type's operations, not its byte layout
+    statement:
+        Do not make assumptions about object layout, sizes, padding,
+        endianness or pointer representation; use the type's operations.
+    rationale:
+        Representations differ between platforms and compilers, and
+        depending on them is undefined or non-portable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        uint32_t v = *reinterpret_cast<uint32_t*>(bytes);   // endianness, alignment
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        uint32_t v = uint32_t(bytes[0]) | uint32_t(bytes[1]) << 8 |
+                     uint32_t(bytes[2]) << 16 | uint32_t(bytes[3]) << 24;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-safety, portability, type-safety]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

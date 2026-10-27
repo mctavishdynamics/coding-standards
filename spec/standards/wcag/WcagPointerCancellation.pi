@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagPointerCancellation:
+    standard: @{Wcag22}
+    ruleId: 2.5.2
+    title: Trigger pointer actions on release, not on press
+    statement:
+        For single-pointer functions, avoid acting on the down-event.
+        Complete the action on the up-event with a way to abort or undo it,
+        or make the up-event reverse what the down-event did.
+    rationale:
+        Users who press the wrong target by mistake can slide away before
+        releasing to cancel.
+    exceptions:
+        Acting on the down-event is allowed when essential, such as an on-
+        screen piano key.
+    severity: null
+    noncompliant:
+        ```js
+        \\\
+        deleteButton.addEventListener("mousedown", deleteFile);
+        \\\
+        ```
+    compliant:
+        ```js
+        \\\
+        deleteButton.addEventListener("click", deleteFile);
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, pointer, events]
+    source: https://www.w3.org/TR/WCAG22/#pointer-cancellation

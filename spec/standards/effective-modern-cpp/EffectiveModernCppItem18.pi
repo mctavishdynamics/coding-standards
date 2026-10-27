@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem18:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-18
+    title: Hold singly owned objects in unique_ptr
+    statement:
+        Hold exclusively owned resources in unique_ptr, adding a custom
+        deleter when needed. Factory functions can return it.
+    rationale:
+        It is as small and fast as a raw pointer, expresses ownership and
+        converts easily to shared_ptr.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Parser* makeParser(const std::string& lang);
+        Parser* p = makeParser("json");
+        // who deletes p?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::unique_ptr<Parser> makeParser(const std::string& lang);
+        auto p = makeParser("json");
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, smart-pointers, ownership]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

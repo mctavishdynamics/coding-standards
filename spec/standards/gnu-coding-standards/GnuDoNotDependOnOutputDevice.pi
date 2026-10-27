@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDoNotDependOnOutputDevice:
+    standard: @{GnuCodingStandards}
+    ruleId: user-interfaces-output-device
+    title: Do not change behavior based on where output goes
+    statement:
+        Make a command behave the same whether its input and output are a
+        terminal, file or pipe. If one behavior suits terminals better, make
+        it the default and offer an option for the other.
+    rationale:
+        Device independence is a core design principle and keeps output
+        predictable in scripts.
+    exceptions:
+        A program that would write binary data to a terminal should refuse
+        with an error, unless -f forces it. Some traditional programs such
+        as ls must keep device-dependent behavior for compatibility, and
+        error message syntax may vary.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (isatty (STDOUT_FILENO))
+          use_columns = true;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        use_columns = !opt_one_per_line;
+        \\\
+        ```
+    languages: [c]
+    tags: [command-line, interface-design]
+    source: https://www.gnu.org/prep/standards/standards.html#User-Interfaces

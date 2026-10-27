@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiDefineAndBuildOnTopOfCoreApi:
+    standard: @{KotlinApiGuidelines}
+    ruleId: define-and-build-on-top-of-core-api
+    title: Build the API on a small set of core operations
+    statement:
+        Define a small, well-documented set of core operations and build
+        further operations on top of them or by combining them. Optimised
+        variants are fine as long as users can solve real problems with the
+        core and swap in the extras without changing behaviour.
+    rationale:
+        A small core keeps the conceptual model simple even as the API
+        grows.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public interface EventStream {
+            public fun filtered(p: (Event) -> Boolean): EventStream
+            public fun mapped(f: (Event) -> Event): EventStream
+            public fun deduplicated(): EventStream   // each implemented separately
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public interface EventStream {
+            public fun transform(step: (Event, emit: (Event) -> Unit) -> Unit): EventStream
+        }
+        public fun EventStream.filter(p: (Event) -> Boolean): EventStream =
+            transform { e, emit -> if (p(e)) emit(e) }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [api-design]
+    source: https://kotlinlang.org/docs/api-guidelines-simplicity.html#define-and-build-on-top-of-core-api

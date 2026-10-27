@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./McIlroyUnix import McIlroyUnix
+
+export coding-rule McIlroyUseTools:
+    standard: @{McIlroyUnix}
+    ruleId: 1978-iv
+    title: Build and use tools rather than relying on manual labour
+    statement:
+        Prefer automating a job with tools over adding untrained hands, even
+        if the tools must be written first and some are thrown away later.
+    rationale:
+        A tool does repetitive work faster and more reliably than people,
+        and the detour to build it usually pays for itself.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```shell
+        \\\
+        # open each of 300 files by hand and fix the copyright year
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        grep -rl 'Copyright 2023' src/ | xargs sed -i 's/Copyright 2023/Copyright 2024/'
+        \\\
+        ```
+    languages: [any]
+    tags: [tooling, automation]
+    source: https://archive.org/details/bstj57-6-1899

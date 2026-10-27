@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgConstructor4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: constructor-4
+    title: Name a constructor parameter after the property it sets
+    statement:
+        When a constructor parameter only sets a property, give it the
+        property's name in camelCase.
+    rationale:
+        The matching names show at once which property each argument fills.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Coupon(string c, decimal pct) { Code = c; Discount = pct; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public Coupon(string code, decimal discount) { Code = code; Discount = discount; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, constructors, naming]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/constructor

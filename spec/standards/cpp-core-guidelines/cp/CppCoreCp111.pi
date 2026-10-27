@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp111:
     standard: @{CppCoreGuidelines}
     ruleId: CP.111
-    title: Use a conventional pattern if you really need double-checked locking
+    title: Follow a proven recipe when double-checked locking is unavoidable
     statement:
-        When a rare, costly action really needs double-checked locking,
-        follow the standard pattern exactly. Make the flag a std::atomic,
-        check it, lock, check it again, then act.
+        If you truly need double-checked locking for an expensive, rarely taken
+        path, use the conventional form. The flag is a std::atomic that you test,
+        then you take the lock, test the flag again and only then do the work.
     rationale:
-        Double-checked locking is easy to get wrong; with a volatile or
-        plain flag the first check is a data race.
+        This idiom is notoriously easy to break. A plain or volatile flag makes the
+        unlocked first test a data race.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleFloatComparison:
+    standard: @{RubyStyleGuide}
+    ruleId: float-comparison
+    title: Do not compare floats for exact equality
+    statement:
+        Avoid equality and inequality tests between floating-point values.
+        Compare within a tolerance, or use BigDecimal when exact decimal
+        values matter. RuboCop checks this with Lint/FloatComparison.
+    rationale:
+        Floating-point arithmetic loses precision, so two values that should
+        match rarely have the same bits.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        paid_in_full = balance == 0.3
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        TOLERANCE = 1e-9
+        paid_in_full = (balance - 0.3).abs < TOLERANCE
+        \\\
+        ```
+    languages: [ruby]
+    tags: [numbers, correctness]
+    source: https://rubystyle.guide/#float-comparison

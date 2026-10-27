@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuStartFunctionNameInColumnOne:
+    standard: @{GnuCodingStandards}
+    ruleId: formatting-function-name
+    title: Start the function name of a definition in column one
+    statement:
+        Write the return type on its own line so the function name begins in
+        column one. If the parameters do not fit on one line, continue them
+        aligned under the first parameter.
+    rationale:
+        Searching for a name at the start of a line finds the definition
+        quickly, and some tools rely on it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static const char *find_suffix (const char *name, char sep)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static const char *
+        find_suffix (const char *name, char sep)
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, functions]
+    source: https://www.gnu.org/prep/standards/standards.html#Formatting

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem1:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-1
+    title: Learn the rules for deducing template parameter types
+    statement:
+        Know how a template parameter is deduced for reference, forwarding
+        reference and by-value parameters, and that arrays and functions
+        decay unless bound to references.
+    rationale:
+        auto, decltype and much of modern C++ rest on these rules, and
+        surprises in deduction show up as copies or wrong overloads.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class T> void show(T x);
+        const int limit = 10;
+        show(limit);   // assumes T is const int; it is int
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T> void show(const T& x);
+        const int limit = 10;
+        show(limit);   // T is int, x is const int&
+        \\\
+        ```
+    languages: [cpp]
+    tags: [deducing-types, templates, type-deduction]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopInterfaces4:
+    standard: @{PracticeOfProgramming}
+    ruleId: interfaces-4
+    title: Apply one convention across related calls
+    statement:
+        Make the parts of an interface, and related interfaces, follow the
+        same conventions for arguments, results and errors.
+    rationale:
+        Consistency lets users carry what they learned from one call to the
+        next and avoids mistakes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int copy_to(char *dst, const char *src);
+        int copy_from(const char *src, char *dst);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int copy_to(char *dst, const char *src);
+        int copy_n(char *dst, const char *src, size_t n);
+        \\\
+        ```
+    languages: [any]
+    tags: [interfaces, api-design, consistency]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

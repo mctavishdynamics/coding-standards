@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiAvoidWideningOrNarrowingReturnTypes:
+    standard: @{KotlinApiGuidelines}
+    ruleId: avoid-widening-or-narrowing-return-types
+    title: Do not widen or narrow published return types
+    statement:
+        Keep the return type of a published function unchanged. Widening
+        breaks source compatibility, and narrowing, although source
+        compatible, breaks binary compatibility.
+    rationale:
+        On the JVM the return type is part of the method descriptor, so
+        compiled callers can no longer find the method.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        // v1.0: public fun recentOrders(): Collection<Order>
+        // v1.1:
+        public fun recentOrders(): List<Order>
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun recentOrders(): Collection<Order>
+        public fun recentOrderList(): List<Order>   // new function for the new need
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [compatibility, types]
+    source: https://kotlinlang.org/docs/api-guidelines-backward-compatibility.html#avoid-widening-or-narrowing-return-types

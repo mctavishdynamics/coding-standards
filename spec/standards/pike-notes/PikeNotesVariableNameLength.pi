@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PikeNotes import PikeNotes
+
+export coding-rule PikeNotesVariableNameLength:
+    standard: @{PikeNotes}
+    ruleId: variable-names
+    title: Size a name to its scope and favour clarity over length
+    statement:
+        Pick the shortest name that still tells the reader what they need,
+        and let the surrounding code supply the rest. A loop index can be a
+        single letter; a rarely used global, which has little context where
+        it appears, needs a more telling name.
+    rationale:
+        Long names do not make code clearer by themselves. When every index
+        is a phrase, the shape of the computation is harder to see.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (int position_in_buffer = 0; position_in_buffer < len; position_in_buffer++)
+            buffer[position_in_buffer] = toupper(buffer[position_in_buffer]);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (int i = 0; i < len; i++)
+            buf[i] = toupper(buf[i]);
+        \\\
+        ```
+    languages: [c]
+    tags: [naming, readability]
+    source: https://www.cs.princeton.edu/courses/archive/spr01/cs217/pike.html

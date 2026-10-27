@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem12:
+    standard: @{EffectivePython}
+    ruleId: item-12
+    title: Know when repr is shown and when str is shown
+    statement:
+        Use str output for people and repr output for debugging. Use the !r
+        conversion in f-strings when you need the unambiguous form, and give
+        your classes a useful __repr__.
+    rationale:
+        print shows str, which hides the difference between the number 5 and
+        the string 5. Repr makes types and values clear.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        print(f"value={value}")  # 5 and "5" look the same
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        print(f"value={value!r}")
+
+        class Point:
+            def __repr__(self):
+                return f"Point({self.x!r}, {self.y!r})"
+        \\\
+        ```
+    languages: [python]
+    tags: [strings-and-slicing, strings, debugging]
+    source: https://effectivepython.com/

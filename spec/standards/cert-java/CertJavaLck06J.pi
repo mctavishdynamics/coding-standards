@@ -19,11 +19,14 @@ export coding-rule CertJavaLck06J:
     noncompliant:
         ```java
         \\\
-        class Visits {
-            private static int count;
+        final class Printer {
+            private static long pagesPrinted;
+            private final Object guard = new Object();
 
-            synchronized void record() {
-                count++;
+            void print(Page p) {
+                synchronized (guard) {
+                    pagesPrinted++;
+                }
             }
         }
         \\\
@@ -31,13 +34,13 @@ export coding-rule CertJavaLck06J:
     compliant:
         ```java
         \\\
-        class Visits {
-            private static final Object lock = new Object();
-            private static int count;
+        final class Printer {
+            private static long pagesPrinted;
+            private static final Object PAGE_GUARD = new Object();
 
-            void record() {
-                synchronized (lock) {
-                    count++;
+            void print(Page p) {
+                synchronized (PAGE_GUARD) {
+                    pagesPrinted++;
                 }
             }
         }

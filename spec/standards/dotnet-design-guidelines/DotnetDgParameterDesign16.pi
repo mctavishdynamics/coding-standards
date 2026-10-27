@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign16:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-16
+    title: Consider params for arrays usually passed with few elements
+    statement:
+        Mark an array parameter params when callers typically pass a handful
+        of values inline. When large inputs are the norm, params adds
+        nothing.
+    rationale:
+        params lets callers list values directly instead of building an
+        array.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public void Tag(string item, params string[] labels) { /* ... */ }
+
+        catalog.Tag("lamp", "sale", "new");
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, member-design, parameters, params]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#members-with-variable-number-of-parameters

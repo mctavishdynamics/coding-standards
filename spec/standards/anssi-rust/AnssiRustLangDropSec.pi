@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangDropSec:
+    standard: @{AnssiRust}
+    ruleId: LANG-DROP-SEC
+    title: Do not rely on Drop alone for security operations
+    statement:
+        Security actions at the end of a task, such as erasing a key after
+        encryption, must not depend only on a Drop implementation; perform
+        them explicitly as well.
+    rationale:
+        Destructors can be skipped by mem::forget, leaks, cycles or an
+        abort, so the secret could stay in memory.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        fn encrypt(msg: &[u8]) -> Vec<u8> {
+            let key = SecretKey::generate(); // zeroes itself in Drop
+            cipher(&key, msg)
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        fn encrypt(msg: &[u8]) -> Vec<u8> {
+            let mut key = SecretKey::generate();
+            let out = cipher(&key, msg);
+            key.zeroize();
+            out
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, destructors, sensitive-data]
+    source: https://anssi-fr.github.io/rust-guide/standard.html#LANG-DROP-SEC

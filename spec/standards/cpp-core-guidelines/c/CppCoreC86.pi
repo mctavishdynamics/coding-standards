@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC86:
     standard: @{CppCoreGuidelines}
     ruleId: C.86
-    title: Make == symmetric in operand types and noexcept
+    title: Write equality so it treats both operands alike and never throws
     statement:
-        Define == so that both operands are treated alike, usually as a
-        non-member taking two const references, and make it noexcept.
+        Make == treat its two operands the same way, usually by writing it as a
+        non-member that takes two const references. Mark it noexcept.
     rationale:
-        Asymmetric equality surprises users when conversions apply to one
-        side only, and == is basic enough that it should never fail.
+        If conversions apply to only one side, results depend on argument order,
+        which surprises users. Equality is too basic an operation to be allowed
+        to fail.
     exceptions: null
     severity: null
     noncompliant:

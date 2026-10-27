@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12NoLeadingBackslashImport:
+    standard: @{Psr12}
+    ruleId: 3d
+    title: Do not begin import statements with a backslash
+    statement:
+        Write use imports without a leading backslash. Import names are
+        always fully qualified already.
+    rationale:
+        The backslash adds nothing in an import and makes import lists
+        inconsistent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        use \Acme\Shop\Model\Product;
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        use Acme\Shop\Model\Product;
+        \\\
+        ```
+    languages: [php]
+    tags: [imports, namespaces]
+    source: https://www.php-fig.org/psr/psr-12/#3-declare-statements-namespace-and-import-statements

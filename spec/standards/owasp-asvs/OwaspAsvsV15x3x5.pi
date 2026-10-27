@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV15x3x5:
+    standard: @{OwaspAsvs}
+    ruleId: V15.3.5
+    title: Check variable types and use strict comparisons
+    statement:
+        Explicitly confirm variables have the expected type and use strict
+        equality and comparison operators.
+    rationale:
+        Loose comparisons enable type juggling, where a value of an
+        unexpected type passes a check it should fail.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        if (req.body.pin == storedPin) grantAccess();
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        if (typeof req.body.pin === "string" && req.body.pin === storedPin) grantAccess();
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, type-safety, comparisons]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x24-V15-Secure-Coding-and-Architecture.md#v153-defensive-coding

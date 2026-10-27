@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem82:
+    standard: @{EffectivePython}
+    ruleId: item-82
+    title: Package reusable cleanup with contextlib and with
+    statement:
+        When the same setup and teardown wraps code in many places, write a
+        context manager, usually with contextlib.contextmanager, and use it
+        in a with statement.
+    rationale:
+        It removes repeated try and finally blocks and makes the scope of
+        the behaviour obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        old = logger.level
+        logger.setLevel(logging.DEBUG)
+        try:
+            run()
+        finally:
+            logger.setLevel(old)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        @contextmanager
+        def log_level(logger, level):
+            old = logger.level
+            logger.setLevel(level)
+            try:
+                yield logger
+            finally:
+                logger.setLevel(old)
+        \\\
+        ```
+    languages: [python]
+    tags: [robustness, exceptions, context-managers]
+    source: https://effectivepython.com/

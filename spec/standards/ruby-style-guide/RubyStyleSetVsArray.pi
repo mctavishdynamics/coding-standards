@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSetVsArray:
+    standard: @{RubyStyleGuide}
+    ruleId: set-vs-array
+    title: Store unique values in a Set
+    statement:
+        When elements must be unique, store them in a Set rather than an
+        Array.
+    rationale:
+        A Set refuses duplicates and looks values up quickly, while still
+        behaving much like an Array.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        seen = []
+        emails.each { |e| seen << e unless seen.include?(e) }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        require 'set'
+
+        seen = Set.new
+        emails.each { |e| seen << e }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, performance]
+    source: https://rubystyle.guide/#set-vs-array

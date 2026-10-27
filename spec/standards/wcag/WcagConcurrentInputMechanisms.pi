@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagConcurrentInputMechanisms:
+    standard: @{Wcag22}
+    ruleId: 2.5.6
+    title: Do not restrict which input methods users can use
+    statement:
+        Let users switch between the input methods their platform offers,
+        such as touch, mouse, keyboard and stylus, instead of limiting
+        content to one.
+    rationale:
+        Users may attach a keyboard to a tablet or use a mouse on a touch
+        screen.
+    exceptions:
+        Restrictions that are essential, needed for security, or that follow
+        user settings are allowed.
+    severity: null
+    noncompliant:
+        ```js
+        \\\
+        if ("ontouchstart" in window) {
+          document.removeEventListener("keydown", handleKeys);
+        }
+        \\\
+        ```
+    compliant:
+        ```js
+        \\\
+        document.addEventListener("keydown", handleKeys);
+        document.addEventListener("pointerdown", handlePointer);
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aaa, input, pointer]
+    source: https://www.w3.org/TR/WCAG22/#concurrent-input-mechanisms

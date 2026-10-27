@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleRationaleComments:
+    standard: @{RubyStyleGuide}
+    ruleId: rationale-comments
+    title: Comment on why, when the code cannot show it
+    statement:
+        When the code already shows how it works but not why it is written
+        that way, add a comment giving the reason, such as a workaround for
+        a library quirk or a reference to the algorithm being followed.
+    rationale:
+        Reasons are the one thing the code cannot express, and without them
+        a later reader may undo a deliberate choice.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        rows = report.rows.map(&:dup)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        # The report gem hands back frozen rows it reuses, so copy before editing.
+        rows = report.rows.map(&:dup)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [comments]
+    source: https://rubystyle.guide/#rationale-comments

@@ -7,18 +7,19 @@ export coding-rule GoogleCppNonmemberStaticMemberGlobalFunctions:
     ruleId: Nonmember,_Static_Member,_and_Global_Functions
     title: Put nonmember functions in a namespace, not a static class
     statement:
-        Place nonmember functions in a namespace and use fully global
-        functions rarely. Do not create a class only to group static
-        members. If a nonmember function is needed only in its .cc file,
-        give it internal linkage.
+        Put nonmember functions inside a namespace, and keep truly global
+        functions rare. Never write a class just to collect static members.
+        Give a nonmember function internal linkage when only its own .cc
+        file uses it.
     rationale:
-        Free functions in a namespace are the idiomatic way to write
-        operations that need no instance. A class of statics adds nothing
-        over a common name prefix.
+        C++ already offers a natural home for operations that do not act on
+        an object, and that home is a namespace. Wrapping statics in a class
+        only gives them a shared prefix, which a namespace does just as
+        well.
     exceptions:
-        A class of static members can be justified for a policy class, a
-        trait, giving type semantics to a separate representation, or
-        closing an interface to extension.
+        Static-only classes still have a place in a few designs, for
+        instance policy classes, traits, a type wrapped around some other
+        representation, or an interface you want to seal against extension.
     severity: null
     noncompliant:
         ```cpp

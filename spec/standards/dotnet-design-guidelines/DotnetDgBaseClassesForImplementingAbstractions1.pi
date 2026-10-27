@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgBaseClassesForImplementingAbstractions1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: base-classes-for-implementing-abstractions-1
+    title: Consider abstract base classes even without abstract members
+    statement:
+        Mark a base class abstract when it exists only to be derived from,
+        even if it has no abstract members.
+    rationale:
+        The modifier tells users plainly that the class is not meant to be
+        used on its own.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public abstract class CollectionWrapper<T> : IEnumerable<T>
+        {
+            protected IList<T> Items { get; } = new List<T>();
+            public IEnumerator<T> GetEnumerator() => Items.GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, extensibility, abstract-classes, inheritance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/base-classes-for-implementing-abstractions

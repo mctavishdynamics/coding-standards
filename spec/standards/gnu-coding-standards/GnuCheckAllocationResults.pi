@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuCheckAllocationResults:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-check-malloc
+    title: Check every malloc and realloc for failure
+    statement:
+        Test the result of every malloc and realloc call for NULL, including
+        a realloc that shrinks a block.
+    rationale:
+        Allocators may move or fail even on a shrinking request, for example
+        when they round sizes to powers of two.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        buf = realloc (buf, used);
+        memcpy (buf, src, used);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *p = realloc (buf, used);
+        if (p == NULL)
+          xalloc_die ();
+        buf = p;
+        memcpy (buf, src, used);
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, error-handling]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

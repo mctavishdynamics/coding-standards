@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagAudioControl:
+    standard: @{Wcag22}
+    ruleId: 1.4.2
+    title: Let users pause or turn down audio that plays automatically
+    statement:
+        If audio starts on its own and lasts more than three seconds,
+        provide a way to pause or stop it, or to control its volume
+        separately from the system volume.
+    rationale:
+        Autoplaying sound drowns out screen reader speech and makes the page
+        hard to use.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <audio src="/media/welcome.mp3" autoplay loop></audio>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <audio src="/media/welcome.mp3" controls></audio>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, media, autoplay]
+    source: https://www.w3.org/TR/WCAG22/#audio-control

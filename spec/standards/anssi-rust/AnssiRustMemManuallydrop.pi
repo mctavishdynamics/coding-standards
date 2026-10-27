@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustMemManuallydrop:
+    standard: @{AnssiRust}
+    ruleId: MEM-MANUALLYDROP
+    title: Release every value wrapped in ManuallyDrop
+    statement:
+        Any value placed in ManuallyDrop must later either be taken out
+        with ManuallyDrop::into_inner so it is dropped normally, or be
+        dropped explicitly with the unsafe ManuallyDrop::drop.
+    rationale:
+        ManuallyDrop disables the automatic destructor, so forgetting to
+        release the value leaks it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        let guard = std::mem::ManuallyDrop::new(conn);
+        use_connection(&guard);
+        // guard goes out of scope; conn is never closed
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        let guard = std::mem::ManuallyDrop::new(conn);
+        use_connection(&guard);
+        let conn = std::mem::ManuallyDrop::into_inner(guard);
+        drop(conn);
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, memory, resource-management]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/memory.html#MEM-MANUALLYDROP

@@ -21,10 +21,10 @@ export coding-rule CertJavaLck11J:
     noncompliant:
         ```java
         \\\
-        // The pool does not document which lock it uses.
-        void addIfAbsent(ConnectionPool pool, Connection c) {
-            synchronized (pool) {
-                if (!pool.contains(c)) pool.add(c);
+        // Roster makes no promise about which lock it uses internally.
+        static void enrolOnce(Roster roster, Student s) {
+            synchronized (roster) {
+                if (!roster.has(s)) roster.enrol(s);
             }
         }
         \\\
@@ -32,13 +32,13 @@ export coding-rule CertJavaLck11J:
     compliant:
         ```java
         \\\
-        final class SafePool {
-            private final Object lock = new Object();
-            private final ConnectionPool pool = new ConnectionPool();
+        final class GuardedRoster {
+            private final Roster roster = new Roster();
+            private final Object rosterGuard = new Object();
 
-            void addIfAbsent(Connection c) {
-                synchronized (lock) {
-                    if (!pool.contains(c)) pool.add(c);
+            void enrolOnce(Student s) {
+                synchronized (rosterGuard) {
+                    if (!roster.has(s)) roster.enrol(s);
                 }
             }
         }

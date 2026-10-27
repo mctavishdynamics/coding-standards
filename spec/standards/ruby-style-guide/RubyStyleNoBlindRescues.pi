@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoBlindRescues:
+    standard: @{RubyStyleGuide}
+    ruleId: no-blind-rescues
+    title: Rescue narrower classes than Exception
+    statement:
+        Leave the root Exception class out of rescue clauses. Rescue
+        StandardError or, better, the specific errors you can handle.
+    rationale:
+        Rescuing Exception also traps signals, interrupts and calls to exit,
+        so the process may only stop with kill -9.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        begin
+          worker.run
+        rescue Exception => e
+          logger.error(e.message)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        begin
+          worker.run
+        rescue StandardError => e
+          logger.error(e.message)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [error-handling, exceptions]
+    source: https://rubystyle.guide/#no-blind-rescues

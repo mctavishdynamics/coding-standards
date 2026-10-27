@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiBeginFactoryNameWithMake:
+    standard: @{SwiftApiDesign}
+    ruleId: begin-factory-name-with-make
+    title: Start factory method names with make
+    statement:
+        Name factory methods with a leading make, as in makeIterator.
+    rationale:
+        A common prefix tells the reader that the call creates and returns a
+        new object.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let session = client.newSession()
+        let request = builder.createRequest()
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let session = client.makeSession()
+        let request = builder.makeRequest()
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, factories]
+    source: https://www.swift.org/documentation/api-design-guidelines/#begin-factory-name-with-make

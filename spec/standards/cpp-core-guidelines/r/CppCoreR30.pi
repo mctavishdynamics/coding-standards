@@ -5,16 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR30:
     standard: @{CppCoreGuidelines}
     ruleId: R.30
-    title: Take smart pointers as parameters only to express lifetime semantics
+    title: Take smart pointer parameters only when lifetime is the point
     statement:
-        Accept a smart pointer parameter only when the function takes part
-        in the object's lifetime, by keeping, sharing or reseating it.
-        Otherwise take a raw pointer or a reference. This rule defers to
-        F.7.
+        Let a function take a smart pointer parameter only when it really
+        affects the lifetime of the object, for instance by storing it,
+        sharing it or making it point elsewhere. Otherwise pass a plain
+        pointer or a reference. See F.7 for the full treatment.
     rationale:
-        A function that only uses the object should not force callers to
-        hold it in a particular smart pointer type, and passing a smart
-        pointer by value has a cost.
+        When the function merely uses the object, demanding a particular
+        smart pointer type needlessly restricts callers. Copying a
+        shared_ptr also costs an atomic count update.
     exceptions: null
     severity: null
     noncompliant:

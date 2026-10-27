@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando141:
+    standard: @{ZalandoApi}
+    ruleId: 141
+    title: Keep URLs free of verbs
+    statement:
+        Let paths name things and let the HTTP method say what happens to
+        them. Rather than an approve verb in the path, create an approval in
+        an approvals collection.
+    rationale:
+        Resource-oriented URLs keep the API uniform and let the standard
+        method semantics carry the meaning of the operation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        POST /refunds/r-88/approve
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        POST /refunds/r-88/approvals
+        \\\
+        ```
+    languages: [any]
+    tags: [must, urls, resources]
+    source: https://opensource.zalando.com/restful-api-guidelines/#141

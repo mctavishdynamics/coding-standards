@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando128:
+    standard: @{ZalandoApi}
+    ruleId: 128
+    title: Encode countries, languages and currencies with standard codes
+    statement:
+        Use ISO 3166-1 alpha-2 country codes, ISO 639-1 language codes, BCP
+        47 language tags and ISO 4217 currency codes, and mark them with the
+        matching format in the specification.
+    rationale:
+        Standard codes are understood by every system and library, so values
+        can be validated and exchanged without mapping tables.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        properties:
+          country_code:
+            type: string
+            format: iso-3166-alpha-2
+            example: DE
+          language:
+            type: string
+            format: bcp47
+            example: en-GB
+          currency:
+            type: string
+            format: iso-4217
+            example: EUR
+        \\\
+        ```
+    languages: [any]
+    tags: [must, data-formats, localization]
+    source: https://opensource.zalando.com/restful-api-guidelines/#128

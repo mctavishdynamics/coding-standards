@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSerialization2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: serialization-2
+    title: Consider data contract serialization for persisted or web service types
+    statement:
+        If instances may be stored or exchanged with web services, think
+        about supporting data contract serialization.
+    rationale:
+        Data contracts were the recommended general-purpose mechanism for
+        these scenarios.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        [DataContract]
+        public class ShippingLabel
+        {
+            [DataMember] public string TrackingNumber { get; set; }
+            [DataMember] public string Carrier { get; set; }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, usage, serialization, data-contracts]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/serialization#choosing-the-right-serialization-technology-to-support

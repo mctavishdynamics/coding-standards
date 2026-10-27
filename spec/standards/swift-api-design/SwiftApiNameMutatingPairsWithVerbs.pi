@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiNameMutatingPairsWithVerbs:
+    standard: @{SwiftApiDesign}
+    ruleId: name-mutating-pairs-with-verbs
+    title: Name verb-based mutating pairs with ed or ing
+    statement:
+        When an operation is naturally a verb, use the imperative verb for
+        the mutating method and the past participle, usually ending in ed,
+        for the nonmutating one. If ed does not work because the verb takes
+        a direct object, use the ing form.
+    rationale:
+        A consistent pattern lets readers tell at a glance which variant
+        changes the value in place and which returns a new one.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        mutating func shuffle()
+        func shuffleCopy() -> Self
+        mutating func trimWhitespace()
+        func trimmedWhitespaceCopy() -> String
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        mutating func shuffle()
+        func shuffled() -> Self
+        mutating func trimWhitespace()
+        func trimmingWhitespace() -> String
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, mutation]
+    source: https://www.swift.org/documentation/api-design-guidelines/#name-according-to-side-effects

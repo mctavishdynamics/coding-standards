@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem63:
+    standard: @{EffectivePython}
+    ruleId: item-63
+    title: Register subclasses automatically with __init_subclass__
+    statement:
+        When a base class needs to know about all its subclasses, for
+        example for deserialization or plugins, record them in
+        __init_subclass__ rather than relying on manual registration calls.
+    rationale:
+        Automatic registration cannot be forgotten, so every subclass is
+        available as soon as it is defined.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class CsvExporter(Exporter): ...
+        register(CsvExporter)  # easy to forget
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Exporter:
+            registry = {}
+
+            def __init_subclass__(cls, **kwargs):
+                super().__init_subclass__(**kwargs)
+                Exporter.registry[cls.__name__] = cls
+        \\\
+        ```
+    languages: [python]
+    tags: [metaclasses-and-attributes, metaprogramming, registration]
+    source: https://effectivepython.com/

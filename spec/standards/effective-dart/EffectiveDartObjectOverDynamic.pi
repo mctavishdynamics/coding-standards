@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartObjectOverDynamic:
+    standard: @{EffectiveDart}
+    ruleId: avoid-using-dynamic-unless-you-want-to-disable-static-checking
+    title: Use Object? rather than dynamic to accept any value
+    statement:
+        Type a value that may be anything as `Object?`, or `Object` if null
+        is excluded, and use `is` checks before accessing members. Use
+        dynamic only when you want unchecked dynamic dispatch.
+    rationale:
+        dynamic allows any member call at compile time, so mistakes only
+        show up as runtime failures.
+    exceptions:
+        APIs that already use dynamic, such as JSON maps typed `Map<String,
+        dynamic>`, require it, though values are best cast to precise types
+        before use.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        void log(dynamic value) {
+          print(value.toUpperCase());
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        void log(Object? value) {
+          print(value is String ? value.toUpperCase() : '$value');
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, types, dynamic]
+    source: https://dart.dev/effective-dart/design#avoid-using-dynamic-unless-you-want-to-disable-static-checking

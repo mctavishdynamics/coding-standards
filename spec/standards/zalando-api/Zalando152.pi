@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando152:
+    standard: @{ZalandoApi}
+    ruleId: 152
+    title: Answer batch and bulk requests with status 207
+    statement:
+        Answer a batch or bulk request with 207 Multi-Status and a body that
+        gives the status of each item, even if every item failed or runs
+        asynchronously. Use 4xx or 5xx only for failures not tied to
+        individual items.
+    rationale:
+        One consistent response shape lets clients always inspect the
+        per-item results.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```json
+        \\\
+        {
+          "items": [
+            { "id": "sku-1", "status": 201 },
+            { "id": "sku-2", "status": 422, "description": "Unknown size" }
+          ]
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, http, status-codes]
+    source: https://opensource.zalando.com/restful-api-guidelines/#152

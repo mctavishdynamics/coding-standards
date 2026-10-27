@@ -19,11 +19,15 @@ export coding-rule CertJavaEnv06J:
     noncompliant:
         ```java
         \\\
-        public class OrderServlet extends HttpServlet {
-            protected void doGet(HttpServletRequest req, HttpServletResponse res) { /* ... */ }
+        public final class InvoiceEndpoint extends HttpServlet {
+            @Override
+            protected void doPost(HttpServletRequest rq, HttpServletResponse rs) {
+                // normal request handling
+            }
 
-            public static void main(String[] args) {
-                new OrderService().dumpAllOrders();
+            // Left over from local testing.
+            public static void main(String... cli) {
+                InvoiceStore.open().purgeAll();
             }
         }
         \\\
@@ -31,8 +35,11 @@ export coding-rule CertJavaEnv06J:
     compliant:
         ```java
         \\\
-        public class OrderServlet extends HttpServlet {
-            protected void doGet(HttpServletRequest req, HttpServletResponse res) { /* ... */ }
+        public final class InvoiceEndpoint extends HttpServlet {
+            @Override
+            protected void doPost(HttpServletRequest rq, HttpServletResponse rs) {
+                // normal request handling
+            }
         }
         \\\
         ```

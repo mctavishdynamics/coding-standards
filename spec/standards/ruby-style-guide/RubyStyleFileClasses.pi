@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleFileClasses:
+    standard: @{RubyStyleGuide}
+    ruleId: file-classes
+    title: Give substantial nested classes their own files
+    statement:
+        When an inner class has more than a line or two of body, store it in
+        a separate file under a directory that carries the outer class's
+        name.
+    rationale:
+        Separate files keep each class short and easy to locate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        # invoice.rb
+        class Invoice
+          class Line
+            def total
+              price * quantity
+            end
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        # invoice/line.rb
+        class Invoice
+          class Line
+            def total
+              price * quantity
+            end
+          end
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, files, organization]
+    source: https://rubystyle.guide/#file-classes

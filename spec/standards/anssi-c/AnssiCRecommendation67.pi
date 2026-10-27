@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation67:
+    standard: @{AnssiC}
+    ruleId: recommendation-67
+    title: Limit the use of compound literals
+    statement:
+        Use compound literals sparingly, document them, and watch their
+        scope.
+    rationale:
+        A compound literal inside a block disappears at the end of it, so
+        keeping its address leads to a dangling pointer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int *pick(int i) {
+            int *p = NULL;
+            if (i > 0) {
+                p = (int[]){1, 2, 3};
+            }
+            return p; /* literal no longer exists */
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static const int VALUES[3] = {1, 2, 3};
+        const int *pick(int i) { return (i > 0) ? VALUES : NULL; }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, declarations, lifetime]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=49

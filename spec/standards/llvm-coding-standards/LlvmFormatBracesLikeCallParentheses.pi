@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmFormatBracesLikeCallParentheses:
+    standard: @{LlvmCodingStandards}
+    ruleId: braced-initializer-lists
+    title: Format braced initializer lists like function call parentheses
+    statement:
+        Format a braced initializer list as though its braces were the
+        parentheses of a call, nesting and breaking lines the same way.
+    rationale:
+        One rule covers nested and inline initializers and gives predictable
+        output from clang-format.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        emitTable({ "add", 1 },
+          { "sub", 2 });
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        emitTable({"add", 1}, {"sub", 2});
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, initialization]
+    source: https://llvm.org/docs/CodingStandards.html#braced-initializer-lists

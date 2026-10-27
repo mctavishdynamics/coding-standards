@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSingleActionBlocks:
+    standard: @{RubyStyleGuide}
+    ruleId: single-action-blocks
+    title: Use the symbol-to-proc shorthand for single-call blocks
+    statement:
+        When a block does nothing but call one method on its argument, pass
+        the method name as a symbol with an ampersand instead.
+    rationale:
+        The shorthand removes a throwaway parameter and reads as a
+        description of the operation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        emails = users.map { |user| user.email }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        emails = users.map(&:email)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [blocks]
+    source: https://rubystyle.guide/#single-action-blocks

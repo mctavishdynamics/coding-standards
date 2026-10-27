@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleGuardAgainstBufferBleeds:
+    standard: @{TigerStyle}
+    ruleId: guard-against-buffer-bleeds
+    title: Guard against buffer bleeds
+    statement:
+        Make sure buffers are fully used or that any unused space and
+        padding is zeroed.
+    rationale:
+        Stale bytes left in a buffer can leak sensitive data and break
+        deterministic behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        var buffer: [4096]u8 = undefined;
+        @memcpy(buffer[0..payload.len], payload);
+        try socket.send(&buffer);
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        var buffer: [4096]u8 = undefined;
+        @memcpy(buffer[0..payload.len], payload);
+        @memset(buffer[payload.len..], 0);
+        try socket.send(&buffer);
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [security, memory]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#cache-invalidation

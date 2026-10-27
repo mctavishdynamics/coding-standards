@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR6:
     standard: @{CppCoreGuidelines}
     ruleId: R.6
-    title: Avoid non-const global variables
+    title: Avoid mutable global state
     statement:
-        Do not use mutable global variables. This rule defers to I.2, which
-        gives the full reasoning.
+        Steer clear of global variables that can be modified. The reasoning
+        lives in I.2.
     rationale:
-        Mutable globals create hidden dependencies between functions, make
-        code hard to reason about and cause data races between threads.
+        Writable globals tie functions together in ways no signature shows.
+        They make behaviour hard to follow and invite data races in threaded
+        code.
     exceptions: null
     severity: null
     noncompliant:

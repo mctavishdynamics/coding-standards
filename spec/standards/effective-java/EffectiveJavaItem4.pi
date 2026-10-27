@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem4:
+    standard: @{EffectiveJava}
+    ruleId: item-4
+    title: Give utility classes a private constructor so they cannot be instantiated
+    statement:
+        A class that only holds static methods and fields should declare a
+        private constructor, ideally one that throws, so nobody can create
+        an instance of it.
+    rationale:
+        Without an explicit constructor the compiler adds a public one, and
+        the class looks instantiable. Making the class abstract does not
+        help, because it can still be subclassed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class MathUtils {
+            public static int clamp(int v, int lo, int hi) { return Math.max(lo, Math.min(hi, v)); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public final class MathUtils {
+            private MathUtils() {
+                throw new AssertionError("no instances");
+            }
+
+            public static int clamp(int v, int lo, int hi) { return Math.max(lo, Math.min(hi, v)); }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [creating-and-destroying-objects, utility-classes, construction]
+    source: https://www.informit.com/store/effective-java-9780134686097

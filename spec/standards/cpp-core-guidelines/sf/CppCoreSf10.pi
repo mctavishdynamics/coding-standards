@@ -5,40 +5,39 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSf10:
     standard: @{CppCoreGuidelines}
     ruleId: SF.10
-    title: Avoid dependencies on implicitly #included names
+    title: Include every header whose names you use
     statement:
-        Include the header for every name you use, rather than relying on
-        another header happening to bring it in.
+        For each name a file uses, include the header that declares it. Do not count
+        on some other header pulling it in for you.
     rationale:
-        Indirect inclusion is an implementation detail; when it changes,
-        code breaks in surprising ways, as when iostream exposes std::string
-        but not getline.
+        Which headers a header includes internally can differ between library
+        versions and vendors. Code that relied on such a side effect then stops
+        compiling for no visible reason, and an include list that names every real
+        dependency avoids this.
     exceptions:
-        A header whose purpose is to collect a consistent set of other
-        headers may be relied on deliberately.
+        A header written deliberately to bundle a related group of headers is meant
+        to be relied on, so including just that one is fine.
     severity: null
     noncompliant:
         ```cpp
         \\\
-        #include <iostream>
+        #include <vector>
 
-        void greet()
+        int total(const std::vector<int>& values)
         {
-            std::string name;
-            std::getline(std::cin, name);   // may not compile
+            return std::accumulate(values.begin(), values.end(), 0);   // <numeric> missing
         }
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        #include <iostream>
-        #include <string>
+        #include <numeric>
+        #include <vector>
 
-        void greet()
+        int total(const std::vector<int>& values)
         {
-            std::string name;
-            std::getline(std::cin, name);
+            return std::accumulate(values.begin(), values.end(), 0);
         }
         \\\
         ```

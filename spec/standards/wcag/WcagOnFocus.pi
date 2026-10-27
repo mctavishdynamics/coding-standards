@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagOnFocus:
+    standard: @{Wcag22}
+    ruleId: 3.2.1
+    title: Do not change context when an element receives focus
+    statement:
+        Do not open windows, submit forms, move focus or otherwise change
+        context just because a component received focus.
+    rationale:
+        Keyboard users explore by tabbing, and unexpected changes on focus
+        disorient them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <input id="promo" onfocus="window.open('/promo-terms')">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <input id="promo">
+        <a href="/promo-terms">Promo code terms</a>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, focus, predictability]
+    source: https://www.w3.org/TR/WCAG22/#on-focus

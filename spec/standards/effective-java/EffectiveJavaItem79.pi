@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem79:
+    standard: @{EffectiveJava}
+    ruleId: item-79
+    title: Do as little as possible inside synchronised regions
+    statement:
+        Never call alien or overridable methods while holding a lock, and
+        keep synchronised blocks short.
+    rationale:
+        Calling unknown code under a lock risks deadlock and data
+        corruption, and long critical sections hurt scalability.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        synchronized (listeners) {
+            for (Listener l : listeners) l.changed(this);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        List<Listener> snapshot;
+        synchronized (listeners) {
+            snapshot = List.copyOf(listeners);
+        }
+        for (Listener l : snapshot) l.changed(this);
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, synchronization, deadlock]
+    source: https://www.informit.com/store/effective-java-9780134686097

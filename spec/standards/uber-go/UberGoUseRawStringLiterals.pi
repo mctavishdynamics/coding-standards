@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoUseRawStringLiterals:
+    standard: @{UberGo}
+    ruleId: use-raw-string-literals-to-avoid-escaping
+    title: Use raw string literals instead of escaping
+    statement:
+        Write strings that would need many escapes, such as those containing
+        quotes or backslashes, as backquoted raw string literals.
+    rationale:
+        Hand-escaped strings are hard to read and easy to get wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        pattern := "^\\d{3}-\\d{4}$"
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        pattern := `^\d{3}-\d{4}$`
+        \\\
+        ```
+    languages: [go]
+    tags: [strings, readability]
+    source: https://github.com/uber-go/guide/blob/master/style.md#use-raw-string-literals-to-avoid-escaping

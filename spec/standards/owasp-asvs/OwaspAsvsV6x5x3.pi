@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV6x5x3:
+    standard: @{OwaspAsvs}
+    ruleId: V6.5.3
+    title: Generate MFA secrets with a CSPRNG
+    statement:
+        Create lookup secrets, out-of-band codes and TOTP seeds with a
+        cryptographically secure random number generator.
+    rationale:
+        Values from a weak generator can be predicted, which defeats the
+        second factor.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        code = str(random.randint(0, 999999)).zfill(6)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        code = str(secrets.randbelow(1_000_000)).zfill(6)
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, mfa, randomness]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x15-V6-Authentication.md#v65-general-multi-factor-authentication-requirements

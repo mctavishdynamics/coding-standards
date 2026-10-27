@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip236:
+    standard: @{GoogleAip}
+    ruleId: AIP-236
+    title: Preview policy changes through experiment child resources
+    statement:
+        To preview a policy change, model it as a child collection of
+        resources named after the policy type with an Experiment suffix,
+        holding the candidate policy and its preview metadata. Create,
+        update and delete them with long-running standard methods, start and
+        stop previews with custom methods, and commit by atomically copying
+        into the live policy.
+    rationale:
+        Policy changes can block legitimate access or admit unwanted
+        traffic. Evaluating a candidate alongside the live policy shows its
+        effect before it is enforced.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```protobuf
+        \\\
+        message FirewallPolicyExperiment {
+          string name = 1;
+          FirewallPolicy firewall_policy = 2;
+          FirewallPolicyPreviewMetadata preview_metadata = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design-patterns, policies]
+    source: https://google.aip.dev/236

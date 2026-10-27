@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleIndentPublicPrivateProtected:
+    standard: @{RubyStyleGuide}
+    ruleId: indent-public-private-protected
+    title: Indent access modifiers like the methods they govern
+    statement:
+        Indent the public, protected and private keywords at the same level
+        as the def lines they govern, and surround each with a single blank
+        line.
+    rationale:
+        The alignment and spacing show that the modifier applies to all the
+        methods after it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Exporter
+          def run = write
+        private
+          def write = File.write(path, data)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Exporter
+          def run = write
+
+          private
+
+          def write = File.write(path, data)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, indentation, visibility]
+    source: https://rubystyle.guide/#indent-public-private-protected

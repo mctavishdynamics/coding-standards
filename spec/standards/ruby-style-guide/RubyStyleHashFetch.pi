@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHashFetch:
+    standard: @{RubyStyleGuide}
+    ruleId: hash-fetch
+    title: Use fetch for keys that must exist
+    statement:
+        When a missing key would be a bug, look it up with fetch so the
+        lookup fails loudly.
+    rationale:
+        fetch raises KeyError for a missing or misspelt key, so the error
+        surfaces at once instead of as a stray nil later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        db_url = env[:databse_url] # => nil, typo goes unnoticed
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        db_url = env.fetch(:database_url)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes, error-handling]
+    source: https://rubystyle.guide/#hash-fetch

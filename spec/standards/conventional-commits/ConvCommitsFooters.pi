@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ConventionalCommits import ConventionalCommits
+
+export coding-rule ConvCommitsFooters:
+    standard: @{ConventionalCommits}
+    ruleId: 8
+    title: Write each footer as a token, a separator and a value
+    statement:
+        Footers, if present, follow the body after a single empty line. Each
+        one consists of a word token, then either a colon and a space or a
+        space and a hash, then its value.
+    rationale:
+        The format follows the Git trailer convention, so existing tools can
+        read footers such as reviewers or issue references.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        fix: reject negative quantities
+
+        Reviewed by Ana
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        fix: reject negative quantities
+
+        Reviewed-by: Ana
+        Refs #482
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, footers]
+    source: https://www.conventionalcommits.org/en/v1.0.0/#specification

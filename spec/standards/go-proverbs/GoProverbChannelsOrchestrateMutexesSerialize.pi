@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbChannelsOrchestrateMutexesSerialize:
+    standard: @{GoProverbs}
+    ruleId: channels-orchestrate-mutexes-serialize
+    title: Coordinate with channels and protect state with mutexes
+    statement:
+        Use channels to coordinate the work of goroutines, and use a mutex
+        when the only need is to make access to a piece of state happen one
+        at a time.
+    rationale:
+        Each tool fits a different job. A mutex is simplest for guarding a
+        small piece of state, while channels describe how work flows between
+        goroutines.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Counter struct {
+            inc chan struct{}
+            get chan int
+        }
+        // a goroutine loop just to add one to an int
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Counter struct {
+            mu sync.Mutex
+            n  int
+        }
+
+        func (c *Counter) Inc() {
+            c.mu.Lock()
+            c.n++
+            c.mu.Unlock()
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, channels, mutexes]
+    source: https://go-proverbs.github.io/

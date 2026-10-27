@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgOperatorOverloads3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: operator-overloads-3
+    title: Overload operators on numeric structs
+    statement:
+        Define arithmetic and comparison operators on structs that represent
+        numbers.
+    rationale:
+        Numeric code is unreadable when every calculation must be written as
+        method calls.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public readonly struct Fixed16
+        {
+            private readonly int _raw;
+            private Fixed16(int raw) => _raw = raw;
+            public static Fixed16 operator +(Fixed16 left, Fixed16 right) => new(left._raw + right._raw);
+            public static Fixed16 operator -(Fixed16 left, Fixed16 right) => new(left._raw - right._raw);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, operators, structs]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/operator-overloads

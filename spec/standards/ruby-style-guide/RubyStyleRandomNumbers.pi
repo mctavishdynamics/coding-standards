@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleRandomNumbers:
+    standard: @{RubyStyleGuide}
+    ruleId: random-numbers
+    title: Pass a range to rand
+    statement:
+        When generating a random number within bounds, give rand a range
+        rather than adding an offset to its result. RuboCop checks this with
+        Style/RandomWithOffset.
+    rationale:
+        A range shows the intended bounds at a glance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        delay = rand(5) + 1
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        delay = rand(1..5)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [numbers, readability]
+    source: https://rubystyle.guide/#random-numbers

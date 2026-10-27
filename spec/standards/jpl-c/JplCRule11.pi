@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule11:
+    standard: @{JplC}
+    ruleId: rule-11
+    title: Avoid jumps such as goto and longjmp
+    statement:
+        Do not write goto statements and do not call setjmp or longjmp.
+    rationale:
+        Straight-line structure makes code easier to reason about and to
+        check with tools. In critical software, correctness should be
+        obvious at a glance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int init_all(void) {
+            if (init_radio() != OK) {
+                goto fail;
+            }
+            return OK;
+        fail:
+            log_error("radio");
+            return ERR_INIT;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int init_all(void) {
+            if (init_radio() != OK) {
+                log_error("radio");
+                return ERR_INIT;
+            }
+            return OK;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-2, control-flow]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

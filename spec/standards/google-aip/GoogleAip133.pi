@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip133:
+    standard: @{GoogleAip}
+    ruleId: AIP-133
+    title: Provide a Create method that lets the user choose the resource ID
+    statement:
+        Name the method Create plus the singular resource, return the
+        resource itself, and include a parent field for non-top-level
+        resources and the resource field mapped to the POST body. Management
+        plane APIs must accept a user-chosen ID in a field on the request
+        named after the resource with an _id suffix, and ignore the name
+        field on the supplied resource.
+    rationale:
+        Declarative clients identify resources by ID; without a user-chosen
+        ID they cannot find a resource they created and may create it twice.
+        A known ID also lets clients compute the name in advance and
+        reference it elsewhere.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message CreateRecipeRequest {
+          string parent = 1;
+          Recipe recipe = 2;  // Server always invents the ID.
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message CreateRecipeRequest {
+          string parent = 1 [(google.api.field_behavior) = REQUIRED];
+          string recipe_id = 2 [(google.api.field_behavior) = REQUIRED];
+          Recipe recipe = 3 [(google.api.field_behavior) = REQUIRED];
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [methods, standard-methods]
+    source: https://google.aip.dev/133

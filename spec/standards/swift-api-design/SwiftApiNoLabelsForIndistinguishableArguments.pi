@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiNoLabelsForIndistinguishableArguments:
+    standard: @{SwiftApiDesign}
+    ruleId: no-labels-for-indistinguishable-arguments
+    title: Omit labels when arguments cannot be told apart
+    statement:
+        Leave out all argument labels when the arguments play the same role
+        and cannot usefully be distinguished.
+    rationale:
+        Labels such as first and second add length without adding meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let longest = max(first: a, second: b)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let longest = max(a, b)
+        \\\
+        ```
+    languages: [swift]
+    tags: [argument-labels]
+    source: https://www.swift.org/documentation/api-design-guidelines/#no-labels-for-indistinguishable-arguments

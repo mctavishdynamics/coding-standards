@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoUseTimeToHandleTime:
+    standard: @{UberGo}
+    ruleId: use-time-to-handle-time
+    title: Handle time with the time package
+    statement:
+        Always use the standard time package for time calculations rather
+        than raw numbers and assumptions such as every day having 24 hours.
+    rationale:
+        Calendars have daylight saving shifts, leap years and other
+        irregularities that hand-written arithmetic gets wrong; the time
+        package accounts for many of them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        expiresAt := createdUnix + 30*24*60*60
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        expiresAt := createdAt.AddDate(0, 0, 30)
+        \\\
+        ```
+    languages: [go]
+    tags: [time]
+    source: https://github.com/uber-go/guide/blob/master/style.md#use-time-to-handle-time

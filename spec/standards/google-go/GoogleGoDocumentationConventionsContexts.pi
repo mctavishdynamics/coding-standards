@@ -19,16 +19,18 @@ export coding-rule GoogleGoDocumentationConventionsContexts:
     noncompliant:
         ```go
         \\\
-        // Run runs the worker loop. It returns ctx.Err() if ctx is cancelled.
-        func (w *Worker) Run(ctx context.Context) error
+        // Sync copies pending rows to the archive. When ctx is done,
+        // Sync stops and returns ctx.Err().
+        func (a *Archiver) Sync(ctx context.Context) error
         \\\
         ```
     compliant:
         ```go
         \\\
-        // Run runs the worker loop until ctx is cancelled or Stop is called.
-        // If the context is cancelled, Run returns a nil error.
-        func (w *Worker) Run(ctx context.Context) error
+        // Sync copies pending rows to the archive until ctx ends or the
+        // batch limit is reached. Cancellation is not an error here:
+        // Sync then reports success for the rows already copied.
+        func (a *Archiver) Sync(ctx context.Context) error
         \\\
         ```
     languages: [go]

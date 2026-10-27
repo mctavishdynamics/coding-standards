@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuFollowPosixOptionConventions:
+    standard: @{GnuCodingStandards}
+    ruleId: command-line-posix-options
+    title: Follow POSIX option conventions and add long option equivalents
+    statement:
+        Follow the POSIX guidelines for options, normally by parsing with
+        getopt, and give each single-letter option a long-named equivalent.
+        Use the names in the GNU table of common long options when they
+        apply.
+    rationale:
+        Long options are easier to remember and, when shared across
+        programs, consistent for users.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* Only -q, with no long form. */
+        while ((c = getopt (argc, argv, "q")) != -1)
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static const struct option longopts[] = {
+          {"quiet", no_argument, NULL, 'q'},
+          {NULL, 0, NULL, 0}
+        };
+        while ((c = getopt_long (argc, argv, "q", longopts, NULL)) != -1)
+        \\\
+        ```
+    languages: [c]
+    tags: [command-line, options]
+    source: https://www.gnu.org/prep/standards/standards.html#Command_002dLine-Interfaces

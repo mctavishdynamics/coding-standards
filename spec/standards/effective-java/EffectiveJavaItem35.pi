@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem35:
+    standard: @{EffectiveJava}
+    ruleId: item-35
+    title: Store enum-related values in fields, not in ordinals
+    statement:
+        Never derive a value from an enum constant's ordinal. Keep the value
+        in an instance field set by the constructor.
+    rationale:
+        Ordinals change when constants are reordered or added, which
+        silently breaks any value computed from them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        enum Size { SMALL, MEDIUM, LARGE;
+            int litres() { return ordinal() + 1; }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        enum Size { SMALL(1), MEDIUM(2), LARGE(3);
+            private final int litres;
+            Size(int litres) { this.litres = litres; }
+            int litres() { return litres; }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [enums-and-annotations, enums]
+    source: https://www.informit.com/store/effective-java-9780134686097

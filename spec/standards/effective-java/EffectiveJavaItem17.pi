@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem17:
+    standard: @{EffectiveJava}
+    ruleId: item-17
+    title: Make classes immutable unless there is a good reason not to
+    statement:
+        Prefer classes whose state cannot change after construction. Give
+        them no mutators, make fields private and final, prevent
+        subclassing, and avoid exposing mutable components.
+    rationale:
+        Immutable objects are simple to reason about, safe to share between
+        threads and good building blocks for other objects.
+    exceptions:
+        When a class must be mutable, keep as much of its state final and
+        its set of reachable states as small as possible.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class Money {
+            private BigDecimal amount;
+            public void add(BigDecimal x) { amount = amount.add(x); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public final class Money {
+            private final BigDecimal amount;
+
+            public Money(BigDecimal amount) { this.amount = amount; }
+
+            public Money plus(Money other) { return new Money(amount.add(other.amount)); }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [classes-and-interfaces, immutability, thread-safety]
+    source: https://www.informit.com/store/effective-java-9780134686097

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEventsAndCallbacks5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: events-and-callbacks-5
+    title: Use Func, Action or Expression instead of custom delegates
+    statement:
+        Type callback parameters with the generic Func and Action delegates,
+        or Expression when the code must be inspected, instead of declaring
+        new delegate types.
+    rationale:
+        The built-in types are familiar, interchangeable and save you from
+        extra declarations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public delegate decimal PriceRule(Product product);
+        public void AddRule(PriceRule rule) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void AddRule(Func<Product, decimal> rule) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, extensibility, callbacks, delegates]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/events-and-callbacks

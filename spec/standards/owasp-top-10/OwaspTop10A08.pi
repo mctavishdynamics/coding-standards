@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./OwaspTop10 import OwaspTop10
+
+export coding-rule OwaspTop10A08:
+    standard: @{OwaspTop10}
+    ruleId: A08:2025
+    title: Prevent software and data integrity failures
+    statement:
+        Verify with digital signatures or similar checks that software and
+        data come from the expected source unchanged, and pull dependencies
+        only from trusted or internally vetted repositories. Review code and
+        configuration changes, segregate and lock down the CI/CD pipeline,
+        and treat serialized objects that come back from clients as tampered
+        unless a signature or MAC proves otherwise.
+    rationale:
+        Code or data that is trusted without verification lets an attacker
+        slip in malicious updates, tampered artifacts or forged objects. It
+        is the eighth category in the OWASP Top 10 for 2025.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def apply_update():
+            package = urlopen(UPDATE_URL).read()
+            install(package)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def apply_update():
+            package = urlopen(UPDATE_URL).read()
+            signature = urlopen(UPDATE_URL + ".sig").read()
+            VENDOR_KEY.verify(signature, package)  # raises InvalidSignature
+            install(package)
+        \\\
+        ```
+    languages: [any]
+    tags: [rank-8, integrity, signatures, supply-chain]
+    source: https://owasp.org/Top10/2025/A08_2025-Software_or_Data_Integrity_Failures/

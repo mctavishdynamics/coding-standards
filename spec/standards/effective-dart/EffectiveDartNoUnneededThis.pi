@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoUnneededThis:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-this-when-not-needed-to-avoid-shadowing
+    title: Write this. only to avoid shadowing or to redirect
+    statement:
+        Use `this.` only when a local name shadows the member, or to
+        redirect to a named constructor. Constructor parameters do not
+        shadow fields in initializer lists. The unnecessary_this lint checks
+        this.
+    rationale:
+        Dart resolves members without `this.`, so writing it elsewhere is
+        noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Counter {
+          int count = 0;
+          void increment() {
+            this.count++;
+            this.notify();
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Counter {
+          int count = 0;
+          void increment() {
+            count++;
+            notify();
+          }
+          void reset(int count) {
+            this.count = count;
+          }
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, classes, members]
+    source: https://dart.dev/effective-dart/usage#dont-use-this-when-not-needed-to-avoid-shadowing

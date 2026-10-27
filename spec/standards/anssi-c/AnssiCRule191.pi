@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule191:
+    standard: @{AnssiC}
+    ruleId: rule-191
+    title: Remove development assertions from production code
+    statement:
+        Make sure assertions used during development are not present in
+        production builds.
+    rationale:
+        Debug assertions can stop the program or expose internal details in
+        production.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* built without NDEBUG for release */
+        assert(len < MAX);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* release built with -DNDEBUG; real checks stay as code */
+        if (len >= MAX) { return ERR_RANGE; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, assertions, release]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=153

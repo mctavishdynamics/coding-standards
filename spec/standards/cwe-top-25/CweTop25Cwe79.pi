@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe79:
+    standard: @{CweTop25}
+    ruleId: CWE-79
+    title: Prevent cross-site scripting
+    statement:
+        Encode untrusted data for the exact place it is written into a page,
+        whether HTML text, an attribute, a URL, a script or a style, and
+        prefer a template or DOM API that escapes by default. Validate input
+        on the server with an allow list as a second layer, and repeat on
+        the server any check done in the browser.
+    rationale:
+        Injected script runs with the victim's session, so an attacker can
+        steal cookies, read private data or act as the user. It is ranked 1
+        of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const params = new URLSearchParams(location.search);
+        greeting.innerHTML = "<p>Welcome, " + params.get("name") + "</p>";
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const params = new URLSearchParams(location.search);
+        const p = document.createElement("p");
+        p.textContent = "Welcome, " + params.get("name");
+        greeting.replaceChildren(p);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [rank-1, injection, xss, output-encoding]
+    source: https://cwe.mitre.org/data/definitions/79.html

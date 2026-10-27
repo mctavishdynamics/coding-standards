@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmPreferPreincrement:
+    standard: @{LlvmCodingStandards}
+    ruleId: prefer-preincrement
+    title: Use preincrement whenever possible
+    statement:
+        Write ++X instead of X++ unless you need the old value.
+    rationale:
+        Postincrement makes a copy of the old value, which can be expensive
+        for iterators and is never faster.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (auto It = Begin; It != End; It++)
+          visit(*It);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (auto It = Begin; It != End; ++It)
+          visit(*It);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [performance, iterators]
+    source: https://llvm.org/docs/CodingStandards.html#prefer-preincrement

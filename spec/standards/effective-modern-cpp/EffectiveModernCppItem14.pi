@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem14:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-14
+    title: State with noexcept which functions never throw
+    statement:
+        Declare functions noexcept when they will not throw, particularly
+        move operations, swap and deallocation functions.
+    rationale:
+        noexcept is part of the interface, enables optimisations, and lets
+        containers move rather than copy.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Packet {
+        public:
+            Packet(Packet&& o);   // vector copies on growth
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Packet {
+        public:
+            Packet(Packet&& o) noexcept;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [moving-to-modern-cpp, exceptions, performance]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

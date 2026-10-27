@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopTesting12:
+    standard: @{PracticeOfProgramming}
+    ruleId: testing-12
+    title: Rerun the old tests by machine after every change
+    statement:
+        Keep a suite of tests that compares new behavior with old, and run
+        it automatically after every change.
+    rationale:
+        Automation makes testing cheap enough to do all the time, so
+        regressions are caught at once.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```sh
+        \\\
+        for t in tests/*.in; do
+            ./prog < "$t" > /tmp/out
+            cmp -s /tmp/out "${t%.in}.out" || echo "FAIL: $t"
+        done
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, automation, regression]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

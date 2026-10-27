@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip151:
+    standard: @{GoogleAip}
+    ruleId: AIP-151
+    title: Return a long-running operation for slow methods
+    statement:
+        A method that takes significant time returns a
+        google.longrunning.Operation, never a streaming response and never a
+        copied Operation definition, and carries an operation_info
+        annotation naming both the response and metadata types. Errors that
+        stop the operation from starting are returned directly; failures
+        during execution go in Operation.error as a google.rpc.Status.
+    rationale:
+        Blocking a caller for a long task is a poor experience. A standard
+        operation type gives every client one way to poll, wait and read
+        results or errors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        rpc ExportMenu(ExportMenuRequest) returns (stream ExportMenuResponse);
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        rpc ExportMenu(ExportMenuRequest) returns (google.longrunning.Operation) {
+          option (google.longrunning.operation_info) = {
+            response_type: "ExportMenuResponse"
+            metadata_type: "ExportMenuMetadata"
+          };
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [long-running-operations, methods]
+    source: https://google.aip.dev/151

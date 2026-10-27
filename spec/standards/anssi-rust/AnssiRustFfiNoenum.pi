@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiNoenum:
+    standard: @{AnssiRust}
+    ruleId: FFI-NOENUM
+    title: Do not accept Rust enums from foreign code
+    statement:
+        Do not accept incoming values of a Rust enum type from foreign code.
+        Take an integer and convert it after checking.
+    rationale:
+        C can pass any integer, and a value outside the enum's variants is
+        undefined behaviour in Rust.
+    exceptions:
+        Enums that are opaque to the foreign side and handled only by Rust,
+        and enums mapped to a type-safe enumeration on the other side, such
+        as a C++ enum class.
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[repr(C)]
+        pub enum Mode { Read = 0, Write = 1 }
+
+        #[no_mangle]
+        pub extern "C" fn open_mode(m: Mode) {}
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub extern "C" fn open_mode(m: u32) -> i32 {
+            let mode = match m {
+                0 => Mode::Read,
+                1 => Mode::Write,
+                _ => return -1,
+            };
+            apply(mode);
+            0
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, ffi, input-validation]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-NOENUM

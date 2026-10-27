@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule14:
+    standard: @{AnssiC}
+    ruleId: rule-14
+    title: Keep every directive of a conditional block in one file
+    statement:
+        The opening, intermediate and closing directives of a preprocessor
+        conditional block must all be in the same file.
+    rationale:
+        A block opened in one file and closed in another depends on include
+        order and is almost impossible to follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* a.c */
+        #ifdef FEATURE_X
+        #include "x_impl.h" /* x_impl.h ends with #endif */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* a.c */
+        #ifdef FEATURE_X
+        #include "x_impl.h"
+        #endif /* FEATURE_X */
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, preprocessor]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=18

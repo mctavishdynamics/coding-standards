@@ -5,16 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreP4:
     standard: @{CppCoreGuidelines}
     ruleId: P.4
-    title: Aim for a program that is statically type safe
+    title: Write programs whose types are checked by the compiler
     statement:
-        Write programs that are type safe at compile time as far as
-        possible. Treat unions, casts, array decay, range errors and
-        narrowing conversions as problem areas and prefer the safer
-        alternatives.
+        Aim for code the compiler can type check. Unions, casts, decayed arrays,
+        out-of-range access and narrowing are the usual weak spots, so reach for
+        safer tools such as variant, span and brace initialization.
     rationale:
-        Full static type safety is not achievable in C++, but those problem
-        areas are the source of serious failures such as crashes and
-        security holes.
+        C++ cannot be made fully type safe, yet most crashes and exploits trace
+        back to those few weak spots. Shrinking them removes a large class of
+        defects.
     exceptions: null
     severity: null
     noncompliant:

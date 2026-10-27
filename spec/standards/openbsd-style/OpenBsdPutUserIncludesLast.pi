@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdPutUserIncludesLast:
+    standard: @{OpenBsdStyle}
+    ruleId: include-order-local
+    title: Put the program's own headers last, in quotes
+    statement:
+        After another blank line, include the program's own headers, using
+        double quotes rather than angle brackets.
+    rationale:
+        Quotes and position mark which headers belong to the program.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include <extern.h>
+        #include <stdio.h>
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdio.h>
+
+        #include "extern.h"
+        \\\
+        ```
+    languages: [c]
+    tags: [includes, file-structure]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

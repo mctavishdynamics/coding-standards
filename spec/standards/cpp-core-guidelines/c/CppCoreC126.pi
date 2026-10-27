@@ -5,16 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC126:
     standard: @{CppCoreGuidelines}
     ruleId: C.126
-    title: Do not usually give an abstract class a user-written constructor
+    title: Let an abstract class rely on the compiler-generated constructor
     statement:
-        An abstract class normally has no data, so it seldom needs a
-        constructor of its own.
+        An abstract class usually has no data, so it rarely needs a user-written
+        constructor.
     rationale:
-        There is nothing for such a constructor to initialize.
+        With no members to set up, a constructor would have nothing to do.
     exceptions:
-        A base constructor that does work, such as registering the object,
-        may be needed. Rarely an abstract class carries data shared by all
-        derived classes and then needs a constructor.
+        A base constructor may still be useful when it performs work, such as
+        registering each new object somewhere. In rare designs the abstract
+        class also holds data shared by all derived types, and then it needs a
+        constructor.
     severity: null
     noncompliant:
         ```cpp

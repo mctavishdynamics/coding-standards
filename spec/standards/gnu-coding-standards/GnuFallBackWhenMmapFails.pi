@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuFallBackWhenMmapFails:
+    standard: @{GnuCodingStandards}
+    ruleId: mmap
+    title: Fall back to read and write when mmap does not work
+    statement:
+        Do not assume mmap works for all files or for none. Attempt it for
+        each file you need, and if it fails, do the job with read and write
+        instead.
+    rationale:
+        Some file systems support mmap only for some kinds of files.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        data = mmap (NULL, size, PROT_READ, MAP_PRIVATE, fd, 0);
+        checksum (data, size);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        data = mmap (NULL, size, PROT_READ, MAP_PRIVATE, fd, 0);
+        if (data != MAP_FAILED)
+          checksum (data, size);
+        else
+          checksum_by_reading (fd, size);
+        \\\
+        ```
+    languages: [c]
+    tags: [files, portability, error-handling]
+    source: https://www.gnu.org/prep/standards/standards.html#Mmap

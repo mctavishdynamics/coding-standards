@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule48:
+    standard: @{CppCodingStandards}
+    ruleId: rule-48
+    title: Set members through the initialiser list
+    statement:
+        Set member values in the constructor's initialiser list or with
+        default member initialisers instead of assigning in the body.
+    rationale:
+        Assignment after default construction does extra work and is
+        impossible for const and reference members.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        User::User(const std::string& n) { name_ = n; }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        User::User(const std::string& n) : name_(n) {}
+        \\\
+        ```
+    languages: [cpp]
+    tags: [construction-destruction-copying, initialization, constructors]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmExtractPredicateLoops:
+    standard: @{LlvmCodingStandards}
+    ruleId: turn-predicate-loops-into-predicate-functions
+    title: Move loops that compute a boolean into named predicate functions
+    statement:
+        Instead of a loop that sets a flag and breaks, write a small
+        function, possibly static, that returns as soon as the answer is
+        known, and call it.
+    rationale:
+        The function gets a name and a comment, can be reused, and lets the
+        caller read at a higher level.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        bool HasStore = false;
+        for (Instruction &I : BB)
+          if (isa<StoreInst>(I)) {
+            HasStore = true;
+            break;
+          }
+        if (HasStore)
+          markDirty(BB);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        /// Returns true if \p BB writes to memory through a store.
+        static bool containsStore(BasicBlock &BB) {
+          return llvm::any_of(BB, [](Instruction &I) { return isa<StoreInst>(I); });
+        }
+
+        if (containsStore(BB))
+          markDirty(BB);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, readability, control-flow]
+    source: https://llvm.org/docs/CodingStandards.html#turn-predicate-loops-into-predicate-functions

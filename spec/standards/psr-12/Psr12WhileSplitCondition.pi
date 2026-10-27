@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12WhileSplitCondition:
+    standard: @{Psr12}
+    ruleId: 5.3b
+    title: Wrap long while conditions in the standard shape
+    statement:
+        If a while condition wraps across lines, begin it on a new line
+        after the opening parenthesis and indent every continuation at least
+        one level. The final parenthesis and the brace then share a line of
+        their own, separated by a single space. Boolean operators go
+        consistently at the start of lines or consistently at the end.
+    rationale:
+        A fixed shape for long conditions keeps them readable and stops each
+        author from inventing a different wrapping style.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        while ($attempts < $max
+            && !$connected) {
+            $connected = connect();
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        while (
+            $attempts < $max
+            && !$connected
+        ) {
+            $connected = connect();
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [control-structures, loops]
+    source: https://www.php-fig.org/psr/psr-12/#53-while-do-while

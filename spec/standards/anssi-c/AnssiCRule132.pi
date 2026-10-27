@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule132:
+    standard: @{AnssiC}
+    ruleId: rule-132
+    title: Write complete, simple for loops
+    statement:
+        Give each for loop exactly one counter initialisation, one stop
+        condition on that counter and one counter update. Use a while or
+        do-while loop for other shapes.
+    rationale:
+        Empty or comma-packed parts hide how the loop progresses and when it
+        ends.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (i = 0, j = n; ; i++, j--) { if (i >= j) { break; } }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (i = 0; i < n; i++) { process(i); }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, control-flow, loops]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=102

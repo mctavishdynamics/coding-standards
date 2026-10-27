@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgGeneralNamingConventions12:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: general-naming-conventions-12
+    title: Mark a newer API version at the end of its name
+    statement:
+        Show that an API is a new version by appending to the original name
+        rather than putting something in front of it.
+    rationale:
+        Tools and documentation list names alphabetically, so an appended
+        marker keeps the versions side by side.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public interface IModernPaymentGateway : IPaymentGateway { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public interface IPaymentGateway2 : IPaymentGateway { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, versioning]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/general-naming-conventions#naming-new-versions-of-existing-apis

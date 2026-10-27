@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule8:
+    standard: @{JplC}
+    ruleId: rule-8
+    title: Let one task at a time own each shared object
+    statement:
+        Each object in shared memory should have one owning task, and only
+        the owner should modify it. Hand ownership to another task
+        explicitly, preferably by IPC message.
+    rationale:
+        A single writer removes conflicting updates, while readers are still
+        free to look. Objects that several tasks write would instead need
+        locking to stay consistent.
+    exceptions:
+        Shared library modules that belong to no one task are still allowed,
+        though tasks must follow the rule in how they use them.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* telemetry task and logger task both write here */
+        telemetry_frame_t shared_frame;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* owned by the telemetry task; others read it, ownership
+           moves by IPC message when the logger takes a frame */
+        static telemetry_frame_t frame;
+
+        void hand_frame_to_logger(void) {
+            if (ipc_send(LOGGER_QUEUE, &frame, sizeof frame) != OK) {
+                report_fault(FAULT_IPC);
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-2, concurrency, shared-data]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

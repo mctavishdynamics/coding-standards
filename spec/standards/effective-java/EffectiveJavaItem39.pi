@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem39:
+    standard: @{EffectiveJava}
+    ruleId: item-39
+    title: Mark program elements with annotations, not naming conventions
+    statement:
+        When tools need to find methods or classes that play a special role,
+        mark them with an annotation instead of a naming pattern.
+    rationale:
+        Naming patterns break silently on typos, cannot be restricted to
+        certain elements and cannot carry parameters. Annotations are
+        checked by the compiler.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public void tsetLogin() { } // typo: never run as a test
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Test
+        public void login() { }
+        \\\
+        ```
+    languages: [java]
+    tags: [enums-and-annotations, annotations]
+    source: https://www.informit.com/store/effective-java-9780134686097

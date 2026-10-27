@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoSingleLineMethods:
+    standard: @{RubyStyleGuide}
+    ruleId: no-single-line-methods
+    title: Spread def bodies over several lines
+    statement:
+        Do not write a method with def, its body and end all on one line. If
+        you do, keep it to a single expression.
+    rationale:
+        The one-line def syntax has quirks that make it error-prone, and it
+        hides the structure of the method.
+    exceptions:
+        Methods with an empty body may be written on one line.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def area; width * height; end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def area
+          width * height
+        end
+
+        def no_op; end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, formatting]
+    source: https://rubystyle.guide/#no-single-line-methods

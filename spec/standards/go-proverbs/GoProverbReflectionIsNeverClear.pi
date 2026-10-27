@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbReflectionIsNeverClear:
+    standard: @{GoProverbs}
+    ruleId: reflection-is-never-clear
+    title: Avoid reflection unless nothing else will do
+    statement:
+        Reach for package reflect only when static types truly cannot
+        express the task, and keep the reflective code small and well
+        hidden.
+    rationale:
+        Reflective code is hard to read, loses compile-time type checks and
+        fails at run time instead.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func setName(v any, name string) {
+            reflect.ValueOf(v).Elem().FieldByName("Name").SetString(name)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Named interface{ SetName(string) }
+
+        func setName(v Named, name string) {
+            v.SetName(name)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [reflection, readability]
+    source: https://go-proverbs.github.io/

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem17:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-17
+    title: Know which declarations suppress generated moves and copies
+    statement:
+        Know that move operations are generated only when no copy operation,
+        move operation or destructor is declared, and that declaring a move
+        suppresses the copies. Member templates never suppress them.
+    rationale:
+        Adding a destructor for logging can quietly turn moves into copies.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Record {
+        public:
+            ~Record() { log("gone"); }   // moves now copy
+        private:
+            std::vector<std::string> fields_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Record {
+        public:
+            ~Record() { log("gone"); }
+            Record(Record&&) = default;
+            Record& operator=(Record&&) = default;
+            Record(const Record&) = default;
+            Record& operator=(const Record&) = default;
+        private:
+            std::vector<std::string> fields_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [moving-to-modern-cpp, special-members]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

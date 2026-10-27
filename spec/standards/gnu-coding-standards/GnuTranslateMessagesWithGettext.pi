@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuTranslateMessagesWithGettext:
+    standard: @{GnuCodingStandards}
+    ruleId: internationalization-gettext
+    title: Wrap translatable messages in gettext
+    statement:
+        Use GNU gettext in every program: write messages in English and wrap
+        each translatable string in a gettext call, including new strings
+        you add later. Use the package name as the text domain.
+    rationale:
+        This lets translators provide every message in other languages
+        without code changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        printf ("Skipping %s\n", name);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        printf (_("Skipping %s\n"), name);
+        \\\
+        ```
+    languages: [c]
+    tags: [internationalization, messages]
+    source: https://www.gnu.org/prep/standards/standards.html#Internationalization

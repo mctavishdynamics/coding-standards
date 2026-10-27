@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgExceptionsAndPerformance2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: exceptions-and-performance-2
+    title: Consider a check-then-act pair for members that often fail
+    statement:
+        When a member often throws in normal use, think about adding a
+        member that checks whether the operation will succeed before calling
+        it.
+    rationale:
+        Callers can then test first and avoid paying for an exception.
+    exceptions:
+        Tester-Doer is unsafe when another thread can change the state
+        between the test and the call.
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        if (queue.CanDequeue)
+            Process(queue.Dequeue());
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, exceptions, performance, patterns]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/exceptions-and-performance#tester-doer-pattern

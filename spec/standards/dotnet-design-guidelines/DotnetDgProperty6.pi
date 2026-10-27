@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-6
+    title: Keep property getters from failing
+    statement:
+        A getter should just hand back a value and need no setup by the
+        caller. When reading the value can fail, expose it through a method.
+    rationale:
+        Callers, debuggers and tools read properties freely and do not
+        expect them to throw.
+    exceptions:
+        Indexers may throw when their arguments are invalid.
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Customer Owner => _ownerId is null
+            ? throw new InvalidOperationException()
+            : _repository.Load(_ownerId.Value);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public Customer LoadOwner() => _ownerId is null
+            ? throw new InvalidOperationException("No owner assigned.")
+            : _repository.Load(_ownerId.Value);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, member-design, properties, exceptions]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property

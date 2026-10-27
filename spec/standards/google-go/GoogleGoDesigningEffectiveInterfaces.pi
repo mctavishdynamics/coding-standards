@@ -21,31 +21,30 @@ export coding-rule GoogleGoDesigningEffectiveInterfaces:
     noncompliant:
         ```go
         \\\
-        type Storage interface {
-            Read(key string) ([]byte, error)
-            Write(key string, v []byte) error
-            Stats() Stats
-            Compact() error
-            Close() error
+        type Inventory interface {
+            Lookup(sku string) (Item, error)
+            Reserve(sku string, qty int) error
+            Restock(sku string, qty int) error
+            Report() Summary
+            Shutdown() error
+        }
+
+        func OpenInventory(dsn string) Inventory {
+            return &sqlInventory{dsn: dsn}
         }
         \\\
         ```
     compliant:
         ```go
         \\\
-        // A Reader fetches values by key. Read returns ErrNotFound when the key
-        // is absent. Implementations must be safe for concurrent use.
-        type Reader interface {
-            Read(key string) ([]byte, error)
+        // An ItemFinder looks up stock items. Lookup returns ErrUnknownSKU
+        // for codes it has never seen. Safe for use from many goroutines.
+        type ItemFinder interface {
+            Lookup(sku string) (Item, error)
         }
 
-        func NewWriter(format string) io.Writer {
-            switch format {
-            case "json":
-                return &jsonWriter{}
-            default:
-                return &textWriter{}
-            }
+        func OpenInventory(dsn string) *SQLInventory {
+            return &SQLInventory{dsn: dsn}
         }
         \\\
         ```

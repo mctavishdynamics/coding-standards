@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdUseGetprogname:
+    standard: @{OpenBsdStyle}
+    ruleId: getprogname
+    title: Get the program name from getprogname
+    statement:
+        Get the program name from getprogname(3) instead of spelling it out
+        in strings.
+    rationale:
+        Messages stay correct when the program is renamed or linked under
+        another name.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fprintf(stderr, "usage: mytool [-v]\n");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        fprintf(stderr, "usage: %s [-v]\n", getprogname());
+        \\\
+        ```
+    languages: [c]
+    tags: [command-line, error-messages]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

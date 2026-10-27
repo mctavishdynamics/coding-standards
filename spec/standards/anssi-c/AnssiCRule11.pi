@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule11:
+    standard: @{AnssiC}
+    ruleId: rule-11
+    title: Keep quotes, backslashes and comment markers out of header names
+    statement:
+        A header file name must not contain a single quote, a double quote,
+        a backslash, or the sequences that start a comment.
+    rationale:
+        The standard leaves the behaviour of such names undefined.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include "tools//util.h"
+        #include "it's.h"
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include "tools/util.h"
+        #include "its.h"
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, headers, undefined-behavior]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=18

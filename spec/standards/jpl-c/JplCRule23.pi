@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule23:
+    standard: @{JplC}
+    ruleId: rule-23
+    title: Open and close each conditional block in one file
+    statement:
+        A conditional compilation block must begin and end in one file, with
+        all its branches in that same file.
+    rationale:
+        Conditional blocks split across files are hard to follow and easy to
+        break when one of the files changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* config_begin.h */
+        #ifdef FLIGHT_BUILD
+        #define LOG_LEVEL 1
+
+        /* config_end.h */
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* config.h */
+        #ifdef FLIGHT_BUILD
+        #define LOG_LEVEL 1
+        #else
+        #define LOG_LEVEL 3
+        #endif
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-4, preprocessor, conditional-compilation]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

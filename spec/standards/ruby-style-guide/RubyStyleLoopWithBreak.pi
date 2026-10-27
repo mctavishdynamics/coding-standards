@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleLoopWithBreak:
+    standard: @{RubyStyleGuide}
+    ruleId: loop-with-break
+    title: Use loop with break for tests at the end of a loop
+    statement:
+        When the exit test belongs after the body, use loop with a break
+        instead of begin, end, while or begin, end, until.
+    rationale:
+        The begin and end form with a trailing condition has surprising
+        semantics and is discouraged even by Ruby's author.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        begin
+          line = input.gets
+          lines << line
+        end while line
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        loop do
+          line = input.gets
+          lines << line
+          break unless line
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, loops]
+    source: https://rubystyle.guide/#loop-with-break

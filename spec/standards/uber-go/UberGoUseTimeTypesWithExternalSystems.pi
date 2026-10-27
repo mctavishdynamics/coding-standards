@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoUseTimeTypesWithExternalSystems:
+    standard: @{UberGo}
+    ruleId: use-timetime-and-timeduration-with-external-systems
+    title: Use time types at system boundaries too
+    statement:
+        Use time.Time and time.Duration in flags, JSON, SQL and YAML where
+        the library supports them. If a Duration cannot be used, store a
+        number and put the unit in the field name; if a Time cannot be used,
+        store an RFC 3339 string unless another format is agreed.
+    rationale:
+        Typed values or self-describing names stop units and formats from
+        being misread by the systems on the other side.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Settings struct {
+            Timeout int `json:"timeout"`
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Settings struct {
+            TimeoutSeconds int `json:"timeoutSeconds"`
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [time, serialization]
+    source: https://github.com/uber-go/guide/blob/master/style.md#use-timetime-and-timeduration-with-external-systems

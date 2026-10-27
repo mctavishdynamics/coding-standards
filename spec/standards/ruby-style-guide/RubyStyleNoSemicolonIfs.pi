@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoSemicolonIfs:
+    standard: @{RubyStyleGuide}
+    ruleId: no-semicolon-ifs
+    title: Do not write if with a semicolon
+    statement:
+        A one-line if whose condition ends in a semicolon should become a
+        ternary expression.
+    rationale:
+        The semicolon form is unusual and cramped, while the ternary is the
+        familiar way to write a one-line choice.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        fee = if member?; 0 else 5 end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        fee = member? ? 0 : 5
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals]
+    source: https://rubystyle.guide/#no-semicolon-ifs

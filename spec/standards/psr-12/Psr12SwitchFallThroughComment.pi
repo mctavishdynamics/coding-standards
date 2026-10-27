@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12SwitchFallThroughComment:
+    standard: @{Psr12}
+    ruleId: 5.2b
+    title: Mark intentional fall-through with a comment
+    statement:
+        When a non-empty case deliberately falls through to the next one,
+        add a comment such as no break in place of the break.
+    rationale:
+        Without the comment a reader cannot tell a deliberate fall-through
+        from a forgotten break.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        switch ($level) {
+            case 'error':
+                notifyOnCall();
+            case 'warning':
+                writeLog();
+                break;
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        switch ($level) {
+            case 'error':
+                notifyOnCall();
+                // no break
+            case 'warning':
+                writeLog();
+                break;
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [control-structures, comments]
+    source: https://www.php-fig.org/psr/psr-12/#52-switch-case

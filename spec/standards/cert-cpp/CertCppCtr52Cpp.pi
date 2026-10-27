@@ -20,20 +20,22 @@ export coding-rule CertCppCtr52Cpp:
     noncompliant:
         ```cpp
         \\\
-        std::vector<int> duplicate(const std::vector<int>& src) {
-            std::vector<int> dest;
-            std::copy(src.begin(), src.end(), dest.begin());
-            return dest;
+        std::vector<double> scaled(const std::vector<double>& in, double k) {
+            std::vector<double> out;
+            std::transform(in.cbegin(), in.cend(), out.begin(),
+                           [k](double v) { return v * k; });
+            return out;
         }
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        std::vector<int> duplicate(const std::vector<int>& src) {
-            std::vector<int> dest;
-            std::copy(src.begin(), src.end(), std::back_inserter(dest));
-            return dest;
+        std::vector<double> scaled(const std::vector<double>& in, double k) {
+            std::vector<double> out(in.size());
+            std::transform(in.cbegin(), in.cend(), out.begin(),
+                           [k](double v) { return v * k; });
+            return out;
         }
         \\\
         ```

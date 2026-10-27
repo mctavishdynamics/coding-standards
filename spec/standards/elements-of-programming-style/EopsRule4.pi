@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule4:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-4
+    title: Drop needless intermediate variables
+    statement:
+        Do not introduce a temporary variable just to hold a value that is
+        used once and adds no meaning.
+    rationale:
+        Every extra name is something the reader must track. Removing
+        pointless temporaries makes the flow of values easier to follow.
+    exceptions:
+        A temporary with a well-chosen name that explains a complex
+        subexpression is worth keeping.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        t1 = price * qty
+        t2 = t1 * tax_rate
+        t3 = t1 + t2
+        return t3
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        subtotal = price * qty
+        return subtotal * (1 + tax_rate)
+        \\\
+        ```
+    languages: [any]
+    tags: [expression, variables, clarity]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem40:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-40
+    title: Share data with atomics and keep volatile for hardware memory
+    statement:
+        Use std::atomic for variables shared between threads. Use volatile
+        only for memory the compiler must not optimise, such as
+        memory-mapped hardware.
+    rationale:
+        volatile gives no atomicity or ordering, and atomics do not stop
+        redundant hardware accesses from being merged.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        volatile int hits = 0;
+        // several threads
+        ++hits;   // data race
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::atomic<int> hits{0};
+        ++hits;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [the-concurrency-api, concurrency, atomics]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

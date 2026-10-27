@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe22:
+    standard: @{CweTop25}
+    ruleId: CWE-22
+    title: Prevent path traversal
+    statement:
+        Resolve a requested path to its canonical form and confirm it still
+        lies inside the intended directory before using it. Validate file
+        names against a strict allow list of characters and extensions
+        rather than stripping sequences such as dot-dot-slash, and where
+        possible map fixed identifiers to files.
+    rationale:
+        A crafted name can reach files outside the intended folder, exposing
+        secrets or letting an attacker overwrite configuration and code. It
+        is ranked 6 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def read_upload(name):
+            with open(os.path.join(UPLOAD_DIR, name), "rb") as f:
+                return f.read()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def read_upload(name):
+            root = os.path.realpath(UPLOAD_DIR)
+            path = os.path.realpath(os.path.join(root, name))
+            if os.path.commonpath([root, path]) != root:
+                raise PermissionError(name)
+            with open(path, "rb") as f:
+                return f.read()
+        \\\
+        ```
+    languages: [python]
+    tags: [rank-6, file-system, input-validation, path-traversal]
+    source: https://cwe.mitre.org/data/definitions/22.html

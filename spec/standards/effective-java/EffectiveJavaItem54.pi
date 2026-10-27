@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem54:
+    standard: @{EffectiveJava}
+    ruleId: item-54
+    title: Signal no results with an empty container rather than null
+    statement:
+        A method that returns a collection or array should return an empty
+        one when there is nothing to return.
+    rationale:
+        Returning null forces every caller to add a check and leads to
+        crashes when one is forgotten. Empty results cost almost nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public List<Item> items() {
+            return items.isEmpty() ? null : new ArrayList<>(items);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public List<Item> items() {
+            return List.copyOf(items);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods, null-safety, collections]
+    source: https://www.informit.com/store/effective-java-9780134686097

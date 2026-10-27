@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEnum1:
     standard: @{CppCoreGuidelines}
     ruleId: Enum.1
-    title: Prefer enumerations over macros
+    title: Define related constants as an enum instead of macros
     statement:
-        Define sets of named constants as enumerations rather than
-        preprocessor macros.
+        Reach for an enumeration, not a list of #define lines, when you need
+        a group of named integer constants.
     rationale:
-        Macros ignore scope and type rules, and their names disappear during
-        preprocessing, so debuggers usually cannot show them.
+        The preprocessor knows nothing about scopes or types, so a macro
+        name can collide with anything. Its name is also gone before
+        compilation, which means a debugger shows only a bare number.
     exceptions: null
     severity: null
     noncompliant:

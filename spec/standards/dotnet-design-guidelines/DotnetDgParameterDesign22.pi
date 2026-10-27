@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign22:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-22
+    title: Expect a params array argument to be null
+    statement:
+        Check params array parameters for null before using them.
+    rationale:
+        Callers can pass null explicitly instead of a list of values.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public void AddRange(params string[] items)
+        {
+            ArgumentNullException.ThrowIfNull(items);
+            foreach (string item in items) Add(item);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, parameters, null-handling]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#members-with-variable-number-of-parameters

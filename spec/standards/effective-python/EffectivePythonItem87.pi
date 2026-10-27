@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem87:
+    standard: @{EffectivePython}
+    ruleId: item-87
+    title: Report exceptions in detail with the traceback module
+    statement:
+        When you handle an exception but still need to show where it came
+        from, use the traceback module, or logging.exception, to print or
+        capture the full stack.
+    rationale:
+        Printing only the message loses the location of the error. traceback
+        can format stacks for logs or reports.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            sync()
+        except Exception as e:
+            print("error:", e)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import traceback
+
+        try:
+            sync()
+        except Exception:
+            send_to_monitoring(traceback.format_exc())
+        \\\
+        ```
+    languages: [python]
+    tags: [robustness, exceptions, debugging]
+    source: https://effectivepython.com/

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiIncludeWordsToAvoidAmbiguity:
+    standard: @{SwiftApiDesign}
+    ruleId: include-words-to-avoid-ambiguity
+    title: Keep the words a reader needs to avoid ambiguity
+    statement:
+        Include every word that someone reading the call site needs in order
+        to understand it without guessing.
+    rationale:
+        Dropping a key word can make a call mean something else, for example
+        removing by value instead of by position.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        extension Playlist {
+            mutating func remove(_ index: Int) -> Track
+        }
+        playlist.remove(n)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        extension Playlist {
+            mutating func remove(at index: Int) -> Track
+        }
+        playlist.remove(at: n)
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, clarity]
+    source: https://www.swift.org/documentation/api-design-guidelines/#include-words-to-avoid-ambiguity

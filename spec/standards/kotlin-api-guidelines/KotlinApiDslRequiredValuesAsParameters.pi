@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiDslRequiredValuesAsParameters:
+    standard: @{KotlinApiGuidelines}
+    ruleId: dsl-required-values-as-parameters
+    title: Pass required builder values as parameters
+    statement:
+        Take values that must be supplied as ordinary function parameters,
+        not as properties set inside the builder lambda.
+    rationale:
+        The compiler cannot check that a lambda sets a required property,
+        but it does check parameters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        val db = Database {
+            url = "jdbc:postgresql://db/app"   // forgetting this fails at runtime
+            poolSize = 10
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        val db = Database(url = "jdbc:postgresql://db/app") {
+            poolSize = 10
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [dsl, type-safety]
+    source: https://kotlinlang.org/docs/api-guidelines-readability.html#use-dsls

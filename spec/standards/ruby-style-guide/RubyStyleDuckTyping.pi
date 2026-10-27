@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleDuckTyping:
+    standard: @{RubyStyleGuide}
+    ruleId: duck-typing
+    title: Prefer duck typing to inheritance
+    statement:
+        Let objects work together through the methods they respond to,
+        rather than requiring them to share a parent class.
+    rationale:
+        Duck typing keeps classes loosely coupled and avoids hierarchies
+        that exist only for polymorphism.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Notifier
+          def send_message(msg) = raise(NotImplementedError)
+        end
+
+        class EmailNotifier < Notifier
+          def send_message(msg) = Mail.deliver(msg)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class EmailNotifier
+          def send_message(msg) = Mail.deliver(msg)
+        end
+
+        class SmsNotifier
+          def send_message(msg) = Sms.push(msg)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [design, inheritance, polymorphism]
+    source: https://rubystyle.guide/#duck-typing

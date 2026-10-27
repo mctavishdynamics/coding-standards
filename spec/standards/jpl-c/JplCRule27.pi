@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule27:
+    standard: @{JplC}
+    ruleId: rule-27
+    title: Dereference an object at most twice per statement
+    statement:
+        A statement should dereference any one object at most twice.
+    rationale:
+        Long chains of dereferences are hard to read and hide where a null
+        or stray pointer could be followed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        value = ***table;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int **row = *table;
+        value = **row;
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-4, pointers]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

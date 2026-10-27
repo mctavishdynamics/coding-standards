@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoTrailingBackslash:
+    standard: @{RubyStyleGuide}
+    ruleId: no-trailing-backslash
+    title: Break lines without a backslash when you can
+    statement:
+        Do not continue a line with a backslash when the expression can be
+        broken without one. In practice, use backslash continuation only to
+        join string literals.
+    rationale:
+        Ruby already continues an expression after an operator, comma or
+        open bracket, and a backslash is easy to break by adding a trailing
+        space.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        total = subtotal \
+          + shipping
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        total = subtotal +
+                shipping
+
+        message = 'The order could not be saved ' \
+                  'because the address is missing.'
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, line-length]
+    source: https://rubystyle.guide/#no-trailing-backslash

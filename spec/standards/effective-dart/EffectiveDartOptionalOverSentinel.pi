@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartOptionalOverSentinel:
+    standard: @{EffectiveDart}
+    ruleId: avoid-mandatory-parameters-that-accept-a-special-no-argument-value
+    title: Make parameters optional instead of taking a no-value sentinel
+    statement:
+        When callers may logically leave out a parameter, make it optional
+        instead of requiring null, an empty string or another special value.
+    rationale:
+        Omitting is shorter and avoids passing a sentinel by mistake when a
+        real value was intended.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        String greet(String name, String? title) =>
+            title == null ? 'Hi $name' : 'Hi $title $name';
+        greet('Ada', null);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        String greet(String name, {String? title}) =>
+            title == null ? 'Hi $name' : 'Hi $title $name';
+        greet('Ada');
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, parameters]
+    source: https://dart.dev/effective-dart/design#avoid-mandatory-parameters-that-accept-a-special-no-argument-value

@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./PikeNotes import PikeNotes
+
+export coding-rule PikeNotesFunctionPointers:
+    standard: @{PikeNotes}
+    ruleId: function-pointers
+    title: Use function pointers behind a common protocol
+    statement:
+        Group operations as function pointers that all follow one calling
+        protocol, one set per data type, and dispatch through them. Combine
+        this with data-driven tables.
+    rationale:
+        Each routine owns its own complexity as long as it honours the
+        protocol, which makes the parts easy to document, test and extend.
+        This is essentially classes and methods without needing an
+        object-oriented language.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void draw(struct shape *s) {
+            if (s->kind == CIRCLE)
+                drawcircle(s);
+            else if (s->kind == RECT)
+                drawrect(s);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct shapeops {
+            void (*draw)(struct shape *);
+            double (*area)(struct shape *);
+        };
+
+        void draw(struct shape *s) {
+            s->ops->draw(s);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [function-pointers, design, polymorphism]
+    source: https://www.cs.princeton.edu/courses/archive/spr01/cs217/pike.html

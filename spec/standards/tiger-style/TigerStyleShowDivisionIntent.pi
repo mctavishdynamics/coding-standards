@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleShowDivisionIntent:
+    standard: @{TigerStyle}
+    ruleId: show-division-intent
+    title: Make the rounding of every division explicit
+    statement:
+        Use division functions that state how rounding works, such as exact,
+        floor or ceiling division.
+    rationale:
+        Naming the rounding shows that you considered each case where the
+        result is not exact.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        const blocks = size / block_size;
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        const blocks = std.math.divCeil(u64, size, block_size) catch unreachable;
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [arithmetic, off-by-one]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#off-by-one-errors

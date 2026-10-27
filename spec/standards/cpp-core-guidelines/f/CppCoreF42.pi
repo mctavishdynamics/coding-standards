@@ -5,13 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF42:
     standard: @{CppCoreGuidelines}
     ruleId: F.42
-    title: Return a T* to indicate a position only
+    title: Return a raw pointer only to say where something is
     statement:
-        Return a raw pointer only to refer to an existing object, such as an
-        element found in a container, never to pass ownership.
+        Return a T* only to point at an object that already exists elsewhere,
+        such as an element found by a search. Never use it to give the caller
+        ownership.
     rationale:
-        Indicating a position is what pointers are good for. Returning T* to
-        transfer ownership is a misuse that causes leaks.
+        Pointing at a location is the natural job of a pointer. Using one to
+        hand over ownership invites leaks, because callers assume they need not
+        delete it.
     exceptions: null
     severity: null
     noncompliant:

@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs65:
     standard: @{CppCoreGuidelines}
     ruleId: ES.65
-    title: Don't dereference an invalid pointer
+    title: Never dereference a pointer that does not point to a live object
     statement:
-        Do not dereference a null pointer, a dangling pointer or a pointer
-        past the end of its object.
+        Only dereference a pointer, iterator or view that refers to a live
+        object. Never dereference one that is null, dangling or past the
+        end.
     rationale:
-        Dereferencing an invalid pointer is undefined behavior and typically
-        causes crashes, wrong results or memory corruption.
+        Using an invalid pointer is undefined behavior. The usual outcomes
+        are crashes, garbage values or corrupted memory.
     exceptions: null
     severity: null
     noncompliant:

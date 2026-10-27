@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDeclareAllTypesExplicitly:
+    standard: @{GnuCodingStandards}
+    ruleId: syntactic-explicit-types
+    title: Spell out the type of every object
+    statement:
+        Give every object, argument and function return an explicit type; do
+        not rely on implicit int.
+    rationale:
+        Implicit types hide intent and are rejected by modern C.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static counter;
+        next_id () { return ++counter; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int counter;
+        int next_id (void) { return ++counter; }
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, types]
+    source: https://www.gnu.org/prep/standards/standards.html#Syntactic-Conventions

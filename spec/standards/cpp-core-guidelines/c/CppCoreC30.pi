@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC30:
     standard: @{CppCoreGuidelines}
     ruleId: C.30
-    title: Define a destructor only if destruction needs an explicit action
+    title: Write a destructor only when cleanup needs code
     statement:
-        Write a destructor only when the class must run code at the end of
-        its lifetime that its members' destructors do not already run.
-        Otherwise rely on the default.
+        Only provide a destructor when the class has cleanup work that its
+        members do not already perform. In every other case the default is
+        enough.
     rationale:
-        The generated destructor is correct whenever members clean up after
-        themselves, and an unnecessary user destructor also suppresses the
-        implicit move operations.
+        When members clean up after themselves, the generated destructor is
+        correct. Writing one anyway also stops the compiler from generating move
+        operations.
     exceptions: null
     severity: null
     noncompliant:

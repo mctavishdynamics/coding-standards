@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiCOpaque:
+    standard: @{AnssiRust}
+    ruleId: FFI-C-OPAQUE
+    title: Expose opaque Rust types to C as incomplete structs
+    statement:
+        When C or C++ must treat a Rust type as opaque, declare it there as
+        an incomplete struct and provide a dedicated constructor and
+        destructor.
+    rationale:
+        An incomplete type cannot be inspected or copied by C, so all access
+        goes through functions Rust controls.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* parser.h */
+        struct parser { void *state; size_t pos; };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* parser.h */
+        struct parser;
+        struct parser *parser_new(void);
+        void parser_free(struct parser *p);
+        \\\
+        ```
+    languages: [rust, c]
+    tags: [recommendation, ffi, encapsulation]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-C-OPAQUE

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule71:
+    standard: @{CppCodingStandards}
+    ruleId: rule-71
+    title: Write code that is safe in the presence of errors
+    statement:
+        Give every function at least the basic guarantee of no leaks and
+        valid state, the strong guarantee where practical, and the no-fail
+        guarantee for cleanup operations.
+    rationale:
+        Without these guarantees a single failure can corrupt the program's
+        state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Inventory::add(Item i) {
+            count_++;
+            items_.push_back(i);   // throw leaves count_ wrong
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Inventory::add(Item i) {
+            items_.push_back(std::move(i));
+            ++count_;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling-and-exceptions, exceptions, raii]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

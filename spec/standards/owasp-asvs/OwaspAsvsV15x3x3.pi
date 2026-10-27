@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV15x3x3:
+    standard: @{OwaspAsvs}
+    ruleId: V15.3.3
+    title: Prevent mass assignment
+    statement:
+        Limit the fields each controller and action may set, so that a
+        request cannot insert or change fields not meant for that action.
+    rationale:
+        Automatic binding of request data to objects lets attackers set
+        fields such as roles or prices.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        for key, value in request.json.items():
+            setattr(account, key, value)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        account.display_name = request.json["display_name"]
+        account.timezone = request.json["timezone"]
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, mass-assignment, api]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x24-V15-Secure-Coding-and-Architecture.md#v153-defensive-coding

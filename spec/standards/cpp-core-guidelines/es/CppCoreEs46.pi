@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs46:
     standard: @{CppCoreGuidelines}
     ruleId: ES.46
-    title: Avoid lossy narrowing and truncating arithmetic conversions
+    title: Avoid conversions that lose value or precision
     statement:
-        Do not convert an arithmetic value to a type that cannot hold it.
-        When a narrowing conversion is intended, make it explicit with the
-        GSL functions narrow or narrow_cast.
+        Avoid arithmetic conversions to a type too small or too imprecise to
+        represent the value. If losing information is intentional, say so
+        with gsl::narrow_cast, or use gsl::narrow to have it checked.
     rationale:
-        A narrowing conversion destroys information, often without anyone
-        noticing.
+        Narrowing silently drops digits, fractions or high bits. The loss
+        usually goes unnoticed until the wrong value causes trouble
+        somewhere else.
     exceptions: null
     severity: null
     noncompliant:

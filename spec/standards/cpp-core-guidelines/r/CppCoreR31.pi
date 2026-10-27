@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR31:
     standard: @{CppCoreGuidelines}
     ruleId: R.31
-    title: Make non-std smart pointers follow the basic pattern from std
+    title: Model custom smart pointers on the standard ones
     statement:
-        If you use custom or third-party smart pointers, give them the same
-        shape as the standard ones, so a copyable smart pointer behaves like
-        shared_ptr and a non-copyable one like unique_ptr.
+        Custom or library smart pointers should follow the standard model. A
+        copyable one should act like shared_ptr, and a move-only one like
+        unique_ptr.
     rationale:
-        The smart pointer parameter rules and the tools that check them then
-        work on all the smart pointers in a codebase. Any type that
-        overloads unary * and -> is treated as a smart pointer.
+        The parameter rules in this section, and the checkers built on them,
+        can then apply to every smart pointer in the program. Checkers count
+        any type with overloaded unary * and -> as a smart pointer.
     exceptions: null
     severity: null
     noncompliant:

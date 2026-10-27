@@ -10,9 +10,10 @@ export coding-rule CertCInt34C:
         greater than or equal to the number of bits that exist in the
         operand
     statement:
-        Check that a shift count is not negative and is less than the
-        precision of the promoted left operand. Do not left-shift a negative
-        signed value or shift a signed value into overflow.
+        Before shifting, confirm the bit count is zero or more and smaller
+        than the width the left operand has after integer promotion. A
+        signed value that is negative, or that would overflow, must not be
+        shifted left.
     rationale:
         Such shifts are undefined behavior, and processors handle them
         differently, often by masking the count. CERT rates likelihood

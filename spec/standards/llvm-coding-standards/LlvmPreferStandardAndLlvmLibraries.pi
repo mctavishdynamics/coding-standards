@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmPreferStandardAndLlvmLibraries:
+    standard: @{LlvmCodingStandards}
+    ruleId: c-standard-library
+    title: Reuse standard and LLVM support libraries instead of custom containers
+    statement:
+        Do not hand-roll data structures when the C++ standard library or an
+        LLVM support library already provides one. When both offer the same
+        thing, prefer the LLVM version: use llvm::DenseMap in place of the
+        standard maps and llvm::SmallVector in place of a standard vector.
+    rationale:
+        Shared, well-tested facilities reduce bugs, and the LLVM containers
+        are tuned for the access patterns the project relies on.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::map<unsigned, Value *> RegToValue;
+        std::vector<BasicBlock *> Worklist;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        llvm::DenseMap<unsigned, Value *> RegToValue;
+        llvm::SmallVector<BasicBlock *, 8> Worklist;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [libraries, containers]
+    source: https://llvm.org/docs/CodingStandards.html#c-standard-library

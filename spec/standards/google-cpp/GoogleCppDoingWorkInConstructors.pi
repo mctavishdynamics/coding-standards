@@ -7,11 +7,11 @@ export coding-rule GoogleCppDoingWorkInConstructors:
     ruleId: Doing_Work_in_Constructors
     title: Keep constructors free of virtual calls and failing work
     statement:
-        Never call virtual functions from a constructor, and avoid
-        initialization that can fail when you have no way to report the
-        error. Where crashing is not appropriate, use a factory function or
-        an Init method instead, but avoid Init methods on objects that have
-        no other state affecting which methods may be called.
+        Constructors must not call virtual functions, and should avoid
+        initialization that may fail without a way to signal the error. If
+        crashing is unacceptable, move such work to an Init method or a
+        factory function, but do not add Init methods to objects whose other
+        state does not affect which methods are callable.
     rationale:
         Virtual calls in a constructor do not reach subclass overrides.
         Constructors cannot return errors and exceptions are not used, so

@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF7:
     standard: @{CppCoreGuidelines}
     ruleId: F.7
-    title: For general use, take T* or T& arguments rather than smart pointers
+    title: Take plain pointers or references unless ownership is involved
     statement:
-        A function that only uses an object should take a reference or raw
-        pointer, not a smart pointer. Take a smart pointer only when the
-        function affects ownership.
+        If a function just uses an object, give it a T& or T* parameter. Reserve
+        smart pointer parameters for functions that take, share or change
+        ownership.
     rationale:
-        A smart pointer parameter restricts callers to objects managed by
-        that smart pointer and, for shared_ptr, adds run-time cost.
+        A smart pointer parameter forces callers to hold the object in that
+        exact smart pointer. Passing shared_ptr also costs reference count
+        updates.
     exceptions: null
     severity: null
     noncompliant:

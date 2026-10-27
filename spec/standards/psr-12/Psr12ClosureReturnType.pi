@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ClosureReturnType:
+    standard: @{Psr12}
+    ruleId: 7f
+    title:
+        Attach a closure return type to the last closing parenthesis
+    statement:
+        Format a closure return type like a function return type. When a use
+        list is present, put the colon directly after the closing
+        parenthesis of the use list with no space.
+    rationale:
+        The return type then sits in the same place for closures as for
+        functions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        $isValid = function ($code) use ($pattern) : bool {
+            return preg_match($pattern, $code) === 1;
+        };
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        $isValid = function ($code) use ($pattern): bool {
+            return preg_match($pattern, $code) === 1;
+        };
+        \\\
+        ```
+    languages: [php]
+    tags: [closures, types]
+    source: https://www.php-fig.org/psr/psr-12/#7-closures

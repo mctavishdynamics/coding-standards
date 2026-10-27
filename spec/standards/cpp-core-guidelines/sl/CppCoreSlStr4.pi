@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSlStr4:
     standard: @{CppCoreGuidelines}
     ruleId: SL.str.4
-    title: Use char* to refer to a single character
+    title: Reserve char pointers for a single character
     statement:
-        Reserve a plain char pointer for pointing to one character. Use
-        zstring, string or string_view for sequences of characters.
+        Let a plain char pointer refer to one single character only. For text, use
+        zstring, std::string or std::string_view.
     rationale:
-        The many different uses of char pointers in existing code are a
-        major source of errors, such as passing an array that is not
-        zero-terminated to code expecting a C string.
+        Existing code uses char pointers for so many purposes that mix-ups are
+        common, such as handing an array without a terminator to a function that
+        expects a C string.
     exceptions: null
     severity: null
     noncompliant:

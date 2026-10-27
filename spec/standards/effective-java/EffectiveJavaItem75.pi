@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem75:
+    standard: @{EffectiveJava}
+    ruleId: item-75
+    title: Put the values that caused a failure in the exception message
+    statement:
+        An exception's detail message should include the values of all
+        parameters and fields that led to it, but never secrets such as
+        passwords.
+    rationale:
+        The stack trace is often all you get after a failure. Without the
+        values it is hard to reproduce the problem.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        throw new IllegalArgumentException("bad range");
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        throw new IllegalArgumentException("start " + start + " is after end " + end);
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, debugging]
+    source: https://www.informit.com/store/effective-java-9780134686097

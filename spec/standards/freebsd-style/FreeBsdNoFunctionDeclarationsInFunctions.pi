@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdNoFunctionDeclarationsInFunctions:
+    standard: @{FreeBsdStyle}
+    ruleId: nested-function-declarations
+    title: Keep function declarations out of function bodies
+    statement:
+        Put function declarations at file scope or in headers, never in a
+        function body.
+    rationale:
+        C gives them file scope anyway, so a local-looking declaration
+        misleads readers and draws compiler warnings.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void
+        flush(void)
+        {
+                int sync_disk(int);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int      sync_disk(int);
+
+        void
+        flush(void)
+        {
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, functions]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

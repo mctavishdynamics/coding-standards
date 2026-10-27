@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem105:
+    standard: @{EffectivePython}
+    ruleId: item-105
+    title: Convert between time zones with datetime and zoneinfo
+    statement:
+        Use datetime with zoneinfo time zones to convert between local times
+        and UTC. Avoid the time module for this.
+    rationale:
+        The time module depends on the platform and handles time zones
+        poorly, while datetime with zoneinfo is reliable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import time
+
+        local = time.localtime(timestamp)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+
+        local = datetime.fromtimestamp(timestamp, ZoneInfo("Asia/Bangkok"))
+        \\\
+        ```
+    languages: [python]
+    tags: [data-structures-and-algorithms, dates-and-times, standard-library]
+    source: https://effectivepython.com/

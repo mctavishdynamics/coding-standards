@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando122:
+    standard: @{ZalandoApi}
+    ruleId: 122
+    title: Do not use null for boolean properties
+    statement:
+        Never send null for a property that is a boolean by design. If a
+        third state is needed, replace the boolean with an enumeration of
+        named values.
+    rationale:
+        A boolean has exactly two values, and a nullable one silently
+        becomes a three-valued type that clients misread.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        { "newsletter_opt_in": null }
+        \\\
+        ```
+    compliant:
+        ```json
+        \\\
+        { "newsletter_consent": "NOT_ASKED" }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, json, null-handling]
+    source: https://opensource.zalando.com/restful-api-guidelines/#122

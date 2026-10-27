@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./PikeNotes import PikeNotes
+
+export coding-rule PikeNotesComments:
+    standard: @{PikeNotes}
+    ruleId: comments
+    title: Comment sparingly and rewrite code that needs explaining
+    statement:
+        Let clear code and good names explain themselves, and keep comments
+        for introductions: global variables and types, an unusual or
+        critical routine, or the start of a section of a long computation.
+        Do not restate what a line does.
+    rationale:
+        The compiler never checks comments, so they drift from the code and
+        can mislead. They also clutter the page. If code cannot be
+        understood without a comment, making the code simpler helps more.
+    exceptions:
+        Comments on the central data structures are worth having, since
+        comments on data usually help more than comments on algorithms.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        count = count - 1;   /* subtract one from count */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /*
+         * freelist holds released buffers, newest first;
+         * nfree counts them.
+         */
+        static struct buf *freelist;
+        static int nfree;
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, readability]
+    source: https://www.cs.princeton.edu/courses/archive/spr01/cs217/pike.html

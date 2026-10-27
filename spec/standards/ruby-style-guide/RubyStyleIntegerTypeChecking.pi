@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleIntegerTypeChecking:
+    standard: @{RubyStyleGuide}
+    ruleId: integer-type-checking
+    title: Check for integers against Integer
+    statement:
+        To test whether a value is an integer, compare it with Integer, not
+        with Fixnum or Bignum. RuboCop checks this with Lint/UnifiedInteger.
+    rationale:
+        Whether a number is a Fixnum or a Bignum depends on the machine's
+        word size, so tests against those classes behave differently on
+        different architectures.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        raise ArgumentError unless quantity.is_a?(Fixnum)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        raise ArgumentError unless quantity.is_a?(Integer)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [numbers, types]
+    source: https://rubystyle.guide/#integer-type-checking

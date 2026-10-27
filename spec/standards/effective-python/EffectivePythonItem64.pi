@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem64:
+    standard: @{EffectivePython}
+    ruleId: item-64
+    title: Let descriptors learn their attribute name with __set_name__
+    statement:
+        Implement __set_name__ on descriptors so they know the name they
+        were assigned to, instead of repeating that name as an argument.
+    rationale:
+        It removes redundancy and the typos that come with it, without
+        needing a metaclass.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Model:
+            title = Field("title")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Field:
+            def __set_name__(self, owner, name):
+                self.name = name
+
+        class Model:
+            title = Field()
+        \\\
+        ```
+    languages: [python]
+    tags: [metaclasses-and-attributes, descriptors, metaprogramming]
+    source: https://effectivepython.com/

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvImmutableCollectionTypes:
+    standard: @{KotlinConventions}
+    ruleId: immutable-collection-types
+    title: Use read-only collection types for unmutated collections
+    statement:
+        Declare collections that are not mutated with the read-only
+        interfaces Collection, List, Set or Map, and create them with
+        factory functions that return those types where possible.
+    rationale:
+        Read-only types state that the collection will not change and stop
+        accidental mutation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        fun isAllowed(role: String, allowed: ArrayList<String>) = role in allowed
+        val roles = mutableListOf("admin", "editor")
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        fun isAllowed(role: String, allowed: List<String>) = role in allowed
+        val roles = listOf("admin", "editor")
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [immutability, collections]
+    source: https://kotlinlang.org/docs/coding-conventions.html#immutability

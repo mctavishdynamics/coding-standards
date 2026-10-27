@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdChooseOneCommentKindPerFile:
+    standard: @{FreeBsdStyle}
+    ruleId: comment-consistency
+    title: Use C or C++ comment syntax consistently within a file
+    statement:
+        Both C and C++ comment syntax are allowed. Within one file, write
+        all single-line comments in the same syntax, and all multi-line
+        comments in the same syntax, which may differ from the single-line
+        choice.
+    rationale:
+        Mixing syntaxes for the same kind of comment makes a file look
+        patched together.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        // Number of retries.
+        int retries;
+        /* Delay between retries. */
+        int delay;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* Number of retries. */
+        int retries;
+        /* Delay between retries. */
+        int delay;
+        \\\
+        ```
+    languages: [c]
+    tags: [comments, consistency]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

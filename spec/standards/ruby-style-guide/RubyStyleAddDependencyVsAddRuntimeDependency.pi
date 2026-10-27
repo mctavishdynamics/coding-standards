@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAddDependencyVsAddRuntimeDependency:
+    standard: @{RubyStyleGuide}
+    ruleId: add_dependency_vs_add_runtime_dependency
+    title: Declare gem dependencies with add_dependency
+    statement:
+        In a gemspec, use add_dependency rather than add_runtime_dependency.
+        RuboCop checks this with Gemspec/AddRuntimeDependency.
+    rationale:
+        Bundler maintainers treat add_runtime_dependency as softly
+        deprecated and advise using add_dependency.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        Gem::Specification.new do |spec|
+          spec.add_runtime_dependency 'faraday'
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        Gem::Specification.new do |spec|
+          spec.add_dependency 'faraday'
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [gems, dependencies]
+    source: https://rubystyle.guide/#add_dependency_vs_add_runtime_dependency

@@ -5,17 +5,17 @@ from ./GoogleEngPractices import GoogleEngPractices
 export coding-rule GoogleEngSmallClsTestCode:
     standard: @{GoogleEngPractices}
     ruleId: developer/small-cls/test-code
-    title: Keep related test code in the same CL
+    title: Ship tests together with the code they cover
     statement:
-        A CL that adds or changes logic includes new or updated tests for
-        that behavior, and pure refactorings should be covered by tests,
-        adding them if missing. Independent test work, such as new tests for
-        existing code, test refactoring or larger test frameworks, may go in
-        separate CLs first.
+        When a CL changes or adds behavior, the tests for that behavior come
+        in the same CL, and a refactoring should land with test coverage,
+        written first if none exists. Test work that stands alone, like
+        covering old code, restructuring tests or building test
+        infrastructure, can be sent as its own earlier CLs.
     rationale:
-        Smallness means focus, not line count; tests belong with the
-        behavior they check, and tests landed before a refactoring prove
-        behavior is unchanged.
+        Keeping a CL small is about a single focus rather than few lines.
+        Tests stay with the behavior they verify, and tests submitted ahead
+        of a refactoring show that it preserves behavior.
     exceptions: null
     severity: null
     noncompliant: null

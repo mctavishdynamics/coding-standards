@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem21:
+    standard: @{EffectivePython}
+    ruleId: item-21
+    title: Guard against iterating twice over a one-shot argument
+    statement:
+        A function that loops over its argument more than once must make
+        sure it was given a container, not an iterator. Check for this and
+        raise, or accept a container class that creates a fresh iterator
+        each time.
+    rationale:
+        An exhausted iterator yields nothing on a second pass, giving
+        silently wrong results.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def shares(counts):
+            total = sum(counts)
+            return [c / total for c in counts]  # empty if counts is a generator
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def shares(counts):
+            if iter(counts) is counts:
+                raise TypeError("pass a container, not an iterator")
+            total = sum(counts)
+            return [c / total for c in counts]
+        \\\
+        ```
+    languages: [python]
+    tags: [loops-and-iterators, iterators, defensive-programming]
+    source: https://effectivepython.com/

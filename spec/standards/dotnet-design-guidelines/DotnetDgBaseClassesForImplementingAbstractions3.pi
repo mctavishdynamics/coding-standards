@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgBaseClassesForImplementingAbstractions3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: base-classes-for-implementing-abstractions-3
+    title: Avoid a Base suffix on base classes used in public APIs
+    statement:
+        Do not end the name of a base class with Base if it appears in
+        public API signatures.
+    rationale:
+        Users see the class as a type in signatures, and the suffix
+        describes its role for implementers rather than what it is.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public abstract class StorageProviderBase { }
+        public void Register(StorageProviderBase provider) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public abstract class StorageProvider { }
+        public void Register(StorageProvider provider) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, extensibility, naming]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/base-classes-for-implementing-abstractions

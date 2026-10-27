@@ -5,14 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR15:
     standard: @{CppCoreGuidelines}
     ruleId: R.15
-    title: Always overload matched allocation and deallocation pairs
+    title: Overload allocation and deallocation operators together
     statement:
-        If you overload an allocation function such as operator new, also
-        overload the matching deallocation function, and the other way
-        around.
+        Overloaded allocation and deallocation functions come in pairs.
+        Define operator delete whenever you define operator new for a type,
+        and the reverse.
     rationale:
-        Overloading only one side makes allocations and releases go through
-        mismatched mechanisms, with unpredictable results.
+        With only one half replaced, memory gets allocated by one scheme and
+        freed by another. The outcome is undefined and hard to diagnose. If
+        memory must never be freed, delete the deallocation function
+        explicitly instead of leaving it out.
     exceptions: null
     severity: null
     noncompliant:

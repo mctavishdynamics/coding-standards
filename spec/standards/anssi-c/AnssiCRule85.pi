@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule85:
+    standard: @{AnssiC}
+    ruleId: rule-85
+    title: Do not use variable-length arrays
+    statement:
+        Do not declare arrays whose size is only known at run time.
+    rationale:
+        A large or negative size can overflow the stack or cause undefined
+        behaviour, and there is no way to detect allocation failure.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void copy_name(const char *src, size_t n) {
+            char tmp[n];
+            memcpy(tmp, src, n);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define NAME_MAX_LEN 64U
+        int copy_name(const char *src, size_t n) {
+            char tmp[NAME_MAX_LEN];
+            if (n > NAME_MAX_LEN) { return -1; }
+            memcpy(tmp, src, n);
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, arrays, memory]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=69

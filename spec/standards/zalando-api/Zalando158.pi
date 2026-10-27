@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando158:
+    standard: @{ZalandoApi}
+    ruleId: 158
+    title: Allow optional embedding of sub-resources
+    statement:
+        Let clients ask for related resources to be embedded in the response
+        with the embed query parameter, using the same grammar as field
+        filtering.
+    rationale:
+        Embedding saves round trips when clients know in advance which
+        related data they need.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        GET /orders/so-4471?embed=(items)
+
+        HTTP/1.1 200 OK
+        { "id": "so-4471", "items": [ { "sku": "A-1", "quantity": 1 } ] }
+        \\\
+        ```
+    languages: [any]
+    tags: [should, performance, query-parameters]
+    source: https://opensource.zalando.com/restful-api-guidelines/#158

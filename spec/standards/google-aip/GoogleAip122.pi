@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip122:
+    standard: @{GoogleAip}
+    ruleId: AIP-122
+    title: Identify every resource by a unique slash-separated resource name
+    statement:
+        Give each resource a name that is unique within the API, built from
+        alternating plural camelCase collection identifiers and resource IDs
+        separated by slashes. Store it in a string field called name, which
+        must not be used for anything else, and always return canonical
+        names; document the allowed format of user-chosen IDs.
+    rationale:
+        A single string identifier is easier to pass around than ad hoc
+        tuples of IDs, and logging, access control and other shared
+        infrastructure can understand it. Referring to other resources by
+        name keeps lifecycles and permissions separate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          string kitchen_id = 1;
+          string recipe_id = 2;
+          string name = 3;  // Used for the dish title.
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Recipe {
+          // Format: kitchens/main-hall/recipes/lemon-tart
+          string name = 1;
+          string display_name = 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [naming, resource-design]
+    source: https://google.aip.dev/122

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmRespectLibraryLayering:
+    standard: @{LlvmCodingStandards}
+    ruleId: library-layering
+    title: Use only the libraries a library declares as dependencies
+    statement:
+        A library, meaning a header directory and its implementation, may
+        use only the libraries listed as its dependencies. Check layering by
+        asking whether a classic Unix linker would still succeed if every
+        inline function were moved out of line.
+    rationale:
+        Undeclared or circular dependencies, including ones hidden in inline
+        header code, break builds and tangle the library structure.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // In llvm/lib/Support, which must not depend on IR:
+        #include "llvm/IR/Module.h"
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Support stays independent; IR code depends on Support instead.
+        #include "llvm/Support/raw_ostream.h"
+        \\\
+        ```
+    languages: [cpp]
+    tags: [architecture, dependencies]
+    source: https://llvm.org/docs/CodingStandards.html#library-layering

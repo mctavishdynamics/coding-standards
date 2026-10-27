@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule57:
+    standard: @{CppCodingStandards}
+    ruleId: rule-57
+    title: Put a type's free functions in the type's namespace
+    statement:
+        Declare non-member functions and operators that belong to a type's
+        interface in the type's namespace.
+    rationale:
+        Argument-dependent lookup finds them there, and they are clearly
+        part of the type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        namespace geo { struct Point { int x, y; }; }
+        std::ostream& operator<<(std::ostream& os, const geo::Point& p);   // global
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace geo {
+        struct Point { int x, y; };
+        std::ostream& operator<<(std::ostream& os, const Point& p);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces-and-modules, namespaces]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

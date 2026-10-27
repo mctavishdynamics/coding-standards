@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando115:
+    standard: @{ZalandoApi}
+    ruleId: 115
+    title: Do not use URL versioning
+    statement:
+        Do not put a version number in the URL path, and use media type
+        versioning instead.
+    rationale:
+        Version numbers in URLs couple consumers tightly to provider
+        releases and complicate hyperlinked services.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /v2/customers/c-90
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /customers/c-90
+        Accept: application/x.shop.customer+json;version=2
+        \\\
+        ```
+    languages: [any]
+    tags: [must, versioning, urls]
+    source: https://opensource.zalando.com/restful-api-guidelines/#115

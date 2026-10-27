@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoExplicitReturn:
+    standard: @{RubyStyleGuide}
+    ruleId: no-explicit-return
+    title: Avoid return where it is not needed
+    statement:
+        Leave out return when the value is simply the last expression of the
+        method; use it only to leave early.
+    rationale:
+        Ruby returns the last expression automatically, so an explicit
+        return at the end is noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def full_name
+          return "#{first_name} #{last_name}"
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def full_name
+          "#{first_name} #{last_name}"
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, methods]
+    source: https://rubystyle.guide/#no-explicit-return

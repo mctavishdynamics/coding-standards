@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule64:
+    standard: @{AnssiC}
+    ruleId: rule-64
+    title: Use volatile only for data changed outside the program
+    statement:
+        Declare a variable volatile only when it can change outside the
+        program's control, such as an I/O register or data written by an
+        interrupt handler.
+    rationale:
+        volatile blocks optimisations; using it elsewhere costs performance
+        and suggests a synchronisation that it does not provide.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        volatile int loop_index;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        volatile uint32_t *const UART_STATUS = (volatile uint32_t *)0x40001000U;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, volatile, declarations]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=47

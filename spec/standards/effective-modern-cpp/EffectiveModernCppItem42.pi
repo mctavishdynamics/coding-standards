@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem42:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-42
+    title: Construct elements in place with emplace when it avoids temporaries
+    statement:
+        Use emplacement when constructing the element in place avoids a
+        temporary, such as when the argument type differs from the element
+        type.
+    rationale:
+        Emplacement can be faster, but it may perform explicit conversions
+        and leak if allocation fails with raw pointers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::vector<std::string> words;
+        words.push_back("hello");   // builds a temporary string
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<std::string> words;
+        words.emplace_back("hello");
+        \\\
+        ```
+    languages: [cpp]
+    tags: [tweaks, containers, performance]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

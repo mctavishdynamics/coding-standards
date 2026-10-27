@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartTripleSlashDocComments:
+    standard: @{EffectiveDart}
+    ruleId: do-use-doc-comments-to-document-members-and-types
+    title: Document members and types with /// comments
+    statement:
+        Write documentation for declarations as `///` doc comments rather
+        than `//` comments or JavaDoc-style `/** */` blocks. The
+        slash_for_doc_comments lint checks this.
+    rationale:
+        `dart doc` only picks up doc comments. The `///` form is more
+        compact than `/** */`, which adds two empty lines, and it handles
+        bulleted lists cleanly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        // The number of seats still free.
+        int get freeSeats => capacity - booked;
+
+        /**
+         * Cancels every pending booking.
+         */
+        void cancelAll() {}
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// The number of seats still free.
+        int get freeSeats => capacity - booked;
+
+        /// Cancels every pending booking.
+        void cancelAll() {}
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, documentation, comments]
+    source: https://dart.dev/effective-dart/documentation#do-use-doc-comments-to-document-members-and-types

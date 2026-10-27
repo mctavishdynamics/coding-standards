@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiBeSelfContainedWherePossible:
+    standard: @{KotlinApiGuidelines}
+    ruleId: be-self-contained-where-possible
+    title: Make documentation self-contained
+    statement:
+        Give readers the basic information they need in the documentation
+        itself rather than sending them to an external standard. Refer to
+        outside specifications only for unusual edge cases.
+    rationale:
+        Users should not have to read a standards document to learn typical
+        usage.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        /** Trims whitespace as defined by Unicode TR #44. */
+        public fun String.clean(): String
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        /**
+         * Removes leading and trailing spaces, tabs and line breaks. See Unicode
+         * TR 44 for the full list of whitespace characters.
+         */
+        public fun String.clean(): String
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [documentation]
+    source: https://kotlinlang.org/docs/api-guidelines-informative-documentation.html#be-self-contained-where-possible

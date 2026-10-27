@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem28:
+    standard: @{EffectiveCpp}
+    ruleId: item-28
+    title: Do not hand out references or pointers to an object's internals
+    statement:
+        Avoid returning references, pointers or iterators to private data,
+        particularly from const member functions.
+    rationale:
+        Such handles let callers modify state the class should guard, and
+        they dangle when the owning object dies.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Polygon {
+        public:
+            Point& first() const { return pts_->front(); }
+        private:
+            std::unique_ptr<std::vector<Point>> pts_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Polygon {
+        public:
+            Point first() const { return pts_->front(); }
+        private:
+            std::unique_ptr<std::vector<Point>> pts_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [implementations, encapsulation, lifetime]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

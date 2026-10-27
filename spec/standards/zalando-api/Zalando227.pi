@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando227:
+    standard: @{ZalandoApi}
+    ruleId: 227
+    title: Describe caching for every GET, HEAD or POST endpoint that allows it
+    statement:
+        Avoid caching by default and send Cache-Control no-store. When a
+        service does need caching, document every cacheable GET, HEAD and
+        POST endpoint with its Cache-Control, Vary and ETag behavior.
+    rationale:
+        Caching is hard to get right with authorization, invalidation and
+        many consumer instances, so it should be opt-in and explicit.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        HTTP/1.1 200 OK
+        Cache-Control: max-age=120, private, must-revalidate
+        Vary: Accept, Accept-Encoding, Authorization
+        ETag: "brands-v17"
+        \\\
+        ```
+    languages: [any]
+    tags: [must, performance, caching]
+    source: https://opensource.zalando.com/restful-api-guidelines/#227

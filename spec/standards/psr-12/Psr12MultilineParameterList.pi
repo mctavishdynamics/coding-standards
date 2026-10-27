@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12MultilineParameterList:
+    standard: @{Psr12}
+    ruleId: 4.5c
+    title: Put one parameter per line when wrapping a parameter list
+    statement:
+        A parameter list may be split over several lines, each indented
+        once. If you split it, put the first parameter on the next line and
+        only one parameter on each line.
+    rationale:
+        Either a single line or one parameter per line keeps long signatures
+        readable and gives clean diffs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        function createUser(string $name, string $email,
+            string $role, bool $active)
+        {
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        function createUser(
+            string $name,
+            string $email,
+            string $role,
+            bool $active
+        ) {
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [functions, formatting]
+    source: https://www.php-fig.org/psr/psr-12/#45-method-and-function-arguments

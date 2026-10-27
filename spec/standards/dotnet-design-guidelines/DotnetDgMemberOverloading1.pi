@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgMemberOverloading1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: member-overloading-1
+    title: Let parameter names reveal the defaults of shorter overloads
+    statement:
+        Choose parameter names in the longer overloads that hint at the
+        value the shorter overloads assume.
+    rationale:
+        A caller reading the long signature can then infer what the short
+        one does without the documentation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public string Pad(string text);                  // pads on the right
+        public string Pad(string text, bool flag);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public string Pad(string text);                  // padLeft = false
+        public string Pad(string text, bool padLeft);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, overloading, parameters]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/member-overloading

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule124:
+    standard: @{AnssiC}
+    ruleId: rule-124
+    title: Do not use floating-point loop counters
+    statement:
+        Use only integer loop counters, and check that the counter cannot
+        overflow.
+    rationale:
+        Accumulated rounding errors change how many times a floating-point
+        loop runs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (float t = 0.0f; t < 1.0f; t += 0.1f) { sample(t); }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (uint32_t i = 0U; i < 10U; i++) { sample((float)i / 10.0f); }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, floating-point, loops]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=97

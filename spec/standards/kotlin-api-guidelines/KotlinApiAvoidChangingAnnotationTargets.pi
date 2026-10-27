@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiAvoidChangingAnnotationTargets:
+    standard: @{KotlinApiGuidelines}
+    ruleId: avoid-changing-annotation-targets
+    title: Do not change a published annotation's targets
+    statement:
+        Once an annotation is published, leave its allowed targets alone.
+    rationale:
+        Adding a target such as PROPERTY changes where an unqualified use
+        lands on recompilation, which can hide it from Java reflection and
+        processors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        // v1.0: @Target(AnnotationTarget.CLASS)
+        // v1.1:
+        @Target(AnnotationTarget.CLASS, AnnotationTarget.TYPEALIAS)
+        public annotation class Indexed
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        @Target(AnnotationTarget.FIELD)
+        public annotation class Indexed
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [compatibility, annotations]
+    source: https://kotlinlang.org/docs/api-guidelines-backward-compatibility.html#avoid-changing-annotation-targets

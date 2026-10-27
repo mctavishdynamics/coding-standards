@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12CompoundNamespaceDepth:
+    standard: @{Psr12}
+    ruleId: 3e
+    title: Limit grouped imports to two levels of nesting
+    statement:
+        In a grouped use statement, names inside the braces may go at most
+        two namespace levels deep. Deeper compound namespaces must not be
+        used.
+    rationale:
+        Deeply nested group imports are hard to read and hide where each
+        class comes from.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        use Acme\Shop\{
+            Model\Catalog\Product,
+            Model\Order,
+        };
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        use Acme\Shop\{
+            Model\Order,
+            Service\Mailer,
+            Cart,
+        };
+        \\\
+        ```
+    languages: [php]
+    tags: [imports, namespaces]
+    source: https://www.php-fig.org/psr/psr-12/#3-declare-statements-namespace-and-import-statements

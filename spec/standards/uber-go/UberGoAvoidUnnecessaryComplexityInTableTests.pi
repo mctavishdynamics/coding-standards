@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoAvoidUnnecessaryComplexityInTableTests:
+    standard: @{UberGo}
+    ruleId: avoid-unnecessary-complexity-in-table-tests
+    title: Keep table tests free of branching logic
+    statement:
+        Do not use a table test when its subtests need conditional
+        assertions, mock setup functions in the table or several branch
+        flags. Split such cases into separate tables or test functions, and
+        make sure every field and every line of test logic applies to every
+        case.
+    rationale:
+        Branching inside table tests makes failures hard to debug and the
+        tests hard to change or trust.
+    exceptions:
+        A short test may have a single success-or-failure branch driven by a
+        field such as shouldErr.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        tests := []struct {
+            give        string
+            shouldError bool
+            setupMock   func(*MockStore)
+            checkCache  bool
+        }{ /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func TestParseValid(t *testing.T) { /* table of valid inputs */ }
+
+        func TestParseInvalid(t *testing.T) { /* table of invalid inputs */ }
+        \\\
+        ```
+    languages: [go]
+    tags: [testing, readability]
+    source: https://github.com/uber-go/guide/blob/master/style.md#avoid-unnecessary-complexity-in-table-tests

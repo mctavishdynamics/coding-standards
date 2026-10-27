@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem93:
+    standard: @{EffectivePython}
+    ruleId: item-93
+    title: Benchmark hot code with timeit
+    statement:
+        When tuning a small, performance-critical piece of code, compare
+        alternatives with the timeit module rather than ad hoc timing.
+    rationale:
+        timeit runs the code many times and avoids common timing mistakes,
+        giving numbers you can compare.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        start = time.time()
+        join_parts(parts)
+        print(time.time() - start)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import timeit
+
+        t = timeit.timeit("join_parts(parts)", globals=globals(), number=10_000)
+        \\\
+        ```
+    languages: [python]
+    tags: [performance, benchmarking]
+    source: https://effectivepython.com/

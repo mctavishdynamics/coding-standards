@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoHtmlInDocs:
+    standard: @{EffectiveDart}
+    ruleId: avoid-using-html-for-formatting
+    title: Do not format doc comments with HTML
+    statement:
+        Use Markdown, not HTML tags, for formatting doc comments. HTML may
+        be justified in rare cases such as tables.
+    rationale:
+        Content too complex for Markdown is usually better left out or
+        simplified than expressed in HTML.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        /// Sends the report. <b>Never</b> call this from the UI thread.<br>
+        void sendReport() {}
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Sends the report. **Never** call this from the UI thread.
+        void sendReport() {}
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, documentation, markdown]
+    source: https://dart.dev/effective-dart/documentation#avoid-using-html-for-formatting

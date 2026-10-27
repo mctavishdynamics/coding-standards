@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuUseAutoconfForPortability:
+    standard: @{GnuCodingStandards}
+    ruleId: system-portability-autoconf
+    title: Use Autoconf to adapt to different Unix-like systems
+    statement:
+        Supporting other Unix-like systems is desirable but optional; when
+        you do, use Autoconf to discover what the host provides rather than
+        hard-coding system checks.
+    rationale:
+        Autoconf already knows nearly everything a program needs about host
+        differences.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #if defined __sun || defined _AIX
+        # include <strings.h>
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #ifdef HAVE_STRINGS_H
+        # include <strings.h>
+        #endif
+        \\\
+        ```
+    languages: [c]
+    tags: [portability, build]
+    source: https://www.gnu.org/prep/standards/standards.html#System-Portability

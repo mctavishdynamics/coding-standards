@@ -5,13 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC182:
     standard: @{CppCoreGuidelines}
     ruleId: C.182
-    title: Use anonymous unions to implement tagged unions
+    title: Use an unnamed union inside a tagged wrapper class
     statement:
-        When writing a tagged union by hand, put an anonymous union inside a
-        class next to the tag and keep both private behind accessors.
+        When you write your own tagged union, place an anonymous union inside a
+        class together with the tag. Keep both private and expose them only
+        through member functions.
     rationale:
-        A well-designed tagged union is type safe, and an anonymous union
-        makes the tag and union pair simpler to define.
+        With tag and storage in one class, every access can be checked. The
+        anonymous union also saves you naming the union member and forwarding
+        through it.
     exceptions: null
     severity: null
     noncompliant:

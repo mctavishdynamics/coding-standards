@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartDocGetterOrSetterNotBoth:
+    standard: @{EffectiveDart}
+    ruleId: dont-write-documentation-for-both-the-getter-and-setter-of-a-property
+    title: Document only one of a property's getter and setter
+    statement:
+        Document a property on its getter or on its setter, never on both
+        members of the pair.
+    rationale:
+        `dart doc` presents the pair as one field and drops the setter's
+        comment when both have one.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        /// The volume level, from 0 to 10.
+        int get volume => _volume;
+
+        /// Sets the volume level, from 0 to 10.
+        set volume(int value) => _volume = value.clamp(0, 10);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// The volume level, from 0 to 10.
+        int get volume => _volume;
+        set volume(int value) => _volume = value.clamp(0, 10);
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, documentation, properties]
+    source: https://dart.dev/effective-dart/documentation#dont-write-documentation-for-both-the-getter-and-setter-of-a-property

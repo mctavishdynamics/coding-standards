@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmUseDescriptiveNames:
+    standard: @{LlvmCodingStandards}
+    ruleId: name-types-functions-variables-and-enumerators-properly
+    title: Choose descriptive, consistently capitalized names
+    statement:
+        Pick names that describe the role of the thing they name and avoid
+        abbreviations that are not widely known. Keep capitalization
+        consistent so users do not have to look up the exact spelling.
+    rationale:
+        Poor names mislead readers and cause bugs; inconsistent spelling
+        makes APIs harder to use.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Tire Tmp1 = M.makeTire();
+        Factory<Tire> F;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Tire SpareTire = M.makeTire();
+        Factory<Tire> TireFactory;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, readability]
+    source: https://llvm.org/docs/CodingStandards.html#name-types-functions-variables-and-enumerators-properly

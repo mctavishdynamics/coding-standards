@@ -5,32 +5,31 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSlIo1:
     standard: @{CppCoreGuidelines}
     ruleId: SL.io.1
-    title: Use character-level input only when you have to
+    title: Read input a character at a time only when necessary
     statement:
-        Read whole tokens, lines or values with the stream operators and
-        getline, and read single characters only when you really process
-        individual characters.
+        Let the stream operators and getline read whole words, numbers and lines.
+        Read input one character at a time only when the program really works with
+        single characters.
     rationale:
-        Building tokens from single characters is error-prone and often
-        slower than letting the library do it.
+        Assembling tokens by hand from individual characters is easy to get wrong
+        and is often slower than the library's own parsing.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        char buf[64];
-        int n = 0;
-        char c;
-        while (std::cin.get(c) && !std::isspace(c) && n < 63)
-            buf[n++] = c;
-        buf[n] = '\0';
+        int quantity = 0;
+        char ch;
+        while (std::cin.get(ch) && ch >= '0' && ch <= '9')
+            quantity = quantity * 10 + (ch - '0');   // no sign, no overflow check
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        std::string word;
-        std::cin >> word;
+        int quantity = 0;
+        if (!(std::cin >> quantity))
+            report_bad_input();
         \\\
         ```
     languages: [cpp]

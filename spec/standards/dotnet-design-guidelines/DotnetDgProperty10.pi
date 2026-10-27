@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty10:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-10
+    title: Restrict indexer parameters to common key types
+    statement:
+        Use other index types only after seriously questioning whether the
+        API is a collection accessor; otherwise use a method with a Get or
+        Set prefix.
+    rationale:
+        These index types match how callers expect collections to be
+        addressed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Employee this[EmployeeQuery query] { get { /* ... */ } }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public Employee GetEmployee(EmployeeQuery query) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, member-design, indexers]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property#indexed-property-design

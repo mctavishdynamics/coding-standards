@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV11x2x4:
+    standard: @{OwaspAsvs}
+    ruleId: V11.2.4
+    title: Make cryptographic operations constant-time
+    statement:
+        Implement comparisons, calculations and returns in cryptographic
+        code without short-circuit behavior so their timing does not depend
+        on secret data.
+    rationale:
+        Timing differences leak information about secrets such as MACs or
+        keys to an attacker who measures them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if computed_mac == request_mac:
+            accept(message)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        if hmac.compare_digest(computed_mac, request_mac):
+            accept(message)
+        \\\
+        ```
+    languages: [any]
+    tags: [level-3, cryptography, timing-attacks]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x20-V11-Cryptography.md#v112-secure-cryptography-implementation

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgStruct4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: struct-4
+    title: Implement IEquatable on structs
+    statement:
+        Have every value type implement the generic IEquatable interface for
+        itself.
+    rationale:
+        The inherited Equals boxes the value and compares fields through
+        reflection, which is slow; a typed Equals avoids both.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public readonly struct Rgb : IEquatable<Rgb>
+        {
+            public byte R { get; init; }
+            public byte G { get; init; }
+            public byte B { get; init; }
+
+            public bool Equals(Rgb other) => R == other.R && G == other.G && B == other.B;
+            public override bool Equals(object obj) => obj is Rgb other && Equals(other);
+            public override int GetHashCode() => HashCode.Combine(R, G, B);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, structs, equality]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/struct

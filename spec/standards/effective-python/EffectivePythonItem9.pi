@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem9:
+    standard: @{EffectivePython}
+    ruleId: item-9
+    title: Use match to destructure data, and if when that is enough
+    statement:
+        Use a match statement when branching on the shape of structured data
+        and pulling values out of it. For plain comparisons of simple
+        values, keep using if statements.
+    rationale:
+        Structural patterns read clearly for nested data, but a match over
+        simple constants adds ceremony and has surprising capture rules.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        match status:
+            case 200:
+                ok()
+            case _:
+                fail()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        match event:
+            case {"type": "click", "pos": (x, y)}:
+                click(x, y)
+            case {"type": "key", "key": key}:
+                press(key)
+        \\\
+        ```
+    languages: [python]
+    tags: [pythonic-thinking, pattern-matching, control-flow]
+    source: https://effectivepython.com/

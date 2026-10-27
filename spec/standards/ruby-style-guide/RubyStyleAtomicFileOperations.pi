@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAtomicFileOperations:
+    standard: @{RubyStyleGuide}
+    ruleId: atomic-file-operations
+    title: Use atomic file operations instead of checking first
+    statement:
+        Do not test whether a file or directory exists and then act on it;
+        call an operation that performs the whole step atomically, such as
+        mkdir_p or rm_f in FileUtils.
+    rationale:
+        Another process can change the file between the check and the
+        action, which causes rare errors that are hard to reproduce.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        FileUtils.mkdir(cache_dir) unless Dir.exist?(cache_dir)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        FileUtils.mkdir_p(cache_dir)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [files, concurrency]
+    source: https://rubystyle.guide/#atomic-file-operations

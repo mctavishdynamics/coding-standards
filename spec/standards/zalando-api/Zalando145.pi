@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando145:
+    standard: @{ZalandoApi}
+    ruleId: 145
+    title: Consider nested or non-nested URLs
+    statement:
+        Use a nested URL for a sub-resource that exists only within its
+        parent. Expose a resource with its own globally unique id as a
+        top-level resource as well.
+    rationale:
+        Nesting expresses ownership, while a top-level path lets clients
+        reach independent resources directly.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        GET /wishlists/w-1/entries/3
+        GET /suppliers/s-4/purchase-orders
+        GET /purchase-orders/po-2290
+        \\\
+        ```
+    languages: [any]
+    tags: [may, urls, resources]
+    source: https://opensource.zalando.com/restful-api-guidelines/#145

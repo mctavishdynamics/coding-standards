@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagAccessibleAuthenticationMinimum:
+    standard: @{Wcag22}
+    ruleId: 3.3.8
+    title: Do not require cognitive tests to log in
+    statement:
+        Do not make any authentication step depend on a cognitive function
+        test, such as recalling a password or solving a puzzle, unless there
+        is an alternative method, a mechanism that assists, such as allowing
+        paste and password managers, or the test is object recognition or
+        personal content.
+    rationale:
+        Memorizing, transcribing and puzzle solving exclude people with
+        cognitive disabilities from their own accounts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <input type="password" id="pw" autocomplete="off" onpaste="return false">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <label for="pw">Password</label>
+        <input type="password" id="pw" autocomplete="current-password">
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, authentication, forms, cognitive]
+    source: https://www.w3.org/TR/WCAG22/#accessible-authentication-minimum

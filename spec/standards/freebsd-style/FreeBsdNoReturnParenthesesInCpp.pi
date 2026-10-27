@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdNoReturnParenthesesInCpp:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-return-parentheses
+    title: Do not parenthesize return values in C++
+    statement:
+        In C++ write return values without surrounding parentheses.
+        Converted C code may keep existing parentheses.
+    rationale:
+        Parenthesized return values do not fit broadly accepted C++
+        practice, which this section follows where it differs from KNF C.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        return (count_);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        return count_;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, formatting]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

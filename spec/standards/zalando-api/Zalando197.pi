@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando197:
+    standard: @{ZalandoApi}
+    ruleId: 197
+    title: Describe each event in a registered event type definition
+    statement:
+        Register each event as an event type that declares its category,
+        name, audience, owning application, payload schema and compatibility
+        mode.
+    rationale:
+        Event types make events discoverable, well structured and
+        validatable.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        name: logistics-parcels.parcel-scanned
+        category: data
+        audience: company-internal
+        owning_application: parcel-tracker
+        compatibility_mode: compatible
+        schema:
+          type: json_schema
+          schema: '{ "type": "object", "properties": { "parcel_id": { "type": "string" } } }'
+        \\\
+        ```
+    languages: [any]
+    tags: [must, events, schema]
+    source: https://opensource.zalando.com/restful-api-guidelines/#197

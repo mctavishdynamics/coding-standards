@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando148:
+    standard: @{ZalandoApi}
+    ruleId: 148
+    title: Use HTTP methods correctly
+    statement:
+        Follow the RFC 9110 semantics of each method, GET to read, PUT to
+        replace, POST to create or run, PATCH to change part of a resource
+        and DELETE to remove. GET requests must not carry a body; use POST
+        with a body when query data is too large for the URL.
+    rationale:
+        Clients, proxies and caches rely on the standard method semantics,
+        so deviating from them breaks tooling and expectations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /orders/5531/delete
+        GET /orders
+        Content-Type: application/json
+
+        { "status": "OPEN" }
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        DELETE /orders/5531
+        POST /orders/searches
+        Content-Type: application/json
+
+        { "status": "OPEN" }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, http, methods]
+    source: https://opensource.zalando.com/restful-api-guidelines/#148

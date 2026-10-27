@@ -5,20 +5,20 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp1:
     standard: @{CppCoreGuidelines}
     ruleId: CP.1
-    title: Assume your code will run as part of a multi-threaded program
+    title: Write code that stays correct when called from several threads
     statement:
-        Write code, especially library code, so that it stays correct when
-        called from several threads. Avoid hidden shared state such as
-        function-local statics; keep state in objects the caller owns, or
-        make it thread_local or properly synchronized.
+        Assume any function may one day be called from more than one thread. Keep
+        mutable state in objects the caller passes in, or make it thread_local or
+        guarded, instead of hiding it in globals or function-local statics. Library
+        code needs this most.
     rationale:
-        It is hard to be sure that concurrency is not used now or will not
-        be later. Code gets reused, and a single-threaded library may end up
-        called from a threaded program.
+        Programs grow threads over time and code moves between projects. A routine
+        written for a single-threaded tool can later sit inside a server, where
+        hidden state turns into a data race that is costly to track down.
     exceptions:
-        Code that will never run in a multi-threaded environment. Label such
-        code clearly and ideally enforce the restriction at compile or run
-        time, since such assumptions often prove wrong years later.
+        Code with a firm guarantee that it only ever runs on one thread. Mark that
+        limit plainly and check it at build or run time if you can, because such
+        guarantees tend to break as the code base changes.
     severity: null
     noncompliant:
         ```cpp

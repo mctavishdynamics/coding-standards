@@ -18,16 +18,18 @@ export coding-rule CertJavaMsc63J:
     noncompliant:
         ```java
         \\\
-        SecureRandom random = new SecureRandom(
-                Long.toString(System.currentTimeMillis()).getBytes());
+        byte[] seed = ByteBuffer.allocate(8).putLong(System.nanoTime()).array();
+        SecureRandom gen = new SecureRandom(seed);
+        byte[] apiKey = new byte[24];
+        gen.nextBytes(apiKey);
         \\\
         ```
     compliant:
         ```java
         \\\
-        SecureRandom random = new SecureRandom();
-        byte[] token = new byte[32];
-        random.nextBytes(token);
+        SecureRandom gen = SecureRandom.getInstanceStrong();
+        byte[] apiKey = new byte[24];
+        gen.nextBytes(apiKey);
         \\\
         ```
     languages: [java]

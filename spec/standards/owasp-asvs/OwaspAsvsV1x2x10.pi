@@ -1,0 +1,23 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV1x2x10:
+    standard: @{OwaspAsvs}
+    ruleId: V1.2.10
+    title: Prevent CSV and formula injection in exports
+    statement:
+        When writing CSV, apply the quoting and escaping that RFC 4180 lays
+        down in its sections 2.6 and 2.7. In CSV or spreadsheet output, put
+        a single quote in front of any cell whose first character is an
+        equals sign, plus, minus, at sign, tab or null.
+    rationale:
+        Spreadsheet programs treat such fields as formulas, so an exported
+        value can run commands or leak data when someone opens the file.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-3, injection, csv, export]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x10-V1-Encoding-and-Sanitization.md#v12-injection-prevention

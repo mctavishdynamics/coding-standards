@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgConstructor8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: constructor-8
+    title: Avoid explicit parameterless constructors on structs
+    statement:
+        Do not declare a parameterless constructor on a struct.
+    rationale:
+        Without one, creating arrays of the struct does not need to run code
+        for each element.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public struct Vector2
+        {
+            public Vector2() { X = 0; Y = 0; }
+            public float X, Y;
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public readonly struct Vector2
+        {
+            public Vector2(float x, float y) => (X, Y) = (x, y);
+            public float X { get; }
+            public float Y { get; }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, member-design, constructors, structs]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/constructor

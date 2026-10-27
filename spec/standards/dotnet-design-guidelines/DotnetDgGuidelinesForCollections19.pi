@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgGuidelinesForCollections19:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: guidelines-for-collections-19
+    title: Use byte arrays rather than collections of bytes
+    statement:
+        Represent binary data as byte arrays, not as collections of bytes.
+    rationale:
+        Byte arrays are compact, fast and what every I/O API expects.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Collection<byte> Thumbnail { get; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public byte[] GetThumbnail() { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, collections, arrays]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/guidelines-for-collections#choosing-between-arrays-and-collections

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleInstanceVars:
+    standard: @{RubyStyleGuide}
+    ruleId: instance-vars
+    title: Keep shared state on a module, not in a global
+    statement:
+        Keep shared state in an instance variable on a module, exposed
+        through accessors, rather than in a global variable. RuboCop checks
+        this with Style/GlobalVars.
+    rationale:
+        A module scopes the state to a namespace and controls how it is
+        reached, while a global is visible and writable everywhere.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        $request_timeout = 10
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        module HttpClient
+          class << self
+            attr_accessor :request_timeout
+          end
+        end
+
+        HttpClient.request_timeout = 10
+        \\\
+        ```
+    languages: [ruby]
+    tags: [globals, state]
+    source: https://rubystyle.guide/#instance-vars

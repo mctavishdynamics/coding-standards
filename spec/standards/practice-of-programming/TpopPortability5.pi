@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPortability5:
+    standard: @{PracticeOfProgramming}
+    ruleId: portability-5
+    title: Prefer library routines every platform ships
+    statement:
+        Use the language's standard libraries in preference to
+        system-specific or home-grown ones.
+    rationale:
+        Standard libraries are available and behave the same wherever the
+        language is supported.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include <strings.h>
+        bzero(buf, sizeof buf);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <string.h>
+        memset(buf, 0, sizeof buf);
+        \\\
+        ```
+    languages: [any]
+    tags: [portability, libraries]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern9:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-9
+    title: Avoid throwing from Dispose(bool)
+    statement:
+        Do not throw from Dispose(bool) except when the process state is
+        already corrupted, and never when disposing is false.
+    rationale:
+        Dispose usually runs in finally blocks, where an exception skips
+        further cleanup; inside a finalizer it ends the process.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_pendingWrites > 0) throw new InvalidOperationException("Unflushed data.");
+            _file.Dispose();
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_pendingWrites > 0) _log.Warn("Disposing with unflushed data.");
+                _file.Dispose();
+            }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, dispose, resources, exceptions]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern#basic-dispose-pattern

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartReadLikeASentence:
+    standard: @{EffectiveDart}
+    ruleId: consider-making-the-code-read-like-a-sentence
+    title: Consider how calls read aloud when choosing names
+    statement:
+        When unsure about a name, write code that calls the API and check
+        that it reads like a sentence, without adding articles or filler
+        words to force strict grammar.
+    rationale:
+        Trying the API at a call site shows whether its names communicate,
+        but overly literal names become clumsy.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        if (queue.empty()) return;
+        tasks.withoutTheOnesThatAre(isDone);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        if (queue.isEmpty) return;
+        tasks.removeWhere(isDone);
+        \\\
+        ```
+    languages: [dart]
+    tags: [consider, naming, api-design]
+    source: https://dart.dev/effective-dart/design#consider-making-the-code-read-like-a-sentence

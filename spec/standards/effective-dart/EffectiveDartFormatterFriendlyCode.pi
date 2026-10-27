@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartFormatterFriendlyCode:
+    standard: @{EffectiveDart}
+    ruleId: consider-changing-your-code-to-make-it-more-formatter-friendly
+    title: Restructure code the formatter cannot make readable
+    statement:
+        When formatted output is still hard to read, change the code:
+        shorten long names, pull nested expressions into local variables, or
+        split mixed operators.
+    rationale:
+        The formatter only moves whitespace. Very long identifiers and deep
+        nesting stay hard to read until the code itself changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final total = order.items.where((i) => !i.isGift).map((i) => i.unitPrice * i.quantity * (1 - customer.loyaltyDiscountRate)).fold(0.0, (a, b) => a + b);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final discount = 1 - customer.loyaltyDiscountRate;
+        final paidItems = order.items.where((i) => !i.isGift);
+        final total = paidItems
+            .map((i) => i.unitPrice * i.quantity * discount)
+            .fold(0.0, (a, b) => a + b);
+        \\\
+        ```
+    languages: [dart]
+    tags: [consider, formatting, readability]
+    source: https://dart.dev/effective-dart/style#consider-changing-your-code-to-make-it-more-formatter-friendly

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmOrderIncludesByCategory:
+    standard: @{LlvmCodingStandards}
+    ruleId: include-style
+    title: List the minimal includes in a fixed category order
+    statement:
+        After the file comment and guards, include only what the file needs,
+        in this order: the main module header, local private headers,
+        project and subproject headers from most to least specific, then
+        system headers. Sort each group lexicographically by full path.
+    rationale:
+        Including the main header first proves it has no hidden dependencies
+        and documents which interface the file implements.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // In lib/Analysis/LoopInfo.cpp
+        #include <algorithm>
+        #include "llvm/IR/Dominators.h"
+        #include "llvm/Analysis/LoopInfo.h"
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // In lib/Analysis/LoopInfo.cpp
+        #include "llvm/Analysis/LoopInfo.h"
+        #include "llvm/IR/Dominators.h"
+        #include <algorithm>
+        \\\
+        ```
+    languages: [cpp]
+    tags: [includes, headers, file-structure]
+    source: https://llvm.org/docs/CodingStandards.html#include-style

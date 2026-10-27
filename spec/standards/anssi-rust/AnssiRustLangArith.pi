@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangArith:
+    standard: @{AnssiRust}
+    ruleId: LANG-ARITH
+    title: Use explicit overflow handling for arithmetic that can overflow
+    statement:
+        Where an operation may overflow, do not use the plain operators. Use
+        the checked, overflowing, wrapping or saturating methods, or the
+        Wrapping and Saturating types, so the behaviour is stated
+        explicitly.
+    rationale:
+        Plain operators panic on overflow in debug builds but wrap silently
+        in release builds, so the same code behaves differently depending on
+        the profile.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        fn total_len(header: u32, body: u32) -> u32 {
+            header + body
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        fn total_len(header: u32, body: u32) -> Option<u32> {
+            header.checked_add(body)
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, integer-overflow, arithmetic]
+    source: https://anssi-fr.github.io/rust-guide/integer.html#LANG-ARITH

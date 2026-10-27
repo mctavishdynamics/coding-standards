@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackGatherComputeApply:
+    standard: @{Carmack}
+    ruleId: gather-compute-apply
+    title: Gather inputs, compute with a pure function, then apply the result
+    statement:
+        Split a task into three stages: assembling the inputs, a pure
+        function that computes the answer, and a final step that applies
+        that answer to the world.
+    rationale:
+        Separating the computation from its effects keeps the core logic
+        pure and makes the side effects easy to see.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Ai::Update() {
+            if (world.Nearest(self).dist < range) self.Attack(world.Nearest(self));
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Ai::Update() {
+            const Perception seen = Perceive(world, self);
+            const Action act = ChooseAction(seen, self.stats);
+            Apply(act, self, world);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [purity, design]
+    source: https://www.gamedeveloper.com/programming/in-depth-functional-programming-in-c-

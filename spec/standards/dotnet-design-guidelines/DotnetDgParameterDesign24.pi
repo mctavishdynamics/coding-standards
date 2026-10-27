@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign24:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-24
+    title: Offer a pointer-free alternative to any pointer member
+    statement:
+        For every member that takes a pointer, provide another member that
+        does the same without pointers.
+    rationale:
+        Pointers are not CLS compliant and are unavailable in many languages
+        and in safe code.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public unsafe int Checksum(byte* data, int length) { /* ... */ }
+        public int Checksum(ReadOnlySpan<byte> data) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, parameters, interoperability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#pointer-parameters

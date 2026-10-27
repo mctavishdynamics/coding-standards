@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando255:
+    standard: @{ZalandoApi}
+    ruleId: 255
+    title: Choose the right format for date and time properties
+    statement:
+        Use date-time for exact points in time and date for whole days such
+        as birthdays or arrival dates. Use time-local or date-time-local
+        only with an extra time zone field when an exact moment is needed,
+        and do not use local formats for absolute moments.
+    rationale:
+        Picking the format that matches the meaning prevents errors from
+        implicit time zones and daylight saving changes.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        properties:
+          birth_date:
+            type: string
+            format: date
+          campaign_start:
+            type: string
+            format: date-time-local
+          campaign_time_zone:
+            type: string
+            example: Europe/Berlin
+        \\\
+        ```
+    languages: [any]
+    tags: [should, data-formats, date-time]
+    source: https://opensource.zalando.com/restful-api-guidelines/#255

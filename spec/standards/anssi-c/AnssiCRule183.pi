@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule183:
+    standard: @{AnssiC}
+    ruleId: rule-183
+    title: Find and remove dead code
+    statement:
+        Identify and delete code whose execution has no effect on the
+        program's result.
+    rationale:
+        Dead code confuses readers and can hide logic errors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int scaled(int v) {
+            int tmp = v * 3; /* never used */
+            return v * 2;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int scaled(int v) {
+            return v * 2;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, dead-code]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=147

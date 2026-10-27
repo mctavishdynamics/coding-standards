@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC33:
     standard: @{CppCoreGuidelines}
     ruleId: C.33
-    title: Define a destructor if a class has an owning pointer member
+    title: Give a class that owns a pointer a destructor that frees it
     statement:
-        If a class owns an object through a raw pointer member, define a
-        destructor that deletes it, or better, replace the raw pointer with
-        a smart pointer.
+        A class that owns an object through a raw pointer needs a destructor
+        that deletes it. A better fix is to replace that pointer with a smart
+        pointer.
     rationale:
-        An owned object must be deleted when its owner is destroyed, and the
-        default destructor does not delete through raw pointers.
+        The generated destructor does not delete anything a raw pointer refers
+        to. Without a user destructor, the owned object leaks when its owner
+        dies.
     exceptions: null
     severity: null
     noncompliant:

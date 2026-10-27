@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmUseAutoOnlyWhenClearer:
+    standard: @{LlvmCodingStandards}
+    ruleId: use-auto-type-deduction-to-make-code-more-readable
+    title: Use auto only when it makes code clearer
+    statement:
+        Use auto when the type is already obvious, as with the result of a
+        cast, or when it would be hidden behind a typedef anyway, as with
+        iterators. Do not use it everywhere by habit. Generic lambdas may
+        use auto parameters where you would otherwise write a template.
+    rationale:
+        Spelling out non-obvious types documents the code, while auto
+        removes noise when the type adds nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto Size = computeFrameSize(MF);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        uint64_t Size = computeFrameSize(MF);
+        auto *Load = cast<LoadInst>(I);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-deduction, readability]
+    source: https://llvm.org/docs/CodingStandards.html#use-auto-type-deduction-to-make-code-more-readable

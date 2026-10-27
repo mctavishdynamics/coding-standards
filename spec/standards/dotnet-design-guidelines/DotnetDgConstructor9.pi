@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgConstructor9:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: constructor-9
+    title: Avoid calling virtual members in constructors
+    statement:
+        Do not call virtual methods or properties on the object from inside
+        its constructor.
+    rationale:
+        The most derived override runs before the derived constructor has
+        finished, so it sees uninitialized state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public abstract class Widget
+        {
+            protected Widget() { Layout(); }
+            protected abstract void Layout();
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public abstract class Widget
+        {
+            protected Widget() { }
+            public void Show() { Layout(); /* ... */ }
+            protected abstract void Layout();
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, member-design, constructors, inheritance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/constructor

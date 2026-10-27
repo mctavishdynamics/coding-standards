@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagLabelInName:
+    standard: @{Wcag22}
+    ruleId: 2.5.3
+    title: Include the visible label text in the accessible name
+    statement:
+        For controls labelled with text, make the accessible name contain
+        the visible label text, ideally at the start.
+    rationale:
+        Speech input users activate controls by saying what they see, which
+        fails if the hidden name differs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <button aria-label="Submit form">Send message</button>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <button aria-label="Send message to support">Send message</button>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, labels, voice-control]
+    source: https://www.w3.org/TR/WCAG22/#label-in-name

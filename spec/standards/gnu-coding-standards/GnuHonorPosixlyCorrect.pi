@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuHonorPosixlyCorrect:
+    standard: @{GnuCodingStandards}
+    ruleId: compatibility-posixly-correct
+    title: Disable conflicting extensions when POSIXLY_CORRECT is set
+    statement:
+        If the program has extensions that conflict with POSIX, turn them
+        off whenever the POSIXLY_CORRECT environment variable is defined,
+        even if its value is empty.
+    rationale:
+        This gives users one standard switch for strict POSIX behavior
+        across all GNU programs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        block_size = 1024;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        block_size = getenv ("POSIXLY_CORRECT") ? 512 : 1024;
+        \\\
+        ```
+    languages: [c]
+    tags: [compatibility, posix, environment]
+    source: https://www.gnu.org/prep/standards/standards.html#Compatibility

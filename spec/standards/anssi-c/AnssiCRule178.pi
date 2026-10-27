@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule178:
+    standard: @{AnssiC}
+    ruleId: rule-178
+    title: Use the safer variants of standard functions
+    statement:
+        When the standard library offers a safer version of a function, use
+        it.
+    rationale:
+        Safer variants take buffer sizes or report errors, which prevents
+        overflows.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        sprintf(msg, "id=%d", id);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        (void)snprintf(msg, sizeof msg, "id=%d", id);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, standard-library, buffer-overflow]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=144

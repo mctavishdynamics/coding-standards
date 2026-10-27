@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem85:
+    standard: @{EffectivePython}
+    ruleId: item-85
+    title: Be wary of catching Exception as a whole
+    statement:
+        Catch the specific exceptions you expect. Catch Exception only at
+        the outer edges of a program, such as a request handler, and log it
+        with its traceback there.
+    rationale:
+        A broad handler swallows bugs such as typos and wrong types, which
+        then surface far from their cause.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            price = float(text)
+        except Exception:
+            price = 0.0
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        try:
+            price = float(text)
+        except ValueError:
+            price = 0.0
+        \\\
+        ```
+    languages: [python]
+    tags: [robustness, exceptions, error-handling]
+    source: https://effectivepython.com/

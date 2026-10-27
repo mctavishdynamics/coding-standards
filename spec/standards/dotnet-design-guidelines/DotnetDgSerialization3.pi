@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgSerialization3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: serialization-3
+    title: Consider XML serialization when you need control over the XML
+    statement:
+        Support XML serialization, instead of or alongside data contracts,
+        when you must control the exact XML produced, for example to emit
+        XML attributes.
+    rationale:
+        Data contracts cannot express every XML construct that
+        interoperability may require.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class Sensor
+        {
+            [XmlAttribute("id")] public string Id { get; set; }
+            [XmlElement("reading")] public double Reading { get; set; }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, usage, serialization, xml]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/serialization#choosing-the-right-serialization-technology-to-support

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdKeepInClassDefinitionsCompact:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-inline-members
+    title: Write in-class member definitions compactly
+    statement:
+        Member functions defined inside a class, struct or union do not
+        break after the return type. A single-statement body may sit on one
+        line, and an empty body always does.
+    rationale:
+        This is common C++ style and suits small methods like getters and
+        setters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct gauge {
+                int
+                value()
+                {
+                        return v;
+                }
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct gauge {
+                int value() { return v; }
+                void reset() {}
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, formatting, classes]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

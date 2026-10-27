@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleMultiLineRegexes:
+    standard: @{RubyStyleGuide}
+    ruleId: multi-line-regexes
+    title: Use the x modifier for multi-line regexps
+    statement:
+        When a regexp spans several lines, write it in free-spacing mode
+        with the x modifier rather than with line continuations.
+    rationale:
+        Free-spacing mode ignores layout whitespace, so the pattern can be
+        laid out readably.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        DATE = /(\d{4})\
+        -(\d{2})\
+        -(\d{2})/
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        DATE = /
+          (\d{4})
+          -(\d{2})
+          -(\d{2})
+        /x
+        \\\
+        ```
+    languages: [ruby]
+    tags: [regex, formatting]
+    source: https://rubystyle.guide/#multi-line-regexes

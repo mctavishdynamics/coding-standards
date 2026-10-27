@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule155:
+    standard: @{AnssiC}
+    ruleId: rule-155
+    title: Do not nest the ternary operator
+    statement:
+        Never put one conditional operator inside another.
+    rationale:
+        Nested ternaries are very hard to read and to check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        level = (t > 90) ? HIGH : (t > 50) ? MID : LOW;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (t > 90) { level = HIGH; }
+        else if (t > 50) { level = MID; }
+        else { level = LOW; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, expressions, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=125

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem56:
+    standard: @{EffectivePython}
+    ruleId: item-56
+    title: Freeze dataclasses that represent values
+    statement:
+        For objects that should not change after creation, use a frozen
+        dataclass, and create modified copies with dataclasses.replace.
+    rationale:
+        Immutable objects are safe to share, can be used as dict keys and
+        set members, and prevent accidental changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        @dataclass
+        class Point:
+            x: int
+            y: int
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from dataclasses import dataclass, replace
+
+        @dataclass(frozen=True)
+        class Point:
+            x: int
+            y: int
+
+        moved = replace(origin, x=5)
+        \\\
+        ```
+    languages: [python]
+    tags: [classes-and-interfaces, classes, dataclasses, immutability]
+    source: https://effectivepython.com/

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando166:
+    standard: @{ZalandoApi}
+    ruleId: 166
+    title: Put links in the JSON body rather than in Link headers
+    statement:
+        Put links in the JSON body rather than in RFC 8288 Link headers when
+        the response is JSON.
+    rationale:
+        Links in the payload are more flexible and precise than the rarely
+        used Link header syntax.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        HTTP/1.1 200 OK
+        Content-Type: application/json
+        Link: <https://orders.example.com/orders?cursor=def>; rel="next"
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        HTTP/1.1 200 OK
+        Content-Type: application/json
+
+        { "next": "https://orders.example.com/orders?cursor=def", "items": [] }
+        \\\
+        ```
+    languages: [any]
+    tags: [must, hypermedia, headers]
+    source: https://opensource.zalando.com/restful-api-guidelines/#166

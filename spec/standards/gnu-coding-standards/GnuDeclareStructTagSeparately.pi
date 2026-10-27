@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDeclareStructTagSeparately:
+    standard: @{GnuCodingStandards}
+    ruleId: syntactic-struct-tag-separate
+    title: Declare a struct tag apart from variables or typedefs that use it
+    statement:
+        Do not declare a structure tag and a variable or typedef in the same
+        declaration. Declare the tag first, then use it.
+    rationale:
+        Separate declarations are easier to read and to reuse.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct point { int x, y; } origin;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct point { int x, y; };
+        struct point origin;
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, types]
+    source: https://www.gnu.org/prep/standards/standards.html#Syntactic-Conventions

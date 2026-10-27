@@ -1,0 +1,22 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV6x5x2:
+    standard: @{OwaspAsvs}
+    ruleId: V6.5.2
+    title: Hash low-entropy lookup secrets with a password hash
+    statement:
+        When stored lookup secrets are weaker than 112 bits, hash them with
+        an approved password hashing algorithm and a 32-bit random salt. A
+        plain hash function is acceptable at 112 bits or more.
+    rationale:
+        Low-entropy secrets are cheap to brute force from a stolen database
+        unless the hash is deliberately slow and salted.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-2, mfa, hashing]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x15-V6-Authentication.md#v65-general-multi-factor-authentication-requirements

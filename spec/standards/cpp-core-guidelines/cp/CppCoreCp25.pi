@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp25:
     standard: @{CppCoreGuidelines}
     ruleId: CP.25
-    title: Prefer gsl::joining_thread over std::thread
+    title: Use a thread type that joins on destruction
     statement:
-        Use a thread type that joins in its destructor, such
-        as gsl::joining_thread or C++20 std::jthread, instead
-        of std::thread.
+        Prefer std::jthread in C++20, or gsl::joining_thread, over std::thread, so
+        the thread is joined automatically when its owner goes away.
     rationale:
-        A std::thread that is still joinable when destroyed terminates the
-        program, and forgetting to join is easy. Threads that might be
-        detached are hard to monitor and to prove correct.
+        Destroying a std::thread that was never joined or detached
+        calls std::terminate, and a forgotten join is an easy slip.
+        Threads that might end up detached are also hard to watch and
+        to verify.
     exceptions: null
     severity: null
     noncompliant:

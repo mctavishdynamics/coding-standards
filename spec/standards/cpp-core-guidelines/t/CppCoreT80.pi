@@ -5,41 +5,45 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT80:
     standard: @{CppCoreGuidelines}
     ruleId: T.80
-    title: Do not naively templatize a class hierarchy
+    title: Think before turning a class hierarchy into a template
     statement:
-        Avoid making a class hierarchy with many virtual functions into a
-        template. Keep the virtual interface non-templated where you can.
+        Think twice before turning a class hierarchy with many virtual functions
+        into a template. Where possible, keep the virtual interface in a
+        non-template class.
     rationale:
-        Every virtual function of every instantiation must be generated,
-        since the compiler cannot tell whether it is called, which bloats
-        code size.
+        Every virtual function of every instantiation has to be generated, because
+        the compiler cannot know which ones will be called. This multiplies code
+        size.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        template<typename T>
-        struct Collection {
-            virtual T* at(int i);
-            virtual void sort();
-            virtual void shuffle();
-            virtual ~Collection();
+        template<typename Msg>
+        class Channel {
+        public:
+            virtual void send(const Msg& m);
+            virtual void close();             // all generated for every Msg
+            virtual void reconnect();
+            virtual void report_stats();
+            virtual ~Channel();
         };
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        struct Collection_base {
-            virtual int size() const = 0;
-            virtual ~Collection_base() = default;
+        class Channel_base {
+        public:
+            virtual void close() = 0;         // generated once
+            virtual void reconnect() = 0;
+            virtual ~Channel_base() = default;
         };
 
-        template<typename T>
-        class Collection : public Collection_base {
+        template<typename Msg>
+        class Channel : public Channel_base {
         public:
-            T* at(int i);          // non-virtual, instantiated only if used
-            int size() const override;
+            void send(const Msg& m);          // non-virtual, only built if used
         };
         \\\
         ```

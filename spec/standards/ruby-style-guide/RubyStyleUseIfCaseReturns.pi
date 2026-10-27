@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleUseIfCaseReturns:
+    standard: @{RubyStyleGuide}
+    ruleId: use-if-case-returns
+    title: Use the value returned by if and case
+    statement:
+        Assign the result of an if or case expression directly instead of
+        assigning the same variable in every branch.
+    rationale:
+        In Ruby these constructs are expressions, so assigning once removes
+        repetition and makes the purpose clear.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        if premium?
+          discount = 0.2
+        else
+          discount = 0.05
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        discount =
+          if premium?
+            0.2
+          else
+            0.05
+          end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals, assignment]
+    source: https://rubystyle.guide/#use-if-case-returns

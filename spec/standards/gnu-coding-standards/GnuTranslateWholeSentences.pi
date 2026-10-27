@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuTranslateWholeSentences:
+    standard: @{GnuCodingStandards}
+    ruleId: internationalization-whole-sentences
+    title: Use complete sentences instead of assembled fragments
+    statement:
+        Do not build messages by inserting words or phrases into a sentence
+        template. Use a separate full-sentence string for each variant.
+    rationale:
+        Grammar such as gender agreement and negation differs between
+        languages, so fragments cannot be translated correctly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        printf (_("Connection %s\n"), ok ? _("succeeded") : _("failed"));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        puts (ok ? _("Connection succeeded") : _("Connection failed"));
+        \\\
+        ```
+    languages: [c]
+    tags: [internationalization, messages]
+    source: https://www.gnu.org/prep/standards/standards.html#Internationalization

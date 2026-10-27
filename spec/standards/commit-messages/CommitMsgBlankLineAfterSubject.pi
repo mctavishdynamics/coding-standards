@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CommitMessages import CommitMessages
+
+export coding-rule CommitMsgBlankLineAfterSubject:
+    standard: @{CommitMessages}
+    ruleId: 1
+    title: Put an empty line between the summary and the details
+    statement:
+        Write a one-line summary first, then leave one empty line before any
+        longer explanation. A trivial change may need only the summary.
+    rationale:
+        Git and the tools built on it treat everything before the first
+        empty line as the title, so log, shortlog and patch emails show the
+        right text only when that line is there.
+    exceptions:
+        A commit whose summary says everything needs no body at all.
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        Cache parsed templates between requests
+        Parsing took most of the render time on busy pages.
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        Cache parsed templates between requests
+
+        Parsing took most of the render time on busy pages.
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, format]
+    source: https://cbea.ms/git-commit/#separate

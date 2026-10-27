@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleExponentialNotation:
+    standard: @{RubyStyleGuide}
+    ruleId: exponential-notation
+    title: Write exponents in normalised scientific notation
+    statement:
+        Write exponential literals with a mantissa of at least 1 and below
+        10, and drop the exponent when it is zero. Engineering notation,
+        with exponents in multiples of three, is an acceptable alternative.
+        RuboCop checks this with Style/ExponentialNotation.
+    rationale:
+        A mantissa of 10 or more makes a power of ten easy to misread by one
+        order of magnitude.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        AVOGADRO = 60.2e22
+        TIMEOUT = 2.5e0
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        AVOGADRO = 6.02e23
+        TIMEOUT = 2.5
+        \\\
+        ```
+    languages: [ruby]
+    tags: [numbers, literals]
+    source: https://rubystyle.guide/#exponential-notation

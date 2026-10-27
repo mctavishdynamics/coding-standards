@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvMultiplatformProjects:
+    standard: @{KotlinConventions}
+    ruleId: multiplatform-projects
+    title: Suffix platform-specific file names in multiplatform projects
+    statement:
+        In a multiplatform project, give files with top-level declarations
+        in a platform source set a suffix naming that source set, such as
+        Clock.jvm.kt. Files in the common source set get no suffix.
+    rationale:
+        On the JVM, top-level declarations compile into a facade class named
+        after the file, and two files with the same name in one package
+        would clash.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        // commonMain/kotlin/time/Clock.kt
+        // jvmMain/kotlin/time/Clock.kt     -> duplicate JVM class time.ClockKt
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        // commonMain/kotlin/time/Clock.kt
+        // jvmMain/kotlin/time/Clock.jvm.kt
+        // iosMain/kotlin/time/Clock.ios.kt
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [naming, files, multiplatform]
+    source: https://kotlinlang.org/docs/coding-conventions.html#multiplatform-projects

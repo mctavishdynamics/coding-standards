@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule51:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-51
+    title: Check loop and index bounds for fencepost errors
+    statement:
+        Check loop bounds and index arithmetic carefully for being one too
+        many or one too few.
+    rationale:
+        Fencepost mistakes are among the most common bugs and often only
+        show at the edges of the data.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (i = 0; i <= n; i++) {
+            a[i] = 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (i = 0; i < n; i++) {
+            a[i] = 0;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [common-blunders, bounds, loops]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

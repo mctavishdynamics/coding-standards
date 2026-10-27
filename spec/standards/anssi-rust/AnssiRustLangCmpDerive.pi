@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangCmpDerive:
+    standard: @{AnssiRust}
+    ruleId: LANG-CMP-DERIVE
+    title: Derive comparison traits when possible
+    statement:
+        When structural equality and field-by-field ordering is what you
+        need, derive the comparison traits. Document and justify any
+        hand-written implementation.
+    rationale:
+        Derived implementations are consistent by construction, while manual
+        ones are easy to get subtly wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        struct Version { major: u16, minor: u16 }
+
+        impl PartialEq for Version {
+            fn eq(&self, other: &Self) -> bool { self.major == other.major }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+        struct Version { major: u16, minor: u16 }
+        \\\
+        ```
+    languages: [rust]
+    tags: [recommendation, traits, comparison]
+    source: https://anssi-fr.github.io/rust-guide/standard.html#LANG-CMP-DERIVE

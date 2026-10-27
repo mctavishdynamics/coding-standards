@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartToMethodsForCopies:
+    standard: @{EffectiveDart}
+    ruleId: prefer-naming-a-method-to___-if-it-copies-the-objects-state-to-a-new-object
+    title: Start conversion methods that copy state with to
+    statement:
+        Name a method that returns a new object holding a copy of the
+        receiver's state in another form `toSomething()`. The
+        use_to_and_as_if_applicable lint checks this.
+    rationale:
+        The core libraries use this convention, as in toList and toString,
+        so readers recognise a snapshot conversion.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        Map<String, Object?> serialize() => {'id': id, 'name': name};
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        Map<String, Object?> toJson() => {'id': id, 'name': name};
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, naming, conversion]
+    source: https://dart.dev/effective-dart/design#prefer-naming-a-method-to___-if-it-copies-the-objects-state-to-a-new-object

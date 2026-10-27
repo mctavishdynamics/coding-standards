@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe306:
+    standard: @{CweTop25}
+    ruleId: CWE-306
+    title: Prevent missing authentication for critical functions
+    statement:
+        List every function and channel that needs a proven identity,
+        including ones assumed to be internal, and require authentication on
+        each of them on the server. Use a central authentication mechanism
+        from the framework or platform rather than hand-written checks.
+    rationale:
+        A critical function without authentication can be called by anyone
+        who finds it, often with full administrative effect. It is ranked 21
+        of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        app.post("/admin/rebuild-index", rebuildIndex);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        app.post("/admin/rebuild-index", requireLogin, requireRole("admin"), rebuildIndex);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [rank-21, authentication, access-control]
+    source: https://cwe.mitre.org/data/definitions/306.html

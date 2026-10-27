@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem32:
+    standard: @{EffectivePython}
+    ruleId: item-32
+    title: Raise an exception rather than returning None for failure
+    statement:
+        A function that cannot produce a result should raise an exception,
+        not return None. Document the exception and use type hints that show
+        the function never returns None.
+    rationale:
+        None and other falsy results are easy to confuse in a condition, so
+        callers mistake a valid zero for an error.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def ratio(a, b):
+            try:
+                return a / b
+            except ZeroDivisionError:
+                return None
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def ratio(a: float, b: float) -> float:
+            """Raises ValueError when b is zero."""
+            try:
+                return a / b
+            except ZeroDivisionError as e:
+                raise ValueError("b must not be zero") from e
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, exceptions]
+    source: https://effectivepython.com/

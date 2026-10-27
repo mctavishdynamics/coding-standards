@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12StaticAfterVisibility:
+    standard: @{Psr12}
+    ruleId: 4.6b
+    title: Put static after the visibility keyword
+    statement:
+        When a declaration is static, write the static keyword after its
+        visibility keyword.
+    rationale:
+        Keeping visibility first and static after it gives a single,
+        predictable modifier order.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Registry
+        {
+            static private $items = [];
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Registry
+        {
+            private static $items = [];
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [modifiers, visibility]
+    source: https://www.php-fig.org/psr/psr-12/#46-abstract-final-and-static

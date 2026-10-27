@@ -5,16 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT49:
     standard: @{CppCoreGuidelines}
     ruleId: T.49
-    title: Where possible, avoid type-erasure
+    title: Avoid type erasure where possible
     statement:
-        Prefer templates or ordinary interfaces over hiding types behind a
-        type-erased wrapper, unless the erasure buys something you need.
+        Prefer templates or a plain interface to hiding types behind a type-erasing
+        wrapper, unless you need what the erasure provides.
     rationale:
-        Type erasure adds a level of indirection by hiding type information
-        behind a separate compilation boundary, which costs run time and
-        optimization opportunities.
+        Erasure adds an indirection and an indirect call on every use. The concrete
+        type disappears from the compiler's view, so the call cannot be inlined and
+        runs slower.
     exceptions:
-        Type erasure is sometimes the right tool, as with std::function.
+        Sometimes erasure is exactly right, for example std::function for storing
+        arbitrary callables.
     severity: null
     noncompliant:
         ```cpp

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ConventionalCommits import ConventionalCommits
+
+export coding-rule ConvCommitsDescription:
+    standard: @{ConventionalCommits}
+    ruleId: 5
+    title: Follow the prefix immediately with a short description
+    statement:
+        Put a short summary of the change directly after the colon and space
+        that end the type and scope prefix.
+    rationale:
+        The description is what appears in changelogs and one-line logs, so
+        it must always be present and in a predictable place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        fix(auth):
+
+        Tokens were compared with the wrong clock.
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        fix(auth): compare token expiry against UTC
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, format]
+    source: https://www.conventionalcommits.org/en/v1.0.0/#specification

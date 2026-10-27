@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustDenvCargoOpts:
+    standard: @{AnssiRust}
+    ruleId: DENV-CARGO-OPTS
+    title: Keep debug assertions and overflow checks on in dev profiles
+    statement:
+        Do not override debug-assertions or overflow-checks in the dev and
+        test profiles of Cargo.toml; leave their default enabled values.
+    rationale:
+        These checks catch integer overflows and broken assumptions while
+        the code is developed and tested. Turning them off hides bugs until
+        production.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```toml
+        \\\
+        [profile.dev]
+        overflow-checks = false
+        debug-assertions = false
+        \\\
+        ```
+    compliant:
+        ```toml
+        \\\
+        [profile.dev]
+        opt-level = 1
+        # overflow-checks and debug-assertions keep their defaults
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, toolchain, integer-overflow]
+    source: https://anssi-fr.github.io/rust-guide/devenv.html#DENV-CARGO-OPTS

@@ -5,31 +5,33 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT41:
     standard: @{CppCoreGuidelines}
     ruleId: T.41
-    title: Require only essential properties in a template's concepts
+    title: Constrain templates only on the properties they truly need
     statement:
-        Constrain a template only on properties that are fundamental to what
-        it does. Incidental needs such as debug printing should not appear
-        in its concepts.
+        List in a template's constraints only what is essential to its purpose.
+        Requirements that come from incidental code, such as debug output or
+        logging, should stay out.
     rationale:
-        Listing every operation the implementation uses makes the interface
-        unstable, forcing changes and recompilation whenever logging or test
-        support changes. The cost is a later error if a non-essential
-        operation is missing.
+        If every operation the body touches becomes part of the interface, the
+        interface changes whenever tracing or test support changes, and callers must
+        recompile. The price of leaving them out is that a missing helper operation
+        is reported later, during instantiation.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        template<std::sortable S>
-            requires Printable<S>          // only needed for tracing
-        void sort_seq(S& s);
+        template<std::ranges::input_range R, typename V>
+            requires std::equality_comparable_with<std::ranges::range_value_t<R>, V>
+                     && Loggable<V>             // only for a trace message
+        bool contains(const R& r, const V& v);
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        template<std::sortable S>
-        void sort_seq(S& s);               // tracing is an implementation detail
+        template<std::ranges::input_range R, typename V>
+            requires std::equality_comparable_with<std::ranges::range_value_t<R>, V>
+        bool contains(const R& r, const V& v);   // tracing stays an internal detail
         \\\
         ```
     languages: [cpp]

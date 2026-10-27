@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoExtendStructNew:
+    standard: @{RubyStyleGuide}
+    ruleId: no-extend-struct-new
+    title: Do not subclass the result of Struct.new
+    statement:
+        Do not inherit from a class created by Struct.new; assign it to a
+        constant and pass a block for extra methods.
+    rationale:
+        Subclassing adds a pointless anonymous ancestor and can cause
+        superclass mismatch errors if the file is loaded more than once.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Range2D < Struct.new(:width, :height)
+          def area = width * height
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        Range2D = Struct.new(:width, :height) do
+          def area = width * height
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, data, inheritance]
+    source: https://rubystyle.guide/#no-extend-struct-new

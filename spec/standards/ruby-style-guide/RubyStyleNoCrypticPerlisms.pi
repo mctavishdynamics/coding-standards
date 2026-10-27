@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoCrypticPerlisms:
+    standard: @{RubyStyleGuide}
+    ruleId: no-cryptic-perlisms
+    title: Avoid Perl-style special global variables
+    statement:
+        Do not use cryptic special globals such as the dollar-colon load
+        path alias. Use the descriptive names, or require the English
+        library for its readable aliases. RuboCop checks this with
+        Style/SpecialGlobalVars.
+    rationale:
+        The punctuation globals are hard to read and are only tolerable in
+        one-line scripts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        $: << File.expand_path('lib', __dir__)
+        puts $$
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        require 'English'
+
+        $LOAD_PATH << File.expand_path('lib', __dir__)
+        puts $PROCESS_ID
+        \\\
+        ```
+    languages: [ruby]
+    tags: [readability, globals]
+    source: https://rubystyle.guide/#no-cryptic-perlisms

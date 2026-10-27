@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem1:
+    standard: @{EffectivePython}
+    ruleId: item-1
+    title: Confirm the interpreter release before running code
+    statement:
+        Confirm that the interpreter you run is the Python 3 release you
+        intend, using python3 --version or sys.version_info.
+    rationale:
+        Machines often have several interpreters, and the bare python
+        command may point at an old one. Code written for a newer release
+        can fail on another.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        import sys
+
+        if sys.version_info < (3, 12):
+            raise SystemExit("This tool needs Python 3.12 or newer")
+        \\\
+        ```
+    languages: [python]
+    tags: [pythonic-thinking, versions, tooling]
+    source: https://effectivepython.com/

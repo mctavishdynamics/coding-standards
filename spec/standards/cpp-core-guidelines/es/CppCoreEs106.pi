@@ -5,14 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs106:
     standard: @{CppCoreGuidelines}
     ruleId: ES.106
-    title: Don't try to avoid negative values by using unsigned
+    title: Validate non-negative values instead of relying on unsigned types
     statement:
-        Do not choose an unsigned type just to say a value cannot be
-        negative. Use a signed type and check the precondition.
+        A value that must not be negative should still use a signed type,
+        with an explicit check of the precondition. Unsigned is not a
+        substitute for that check.
     rationale:
-        Unsigned types bring modular arithmetic, can hide overflow warnings
-        and invite signed and unsigned mixing, and they do not actually stop
-        negative values, which simply wrap.
+        A negative number assigned to an unsigned variable just wraps to a
+        large one, so nothing is actually prevented. Meanwhile unsigned
+        types switch on modular arithmetic, can hide overflow warnings and
+        lead to mixed signed and unsigned bugs.
     exceptions: null
     severity: null
     noncompliant:

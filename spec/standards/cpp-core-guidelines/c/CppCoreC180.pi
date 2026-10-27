@@ -5,13 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC180:
     standard: @{CppCoreGuidelines}
     ruleId: C.180
-    title: Use unions to save memory
+    title: Overlay alternatives in a union when memory is tight
     statement:
-        Use a union when several objects are never needed at the same time
-        and they can share one piece of memory.
+        Use a union to save memory when several objects are never alive at the
+        same moment and can share the same storage.
     rationale:
-        A union lets the same storage hold different types at different
-        times, which saves space.
+        Alternatives that never coexist can reuse the same bytes. The union only
+        needs room for its largest member.
     exceptions: null
     severity: null
     noncompliant:

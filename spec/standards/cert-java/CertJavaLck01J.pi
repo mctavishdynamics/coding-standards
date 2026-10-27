@@ -20,11 +20,11 @@ export coding-rule CertJavaLck01J:
     noncompliant:
         ```java
         \\\
-        private final String lock = "cache-lock";
+        private final Integer statsGuard = 0;
 
-        void refresh() {
-            synchronized (lock) {
-                reload();
+        void bump() {
+            synchronized (statsGuard) {
+                hits++;
             }
         }
         \\\
@@ -32,11 +32,11 @@ export coding-rule CertJavaLck01J:
     compliant:
         ```java
         \\\
-        private final Object lock = new Object();
+        private final Object statsGuard = new Object();
 
-        void refresh() {
-            synchronized (lock) {
-                reload();
+        void bump() {
+            synchronized (statsGuard) {
+                hits++;
             }
         }
         \\\

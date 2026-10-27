@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule36:
+    standard: @{CppCodingStandards}
+    ruleId: rule-36
+    title: Make clients depend on abstract interfaces
+    statement:
+        Define abstract base classes made of pure virtual functions for the
+        services clients depend on, and let concrete classes implement them.
+    rationale:
+        Clients then depend on stable abstractions, which eases testing and
+        replacement of implementations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class ReportJob {
+            PostgresDb db_;   // concrete dependency
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Database {
+        public:
+            virtual ~Database() = default;
+            virtual Rows query(const std::string& sql) = 0;
+        };
+        class ReportJob {
+        public:
+            explicit ReportJob(Database& db);
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, interfaces, dependencies]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

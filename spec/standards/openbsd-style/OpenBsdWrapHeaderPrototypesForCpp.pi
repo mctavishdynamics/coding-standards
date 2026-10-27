@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdWrapHeaderPrototypesForCpp:
+    standard: @{OpenBsdStyle}
+    ruleId: cplusplus-declarations
+    title: Wrap header prototypes in __BEGIN_DECLS and __END_DECLS
+    statement:
+        In header files, enclose function prototypes in a matching
+        __BEGIN_DECLS and __END_DECLS pair.
+    rationale:
+        This gives the declarations C linkage, so the header also works from
+        C++.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* util.h */
+        int     fmt_scaled(long long, char *);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* util.h */
+        __BEGIN_DECLS
+        int     fmt_scaled(long long, char *);
+        __END_DECLS
+        \\\
+        ```
+    languages: [c]
+    tags: [headers, declarations, interoperability]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem13:
+    standard: @{EffectiveJava}
+    ruleId: item-13
+    title: Be very careful about implementing clone
+    statement:
+        Avoid Cloneable in new designs. Offer a copy constructor or copy
+        factory instead, and if you must override clone, deep-copy the
+        mutable state and call super.clone.
+    rationale:
+        Cloneable has a fragile, unusual contract that bypasses constructors
+        and conflicts with final fields. Copy constructors are simpler and
+        type safe.
+    exceptions:
+        Arrays are the main case where clone is the best way to make a copy.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class Route implements Cloneable {
+            @Override
+            public Route clone() throws CloneNotSupportedException {
+                return (Route) super.clone(); // shares the stops list
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public Route(Route other) {
+            this.name = other.name;
+            this.stops = new ArrayList<>(other.stops);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods-common-to-all-objects, copying, contracts]
+    source: https://www.informit.com/store/effective-java-9780134686097

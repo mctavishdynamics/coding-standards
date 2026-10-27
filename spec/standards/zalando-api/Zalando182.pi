@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando182:
+    standard: @{ZalandoApi}
+    ruleId: 182
+    title: Consider ETag with If-Match and If-None-Match
+    statement:
+        Support the ETag header together with If-Match and If-None-Match to
+        detect conflicting updates and duplicate creations. A failed
+        condition returns 412 Precondition Failed.
+    rationale:
+        Conditional requests prevent lost updates without locking, using
+        standard HTTP mechanics.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        GET /articles/sku-881
+        HTTP/1.1 200 OK
+        ETag: "v42"
+
+        PUT /articles/sku-881
+        If-Match: "v42"
+
+        HTTP/1.1 412 Precondition Failed
+        \\\
+        ```
+    languages: [any]
+    tags: [may, http, concurrency]
+    source: https://opensource.zalando.com/restful-api-guidelines/#182

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgField3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: field-3
+    title: Expose predefined instances as public static readonly fields
+    statement:
+        When a type has well-known instances, provide them as public static
+        readonly fields on the type itself.
+    rationale:
+        Callers find them where they look first and cannot replace them.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public sealed class Currency
+        {
+            public static readonly Currency Euro = new("EUR");
+            public static readonly Currency UsDollar = new("USD");
+
+            private Currency(string code) => Code = code;
+            public string Code { get; }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, fields, static]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/field

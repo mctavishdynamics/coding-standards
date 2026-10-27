@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagLinkPurposeLinkOnly:
+    standard: @{Wcag22}
+    ruleId: 2.4.9
+    title: Make each link's purpose clear from its text alone
+    statement:
+        Provide a way for the purpose of every link to be identified from
+        the link text alone.
+    rationale:
+        Users who navigate by a list of links never see the surrounding
+        context.
+    exceptions:
+        Links whose purpose would be ambiguous to everyone are exempt.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <li>Annual report 2025 <a href="/reports/2025.pdf">Download</a></li>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <li><a href="/reports/2025.pdf">Download the 2025 annual report (PDF)</a></li>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aaa, links, content]
+    source: https://www.w3.org/TR/WCAG22/#link-purpose-link-only

@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp42:
     standard: @{CppCoreGuidelines}
     ruleId: CP.42
-    title: Do not wait without a condition
+    title: Always wait on a condition variable with a predicate
     statement:
-        Always wait on a condition variable with a predicate that states
-        what you are waiting for, so the waiter rechecks the shared state
-        after every wakeup.
+        Pass a predicate describing the awaited state to every condition variable
+        wait, so the shared state is tested again each time the thread wakes.
     rationale:
-        A bare wait can miss a notification sent before it started and block
-        forever, or wake spuriously and find no work.
+        Without a predicate, a notify that fires before the wait begins is lost and
+        the thread may sleep forever. A spurious wakeup can also return with nothing
+        to do.
     exceptions: null
     severity: null
     noncompliant:

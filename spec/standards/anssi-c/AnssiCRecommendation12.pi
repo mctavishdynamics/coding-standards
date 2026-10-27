@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation12:
+    standard: @{AnssiC}
+    ruleId: recommendation-12
+    title: Comment conditional compilation blocks
+    statement:
+        Explain with a comment what each preprocessor conditional block
+        handles, and mark the else, elif and endif lines with a comment
+        naming the condition they belong to.
+    rationale:
+        Long or nested conditional blocks are hard to follow, and it is easy
+        to lose track of which endif closes which condition.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #ifdef USE_TLS
+        init_tls();
+        #else
+        init_plain();
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #ifdef USE_TLS /* encrypted transport */
+        init_tls();
+        #else /* not USE_TLS: plain transport */
+        init_plain();
+        #endif /* USE_TLS */
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor, comments]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=18

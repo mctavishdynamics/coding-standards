@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdOrderStructMembers:
+    standard: @{FreeBsdStyle}
+    ruleId: struct-member-order
+    title: Order struct members by use, then size, then name
+    statement:
+        Declare structure members grouped by use, then from largest to
+        smallest, then alphabetically, with one member per line.
+    rationale:
+        Size ordering reduces padding, and one member per line keeps the
+        layout readable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct conn {
+                char flags;
+                uint64_t bytes;
+                int fd, state;
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct conn {
+                uint64_t bytes;
+                int fd;
+                int state;
+                char flags;
+        };
+        \\\
+        ```
+    languages: [c]
+    tags: [structs, declarations]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

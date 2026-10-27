@@ -1,0 +1,23 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV10x1x2:
+    standard: @{OwaspAsvs}
+    ruleId: V10.1.2
+    title: Bind authorization responses to the session that started the flow
+    statement:
+        Accept codes and ID tokens from the authorization server only when
+        they belong to a flow this same user agent session and transaction
+        began. Make PKCE verifiers, state and nonce values unguessable,
+        unique to the transaction and bound to both client and session.
+    rationale:
+        Otherwise an attacker can inject their own code or token into the
+        victim's session, or replay one from another flow.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-2, oauth, csrf, pkce]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x19-V10-OAuth-and-OIDC.md#v101-generic-oauth-and-oidc-security

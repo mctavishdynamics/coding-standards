@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem46:
+    standard: @{EffectiveJava}
+    ruleId: item-46
+    title: Build stream results with collectors, not by mutating outside state
+    statement:
+        Each stage of a stream should be a pure function of its input. Use
+        collectors to build results instead of mutating state from forEach.
+    rationale:
+        Side-effecting stream code is just a loop in disguise, harder to
+        read and unsafe to run in parallel.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Map<String, Long> freq = new HashMap<>();
+        words.forEach(w -> freq.merge(w, 1L, Long::sum));
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Map<String, Long> freq = words.stream()
+                .collect(Collectors.groupingBy(w -> w, Collectors.counting()));
+        \\\
+        ```
+    languages: [java]
+    tags: [lambdas-and-streams, streams, side-effects]
+    source: https://www.informit.com/store/effective-java-9780134686097

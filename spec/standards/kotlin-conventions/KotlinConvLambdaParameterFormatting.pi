@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvLambdaParameterFormatting:
+    standard: @{KotlinConventions}
+    ruleId: lambda-parameter-formatting
+    title: Put multiline lambda parameters on the first line
+    statement:
+        In a multiline lambda, put the parameter names and arrow on the
+        first line, then break. If the parameters do not fit on one line,
+        give the arrow its own line.
+    rationale:
+        Readers see the parameters before the body, and long lists stay
+        legible.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        orders.forEach {
+            order ->
+            ship(order)
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        orders.forEach { order ->
+            ship(order)
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, lambdas]
+    source: https://kotlinlang.org/docs/coding-conventions.html#lambdas

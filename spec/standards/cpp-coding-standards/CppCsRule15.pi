@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule15:
+    standard: @{CppCodingStandards}
+    ruleId: rule-15
+    title: Apply const early and consistently
+    statement:
+        Declare values, parameters and member functions const whenever they
+        do not change. Do not declare by-value parameters const in
+        declarations.
+    rationale:
+        const documents intent, lets the compiler catch mistakes and is hard
+        to retrofit later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::size_t countSpaces(std::string& s);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::size_t countSpaces(const std::string& s);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [coding-style, const-correctness]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

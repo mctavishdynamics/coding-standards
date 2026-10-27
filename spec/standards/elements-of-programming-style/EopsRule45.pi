@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule45:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-45
+    title: Let input name its own fields, with defaults shown back to the user
+    statement:
+        Let input name the values it supplies, give sensible defaults for
+        anything left out, and print back what was read and assumed.
+    rationale:
+        Named fields are hard to misplace, defaults keep input short, and
+        the echo lets users check that the program understood them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        width, height, depth = map(int, sys.argv[1:4])
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        opts = {"width": 80, "height": 24, "depth": 1}
+        for arg in sys.argv[1:]:
+            key, _, value = arg.partition("=")
+            opts[key] = int(value)
+        print("using", opts)
+        \\\
+        ```
+    languages: [any]
+    tags: [input-and-output, input, defaults]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

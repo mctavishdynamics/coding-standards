@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation129:
+    standard: @{AnssiC}
+    ruleId: recommendation-129
+    title: End each switch case with break
+    statement:
+        Finish every case with a break. Falling through on purpose to share
+        code is tolerated if a comment says so.
+    rationale:
+        A missing break runs the next case by accident.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        case OPT_A:
+            enable_a();
+        case OPT_B:
+            enable_b();
+            break;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        case OPT_A:
+            enable_a();
+            /* fall through: A also needs B */
+        case OPT_B:
+            enable_b();
+            break;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, control-flow, switch]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=100

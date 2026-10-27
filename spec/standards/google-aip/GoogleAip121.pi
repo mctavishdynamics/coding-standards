@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip121:
+    standard: @{GoogleAip}
+    ruleId: AIP-121
+    title: Design the API around resources and standard methods
+    statement:
+        Model the API as resources addressed by name and act on them with
+        standard methods, using the same resource schema in every method
+        that returns or accepts it. Every resource needs a Get method and,
+        unless it is a singleton, a List method; management operations must
+        leave the resource in a steady state when they finish, and the
+        protocol must be stateless with acyclic relationships between
+        resources.
+    rationale:
+        A small, predictable set of operations on named resources lets users
+        carry what they learned from one API to the next and lets generic
+        clients work against any API. Read-after-write consistency lets a
+        client confirm the effect of each mutation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        service RecipeService {
+          // A one-off verb with no resource behind it.
+          rpc SaveRecipeAndNotify(SaveRecipeAndNotifyRequest)
+              returns (SaveRecipeAndNotifyResponse);
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        service RecipeService {
+          rpc GetRecipe(GetRecipeRequest) returns (Recipe);
+          rpc ListRecipes(ListRecipesRequest) returns (ListRecipesResponse);
+          rpc CreateRecipe(CreateRecipeRequest) returns (Recipe);
+          rpc UpdateRecipe(UpdateRecipeRequest) returns (Recipe);
+          rpc DeleteRecipe(DeleteRecipeRequest) returns (google.protobuf.Empty);
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [resource-design, methods]
+    source: https://google.aip.dev/121

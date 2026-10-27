@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Psr1 import Psr1
+
+export coding-rule Psr1FormalNamespaces:
+    standard: @{Psr1}
+    ruleId: 3c
+    title: Use formal namespaces in PHP 5.3 and later
+    statement:
+        Code written for PHP 5.3 or any later version must declare its
+        classes inside formal namespaces.
+    rationale:
+        Real namespaces avoid name clashes between packages and are what the
+        autoloading standards expect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Acme_Billing_Invoice
+        {
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        namespace Acme\Billing;
+
+        class Invoice
+        {
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [namespaces]
+    source: https://www.php-fig.org/psr/psr-1/#3-namespace-and-class-names

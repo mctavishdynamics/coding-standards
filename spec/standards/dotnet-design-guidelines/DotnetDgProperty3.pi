@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-3
+    title: Give every property a safe, sensible default
+    statement:
+        Initialize properties to useful defaults that are neither insecure
+        nor very inefficient.
+    rationale:
+        Many callers never set every property, so the defaults decide how
+        the object really behaves.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public bool ValidateCertificates { get; set; }        // false by default
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public bool ValidateCertificates { get; set; } = true;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, properties, defaults]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property

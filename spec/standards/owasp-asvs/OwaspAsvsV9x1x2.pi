@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV9x1x2:
+    standard: @{OwaspAsvs}
+    ruleId: V9.1.2
+    title: Accept only allowlisted token algorithms
+    statement:
+        Allow only listed algorithms for creating and verifying tokens in
+        each context, ideally all symmetric or all asymmetric, and never the
+        none algorithm. Add controls against key confusion if both kinds are
+        needed.
+    rationale:
+        Letting the token pick its algorithm enables unsigned tokens and
+        attacks that verify with the public key as an HMAC secret.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        claims = jwt.decode(token, key, algorithms=jwt.algorithms.get_default_algorithms())
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        claims = jwt.decode(token, public_key, algorithms=["ES256"])
+        \\\
+        ```
+    languages: [any]
+    tags: [level-1, tokens, jwt, algorithms]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x18-V9-Self-contained-Tokens.md#v91-token-source-and-integrity

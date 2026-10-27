@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance20:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-20
+    title: Recompute cheap values instead of storing them
+    statement:
+        Do not keep data that can be derived quickly from other data when
+        space is tight.
+    rationale:
+        Storing derived values costs memory and risks them getting out of
+        step with the originals.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct rect { int w, h, area; };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct rect { int w, h; };
+
+        static inline int rect_area(const struct rect *r) { return r->w * r->h; }
+        \\\
+        ```
+    languages: [any]
+    tags: [performance, memory]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

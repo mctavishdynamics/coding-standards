@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvPreferExpressionBody:
+    standard: @{KotlinConventions}
+    ruleId: prefer-expression-body
+    title: Use an expression body for single-expression functions
+    statement:
+        When a function body is a single expression, write it as an
+        expression body.
+    rationale:
+        An expression body removes braces and return for code that is just a
+        value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        fun isAdult(age: Int): Boolean {
+            return age >= 18
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        fun isAdult(age: Int): Boolean = age >= 18
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [functions, idioms]
+    source: https://kotlinlang.org/docs/coding-conventions.html#functions

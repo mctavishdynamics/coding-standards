@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem43:
+    standard: @{EffectiveJava}
+    ruleId: item-43
+    title: Use method references when they are clearer than lambdas
+    statement:
+        Where a method reference is shorter and clearer than the equivalent
+        lambda, use it.
+    rationale:
+        A method reference names the operation directly, removing parameter
+        noise.
+    exceptions:
+        Keep the lambda if it is shorter or clearer, for example when the
+        method lives in the same class with a long class name.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        counts.merge(word, 1, (a, b) -> Integer.sum(a, b));
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        counts.merge(word, 1, Integer::sum);
+        \\\
+        ```
+    languages: [java]
+    tags: [lambdas-and-streams, lambdas, readability]
+    source: https://www.informit.com/store/effective-java-9780134686097

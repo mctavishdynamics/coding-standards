@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoReceivingSlicesAndMaps:
+    standard: @{UberGo}
+    ruleId: receiving-slices-and-maps
+    title: Copy slices and maps you receive before storing them
+    statement:
+        When a function stores a slice or map it got as an argument, make a
+        copy first. Otherwise the caller can still change the data your type
+        keeps.
+    rationale:
+        Slices and maps share their backing data, so a stored reference lets
+        outside code modify internal state without your knowledge.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (p *Playlist) SetTracks(tracks []string) {
+            p.tracks = tracks
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (p *Playlist) SetTracks(tracks []string) {
+            p.tracks = make([]string, len(tracks))
+            copy(p.tracks, tracks)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [slices, maps, encapsulation]
+    source: https://github.com/uber-go/guide/blob/master/style.md#receiving-slices-and-maps

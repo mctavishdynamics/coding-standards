@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEvent6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: event-6
+    title: Pass the instance as sender for instance events
+    statement:
+        When raising a non-static event, always pass the raising object as
+        the sender, never null.
+    rationale:
+        Handlers commonly use the sender to find out which object raised the
+        event.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        Expired?.Invoke(null, EventArgs.Empty);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        Expired?.Invoke(this, EventArgs.Empty);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, events]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/event

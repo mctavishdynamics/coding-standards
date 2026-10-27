@@ -5,12 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC102:
     standard: @{CppCoreGuidelines}
     ruleId: C.102
-    title: Give a container move operations
+    title: Let a container be moved cheaply
     statement:
-        Provide a move constructor and move assignment for container types.
+        Give container types a move constructor and a move assignment operator.
     rationale:
-        Containers are often large, and without cheap moves people pass them
-        around by pointer and run into resource management problems.
+        Containers can be large. If returning one by value forces a deep copy,
+        people start passing them around by pointer, and ownership mistakes
+        follow.
     exceptions: null
     severity: null
     noncompliant:

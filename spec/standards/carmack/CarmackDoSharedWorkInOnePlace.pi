@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackDoSharedWorkInOnePlace:
+    standard: @{Carmack}
+    ruleId: do-shared-work-in-one-place
+    title: Do work needed by several callers in one controlled place
+    statement:
+        When several places call a function, try to arrange for the work to
+        run once in a single spot, for example by setting a flag that the
+        main routine checks, and inline it there.
+    rationale:
+        Callers that invoke partial updates as shortcuts leave the program
+        in a state nobody expected, which Carmack names as the source of
+        most bugs.
+    exceptions:
+        Duplicating code to avoid a function is usually worse than the
+        problems the function causes, so do not copy the body into each
+        caller.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void OnHit(Player& p)  { p.health -= 10; UpdateHealthFx(p); }
+        void OnHeal(Player& p) { p.health += 25; UpdateHealthFx(p); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void OnHit(Player& p)  { p.health -= 10; p.healthChanged = true; }
+        void OnHeal(Player& p) { p.health += 25; p.healthChanged = true; }
+
+        void PlayerThink(Player& p) {
+            if (p.healthChanged) { /* update health effects inline */ }
+            p.healthChanged = false;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, state, control-flow]
+    source: http://number-none.com/blow/john_carmack_on_inlined_code.html

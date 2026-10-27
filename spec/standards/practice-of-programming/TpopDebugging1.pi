@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopDebugging1:
+    standard: @{PracticeOfProgramming}
+    ruleId: debugging-1
+    title: Recognize the patterns of familiar bugs
+    statement:
+        When a bug appears, ask whether it looks like one you have seen
+        before, such as a wrong format string or a missing initialization.
+    rationale:
+        Many bugs repeat. Recognizing the symptom often leads straight to
+        the cause.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (strcmp(a, b))      /* meant: strings are equal */
+            merge(a, b);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (strcmp(a, b) == 0)
+            merge(a, b);
+        \\\
+        ```
+    languages: [any]
+    tags: [debugging]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

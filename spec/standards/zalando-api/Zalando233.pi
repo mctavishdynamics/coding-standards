@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando233:
+    standard: @{ZalandoApi}
+    ruleId: 233
+    title: Support the X-Flow-ID header
+    statement:
+        Accept, pass on and log a flow id through the X-Flow-ID header on
+        API requests and the flow_id field on events. It may be a UUID,
+        base64 or base64url value, or a random string of up to 128 safe
+        characters.
+    rationale:
+        A shared flow id lets operators trace one call across all services
+        and events, which greatly helps troubleshooting.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        GET /orders/so-4471
+        X-Flow-ID: 3a9c51f0-61d2-4c1a-a5e9-0d7f2b8e4c6a
+        \\\
+        ```
+    languages: [any]
+    tags: [must, http, observability]
+    source: https://opensource.zalando.com/restful-api-guidelines/#233

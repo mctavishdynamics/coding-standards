@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem23:
+    standard: @{EffectiveCpp}
+    ruleId: item-23
+    title: Implement convenience operations outside the class
+    statement:
+        When an operation can be written using only a class's public
+        interface, write it as a non-member, non-friend function, ideally in
+        the same namespace.
+    rationale:
+        This increases encapsulation, since fewer functions can see private
+        data, and lets convenience functions grow without touching the
+        class.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Browser {
+        public:
+            void clearCache();
+            void clearHistory();
+            void clearEverything();   // only calls the two above
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Browser {
+        public:
+            void clearCache();
+            void clearHistory();
+        };
+        void clearEverything(Browser& b) { b.clearCache(); b.clearHistory(); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [designs-and-declarations, encapsulation, functions]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

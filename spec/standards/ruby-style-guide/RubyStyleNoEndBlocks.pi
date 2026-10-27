@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoEndBlocks:
+    standard: @{RubyStyleGuide}
+    ruleId: no-END-blocks
+    title: Use Kernel#at_exit instead of END blocks
+    statement:
+        Do not use END blocks; register exit handlers with at_exit instead.
+    rationale:
+        The at_exit method is the clear, ordinary way to run code when the
+        program finishes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        END { logger.close }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        at_exit { logger.close }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow]
+    source: https://rubystyle.guide/#no-END-blocks

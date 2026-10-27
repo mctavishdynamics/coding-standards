@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle7:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-7
+    title: Use parentheses to settle grouping
+    statement:
+        Add parentheses when operator precedence might be unclear, even
+        where they are not strictly required.
+    rationale:
+        Some operator priorities in C are surprising. Explicit grouping
+        prevents misreading and real mistakes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (mode << 2 + offset)
+            apply();
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if ((mode << 2) + offset)
+            apply();
+        \\\
+        ```
+    languages: [any]
+    tags: [style, expressions, operators]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

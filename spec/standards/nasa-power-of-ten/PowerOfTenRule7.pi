@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./PowerOfTen import PowerOfTen
+
+export coding-rule PowerOfTenRule7:
+    standard: @{PowerOfTen}
+    ruleId: rule-7
+    title: Check results and arguments everywhere
+    statement:
+        Each caller must check the return value of every non-void function,
+        and each function must check that its parameters are valid.
+    rationale:
+        Ignored errors and unchecked inputs are a common source of failure,
+        especially when error codes must travel up the call chain. Keeping
+        the rule strict means every exception has to be justified, and tools
+        can flag the rest.
+    exceptions:
+        When handling a failure would be no different from success, as is
+        often true for printf or close, cast the result to (void) to show
+        the choice is deliberate, and add a comment in doubtful cases.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void save_log(const char *path, const char *text) {
+            FILE *f = fopen(path, "a");
+            fputs(text, f);
+            fclose(f);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int save_log(const char *path, const char *text) {
+            if (path == NULL || text == NULL) {
+                return ERR_ARG;
+            }
+            FILE *f = fopen(path, "a");
+            if (f == NULL) {
+                return ERR_IO;
+            }
+            int rc = (fputs(text, f) == EOF) ? ERR_IO : OK;
+            if (fclose(f) == EOF) {
+                rc = ERR_IO;
+            }
+            return rc;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, input-validation]
+    source: https://spinroot.com/gerard/pdf/P10.pdf

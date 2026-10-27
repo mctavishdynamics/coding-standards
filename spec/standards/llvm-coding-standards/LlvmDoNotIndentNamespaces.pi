@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmDoNotIndentNamespaces:
+    standard: @{LlvmCodingStandards}
+    ruleId: namespace-indentation
+    title: Do not indent the contents of namespaces
+    statement:
+        Keep code inside namespace blocks at the outer indentation level.
+        Add a closing comment naming the namespace where it helps, such as
+        for namespaces closed partway through a source file.
+    rationale:
+        Indenting namespaces wastes columns and adds nesting without
+        improving understanding.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        namespace llvm {
+          namespace dwarf {
+            unsigned getTagCount();
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace llvm {
+        namespace dwarf {
+        unsigned getTagCount();
+        } // namespace dwarf
+        } // namespace llvm
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, indentation, namespaces]
+    source: https://llvm.org/docs/CodingStandards.html#namespace-indentation

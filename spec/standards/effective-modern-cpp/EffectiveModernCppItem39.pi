@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem39:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-39
+    title: Signal a single event with a promise of void
+    statement:
+        For a single event from one thread to others, consider a promise and
+        future of void instead of a condition variable or flag.
+    rationale:
+        It needs no mutex, avoids spurious wakeups and blocks properly,
+        though it works only once.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        bool ready = false;   // polled in a loop
+        std::thread t([&] { while (!ready) {} start(); });
+        ready = true;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::promise<void> go;
+        std::thread t([f = go.get_future()]() mutable { f.wait(); start(); });
+        go.set_value();
+        t.join();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [the-concurrency-api, concurrency]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

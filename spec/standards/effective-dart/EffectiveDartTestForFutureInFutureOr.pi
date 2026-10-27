@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartTestForFutureInFutureOr:
+    standard: @{EffectiveDart}
+    ruleId: do-test-for-futuret-when-disambiguating-a-futureort-whose-type-argument-could-be-object
+    title: Test for Future when a FutureOr value type could be Object
+    statement:
+        When checking which branch of a `FutureOr<T>` you hold and `T` could
+        be `Object`, test `is Future<T>` rather than `is T`.
+    rationale:
+        A future is itself an Object, so `is T` can succeed for a future and
+        treat it as a plain value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        Future<T> settle<T>(FutureOr<T> value) async {
+          if (value is T) return value;
+          return await value;
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        Future<T> settle<T>(FutureOr<T> value) async {
+          if (value is Future<T>) return await value;
+          return value;
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, async, types]
+    source: https://dart.dev/effective-dart/usage#do-test-for-futuret-when-disambiguating-a-futureort-whose-type-argument-could-be-object

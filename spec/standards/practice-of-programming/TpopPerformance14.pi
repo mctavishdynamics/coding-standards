@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance14:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-14
+    title: Do input and output in large blocks
+    statement:
+        Buffer I/O so that data moves in big chunks rather than one byte or
+        line per system call.
+    rationale:
+        System calls are expensive. Buffering reduces their number
+        dramatically.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        while (read(fd, &c, 1) == 1)
+            process(c);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char buf[65536];
+        ssize_t n;
+        while ((n = read(fd, buf, sizeof buf)) > 0)
+            for (ssize_t i = 0; i < n; i++)
+                process(buf[i]);
+        \\\
+        ```
+    languages: [any]
+    tags: [performance, io]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

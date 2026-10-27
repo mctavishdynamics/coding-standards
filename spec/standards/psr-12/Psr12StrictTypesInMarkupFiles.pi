@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12StrictTypesInMarkupFiles:
+    standard: @{Psr12}
+    ruleId: 3f
+    title: Declare strict types on the first line of template files
+    statement:
+        To declare strict types in a file that contains markup outside PHP
+        tags, put the opening tag, the strict types declaration and the
+        closing tag together on the first line.
+    rationale:
+        PHP requires the declaration to be the first statement, and a
+        one-line form keeps it from wrapping around the markup.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <h1>Orders</h1>
+        <?php declare(strict_types=1); ?>
+        <p><?= count($orders) ?></p>
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php declare(strict_types=1) ?>
+        <h1>Orders</h1>
+        <p><?= count($orders) ?></p>
+        \\\
+        ```
+    languages: [php]
+    tags: [files, declare, templates]
+    source: https://www.php-fig.org/psr/psr-12/#3-declare-statements-namespace-and-import-statements

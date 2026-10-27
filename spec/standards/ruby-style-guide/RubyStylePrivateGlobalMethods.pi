@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStylePrivateGlobalMethods:
+    standard: @{RubyStyleGuide}
+    ruleId: private-global-methods
+    title: Make global methods private methods of Kernel
+    statement:
+        If you truly need a method that is available everywhere, define it
+        in Kernel and make it private.
+    rationale:
+        Private Kernel methods can be called anywhere without a receiver but
+        do not appear as public methods of every object.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def debug_dump(value)
+          pp value
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        module Kernel
+          private
+
+          def debug_dump(value)
+            pp value
+          end
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, modules, visibility]
+    source: https://rubystyle.guide/#private-global-methods

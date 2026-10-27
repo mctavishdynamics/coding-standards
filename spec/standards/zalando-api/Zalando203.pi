@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando203:
+    standard: @{ZalandoApi}
+    ruleId: 203
+    title: Provide explicit ordering for general events
+    statement:
+        Give general events explicit business ordering, declaring ordering
+        key fields and, where useful, ordering instance id fields in the
+        event type. Use a monotonic version or counter rather than a
+        timestamp.
+    rationale:
+        Consumers need the order to replay or analyse event streams, and
+        clocks in distributed systems are not reliable enough.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        ordering_key_fields: [ "order_version" ]
+        ordering_instance_ids: [ "order_id" ]
+        \\\
+        ```
+    languages: [any]
+    tags: [should, events, ordering]
+    source: https://opensource.zalando.com/restful-api-guidelines/#203

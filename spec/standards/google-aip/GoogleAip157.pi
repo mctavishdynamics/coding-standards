@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip157:
+    standard: @{GoogleAip}
+    ruleId: AIP-157
+    title: Offer partial responses through views or field masks
+    statement:
+        Let users limit what large resources return either with a View enum
+        in a view request field, where the unspecified value is valid, or
+        with a field mask. A field mask must be optional and return
+        everything when omitted; Google APIs use the system field mask
+        parameter rather than a read_mask field.
+    rationale:
+        Large or costly resources waste bandwidth and compute when always
+        sent in full. Standard selection mechanisms let clients ask for only
+        what they need.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```protobuf
+        \\\
+        enum RecipeView {
+          RECIPE_VIEW_UNSPECIFIED = 0;
+          BASIC = 1;
+          FULL = 2;
+        }
+        message GetRecipeRequest {
+          string name = 1;
+          RecipeView view = 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design-patterns, field-masks]
+    source: https://google.aip.dev/157

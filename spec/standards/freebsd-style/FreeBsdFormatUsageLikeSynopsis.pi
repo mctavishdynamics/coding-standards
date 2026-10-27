@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdFormatUsageLikeSynopsis:
+    standard: @{FreeBsdStyle}
+    ruleId: usage-statements
+    title: Format usage messages like a manual page synopsis
+    statement:
+        List options without operands first, in alphabetical order inside
+        one pair of brackets, then options with operands each in their own
+        brackets, then required arguments, then optional arguments in
+        brackets. Use a bar between alternatives and group options used
+        together in one bracket pair.
+    rationale:
+        Users can read the usage line the same way as the manual page.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fprintf(stderr, "usage: sum file [-v] [-o out] [-a]\n");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        fprintf(stderr, "usage: sum [-av] [-o out] file [file ...]\n");
+        \\\
+        ```
+    languages: [c]
+    tags: [command-line, documentation]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

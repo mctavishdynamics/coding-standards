@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem32:
+    standard: @{EffectiveJava}
+    ruleId: item-32
+    title: Take care when combining varargs with generic types
+    statement:
+        A method with a generic varargs parameter must not store into the
+        varargs array or let it escape to untrusted code. Mark a method that
+        is safe with SafeVarargs, or take a List instead.
+    rationale:
+        A generic varargs array is created with an erased type, which can
+        pollute the heap and cause a ClassCastException far from its cause.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        static <T> T[] asArray(T... items) {
+            return items; // leaks the generic array
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @SafeVarargs
+        static <T> List<T> flatten(List<? extends T>... lists) {
+            List<T> out = new ArrayList<>();
+            for (List<? extends T> l : lists) out.addAll(l);
+            return out;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [generics, varargs, type-safety]
+    source: https://www.informit.com/store/effective-java-9780134686097

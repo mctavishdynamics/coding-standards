@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem57:
+    standard: @{EffectiveJava}
+    ruleId: item-57
+    title: Declare each local variable close to its first use
+    statement:
+        Declare a local variable where it is first used, initialise it at
+        declaration and keep methods short and focused. Prefer for loops
+        over while loops when the loop variable is not needed afterwards.
+    rationale:
+        Narrow scope makes code easier to read and prevents mistakes such as
+        reusing a stale variable from an earlier loop.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Iterator<Job> it = jobs.iterator();
+        while (it.hasNext()) run(it.next());
+        Iterator<Job> it2 = retries.iterator();
+        while (it.hasNext()) run(it2.next()); // wrong iterator
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        for (Iterator<Job> it = jobs.iterator(); it.hasNext(); ) run(it.next());
+        for (Iterator<Job> it = retries.iterator(); it.hasNext(); ) run(it.next());
+        \\\
+        ```
+    languages: [java]
+    tags: [general-programming, scope, readability]
+    source: https://www.informit.com/store/effective-java-9780134686097

@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC12:
     standard: @{CppCoreGuidelines}
     ruleId: C.12
-    title: Avoid const or reference data members in copyable or movable types
+    title: Keep const and reference members out of copyable or movable types
     statement:
-        Do not declare data members const or as references in a type that is
-        meant to be copied or moved. Use a pointer, possibly not_null, when
-        the member must refer to something.
+        A type that should be copyable or movable must not have const or
+        reference data members. If a member needs to refer to another object,
+        store a pointer, perhaps a not_null one.
     rationale:
-        Such members silently delete the assignment operators, leaving a
-        type that can be constructed by copy but not assigned, which is
-        confusing to use.
+        Such members delete the assignment operators without any warning. The
+        type can then be copy constructed but not assigned, which confuses
+        users.
     exceptions: null
     severity: null
     noncompliant:

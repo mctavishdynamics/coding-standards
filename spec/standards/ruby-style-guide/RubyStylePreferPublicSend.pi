@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStylePreferPublicSend:
+    standard: @{RubyStyleGuide}
+    ruleId: prefer-public-send
+    title: Call public_send rather than send
+    statement:
+        For dynamic calls, use public_send, which refuses to invoke private
+        or protected methods. RuboCop checks this with Style/Send.
+    rationale:
+        send can reach private methods, bypassing the design of the class
+        you are calling.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        account.send(:recalculate_balance!)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        account.public_send(action)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [metaprogramming, encapsulation]
+    source: https://rubystyle.guide/#prefer-public-send

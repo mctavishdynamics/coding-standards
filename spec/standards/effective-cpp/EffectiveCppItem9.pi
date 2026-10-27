@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem9:
+    standard: @{EffectiveCpp}
+    ruleId: item-9
+    title: Keep virtual calls out of constructors and destructors
+    statement:
+        Avoid calling virtual functions while an object is being built or
+        torn down; pass the needed data up to the base constructor instead.
+    rationale:
+        During those phases the object behaves as the base type, so the
+        derived override is not called.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Widget {
+        public:
+            Widget() { logCreation(); }
+            virtual void logCreation() const;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Widget {
+        public:
+            explicit Widget(const std::string& info) { log(info); }
+        };
+        class Button : public Widget {
+        public:
+            Button() : Widget("button created") {}
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors-destructors-assignment, inheritance, constructors]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

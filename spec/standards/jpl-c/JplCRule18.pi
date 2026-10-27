@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule18:
+    standard: @{JplC}
+    ruleId: rule-18
+    title: Parenthesize mixed-operator expressions
+    statement:
+        In an expression with several sub-expressions, use parentheses to
+        show the intended order of evaluation.
+    rationale:
+        Readers often misremember C precedence rules, especially for shifts,
+        bitwise operators and comparisons. Parentheses make the intent
+        unambiguous.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (flags & MASK == MASK) {
+            enable();
+        }
+        value = a << 2 + b;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if ((flags & MASK) == MASK) {
+            enable();
+        }
+        value = (a << 2) + b;
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-3, expressions, readability]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

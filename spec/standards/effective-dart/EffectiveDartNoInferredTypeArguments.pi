@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoInferredTypeArguments:
+    standard: @{EffectiveDart}
+    ruleId: dont-write-type-arguments-on-generic-invocations-that-are-inferred
+    title: Omit type arguments that inference already supplies
+    statement:
+        Leave off type arguments on a generic invocation when Dart infers
+        the ones you want from the surrounding type or the arguments.
+    rationale:
+        Repeating inferred types adds clutter.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final Set<String> seen = <String>{};
+        final names = <String>['ada', 'linus'];
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final Set<String> seen = {};
+        final names = ['ada', 'linus'];
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, types, generics]
+    source: https://dart.dev/effective-dart/design#dont-write-type-arguments-on-generic-invocations-that-are-inferred

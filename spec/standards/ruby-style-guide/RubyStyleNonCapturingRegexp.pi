@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNonCapturingRegexp:
+    standard: @{RubyStyleGuide}
+    ruleId: non-capturing-regexp
+    title: Mark grouping-only parentheses as non-capturing
+    statement:
+        When a group is only there for grouping and you do not use what it
+        captures, make it non-capturing.
+    rationale:
+        A non-capturing group states that the capture is not needed and
+        keeps the numbering of the real captures simple.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        /\A(jpg|png|gif)\z/
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        /\A(?:jpg|png|gif)\z/
+        \\\
+        ```
+    languages: [ruby]
+    tags: [regex]
+    source: https://rubystyle.guide/#non-capturing-regexp

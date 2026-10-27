@@ -5,30 +5,30 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT26:
     standard: @{CppCoreGuidelines}
     ruleId: T.26
-    title: Prefer to define concepts in terms of use-patterns rather than simple syntax
+    title: Describe concepts by how values are used, not by bare syntax
     statement:
-        Write a concept as a requires expression showing how the type is
-        used, rather than as a conjunction of has-this-operator traits.
+        Define a concept through a requires expression that shows how values of the
+        type are used, not as a list of has-this-operator traits joined together.
     rationale:
-        Use patterns read like the code a user writes, take conversions into
-        account, and spare readers from remembering the names of many helper
-        traits.
+        The use patterns look like the code callers will write, and they
+        automatically allow for conversions. Readers also do not need to know the
+        names of a dozen helper traits.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
         template<typename T>
-        concept Equality = has_equal<T> && has_not_equal<T>;
+        concept Ordered = has_less_v<T> && has_greater_v<T>;
         \\\
         ```
     compliant:
         ```cpp
         \\\
         template<typename T>
-        concept Equality = requires(T a, T b) {
-            { a == b } -> std::convertible_to<bool>;
-            { a != b } -> std::convertible_to<bool>;
+        concept Ordered = requires(const T& lhs, const T& rhs) {
+            { lhs < rhs } -> std::same_as<bool>;
+            { lhs > rhs } -> std::same_as<bool>;
         };
         \\\
         ```

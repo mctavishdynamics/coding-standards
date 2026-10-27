@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNounPhraseForValueFunctions:
+    standard: @{EffectiveDart}
+    ruleId: prefer-a-noun-phrase-or-non-imperative-verb-phrase-for-a-function-or-method-if-returning-a-value-is-its-primary-purpose
+    title: Name value-returning functions after their result
+    statement:
+        When a function or method is used mainly for the value it returns
+        and needs parameters, so it cannot be a getter, name it for what it
+        returns. Verb names such as take or split remain acceptable when
+        simpler.
+    rationale:
+        Such a member is conceptually a property, and its name should
+        describe the value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        final row = table.fetchTheRowFor(3);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        final row = table.rowAt(3);
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, naming, functions]
+    source: https://dart.dev/effective-dart/design#prefer-a-noun-phrase-or-non-imperative-verb-phrase-for-a-function-or-method-if-returning-a-value-is-its-primary-purpose

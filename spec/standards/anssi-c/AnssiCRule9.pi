@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule9:
+    standard: @{AnssiC}
+    ruleId: rule-9
+    title: Include only headers, never .c files
+    statement:
+        Use include directives only for header files, never for .c files.
+    rationale:
+        Including a .c file duplicates its definitions in several
+        translation units and hides the real module structure.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* main.c */
+        #include "crc.c"
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* main.c */
+        #include "crc.h"
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, headers, modularity]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=16

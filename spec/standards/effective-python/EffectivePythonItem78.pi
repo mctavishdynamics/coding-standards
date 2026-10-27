@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem78:
+    standard: @{EffectivePython}
+    ruleId: item-78
+    title: Keep the event loop responsive by offloading blocking work
+    statement:
+        Never make blocking calls such as file I/O or heavy computation
+        directly inside a coroutine. Move them to worker threads.
+    rationale:
+        A blocking call stalls the whole event loop and every other
+        coroutine. Debug mode can report slow callbacks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        async def save(report):
+            with open("out.txt", "w") as f:
+                f.write(render(report))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        async def save(report):
+            await asyncio.to_thread(write_file, "out.txt", render(report))
+        \\\
+        ```
+    languages: [python]
+    tags: [concurrency-and-parallelism, asyncio, performance]
+    source: https://effectivepython.com/

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip158:
+    standard: @{GoogleAip}
+    ruleId: AIP-158
+    title: Paginate collections from the first release with opaque tokens
+    statement:
+        Any method returning a collection must support pagination from the
+        start, with an optional page_size and a page_token in the request
+        and next_page_token in the response. Page tokens must be opaque,
+        URL-safe and carry no authorization, and pagination must really be
+        enforced with a finite default page size.
+    rationale:
+        Adding pagination later is a breaking change, and unbounded
+        responses grow with the data. Opaque tokens keep implementation
+        details out of the contract so the server can change them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message ListOrdersRequest {
+          string parent = 1;
+          int32 offset = 2;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message ListOrdersRequest {
+          string parent = 1;
+          int32 page_size = 2;
+          string page_token = 3;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [pagination, design-patterns]
+    source: https://google.aip.dev/158

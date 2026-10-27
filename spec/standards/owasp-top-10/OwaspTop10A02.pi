@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./OwaspTop10 import OwaspTop10
+
+export coding-rule OwaspTop10A02:
+    standard: @{OwaspTop10}
+    ruleId: A02:2025
+    title: Prevent security misconfiguration
+    statement:
+        Use an automated, repeatable hardening process that sets up every
+        environment the same way with its own credentials, on a minimal
+        platform without unused features or samples. Review settings as part
+        of patching, segment components and tenants, send security headers,
+        verify the configuration automatically, and take credentials from
+        the platform instead of embedding static secrets.
+    rationale:
+        Default accounts, debug features, verbose errors and open storage
+        are easy for attackers to find and often give direct access. It is
+        the second category in the OWASP Top 10 for 2025.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        app.config["SECRET_KEY"] = "dev"
+        app.run(host="0.0.0.0", debug=True)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
+        app.run(host="0.0.0.0", debug=False)
+        \\\
+        ```
+    languages: [any]
+    tags: [rank-2, configuration, hardening, secrets]
+    source: https://owasp.org/Top10/2025/A02_2025-Security_Misconfiguration/

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule84:
+    standard: @{CppCodingStandards}
+    ruleId: rule-84
+    title: Reach for a named algorithm before a raw loop
+    statement:
+        Use standard algorithms with lambdas or function objects in place of
+        hand-written loops for common tasks.
+    rationale:
+        Algorithms state intent by name, are tested and often more
+        efficient.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        bool any = false;
+        for (const auto& u : users) if (u.isAdmin()) { any = true; break; }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        bool any = std::any_of(users.begin(), users.end(),
+                               [](const User& u) { return u.isAdmin(); });
+        \\\
+        ```
+    languages: [cpp]
+    tags: [stl-algorithms, algorithms, readability]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

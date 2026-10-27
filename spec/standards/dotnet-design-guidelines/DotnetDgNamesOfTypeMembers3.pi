@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfTypeMembers3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-type-members-3
+    title: Do not pair a property with a Get method of the same name
+    statement:
+        Do not declare both a property and a method named Get plus that
+        property's name.
+    rationale:
+        The pairing usually means the value really should be exposed by a
+        method only.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Address ShippingAddress { get; set; }
+        public Address GetShippingAddress(int index) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public Address GetShippingAddress(int index) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, naming, properties]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-type-members#names-of-properties

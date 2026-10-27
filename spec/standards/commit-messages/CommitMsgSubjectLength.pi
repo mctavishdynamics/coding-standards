@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CommitMessages import CommitMessages
+
+export coding-rule CommitMsgSubjectLength:
+    standard: @{CommitMessages}
+    ruleId: 2
+    title: Keep the summary line short, about 50 characters
+    statement:
+        Aim for a summary of around 50 characters and treat 72 as the firm
+        upper bound.
+    rationale:
+        Short summaries stay readable in one-line views and hosting sites
+        cut off longer ones. Trouble fitting the limit often means the
+        commit mixes several changes.
+    exceptions:
+        The 50 figure is a guideline, not a strict cap.
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        Change the way the background job scheduler handles retries after failures
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        Back off exponentially when retrying failed jobs
+        \\\
+        ```
+    languages: [any]
+    tags: [commit-messages, line-length]
+    source: https://cbea.ms/git-commit/#limit-50

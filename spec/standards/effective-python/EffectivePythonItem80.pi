@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem80:
+    standard: @{EffectivePython}
+    ruleId: item-80
+    title: Give try, except, else and finally one job each
+    statement:
+        Put the risky call in try, handle expected failures in except, put
+        follow-up code that should run only on success in else, and put
+        cleanup in finally.
+    rationale:
+        Using each block for its own job keeps the try short and makes clear
+        which errors are handled.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            data = json.loads(text)
+            total = data["count"] * 2
+        except ValueError:
+            total = 0
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        try:
+            data = json.loads(text)
+        except ValueError:
+            total = 0
+        else:
+            total = data["count"] * 2
+        \\\
+        ```
+    languages: [python]
+    tags: [robustness, exceptions, error-handling]
+    source: https://effectivepython.com/

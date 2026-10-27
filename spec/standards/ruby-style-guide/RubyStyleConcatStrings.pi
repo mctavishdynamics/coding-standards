@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleConcatStrings:
+    standard: @{RubyStyleGuide}
+    ruleId: concat-strings
+    title: Append with << when building large strings
+    statement:
+        When assembling a big string piece by piece, append to it with the
+        shovel operator rather than with plus.
+    rationale:
+        The shovel operator changes the string in place, while plus creates
+        a new string object on every step and is slower.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        csv = ''
+        rows.each { |row| csv += row.join(',') + "\n" }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        csv = +''
+        rows.each { |row| csv << row.join(',') << "\n" }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, performance]
+    source: https://rubystyle.guide/#concat-strings

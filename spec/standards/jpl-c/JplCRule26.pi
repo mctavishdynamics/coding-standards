@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule26:
+    standard: @{JplC}
+    ruleId: rule-26
+    title: Declare pointers with at most two stars
+    statement:
+        An object declaration should contain at most two levels of pointer
+        indirection.
+    rationale:
+        Deeply nested pointers make data flow hard to follow and are easy to
+        get wrong, for people and static analyzers alike.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int ***grid_planes;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        typedef struct {
+            int **rows;
+        } plane_t;
+
+        plane_t *grid_planes;
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-4, pointers]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

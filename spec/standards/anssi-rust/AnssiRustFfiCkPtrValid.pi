@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiCkPtrValid:
+    standard: @{AnssiRust}
+    ruleId: FFI-CK-PTR-VALID
+    title: Check foreign pointers before dereferencing
+    statement:
+        Before dereferencing a pointer received from foreign code, check it
+        is valid, and at least that it is not null. Prefer stronger checks
+        such as range, tag or alignment checks when they are available.
+    rationale:
+        Dereferencing a null or dangling pointer is undefined behaviour and
+        a common source of crashes and exploits.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub unsafe extern "C" fn counter_inc(c: *mut u32) {
+            *c += 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub unsafe extern "C" fn counter_inc(c: *mut u32) -> i32 {
+            match unsafe { c.as_mut() } {
+                Some(c) => { *c = c.wrapping_add(1); 0 }
+                None => -1,
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, ffi, pointers, null-safety]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-CK-PTR-VALID

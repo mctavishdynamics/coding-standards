@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern19:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-19
+    title: Consider critical finalizers when cleanup must always run
+    statement:
+        If a finalizer absolutely has to execute even during forced
+        application domain unloads or thread aborts, derive from
+        CriticalFinalizerObject, for example through SafeHandle.
+    rationale:
+        Critical finalizers get stronger execution guarantees than ordinary
+        ones.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public sealed class DeviceHandle : SafeHandleZeroOrMinusOneIsInvalid
+        {
+            public DeviceHandle() : base(ownsHandle: true) { }
+            protected override bool ReleaseHandle() => NativeMethods.CloseDevice(handle);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, dispose, finalizers, reliability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern#finalizable-types

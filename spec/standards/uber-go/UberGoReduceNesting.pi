@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoReduceNesting:
+    standard: @{UberGo}
+    ruleId: reduce-nesting
+    title: Return early to keep nesting shallow
+    statement:
+        Handle errors and special cases first and return or continue early,
+        so that the main logic is not buried several levels deep.
+    rationale:
+        Deep nesting is harder to follow than a straight sequence of guard
+        clauses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        for _, o := range orders {
+            if o.Paid {
+                if err := ship(o); err == nil {
+                    shipped++
+                } else {
+                    return err
+                }
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        for _, o := range orders {
+            if !o.Paid {
+                continue
+            }
+            if err := ship(o); err != nil {
+                return err
+            }
+            shipped++
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [control-flow, readability]
+    source: https://github.com/uber-go/guide/blob/master/style.md#reduce-nesting

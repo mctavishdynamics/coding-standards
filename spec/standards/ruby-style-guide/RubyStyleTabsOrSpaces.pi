@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleTabsOrSpaces:
+    standard: @{RubyStyleGuide}
+    ruleId: tabs-or-spaces
+    title: Indent with spaces, never hard tabs
+    statement:
+        Indent code with space characters alone. Do not put hard tab
+        characters in source files.
+    rationale:
+        Tabs render at different widths in different editors and tools, so
+        the layout of tab-indented code changes from one viewer to the next.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def total
+        # the next line starts with a hard tab, which displays at varying widths
+                items.sum(&:price)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def total
+          items.sum(&:price)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, indentation]
+    source: https://rubystyle.guide/#tabs-or-spaces

@@ -5,16 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE4:
     standard: @{CppCoreGuidelines}
     ruleId: E.4
-    title: Design your error-handling strategy around invariants
+    title: Build the error strategy around the invariants each type keeps
     statement:
-        Base the error-handling design on class invariants. Every object
-        must be in a valid state to be used, and after recovering from an
-        error every object that was not destroyed must still satisfy its
-        invariant.
+        Design error handling around class invariants. An object may only be used
+        while its invariant holds, and once an error has been handled, every object
+        still alive must satisfy its invariant again.
     rationale:
-        An object can only be used safely when its invariant holds, so
-        recovery is only meaningful if errors never leave surviving objects
-        in a broken state.
+        Member functions depend on the invariant, so recovering is pointless if it
+        leaves some object broken.
     exceptions: null
     severity: null
     noncompliant: null

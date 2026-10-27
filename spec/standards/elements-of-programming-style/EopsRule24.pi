@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule24:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-24
+    title: Place each action right after the test that triggers it
+    statement:
+        Keep the code that handles a condition next to the test for it,
+        rather than far away down the routine.
+    rationale:
+        When decision and action sit together, a reader sees the cause and
+        effect at once and is less likely to mismatch them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int bad = (n < 0);
+        int big = (n > MAX);
+        compute(n);
+        if (bad) error("negative");
+        if (big) error("too large");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (n < 0) {
+            error("negative");
+        } else if (n > MAX) {
+            error("too large");
+        } else {
+            compute(n);
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [control-structure, conditionals, readability]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

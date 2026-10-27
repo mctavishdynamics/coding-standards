@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation15:
+    standard: @{AnssiC}
+    ruleId: recommendation-15
+    title: Make preprocessor conditions evaluate to 0 or 1 using defined macros
+    statement:
+        Write conditions for if and elif directives so they only yield 0 or
+        1, and use only identifiers that have been defined.
+    rationale:
+        An undefined identifier silently counts as 0, so a typo flips the
+        branch without any error.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #if LOG_LEVL > 2
+        #define VERBOSE 1
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #if defined(LOG_LEVEL) && (LOG_LEVEL > 2)
+        #define VERBOSE 1
+        #endif
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, preprocessor]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=19

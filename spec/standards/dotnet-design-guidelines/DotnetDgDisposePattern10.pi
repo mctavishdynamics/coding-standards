@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern10:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-10
+    title: Throw ObjectDisposedException after disposal
+    statement:
+        Members that cannot work once the object is disposed should throw
+        ObjectDisposedException.
+    rationale:
+        It tells the caller clearly that the object's lifetime is over
+        instead of failing in an obscure way.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public void Write(ReadOnlySpan<byte> data)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            _stream.Write(data);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, dispose, resources, exceptions]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern#basic-dispose-pattern

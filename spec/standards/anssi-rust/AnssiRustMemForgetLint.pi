@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustMemForgetLint:
+    standard: @{AnssiRust}
+    ruleId: MEM-FORGET-LINT
+    title: Deny the Clippy mem_forget lint
+    statement:
+        Enable Clippy's mem_forget lint to find calls to mem::forget, and
+        deny it at the top of the crate root to keep them out.
+    rationale:
+        A lint turns the ban into an automatic check instead of relying on
+        reviewers to spot every call.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```rust
+        \\\
+        // src/lib.rs
+        #![deny(clippy::mem_forget)]
+        \\\
+        ```
+    languages: [rust]
+    tags: [recommendation, memory, tooling]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/memory.html#MEM-FORGET-LINT

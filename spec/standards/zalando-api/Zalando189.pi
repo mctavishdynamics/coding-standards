@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando189:
+    standard: @{ZalandoApi}
+    ruleId: 189
+    title: Add Deprecation and Sunset headers to responses
+    statement:
+        While an element is deprecated, every response that involves it
+        carries a Deprecation header, plus a Sunset header once a removal
+        date is set. If a response touches several deprecated elements,
+        report the soonest dates.
+    rationale:
+        The headers tell clients at run time that they depend on something
+        that is going away.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        HTTP/1.1 200 OK
+        Deprecation: @1767225600
+        Sunset: Thu, 31 Dec 2026 23:59:59 GMT
+        \\\
+        ```
+    languages: [any]
+    tags: [should, deprecation, headers]
+    source: https://opensource.zalando.com/restful-api-guidelines/#189

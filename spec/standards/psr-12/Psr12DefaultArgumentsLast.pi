@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12DefaultArgumentsLast:
+    standard: @{Psr12}
+    ruleId: 4.5b
+    title: Put parameters with defaults at the end
+    statement:
+        Place method and function parameters that have default values after
+        all the parameters that do not.
+    rationale:
+        A default before a required parameter can never be used, and PHP
+        warns about it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        function paginate(int $perPage = 20, int $page)
+        {
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        function paginate(int $page, int $perPage = 20)
+        {
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [functions, parameters]
+    source: https://www.php-fig.org/psr/psr-12/#45-method-and-function-arguments

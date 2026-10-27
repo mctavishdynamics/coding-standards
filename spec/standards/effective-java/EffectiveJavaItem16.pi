@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem16:
+    standard: @{EffectiveJava}
+    ruleId: item-16
+    title: Expose state through methods, not public fields
+    statement:
+        A public class should keep its fields private and provide accessor
+        methods, and setters where mutation is needed.
+    rationale:
+        Public fields fix the representation forever, cannot enforce
+        invariants and cannot run code on access.
+    exceptions:
+        Package-private and private nested classes may expose fields, and
+        exposing immutable fields is less harmful.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class Range {
+            public int low;
+            public int high;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class Range {
+            private int low;
+            private int high;
+
+            public int low() { return low; }
+            public int high() { return high; }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [classes-and-interfaces, encapsulation, accessors]
+    source: https://www.informit.com/store/effective-java-9780134686097

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule37:
+    standard: @{CppCodingStandards}
+    ruleId: rule-37
+    title: Derive publicly so the class can be used wherever the base is expected
+    statement:
+        Use public inheritance when derived objects must work correctly in
+        all code written for the base. Do not use it just to reuse the
+        base's code.
+    rationale:
+        The value of public inheritance is that existing polymorphic code
+        keeps working with new types.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Stack : public std::vector<int> {};   // reuse only
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Stack {
+        public:
+            void push(int v) { v_.push_back(v); }
+        private:
+            std::vector<int> v_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, inheritance, substitutability]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

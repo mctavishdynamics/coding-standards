@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem36:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-36
+    title: Pass std::launch::async when the work must run asynchronously
+    statement:
+        If a task must run on another thread, request the async launch
+        policy explicitly.
+    rationale:
+        The default policy may defer the task until get or wait, which
+        breaks timed waits and thread-local assumptions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto f = std::async(poll);
+        while (f.wait_for(10ms) != std::future_status::ready) {}   // may spin forever
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto f = std::async(std::launch::async, poll);
+        while (f.wait_for(10ms) != std::future_status::ready) {}
+        \\\
+        ```
+    languages: [cpp]
+    tags: [the-concurrency-api, concurrency]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV3x5x5:
+    standard: @{OwaspAsvs}
+    ruleId: V3.5.5
+    title: Discard postMessage data from untrusted origins
+    statement:
+        Ignore messages arriving through postMessage when their origin is
+        not trusted or their content is not in the expected format.
+    rationale:
+        Any window can post a message, so unchecked handlers let hostile
+        pages drive the application.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        window.addEventListener("message", (event) => {
+          applySettings(JSON.parse(event.data));
+        });
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        window.addEventListener("message", (event) => {
+          if (event.origin !== "https://app.example.com") return;
+          const settings = parseSettings(event.data);
+          if (settings) applySettings(settings);
+        });
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, postmessage, javascript]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x12-V3-Web-Frontend-Security.md#v35-browser-origin-separation

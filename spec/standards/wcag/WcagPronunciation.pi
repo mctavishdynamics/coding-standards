@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagPronunciation:
+    standard: @{Wcag22}
+    ruleId: 3.1.6
+    title: Indicate pronunciation where meaning depends on it
+    statement:
+        Provide a way to find the pronunciation of words whose meaning is
+        ambiguous in context without knowing how they are pronounced.
+    rationale:
+        Readers who cannot use context or who hear text through a screen
+        reader may otherwise pick the wrong meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <p>Please read the minute notes.</p>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <p>Please read the <ruby>minute<rt>my-NOOT</rt></ruby> notes.</p>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aaa, content, language]
+    source: https://www.w3.org/TR/WCAG22/#pronunciation

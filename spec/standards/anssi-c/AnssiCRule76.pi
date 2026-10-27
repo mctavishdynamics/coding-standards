@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule76:
+    standard: @{AnssiC}
+    ruleId: rule-76
+    title: Never hard-code sensitive data
+    statement:
+        Do not write passwords, keys, logins or other secrets into the
+        source code.
+    rationale:
+        Secrets in code end up in binaries and repositories, where anyone
+        with access can read them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static const char API_KEY[] = "k3y-0f-pr0duct10n";
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char api_key[64];
+        if (load_secret("api_key", api_key, sizeof api_key) != 0) { return -1; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, sensitive-data, secrets]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=57

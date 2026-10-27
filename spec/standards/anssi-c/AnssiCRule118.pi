@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule118:
+    standard: @{AnssiC}
+    ruleId: rule-118
+    title: Do not assign inside a boolean expression
+    statement:
+        Never assign inside a condition; do the assignment as a separate
+        statement.
+    rationale:
+        An assignment in a condition is often a mistyped comparison, and
+        even when intended it hides the side effect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if ((fd = open(path, O_RDONLY)) < 0) { return -1; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        fd = open(path, O_RDONLY);
+        if (fd < 0) { return -1; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, expressions, side-effects]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=93

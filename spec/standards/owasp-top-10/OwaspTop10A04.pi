@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./OwaspTop10 import OwaspTop10
+
+export coding-rule OwaspTop10A04:
+    standard: @{OwaspTop10}
+    ruleId: A04:2025
+    title: Prevent cryptographic failures
+    statement:
+        Classify data, keep sensitive data only as long as needed, and
+        encrypt it at rest and in transit with TLS 1.2 or later and HSTS,
+        using current, well-trusted algorithms with proper key management.
+        Hash passwords with a salted adaptive function such as Argon2, use
+        authenticated encryption, never reuse an IV with the same key,
+        generate keys from a secure random source, and drop deprecated
+        choices such as MD5, SHA-1 and CBC.
+    rationale:
+        Weak or missing cryptography exposes passwords, personal data and
+        secrets to anyone who can read the traffic or the storage. It is the
+        fourth category in the OWASP Top 10 for 2025.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def hash_password(password):
+            return hashlib.md5(password.encode()).hexdigest()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from argon2 import PasswordHasher
+
+        hasher = PasswordHasher()
+
+        def hash_password(password):
+            return hasher.hash(password)
+        \\\
+        ```
+    languages: [any]
+    tags: [rank-4, cryptography, passwords, data-protection]
+    source: https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/

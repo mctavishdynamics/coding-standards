@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgUsingStandardExceptionTypes7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: using-standard-exception-types-7
+    title: Set ParamName on argument exceptions
+    statement:
+        Pass the parameter name when throwing an ArgumentException subtype,
+        using the constructor overload that accepts it.
+    rationale:
+        The name identifies which argument the caller got wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        throw new ArgumentNullException();
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        throw new ArgumentNullException(nameof(destination));
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, exceptions, exception-types, validation]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/using-standard-exception-types#argumentexception-argumentnullexception-and-argumentoutofrangeexception

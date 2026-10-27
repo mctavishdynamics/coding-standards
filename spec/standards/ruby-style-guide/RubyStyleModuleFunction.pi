@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleModuleFunction:
+    standard: @{RubyStyleGuide}
+    ruleId: module-function
+    title: Prefer module_function to extend self
+    statement:
+        To make a module's instance methods callable on the module itself,
+        use module_function rather than extend self.
+    rationale:
+        The module_function call states the intent directly and keeps the
+        copied methods private when the module is mixed in.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        module Slug
+          extend self
+
+          def build(text) = text.downcase.tr(' ', '-')
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        module Slug
+          module_function
+
+          def build(text) = text.downcase.tr(' ', '-')
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [modules]
+    source: https://rubystyle.guide/#module-function

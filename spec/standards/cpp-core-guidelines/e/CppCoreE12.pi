@@ -5,15 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE12:
     standard: @{CppCoreGuidelines}
     ruleId: E.12
-    title: Use noexcept when exiting a function by a throw is impossible or unacceptable
+    title: Mark functions noexcept when throwing out of them is impossible or unwanted
     statement:
-        Declare a function noexcept when it cannot throw, or when you would
-        rather terminate than deal with an exception leaving it, for example
-        on memory exhaustion.
+        Add noexcept to a function that never throws. Also add it when an exception
+        escaping would leave you nothing better to do than stop, as with running out
+        of memory in many programs.
     rationale:
-        noexcept makes error handling systematic and efficient, and tells
-        both the compiler and human readers that the function will not exit
-        through an exception.
+        The keyword documents for readers and the compiler that no exception leaves
+        the function. That lets the compiler emit tighter code and keeps the error
+        policy predictable.
     exceptions: null
     severity: null
     noncompliant:

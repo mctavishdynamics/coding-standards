@@ -5,13 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreSlIo10:
     standard: @{CppCoreGuidelines}
     ruleId: SL.io.10
-    title: Unless you use printf-family functions call ios_base::sync_with_stdio(false)
+    title: Turn off stdio synchronization when not mixing in printf
     statement:
-        If the program does not mix printf-style I/O with iostreams, turn
-        off stream synchronization at the start of main.
+        At the top of main, call std::ios_base::sync_with_stdio(false) unless the
+        program also writes or reads through printf and its relatives.
     rationale:
-        cin and cout are synchronized with C stdio by default, and that
-        synchronization can be costly.
+        The standard streams are kept in lock step with C stdio by default. That
+        coordination has a noticeable cost that buys nothing when C I/O is not used.
     exceptions: null
     severity: null
     noncompliant:

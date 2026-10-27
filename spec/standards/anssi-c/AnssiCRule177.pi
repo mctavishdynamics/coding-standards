@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule177:
+    standard: @{AnssiC}
+    ruleId: rule-177
+    title: Do not use rand
+    statement:
+        Do not use the standard rand function.
+    rationale:
+        It gives no guarantee about the quality of its randomness and is
+        unsuitable for security purposes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        uint32_t token = (uint32_t)rand();
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        uint32_t token = 0;
+        if (getrandom(&token, sizeof token, 0) != (ssize_t)sizeof token) { return -1; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, standard-library, randomness]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=143

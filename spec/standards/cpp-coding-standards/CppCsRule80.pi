@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule80:
+    standard: @{CppCodingStandards}
+    ruleId: rule-80
+    title: Add elements to sequences with push_back where possible
+    statement:
+        Use push_back or emplace_back to grow a sequence, instead of
+        inserting at arbitrary positions or resizing then assigning.
+    rationale:
+        Appending is amortised constant time and clearer than the
+        alternatives.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        v.insert(v.begin(), x);   // shifts every element
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        v.push_back(x);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [stl-containers, containers, performance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

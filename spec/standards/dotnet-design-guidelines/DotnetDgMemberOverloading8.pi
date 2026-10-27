@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgMemberOverloading8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: member-overloading-8
+    title: Prefer overloads to default arguments
+    statement:
+        Offer shorter overloads instead of parameters with default values.
+    rationale:
+        Default arguments are not part of the CLS, and their values are
+        baked into callers when compiled.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Connect(string host, int port = 443, bool secure = true) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Connect(string host) => Connect(host, 443);
+        public void Connect(string host, int port) => Connect(host, port, true);
+        public void Connect(string host, int port, bool secure) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, overloading, interoperability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/member-overloading

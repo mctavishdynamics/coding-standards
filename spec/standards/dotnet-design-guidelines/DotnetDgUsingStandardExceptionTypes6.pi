@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgUsingStandardExceptionTypes6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: using-standard-exception-types-6
+    title: Throw ArgumentException or its most specific subtype for bad arguments
+    statement:
+        Report invalid arguments with ArgumentException, choosing the most
+        derived subtype that fits.
+    rationale:
+        Specific types such as ArgumentNullException and
+        ArgumentOutOfRangeException tell the caller exactly what was wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        if (pageSize <= 0) throw new ArgumentException("bad page size");
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        if (pageSize <= 0) throw new ArgumentOutOfRangeException(nameof(pageSize), pageSize, "Must be positive.");
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, exceptions, exception-types, validation]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/using-standard-exception-types#argumentexception-argumentnullexception-and-argumentoutofrangeexception

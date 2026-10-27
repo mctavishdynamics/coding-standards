@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagPauseStopHide:
+    standard: @{Wcag22}
+    ruleId: 2.2.2
+    title: Let users pause moving, blinking and auto-updating content
+    statement:
+        For content that moves, blinks or scrolls automatically for more
+        than five seconds alongside other content, provide a way to pause,
+        stop or hide it. For auto-updating content, also allow controlling
+        how often it updates.
+    rationale:
+        Motion distracts people with attention disorders and makes text
+        unreadable for slow readers.
+    exceptions:
+        Not required where the movement is essential to the activity.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <div class="carousel" data-autoplay="true">...</div>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <div class="carousel" data-autoplay="true">
+          <button type="button" class="carousel-pause" aria-pressed="false">Pause slideshow</button>
+          ...
+        </div>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, motion, carousels, animation]
+    source: https://www.w3.org/TR/WCAG22/#pause-stop-hide

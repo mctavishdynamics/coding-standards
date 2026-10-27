@@ -5,42 +5,47 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC130:
     standard: @{CppCoreGuidelines}
     ruleId: C.130
-    title: Prefer a virtual clone function for deep copies of polymorphic classes
+    title: Copy polymorphic objects through a virtual clone member
     statement:
-        To copy a polymorphic object deeply, provide a virtual clone
-        function that returns an owning pointer to a copy of the most
-        derived type, instead of public copy operations.
+        For deep copies of polymorphic objects, add a virtual clone function
+        that returns an owning pointer to a new object of the most derived type.
+        Do not offer public copy operations.
     rationale:
-        Public copying of polymorphic classes slices objects, while clone
-        always copies the actual dynamic type.
+        Public copying slices a polymorphic object to its base. A clone call
+        always copies the real dynamic type.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        class Shape {
+        class Token {
         public:
-            Shape(const Shape&) = default;   // copies only the base part
-            virtual ~Shape() = default;
+            Token(const Token&) = default;     // copying a Keyword yields a Token
+            virtual ~Token() = default;
+            virtual std::string text() const = 0;
         };
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        class Shape {
+        class Token {
         public:
-            virtual std::unique_ptr<Shape> clone() const = 0;
-            virtual ~Shape() = default;
+            virtual ~Token() = default;
+            virtual std::string text() const = 0;
+            virtual std::unique_ptr<Token> clone() const = 0;
         protected:
-            Shape(const Shape&) = default;
+            Token(const Token&) = default;
         };
 
-        class Circle : public Shape {
+        class Keyword final : public Token {
         public:
-            std::unique_ptr<Shape> clone() const override {
-                return std::unique_ptr<Shape>(new Circle(*this));
+            std::string text() const override { return word_; }
+            std::unique_ptr<Token> clone() const override {
+                return std::make_unique<Keyword>(*this);
             }
+        private:
+            std::string word_;
         };
         \\\
         ```

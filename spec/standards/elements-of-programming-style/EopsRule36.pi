@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule36:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-36
+    title: Reject input that is malformed or out of range
+    statement:
+        Verify that every input value is well formed and falls within a
+        sensible range before using it.
+    rationale:
+        Bad input is common, and a program that trusts it will produce
+        garbage or fail in confusing ways.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        age = int(input())
+        save(age)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        text = input()
+        if not text.isdigit() or not 0 <= int(text) <= 150:
+            raise ValueError(f"implausible age: {text!r}")
+        save(int(text))
+        \\\
+        ```
+    languages: [any]
+    tags: [input-and-output, input-validation]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

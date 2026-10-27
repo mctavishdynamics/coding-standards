@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleLineLengthLimit:
+    standard: @{TigerStyle}
+    ruleId: line-length-limit
+    title: Keep every line to 100 columns or fewer
+    statement:
+        Never let a line exceed 100 columns. To wrap a long signature, call
+        or literal, add a trailing comma and let the formatter lay it out.
+    rationale:
+        A horizontal scrollbar should never conceal code, and at 100 columns
+        two copies of a file fit next to each other on screen.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        const reply = try client.request(.lookup_accounts, account_ids, timeout_ms_max, retries_max, tracer);
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        const reply = try client.request(
+            .lookup_accounts,
+            account_ids,
+            timeout_ms_max,
+            retries_max,
+            tracer,
+        );
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [formatting, line-length]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#style-by-the-numbers

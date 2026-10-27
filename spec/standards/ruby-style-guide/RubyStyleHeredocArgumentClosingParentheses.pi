@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHeredocArgumentClosingParentheses:
+    standard: @{RubyStyleGuide}
+    ruleId: heredoc-argument-closing-parentheses
+    title:
+        Close the argument parenthesis on the heredoc's opening line
+    statement:
+        When passing a heredoc as a method argument, put the closing
+        parenthesis of the call on the line that opens the heredoc. RuboCop
+        checks this with Layout/HeredocArgumentClosingParenthesis.
+    rationale:
+        A parenthesis on its own line after the delimiter breaks if the
+        newline before it is removed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        mailer.send_text(<<~BODY
+          Your report is ready.
+        BODY
+        )
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        mailer.send_text(<<~BODY)
+          Your report is ready.
+        BODY
+        \\\
+        ```
+    languages: [ruby]
+    tags: [strings, heredocs, formatting]
+    source: https://rubystyle.guide/#heredoc-argument-closing-parentheses

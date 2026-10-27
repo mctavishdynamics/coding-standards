@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp44:
     standard: @{CppCoreGuidelines}
     ruleId: CP.44
-    title: Name your lock_guards and unique_locks
+    title: Give every scoped lock object a variable name
     statement:
-        Always give a lock object a variable name so that it lives until the
-        end of the scope.
+        Bind every lock guard to a named variable so it stays alive until the scope
+        ends.
     rationale:
-        An unnamed lock is a temporary that unlocks again at the end of the
-        statement, and some spellings even declare a new unlocked variable
-        that shadows the mutex.
+        A guard without a name is a temporary, which unlocks at the semicolon.
+        Certain spellings even parse as a declaration of a fresh, unlocked object
+        that hides the mutex.
     exceptions: null
     severity: null
     noncompliant:

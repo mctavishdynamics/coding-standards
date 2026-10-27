@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgGeneralNamingConventions4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: general-naming-conventions-4
+    title: Leave type codes out of names
+    statement:
+        Do not encode a variable's type or kind in its name with prefixes in
+        the Hungarian style.
+    rationale:
+        The compiler and editor already show types, and a prefix goes stale
+        as soon as the type changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Notify(string szRecipient, bool bUrgent) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Notify(string recipient, bool urgent) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, naming]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/general-naming-conventions#word-choice

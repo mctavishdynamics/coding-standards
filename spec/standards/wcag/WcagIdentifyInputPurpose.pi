@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagIdentifyInputPurpose:
+    standard: @{Wcag22}
+    ruleId: 1.3.5
+    title: Mark the purpose of fields that collect user data
+    statement:
+        For inputs that collect information about the user, such as name,
+        email or address, declare the purpose in code, in HTML with the
+        matching autocomplete value.
+    rationale:
+        Browsers can then autofill the field and assistive tools can add
+        familiar icons, which helps people with memory, motor or cognitive
+        disabilities.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <label for="em">Email</label>
+        <input id="em" type="text" name="field3">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <label for="em">Email</label>
+        <input id="em" type="email" name="email" autocomplete="email">
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, forms, autocomplete]
+    source: https://www.w3.org/TR/WCAG22/#identify-input-purpose

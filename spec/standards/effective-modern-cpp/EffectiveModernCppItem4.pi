@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem4:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-4
+    title: Use reliable ways to inspect deduced types
+    statement:
+        View deduced types through IDE hints, deliberate compiler errors or
+        a type-name library. Treat typeid output as unreliable.
+    rationale:
+        Some tools strip references and const, giving the wrong answer, so
+        understanding the deduction rules remains essential.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::cout << typeid(param).name();   // drops const and &
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T> struct TypeOf;
+        TypeOf<decltype(param)> probe;   // compiler error names the type
+        \\\
+        ```
+    languages: [cpp]
+    tags: [deducing-types, type-deduction, debugging]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

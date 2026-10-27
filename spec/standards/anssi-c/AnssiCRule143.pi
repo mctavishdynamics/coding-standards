@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule143:
+    standard: @{AnssiC}
+    ruleId: rule-143
+    title: Declare inline functions static
+    statement:
+        Always make inline functions static.
+    rationale:
+        A non-static inline function without an external definition
+        elsewhere can cause undefined behaviour or link errors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        inline int min_int(int a, int b) { return (a < b) ? a : b; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static inline int min_int(int a, int b) { return (a < b) ? a : b; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, functions, linkage]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=114

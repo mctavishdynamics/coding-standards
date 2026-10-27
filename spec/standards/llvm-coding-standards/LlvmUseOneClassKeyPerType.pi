@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmUseOneClassKeyPerType:
+    standard: @{LlvmCodingStandards}
+    ruleId: use-of-class-and-struct-keywords
+    title: Declare a type with the same class key everywhere
+    statement:
+        Every declaration and definition of a given type must use the same
+        keyword, either class or struct.
+    rationale:
+        Mismatched keys trigger warnings on some compilers and can change
+        name mangling on others.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Interval;          // forward declaration
+        struct Interval {        // definition
+          unsigned Start, End;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Interval;
+        struct Interval {
+          unsigned Start, End;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, declarations]
+    source: https://llvm.org/docs/CodingStandards.html#use-of-class-and-struct-keywords

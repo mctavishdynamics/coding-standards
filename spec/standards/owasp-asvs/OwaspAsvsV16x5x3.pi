@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV16x5x3:
+    standard: @{OwaspAsvs}
+    ruleId: V16.5.3
+    title: Fail securely rather than open
+    statement:
+        Handle errors, including exceptions, so the application fails
+        safely, never carrying on with a transaction after validation logic
+        has failed.
+    rationale:
+        A fail-open path lets an attacker trigger an error to skip a check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            approved = fraud_check(order)
+        except TimeoutError:
+            approved = True
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        try:
+            approved = fraud_check(order)
+        except TimeoutError:
+            approved = False
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, error-handling, fail-secure]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x25-V16-Security-Logging-and-Error-Handling.md#v165-error-handling

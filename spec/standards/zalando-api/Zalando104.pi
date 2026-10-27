@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando104:
+    standard: @{ZalandoApi}
+    ruleId: 104
+    title: Secure every endpoint
+    statement:
+        Protect every endpoint with authentication and authorization, and
+        declare in the specification how it is protected, using an http
+        bearer or an oauth2 security scheme. Internal APIs secured by
+        platform JWT tokens use the bearer scheme.
+    rationale:
+        An unprotected endpoint exposes data and operations to anyone who
+        can reach it, and declaring the scheme tells clients how to
+        authenticate.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        components:
+          securitySchemes:
+            BearerAuth:
+              type: http
+              scheme: bearer
+              bearerFormat: JWT
+        security:
+          - BearerAuth: [ parcel-tracking.read ]
+        \\\
+        ```
+    languages: [any]
+    tags: [must, security, authentication]
+    source: https://opensource.zalando.com/restful-api-guidelines/#104

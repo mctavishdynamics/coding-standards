@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip202:
+    standard: @{GoogleAip}
+    ruleId: AIP-202
+    title: Declare field formats with google.api.field_info
+    statement:
+        Annotate string fields carrying UUID4, IPv4 or IPv6 values with the
+        matching field_info format, and use these formats only on string
+        fields. Compare such values with an RFC-compliant implementation,
+        not plain text comparison; new formats need an RFC or an approved
+        AIP.
+    rationale:
+        A declared format lets clients and generators validate and represent
+        values correctly. The text forms have many equivalent spellings, so
+        string comparison gives wrong answers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        string device_id = 1;  // A UUID.
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        string device_id = 1 [(google.api.field_info).format = UUID4];
+        \\\
+        ```
+    languages: [any]
+    tags: [fields, annotations]
+    source: https://google.aip.dev/202

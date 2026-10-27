@@ -5,16 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCon1:
     standard: @{CppCoreGuidelines}
     ruleId: Con.1
-    title: By default, make objects immutable
+    title: Start from immutable and add mutability only when needed
     statement:
-        Declare objects const unless their value needs to change.
+        Make const the default for every object, and drop it only for objects that
+        really must change.
     rationale:
-        Immutable objects are easier to reason about, and const prevents
-        accidental or hard-to-notice changes of value.
+        Code is easier to follow when most values stay fixed. The compiler also
+        rejects an accidental assignment instead of letting it pass silently.
     exceptions:
-        A local variable returned by value that is cheaper to move than copy
-        should not be const, because const can force a copy. Value
-        parameters are rarely declared const and need not be.
+        Skip const on a local that you return by value when moving it is cheaper
+        than copying, because const would turn the move into a copy. Parameters
+        taken by value rarely benefit from const either.
     severity: null
     noncompliant:
         ```cpp

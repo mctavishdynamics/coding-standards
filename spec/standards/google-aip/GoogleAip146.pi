@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip146:
+    standard: @{GoogleAip}
+    ruleId: AIP-146
+    title: Choose the least generic field type that fits
+    statement:
+        When a field must hold varying data, choose the most specific option
+        that works. Prefer a oneof, then a map of a single value type, then
+        google.protobuf.Struct, and use google.protobuf.Any only when
+        nothing else is feasible.
+    rationale:
+        Specific types keep the schema part of the contract and preserve
+        type safety. Generic types push validation and interpretation onto
+        every client.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message Payment {
+          google.protobuf.Any method = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message Payment {
+          oneof method {
+            CardDetails card = 1;
+            BankTransfer bank_transfer = 2;
+          }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [fields, types]
+    source: https://google.aip.dev/146

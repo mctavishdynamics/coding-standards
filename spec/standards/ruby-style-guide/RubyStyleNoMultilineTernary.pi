@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoMultilineTernary:
+    standard: @{RubyStyleGuide}
+    ruleId: no-multiline-ternary
+    title: Do not spread a ternary over several lines
+    statement:
+        Avoid a ternary operator that spans more than one line; write an if
+        or unless instead.
+    rationale:
+        A ternary is meant to be a compact one-liner, and splitting it hides
+        the branches.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        message = errors.any? ?
+          errors.full_messages.join(', ') :
+          'Saved'
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        message =
+          if errors.any?
+            errors.full_messages.join(', ')
+          else
+            'Saved'
+          end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals]
+    source: https://rubystyle.guide/#no-multiline-ternary

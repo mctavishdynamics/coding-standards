@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiAutomate:
+    standard: @{AnssiRust}
+    ruleId: FFI-AUTOMATE
+    title: Generate bindings with automatic tools
+    statement:
+        Use tools such as bindgen or cbindgen to generate FFI bindings when
+        possible, and keep regenerating them as the interface changes.
+    rationale:
+        Hand-written bindings drift from the real headers; generated ones
+        keep types and signatures in step.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```rust
+        \\\
+        // build.rs
+        fn main() {
+            bindgen::Builder::default()
+                .header("wrapper.h")
+                .generate()
+                .expect("bindings")
+                .write_to_file("src/bindings.rs")
+                .expect("write");
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [recommendation, ffi, tooling]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-AUTOMATE

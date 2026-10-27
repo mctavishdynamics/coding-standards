@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleUseRequireRelativeWheneverPossible:
+    standard: @{RubyStyleGuide}
+    ruleId: use-require_relative-whenever-possible
+    title: Load internal files with require_relative
+    statement:
+        Load the project's own files with require_relative, and keep require
+        for external libraries.
+    rationale:
+        It shows which dependencies are internal, and it is faster because
+        Ruby does not search the whole load path.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        require 'json'
+        require 'billing/lib/invoice'
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        require 'json'
+        require_relative 'invoice'
+        \\\
+        ```
+    languages: [ruby]
+    tags: [files, dependencies]
+    source: https://rubystyle.guide/#use-require_relative-whenever-possible

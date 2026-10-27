@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe121:
+    standard: @{CweTop25}
+    ruleId: CWE-121
+    title: Prevent stack-based buffer overflows
+    statement:
+        Bounds-check all data written into stack buffers and never call
+        unbounded functions such as gets; use their size-limited
+        replacements. Turn on stack canaries, address randomization and
+        other compiler and OS protections as defence in depth.
+    rationale:
+        Overrunning a stack buffer can overwrite the saved return address
+        and hand control of the program to the attacker. It is ranked 14 of
+        25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char line[128];
+        gets(line);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char line[128];
+        if (fgets(line, sizeof line, stdin) == NULL) {
+            return -1;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rank-14, memory, buffer-overflow, stack]
+    source: https://cwe.mitre.org/data/definitions/121.html

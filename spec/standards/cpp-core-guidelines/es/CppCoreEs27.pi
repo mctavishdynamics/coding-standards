@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs27:
     standard: @{CppCoreGuidelines}
     ruleId: ES.27
-    title: Use std::array or stack_array for arrays on the stack
+    title: Use std::array or a stack array type for local fixed-size arrays
     statement:
-        For local arrays use std::array when the size is fixed at compile
-        time, or gsl::stack_array when it is only known at run time, rather
-        than built-in or variable-length arrays.
+        Stack arrays should be std::array when the length is a compile-time
+        constant, or gsl::stack_array when the length is computed at run
+        time. Avoid C arrays and variable-length arrays.
     rationale:
-        They are readable, do not decay to pointers, and cannot be confused
-        with non-standard variable-length array extensions.
+        These types are easy to read and never silently decay into pointers.
+        They also cannot be mistaken for the non-standard variable-length
+        array extension, which is a security risk.
     exceptions: null
     severity: null
     noncompliant:

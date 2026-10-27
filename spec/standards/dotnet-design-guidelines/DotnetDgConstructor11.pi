@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgConstructor11:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: constructor-11
+    title: Keep static constructors from failing
+    statement:
+        Make sure a static constructor cannot let an exception escape.
+    rationale:
+        If type initialization fails, the type is unusable for the rest of
+        the application domain.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        static FeatureFlags()
+        {
+            Values = JsonSerializer.Deserialize<Dictionary<string, bool>>(File.ReadAllText("flags.json"));
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        private static readonly Lazy<Dictionary<string, bool>> s_values = new(LoadFlags);
+
+        public static bool IsEnabled(string name) => s_values.Value.GetValueOrDefault(name);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, constructors, exceptions]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/constructor#type-constructor-guidelines

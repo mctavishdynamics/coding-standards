@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiConsiderationsForUsingThePublishedapiAnnotation:
+    standard: @{KotlinApiGuidelines}
+    ruleId: considerations-for-using-the-publishedapi-annotation
+    title: Treat PublishedApi declarations as public API
+    statement:
+        If a public inline function calls an internal declaration marked
+        PublishedApi, treat that declaration as public when changing it.
+    rationale:
+        Its references are inlined into client code, so changing it can
+        break binary compatibility.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```kotlin
+        \\\
+        public inline fun <T> timed(block: () -> T): T {
+            val start = nowNanos()
+            return block().also { record(nowNanos() - start) }
+        }
+
+        // Effectively public: keep its signature stable.
+        @PublishedApi
+        internal fun record(elapsed: Long) { }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [compatibility, inline]
+    source: https://kotlinlang.org/docs/api-guidelines-backward-compatibility.html#considerations-for-using-the-publishedapi-annotation

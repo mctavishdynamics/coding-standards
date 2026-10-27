@@ -5,16 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCorePer3:
     standard: @{CppCoreGuidelines}
     ruleId: Per.3
-    title: Do not optimize code that is not performance critical
+    title: Spend optimization effort only on hot code
     statement:
-        Spend optimization effort only on the parts of a program that
-        dominate its running time. A program that mostly waits for the
-        network or a user gains little from faster in-memory computation.
+        Direct optimization work at the parts of the program that take most
+        of the time. If the program mostly waits on users or the network,
+        faster computation in memory will hardly help.
     rationale:
-        Speeding up a part that takes a small share of the time barely
-        changes overall performance; halving a step that takes 4 percent of
-        the time is worth about as much as a 5 percent gain on one that
-        takes 40 percent.
+        Improving a part that uses little of the run time cannot improve the
+        whole by much. For example, if A takes 4 percent and B takes 40
+        percent of the time, making A twice as fast gains about as much as
+        making B 5 percent faster.
     exceptions: null
     severity: null
     noncompliant: null

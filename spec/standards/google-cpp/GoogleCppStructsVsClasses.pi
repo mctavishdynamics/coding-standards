@@ -7,16 +7,18 @@ export coding-rule GoogleCppStructsVsClasses:
     ruleId: Structs_vs._Classes
     title: Use struct only for passive data carriers
     statement:
-        Use a struct only for passive objects that carry data, with all
-        fields public and no invariants between fields. Everything else is a
-        class, and when in doubt make it a class.
+        Reserve the struct keyword for plain bundles of data whose fields
+        are all public and do not depend on one another. Any type with
+        behaviour or invariants should be a class, and a class is the safer
+        pick when unsure.
     rationale:
         The two keywords behave almost the same, so the choice signals
         intent. Users of a struct may write any field directly, which would
         break any invariant the type tried to keep.
     exceptions:
-        Stateless types such as traits, template metafunctions and some
-        functors may be structs for consistency with the standard library.
+        Types that hold no state, like traits, metafunctions in templates or
+        certain function objects, may be declared as structs to match the
+        style of the standard library.
     severity: null
     noncompliant:
         ```cpp

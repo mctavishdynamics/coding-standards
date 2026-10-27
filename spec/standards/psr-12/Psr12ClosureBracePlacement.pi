@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ClosureBracePlacement:
+    standard: @{Psr12}
+    ruleId: 7b
+    title: Open closure bodies on the declaration line
+    statement:
+        Put the opening brace of a closure on the same line as its
+        declaration, and the closing brace on the line after the body.
+    rationale:
+        Closures are usually expressions inside other code, so a same-line
+        brace keeps them compact.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        $double = function ($n)
+        {
+            return $n * 2;
+        };
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        $double = function ($n) {
+            return $n * 2;
+        };
+        \\\
+        ```
+    languages: [php]
+    tags: [closures, braces]
+    source: https://www.php-fig.org/psr/psr-12/#7-closures

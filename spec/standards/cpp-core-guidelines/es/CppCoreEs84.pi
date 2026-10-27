@@ -5,13 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs84:
     standard: @{CppCoreGuidelines}
     ruleId: ES.84
-    title: Don't try to declare a local variable with no name
+    title: Always name the scoped guard objects you create
     statement:
-        Give an RAII object such as a lock guard a name so it lives until
-        the end of the scope.
+        Give a name to every RAII object you create, such as a lock guard,
+        so that it survives until the end of the block.
     rationale:
-        There is no unnamed local variable. What looks like one is a
-        temporary that is destroyed at the end of the statement.
+        C++ has no unnamed local variables. A guard written without a name
+        is a temporary that is destroyed at the semicolon, so the lock is
+        released at once.
     exceptions: null
     severity: null
     noncompliant:

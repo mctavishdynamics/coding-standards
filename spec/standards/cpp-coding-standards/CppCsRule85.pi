@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule85:
+    standard: @{CppCodingStandards}
+    ruleId: rule-85
+    title: Match the search algorithm to whether the range is sorted
+    statement:
+        Use find or find_if for unsorted ranges; for sorted ranges use
+        binary_search, lower_bound, upper_bound or equal_range, or the
+        container's own member functions.
+    rationale:
+        The right choice is logarithmic instead of linear and gives the
+        information you actually need.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // ids is sorted
+        bool has = std::find(ids.begin(), ids.end(), x) != ids.end();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        bool has = std::binary_search(ids.begin(), ids.end(), x);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [stl-algorithms, algorithms, performance]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

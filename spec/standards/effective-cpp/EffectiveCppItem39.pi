@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem39:
+    standard: @{EffectiveCpp}
+    ruleId: item-39
+    title: Use private inheritance only when composition will not do
+    statement:
+        Prefer a member; inherit privately only when you need access to
+        protected members, must override virtual functions, or want the
+        empty base optimisation.
+    rationale:
+        Private inheritance means implemented in terms of, but couples the
+        classes more tightly than a member.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Widget : private Timer {   // only wants Timer's services
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Widget {
+        private:
+            class Ticker : public Timer {
+                void onTick() override;
+            };
+            Ticker ticker_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance-and-oo-design, inheritance, composition]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

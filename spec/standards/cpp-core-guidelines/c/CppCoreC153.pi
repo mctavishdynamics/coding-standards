@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC153:
     standard: @{CppCoreGuidelines}
     ruleId: C.153
-    title: Prefer virtual functions to casting
+    title: Dispatch through virtual calls instead of casting
     statement:
-        Rather than testing an object's type with casts and acting on the
-        result, call a virtual function that each class implements.
+        Instead of checking an object's type with casts and branching on it,
+        call a virtual function that each class implements.
     rationale:
-        A virtual call is safe and always reaches the most derived override,
-        while a cast can stop at an intermediate class and gives wrong
-        results as the hierarchy changes.
+        The virtual call always reaches the most derived version and stays safe
+        as the hierarchy grows. A chain of casts may stop at an intermediate
+        class and break when new classes are added.
     exceptions: null
     severity: null
     noncompliant:

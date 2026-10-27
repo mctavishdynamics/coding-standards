@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartDocumentPrivateApis:
+    standard: @{EffectiveDart}
+    ruleId: consider-writing-doc-comments-for-private-apis
+    title: Consider doc comments on private declarations
+    statement:
+        Document private members and types that other parts of the library
+        call, not only the public API.
+    rationale:
+        Maintainers of the library benefit from documentation of its
+        internals as much as users benefit from public docs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        int _backoffMillis(int attempt) => 100 * (1 << attempt);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// The delay before retry number [attempt], doubling each time.
+        int _backoffMillis(int attempt) => 100 * (1 << attempt);
+        \\\
+        ```
+    languages: [dart]
+    tags: [consider, documentation]
+    source: https://dart.dev/effective-dart/documentation#consider-writing-doc-comments-for-private-apis

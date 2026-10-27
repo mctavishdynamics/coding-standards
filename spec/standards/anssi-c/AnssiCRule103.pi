@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule103:
+    standard: @{AnssiC}
+    ruleId: rule-103
+    title: Do not use flexible array members
+    statement:
+        Do not declare a structure whose last member is an array of
+        unspecified size.
+    rationale:
+        Such structures need careful manual allocation and copying, and
+        mistakes lead to overflows.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct msg { size_t len; uint8_t data[]; };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define MSG_MAX 512U
+        struct msg { size_t len; uint8_t data[MSG_MAX]; };
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, structs, memory]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=82

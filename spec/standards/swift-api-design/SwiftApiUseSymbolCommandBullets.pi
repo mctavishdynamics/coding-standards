@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiUseSymbolCommandBullets:
+    standard: @{SwiftApiDesign}
+    ruleId: use-symbol-command-bullets
+    title: Use the recognised symbol command keywords
+    statement:
+        Learn the bullet keywords that tools treat specially, such as
+        Complexity, Precondition, Note, SeeAlso and Warning, and use them
+        for that kind of information.
+    rationale:
+        Xcode and similar tools highlight these keywords, so readers find
+        the facts where they expect them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        /// Sorts the items. Takes n log n time. Do not call with an empty list!
+        mutating func sortItems()
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// Sorts the items in place.
+        ///
+        /// - Complexity: O(n log n), where n is the number of items.
+        /// - Precondition: The list is not empty.
+        mutating func sortItems()
+        \\\
+        ```
+    languages: [swift]
+    tags: [documentation]
+    source: https://www.swift.org/documentation/api-design-guidelines/#write-doc-comment

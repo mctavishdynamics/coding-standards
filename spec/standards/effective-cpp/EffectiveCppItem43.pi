@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem43:
+    standard: @{EffectiveCpp}
+    ruleId: item-43
+    title: Name members of a dependent base class explicitly
+    statement:
+        In a class template derived from a base that depends on a template
+        parameter, refer to base members through this, a using declaration
+        or explicit qualification.
+    rationale:
+        The compiler does not look in dependent bases by default, since a
+        specialisation might not have the member.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class T>
+        class Logged : public Sender<T> {
+        public:
+            void send(const T& m) { log(m); transmit(m); }   // not found
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T>
+        class Logged : public Sender<T> {
+        public:
+            void send(const T& m) { log(m); this->transmit(m); }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates-and-generic-programming, templates, inheritance]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagCharacterKeyShortcuts:
+    standard: @{Wcag22}
+    ruleId: 2.1.4
+    title: Let users turn off or remap single-key shortcuts
+    statement:
+        If a shortcut uses only a letter, number, punctuation or symbol key,
+        let users turn it off or remap it to include a modifier key, or make
+        it active only while its component has focus.
+    rationale:
+        Speech input users can trigger single-key shortcuts by accident just
+        by speaking, and so can people who press keys unintentionally.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```js
+        \\\
+        document.addEventListener("keydown", e => {
+          if (e.key === "d") deleteMessage();
+        });
+        \\\
+        ```
+    compliant:
+        ```js
+        \\\
+        document.addEventListener("keydown", e => {
+          if (settings.shortcutsEnabled && e.altKey && e.key === "d") deleteMessage();
+        });
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, keyboard, shortcuts]
+    source: https://www.w3.org/TR/WCAG22/#character-key-shortcuts

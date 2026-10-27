@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule2:
+    standard: @{JplC}
+    ruleId: rule-2
+    title: Keep compiler and analyzer output free of warnings
+    statement:
+        Always compile with every compiler warning enabled at the highest
+        level, with no errors or warnings. Also check all code with an
+        approved static analyzer and leave no errors or warnings.
+    rationale:
+        A clean build is cheap insurance, worth having in any project. Code
+        that puzzles a tool should be reshaped until the tool accepts it,
+        because a warning that looks spurious is often pointing at a real
+        but subtle fault.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int scale(int v) {
+            unsigned int factor = 3;
+            int result;
+            if (v > factor) {
+                result = v * factor;
+            }
+            return result;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int scale(int v) {
+            const int factor = 3;
+            int result = 0;
+            if (v > factor) {
+                result = v * factor;
+            }
+            return result;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-1, tooling, warnings, static-analysis]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

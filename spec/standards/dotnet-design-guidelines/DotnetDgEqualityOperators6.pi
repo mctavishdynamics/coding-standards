@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEqualityOperators6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: equality-operators-6
+    title: Skip equality operators on classes when comparison would be slow
+    statement:
+        Do not overload equality operators on a class if the comparison
+        would be significantly slower than a reference check.
+    rationale:
+        Callers assume the operator is cheap and may use it in hot loops.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static bool operator ==(Document left, Document right)
+            => left.Pages.SequenceEqual(right.Pages);   // compares every page
+        \\\
+        ```
+    compliant: null
+    languages: [csharp]
+    tags: [avoid, usage, equality, performance]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/equality-operators#equality-operators-on-reference-types

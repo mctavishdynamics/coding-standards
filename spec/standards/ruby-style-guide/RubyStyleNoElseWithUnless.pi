@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoElseWithUnless:
+    standard: @{RubyStyleGuide}
+    ruleId: no-else-with-unless
+    title: Do not use else with unless
+    statement:
+        Never attach an else branch to unless; turn it into an if that
+        handles the positive condition in its first branch.
+    rationale:
+        An unless with an else forces the reader into a double negative.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        unless signed_in?
+          show_login
+        else
+          show_dashboard
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        if signed_in?
+          show_dashboard
+        else
+          show_login
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals]
+    source: https://rubystyle.guide/#no-else-with-unless

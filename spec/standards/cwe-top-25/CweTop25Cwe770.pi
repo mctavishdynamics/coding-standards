@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe770:
+    standard: @{CweTop25}
+    ruleId: CWE-770
+    title: Prevent unlimited resource allocation
+    statement:
+        Decide the limits for every resource a caller can consume, such as
+        memory, connections, files and request rate, and enforce them with
+        per-user quotas and throttling. Validate any input that controls how
+        much is allocated or how often.
+    rationale:
+        Without limits a single client can exhaust memory, connections or
+        money and deny service to everyone else. It is ranked 25 of 25 in
+        the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        size = int(request.headers["Content-Length"])
+        body = request.stream.read(size)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        MAX_BODY = 1_000_000
+        size = int(request.headers.get("Content-Length", 0))
+        if size > MAX_BODY:
+            abort(413)
+        body = request.stream.read(size)
+        \\\
+        ```
+    languages: [python]
+    tags: [rank-25, resource-limits, denial-of-service]
+    source: https://cwe.mitre.org/data/definitions/770.html

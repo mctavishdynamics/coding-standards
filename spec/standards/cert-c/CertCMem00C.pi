@@ -9,8 +9,9 @@ export coding-rule CertCMem00C:
         Allocate and free memory in the same module, at the same level of
         abstraction
     statement:
-        Free memory in the same module and at the same level of abstraction
-        where it was allocated, so ownership is clear.
+        Let the code that allocated a block also be the code that releases
+        it, at the same layer of the program. Ownership then stays obvious
+        to every reader.
     rationale:
         Freeing memory far from where it was allocated makes it hard to know
         whether a block is still live, leading to leaks, double frees and

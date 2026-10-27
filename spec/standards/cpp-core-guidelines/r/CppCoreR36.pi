@@ -5,17 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreR36:
     standard: @{CppCoreGuidelines}
     ruleId: R.36
-    title:
-        Take a const shared_ptr reference to express that a function might
-        retain a reference count
+    title: Take a shared_ptr by const reference when the function may keep a copy
     statement:
-        Take a const reference to shared_ptr only when the function may copy
-        it and keep a share of ownership. If the function never copies the
-        pointer, take a plain pointer or reference instead.
+        A parameter of type const reference to shared_ptr should mean the
+        function might copy it and so extend the object's life. If no copy
+        is ever taken, prefer a raw pointer or a reference.
     rationale:
-        The signature tells callers the function might keep the object
-        alive. The source marks the full rationale of this rule as still to
-        be written.
+        This form tells callers the object may outlive the call. The
+        guideline itself leaves the detailed reasoning for this rule
+        unfinished.
     exceptions: null
     severity: null
     noncompliant:

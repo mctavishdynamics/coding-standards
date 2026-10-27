@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem22:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-22
+    title: Define the special members of a pimpl class in the source file
+    statement:
+        When a class holds its implementation through unique_ptr to an
+        incomplete type, declare the destructor and move operations in the
+        header and define them in the implementation file.
+    rationale:
+        The generated versions are inline and need the complete type, so
+        they fail to compile in client code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // widget.h
+        class Widget {
+        public:
+            Widget();
+        private:
+            struct Impl;
+            std::unique_ptr<Impl> impl_;   // ~Widget fails in clients
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // widget.h
+        class Widget {
+        public:
+            Widget();
+            ~Widget();
+            Widget(Widget&&) noexcept;
+            Widget& operator=(Widget&&) noexcept;
+        private:
+            struct Impl;
+            std::unique_ptr<Impl> impl_;
+        };
+        // widget.cpp
+        Widget::~Widget() = default;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, pimpl, smart-pointers]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

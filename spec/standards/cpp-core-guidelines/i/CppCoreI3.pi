@@ -5,17 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreI3:
     standard: @{CppCoreGuidelines}
     ruleId: I.3
-    title: Avoid singletons
+    title: Steer clear of singletons
     statement:
-        Do not build classes that enforce a single global instance. If
-        shared data must not change, make it const or constexpr.
+        Avoid classes built to force exactly one instance. For shared read-only
+        data, a const or constexpr object is enough.
     rationale:
-        A singleton is a global object in disguise, with the same hidden
-        dependencies and the added complexity of its own machinery.
+        A singleton has all the problems of a global variable, such as hidden
+        coupling and awkward testing. It adds its own creation and lifetime
+        logic on top.
     exceptions:
-        A function that returns a reference to a local static object is
-        acceptable to get initialization on first use. It is not a singleton
-        in the class sense.
+        A function that returns a reference to a function-local static object is
+        fine. It gives lazy initialization and is not a singleton class.
     severity: null
     noncompliant:
         ```cpp

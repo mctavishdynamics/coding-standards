@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule51:
+    standard: @{CppCodingStandards}
+    ruleId: rule-51
+    title: Make destructors, deallocation and swap infallible
+    statement:
+        Write destructors, deallocation functions and swap so they cannot
+        throw or report failure.
+    rationale:
+        Error-safe code relies on these operations; a throwing destructor
+        during unwinding terminates the program.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Transaction::~Transaction() {
+            if (!committed_) db_.rollback();   // may throw
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Transaction::~Transaction() {
+            if (!committed_) {
+                try { db_.rollback(); } catch (...) { log("rollback failed"); }
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [construction-destruction-copying, destructors, exceptions]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

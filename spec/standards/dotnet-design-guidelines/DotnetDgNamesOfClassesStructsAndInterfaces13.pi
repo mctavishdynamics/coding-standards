@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfClassesStructsAndInterfaces13:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-classes-structs-and-interfaces-13
+    title: Give flags enums plural names
+    statement:
+        Name an enum whose values are combinable bit fields in the plural.
+    rationale:
+        A flags value can hold several members at once, which the plural
+        conveys.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        [Flags]
+        public enum Permission { None = 0, Read = 1, Write = 2, Delete = 4 }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        [Flags]
+        public enum Permissions { None = 0, Read = 1, Write = 2, Delete = 4 }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, enums, flags]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces#naming-enumerations

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEnum11:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: enum-11
+    title: Mark flags enums with the Flags attribute, and only those
+    statement:
+        Apply the Flags attribute to enums whose values are meant to be
+        combined, and never to ordinary enums.
+    rationale:
+        The attribute changes how values are displayed and parsed and tells
+        readers that combinations are valid.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        [Flags]
+        public enum Planet { Mercury, Venus, Earth }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public enum Planet { Mercury, Venus, Earth }
+
+        [Flags]
+        public enum FilePermissions { None = 0, Read = 1, Write = 2, Execute = 4 }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, enums, flags]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/enum#designing-flag-enums

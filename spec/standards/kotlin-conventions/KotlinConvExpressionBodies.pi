@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvExpressionBodies:
+    standard: @{KotlinConventions}
+    ruleId: expression-bodies
+    title: Break long expression bodies after the equals sign
+    statement:
+        When an expression body is too long for the signature line, leave
+        the = at the end of that line and continue the expression below it
+        with a four-space indent.
+    rationale:
+        Ending the line with the equals sign shows that the body continues
+        below.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        fun summary(order: Order)
+            = "Order ${order.id}: ${order.lines.size} lines, total ${order.total()}"
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        fun summary(order: Order) =
+            "Order ${order.id}: ${order.lines.size} lines, total ${order.total()}"
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, functions]
+    source: https://kotlinlang.org/docs/coding-conventions.html#expression-bodies

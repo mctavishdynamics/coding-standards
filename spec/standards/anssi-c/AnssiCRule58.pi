@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule58:
+    standard: @{AnssiC}
+    ruleId: rule-58
+    title: Use const for constants that need type checking
+    statement:
+        Declare constants whose type must be checked by the compiler with
+        the const keyword.
+    rationale:
+        A const object has a real type, so misuse is caught at compile time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define TIMEOUT_MS 2500
+        set_timeout(TIMEOUT_MS); /* expects uint16_t */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static const uint16_t TIMEOUT_MS = 2500U;
+        set_timeout(TIMEOUT_MS);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, constants, types]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=43

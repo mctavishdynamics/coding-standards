@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuUseNgettextForPlurals:
+    standard: @{GnuCodingStandards}
+    ruleId: internationalization-plurals
+    title: Use ngettext for messages that depend on a count
+    statement:
+        When a message changes with a number, call ngettext with the
+        singular and plural forms instead of adding an s or choosing between
+        two strings.
+    rationale:
+        Some languages have several plural forms, which only ngettext can
+        select.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        printf (_("%d record%s deleted\n"), n, n == 1 ? "" : "s");
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        printf (ngettext ("%d record deleted\n", "%d records deleted\n", n), n);
+        \\\
+        ```
+    languages: [c]
+    tags: [internationalization, messages]
+    source: https://www.gnu.org/prep/standards/standards.html#Internationalization

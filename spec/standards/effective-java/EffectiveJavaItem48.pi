@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem48:
+    standard: @{EffectiveJava}
+    ruleId: item-48
+    title: Think twice before making a stream parallel
+    statement:
+        Do not parallelize a stream unless you have measured a gain and are
+        sure the result is still correct.
+    rationale:
+        Parallel streams can be slower or wrong, and some sources such as
+        Stream.iterate or limit do not split well. Good candidates are
+        ArrayList, arrays and ranges with simple reductions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Stream.iterate(1, i -> i + 1).parallel().limit(20).forEach(System.out::println);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        long primes = LongStream.rangeClosed(2, n).parallel().filter(Primes::isPrime).count();
+        \\\
+        ```
+    languages: [java]
+    tags: [lambdas-and-streams, streams, concurrency, performance]
+    source: https://www.informit.com/store/effective-java-9780134686097

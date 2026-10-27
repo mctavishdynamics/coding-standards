@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip128:
+    standard: @{GoogleAip}
+    ruleId: AIP-128
+    title: Keep declarative-friendly resources on strongly consistent standard methods
+    statement:
+        A resource meant for declarative tools must be managed only through
+        strongly consistent standard methods and follow the related
+        guidance, including an etag and the required standard fields. If
+        changes take time to apply, add an output-only reconciling boolean
+        that is true while actual and intended state differ; Get must return
+        the current state.
+    rationale:
+        Declarative tools such as infrastructure-as-code systems compare
+        desired and actual state generically. They can only do that when
+        every resource exposes the same lifecycle methods and signals when
+        it is still converging.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```protobuf
+        \\\
+        message Cluster {
+          string name = 1;
+          string etag = 2;
+          // True while the cluster is moving toward the requested state.
+          bool reconciling = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [declarative, resource-design]
+    source: https://google.aip.dev/128

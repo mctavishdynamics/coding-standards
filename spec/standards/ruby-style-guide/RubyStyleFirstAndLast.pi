@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleFirstAndLast:
+    standard: @{RubyStyleGuide}
+    ruleId: first-and-last
+    title: Read the ends of an array with first and last
+    statement:
+        To read the first or last element, prefer first and last over
+        indexing with 0 or -1. Assignment still has to use the index form.
+        RuboCop checks this with Style/ArrayFirstLast.
+    rationale:
+        The method names state the intent and are clearer to readers used to
+        other indexing rules.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        oldest = events[0]
+        newest = events[-1]
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        oldest = events.first
+        newest = events.last
+        events[-1] = corrected_event
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, readability]
+    source: https://rubystyle.guide/#first-and-last

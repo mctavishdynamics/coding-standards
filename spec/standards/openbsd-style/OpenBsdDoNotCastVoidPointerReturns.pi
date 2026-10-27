@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdDoNotCastVoidPointerReturns:
+    standard: @{OpenBsdStyle}
+    ruleId: void-pointer-casts
+    title: Do not cast results of functions returning void *
+    statement:
+        Assign the result of a function returning void * without a cast.
+    rationale:
+        The conversion is implicit in C, and a cast can hide a missing
+        prototype.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        p = (struct peer *)calloc(1, sizeof(*p));
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        p = calloc(1, sizeof(*p));
+        \\\
+        ```
+    languages: [c]
+    tags: [casting, pointers]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNumericLiteralPrefixes:
+    standard: @{RubyStyleGuide}
+    ruleId: numeric-literal-prefixes
+    title: Use lowercase numeric literal prefixes
+    statement:
+        Number prefixes are written in lower case, so octal literals start
+        with 0o, hex with 0x and binary with 0b. Decimal literals take no 0d
+        prefix at all. Style/NumericLiteralPrefix in RuboCop checks this.
+    rationale:
+        A lowercase letter stands apart from the digits, and a bare leading
+        zero for octal is easily misread.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        mode = 0644
+        mask = 0XFF
+        count = 0d42
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        mode = 0o644
+        mask = 0xFF
+        count = 42
+        \\\
+        ```
+    languages: [ruby]
+    tags: [numbers, literals]
+    source: https://rubystyle.guide/#numeric-literal-prefixes

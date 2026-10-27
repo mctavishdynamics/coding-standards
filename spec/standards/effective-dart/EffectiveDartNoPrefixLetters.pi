@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoPrefixLetters:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-prefix-letters
+    title: Do not encode type or scope in name prefixes
+    statement:
+        Leave out Hungarian notation and similar prefixes such as `k`, `m`
+        or `str` that describe a declaration's type, scope or mutability.
+    rationale:
+        The analyzer and IDE already report those properties, so a prefix
+        only adds noise and can go stale.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        const kTimeoutSeconds = 30;
+        String strUserName = 'ana';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        const timeoutSeconds = 30;
+        String userName = 'ana';
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, naming]
+    source: https://dart.dev/effective-dart/style#dont-use-prefix-letters

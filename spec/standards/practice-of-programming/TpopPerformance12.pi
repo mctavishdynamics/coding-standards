@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance12:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-12
+    title: Keep often-needed values at hand
+    statement:
+        Store recently or frequently computed values so they need not be
+        computed again.
+    rationale:
+        Caching avoids repeated expensive work when the same values are
+        requested often.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        const char *name_of(int uid)
+        {
+            static int last_uid = -1;
+            static char last_name[64];
+            if (uid != last_uid) {
+                lookup_user(uid, last_name, sizeof last_name);
+                last_uid = uid;
+            }
+            return last_name;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [performance, caching]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

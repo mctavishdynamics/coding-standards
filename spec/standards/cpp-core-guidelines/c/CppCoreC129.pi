@@ -5,42 +5,42 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC129:
     standard: @{CppCoreGuidelines}
     ruleId: C.129
-    title: Distinguish implementation inheritance from interface inheritance
+    title: Keep inheriting an interface apart from inheriting an implementation
     statement:
-        When designing a hierarchy, decide which bases provide an interface
-        and which share implementation, and keep the two kinds apart, for
-        example with separate interface and implementation hierarchies.
+        Decide for each base class whether it offers an interface or shares
+        implementation, and do not mix the two roles. One way is to keep
+        separate interface and implementation hierarchies.
     rationale:
-        Implementation details in an interface make it brittle, forcing
-        users to recompile when the implementation changes, and data in a
-        base complicates it and leads to duplicated code.
+        An interface that carries implementation detail breaks easily, and users
+        must rebuild whenever that detail changes. Data in a base class also
+        makes it harder to write and leads to duplication.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        class Shape {
+        class Codec {
         public:
-            virtual double area() const = 0;
+            virtual Bytes encode(const Frame& f) = 0;
         protected:
-            Point center_;           // every shape pays for this
-            Color color_;
+            std::vector<std::byte> scratch_;   // forced on every codec
+            int quality_ = 80;
         };
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        class Shape {                // interface only
+        class Codec {                          // pure interface
         public:
-            virtual double area() const = 0;
-            virtual ~Shape() = default;
+            virtual ~Codec() = default;
+            virtual Bytes encode(const Frame& f) = 0;
         };
 
-        class ShapeBase : public Shape {   // shared implementation
+        class BufferedCodec : public Codec {   // optional shared implementation
         protected:
-            Point center_;
-            Color color_;
+            std::vector<std::byte> scratch_;
+            int quality_ = 80;
         };
         \\\
         ```

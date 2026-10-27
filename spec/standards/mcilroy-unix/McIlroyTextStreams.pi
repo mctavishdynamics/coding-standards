@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./McIlroyUnix import McIlroyUnix
+
+export coding-rule McIlroyTextStreams:
+    standard: @{McIlroyUnix}
+    ruleId: salus-3
+    title: Use text streams as the common interface
+    statement:
+        Exchange data as streams of text, the one format every tool can
+        handle.
+    rationale:
+        A universal format lets any program be joined to any other without
+        special adapters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```shell
+        \\\
+        # exporter writes a private binary format only its own viewer can read
+        exporter --format=bin > users.dat
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        # one record per line, fields separated by tabs
+        exporter | cut -f2 | sort | uniq -c
+        \\\
+        ```
+    languages: [any]
+    tags: [text-streams, interfaces, composability]
+    source: http://www.catb.org/esr/writings/taoup/html/ch01s06.html

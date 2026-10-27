@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule92:
+    standard: @{CppCodingStandards}
+    ruleId: rule-92
+    title: Keep reinterpret_cast out of ordinary code
+    statement:
+        Do not use reinterpret_cast except in low-level code that truly
+        needs to view memory as another type, and isolate it there.
+    rationale:
+        It bypasses the type system and its results are usually undefined or
+        implementation-defined.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto* h = reinterpret_cast<Header*>(buffer);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Header h;
+        std::memcpy(&h, buffer, sizeof h);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-safety, casting]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

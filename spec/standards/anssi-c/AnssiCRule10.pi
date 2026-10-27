@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule10:
+    standard: @{AnssiC}
+    ruleId: rule-10
+    title: Write portable, case-correct file paths
+    statement:
+        Write file paths, in include directives and elsewhere, in a portable
+        form with forward slashes and with the exact case of each directory
+        and file name.
+    rationale:
+        Backslashes in include paths are undefined behaviour, and wrong case
+        breaks builds on case-sensitive file systems.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #include "Drivers\Uart\UART.h"
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include "drivers/uart/uart.h"
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, portability, headers]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=17

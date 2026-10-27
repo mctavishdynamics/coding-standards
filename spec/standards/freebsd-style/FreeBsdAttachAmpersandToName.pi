@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdAttachAmpersandToName:
+    standard: @{FreeBsdStyle}
+    ruleId: cpp-references
+    title: Place the reference ampersand next to the variable name
+    statement:
+        Write the & of a reference declaration against the variable name,
+        not the type, as with pointer asterisks.
+    rationale:
+        It matches the pointer style used throughout the tree.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int& total = sums[0];
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int &total = sums[0];
+        \\\
+        ```
+    languages: [cpp]
+    tags: [cpp, formatting, declarations]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

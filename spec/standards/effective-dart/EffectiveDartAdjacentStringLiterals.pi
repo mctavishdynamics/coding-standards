@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartAdjacentStringLiterals:
+    standard: @{EffectiveDart}
+    ruleId: do-use-adjacent-strings-to-concatenate-string-literals
+    title: Join string literals by placing them side by side
+    statement:
+        Concatenate string literals by writing them next to each other
+        without `+`. The prefer_adjacent_string_concatenation lint checks
+        this.
+    rationale:
+        Adjacent literals are joined at compile time and are the clean way
+        to split a long string over several lines.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        const help = 'Run with --verbose to see each step ' +
+            'and --dry-run to skip writing files.';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        const help = 'Run with --verbose to see each step '
+            'and --dry-run to skip writing files.';
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, strings]
+    source: https://dart.dev/effective-dart/usage#do-use-adjacent-strings-to-concatenate-string-literals

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdWrapCompoundMacrosInDoWhile:
+    standard: @{FreeBsdStyle}
+    ruleId: macro-multiline
+    title: Wrap compound macros in do-while (0) and omit the final semicolon
+    statement:
+        Right-justify the continuation backslashes of a multi-line macro.
+        Wrap a macro whose body is a compound statement in do and while (0),
+        and leave the final semicolon to the code that invokes it.
+    rationale:
+        The do-while form behaves as one statement inside if and else, and
+        leaving out the semicolon helps editors and pretty-printers parse
+        the code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define SWAP(a, b) { int t = (a); (a) = (b); (b) = t; };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define SWAP(a, b) do {                                         \
+                int t_ = (a);                                           \
+                (a) = (b);                                              \
+                (b) = t_;                                               \
+        } while (0)
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, macros]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

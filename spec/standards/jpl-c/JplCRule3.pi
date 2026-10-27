@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule3:
+    standard: @{JplC}
+    ruleId: rule-3
+    title: Make every loop's iteration limit provable
+    statement:
+        Every loop must have an upper bound on its iterations that a static
+        checking tool can confirm. For a plain for loop, not touching the
+        loop variables in the body is enough; for a variable-length walk,
+        add an explicit limit.
+    rationale:
+        Provable loop bounds stop runaway code and keep the timing of every
+        task predictable. Together with the ban on recursion they keep the
+        control-flow structure acyclic, which helps static checkers find
+        defects.
+    exceptions:
+        Each task or thread may have one non-terminating server loop that
+        receives and handles requests, marked with the comment /*
+        @non-terminating@ */.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        while (node != NULL) {
+            visit(node);
+            node = node->next;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        for (int n = 0; node != NULL; n++) {
+            if (n >= MAX_NODES) {
+                return ERR_BOUND;
+            }
+            visit(node);
+            node = node->next;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-2, loops, control-flow]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule52:
+    standard: @{CppCodingStandards}
+    ruleId: rule-52
+    title: Write or delete the copy and destroy members as a set
+    statement:
+        If you write a copy constructor, copy assignment or destructor, you
+        probably need to write or explicitly delete the others too.
+    rationale:
+        They manage the same resource and must agree about ownership.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Buffer {
+        public:
+            ~Buffer() { delete[] p_; }   // copies double-free
+        private:
+            char* p_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Buffer {
+        public:
+            ~Buffer() { delete[] p_; }
+            Buffer(const Buffer&) = delete;
+            Buffer& operator=(const Buffer&) = delete;
+        private:
+            char* p_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [construction-destruction-copying, special-members]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

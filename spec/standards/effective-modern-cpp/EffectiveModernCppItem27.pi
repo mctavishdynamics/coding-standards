@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem27:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-27
+    title: Use tag dispatch or constraints instead of greedy overloads
+    statement:
+        Use distinct function names, pass by const reference or by value,
+        dispatch on tags, or constrain the template with enable_if or
+        concepts.
+    rationale:
+        Each approach restores sensible overload resolution while keeping
+        most of the benefits of perfect forwarding.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <class T> void log(T&& msg);
+        void log(int code);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <class T>
+            requires (!std::is_integral_v<std::remove_cvref_t<T>>)
+        void log(T&& msg);
+        void log(int code);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [rvalue-references-move-semantics-forwarding, overloading, templates]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

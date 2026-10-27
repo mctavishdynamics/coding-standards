@@ -5,22 +5,22 @@ from ./Solid import Solid
 export coding-rule SolidSrp:
     standard: @{Solid}
     ruleId: SRP
-    title: Give each class only one reason to change
+    title: Give a class a single reason to change
     statement:
-        Design a class so that there is never more than one reason for it to
-        change. A responsibility is a reason for change, so separate code
-        that changes for different reasons, such as connection handling and
-        data transfer, into different classes or at least different
+        Each class should have exactly one reason to change. Treat each
+        responsibility as a separate axis of change, and split code that
+        changes for unrelated reasons, like managing a connection and moving
+        data over it, into separate classes or at minimum separate
         interfaces.
     rationale:
-        Responsibilities placed in one class become coupled, so a change
-        made for one can break the others and the design grows fragile in
-        unexpected ways.
+        Bundling responsibilities into one class couples them, so editing
+        one can break another and the design becomes fragile in surprising
+        ways.
     exceptions:
-        Martin notes that an axis of change matters only if changes along it
-        actually occur. When hardware or platform details force
-        responsibilities into one implementation class, separating their
-        interfaces still keeps clients decoupled.
+        An axis of change is only worth separating if changes along it
+        really happen. When hardware or platform constraints force several
+        responsibilities into one implementation class, keeping their
+        interfaces separate still decouples the clients.
     severity: null
     noncompliant:
         ```java

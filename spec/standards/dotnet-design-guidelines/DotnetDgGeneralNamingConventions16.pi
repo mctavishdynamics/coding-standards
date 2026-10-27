@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgGeneralNamingConventions16:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: general-naming-conventions-16
+    title: Append 64 to 64-bit variants of existing 32-bit APIs
+    statement:
+        When an API already exists for 32-bit integers and you add one that
+        takes or returns 64-bit integers, add 64 to its name. A new API that
+        only ever has a 64-bit form needs no suffix.
+    rationale:
+        The suffix pairs the old and new members, and an API without an
+        older sibling has nothing to be paired with.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public int GetFileSize(string path) { /* ... */ }
+        public long GetFileSizeLong(string path) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public int GetFileSize(string path) { /* ... */ }
+        public long GetFileSize64(string path) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, naming, versioning]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/general-naming-conventions#naming-new-versions-of-existing-apis

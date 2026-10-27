@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule21:
+    standard: @{JplC}
+    ruleId: rule-21
+    title: Define macros only at file level
+    statement:
+        Place every #define at file level, never inside a function body or
+        other block.
+    rationale:
+        A macro defined inside a block still applies to the rest of the
+        file, which misleads readers into thinking it is local.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void filter(int *v, int n) {
+        #define WINDOW 5
+            smooth(v, n, WINDOW);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define WINDOW 5
+
+        void filter(int *v, int n) {
+            smooth(v, n, WINDOW);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-4, preprocessor, macros]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

@@ -5,13 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs31:
     standard: @{CppCoreGuidelines}
     ruleId: ES.31
-    title: Don't use macros for constants or functions
+    title: Replace constant and function macros with real language constructs
     statement:
-        Replace constant macros with constexpr variables and function-like
-        macros with constexpr or inline functions or templates.
+        A constant should be a constexpr variable, not a #define. A
+        function-like macro should be a constexpr function, an inline
+        function or a template.
     rationale:
-        Macros ignore scope, type and argument-passing rules and show the
-        reader something different from what the compiler sees.
+        Macros skip scope rules, type checks and normal argument passing.
+        Their arguments can be evaluated twice or grouped wrongly, and the
+        code the reader sees is not what gets compiled.
     exceptions: null
     severity: null
     noncompliant:

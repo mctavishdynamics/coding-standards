@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCpl3:
     standard: @{CppCoreGuidelines}
     ruleId: CPL.3
-    title: If you must use C for interfaces, use C++ in the calling code using such interfaces
+    title: Call C interfaces from C++ code when C is required at the boundary
     statement:
-        When a library or system interface is in C, declare it in the common
-        subset, wrap it in a C++ interface that follows these guidelines,
-        and use the wrapper from C++ code.
+        When you must use a library or system API written in C, declare it in the
+        shared C and C++ subset, put a C++ wrapper around it that follows these
+        guidelines, and have the rest of the program call the wrapper.
     rationale:
-        C++ is more expressive and gives better abstraction, memory safety
-        and resource safety than calling the raw C interface everywhere.
+        Calling the bare C API from every place spreads manual memory and resource
+        handling through the program. A C++ wrapper adds type safety, RAII and
+        clearer abstractions at a single point.
     exceptions: null
     severity: null
     noncompliant:

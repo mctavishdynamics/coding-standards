@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoImportsFromOtherSrc:
+    standard: @{EffectiveDart}
+    ruleId: dont-import-libraries-that-are-inside-the-src-directory-of-another-package
+    title: Do not import another package's src libraries
+    statement:
+        Import only the public libraries of other packages, never files
+        under their `lib/src` directory. The implementation_imports lint
+        checks this.
+    rationale:
+        Code under `src` is private to its package and may change in any
+        release, so even a minor version bump can break your import.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        import 'package:payments/src/card_validator.dart';
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        import 'package:payments/payments.dart';
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, imports, packages]
+    source: https://dart.dev/effective-dart/usage#dont-import-libraries-that-are-inside-the-src-directory-of-another-package

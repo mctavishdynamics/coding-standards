@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoUseTimeDurationForPeriods:
+    standard: @{UberGo}
+    ruleId: use-timeduration-for-periods-of-time
+    title: Represent spans of time with time.Duration
+    statement:
+        Store and pass periods as time.Duration values rather than bare
+        integers. Add an exact elapsed duration with Add, and use AddDate when
+        the goal is the same wall-clock time on another calendar day.
+    rationale:
+        A plain integer leaves the unit to guesswork, while a Duration
+        carries its unit and reads clearly at the call site.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // timeoutSec is a count of seconds
+        func newClient(timeoutSec int) *http.Client {
+            return &http.Client{Timeout: time.Duration(timeoutSec) * time.Second}
+        }
+
+        c := newClient(30)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func newClient(timeout time.Duration) *http.Client {
+            return &http.Client{Timeout: timeout}
+        }
+
+        c := newClient(30 * time.Second)
+        \\\
+        ```
+    languages: [go]
+    tags: [time, types]
+    source: https://github.com/uber-go/guide/blob/master/style.md#use-timeduration-for-periods-of-time

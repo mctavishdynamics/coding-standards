@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule82:
+    standard: @{CppCodingStandards}
+    ruleId: rule-82
+    title: Use the established idioms to release capacity and erase elements
+    statement:
+        Remove elements with the erase-remove idiom or erase_if, and release
+        spare capacity with shrink_to_fit or the swap trick.
+    rationale:
+        remove alone does not shrink the container, and clear does not
+        release memory.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::remove(v.begin(), v.end(), 0);   // size unchanged
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::erase(v, 0);
+        v.shrink_to_fit();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [stl-containers, containers]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

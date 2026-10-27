@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule100:
+    standard: @{AnssiC}
+    ruleId: rule-100
+    title: Use sizeof on the structure, not the sum of its fields
+    statement:
+        Get the size of a structure with sizeof on the whole type, never by
+        adding up the sizes of its members.
+    rationale:
+        Padding between and after members makes the real size larger than
+        the sum.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct rec { uint8_t tag; uint32_t value; };
+        size_t n = sizeof(uint8_t) + sizeof(uint32_t);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct rec { uint8_t tag; uint32_t value; };
+        size_t n = sizeof(struct rec);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, structs, memory]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=80

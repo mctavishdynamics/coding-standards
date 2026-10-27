@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip235:
+    standard: @{GoogleAip}
+    ruleId: AIP-235
+    title: Provide a BatchDelete method that is atomic when synchronous
+    statement:
+        A batch delete method is named BatchDelete plus the plural resource
+        and uses POST, not DELETE, with a :batchDelete URI and a repeated
+        field of names or delete requests. It must not match by filter, a
+        synchronous one must be atomic, and a long-running one may report
+        partial failures by request index.
+    rationale:
+        Deleting by explicit names keeps the scope clear, and criteria-based
+        deletion has its own Purge pattern. Atomic synchronous calls avoid
+        ambiguous partial results.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```protobuf
+        \\\
+        rpc BatchDeleteRecipes(BatchDeleteRecipesRequest)
+            returns (google.protobuf.Empty) {
+          option (google.api.http) = {
+            post: "/v1/{parent=kitchens/*}/recipes:batchDelete"
+            body: "*"
+          };
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [batch-methods, methods, deletion]
+    source: https://google.aip.dev/235

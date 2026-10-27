@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveModernCpp import EffectiveModernCpp
+
+export coding-rule EffectiveModernCppItem23:
+    standard: @{EffectiveModernCpp}
+    ruleId: item-23
+    title: Understand that move and forward are only casts
+    statement:
+        Treat a call to std::move as an unconditional cast to an rvalue, and
+        a call to std::forward as a cast that applies only when the original
+        argument was an rvalue. Neither one moves anything.
+    rationale:
+        Moving from a const object silently copies, because the cast result
+        cannot bind to a move constructor.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Note {
+        public:
+            explicit Note(const std::string text) : text_(std::move(text)) {}   // copies
+        private:
+            std::string text_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Note {
+        public:
+            explicit Note(std::string text) : text_(std::move(text)) {}
+        private:
+            std::string text_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [rvalue-references-move-semantics-forwarding, move-semantics]
+    source: https://www.oreilly.com/library/view/effective-modern-c/9781491908419/

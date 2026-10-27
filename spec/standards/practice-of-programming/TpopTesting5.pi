@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopTesting5:
+    standard: @{PracticeOfProgramming}
+    ruleId: testing-5
+    title: Write code that copes with impossible cases
+    statement:
+        Add tests for situations that should never happen and handle them
+        safely when they do.
+    rationale:
+        Defensive checks are cheap insurance against bad data and later
+        changes that break assumptions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (grade >= 90) letter = 'A';
+        else if (grade >= 80) letter = 'B';
+        else letter = 'C';
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (grade < 0 || grade > 100) letter = '?';
+        else if (grade >= 90) letter = 'A';
+        else if (grade >= 80) letter = 'B';
+        else letter = 'C';
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, defensive-programming]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

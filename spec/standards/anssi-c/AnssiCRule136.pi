@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule136:
+    standard: @{AnssiC}
+    ruleId: rule-136
+    title: Declare a prototype for every non-static function
+    statement:
+        Every function with external linkage must have a prototype
+        declaration, normally in a header.
+    rationale:
+        Without a prototype, calls are not type-checked and mismatched
+        arguments go unnoticed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* util.c */
+        int clamp(int v, int lo, int hi) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* util.h */
+        int clamp(int v, int lo, int hi);
+        /* util.c */
+        #include "util.h"
+        int clamp(int v, int lo, int hi) { /* ... */ }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, functions, declarations]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=109

@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC137:
     standard: @{CppCoreGuidelines}
     ruleId: C.137
-    title: Use virtual bases to avoid overly general base classes
+    title: Share a common base virtually instead of widening the base class
     statement:
-        When several branches of a hierarchy share data or an interface,
-        consider a virtual base for the shared part instead of pushing
-        everything into one ultimate base class.
+        If several branches of a hierarchy need the same data or interface,
+        think about making that shared part a virtual base. Do not just keep
+        adding to a single root class.
     rationale:
-        Virtual bases allow shared data and interfaces to be separated
-        without loading a single root class with everything.
+        A virtual base lets the shared piece be split out on its own. The root
+        class then stays small instead of collecting everything.
     exceptions: null
     severity: null
     noncompliant:

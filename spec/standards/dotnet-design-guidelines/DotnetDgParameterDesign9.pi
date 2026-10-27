@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign9:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-9
+    title: Validate arguments of all publicly reachable members
+    statement:
+        Check the arguments of public, protected and explicitly implemented
+        members and throw ArgumentException or a subclass when they are
+        invalid. The checks may live in a private helper as long as the
+        whole public surface is covered.
+    rationale:
+        Callers get a clear error at the point of misuse instead of an
+        obscure failure later.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public void SetDiscount(decimal rate)
+        {
+            if (rate is < 0m or > 1m)
+                throw new ArgumentOutOfRangeException(nameof(rate), "Rate must be between 0 and 1.");
+            _rate = rate;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, parameters, validation]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#validating-arguments

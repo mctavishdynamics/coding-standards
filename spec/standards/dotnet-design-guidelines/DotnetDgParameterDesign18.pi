@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgParameterDesign18:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: parameter-design-18
+    title: Do not write into a params array
+    statement:
+        Do not mark an array parameter params if the method writes into the
+        array.
+    rationale:
+        Callers' arguments are often packed into a throwaway array by the
+        compiler, so writes to it never reach the caller.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Normalize(params double[] values)
+        {
+            for (int i = 0; i < values.Length; i++) values[i] /= values.Max();
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Normalize(double[] values)
+        {
+            double max = values.Max();
+            for (int i = 0; i < values.Length; i++) values[i] /= max;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, parameters, params]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/parameter-design#members-with-variable-number-of-parameters

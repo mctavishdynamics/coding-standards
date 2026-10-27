@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV11x3x4:
+    standard: @{OwaspAsvs}
+    ruleId: V11.3.4
+    title: Never reuse a nonce or IV with the same key
+    statement:
+        Use each nonce, IV or other single-use value only once per key and
+        data element, generated in the way the algorithm requires.
+    rationale:
+        Reusing a nonce with modes such as GCM can reveal plaintext and
+        allow forgery.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        NONCE = b"\x00" * 12
+        ciphertext = AESGCM(key).encrypt(NONCE, data, None)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        nonce = os.urandom(12)
+        ciphertext = nonce + AESGCM(key).encrypt(nonce, data, None)
+        \\\
+        ```
+    languages: [any]
+    tags: [level-3, cryptography, nonce]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x20-V11-Cryptography.md#v113-encryption-algorithms

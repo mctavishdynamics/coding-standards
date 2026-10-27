@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleEqualLengthRelatedNames:
+    standard: @{TigerStyle}
+    ruleId: equal-length-related-names
+    title: Give related names the same length
+    statement:
+        When naming related variables, look for words of equal length, such
+        as source and target rather than src and dest.
+    rationale:
+        Matching lengths make derived names line up in calculations,
+        producing symmetrical code that is easier to scan and check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        @memcpy(dest[dest_off..][0..len], src[src_offset..][0..len]);
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        @memcpy(target[target_offset..][0..size], source[source_offset..][0..size]);
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [naming, alignment]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#naming-things

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoMutableKeys:
+    standard: @{RubyStyleGuide}
+    ruleId: no-mutable-keys
+    title: Never key a hash with an object that can change
+    statement:
+        Do not use objects that can change as hash keys; use symbols, or
+        freeze a string key when a symbol will not do.
+    rationale:
+        If a key changes after it is stored, the hash can no longer find its
+        entry.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        key = String.new('region')
+        settings = { key => 'eu' }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        settings = { region: 'eu' }
+        settings = { 'region'.freeze => 'eu' }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes, mutability]
+    source: https://rubystyle.guide/#no-mutable-keys

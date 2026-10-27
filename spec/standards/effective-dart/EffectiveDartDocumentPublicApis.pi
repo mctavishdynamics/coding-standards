@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartDocumentPublicApis:
+    standard: @{EffectiveDart}
+    ruleId: prefer-writing-doc-comments-for-public-apis
+    title: Write doc comments for public APIs
+    statement:
+        Give most public libraries, top-level variables, types and members a
+        doc comment. Not every single one needs it. The
+        public_member_api_docs lint checks this.
+    rationale:
+        Users of a library depend on its documentation to learn what each
+        public declaration is for.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class RateLimiter {
+          RateLimiter(this.maxPerMinute);
+          final int maxPerMinute;
+          bool tryAcquire() => _take();
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        /// Limits how often an action may run.
+        class RateLimiter {
+          RateLimiter(this.maxPerMinute);
+
+          /// The most actions allowed in any one-minute window.
+          final int maxPerMinute;
+
+          /// Whether a slot was free; claims it when it was.
+          bool tryAcquire() => _take();
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [prefer, documentation, api-design]
+    source: https://dart.dev/effective-dart/documentation#prefer-writing-doc-comments-for-public-apis

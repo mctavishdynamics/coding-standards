@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem85:
+    standard: @{EffectiveJava}
+    ruleId: item-85
+    title: Avoid Java serialization in favour of other formats
+    statement:
+        Do not use Java serialization in new systems. Use a cross-platform
+        format such as JSON or protocol buffers, and never deserialize
+        untrusted data.
+    rationale:
+        Deserialization can run arbitrary code paths in reachable classes,
+        leading to remote code execution and denial of service.
+    exceptions:
+        If you must deserialize, use an object filter that allows only known
+        classes.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Object o = new ObjectInputStream(socket.getInputStream()).readObject();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Order order = objectMapper.readValue(socket.getInputStream(), Order.class);
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, security]
+    source: https://www.informit.com/store/effective-java-9780134686097

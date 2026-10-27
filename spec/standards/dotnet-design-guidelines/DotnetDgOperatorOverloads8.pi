@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgOperatorOverloads8:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: operator-overloads-8
+    title: Add conversion operators only when users clearly expect them
+    statement:
+        Provide a conversion operator only if callers would naturally expect
+        the conversion to exist.
+    rationale:
+        Unexpected conversions make code compile when it should not and hide
+        what is going on.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static implicit operator string(Invoice invoice) => invoice.Number;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public override string ToString() => Number;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, operators, conversions]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/operator-overloads#conversion-operators

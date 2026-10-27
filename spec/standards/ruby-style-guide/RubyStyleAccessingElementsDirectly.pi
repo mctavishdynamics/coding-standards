@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAccessingElementsDirectly:
+    standard: @{RubyStyleGuide}
+    ruleId: accessing-elements-directly
+    title: Use an accessor's indexed form instead of chaining []
+    statement:
+        When a reader method offers a form that takes an index, use it
+        rather than calling square brackets on its result.
+    rationale:
+        The indexed form copes with a missing result, while chaining square
+        brackets on nil raises NoMethodError.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        year = Regexp.last_match[1]
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        year = Regexp.last_match(1)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, nil-safety]
+    source: https://rubystyle.guide/#accessing-elements-directly

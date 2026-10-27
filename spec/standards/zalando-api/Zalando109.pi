@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando109:
+    standard: @{ZalandoApi}
+    ruleId: 109
+    title: Design APIs conservatively
+    statement:
+        Be strict about what the server accepts. Reject unknown input fields
+        with 400 rather than ignoring them, define exact constraints on
+        formats, ranges and lengths, and return clear errors when they are
+        violated.
+    rationale:
+        Strict input keeps room for later compatible extensions and avoids
+        clients assuming that ignored data was stored.
+    exceptions:
+        A server that deliberately handles unknown fields another way must
+        document that behavior for PUT, POST and PATCH.
+    severity: null
+    noncompliant: null
+    compliant:
+        ```yaml
+        \\\
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        \\\
+        ```
+    languages: [any]
+    tags: [should, compatibility, input-validation]
+    source: https://opensource.zalando.com/restful-api-guidelines/#109

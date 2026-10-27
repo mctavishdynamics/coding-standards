@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule58:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-58
+    title: Compare floating point values with a tolerance
+    statement:
+        Do not test computed floating point values for exact equality. Check
+        whether they are close enough for the purpose.
+    rationale:
+        Tiny rounding differences make exact comparisons fail for values
+        that are equal in every meaningful sense.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (area == expected) {
+            ok();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (fabs(area - expected) <= 1e-9 * fabs(expected)) {
+            ok();
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [common-blunders, floating-point, comparison]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

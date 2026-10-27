@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgAttributes3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: attributes-3
+    title: Use settable properties for optional attribute arguments
+    statement:
+        Expose optional attribute arguments as properties with setters.
+    rationale:
+        Users can then specify them by name when applying the attribute.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public sealed class RateLimitAttribute : Attribute
+        {
+            public RateLimitAttribute(int requestsPerMinute) => RequestsPerMinute = requestsPerMinute;
+            public int RequestsPerMinute { get; }
+            public int Burst { get; set; }
+        }
+
+        [RateLimit(60, Burst = 10)]
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, attributes, properties]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/attributes

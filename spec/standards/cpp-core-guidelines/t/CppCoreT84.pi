@@ -5,44 +5,44 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT84:
     standard: @{CppCoreGuidelines}
     ruleId: T.84
-    title: Use a non-template core implementation to provide an ABI-stable interface
+    title: Put a non-template core under a template interface for ABI stability
     statement:
-        Put the real work in a non-template base or core implementation and
-        make the template a thin, type-safe wrapper around it.
+        Do the real work in a non-template core class and make the template a thin,
+        type-safe layer on top of it.
     rationale:
-        The core is compiled once and stays stable across instantiations,
-        which improves ABI stability and avoids code bloat.
+        The core is compiled once and its layout does not change from one
+        instantiation to another. That keeps the ABI stable and avoids generating
+        the same code for every type.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
         template<typename T>
-        class Stack {
-            struct Node { T value; Node* next; };
-            Node* top;
+        class Registry {
+            std::unordered_map<std::string, T*> items;   // all lookup code per T
         public:
-            void push(const T& v);   // linking logic duplicated for every T
-            void pop();
+            void add(const std::string& key, T* obj);
+            T* get(const std::string& key) const;
         };
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        class Stack_base {
+        class Registry_base {
         protected:
-            struct Node_base { Node_base* next; };
-            Node_base* top = nullptr;
-            void link(Node_base* n);   // compiled once
-            Node_base* unlink();
+            void put(const std::string& key, void* obj);   // compiled once
+            void* find(const std::string& key) const;
+        private:
+            std::unordered_map<std::string, void*> items;
         };
 
         template<typename T>
-        class Stack : Stack_base {
-            struct Node : Node_base { T value; };
+        class Registry : Registry_base {
         public:
-            void push(const T& v) { link(new Node{{nullptr}, v}); }
+            void add(const std::string& key, T* obj) { put(key, obj); }
+            T* get(const std::string& key) const { return static_cast<T*>(find(key)); }
         };
         \\\
         ```

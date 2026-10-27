@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdUseErrAndWarn:
+    standard: @{OpenBsdStyle}
+    ruleId: err-warn
+    title: Report errors through err(3) and warn(3) rather than hand-rolled code
+    statement:
+        Print diagnostics through err, errx, warn and warnx instead of
+        custom helpers.
+    rationale:
+        They format messages consistently with the program name and error
+        text.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if ((fp = fopen(path, "r")) == NULL) {
+                fprintf(stderr, "%s: cannot open\n", path);
+                exit(1);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if ((fp = fopen(path, "r")) == NULL)
+                err(1, "%s", path);
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, error-messages]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

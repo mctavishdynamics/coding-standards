@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation93:
+    standard: @{AnssiC}
+    ruleId: recommendation-93
+    title: Use the arrow operator to reach fields through a pointer
+    statement:
+        Access structure members through a pointer with the arrow operator
+        rather than dereferencing and using a dot.
+    rationale:
+        The arrow form is shorter and avoids precedence mistakes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        (*node).next = NULL;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        node->next = NULL;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, pointers, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=76

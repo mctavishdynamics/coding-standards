@@ -12,10 +12,11 @@ export coding-rule CertCFio19C:
         Use a facility that reports the size directly, such as POSIX fstat
         or Windows GetFileSizeEx.
     rationale:
-        Seeking to the end of a binary stream has undefined behavior, ftell
-        on a text stream does not return a byte count, and long can be too
-        small for large files. CERT rates likelihood unlikely, detectable
-        yes, repairable yes, priority P3, level L3.
+        The C standard gives fseek with SEEK_END on a binary stream
+        undefined behavior, ftell on a text stream yields a value that is
+        not a byte count, and a long may be too narrow for big files. CERT
+        rates likelihood unlikely, detectable yes, repairable yes, priority
+        P3, level L3.
     exceptions: null
     severity: low
     noncompliant:

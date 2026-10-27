@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip161:
+    standard: @{GoogleAip}
+    ruleId: AIP-161
+    title: Use self-consistent FieldMask paths relative to the resource
+    statement:
+        Field mask fields use google.protobuf.FieldMask with paths relative
+        to the resource, dot traversal into messages and repeated fields
+        only as a whole. Reads and writes with the same mask must be
+        consistent, indexing into repeated fields must fail with
+        INVALID_ARGUMENT, and output-only fields named in an update mask are
+        ignored.
+    rationale:
+        Consistent masks let a client read with a mask, edit the result and
+        write it back with the same mask safely. Clear limits keep masks
+        portable across protobuf runtimes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        // update_mask: "recipe.ingredients.0"
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        // update_mask: "title,author.given_name,ingredients"
+        message UpdateRecipeRequest {
+          Recipe recipe = 1;
+          google.protobuf.FieldMask update_mask = 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [field-masks, design-patterns]
+    source: https://google.aip.dev/161

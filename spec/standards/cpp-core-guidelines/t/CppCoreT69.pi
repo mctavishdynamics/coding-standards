@@ -5,16 +5,16 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT69:
     standard: @{CppCoreGuidelines}
     ruleId: T.69
-    title: Inside a template, don't make an unqualified non-member function call unless you intend it to be a customization point
+    title: Qualify calls in templates unless the call is meant as an extension point
     statement:
-        In a template, call your own helpers by a name qualified with their
-        namespace, such as a detail namespace. Leave a call unqualified only
-        when you want users to customize it through their own namespace.
+        In a template, qualify calls to your own helpers with their namespace, for
+        example detail. Make an unqualified call only when it is a deliberate
+        customization point that users can supply in their own namespace.
     rationale:
-        An unqualified call with a dependent argument is found by
-        argument-dependent lookup, so any function of that name in the
-        argument's namespace can be picked, including unconstrained
-        templates.
+        An unqualified call with a dependent argument goes through
+        argument-dependent lookup. Any function of that name in the argument's
+        namespaces can then be chosen, unconstrained templates included, so the
+        template's behavior shifts with its surroundings.
     exceptions: null
     severity: null
     noncompliant:

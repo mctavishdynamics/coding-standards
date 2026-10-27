@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem40:
+    standard: @{EffectivePython}
+    ruleId: item-40
+    title: Write a comprehension where map or filter would need a lambda
+    statement:
+        Build lists, dicts and sets with comprehensions rather than calling
+        map and filter with lambdas.
+    rationale:
+        Comprehensions are clearer, need no lambda, and filter and transform
+        in one expression.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        squares = list(map(lambda x: x * x, filter(lambda x: x % 2 == 0, nums)))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        squares = [x * x for x in nums if x % 2 == 0]
+        \\\
+        ```
+    languages: [python]
+    tags: [comprehensions-and-generators, comprehensions, readability]
+    source: https://effectivepython.com/

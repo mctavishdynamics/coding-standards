@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdAvoidImplicitTruthTests:
+    standard: @{FreeBsdStyle}
+    ruleId: explicit-comparisons
+    title: Compare with an explicit value except for booleans
+    statement:
+        Do not test a non-boolean value by itself or with the not operator;
+        compare characters with the NUL character and counts with zero.
+    rationale:
+        Explicit comparisons say what kind of value is being tested.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (!*s)
+                return;
+        if (len)
+                copy(s, len);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (*s == '\0')
+                return;
+        if (len != 0)
+                copy(s, len);
+        \\\
+        ```
+    languages: [c]
+    tags: [expressions, readability]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

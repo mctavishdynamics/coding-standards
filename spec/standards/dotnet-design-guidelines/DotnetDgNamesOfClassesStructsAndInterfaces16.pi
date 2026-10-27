@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfClassesStructsAndInterfaces16:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-classes-structs-and-interfaces-16
+    title: Do not prefix enum member names
+    statement:
+        Name enum values without a shared prefix that repeats the enum or
+        library name.
+    rationale:
+        Values are always written qualified by their enum, so a prefix is
+        pure repetition.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public enum LogLevel { LlDebug, LlInfo, LlError }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public enum LogLevel { Debug, Info, Error }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, naming, enums]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces#naming-enumerations

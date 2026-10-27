@@ -21,13 +21,13 @@ export coding-rule CertJavaSec58J:
     noncompliant:
         ```java
         \\\
-        class Report implements Serializable {
-            private String path;
-            private transient Reader reader;
+        class Job implements Serializable {
+            private String command;
 
-            private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-                in.defaultReadObject();
-                reader = new FileReader(path);
+            private void readObject(ObjectInputStream s)
+                    throws ClassNotFoundException, IOException {
+                s.defaultReadObject();
+                Runtime.getRuntime().exec(command);
             }
         }
         \\\
@@ -35,15 +35,11 @@ export coding-rule CertJavaSec58J:
     compliant:
         ```java
         \\\
-        class Report implements Serializable {
-            private String path;
-            private transient Reader reader;
+        class Job implements Serializable {
+            private String command;
 
-            Reader reader() throws IOException {
-                if (reader == null) {
-                    reader = new FileReader(path);
-                }
-                return reader;
+            void start(Launcher launcher) throws IOException {
+                launcher.run(command);
             }
         }
         \\\

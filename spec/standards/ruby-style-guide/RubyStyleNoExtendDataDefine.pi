@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoExtendDataDefine:
+    standard: @{RubyStyleGuide}
+    ruleId: no-extend-data-define
+    title: Do not subclass the result of Data.define
+    statement:
+        Do not inherit from a class created by Data.define; assign it to a
+        constant and add methods in a block.
+    rationale:
+        Subclassing adds an unnecessary extra level to the class hierarchy.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Coordinate < Data.define(:lat, :lng)
+          def to_s = "#{lat},#{lng}"
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        Coordinate = Data.define(:lat, :lng) do
+          def to_s = "#{lat},#{lng}"
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, data, inheritance]
+    source: https://rubystyle.guide/#no-extend-data-define

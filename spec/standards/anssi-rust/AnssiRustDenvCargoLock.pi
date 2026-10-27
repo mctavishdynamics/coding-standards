@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustDenvCargoLock:
+    standard: @{AnssiRust}
+    ruleId: DENV-CARGO-LOCK
+    title: Commit Cargo.lock to version control
+    statement:
+        Keep the Cargo.lock file under version control alongside the
+        manifest so every build resolves the same dependency versions.
+    rationale:
+        Without the lock file, two builds of the same commit can pull
+        different dependency versions, which makes builds unreproducible and
+        can silently bring in a compromised or broken release.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```shell
+        \\\
+        # .gitignore
+        /target
+        Cargo.lock
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        # .gitignore
+        /target
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, dependencies, reproducibility]
+    source: https://anssi-fr.github.io/rust-guide/devenv.html#DENV-CARGO-LOCK

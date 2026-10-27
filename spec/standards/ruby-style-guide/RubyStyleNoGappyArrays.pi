@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoGappyArrays:
+    standard: @{RubyStyleGuide}
+    ruleId: no-gappy-arrays
+    title: Avoid leaving large gaps in arrays
+    statement:
+        Do not assign to an index far beyond the end of an array, which
+        fills the gap with nils.
+    rationale:
+        The hidden nils waste memory and surprise any code that walks the
+        array.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        readings = []
+        readings[500] = 21.5
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        readings = {}
+        readings[500] = 21.5
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections]
+    source: https://rubystyle.guide/#no-gappy-arrays

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem65:
+    standard: @{EffectivePython}
+    ruleId: item-65
+    title: Derive attribute relationships from the order fields are written
+    statement:
+        Class bodies keep their definition order, so code can inspect
+        attributes in the order they were written, for example to map CSV
+        columns to fields.
+    rationale:
+        Relying on definition order avoids repeating a separate list of
+        field names that can drift out of sync.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Row:
+            fields = ["date", "amount"]
+            date = None
+            amount = None
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        @dataclass
+        class Row:
+            date: str
+            amount: float
+
+        columns = [f.name for f in dataclasses.fields(Row)]
+        \\\
+        ```
+    languages: [python]
+    tags: [metaclasses-and-attributes, metaprogramming, classes]
+    source: https://effectivepython.com/

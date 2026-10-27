@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgStruct3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: struct-3
+    title: Make the all-zero state of a struct valid
+    statement:
+        Design a struct so that an instance whose fields are all zero, false
+        or null is a valid value.
+    rationale:
+        Arrays and default expressions produce such instances without
+        calling a constructor, and they must not be broken.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public readonly struct Fraction
+        {
+            public Fraction(int n, int d) => (Numerator, Denominator) = (n, d);
+            public int Numerator { get; }
+            public int Denominator { get; }   // zero by default: division by zero
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public readonly struct Fraction
+        {
+            private readonly int _denominatorMinusOne;
+            public Fraction(int n, int d) => (Numerator, _denominatorMinusOne) = (n, d - 1);
+            public int Numerator { get; }
+            public int Denominator => _denominatorMinusOne + 1;   // default is 0/1
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, structs, defaults]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/struct

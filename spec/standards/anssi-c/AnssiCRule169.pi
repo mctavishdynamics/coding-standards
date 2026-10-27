@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule169:
+    standard: @{AnssiC}
+    ruleId: rule-169
+    title: Give program exit codes a defined meaning
+    statement:
+        Make a program's exit status meaningful, with values from 0 to 127,
+        0 for success and 2 for bad arguments as is usual on Unix, and
+        document the codes.
+    rationale:
+        Scripts and supervisors rely on exit codes to detect failures.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int main(int argc, char **argv) {
+            if (argc != 2) { return -1; }
+            return run(argv[1]);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define EXIT_OK 0
+        #define EXIT_BAD_ARGS 2
+        int main(int argc, char **argv) {
+            if (argc != 2) { return EXIT_BAD_ARGS; }
+            return (run(argv[1]) == 0) ? EXIT_OK : 1;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, error-handling, exit-codes]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=138

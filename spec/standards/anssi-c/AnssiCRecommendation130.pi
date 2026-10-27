@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation130:
+    standard: @{AnssiC}
+    ruleId: recommendation-130
+    title: Do not nest control structures in a switch
+    statement:
+        Avoid putting loops or other control structures inside a switch
+        statement; move complex case handling into a function.
+    rationale:
+        Nested structures inside cases make the switch hard to follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        case MSG_LIST:
+            for (i = 0; i < n; i++) {
+                if (items[i].visible) { send(items[i]); }
+            }
+            break;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        case MSG_LIST:
+            send_visible_items(items, n);
+            break;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, control-flow, switch]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=101

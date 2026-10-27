@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./FreeBsdStyle import FreeBsdStyle
+
+export coding-rule FreeBsdNameMacrosInUpperCase:
+    standard: @{FreeBsdStyle}
+    ruleId: macro-naming
+    title: Name unsafe and constant macros in upper case and parenthesize them
+    statement:
+        Give macros with side effects and manifest-constant macros
+        upper-case names. An expression-like macro expands to a single token
+        or is wrapped in outer parentheses. A macro that stands in for a
+        function has the function's name in upper case.
+    rationale:
+        Upper case warns readers that a name is a macro, and outer
+        parentheses keep the expansion's precedence intact.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define pagesize 4096
+        #define round_up(x) (x) + 7 & ~7
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define PAGE_SIZE 4096
+        #define ROUND_UP(x) (((x) + 7) & ~7)
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, naming]
+    source: https://man.freebsd.org/cgi/man.cgi?query=style&sektion=9#DESCRIPTION

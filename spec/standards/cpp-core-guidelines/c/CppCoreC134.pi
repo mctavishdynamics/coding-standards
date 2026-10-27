@@ -5,18 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC134:
     standard: @{CppCoreGuidelines}
     ruleId: C.134
-    title: Give all non-const data members the same access level
+    title: Put every mutable data member under one access specifier
     statement:
-        Make all non-const data members either private, for a type that
-        keeps an invariant, or public, for a plain collection of values.
+        All writable data members of a type should have the same access. Make
+        them all private when the type keeps an invariant, or all public when it
+        is just a bundle of values.
     rationale:
-        Mixed access means the type is unsure whether it protects an
-        invariant or just holds values, which causes logical errors.
+        Mixed access suggests the type cannot decide whether it guards an
+        invariant. That uncertainty leads to logic errors.
     exceptions:
-        Classes sometimes mix the two, usually for debugging, such as
-        non-const instrumentation that is not part of the value. Such
-        members may be public while the members that form the invariant stay
-        private.
+        A type may mix them for a reason such as debugging, where a non-const
+        counter or trace field is not part of the value. That field can be
+        public while the members that make up the invariant stay private.
     severity: null
     noncompliant:
         ```cpp

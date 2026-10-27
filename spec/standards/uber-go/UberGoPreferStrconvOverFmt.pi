@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoPreferStrconvOverFmt:
+    standard: @{UberGo}
+    ruleId: prefer-strconv-over-fmt
+    title: Convert primitives with strconv rather than fmt
+    statement:
+        On hot paths, use strconv to convert primitive values to and from
+        strings instead of fmt.
+    rationale:
+        strconv is noticeably faster and allocates less than the
+        general-purpose fmt functions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        key := fmt.Sprint(userID)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        key := strconv.Itoa(userID)
+        \\\
+        ```
+    languages: [go]
+    tags: [performance, strings]
+    source: https://github.com/uber-go/guide/blob/master/style.md#prefer-strconv-over-fmt

@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgOperatorOverloads4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: operator-overloads-4
+    title: Do not overload operators in clever ways
+    statement:
+        Overload an operator only when its result is immediately obvious; do
+        not reuse operators for unrelated tricks.
+    rationale:
+        Surprising operator meanings make code misleading to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static Logger operator <<(Logger logger, int line) { logger.Write(line); return logger; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Write(int line) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, operators, readability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/operator-overloads

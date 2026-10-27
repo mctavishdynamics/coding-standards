@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation149:
+    standard: @{AnssiC}
+    ruleId: recommendation-149
+    title: Use every parameter of a function
+    statement:
+        Make sure each parameter in a function's prototype is used in its
+        body, or remove it.
+    rationale:
+        An unused parameter often means a bug or a misleading interface.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int area(int w, int h, int depth) { return w * h; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int area(int w, int h) { return w * h; }
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, functions, dead-code]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=120

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern16:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-16
+    title: Do not touch finalizable objects from a finalizer
+    statement:
+        In the finalizer path, do not use other finalizable objects,
+        including ones reached through static fields during shutdown.
+    rationale:
+        Finalizers run in no particular order, so those objects may already
+        have been finalized.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        protected virtual void Dispose(bool disposing)
+        {
+            _logFile.WriteLine("released");   // runs even when disposing is false
+            FreeNative();
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing) _logFile.WriteLine("released");
+            FreeNative();
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, dispose, resources, finalizers]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern#finalizable-types

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartFutureVoid:
+    standard: @{EffectiveDart}
+    ruleId: do-use-futurevoid-as-the-return-type-of-asynchronous-members-that-do-not-produce-values
+    title: Return Future<void> from async members with no result
+    statement:
+        Give an asynchronous member that produces no value the return type
+        `Future<void>`, not `Future` or `Future<Null>`. Use plain void only
+        when no caller should await it or handle its failure.
+    rationale:
+        It mirrors void on synchronous functions and gives better checking
+        in the body and at call sites.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        Future saveDraft(Draft draft) async {
+          await _store.write(draft);
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        Future<void> saveDraft(Draft draft) async {
+          await _store.write(draft);
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, types, async]
+    source: https://dart.dev/effective-dart/design#do-use-futurevoid-as-the-return-type-of-asynchronous-members-that-do-not-produce-values

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule70:
+    standard: @{CppCodingStandards}
+    ruleId: rule-70
+    title: Separate true errors from normal outcomes
+    statement:
+        Treat as an error only a failure to meet a precondition,
+        postcondition or invariant. Expected outcomes such as a missing key
+        are ordinary results.
+    rationale:
+        Calling normal outcomes errors clutters code and makes real errors
+        harder to spot.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        User findUser(int id);   // throws when not found, a common case
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::optional<User> findUser(int id);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling-and-exceptions, error-handling]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

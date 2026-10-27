@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmNameFunctionsAsVerbPhrases:
+    standard: @{LlvmCodingStandards}
+    ruleId: name-types-functions-variables-and-enumerators-properly-functions
+    title: Name functions as verb phrases in lower camel case
+    statement:
+        Function names describe actions, so they are verb phrases in camel
+        case starting with a lower-case letter; commands are imperative.
+    rationale:
+        Verb names read naturally at call sites and distinguish functions
+        from types and variables.
+    exceptions:
+        Classes that imitate the standard library may use its lower_case
+        member names, such as push_back, and add a prefix to begin and end
+        when they offer several iterators.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        bool Valid(const Module &M);
+        void RegisterPass(Pass *P);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        bool isValid(const Module &M);
+        void registerPass(Pass *P);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, functions]
+    source: https://llvm.org/docs/CodingStandards.html#name-types-functions-variables-and-enumerators-properly

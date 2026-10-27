@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./Psr1 import Psr1
+
+export coding-rule Psr1SymbolsOrSideEffects:
+    standard: @{Psr1}
+    ruleId: 2.3
+    title: Keep declarations and side effects in separate files
+    statement:
+        Each file either declares symbols such as classes, functions and
+        constants, or performs logic with side effects; one file should not
+        mix the two. Side effects here mean things like producing output,
+        including files, changing ini settings, connecting to external
+        services, modifying global state or reading and writing files at load
+        time.
+    rationale:
+        Loading a file that only declares things is safe to do from an
+        autoloader or a test. Mixing in side effects makes including the
+        file change program state unexpectedly.
+    exceptions:
+        Declaring a symbol conditionally, for example only when a function
+        of that name does not exist yet, counts as a declaration and not a
+        side effect.
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        date_default_timezone_set('UTC');
+        echo "Loading helpers\n";
+
+        function formatPrice(int $cents): string
+        {
+            return number_format($cents / 100, 2);
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        function formatPrice(int $cents): string
+        {
+            return number_format($cents / 100, 2);
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [files, side-effects]
+    source: https://www.php-fig.org/psr/psr-1/#23-side-effects

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagReflow:
+    standard: @{Wcag22}
+    ruleId: 1.4.10
+    title: Reflow content at 320 CSS pixels without two-way scrolling
+    statement:
+        Make content usable at a width of 320 CSS pixels without horizontal
+        scrolling, or at a height of 256 CSS pixels for horizontally
+        scrolling content, without losing information or function.
+    rationale:
+        People who zoom to 400 percent should only have to scroll in one
+        direction to read.
+    exceptions:
+        Content that needs a two-dimensional layout, such as maps, diagrams,
+        video, games and data tables, may scroll in both directions.
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        .page { width: 1200px; }
+        .sidebar { float: left; width: 400px; }
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        .page { max-width: 75rem; display: grid; grid-template-columns: 1fr; }
+        @media (min-width: 48rem) {
+          .page { grid-template-columns: 16rem 1fr; }
+        }
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, responsive, zoom, layout]
+    source: https://www.w3.org/TR/WCAG22/#reflow

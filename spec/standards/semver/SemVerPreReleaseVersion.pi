@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./SemVer import SemVer
+
+export coding-rule SemVerPreReleaseVersion:
+    standard: @{SemVer}
+    ruleId: 9
+    title: Mark pre-releases with a hyphen and dot-separated identifiers
+    statement:
+        Denote a pre-release by appending a hyphen and dot-separated
+        identifiers after the patch number. Use only ASCII letters, digits
+        and hyphens, never leave an identifier empty, and give numeric
+        identifiers no leading zeroes.
+    rationale:
+        A pre-release ranks below its normal version and signals that it may
+        not meet that version's compatibility promises.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        1.4.0.beta
+        1.4.0-beta..1
+        1.4.0-rc.01
+        1.4.0-beta_2
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        1.4.0-beta
+        1.4.0-beta.1
+        1.4.0-rc.1
+        1.4.0-0.2.5
+        \\\
+        ```
+    languages: [any]
+    tags: [versioning, pre-release, format]
+    source: https://semver.org/#semantic-versioning-specification-semver

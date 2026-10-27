@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs28:
     standard: @{CppCoreGuidelines}
     ruleId: ES.28
-    title: Use lambdas for complex initialization, especially of const variables
+    title: Initialize tricky constants with an immediately invoked lambda
     statement:
-        When initializing a variable takes several steps, compute it in an
-        immediately invoked lambda so the variable can still be const.
+        If a variable needs several statements to work out its value, put
+        those statements in a lambda that is called on the spot. The
+        variable can then be declared const.
     rationale:
-        The lambda keeps the scratch variables local to the initialization
-        without inventing a one-off named function, and the result can be
-        const.
+        Temporary helpers used only for the computation stay inside the
+        lambda. There is no need for a separate named function that nothing
+        else will ever call.
     exceptions: null
     severity: null
     noncompliant:

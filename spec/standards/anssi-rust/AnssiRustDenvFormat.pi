@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustDenvFormat:
+    standard: @{AnssiRust}
+    ruleId: DENV-FORMAT
+    title: Format the code with rustfmt
+    statement:
+        Run rustfmt over the codebase so that it follows a consistent style.
+    rationale:
+        A uniform layout makes code easier to review, so mistakes stand out
+        instead of hiding in formatting noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```shell
+        \\\
+        cargo build
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        cargo fmt --all -- --check
+        cargo build
+        \\\
+        ```
+    languages: [rust]
+    tags: [recommendation, formatting, tooling]
+    source: https://anssi-fr.github.io/rust-guide/devenv.html#DENV-FORMAT

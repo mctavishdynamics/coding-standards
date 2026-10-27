@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem70:
+    standard: @{EffectivePython}
+    ruleId: item-70
+    title: Hand work between threads through a blocking queue
+    statement:
+        Connect producer and consumer threads with queue.Queue, using its
+        blocking get, task_done and join methods and a bounded size.
+    rationale:
+        Queue handles locking, waiting and back pressure, so you do not need
+        busy loops or hand-made synchronisation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        while True:
+            if items:
+                handle(items.pop(0))
+            else:
+                time.sleep(0.01)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from queue import Queue
+
+        work = Queue(maxsize=100)
+
+        def consumer():
+            while True:
+                handle(work.get())
+                work.task_done()
+        \\\
+        ```
+    languages: [python]
+    tags: [concurrency-and-parallelism, threads, queues]
+    source: https://effectivepython.com/

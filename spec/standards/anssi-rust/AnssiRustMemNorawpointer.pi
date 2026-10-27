@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustMemNorawpointer:
+    standard: @{AnssiRust}
+    ruleId: MEM-NORAWPOINTER
+    title: Do not turn smart pointers into raw pointers in safe code
+    statement:
+        In code without unsafe, avoid converting references and smart
+        pointers such as Box, Rc, Arc and Weak into raw pointers, for
+        example with into_raw or into_non_null. Document and justify any raw
+        pointer that remains.
+    rationale:
+        Safe code cannot use a raw pointer, so the conversion mostly loses
+        the owner and leaks the value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        let id = Box::into_raw(Box::new(session)) as usize;
+        registry.insert(id);
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        let session = std::sync::Arc::new(session);
+        registry.insert(std::sync::Arc::clone(&session));
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, memory, pointers]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/memory.html#MEM-NORAWPOINTER

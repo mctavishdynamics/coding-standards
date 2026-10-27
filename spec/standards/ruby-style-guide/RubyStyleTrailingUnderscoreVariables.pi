@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleTrailingUnderscoreVariables:
+    standard: @{RubyStyleGuide}
+    ruleId: trailing-underscore-variables
+    title: Drop needless underscores at the end of a destructuring
+    statement:
+        In a parallel assignment, do not list underscore variables at the
+        end just to ignore values. If you name ignored values, prefer named
+        underscore variables, which add context.
+    rationale:
+        Trailing values are ignored anyway, so the extra underscores are
+        noise.
+    exceptions:
+        A trailing underscore is needed when the left side has a splat that
+        is not itself an underscore.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        year, _, _ = date_parts
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        year, = date_parts
+        *path, _extension = filename.split('.')
+        \\\
+        ```
+    languages: [ruby]
+    tags: [assignment, naming]
+    source: https://rubystyle.guide/#trailing-underscore-variables

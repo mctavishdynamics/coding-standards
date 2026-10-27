@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleBlockForwarding:
+    standard: @{RubyStyleGuide}
+    ruleId: block-forwarding
+    title: Forward blocks with a bare ampersand
+    statement:
+        When a method only passes its block on, use the anonymous ampersand
+        parameter from Ruby 3.1 instead of naming the block.
+    rationale:
+        Names such as block or proc carry no information, and the bare
+        ampersand is enough to show what happens.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def each_order(&block)
+          orders.each(&block)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def each_order(&)
+          orders.each(&)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, blocks]
+    source: https://rubystyle.guide/#block-forwarding

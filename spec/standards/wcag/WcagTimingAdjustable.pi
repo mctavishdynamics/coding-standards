@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagTimingAdjustable:
+    standard: @{Wcag22}
+    ruleId: 2.2.1
+    title: Let users turn off, adjust or extend time limits
+    statement:
+        For each time limit the content sets, let users turn it off, adjust
+        it to at least ten times the default, or warn them before it ends
+        and give at least 20 seconds to extend it with a simple action, at
+        least ten times.
+    rationale:
+        People who read, type or move slowly need more time to finish tasks.
+    exceptions:
+        Real-time events such as auctions, limits where extension would
+        invalidate the activity, and limits longer than 20 hours are exempt.
+    severity: null
+    noncompliant:
+        ```js
+        \\\
+        setTimeout(() => location.assign("/logout"), 5 * 60 * 1000);
+        \\\
+        ```
+    compliant:
+        ```js
+        \\\
+        setTimeout(() => {
+          dialog.showModal(); // "Your session ends in 2 minutes. Stay signed in?"
+        }, 3 * 60 * 1000);
+        stayButton.addEventListener("click", () => { extendSession(); dialog.close(); });
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, timing, sessions]
+    source: https://www.w3.org/TR/WCAG22/#timing-adjustable

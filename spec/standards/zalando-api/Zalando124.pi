@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando124:
+    standard: @{ZalandoApi}
+    ruleId: 124
+    title: Do not use null for empty arrays
+    statement:
+        Represent an empty array as the empty list rather than null.
+    rationale:
+        The empty list is unambiguous and clients can iterate it without a
+        null check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        { "tags": null }
+        \\\
+        ```
+    compliant:
+        ```json
+        \\\
+        { "tags": [] }
+        \\\
+        ```
+    languages: [any]
+    tags: [should, json, null-handling]
+    source: https://opensource.zalando.com/restful-api-guidelines/#124

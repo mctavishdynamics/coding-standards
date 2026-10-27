@@ -5,35 +5,34 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT24:
     standard: @{CppCoreGuidelines}
     ruleId: T.24
-    title: Use tag classes or traits to differentiate concepts that differ only in semantics
+    title: Separate concepts that differ only in meaning with tags or traits
     statement:
-        When two concepts need the same syntax but mean different things,
-        separate them with a trait or tag the type must opt into.
+        When two concepts have identical syntactic requirements but different
+        meanings, add a trait or tag that a type must explicitly opt into, so the
+        compiler can distinguish them.
     rationale:
-        Concepts with the same syntactic requirements and different
-        semantics are ambiguous unless the programmer marks the difference
-        explicitly.
+        Syntax alone cannot capture a difference in meaning. Unless the author makes
+        the distinction explicit, every type that meets the shared syntax matches
+        both concepts and calls become ambiguous.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        template<typename I>
-        concept Random_iter = std::random_access_iterator<I>;
-
-        template<typename I>
-        concept Contiguous_iter = std::random_access_iterator<I>;  // ambiguous
+        template<typename R>
+        concept Sequence = std::ranges::forward_range<R>;
+        template<typename R>
+        concept Sorted_sequence = std::ranges::forward_range<R>;   // indistinguishable
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        template<typename I>
-        inline constexpr bool is_contiguous_v = false;   // specialized per iterator
+        template<typename R>
+        inline constexpr bool declares_sorted = false;   // specialized by sorted types
 
-        template<typename I>
-        concept Contiguous_iter = std::random_access_iterator<I>
-                                  && is_contiguous_v<I>;
+        template<typename R>
+        concept Sorted_sequence = std::ranges::forward_range<R> && declares_sorted<R>;
         \\\
         ```
     languages: [cpp]

@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEventsAndCallbacks2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: events-and-callbacks-2
+    title: Consider events for customization without object-oriented design
+    statement:
+        Use events to let users adjust framework behavior without needing to
+        understand inheritance.
+    rationale:
+        Subscribing to an event is easier for many developers than deriving
+        and overriding.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        uploader.FileRejected += (sender, e) => log.Warn($"Rejected {e.FileName}");
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, extensibility, events]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/events-and-callbacks

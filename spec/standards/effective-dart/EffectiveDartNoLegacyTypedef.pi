@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoLegacyTypedef:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-the-legacy-typedef-syntax
+    title: Write typedefs with the = Function syntax
+    statement:
+        Define function typedefs as `typedef Name = ... Function(...)`
+        rather than the old C-like form. The
+        prefer_generic_function_type_aliases lint checks this.
+    rationale:
+        The old form cannot name generic function types and reads a single
+        identifier as a parameter name, not a type. The new form can express
+        everything and works anywhere a type can go.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        typedef bool Predicate(String);
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        typedef Predicate = bool Function(String value);
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, types, typedefs]
+    source: https://dart.dev/effective-dart/design#dont-use-the-legacy-typedef-syntax

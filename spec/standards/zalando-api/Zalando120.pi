@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando120:
+    standard: @{ZalandoApi}
+    ruleId: 120
+    title: Pluralize array names
+    statement:
+        Give array properties plural names and object properties singular
+        names.
+    rationale:
+        The name then tells readers whether to expect one value or many.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```json
+        \\\
+        { "item": [ { "sku": "A-1" } ], "addresses": { "city": "Berlin" } }
+        \\\
+        ```
+    compliant:
+        ```json
+        \\\
+        { "items": [ { "sku": "A-1" } ], "address": { "city": "Berlin" } }
+        \\\
+        ```
+    languages: [any]
+    tags: [should, json, naming]
+    source: https://opensource.zalando.com/restful-api-guidelines/#120

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleThreeIsTheNumberThouShaltCount:
+    standard: @{RubyStyleGuide}
+    ruleId: three-is-the-number-thou-shalt-count
+    title: Nest blocks at most three levels deep
+    statement:
+        Keep block nesting to no more than three levels, extracting inner
+        work into methods when it grows deeper. RuboCop checks this with
+        Metrics/BlockNesting.
+    rationale:
+        Deep nesting is hard to follow, and splitting it out gives each step
+        a name.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        regions.each do |region|
+          region.stores.each do |store|
+            store.shelves.each do |shelf|
+              shelf.items.each { |item| restock(item) }
+            end
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        regions.each do |region|
+          region.stores.each { |store| restock_store(store) }
+        end
+
+        def restock_store(store)
+          store.shelves.flat_map(&:items).each { |item| restock(item) }
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [complexity, blocks]
+    source: https://rubystyle.guide/#three-is-the-number-thou-shalt-count

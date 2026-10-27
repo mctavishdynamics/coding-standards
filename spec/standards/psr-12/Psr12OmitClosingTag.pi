@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12OmitClosingTag:
+    standard: @{Psr12}
+    ruleId: 2.2c
+    title: Leave out the closing tag in pure PHP files
+    statement:
+        Do not put a closing PHP tag at the end of a file that contains only
+        PHP code.
+    rationale:
+        Any whitespace after a closing tag is sent as output, which can
+        break headers or corrupt responses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        namespace Acme\Mail;
+
+        const DEFAULT_SENDER = 'noreply@example.com';
+        ?>
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        namespace Acme\Mail;
+
+        const DEFAULT_SENDER = 'noreply@example.com';
+        \\\
+        ```
+    languages: [php]
+    tags: [files, tags]
+    source: https://www.php-fig.org/psr/psr-12/#22-files

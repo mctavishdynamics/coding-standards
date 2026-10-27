@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando178:
+    standard: @{ZalandoApi}
+    ruleId: 178
+    title: Use Content headers correctly
+    statement:
+        Use the Content headers, such as Content-Type, Content-Length,
+        Content-Encoding, Content-Language and Content-Disposition, only to
+        describe the body of the message, with their standard meaning.
+    rationale:
+        Clients and proxies rely on these headers to decode and present the
+        body correctly.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```http
+        \\\
+        HTTP/1.1 200 OK
+        Content-Type: application/pdf
+        Content-Disposition: attachment; filename="invoice-1042.pdf"
+        Content-Length: 48211
+        \\\
+        ```
+    languages: [any]
+    tags: [must, http, headers]
+    source: https://opensource.zalando.com/restful-api-guidelines/#178

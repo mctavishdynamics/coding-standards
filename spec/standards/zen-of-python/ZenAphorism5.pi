@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./ZenOfPython import ZenOfPython
+
+export coding-rule ZenAphorism5:
+    standard: @{ZenOfPython}
+    ruleId: aphorism-5
+    title: Keep nesting shallow
+    statement:
+        Prefer flat structures, such as early returns and shallow package or
+        data hierarchies, to deeply nested ones.
+    rationale:
+        Every level of nesting is more context the reader has to hold in
+        mind.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def ship(order):
+            if order.paid:
+                if order.in_stock:
+                    if order.address:
+                        dispatch(order)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def ship(order):
+            if not (order.paid and order.in_stock and order.address):
+                return
+            dispatch(order)
+        \\\
+        ```
+    languages: [python]
+    tags: [nesting, readability]
+    source: https://peps.python.org/pep-0020/#the-zen-of-python

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleOneExpressionPerLine:
+    standard: @{RubyStyleGuide}
+    ruleId: one-expression-per-line
+    title: Give each expression its own line
+    statement:
+        Write each expression on its own line instead of joining several
+        with semicolons.
+    rationale:
+        One expression per line is easier to scan, to step through and to
+        change in a diff.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        puts "Loading"; load_config; puts "Done"
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        puts "Loading"
+        load_config
+        puts "Done"
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, statements]
+    source: https://rubystyle.guide/#one-expression-per-line

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem58:
+    standard: @{EffectivePython}
+    ruleId: item-58
+    title: Expose plain attributes instead of getters and setters
+    statement:
+        Give classes plain public attributes. If you later need behaviour on
+        access, switch to property without changing the interface.
+    rationale:
+        Explicit get and set methods add noise, and properties let you add
+        logic later without changing callers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Sensor:
+            def get_reading(self):
+                return self._reading
+            def set_reading(self, value):
+                self._reading = value
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Sensor:
+            def __init__(self):
+                self.reading = 0.0
+        \\\
+        ```
+    languages: [python]
+    tags: [metaclasses-and-attributes, attributes, properties]
+    source: https://effectivepython.com/

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance16:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-16
+    title: Calculate results ahead of time
+    statement:
+        Compute values in advance, for example in a table, when they would
+        otherwise be computed again and again.
+    rationale:
+        Looking up a stored result is usually far cheaper than recomputing
+        it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int bits(unsigned char b)
+        {
+            int n = 0;
+            for (; b; b >>= 1) n += b & 1;
+            return n;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static unsigned char bitcount[256];  /* filled once at start-up */
+
+        int bits(unsigned char b) { return bitcount[b]; }
+        \\\
+        ```
+    languages: [any]
+    tags: [performance, lookup-tables]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

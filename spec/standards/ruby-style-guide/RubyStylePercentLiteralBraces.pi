@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStylePercentLiteralBraces:
+    standard: @{RubyStyleGuide}
+    ruleId: percent-literal-braces
+    title: Choose the conventional delimiter for each percent literal
+    statement:
+        Use parentheses for %q and %Q strings, square brackets for %w, %i,
+        %W and %I arrays, braces for %r regexps, and parentheses for the
+        remaining literals such as %s and %x. RuboCop checks this with
+        Style/PercentLiteralDelimiters.
+    rationale:
+        Brackets mirror array literals, and braces suit regexps because
+        parentheses are common inside patterns.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        COLORS = %w(red green blue)
+        MATCH = %r((\d+)-(\d+))
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        COLORS = %w[red green blue]
+        MATCH = %r{(\d+)-(\d+)}
+        \\\
+        ```
+    languages: [ruby]
+    tags: [literals, consistency]
+    source: https://rubystyle.guide/#percent-literal-braces

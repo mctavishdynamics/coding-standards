@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule190:
+    standard: @{AnssiC}
+    ruleId: rule-190
+    title: Add a manual canary when the toolchain cannot provide one
+    statement:
+        When the compiler does not offer stack canaries, implement a canary
+        mechanism by hand, at least for critical functions, or show through
+        analysis that stack overflows cannot occur.
+    rationale:
+        Canaries detect stack overflows before they redirect control flow.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```c
+        \\\
+        extern uint32_t canary_secret;
+        int handle(const uint8_t *in, size_t len) {
+            volatile uint32_t canary = canary_secret;
+            uint8_t local[64];
+            int rc = parse_into(local, sizeof local, in, len);
+            if (canary != canary_secret) { fail_secure(); }
+            return rc;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, hardening, buffer-overflow]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=152

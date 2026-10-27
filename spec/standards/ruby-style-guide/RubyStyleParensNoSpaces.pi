@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleParensNoSpaces:
+    standard: @{RubyStyleGuide}
+    ruleId: parens-no-spaces
+    title: Attach the argument list directly to the method name
+    statement:
+        Write the opening parenthesis of a method call directly after the
+        method name.
+    rationale:
+        With a space, Ruby may parse the parenthesis as part of the first
+        argument instead of the argument list, which changes the meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        puts (total + tax).round(2)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        puts((total + tax).round(2))
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, method-calls]
+    source: https://rubystyle.guide/#parens-no-spaces

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule144:
+    standard: @{AnssiC}
+    ruleId: rule-144
+    title: Do not redefine names from the standard library or other libraries
+    statement:
+        Do not reuse the names of identifiers, macros or functions that
+        belong to the standard library or any other library in use.
+    rationale:
+        A clashing name causes confusion about which version is called and
+        can be undefined behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        void *malloc(size_t size) { return pool_alloc(size); }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void *app_alloc(size_t size) { return pool_alloc(size); }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, naming, functions]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=115

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvControlFlowKeywordPlacement:
+    standard: @{KotlinConventions}
+    ruleId: control-flow-keyword-placement
+    title: Keep else, catch, finally and do-while on the brace line
+    statement:
+        Write else, catch, finally and the trailing while of a do loop
+        directly after the closing brace that comes before them, without a
+        line break.
+    rationale:
+        It keeps the parts of one statement visually joined.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        try {
+            upload(file)
+        }
+        catch (e: IOException) {
+            retry(file)
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        try {
+            upload(file)
+        } catch (e: IOException) {
+            retry(file)
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, control-flow]
+    source: https://kotlinlang.org/docs/coding-conventions.html#control-flow-statements

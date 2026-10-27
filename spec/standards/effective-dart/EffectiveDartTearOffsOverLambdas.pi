@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartTearOffsOverLambdas:
+    standard: @{EffectiveDart}
+    ruleId: dont-create-a-lambda-when-a-tear-off-will-do
+    title: Pass a tear-off instead of a forwarding lambda
+    statement:
+        When a closure would only call a named function, method or
+        constructor with its own arguments, pass that function by name.
+        The unnecessary_lambdas lint checks this.
+    rationale:
+        A tear-off already behaves like that closure, so the wrapper only
+        adds noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        recipients.forEach((address) {
+          mailer.send(address);
+        });
+        final users = ids.map((id) => User.fromId(id));
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        recipients.forEach(mailer.send);
+        final users = ids.map(User.fromId);
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, functions]
+    source: https://dart.dev/effective-dart/usage#dont-create-a-lambda-when-a-tear-off-will-do

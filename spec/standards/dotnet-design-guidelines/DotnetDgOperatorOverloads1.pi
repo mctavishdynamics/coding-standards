@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgOperatorOverloads1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: operator-overloads-1
+    title: Avoid operator overloads except on primitive-like types
+    statement:
+        Only overload operators on types that should behave like built-in
+        types.
+    rationale:
+        On other types, operators hide behavior behind symbols whose meaning
+        is not obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static Customer operator +(Customer customer, Order order) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void AddOrder(Order order) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, member-design, operators]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/operator-overloads

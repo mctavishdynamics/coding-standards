@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip191:
+    standard: @{GoogleAip}
+    ruleId: AIP-191
+    title: Use proto3, a versioned package and matching directories
+    statement:
+        Write protobuf APIs in proto3, put each API in one package ending in
+        a version, and store files in directories matching the package. Name
+        files in snake_case and never after the version, and set the
+        language options such as java_package, java_multiple_files and
+        java_outer_classname.
+    rationale:
+        A predictable layout makes API definitions easier to read and
+        review, and the language options give clean, fine-grained generated
+        code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        // file: example/cooking/v1.proto
+        syntax = "proto2";
+        package example.cooking;
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        // file: example/cooking/v1/recipe_service.proto
+        syntax = "proto3";
+        package example.cooking.v1;
+        option java_multiple_files = true;
+        \\\
+        ```
+    languages: [any]
+    tags: [files, packages]
+    source: https://google.aip.dev/191

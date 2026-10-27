@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdPutFunctionTypeOnOwnLine:
+    standard: @{OpenBsdStyle}
+    ruleId: function-type-line
+    title: Put the function type on its own line
+    statement:
+        In a definition, write the return type on a line by itself before
+        the function name.
+    rationale:
+        Function names then start lines, which makes them easy to find.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static int open_log(const char *path)
+        {
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int
+        open_log(const char *path)
+        {
+        \\\
+        ```
+    languages: [c]
+    tags: [formatting, functions]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

@@ -5,16 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE26:
     standard: @{CppCoreGuidelines}
     ruleId: E.26
-    title: If you cannot throw exceptions, consider failing fast
+    title: Consider terminating promptly when exceptions are unavailable
     statement:
-        If an error cannot be handled in the function that detects it and
-        you cannot be systematic about error handling, log the reason and
-        terminate with abort, quick_exit or a similar call that triggers a
-        restart.
+        Without exceptions, if the function that detects a failure cannot deal with
+        it and there is no systematic error path, record why and stop the program
+        with abort, quick_exit or a similar call that leads to a restart.
     rationale:
-        If you cannot recover well, getting out quickly limits consequential
-        damage. In systems built to survive crashes, this hands the error to
-        the next level.
+        When good recovery is out of reach, stopping early contains the harm. In
+        systems designed to tolerate crashes, it passes the problem up to the
+        supervising layer.
     exceptions: null
     severity: null
     noncompliant:

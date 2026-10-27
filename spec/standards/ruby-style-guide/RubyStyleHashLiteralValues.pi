@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHashLiteralValues:
+    standard: @{RubyStyleGuide}
+    ruleId: hash-literal-values
+    title: Omit hash values that repeat the key
+    statement:
+        When a key and the variable that holds its value share a name, use
+        the Ruby 3.1 shorthand that leaves out the value.
+    rationale:
+        The shorthand removes the repetition and keeps the hash short.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        payload = { id: id, name: name, email: email }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        payload = { id:, name:, email: }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes, syntax]
+    source: https://rubystyle.guide/#hash-literal-values

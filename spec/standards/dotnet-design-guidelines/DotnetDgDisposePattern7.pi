@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDisposePattern7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dispose-pattern-7
+    title: Do not add Dispose overloads beyond the two standard ones
+    statement:
+        The only Dispose methods a type should have are the parameterless
+        one and the one taking a Boolean.
+    rationale:
+        Treating the name as reserved keeps the pattern clear to users,
+        implementers and tools.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Dispose(TimeSpan timeout) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Shutdown(TimeSpan timeout) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, dispose, resources, overloading]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dispose-pattern#basic-dispose-pattern

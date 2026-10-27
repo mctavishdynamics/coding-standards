@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ConstantVisibility:
+    standard: @{Psr12}
+    ruleId: 4.3b
+    title: Declare visibility on class constants
+    statement:
+        Give every class constant an explicit visibility when the minimum
+        PHP version of the project supports constant visibility, which is
+        PHP 7.1 or later.
+    rationale:
+        Constants are part of the class interface too, and stating their
+        visibility keeps internal values from becoming public by accident.
+    exceptions:
+        Projects that still support versions older than PHP 7.1 cannot use
+        constant visibility.
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Retry
+        {
+            const MAX_ATTEMPTS = 3;
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Retry
+        {
+            private const MAX_ATTEMPTS = 3;
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [visibility, constants]
+    source: https://www.php-fig.org/psr/psr-12/#43-properties-and-constants

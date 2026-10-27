@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleDontHideExceptions:
+    standard: @{RubyStyleGuide}
+    ruleId: dont-hide-exceptions
+    title: Never swallow an exception silently
+    statement:
+        Never rescue an exception and then do nothing with it.
+    rationale:
+        A silently swallowed error hides failures and makes bugs very hard
+        to trace.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        begin
+          mailer.deliver(message)
+        rescue Net::SMTPError
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        begin
+          mailer.deliver(message)
+        rescue Net::SMTPError => e
+          logger.warn("delivery failed: #{e.message}")
+          retry_later(message)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [error-handling, exceptions]
+    source: https://rubystyle.guide/#dont-hide-exceptions

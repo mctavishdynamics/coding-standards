@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEvent2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: event-2
+    title: Use the generic EventHandler instead of custom delegates
+    statement:
+        Declare events with the generic EventHandler delegate rather than
+        defining a new delegate type for each event.
+    rationale:
+        The generic delegate saves a type per event and gives every event
+        the same familiar signature.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public delegate void OrderPlacedHandler(object sender, OrderPlacedEventArgs e);
+        public event OrderPlacedHandler OrderPlaced;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public event EventHandler<OrderPlacedEventArgs> OrderPlaced;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, events, delegates]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/event

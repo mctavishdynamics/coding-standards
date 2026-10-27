@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV13x3x1:
+    standard: @{OwaspAsvs}
+    ruleId: V13.3.1
+    title: Manage backend secrets in a secrets management solution
+    statement:
+        Handle the whole life of secrets, from creation and storage to
+        access control and deletion, for items such as passwords, keys,
+        database and third-party credentials, token seeds and API keys with
+        a secrets manager like a key vault. Keep secrets out of source code
+        and build artifacts. At level 3, use hardware backing such as an
+        HSM.
+    rationale:
+        Secrets in code or artifacts are copied everywhere the code goes and
+        are hard to rotate or revoke.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        DATABASE_URL = "postgresql://app:S3cretPassw0rd@db.internal/orders"
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        DATABASE_URL = vault_client.read("secret/orders/database_url")
+        \\\
+        ```
+    languages: [any]
+    tags: [level-2, secrets, key-vault]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x22-V13-Configuration.md#v133-secret-management

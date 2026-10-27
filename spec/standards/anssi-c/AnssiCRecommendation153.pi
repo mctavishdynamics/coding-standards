@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation153:
+    standard: @{AnssiC}
+    ruleId: recommendation-153
+    title: Do not mix postfix increment or decrement with other operators
+    statement:
+        Use postfix increment and decrement only as standalone statements.
+    rationale:
+        Combined with other operators they can make the order of side
+        effects unspecified.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        buf[i++] = buf[i] + 1;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        buf[i] = buf[i + 1U] + 1;
+        i++;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, expressions, side-effects]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=124

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAutoReleaseResources:
+    standard: @{RubyStyleGuide}
+    ruleId: auto-release-resources
+    title: Prefer methods that release resources automatically
+    statement:
+        When a resource-acquiring method has a block form that cleans up for
+        you, use that form.
+    rationale:
+        The block form closes the resource when the block ends, so no manual
+        ensure is needed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        log = File.open('audit.log', 'a')
+        log.puts(entry)
+        log.close
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        File.open('audit.log', 'a') do |log|
+          log.puts(entry)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [resources, files]
+    source: https://rubystyle.guide/#auto-release-resources

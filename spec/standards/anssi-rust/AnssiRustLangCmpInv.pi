@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangCmpInv:
+    standard: @{AnssiRust}
+    ruleId: LANG-CMP-INV
+    title: Respect the invariants of comparison traits
+    statement:
+        Implementations of PartialEq, Eq, PartialOrd and Ord must satisfy
+        the properties their documentation requires, such as symmetry,
+        transitivity and consistency between the traits.
+    rationale:
+        Collections and algorithms rely on these properties; broken
+        comparisons give wrong results, lost entries or panics.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl PartialEq for Version {
+            fn eq(&self, other: &Self) -> bool { self.major <= other.major }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl PartialEq for Version {
+            fn eq(&self, other: &Self) -> bool {
+                self.major == other.major && self.minor == other.minor
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, traits, comparison]
+    source: https://anssi-fr.github.io/rust-guide/standard.html#LANG-CMP-INV

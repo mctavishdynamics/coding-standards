@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule180:
+    standard: @{AnssiC}
+    ruleId: rule-180
+    title: Do not use buffer functions that take no size
+    statement:
+        Do not call library functions that write to a buffer without being
+        told its size, such as strcpy and strcat.
+    rationale:
+        Without a size they cannot stop at the end of the buffer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        strcpy(dst, src);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        (void)snprintf(dst, dst_len, "%s", src);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, standard-library, buffer-overflow]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=144

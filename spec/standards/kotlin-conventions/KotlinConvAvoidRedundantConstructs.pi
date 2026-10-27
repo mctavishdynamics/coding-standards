@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvAvoidRedundantConstructs:
+    standard: @{KotlinConventions}
+    ruleId: avoid-redundant-constructs
+    title: Omit optional syntax the IDE marks as redundant
+    statement:
+        If a construct is optional and the IDE highlights it as redundant,
+        leave it out. Do not keep unnecessary syntax for supposed clarity.
+    rationale:
+        Redundant syntax is noise that readers must skip over.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        val names: List<String> = listOf<String>("a", "b")
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        val names = listOf("a", "b")
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [redundancy]
+    source: https://kotlinlang.org/docs/coding-conventions.html#avoid-redundant-constructs

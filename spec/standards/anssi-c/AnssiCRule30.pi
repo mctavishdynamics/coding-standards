@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule30:
+    standard: @{AnssiC}
+    ruleId: rule-30
+    title: Define the compilation options precisely
+    statement:
+        Fix the compiler options for the whole code base, stating at least
+        the C standard version, the compiler name and version, the warning
+        level and the preprocessor symbols such as NDEBUG for release
+        builds.
+    rationale:
+        Each option changes how the code is built, so undocumented or
+        inconsistent options produce binaries that are hard to reproduce or
+        audit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```shell
+        \\\
+        cc main.c -o app
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        # toolchain: GCC 12, C99, release build
+        gcc-12 -std=c99 -Wall -Wextra -O2 -DNDEBUG main.c -o app
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, compilation, build]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=29

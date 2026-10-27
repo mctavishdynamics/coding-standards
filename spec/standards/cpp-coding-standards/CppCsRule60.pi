@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule60:
+    standard: @{CppCodingStandards}
+    ruleId: rule-60
+    title: Free memory in the same module that allocated it
+    statement:
+        Do not allocate in one library or DLL and free in another; give each
+        module its own release function or use smart pointers with deleters.
+    rationale:
+        Modules may use different heaps or runtimes, so cross-module
+        deallocation can crash.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        char* buf = plugin_getName();
+        delete[] buf;   // freed by the caller's runtime
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        char* buf = plugin_getName();
+        plugin_freeName(buf);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces-and-modules, memory, modules]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

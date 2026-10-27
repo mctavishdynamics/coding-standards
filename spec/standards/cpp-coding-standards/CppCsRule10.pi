@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule10:
+    standard: @{CppCodingStandards}
+    ruleId: rule-10
+    title: Pass state explicitly instead of sharing globals
+    statement:
+        Avoid namespace-scope variables and data shared between modules or
+        threads. Pass state explicitly instead.
+    rationale:
+        Shared data couples components, hides dependencies, complicates
+        testing and invites data races and initialisation order bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Config gConfig;
+        void connect() { open(gConfig.host); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void connect(const Config& cfg) { open(cfg.host); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [design-style, design, global-state]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

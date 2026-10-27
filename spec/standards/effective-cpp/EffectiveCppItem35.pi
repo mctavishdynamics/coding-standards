@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem35:
+    standard: @{EffectiveCpp}
+    ruleId: item-35
+    title: Weigh other designs before a public virtual function
+    statement:
+        Look at the non-virtual interface idiom, strategy objects held as
+        function pointers or callable members, and the classic strategy
+        pattern as alternatives to a public virtual function.
+    rationale:
+        These designs let you add pre and post processing, change behaviour
+        at runtime or per object, and decouple the algorithm from the class
+        hierarchy.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Character {
+        public:
+            virtual int health() const;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Character {
+        public:
+            explicit Character(std::function<int(const Character&)> calc)
+                : calc_(std::move(calc)) {}
+            int health() const { return calc_(*this); }
+        private:
+            std::function<int(const Character&)> calc_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance-and-oo-design, design, polymorphism]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

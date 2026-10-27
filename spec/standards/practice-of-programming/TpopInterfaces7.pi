@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopInterfaces7:
+    standard: @{PracticeOfProgramming}
+    ruleId: interfaces-7
+    title: Reserve exceptions for truly unusual events
+    statement:
+        Use exceptions for conditions that really are out of the ordinary,
+        not for normal outcomes such as reaching end of input.
+    rationale:
+        Exceptions used for control flow make code hard to follow and can be
+        slow. Expected results belong in return values.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def read_all(f):
+            lines = []
+            try:
+                while True:
+                    lines.append(next(f))
+            except StopIteration:
+                return lines
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def read_all(f):
+            return [line for line in f]
+        \\\
+        ```
+    languages: [any]
+    tags: [interfaces, error-handling, exceptions]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

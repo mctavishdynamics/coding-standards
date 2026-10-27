@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleNoMultilineIfModifiers:
+    standard: @{RubyStyleGuide}
+    ruleId: no-multiline-if-modifiers
+    title: Do not put a modifier if after a multi-line block
+    statement:
+        Avoid ending a non-trivial block of several lines with a modifier if
+        or unless; use a normal conditional around it.
+    rationale:
+        A condition placed after a long block is easy to miss, so the reader
+        assumes the block always runs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        orders.each do |order|
+          order.ship
+          order.notify
+        end if shipping_open?
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        if shipping_open?
+          orders.each do |order|
+            order.ship
+            order.notify
+          end
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals]
+    source: https://rubystyle.guide/#no-multiline-if-modifiers

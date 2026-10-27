@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmEvaluateEndOnce:
+    standard: @{LlvmCodingStandards}
+    ruleId: don-t-evaluate-end-every-time-through-a-loop
+    title: Compute end() once before an iterator loop
+    statement:
+        When you must write an explicit iterator loop, evaluate the end
+        iterator once in the loop header rather than calling end() on every
+        iteration. If the container is modified in the loop and you need the
+        fresh end each time, keep the call and comment why.
+    rationale:
+        Re-evaluating end can be costly for complex expressions and suggests
+        to readers that the loop mutates the container.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (auto I = Table.begin(); I != Table.end(); ++I)
+          check(*I);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (auto I = Table.begin(), E = Table.end(); I != E; ++I)
+          check(*I);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [loops, performance, iterators]
+    source: https://llvm.org/docs/CodingStandards.html#don-t-evaluate-end-every-time-through-a-loop

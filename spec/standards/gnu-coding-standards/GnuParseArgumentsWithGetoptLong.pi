@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuParseArgumentsWithGetoptLong:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-getopt-long
+    title: Decode command-line arguments with getopt_long
+    statement:
+        Parse the command line with getopt_long, except where the program's
+        argument syntax cannot fit it.
+    rationale:
+        It gives standard behavior for short and long options without
+        hand-written parsing bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (i = 1; i < argc; i++)
+          if (strcmp (argv[i], "-v") == 0)
+            verbose = true;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static const struct option longopts[] = {
+          {"verbose", no_argument, NULL, 'v'},
+          {NULL, 0, NULL, 0}
+        };
+        while ((c = getopt_long (argc, argv, "v", longopts, NULL)) != -1)
+          if (c == 'v')
+            verbose = true;
+        \\\
+        ```
+    languages: [c]
+    tags: [command-line, parsing]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

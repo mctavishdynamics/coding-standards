@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule25:
+    standard: @{JplC}
+    ruleId: rule-25
+    title: Keep functions short with few parameters
+    statement:
+        Keep functions within 60 lines of text and limit them to 6 parameters.
+    rationale:
+        Small functions can be read and tested as a whole. A body that runs
+        across pages or a long argument list is hard to follow and usually
+        means the work should be split.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int configure(int mode, int rate, int gain, int offset,
+                      int filter, int channel, int flags);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        typedef struct {
+            int mode;
+            int rate;
+            int gain;
+            int offset;
+            int filter;
+            int flags;
+        } config_t;
+
+        int configure(int channel, const config_t *cfg);
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-4, function-size, readability]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

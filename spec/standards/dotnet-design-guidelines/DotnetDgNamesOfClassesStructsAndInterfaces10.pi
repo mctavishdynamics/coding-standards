@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamesOfClassesStructsAndInterfaces10:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: names-of-classes-structs-and-interfaces-10
+    title: Consider naming a type parameter after its constraint
+    statement:
+        When a type parameter is constrained, think about reflecting the
+        constraint in its name.
+    rationale:
+        The name then tells readers what the parameter must be without
+        looking at the where clause.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class Repository<T> where T : IEntity { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class Repository<TEntity> where TEntity : IEntity { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, naming, generics]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces#names-of-generic-type-parameters

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPortability7:
+    standard: @{PracticeOfProgramming}
+    ruleId: portability-7
+    title: Keep platform choices out of preprocessor branches
+    statement:
+        Do not scatter preprocessor tests through the code to select
+        platform-specific variants.
+    rationale:
+        Conditional code multiplies the versions of a program, most of which
+        are rarely built or tested.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #ifdef _WIN32
+            Sleep(ms);
+        #elif defined(__APPLE__)
+            usleep(ms * 1000);
+        #else
+            usleep(ms * 1000);
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* sleep_ms is defined once per platform in sys_win.c or sys_unix.c */
+        sleep_ms(ms);
+        \\\
+        ```
+    languages: [any]
+    tags: [portability, preprocessor]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

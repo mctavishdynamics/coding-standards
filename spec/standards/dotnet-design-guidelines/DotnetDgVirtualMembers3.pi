@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgVirtualMembers3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: virtual-members-3
+    title: Prefer protected virtual members behind public non-virtual ones
+    statement:
+        Make virtual members protected and have public members call into
+        them, rather than making public members virtual.
+    rationale:
+        Public members then serve consumers, and the extension points are
+        visible only to subclasses that need them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public virtual void Save(Document document) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Save(Document document)
+        {
+            ArgumentNullException.ThrowIfNull(document);
+            SaveCore(document);
+        }
+
+        protected virtual void SaveCore(Document document) { /* ... */ }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, extensibility, virtual-members, accessibility]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/virtual-members

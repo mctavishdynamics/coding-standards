@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./JplC import JplC
+
+export coding-rule JplCRule7:
+    standard: @{JplC}
+    ruleId: rule-7
+    title: Never rely on sleeping to coordinate tasks
+    statement:
+        Never use a task delay or sleep to make one task wait for another.
+    rationale:
+        Waiting a fixed time assumes the other task will be done by then.
+        That assumption fails under load or after a change, causing races or
+        deadlock, and it has caused real flight anomalies.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        start_camera_task();
+        task_delay(100);
+        camera_capture();
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        start_camera_task();
+        if (sem_wait_timeout(&camera_ready, CAMERA_TIMEOUT) != OK) {
+            return ERR_TIMEOUT;
+        }
+        camera_capture();
+        \\\
+        ```
+    languages: [c]
+    tags: [loc-2, concurrency, synchronization]
+    source: https://web.archive.org/web/20150215140644/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf

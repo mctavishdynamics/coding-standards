@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12IfSplitCondition:
+    standard: @{Psr12}
+    ruleId: 5.1c
+    title: Wrap long if conditions in the standard shape
+    statement:
+        If an if condition wraps across lines, begin it on a new line after
+        the opening parenthesis and indent every continuation at least one
+        level. The final parenthesis and the brace then share a line of
+        their own, separated by a single space. Boolean operators go
+        consistently at the start of lines or consistently at the end.
+    rationale:
+        A fixed shape for long conditions keeps them readable and stops each
+        author from inventing a different wrapping style.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        if ($user->isActive() &&
+            $user->hasRole('admin')
+            || $override) {
+            grantAccess();
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        if (
+            $user->isActive()
+            && $user->hasRole('admin')
+            || $override
+        ) {
+            grantAccess();
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [control-structures, formatting]
+    source: https://www.php-fig.org/psr/psr-12/#51-if-elseif-else

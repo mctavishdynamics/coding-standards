@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgDependencyProperties10:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: dependency-properties-10
+    title: Use the built-in change callback instead of wrapper notifications
+    statement:
+        Handle changes of a dependency property with a property-changed
+        callback supplied in its PropertyMetadata, not with code in the
+        wrapper.
+    rationale:
+        The callback fires however the value changes, including through
+        binding and animation.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        new PropertyMetadata(100.0, (d, e) => ((Gauge)d).OnMaximumChanged((double)e.NewValue));
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, dependency-properties, wpf, events]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/dependency-properties#dependency-property-change-notifications

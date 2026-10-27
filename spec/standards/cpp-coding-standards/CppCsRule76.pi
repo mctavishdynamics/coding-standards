@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule76:
+    standard: @{CppCodingStandards}
+    ruleId: rule-76
+    title: Start with vector and switch containers only for a reason
+    statement:
+        Use vector unless another container's properties, such as stable
+        references, cheap middle insertion or key lookup, are required.
+    rationale:
+        vector is compact, cache friendly and has the simplest guarantees.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::list<int> scores;   // no need for list properties
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<int> scores;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [stl-containers, containers]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

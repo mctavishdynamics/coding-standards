@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiValidateInputsAndState:
+    standard: @{KotlinApiGuidelines}
+    ruleId: validate-inputs-and-state
+    title: Validate arguments with require and state with check
+    statement:
+        Before doing work, check arguments with require and the object's
+        state with check, and give messages that include the offending
+        input. Leave a value out of the message when showing it could help
+        an attacker.
+    rationale:
+        Failing fast with a clear message shows users exactly how they
+        misused the API.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun withdraw(amount: Long) {
+            balance -= amount
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun withdraw(amount: Long) {
+            require(amount > 0) { "Amount must be positive, was $amount" }
+            check(!isFrozen) { "Account is frozen" }
+            balance -= amount
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [validation, error-handling]
+    source: https://kotlinlang.org/docs/api-guidelines-predictability.html#validate-inputs-and-state

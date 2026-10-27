@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleMixinGrouping:
+    standard: @{RubyStyleGuide}
+    ruleId: mixin-grouping
+    title: Put each mixin in its own statement
+    statement:
+        Split several included, extended or prepended modules into separate
+        statements.
+    rationale:
+        One module per line is easier to read and diff, and avoids confusion
+        about the order of the ancestors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Report
+          include Exportable, Printable
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Report
+          include Exportable
+          include Printable
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, modules]
+    source: https://rubystyle.guide/#mixin-grouping

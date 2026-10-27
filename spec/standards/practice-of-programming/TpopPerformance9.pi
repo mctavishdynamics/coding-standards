@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPerformance9:
+    standard: @{PracticeOfProgramming}
+    ruleId: performance-9
+    title: Compute repeated subexpressions once
+    statement:
+        When the same expensive expression is evaluated several times,
+        compute it once and reuse the result.
+    rationale:
+        Removing repeated work saves time, and naming the result often makes
+        the code clearer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        x = r * cos(angle) * scale;
+        y = r * sin(angle) * scale;
+        z = r * cos(angle) * depth;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        double c = r * cos(angle);
+        x = c * scale;
+        y = r * sin(angle) * scale;
+        z = c * depth;
+        \\\
+        ```
+    languages: [any]
+    tags: [performance]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

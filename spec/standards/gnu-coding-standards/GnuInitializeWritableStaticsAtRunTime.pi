@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuInitializeWritableStaticsAtRunTime:
+    standard: @{GnuCodingStandards}
+    ruleId: semantics-static-initialization
+    title: Initialize static data that changes with code, not initializers
+    statement:
+        If static storage is modified while the program runs, give it its
+        starting value with explicit code. Keep initialized declarations for
+        data that never changes.
+    rationale:
+        Then restarting the program or part of it without reloading resets
+        that state correctly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        static int error_count = 0;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int error_count;
+
+        void
+        start_run (void)
+        {
+          error_count = 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [initialization, globals]
+    source: https://www.gnu.org/prep/standards/standards.html#Semantics

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamingParameters7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: naming-parameters-7
+    title: Avoid abbreviated or numbered operator parameter names
+    statement:
+        Do not name operator parameters with abbreviations or numbers such
+        as m1 and m2.
+    rationale:
+        Such names carry no meaning and depart from the left, right and
+        value convention.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static bool operator ==(Money m1, Money m2) => m1.Equals(m2);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static bool operator ==(Money left, Money right) => left.Equals(right);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, naming, parameters, operators]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/naming-parameters#naming-operator-overload-parameters

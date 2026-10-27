@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbBiggerInterfaceWeakerAbstraction:
+    standard: @{GoProverbs}
+    ruleId: the-bigger-the-interface-the-weaker-the-abstraction
+    title: Keep interfaces small
+    statement:
+        Define interfaces with as few methods as the caller really needs,
+        often just one.
+    rationale:
+        Every added method narrows the set of types that can satisfy the
+        interface, so a large interface abstracts over less.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Store interface {
+            Get(key string) ([]byte, error)
+            Put(key string, v []byte) error
+            Delete(key string) error
+            Compact() error
+            Stats() StoreStats
+        }
+
+        func loadConfig(s Store) (*Config, error)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Getter interface {
+            Get(key string) ([]byte, error)
+        }
+
+        func loadConfig(g Getter) (*Config, error)
+        \\\
+        ```
+    languages: [go]
+    tags: [interfaces, design]
+    source: https://go-proverbs.github.io/

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustUnsafeNoub:
+    standard: @{AnssiRust}
+    ruleId: UNSAFE-NOUB
+    title: Allow no undefined behaviour
+    statement:
+        The program must never perform an operation with undefined
+        behaviour, including inside unsafe blocks.
+    rationale:
+        Once undefined behaviour occurs, the compiler's assumptions no
+        longer hold and the program may do anything, which voids every
+        safety guarantee.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        let v = vec![1u8, 2, 3];
+        let x = unsafe { *v.as_ptr().add(5) };
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        let v = vec![1u8, 2, 3];
+        let x = v.get(5).copied();
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, unsafe, undefined-behavior]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/generalities.html#UNSAFE-NOUB

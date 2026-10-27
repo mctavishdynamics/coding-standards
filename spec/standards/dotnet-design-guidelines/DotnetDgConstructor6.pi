@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgConstructor6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: constructor-6
+    title: Throw from instance constructors when appropriate
+    statement:
+        An instance constructor may throw an exception, for example when its
+        arguments are invalid.
+    rationale:
+        Failing early is better than handing back an object in a broken
+        state.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public Percentage(double value)
+        {
+            if (value is < 0 or > 100)
+                throw new ArgumentOutOfRangeException(nameof(value));
+            Value = value;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, constructors, exceptions]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/constructor

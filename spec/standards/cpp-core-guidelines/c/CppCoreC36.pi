@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC36:
     standard: @{CppCoreGuidelines}
     ruleId: C.36
-    title: Do not let a destructor fail
+    title: Keep destructors from failing
     statement:
-        Write destructors so they cannot fail. Handle or swallow errors
-        inside the destructor instead of throwing them out.
+        A destructor must not fail. Deal with any error inside it, for example
+        by logging, and never let an exception leave it.
     rationale:
-        Error-free code is very hard to write if destruction can fail, and
-        the standard library requires destructors that do not exit by
-        throwing.
+        If cleanup can fail, it is nearly impossible to write correct code
+        around it. The standard library also assumes that destructors never
+        throw.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem57:
+    standard: @{EffectivePython}
+    ruleId: item-57
+    title: Base custom containers on collections.abc
+    statement:
+        When you write your own container type, inherit from the matching
+        abstract base class in collections.abc.
+    rationale:
+        The base class tells you which methods you must implement and
+        provides the rest, such as index and count, for free.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Ring:
+            def __getitem__(self, i): ...
+            def __len__(self): ...
+            # no index, count or __contains__
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from collections.abc import Sequence
+
+        class Ring(Sequence):
+            def __getitem__(self, i): ...
+            def __len__(self): ...
+        \\\
+        ```
+    languages: [python]
+    tags: [classes-and-interfaces, classes, containers]
+    source: https://effectivepython.com/

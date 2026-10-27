@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule5:
+    standard: @{AnssiC}
+    ruleId: rule-5
+    title: Protect every header with an include guard
+    statement:
+        Give each header a unique guard macro, tested with ifndef and
+        defined right after, so its contents are processed only once. The
+        non-standard pragma once is not accepted as a substitute.
+    rationale:
+        Repeated inclusion causes redefinition errors and confusing code;
+        pragma once depends on the compiler and can fail with duplicated
+        paths.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* config.h */
+        #pragma once
+        struct config { int verbose; };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* config.h */
+        #ifndef CONFIG_H
+        #define CONFIG_H
+        struct config { int verbose; };
+        #endif /* CONFIG_H */
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, headers, preprocessor]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=13

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgConstructor7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: constructor-7
+    title: Declare a needed public parameterless constructor explicitly
+    statement:
+        If a class requires a public parameterless constructor, write it out
+        rather than relying on the compiler to generate it.
+    rationale:
+        The implicit constructor vanishes as soon as another constructor is
+        added, which silently breaks callers.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public class ImportSettings
+        {
+            public ImportSettings() { }
+            public ImportSettings(string sourcePath) { SourcePath = sourcePath; }
+            public string SourcePath { get; set; }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, constructors, versioning]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/constructor

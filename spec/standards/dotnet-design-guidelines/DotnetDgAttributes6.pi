@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgAttributes6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: attributes-6
+    title: Avoid constructor parameters for optional attribute arguments
+    statement:
+        Do not let optional properties be set both through the constructor
+        and by a setter.
+    rationale:
+        Keeping optional values out of the constructor makes required and
+        optional arguments obvious and avoids two ways to do the same thing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public ColumnMapAttribute(string columnName, bool nullable) { /* ... */ }
+        public bool Nullable { get; set; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public ColumnMapAttribute(string columnName) { /* ... */ }
+        public bool Nullable { get; set; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, usage, attributes, constructors]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/attributes

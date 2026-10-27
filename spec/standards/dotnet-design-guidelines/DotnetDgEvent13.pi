@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEvent13:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: event-13
+    title: Keep event handlers to two parameters
+    statement:
+        Do not give event handler delegates more than the sender and event
+        data parameters; put extra data in the EventArgs subclass.
+    rationale:
+        Extra parameters break the standard signature and cannot be extended
+        later without breaking handlers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public delegate void UploadEventHandler(object sender, string file, long bytes);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class UploadEventArgs : EventArgs
+        {
+            public string File { get; init; }
+            public long Bytes { get; init; }
+        }
+
+        public delegate void UploadEventHandler(object sender, UploadEventArgs e);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, events, parameters]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/event#custom-event-handler-design

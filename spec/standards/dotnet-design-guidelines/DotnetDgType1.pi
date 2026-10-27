@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgType1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: type-1
+    title: Make each type a coherent set of related members
+    statement:
+        Design every type around one well-defined purpose so that its
+        members belong together, rather than gathering unrelated functions
+        in one place.
+    rationale:
+        A focused type is easier to find, understand and evolve than a grab
+        bag of loosely connected members.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class Helpers
+        {
+            public static string FormatPhone(string raw) { /* ... */ }
+            public static void ResizeImage(string path, int width) { /* ... */ }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static class PhoneNumberFormatter
+        {
+            public static string Format(string raw) { /* ... */ }
+            public static string FormatInternational(string raw) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, cohesion]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/type

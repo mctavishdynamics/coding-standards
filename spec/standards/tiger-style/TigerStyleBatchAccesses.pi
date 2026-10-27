@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleBatchAccesses:
+    standard: @{TigerStyle}
+    ruleId: batch-accesses
+    title: Batch accesses to amortize their cost
+    statement:
+        Group network, disk, memory and CPU operations into batches instead
+        of paying the per-operation cost each time.
+    rationale:
+        Fixed costs per operation dominate small requests, and batching
+        spreads them over many items.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        for (transfers) |transfer| try journal.write(&.{transfer});
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        try journal.write(transfers);
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [performance, batching]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#performance

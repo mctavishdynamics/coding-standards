@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleOwnPaceNotEvents:
+    standard: @{TigerStyle}
+    ruleId: own-pace-not-events
+    title: Process external events at your own pace
+    statement:
+        Do not act directly in response to each external event. Queue events
+        and let the program handle them on its own schedule.
+    rationale:
+        The program keeps control of its own flow, can batch work instead of
+        switching context per event, and can bound the work done per period.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn on_packet(self: *Server, packet: Packet) void {
+            self.state_machine.apply(packet);
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn on_packet(self: *Server, packet: Packet) void {
+            self.inbox.push(packet);
+        }
+
+        fn tick(self: *Server) void {
+            while (self.inbox.pop_batch(batch_max)) |batch| self.state_machine.apply_batch(batch);
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [control-flow, batching, safety]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

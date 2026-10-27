@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmFormatPythonWithBlack:
+    standard: @{LlvmCodingStandards}
+    ruleId: python-version-and-source-code-formatting
+    title: Format Python code with black and keep to the minimum Python version
+    statement:
+        Python in the repository may only use features of the documented
+        minimum Python version and must follow PEP 8. Format it with black
+        using its default settings and the pinned major version; when a
+        patch is not about formatting, format only the lines it touches, for
+        example with darker.
+    rationale:
+        Automatic formatting with fixed settings keeps style consistent and
+        avoids churn in lines a patch did not otherwise change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def load(path,mode = 'r'):
+            with open(path,mode) as f: return f.read()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def load(path, mode="r"):
+            with open(path, mode) as f:
+                return f.read()
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, python, tooling]
+    source: https://llvm.org/docs/CodingStandards.html#python-version-and-source-code-formatting

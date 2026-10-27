@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12VariadicNoSpace:
+    standard: @{Psr12}
+    ruleId: 4.5h
+    title: Write no space between the variadic operator and the name
+    statement:
+        Put the three-dot variadic operator directly before the parameter
+        name.
+    rationale:
+        A consistent spelling keeps variadic parameters recognisable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        function sum(int ... $numbers): int
+        {
+            return array_sum($numbers);
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        function sum(int ...$numbers): int
+        {
+            return array_sum($numbers);
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [parameters, whitespace]
+    source: https://www.php-fig.org/psr/psr-12/#45-method-and-function-arguments

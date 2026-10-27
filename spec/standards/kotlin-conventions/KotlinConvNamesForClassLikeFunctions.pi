@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvNamesForClassLikeFunctions:
+    standard: @{KotlinConventions}
+    ruleId: names-for-class-like-functions
+    title: Give class-like functions a type-style name
+    statement:
+        Two kinds of function, usually top-level, take a class-style name
+        instead. A factory function may share the name of the abstract type
+        it returns, and a Composable function returning Unit is named like a
+        class.
+    rationale:
+        These functions stand in for constructors or UI elements, so a
+        type-style name matches how they are used.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        interface Logger
+        fun createLogger(): Logger = ConsoleLogger()
+
+        @Composable fun loginButton() { }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        interface Logger
+        fun Logger(): Logger = ConsoleLogger()
+
+        @Composable fun LoginButton() { }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [naming, factories]
+    source: https://kotlinlang.org/docs/coding-conventions.html#names-for-class-like-functions

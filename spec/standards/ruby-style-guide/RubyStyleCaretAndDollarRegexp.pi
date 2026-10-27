@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleCaretAndDollarRegexp:
+    standard: @{RubyStyleGuide}
+    ruleId: caret-and-dollar-regexp
+    title: Anchor whole-string matches with \A and \z
+    statement:
+        Remember that the caret and dollar anchors match at line boundaries,
+        not at the ends of the string. To match the whole string, use the
+        start-of-string and end-of-string anchors.
+    rationale:
+        A pattern anchored with caret and dollar also matches one line of
+        multi-line input, which can let unexpected input through validation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        valid = token.match?(/^[a-f0-9]+$/)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        valid = token.match?(/\A[a-f0-9]+\z/)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [regex, security, input-validation]
+    source: https://rubystyle.guide/#caret-and-dollar-regexp

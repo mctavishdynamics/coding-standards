@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopStyle14:
+    standard: @{PracticeOfProgramming}
+    ruleId: style-14
+    title: Prefer functions to function-like macros
+    statement:
+        Write real functions instead of macros that pretend to be functions.
+    rationale:
+        Macros evaluate arguments more than once and ignore types and scope.
+        Modern compilers inline small functions anyway.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define MAX(a, b) ((a) > (b) ? (a) : (b))
+
+        biggest = MAX(biggest, next_sample());   /* may read twice */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static inline int max_int(int a, int b) { return a > b ? a : b; }
+
+        biggest = max_int(biggest, next_sample());
+        \\\
+        ```
+    languages: [any]
+    tags: [style, macros, functions]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

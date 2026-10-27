@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CweTop25 import CweTop25
+
+export coding-rule CweTop25Cwe434:
+    standard: @{CweTop25}
+    ruleId: CWE-434
+    title: Prevent dangerous file uploads
+    statement:
+        Accept only an allow list of file types, checked on the server, and
+        store each upload under a freshly generated name instead of the one
+        the user sent. Keep uploaded files outside the web root and deliver
+        them through code that cannot execute them.
+    rationale:
+        An uploaded script placed where the server runs or serves it gives
+        the attacker code execution or a way to attack other users. It is
+        ranked 12 of 25 in the 2025 CWE Top 25.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def save_avatar(file):
+            file.save(os.path.join(STATIC_DIR, file.filename))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        ALLOWED = {".png", ".jpg", ".webp"}
+
+        def save_avatar(file):
+            ext = os.path.splitext(file.filename)[1].lower()
+            if ext not in ALLOWED:
+                raise ValueError("unsupported file type")
+            file.save(os.path.join(PRIVATE_UPLOAD_DIR, uuid.uuid4().hex + ext))
+        \\\
+        ```
+    languages: [python]
+    tags: [rank-12, file-upload, input-validation]
+    source: https://cwe.mitre.org/data/definitions/434.html

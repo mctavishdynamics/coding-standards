@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustFfiNopanic:
+    standard: @{AnssiRust}
+    ruleId: FFI-NOPANIC
+    title: Handle panics in Rust code called from FFI
+    statement:
+        Rust functions called from foreign code should either be unable to
+        panic or catch panics, for example with catch_unwind, set_hook or a
+        panic_handler, so they never unwind into foreign code or leave state
+        broken.
+    rationale:
+        Unwinding across a foreign frame is undefined behaviour or aborts
+        the process, and a half-finished operation leaves shared state
+        inconsistent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub extern "C" fn parse_len(s: *const c_char) -> usize {
+            let s = unsafe { CStr::from_ptr(s) }.to_str().unwrap();
+            s.parse().unwrap()
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[no_mangle]
+        pub extern "C" fn parse_len(s: *const c_char) -> isize {
+            std::panic::catch_unwind(|| {
+                let s = unsafe { CStr::from_ptr(s) }.to_str().ok()?;
+                s.parse::<isize>().ok()
+            })
+            .ok()
+            .flatten()
+            .unwrap_or(-1)
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [recommendation, ffi, panic, error-handling]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/ffi.html#FFI-NOPANIC

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule75:
+    standard: @{CppCodingStandards}
+    ruleId: rule-75
+    title: Do not write dynamic exception specifications
+    statement:
+        Avoid throw lists on functions; use noexcept only where you
+        guarantee the function cannot throw.
+    rationale:
+        Dynamic specifications were checked only at runtime, cost
+        performance and ended the program on violation; they were removed
+        from the language.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void load() throw(IoError);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void load();
+        void release() noexcept;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling-and-exceptions, exceptions]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

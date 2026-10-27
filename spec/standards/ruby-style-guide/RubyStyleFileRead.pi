@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleFileRead:
+    standard: @{RubyStyleGuide}
+    ruleId: file-read
+    title: Use File.read to read a whole file at once
+    statement:
+        When you only need a file's entire contents in one go, call
+        File.read, or File.binread for binary data, instead of opening the
+        file and reading it yourself.
+    rationale:
+        The convenience method is shorter and opens and closes the file for
+        you.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        template = File.open('invoice.erb') { |f| f.read }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        template = File.read('invoice.erb')
+        \\\
+        ```
+    languages: [ruby]
+    tags: [files, io]
+    source: https://rubystyle.guide/#file-read

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEnum3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: enum-3
+    title: Do not use enums for open sets
+    statement:
+        Only use an enum when the full set of values is known; values that
+        keep growing, such as product versions or country names, need a
+        different representation.
+    rationale:
+        An enum fixes its members at compile time, so an open set would need
+        constant breaking changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public enum BrowserVersion { Edge120, Edge121, Edge122 }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public sealed record BrowserVersion(string Name, Version Number);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, type-design, enums]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/enum

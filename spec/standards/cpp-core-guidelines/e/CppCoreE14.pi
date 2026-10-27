@@ -5,19 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE14:
     standard: @{CppCoreGuidelines}
     ruleId: E.14
-    title: Use purpose-designed user-defined types as exceptions
+    title: Throw types made specifically to describe the error
     statement:
-        Throw objects of types made for the purpose, such as classes derived
-        from std::runtime_error or an enum class, not built-in types like
-        int or string literals and not a bare std::exception.
+        Define an exception class for each kind of failure, for example by deriving
+        from std::runtime_error, and throw that. Avoid throwing an int, a string
+        literal or a plain std::exception.
     rationale:
-        A dedicated type carries information about the error to the handler,
-        encodes it in the type itself and is unlikely to clash with
-        exceptions from other code.
+        The type tells the handler what went wrong and can carry details along with
+        it. Purpose-built types also do not collide with exceptions thrown by
+        unrelated libraries.
     exceptions:
-        Standard library exception types such as std::runtime_error
-        or std::invalid_argument are fine when there is no useful extra
-        information to add.
+        When a standard type such as std::invalid_argument already says everything
+        and there is nothing to add, throwing it is acceptable.
     severity: null
     noncompliant:
         ```cpp

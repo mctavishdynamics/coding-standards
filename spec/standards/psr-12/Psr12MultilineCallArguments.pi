@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12MultilineCallArguments:
+    standard: @{Psr12}
+    ruleId: 4.7b
+    title: Put one argument per line when wrapping a call
+    statement:
+        A call's arguments can wrap across lines, each indented one level.
+        Once wrapped, the list starts on the line after the opening
+        parenthesis and gives each argument its own line. One argument that
+        happens to run over several lines, like an array literal or a
+        closure, does not by itself make the list wrapped.
+    rationale:
+        Either everything on one line or one argument per line keeps long
+        calls readable and their diffs small.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        $mailer->send($recipient, $subject,
+            $body, $attachments);
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        $mailer->send(
+            $recipient,
+            $subject,
+            $body,
+            $attachments
+        );
+        \\\
+        ```
+    languages: [php]
+    tags: [functions, formatting]
+    source: https://www.php-fig.org/psr/psr-12/#47-method-and-function-calls

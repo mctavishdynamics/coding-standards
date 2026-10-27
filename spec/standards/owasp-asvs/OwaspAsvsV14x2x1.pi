@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV14x2x1:
+    standard: @{OwaspAsvs}
+    ruleId: V14.2.1
+    title: Keep sensitive data out of URLs and query strings
+    statement:
+        Send sensitive data only in the HTTP body or headers, never in the
+        URL or query string, including API keys and session tokens.
+    rationale:
+        URLs are logged by servers and proxies, saved in history and leaked
+        in Referer headers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        GET /api/orders?api_key=sk_live_51Hx9 HTTP/1.1
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        GET /api/orders HTTP/1.1
+        Authorization: Bearer sk_live_51Hx9
+        \\\
+        ```
+    languages: [any]
+    tags: [level-1, sensitive-data, urls]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x23-V14-Data-Protection.md#v142-general-data-protection

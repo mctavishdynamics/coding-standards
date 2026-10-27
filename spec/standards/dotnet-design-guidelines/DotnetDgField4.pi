@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgField4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: field-4
+    title: Do not store mutable objects in public readonly fields
+    statement:
+        A readonly field visible to callers should not refer to an array,
+        list or other object whose contents can be changed.
+    rationale:
+        readonly only stops the reference being replaced; anyone can still
+        change the object's contents.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static readonly string[] SupportedFormats = { "png", "jpg" };
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static readonly IReadOnlyList<string> SupportedFormats =
+            Array.AsReadOnly(new[] { "png", "jpg" });
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, fields, immutability]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/field

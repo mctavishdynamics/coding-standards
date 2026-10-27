@@ -5,14 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs79:
     standard: @{CppCoreGuidelines}
     ruleId: ES.79
-    title: Use default to handle common cases only
+    title: Reserve the default label for the common case
     statement:
-        Use a default label for the values that genuinely share handling.
-        When every enumerator of an enum needs its own case, list them all
-        and omit default so the compiler can warn about a missing one.
+        Use default only for values that genuinely get the same treatment.
+        If each enumerator deserves its own handling, write a case for every
+        one and leave default out, so the compiler can report gaps.
     rationale:
-        It keeps the code clear and lets the compiler detect enumerators
-        that were added later but not handled.
+        Readers can see which cases are special and which are the general
+        path. Compilers can also flag enumerators added later that nobody
+        handled.
     exceptions: null
     severity: null
     noncompliant:

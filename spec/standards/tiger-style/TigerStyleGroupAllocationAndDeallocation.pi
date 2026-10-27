@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleGroupAllocationAndDeallocation:
+    standard: @{TigerStyle}
+    ruleId: group-allocation-and-deallocation
+    title: Set allocation and its defer apart with blank lines
+    statement:
+        Put a blank line before a resource allocation and after its matching
+        defer so that the pair stands out as a group.
+    rationale:
+        Grouping makes it easy to see that every allocation has a release,
+        so leaks are easier to spot.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        const count = items.len;
+        const scratch = try gpa.alloc(u8, count);
+        defer gpa.free(scratch);
+        fill(scratch);
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        const count = items.len;
+
+        const scratch = try gpa.alloc(u8, count);
+        defer gpa.free(scratch);
+
+        fill(scratch);
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [memory, formatting]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#cache-invalidation

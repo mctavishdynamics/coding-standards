@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopTesting4:
+    standard: @{PracticeOfProgramming}
+    ruleId: testing-4
+    title: Look at every error status a call returns
+    statement:
+        Test the result of every function that can fail, including output
+        and close operations.
+    rationale:
+        Ignored errors let a program carry on with bad data or lose output
+        without telling anyone.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        fp = fopen(path, "w");
+        fprintf(fp, "%s\n", text);
+        fclose(fp);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        fp = fopen(path, "w");
+        if (fp == NULL)
+            return -1;
+        fprintf(fp, "%s\n", text);
+        if (ferror(fp) | fclose(fp))
+            return -1;
+        \\\
+        ```
+    languages: [any]
+    tags: [testing, error-handling]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

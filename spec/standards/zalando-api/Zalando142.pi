@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando142:
+    standard: @{ZalandoApi}
+    ruleId: 142
+    title: Use domain-specific resource names
+    statement:
+        Name resources with the terms of the business domain, specific
+        enough to identify the business object, such as stock-ledger-entries
+        rather than entries.
+    rationale:
+        Domain names explain what a resource is without extra documentation
+        and avoid clashes between generic names.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /entries
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /stock-ledger-entries
+        \\\
+        ```
+    languages: [any]
+    tags: [must, naming, resources]
+    source: https://opensource.zalando.com/restful-api-guidelines/#142

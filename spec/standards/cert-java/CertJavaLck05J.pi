@@ -21,12 +21,12 @@ export coding-rule CertJavaLck05J:
     noncompliant:
         ```java
         \\\
-        public final class IdGenerator {
-            private static int next;
+        public final class Tally {
+            private static long votes;
 
-            // Callers are told to lock IdGenerator.class first.
-            public static int nextId() {
-                return next++;
+            // Docs ask callers to hold Tally.class while calling this.
+            public static void cast() {
+                votes++;
             }
         }
         \\\
@@ -34,13 +34,13 @@ export coding-rule CertJavaLck05J:
     compliant:
         ```java
         \\\
-        public final class IdGenerator {
-            private static final Object lock = new Object();
-            private static int next;
+        public final class Tally {
+            private static final Object VOTE_GUARD = new Object();
+            private static long votes;
 
-            public static int nextId() {
-                synchronized (lock) {
-                    return next++;
+            public static void cast() {
+                synchronized (VOTE_GUARD) {
+                    votes++;
                 }
             }
         }

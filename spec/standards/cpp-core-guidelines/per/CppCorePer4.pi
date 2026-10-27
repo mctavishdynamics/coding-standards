@@ -5,37 +5,33 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCorePer4:
     standard: @{CppCoreGuidelines}
     ruleId: Per.4
-    title: Do not assume complicated code is faster than simple code
+    title: Do not take for granted that clever code runs faster
     statement:
-        Prefer the straightforward way of expressing a computation and do
-        not replace it with a clever, intricate version on the assumption
-        that it runs faster.
+        Write computations in the plain, direct way. Do not swap in a
+        convoluted version on the belief that it will be faster.
     rationale:
-        Simple code is often very fast, because optimizers handle plain
-        loops and clear intent extremely well. Hand-tuned tricks are
-        frequently slower and can be undefined behavior.
+        Compilers optimize straightforward loops and obvious intent
+        remarkably well, so simple code is often fast. Clever tricks
+        frequently run slower and may rely on undefined behavior.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
-        // Tries to be clever: processes four bytes at a time through a cast.
-        void invert(std::vector<std::uint8_t>& bytes)
+        // "Faster" absolute value through bit tricks
+        int magnitude(int v)
         {
-            for (std::size_t i = 0; i + 4 <= bytes.size(); i += 4) {
-                auto& word = *reinterpret_cast<std::uint32_t*>(&bytes[i]);
-                word = ~word;
-            }
+            int mask = v >> (sizeof(int) * 8 - 1);
+            return (v + mask) ^ mask;
         }
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        void invert(std::vector<std::uint8_t>& bytes)
+        int magnitude(int v)
         {
-            for (auto& b : bytes)
-                b = static_cast<std::uint8_t>(~b);
+            return std::abs(v);   // compilers emit branch-free code for this
         }
         \\\
         ```

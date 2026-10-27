@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Carmack import Carmack
+
+export coding-rule CarmackPreferExplicitLoops:
+    standard: @{Carmack}
+    ruleId: prefer-explicit-loops
+    title: Use explicit loops instead of copy-pasted lines
+    statement:
+        Write a loop for small repeated operations over vector elements
+        instead of pasting a line several times and editing a character in
+        each.
+    rationale:
+        Carmack's own bug log showed that copy, paste and modify edits
+        caused subtle errors far more often than he expected. The compiler
+        can unroll the loop.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        out[0] = Clamp(in[0] * scale, 0.0f, 1.0f);
+        out[1] = Clamp(in[1] * scale, 0.0f, 1.0f);
+        out[2] = Clamp(in[1] * scale, 0.0f, 1.0f);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (int i = 0; i < 3; ++i) {
+            out[i] = Clamp(in[i] * scale, 0.0f, 1.0f);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [duplication, loops, bugs]
+    source: http://number-none.com/blow/john_carmack_on_inlined_code.html

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule73:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-73
+    title: Name jump labels after their purpose
+    statement:
+        When you must use statement labels, name them after their purpose
+        rather than with numbers or arbitrary words.
+    rationale:
+        A descriptive label tells the reader what happens at the target of
+        the jump.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+            if (fd < 0) goto L1;
+            /* ... */
+        L1:
+            return -1;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+            if (fd < 0) goto fail_open;
+            /* ... */
+        fail_open:
+            return -1;
+        \\\
+        ```
+    languages: [any]
+    tags: [documentation, naming, goto]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

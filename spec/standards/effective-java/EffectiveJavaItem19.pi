@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem19:
+    standard: @{EffectiveJava}
+    ruleId: item-19
+    title: Either design a class for subclassing and document it, or forbid it
+    statement:
+        A class meant to be extended must document how its overridable
+        methods use each other and must not call them from constructors.
+        Classes not designed this way should be final or have only private
+        constructors.
+    rationale:
+        Subclasses depend on self-use patterns that are otherwise invisible.
+        Calling overridable methods during construction runs subclass code
+        before the subclass is initialised.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public class Widget {
+            public Widget() {
+                render(); // overridable
+            }
+            protected void render() { }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public final class Widget {
+            public Widget() {
+                render();
+            }
+            private void render() { }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [classes-and-interfaces, inheritance, documentation]
+    source: https://www.informit.com/store/effective-java-9780134686097

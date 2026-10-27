@@ -1,0 +1,22 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuNoPrivilegeWithHeuristicSearch:
+    standard: @{GnuCodingStandards}
+    ruleId: finding-program-files-privilege
+    title: Do not give setuid privilege to programs that search heuristically
+    statement:
+        A program that looks for its executable or data files by the argv[0]
+        heuristic must not run with special privilege such as setuid.
+        Privileged programs should use fixed installed paths only.
+    rationale:
+        A caller controls argv[0] and could point a privileged program at
+        files of their choosing.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [security, privileges]
+    source: https://www.gnu.org/prep/standards/standards.html#Finding-Program-Files

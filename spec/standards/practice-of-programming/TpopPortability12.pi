@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPortability12:
+    standard: @{PracticeOfProgramming}
+    ruleId: portability-12
+    title: Rename a program or interface when its behavior changes
+    statement:
+        If you change what a program or function does in an incompatible
+        way, give it a new name.
+    rationale:
+        Keeping the old name for new behavior breaks users who relied on the
+        old meaning without warning them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* v2: now returns a malloc'd string instead of a static buffer */
+        char *format_date(time_t t);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *format_date(time_t t);       /* unchanged: static buffer */
+        char *format_date_alloc(time_t t); /* new: caller frees */
+        \\\
+        ```
+    languages: [any]
+    tags: [portability, compatibility]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

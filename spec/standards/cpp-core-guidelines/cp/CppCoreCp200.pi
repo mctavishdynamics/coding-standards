@@ -5,16 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreCp200:
     standard: @{CppCoreGuidelines}
     ruleId: CP.200
-    title: Use volatile only to talk to non-C++ memory
+    title: Reserve volatile for memory changed by hardware or code outside C++
     statement:
-        Reserve volatile for objects shared with hardware or code that does
-        not follow the C++ memory model, such as memory-mapped device
-        registers. Volatile locals and data members are almost always wrong;
-        you probably want std::atomic.
+        Limit volatile to objects that hardware or non-C++ code reads or modifies,
+        such as memory-mapped device registers. If you find volatile on a local or a
+        class member, you most likely wanted std::atomic.
     rationale:
-        Volatile tells the compiler that a value can change or be observed
-        outside the program, so reads and writes must not be optimized away.
-        It does nothing for synchronization between threads.
+        The keyword only stops the compiler from removing or merging accesses that
+        the outside world can see. It gives no ordering or atomicity between
+        threads.
     exceptions: null
     severity: null
     noncompliant:

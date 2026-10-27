@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip132:
+    standard: @{GoogleAip}
+    ruleId: AIP-132
+    title: Provide a paginated List method for each collection
+    statement:
+        Offer a List method for every non-singleton resource, named List
+        plus the plural resource, bound to HTTP GET, with matching Request
+        and Response messages. The request takes a parent unless the
+        resource is top level, and must include page_size and page_token;
+        the response holds one repeated field of resources and a
+        next_page_token.
+    rationale:
+        A consistent List lets users and tools enumerate any collection the
+        same way. Building in pagination from the start avoids an
+        incompatible change later as collections grow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        message ListRecipesResponse {
+          repeated Recipe recipes = 1;
+          repeated string tags = 2;
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        message ListRecipesRequest {
+          string parent = 1 [(google.api.field_behavior) = REQUIRED];
+          int32 page_size = 2;
+          string page_token = 3;
+        }
+        message ListRecipesResponse {
+          repeated Recipe recipes = 1;
+          string next_page_token = 2;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [methods, standard-methods, pagination]
+    source: https://google.aip.dev/132

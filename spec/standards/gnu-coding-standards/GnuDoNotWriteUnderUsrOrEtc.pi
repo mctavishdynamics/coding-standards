@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuDoNotWriteUnderUsrOrEtc:
+    standard: @{GnuCodingStandards}
+    ruleId: file-usage
+    title: Do not write internal files under /usr or /etc
+    statement:
+        Store logs, lock files, backups, score files and other internally
+        modified files outside /usr and /etc, so the program works when
+        those are mounted read-only.
+    rationale:
+        Many systems mount these file systems read-only.
+    exceptions:
+        Programs whose job is to update system configuration may modify
+        files in /etc, and when the user asks to change a file in some
+        directory the program may store related files there.
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        #define LOCK_PATH "/usr/lib/tally/lock"
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define LOCK_PATH LOCALSTATEDIR "/lib/tally/lock"
+        \\\
+        ```
+    languages: [c]
+    tags: [files, deployment]
+    source: https://www.gnu.org/prep/standards/standards.html#File-Usage

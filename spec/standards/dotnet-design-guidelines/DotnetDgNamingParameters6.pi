@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNamingParameters6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: naming-parameters-6
+    title: Consider meaningful operator parameter names when they help
+    statement:
+        If the operands of an operator do have distinct roles, name them
+        after those roles.
+    rationale:
+        Role-based names explain asymmetric operators better than left and
+        right.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        public static Money operator /(Money amount, decimal divisor)
+            => new Money(amount.Amount / divisor, amount.Currency);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [consider, naming, parameters, operators]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/naming-parameters#naming-operator-overload-parameters

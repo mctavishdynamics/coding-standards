@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleGlobalStdout:
+    standard: @{RubyStyleGuide}
+    ruleId: global-stdout
+    title: Use $stdout, $stderr and $stdin over the constants
+    statement:
+        Refer to the standard streams through the global variables rather
+        than the STDOUT, STDERR and STDIN constants. RuboCop checks this
+        with Style/GlobalStdStream.
+    rationale:
+        The globals can be reassigned to redirect output without warnings,
+        while reassigning the constants triggers one.
+    exceptions:
+        The constants are the right choice when you need the original
+        streams after the globals have been redirected.
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def log(line, io = STDOUT)
+          io.puts(line)
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def log(line, io = $stdout)
+          io.puts(line)
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [io]
+    source: https://rubystyle.guide/#global-stdout

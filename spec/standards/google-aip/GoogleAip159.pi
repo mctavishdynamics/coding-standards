@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip159:
+    standard: @{GoogleAip}
+    ruleId: AIP-159
+    title: Use a hyphen wildcard to read across collections
+    statement:
+        To list or get resources without naming a specific parent
+        collection, let the client pass a hyphen in place of a collection
+        ID. The URI pattern must still use a star variable, the method must
+        document the support, and responses must use canonical names with
+        real IDs; partial failures follow the unreachable pattern.
+    rationale:
+        Users often need resources across all parents or do not know which
+        parent holds one. A shared wildcard convention avoids inventing new
+        methods for that.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```protobuf
+        \\\
+        rpc ListAllRecipes(ListAllRecipesRequest) returns (ListRecipesResponse) {
+          option (google.api.http) = { get: "/v1/kitchens/-/recipes" };
+        }
+        \\\
+        ```
+    compliant:
+        ```protobuf
+        \\\
+        // Supports kitchens/- to list recipes in every kitchen.
+        rpc ListRecipes(ListRecipesRequest) returns (ListRecipesResponse) {
+          option (google.api.http) = { get: "/v1/{parent=kitchens/*}/recipes" };
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design-patterns, resource-names]
+    source: https://google.aip.dev/159

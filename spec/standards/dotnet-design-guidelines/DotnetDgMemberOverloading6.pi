@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgMemberOverloading6:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: member-overloading-6
+    title: Do not give similar overload parameters different meanings
+    statement:
+        Overloads must not take similarly typed parameters in the same
+        position that mean different things.
+    rationale:
+        Callers assume overloads do the same job, and different semantics
+        behind lookalike signatures lead to wrong calls.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Wait(int milliseconds);
+        public void Wait(long ticks);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Wait(int milliseconds);
+        public void Wait(TimeSpan duration);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, member-design, overloading, parameters]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/member-overloading

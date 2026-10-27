@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem45:
+    standard: @{EffectiveJava}
+    ruleId: item-45
+    title: Use streams only where they make code clearer
+    statement:
+        Use streams where they make code easier to understand, and loops
+        where they do not. Name lambda parameters well and extract helper
+        methods for complex steps.
+    rationale:
+        Overused streams become hard to read and maintain. Some tasks, such
+        as changing local variables or returning early, are only possible
+        with loops.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        long n = text.chars().mapToObj(c -> (char) c).filter(c -> "aeiou".indexOf(c) >= 0)
+                .collect(Collectors.groupingBy(c -> c, Collectors.counting())).values()
+                .stream().mapToLong(Long::longValue).sum();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        long vowels = text.chars().filter(Text::isVowel).count();
+        \\\
+        ```
+    languages: [java]
+    tags: [lambdas-and-streams, streams, readability]
+    source: https://www.informit.com/store/effective-java-9780134686097

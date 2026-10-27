@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule94:
+    standard: @{AnssiC}
+    ruleId: rule-94
+    title: Only increment or decrement pointers into arrays
+    statement:
+        Apply increment and decrement only to pointers that point into an
+        array.
+    rationale:
+        Arithmetic is only meaningful on a pointer into an array; applied to
+        any other pointer it yields an address that means nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int value = 5;
+        int *p = &value;
+        p++;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int values[4] = { 0 };
+        int *p = &values[0];
+        p++;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, pointers, pointer-arithmetic]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=76

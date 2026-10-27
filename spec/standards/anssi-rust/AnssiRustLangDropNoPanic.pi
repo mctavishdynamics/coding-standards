@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangDropNoPanic:
+    standard: @{AnssiRust}
+    ruleId: LANG-DROP-NO-PANIC
+    title: Do not panic in Drop
+    statement:
+        A Drop implementation must never panic.
+    rationale:
+        A panic in a destructor during unwinding aborts the program, and it
+        can leave other cleanup undone.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl Drop for TempDir {
+            fn drop(&mut self) {
+                std::fs::remove_dir_all(&self.path).unwrap();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl Drop for TempDir {
+            fn drop(&mut self) {
+                if let Err(e) = std::fs::remove_dir_all(&self.path) {
+                    log::warn!("could not remove {:?}: {e}", self.path);
+                }
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, destructors, panic]
+    source: https://anssi-fr.github.io/rust-guide/standard.html#LANG-DROP-NO-PANIC

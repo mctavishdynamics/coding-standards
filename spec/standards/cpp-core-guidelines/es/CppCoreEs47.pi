@@ -5,12 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreEs47:
     standard: @{CppCoreGuidelines}
     ruleId: ES.47
-    title: Use nullptr rather than 0 or NULL
+    title: Write nullptr for null pointers
     statement:
-        Write nullptr for a null pointer value.
+        Spell a null pointer as nullptr. Do not use 0 or NULL for that
+        purpose.
     rationale:
-        nullptr cannot be mistaken for an int and has its own precise type,
-        so overload resolution and type deduction behave as expected.
+        The literal 0 and the NULL macro are integers, so overloads and
+        template deduction can pick an integer version by surprise. The type
+        of nullptr is narrow and specific, so it always selects the pointer
+        case and states the intent clearly.
     exceptions: null
     severity: null
     noncompliant:

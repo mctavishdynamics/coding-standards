@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule74:
+    standard: @{AnssiC}
+    ruleId: rule-74
+    title: Keep sensitive and non-sensitive data in separate variables
+    statement:
+        Do not reuse one variable for both sensitive data and ordinary data.
+    rationale:
+        Sharing a variable makes it easy to leak a secret through code that
+        treats the value as harmless.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char buf[64];
+        read_password(buf, sizeof buf);
+        check(buf);
+        snprintf(buf, sizeof buf, "user %s", name);
+        log_line(buf);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char password[64];
+        char log_msg[64];
+        read_password(password, sizeof password);
+        check(password);
+        snprintf(log_msg, sizeof log_msg, "user %s", name);
+        log_line(log_msg);
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, sensitive-data]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=56

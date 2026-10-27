@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule33:
+    standard: @{AnssiC}
+    ruleId: rule-33
+    title: Compile with strict warnings and leave no warnings or errors
+    statement:
+        Turn on high warning levels for the compiler and linker and resolve
+        every warning and error they report. With GCC or Clang, using Werror
+        is strongly advised.
+    rationale:
+        Warnings often point at real misuse of the language; treating them
+        as errors makes sure none is ignored.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```shell
+        \\\
+        gcc -c parser.c
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        gcc -std=c99 -Wall -Wextra -Wpedantic -Werror -O2 -c parser.c
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, compilation, warnings]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=30

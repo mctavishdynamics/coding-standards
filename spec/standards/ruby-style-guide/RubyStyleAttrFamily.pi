@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleAttrFamily:
+    standard: @{RubyStyleGuide}
+    ruleId: attr_family
+    title: Generate simple readers and writers with attr macros
+    statement:
+        Define simple readers and writers with attr_reader, attr_writer and
+        attr_accessor instead of writing them by hand.
+    rationale:
+        The macros are shorter and make plain attributes obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        class Book
+          def title
+            @title
+          end
+
+          def title=(value)
+            @title = value
+          end
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        class Book
+          attr_accessor :title
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [classes, accessors]
+    source: https://rubystyle.guide/#attr_family

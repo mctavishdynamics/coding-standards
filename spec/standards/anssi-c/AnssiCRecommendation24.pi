@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation24:
+    standard: @{AnssiC}
+    ruleId: recommendation-24
+    title: Avoid passing computations as macro arguments
+    statement:
+        Avoid writing macro arguments that perform an operation; compute the
+        value first and pass the result.
+    rationale:
+        A macro may evaluate its argument several times or not at all, which
+        wastes work and can cause surprises.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        total = MAX(compute_cost(order), limit);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int cost = compute_cost(order);
+        total = MAX(cost, limit);
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, macros]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=26

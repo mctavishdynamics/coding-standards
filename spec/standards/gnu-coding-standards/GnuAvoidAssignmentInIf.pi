@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuAvoidAssignmentInIf:
+    standard: @{GnuCodingStandards}
+    ruleId: syntactic-no-assignment-in-if
+    title: Avoid assignments inside if conditions
+    statement:
+        Make assignments as separate statements before the if. Assignments
+        in while conditions are acceptable.
+    rationale:
+        Separating the assignment makes both steps easier to read and avoids
+        confusion with comparison.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if ((fp = fopen (name, "r")) == NULL)
+          die (name);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        fp = fopen (name, "r");
+        if (fp == NULL)
+          die (name);
+        \\\
+        ```
+    languages: [c]
+    tags: [control-flow, readability]
+    source: https://www.gnu.org/prep/standards/standards.html#Syntactic-Conventions

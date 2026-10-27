@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Psr1 import Psr1
+
+export coding-rule Psr1PhpTags:
+    standard: @{Psr1}
+    ruleId: 2.1
+    title: Open PHP code only with the full or short-echo tag
+    statement:
+        Start PHP code with the long opening tag or the short-echo tag. Do
+        not use the short open tag, ASP-style tags or any other tag form.
+    rationale:
+        Other tag forms depend on ini settings or were removed from the
+        language, so code written with them may not run on another
+        installation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <? $greeting = 'Hello'; ?>
+        <p><? echo $greeting; ?></p>
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php $greeting = 'Hello'; ?>
+        <p><?= $greeting ?></p>
+        \\\
+        ```
+    languages: [php]
+    tags: [files, tags]
+    source: https://www.php-fig.org/psr/psr-1/#21-php-tags

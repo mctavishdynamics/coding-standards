@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagFocusOrder:
+    standard: @{Wcag22}
+    ruleId: 2.4.3
+    title: Keep the tab sequence consistent with the content's meaning
+    statement:
+        Where moving through a page in sequence changes what the content
+        means or how it works, let focus travel in a sequence that keeps
+        both intact. Match the DOM order and do not use tabindex values
+        above zero.
+    rationale:
+        A jumping focus order disorients keyboard and screen reader users.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <input id="city" tabindex="3">
+        <input id="street" tabindex="1">
+        <input id="zip" tabindex="2">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <input id="street">
+        <input id="city">
+        <input id="zip">
+        \\\
+        ```
+    languages: [html]
+    tags: [level-a, focus, keyboard]
+    source: https://www.w3.org/TR/WCAG22/#focus-order

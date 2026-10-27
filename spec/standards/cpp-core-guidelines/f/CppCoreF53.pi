@@ -5,14 +5,13 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF53:
     standard: @{CppCoreGuidelines}
     ruleId: F.53
-    title: Avoid capturing by reference in lambdas that will be used non-locally
+    title: Capture by value in lambdas that may outlive the scope
     statement:
-        Capture by value in lambdas that may outlive the current scope, such
-        as those that are returned, stored on the heap or passed to another
-        thread.
+        Capture by value when a lambda may still exist after the enclosing scope
+        ends, for example when it is returned, stored or run on another thread.
     rationale:
-        A reference capture stores a reference to a local, which dangles
-        once the scope ends if the lambda or a copy of it is still around.
+        A reference capture holds a reference to a local. If the lambda or a
+        copy survives the scope, that reference dangles.
     exceptions: null
     severity: null
     noncompliant:

@@ -5,20 +5,18 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF6:
     standard: @{CppCoreGuidelines}
     ruleId: F.6
-    title: If your function must not throw, declare it noexcept
+    title: Mark functions that must never throw noexcept
     statement:
-        Mark functions noexcept when they must not throw, notably
-        destructors, swap, move operations and default constructors. Do not
-        add it everywhere without considering whether exceptions can occur
-        and be handled.
+        Add noexcept to functions that must not fail with an exception,
+        especially destructors, swap, move operations and default constructors.
+        Think about each case instead of marking every function.
     rationale:
-        If an exception is not expected the program cannot cope with it and
-        should terminate promptly. Fewer execution paths also help the
-        optimizer.
+        When an exception escapes a noexcept function the program terminates at
+        once, which is the right outcome if nothing could handle it. Fewer
+        possible exception paths also let the compiler generate tighter code.
     exceptions:
-        On virtual functions and public interfaces noexcept is a promise
-        that all current and future implementations must keep, so add it
-        with care.
+        On a virtual function or a public API, noexcept binds every present and
+        future implementation. Add it there only after careful thought.
     severity: null
     noncompliant:
         ```cpp

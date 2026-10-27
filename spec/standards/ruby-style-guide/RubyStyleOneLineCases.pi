@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleOneLineCases:
+    standard: @{RubyStyleGuide}
+    ruleId: one-line-cases
+    title: Write short case branches as when with then
+    statement:
+        Write a one-line case branch as when value then result. The older
+        colon form was removed in Ruby 1.9.
+    rationale:
+        The then form is the supported, readable way to keep short branches
+        on one line.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        case code
+        when 200
+          :ok
+        when 404
+          :missing
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        case code
+        when 200 then :ok
+        when 404 then :missing
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals]
+    source: https://rubystyle.guide/#one-line-cases

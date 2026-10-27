@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule49:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-49
+    title: Build with checking and diagnostic options while debugging
+    statement:
+        During development, use compiler and runtime options that check for
+        errors such as bad subscripts and uninitialized data.
+    rationale:
+        Checked builds catch mistakes when they happen instead of letting
+        them cause confusing failures later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```sh
+        \\\
+        cc -O2 -o prog prog.c
+        \\\
+        ```
+    compliant:
+        ```sh
+        \\\
+        cc -g -Wall -Wextra -fsanitize=address,undefined -o prog prog.c
+        \\\
+        ```
+    languages: [any]
+    tags: [common-blunders, debugging, tools]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

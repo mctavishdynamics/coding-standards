@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./ZenOfPython import ZenOfPython
+
+export coding-rule ZenAphorism10:
+    standard: @{ZenOfPython}
+    ruleId: aphorism-10
+    title: Never swallow errors quietly
+    statement:
+        Let errors surface. Do not catch an exception and carry on as if
+        nothing happened.
+    rationale:
+        A hidden error turns into wrong results or a failure far from its
+        cause, which is much harder to debug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            config = load_config(path)
+        except Exception:
+            pass
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        config = load_config(path)
+        \\\
+        ```
+    languages: [python]
+    tags: [error-handling, exceptions]
+    source: https://peps.python.org/pep-0020/#the-zen-of-python

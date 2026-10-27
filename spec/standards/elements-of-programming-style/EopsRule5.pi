@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule5:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-5
+    title: Keep clarity ahead of supposed speedups
+    statement:
+        Do not make code harder to read in the name of speed you have not
+        measured.
+    rationale:
+        Most hand optimizations save very little, and obscure code is harder
+        to verify and change. Clear code is also easier to speed up later
+        where it matters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* multiply by 10 using shifts */
+        x = (x << 3) + (x << 1);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        x = x * 10;
+        \\\
+        ```
+    languages: [any]
+    tags: [expression, clarity, performance]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

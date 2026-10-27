@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdUseAnsiDefinitions:
+    standard: @{OpenBsdStyle}
+    ruleId: ansi-definitions
+    title: Use ANSI function definitions and wrap long lists by four spaces
+    statement:
+        Always define functions with ANSI prototype syntax. When the
+        parameters do not fit, continue them on the next line, indented four
+        spaces.
+    rationale:
+        K&R definitions bypass type checking, and the continuation indent
+        keeps parameters apart from the body.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int
+        copy_range(src, dst, len)
+                char *src, *dst;
+                size_t len;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int
+        copy_range(const char *src, char *dst, size_t len,
+            int flags)
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, declarations, formatting]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty5:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-5
+    title: Keep the old value when a setter throws
+    statement:
+        If a property setter fails with an exception, leave the property's
+        previous value unchanged.
+    rationale:
+        Callers that catch the exception can then rely on the object still
+        being in its earlier state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        set
+        {
+            _port = value;
+            if (value is < 1 or > 65535) throw new ArgumentOutOfRangeException(nameof(value));
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        set
+        {
+            if (value is < 1 or > 65535) throw new ArgumentOutOfRangeException(nameof(value));
+            _port = value;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, properties, error-handling]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property

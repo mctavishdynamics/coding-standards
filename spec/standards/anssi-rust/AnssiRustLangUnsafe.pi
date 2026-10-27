@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustLangUnsafe:
+    standard: @{AnssiRust}
+    ruleId: LANG-UNSAFE
+    title: Avoid unsafe blocks and forbid them where not needed
+    statement:
+        Avoid unsafe blocks. Use them only for FFI behind a safe wrapper,
+        for fixed-address hardware access behind an abstraction, or for a
+        measured performance need. Outside those cases put
+        forbid(unsafe_code) in the crate root.
+    rationale:
+        Unsafe code switches off the compiler's memory-safety checks.
+        Forbidding it at the crate root makes any use a compile error
+        instead of a review finding.
+    exceptions:
+        FFI calls with a safe wrapper, memory-mapped registers in embedded
+        code behind a dedicated abstraction, and small hot paths where safe
+        code cannot meet a performance target.
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        // lib.rs
+        pub fn first(bytes: &[u8]) -> u8 {
+            unsafe { *bytes.get_unchecked(0) }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        // lib.rs
+        #![forbid(unsafe_code)]
+
+        pub fn first(bytes: &[u8]) -> Option<u8> {
+            bytes.first().copied()
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, unsafe]
+    source: https://anssi-fr.github.io/rust-guide/unsafe/generalities.html#LANG-UNSAFE

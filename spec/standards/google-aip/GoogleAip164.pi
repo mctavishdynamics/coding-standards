@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip164:
+    standard: @{GoogleAip}
+    ruleId: AIP-164
+    title: Implement soft delete with Undelete and a separate Expunge permission
+    statement:
+        If deleted resources can be recovered, Delete must only mark the
+        resource deleted and should return it, and an Undelete POST method
+        with body star restores it. Return ALREADY_EXISTS when undeleting a
+        live resource, honour allow_missing for repeated deletes, and
+        protect any Expunge method with its own permission.
+    rationale:
+        Soft delete lets users recover from mistakes. A distinct permission
+        for permanent removal keeps the safety net from being bypassed by
+        ordinary delete rights.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```protobuf
+        \\\
+        rpc UndeleteRecipe(UndeleteRecipeRequest) returns (Recipe) {
+          option (google.api.http) = {
+            post: "/v1/{name=kitchens/*/recipes/*}:undelete"
+            body: "*"
+          };
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design-patterns, deletion]
+    source: https://google.aip.dev/164

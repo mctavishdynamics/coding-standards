@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./LlvmCodingStandards import LlvmCodingStandards
+
+export coding-rule LlvmSpaceOnlyBeforeControlParens:
+    standard: @{LlvmCodingStandards}
+    ruleId: spaces-before-parentheses
+    title: Put a space before parentheses only after control keywords
+    statement:
+        Write a space before the opening parenthesis of if, for, while and
+        similar statements, but none in function calls or function-like
+        macro uses.
+    rationale:
+        The difference makes control flow stand out and lets expressions
+        read smoothly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        while(Changed)
+          Changed = runOnce (F);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        while (Changed)
+          Changed = runOnce(F);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, whitespace]
+    source: https://llvm.org/docs/CodingStandards.html#spaces-before-parentheses

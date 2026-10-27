@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEqualityOperators2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: equality-operators-2
+    title: Keep Equals and the equality operators identical in meaning
+    statement:
+        Make Object.Equals and the overloaded equality operators give the
+        same answer at similar cost, which usually means overriding Equals
+        whenever you overload the operators.
+    rationale:
+        Collections use Equals while code uses the operators, and
+        inconsistent results lead to subtle bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static bool operator ==(Isbn left, Isbn right) => left.Digits == right.Digits;
+        // Equals not overridden: still reference equality
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public override bool Equals(object obj) => obj is Isbn other && Digits == other.Digits;
+        public override int GetHashCode() => Digits.GetHashCode();
+        public static bool operator ==(Isbn left, Isbn right) => Equals(left, right);
+        public static bool operator !=(Isbn left, Isbn right) => !Equals(left, right);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, usage, equality, operators]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/equality-operators

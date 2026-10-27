@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleMethodParens:
+    standard: @{RubyStyleGuide}
+    ruleId: method-parens
+    title: Parenthesise def parameters, but not an empty list
+    statement:
+        Put parentheses around the parameter list of a method that takes
+        parameters, and leave them out for a method that takes none.
+    rationale:
+        Parentheses make parameter lists easy to spot, while empty ones are
+        noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def resize width, height
+        end
+
+        def reset()
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def resize(width, height)
+        end
+
+        def reset
+        end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, formatting]
+    source: https://rubystyle.guide/#method-parens

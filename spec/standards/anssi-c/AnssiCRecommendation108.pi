@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation108:
+    standard: @{AnssiC}
+    ruleId: recommendation-108
+    title: Write arithmetic in its most natural, readable form
+    statement:
+        Write calculations plainly and in line with what the program means,
+        not with tricks such as shifts in place of multiplication.
+    rationale:
+        Clever arithmetic hides intent and makes errors hard to see.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        area = (w << 3) + (w << 1); /* w * 10 */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        area = w * 10U;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, arithmetic, readability]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=86

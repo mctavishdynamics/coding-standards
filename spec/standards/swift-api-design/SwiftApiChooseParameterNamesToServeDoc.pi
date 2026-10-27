@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiChooseParameterNamesToServeDoc:
+    standard: @{SwiftApiDesign}
+    ruleId: choose-parameter-names-to-serve-doc
+    title: Choose parameter names that read well in documentation
+    statement:
+        Pick parameter names that make the documentation comment read
+        naturally, even though they do not appear at the call site.
+    rationale:
+        Parameter names are what the documentation refers to, so good names
+        make it grammatical and clear.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        /// Returns the orders that pass `ok`.
+        func orders(_ ok: (Order) -> Bool) -> [Order]
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// Returns the orders that satisfy `predicate`.
+        func orders(_ predicate: (Order) -> Bool) -> [Order]
+        \\\
+        ```
+    languages: [swift]
+    tags: [parameters, documentation]
+    source: https://www.swift.org/documentation/api-design-guidelines/#choose-parameter-names-to-serve-doc

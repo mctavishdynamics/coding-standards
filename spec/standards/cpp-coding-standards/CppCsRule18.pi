@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule18:
+    standard: @{CppCodingStandards}
+    ruleId: rule-18
+    title: Define variables in the smallest block that needs them
+    statement:
+        Introduce variables just before first use, inside the block that
+        needs them, ideally with their initial value.
+    rationale:
+        Smaller scope reduces the reader's burden and the chance of misuse
+        or reuse.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int i, total;
+        std::string line;
+        total = 0;
+        for (i = 0; i < n; ++i) { line = read(); total += line.size(); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::size_t total = 0;
+        for (int i = 0; i < n; ++i) {
+            const std::string line = read();
+            total += line.size();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [coding-style, scope]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEqualityOperators3:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: equality-operators-3
+    title: Have equality operators return a result instead of throwing
+    statement:
+        Equality operators should return a result rather than throw, for
+        instance returning false when one argument is null.
+    rationale:
+        Comparisons appear in conditions everywhere, and an exception there
+        is unexpected.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static bool operator ==(Isbn left, Isbn right) => left.Digits == right.Digits;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static bool operator ==(Isbn left, Isbn right)
+            => ReferenceEquals(left, right) || (left is not null && left.Equals(right));
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, usage, equality, exceptions]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/equality-operators

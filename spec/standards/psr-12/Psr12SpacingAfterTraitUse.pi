@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12SpacingAfterTraitUse:
+    standard: @{Psr12}
+    ruleId: 4.2c
+    title: Follow trait imports with a blank line or the closing brace
+    statement:
+        If nothing follows the trait use statements, put the closing brace
+        of the class on the next line. Otherwise leave one blank line after
+        the last trait use statement.
+    rationale:
+        The rule separates trait imports from the members of the class
+        without leaving stray blank lines in a class that holds only traits.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Order
+        {
+            use Timestamps;
+            private $lines = [];
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Order
+        {
+            use Timestamps;
+
+            private $lines = [];
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [traits, whitespace]
+    source: https://www.php-fig.org/psr/psr-12/#42-using-traits

@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem82:
+    standard: @{EffectiveJava}
+    ruleId: item-82
+    title: State the thread safety of each class in its documentation
+    statement:
+        Say in the documentation which level of thread safety a class
+        provides, such as immutable, thread safe or not thread safe, and
+        which lock clients must hold for compound actions.
+    rationale:
+        The synchronized keyword is not part of the API, so readers cannot
+        tell how safe a class is unless you tell them.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```java
+        \\\
+        /**
+         * Thread safe. Iteration over views requires holding this object's lock.
+         */
+        public final class Inventory { /* ... */ }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, documentation]
+    source: https://www.informit.com/store/effective-java-9780134686097

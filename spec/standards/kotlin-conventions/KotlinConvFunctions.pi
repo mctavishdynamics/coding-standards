@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvFunctions:
+    standard: @{KotlinConventions}
+    ruleId: functions
+    title: Wrap long function signatures one parameter per line
+    statement:
+        A signature that is too long for one line lists every parameter on a
+        separate line, indented by four spaces, and moves the closing
+        parenthesis and return type to the next line.
+    rationale:
+        It keeps long signatures readable and indented the same way as
+        constructor parameters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        fun scheduleMeeting(title: String, start: Instant,
+                            duration: Duration, attendees: List<Person>): Meeting {
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        fun scheduleMeeting(
+            title: String,
+            start: Instant,
+            duration: Duration,
+            attendees: List<Person>,
+        ): Meeting {
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, functions]
+    source: https://kotlinlang.org/docs/coding-conventions.html#functions

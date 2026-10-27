@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgProperty4:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: property-4
+    title: Tolerate property assignments in any sequence
+    statement:
+        Let callers assign related properties in whatever order they like,
+        even if the object is briefly inconsistent; report invalid
+        combinations only when they are used together.
+    rationale:
+        Forcing an assignment order is hard to discover and breaks object
+        initializers and designers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public int Maximum
+        {
+            get => _maximum;
+            set { if (value < _minimum) throw new ArgumentOutOfRangeException(nameof(value)); _maximum = value; }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public int Maximum { get; set; }
+        public int Minimum { get; set; }
+
+        public int Clamp(int value)
+        {
+            if (Minimum > Maximum) throw new InvalidOperationException("Minimum exceeds Maximum.");
+            return Math.Clamp(value, Minimum, Maximum);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, member-design, properties, validation]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/property

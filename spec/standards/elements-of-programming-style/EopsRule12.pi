@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./ElementsOfProgrammingStyle import ElementsOfProgrammingStyle
+
+export coding-rule EopsRule12:
+    standard: @{ElementsOfProgrammingStyle}
+    ruleId: rule-12
+    title: Lean on a language's sound features and shun its weak ones
+    statement:
+        Use the constructs of your language that make code clear and safe,
+        and stay away from those known to be error prone.
+    rationale:
+        Every language has corners that confuse readers or behave
+        surprisingly. Avoiding them keeps a program portable and easy to
+        follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char buf[64];
+        gets(buf);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char buf[64];
+        if (fgets(buf, sizeof buf, stdin) == NULL) {
+            return -1;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [expression, language-features]
+    source: https://en.wikipedia.org/wiki/The_Elements_of_Programming_Style

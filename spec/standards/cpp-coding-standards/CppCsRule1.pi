@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule1:
+    standard: @{CppCodingStandards}
+    ruleId: rule-1
+    title: Treat every compiler warning as something to fix
+    statement:
+        Turn on your compilers' strict warning levels and keep the build
+        free of warnings. Fix the cause, or suppress a specific warning
+        locally with a comment explaining why.
+    rationale:
+        Warnings often reveal real defects, and a noisy build hides the new
+        warning that matters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int clamp(int v, unsigned max) {
+            if (v > max) return max;   // signed/unsigned comparison warning
+            return v;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int clamp(int v, int max) {
+            if (v > max) return max;
+            return v;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [organizational-and-policy-issues, warnings, build]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./KotlinConventions import KotlinConventions
+
+export coding-rule KotlinConvOmitRedundantModifiers:
+    standard: @{KotlinConventions}
+    ruleId: omit-redundant-modifiers
+    title: Leave out redundant modifiers outside libraries
+    statement:
+        Unless you are writing a library, omit modifiers that change
+        nothing, such as public.
+    rationale:
+        Redundant modifiers add noise without changing meaning.
+    exceptions:
+        Libraries should state visibility explicitly, as the library
+        conventions require.
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public class Greeter {
+            public fun greet() = println("hi")
+        }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        class Greeter {
+            fun greet() = println("hi")
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [formatting, modifiers]
+    source: https://kotlinlang.org/docs/coding-conventions.html#modifiers-order

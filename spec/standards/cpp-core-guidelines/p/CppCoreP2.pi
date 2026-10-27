@@ -5,20 +5,19 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreP2:
     standard: @{CppCoreGuidelines}
     ruleId: P.2
-    title: Write in ISO Standard C++
+    title: Write portable standard C++
     statement:
-        Write code that conforms to the ISO C++ standard. Avoid compiler
-        extensions, undefined behavior and reliance on
-        implementation-defined details.
+        Target ISO C++. Stay away from vendor extensions, undefined behavior and
+        code that depends on how one compiler chose to implement a detail.
     rationale:
-        Extensions often lack precise semantics and differ between
-        compilers, so code that depends on them loses portability and
-        predictability.
+        A compiler extension may behave one way here and another way there, and
+        its exact meaning is often unclear. Standard code builds and behaves the
+        same across toolchains.
     exceptions:
-        Some environments need extensions, for example to reach system
-        resources. Keep their use local, govern it with project guidelines
-        and, where possible, hide it behind an interface that can be
-        compiled away.
+        Low-level work sometimes requires an extension, such as access to a
+        hardware feature. Confine it to a small area, follow a project policy
+        for it and, where you can, wrap it in an interface that a different
+        build can replace.
     severity: null
     noncompliant:
         ```cpp

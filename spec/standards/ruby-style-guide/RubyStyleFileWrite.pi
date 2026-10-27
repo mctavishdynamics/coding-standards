@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleFileWrite:
+    standard: @{RubyStyleGuide}
+    ruleId: file-write
+    title: Use File.write to create or replace a file in one step
+    statement:
+        When you only need to create a file or replace its contents in one
+        operation, call File.write, or File.binwrite for binary data.
+    rationale:
+        The convenience method handles opening and closing the file and
+        states the intent directly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        File.open('report.csv', 'w') { |f| f.write(csv) }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        File.write('report.csv', csv)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [files, io]
+    source: https://rubystyle.guide/#file-write

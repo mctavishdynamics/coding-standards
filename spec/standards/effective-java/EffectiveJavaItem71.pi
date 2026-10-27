@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem71:
+    standard: @{EffectiveJava}
+    ruleId: item-71
+    title: Do not declare checked exceptions without need
+    statement:
+        Throw a checked exception only when callers can do something useful
+        with it. Otherwise use an unchecked exception or return an empty
+        Optional.
+    rationale:
+        Checked exceptions burden callers and cannot be used directly in
+        streams. If callers can only rethrow or log, they add cost without
+        value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public String format(Date d) throws FormatException { /* never fails */ }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public Optional<Date> parse(String text) { /* empty if unparseable */ }
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, api-design]
+    source: https://www.informit.com/store/effective-java-9780134686097

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiUseSwiftMarkdown:
+    standard: @{SwiftApiDesign}
+    ruleId: use-swift-markdown
+    title: Write doc comments in Swift's Markdown dialect
+    statement:
+        Format documentation comments with the Markdown flavour that Swift
+        tooling understands, using its code spans, lists and emphasis.
+    rationale:
+        Xcode and other tools render that dialect, so the comment reads well
+        in Quick Help and generated documentation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        /// Returns <b>true</b> when the cache holds KEY.
+        func contains(_ key: String) -> Bool
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// Returns `true` when the cache holds `key`.
+        func contains(_ key: String) -> Bool
+        \\\
+        ```
+    languages: [swift]
+    tags: [documentation]
+    source: https://www.swift.org/documentation/api-design-guidelines/#write-doc-comment

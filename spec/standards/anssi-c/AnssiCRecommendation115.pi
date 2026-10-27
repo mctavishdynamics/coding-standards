@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRecommendation115:
+    standard: @{AnssiC}
+    ruleId: recommendation-115
+    title: Apply bitwise operators only to unsigned operands
+    statement:
+        Use bitwise operators only on unsigned values.
+    rationale:
+        Bitwise operations on signed values can be implementation-defined or
+        undefined, for example shifting a negative number.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int32_t v = -8;
+        int32_t r = v >> 1;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        uint32_t v = 8U;
+        uint32_t r = v >> 1;
+        \\\
+        ```
+    languages: [c]
+    tags: [recommendation, bitwise, types]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=92

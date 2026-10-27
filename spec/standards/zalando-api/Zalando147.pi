@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando147:
+    standard: @{ZalandoApi}
+    ruleId: 147
+    title: Limit the number of sub-resource levels
+    statement:
+        Use sub-resources only when their life cycle is tied to the parent,
+        and nest no more than three levels deep.
+    rationale:
+        Deep nesting makes an API complex and URLs long, and some browsers
+        cannot handle URLs longer than about 2000 characters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```http
+        \\\
+        GET /customers/c-1/orders/o-2/shipments/s-3/parcels/p-4/scans/9
+        \\\
+        ```
+    compliant:
+        ```http
+        \\\
+        GET /parcels/p-4/scans/9
+        \\\
+        ```
+    languages: [any]
+    tags: [should, urls, resources]
+    source: https://opensource.zalando.com/restful-api-guidelines/#147

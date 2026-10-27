@@ -5,18 +5,17 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF27:
     standard: @{CppCoreGuidelines}
     ruleId: F.27
-    title: Use a shared_ptr<T> to share ownership
+    title: Share ownership through a shared_ptr
     statement:
-        When several owners must keep an object alive and the last one
-        should delete it, use shared_ptr. If there is only ever one owner at
-        a time, use unique_ptr.
+        Use shared_ptr when several parties must keep one object alive and the
+        last of them should destroy it. If only one owner exists at any time,
+        use unique_ptr.
     rationale:
-        shared_ptr is the standard way to express shared ownership. Its
-        reference counting has a real cost, so it should not be used without
-        need.
+        shared_ptr is the standard tool for joint ownership. Its reference
+        counting is not free, so do not reach for it without a reason.
     exceptions:
-        An alternative is to let a single scoped object own the shared
-        object and destroy it once all users are finished.
+        Another option is to give ownership to one scoped object that outlives
+        every user and deletes the shared object at the end.
     severity: null
     noncompliant:
         ```cpp

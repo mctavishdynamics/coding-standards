@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleAip import GoogleAip
+
+export coding-rule GoogleAip205:
+    standard: @{GoogleAip}
+    ruleId: AIP-205
+    title: Flag designs to fix before beta with a beta-blocker comment
+    statement:
+        When an alpha design has usability issues or breaks the standards
+        and needs another look before beta, add an internal comment linking
+        to aip.dev/beta-blocker that says what change is needed.
+    rationale:
+        Alpha releases exist to collect feedback, so imperfections are
+        tolerated. Recording them in the API keeps them from being forgotten
+        when the API is promoted.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```protobuf
+        \\\
+        message ImportConfig {
+          // (-- aip.dev/beta-blocker: Replace this map with typed fields
+          //     before beta. --)
+          map<string, string> options = 1;
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [documentation, governance]
+    source: https://google.aip.dev/205

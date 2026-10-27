@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem4:
+    standard: @{EffectiveCpp}
+    ruleId: item-4
+    title: Give every object a value before it is first read
+    statement:
+        Initialise built-in variables explicitly, initialise members in the
+        constructor's member initialiser list, and replace non-local statics
+        with function-local statics.
+    rationale:
+        Uninitialised values are undefined behaviour, and the initialisation
+        order of non-local statics across translation units is unspecified.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Timer {
+        public:
+            Timer() { started_ = false; }
+        private:
+            bool started_;
+            double elapsed_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Timer {
+        public:
+            Timer() : started_(false), elapsed_(0.0) {}
+        private:
+            bool started_;
+            double elapsed_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [accustoming-yourself-to-cpp, initialization]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

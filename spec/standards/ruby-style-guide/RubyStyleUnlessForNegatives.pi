@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleUnlessForNegatives:
+    standard: @{RubyStyleGuide}
+    ruleId: unless-for-negatives
+    title: Choose unless over a negated if
+    statement:
+        Use unless, or control flow with or, instead of if with a negated
+        condition.
+    rationale:
+        Reading unless avoids mentally flipping a negation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        retry_upload if !upload.complete?
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        retry_upload unless upload.complete?
+        \\\
+        ```
+    languages: [ruby]
+    tags: [control-flow, conditionals]
+    source: https://rubystyle.guide/#unless-for-negatives

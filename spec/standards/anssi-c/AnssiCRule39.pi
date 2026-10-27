@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule39:
+    standard: @{AnssiC}
+    ruleId: rule-39
+    title: Enable warnings about uninitialised variables
+    statement:
+        Turn on the warnings for uninitialised automatic variables, such as
+        Wuninitialized, Winit-self and Wmaybe-uninitialized for GCC, or
+        Wuninitialized and Wconditional-uninitialized for Clang.
+    rationale:
+        Using an uninitialised variable is a common source of
+        vulnerabilities, even though these warnings do not catch every case.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        clang -O2 -Wuninitialized -Wconditional-uninitialized -c state.c
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, compilation, initialization]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=34

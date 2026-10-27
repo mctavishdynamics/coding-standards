@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgNestedTypes2:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: nested-types-2
+    title: Group types with namespaces, not public nested types
+    statement:
+        Do not nest public types just to organize them; put related types in
+        a namespace.
+    rationale:
+        Namespaces are the grouping construct; nesting makes names longer
+        and ties unrelated types together.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static class Geometry
+        {
+            public class Circle { }
+            public class Polygon { }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        namespace Fabrikam.Geometry
+        {
+            public class Circle { }
+            public class Polygon { }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, type-design, nested-types, namespaces]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/nested-types

@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./GnuCodingStandards import GnuCodingStandards
+
+export coding-rule GnuLocateFilesFromArgvZero:
+    standard: @{GnuCodingStandards}
+    ruleId: finding-program-files
+    title: Locate the executable and its files from argv[0] and PATH
+    statement:
+        To find its own executable or associated files, a program
+        inspects argv[0]: a name with a slash gives the directory
+        directly, otherwise it searches PATH. It then checks that
+        directory, its parent and any symlink target, and falls back to
+        the installed locations. Also offer environment variables that
+        name these locations explicitly.
+    rationale:
+        This works both for programs run from the build tree and installed
+        ones, while the variables cover callers that pass a misleading
+        argv[0].
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [files, portability]
+    source: https://www.gnu.org/prep/standards/standards.html#Finding-Program-Files

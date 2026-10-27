@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule59:
+    standard: @{AnssiC}
+    ruleId: rule-59
+    title: Give literal constants a type suffix
+    statement:
+        Mark unsigned literals with U, long and long long literals with L
+        and LL rather than lower case, and float literals with f.
+    rationale:
+        Unsuffixed integers are int and unsuffixed floating values are
+        double, which can lead to wrong conversions; a lower-case l looks
+        like a 1.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        uint32_t mask = 0xFF00;
+        long big = 40000l;
+        float ratio = 0.5;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        uint32_t mask = 0xFF00U;
+        long big = 40000L;
+        float ratio = 0.5f;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, constants, types]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=43

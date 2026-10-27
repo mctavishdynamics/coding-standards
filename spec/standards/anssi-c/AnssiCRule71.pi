@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule71:
+    standard: @{AnssiC}
+    ruleId: rule-71
+    title: Use one initialisation style per structured variable
+    statement:
+        Initialise an array or structure with a single syntax, either
+        positional or designated, not a mix of both.
+    rationale:
+        Mixing styles makes it hard to see which element receives which
+        value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct endpoint ep = { .port = 443, "example.org", 1 };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct endpoint ep = { .port = 443, .host = "example.org", .secure = 1 };
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, initialization, structs]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=53

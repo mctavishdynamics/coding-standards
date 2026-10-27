@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveJava import EffectiveJava
+
+export coding-rule EffectiveJavaItem80:
+    standard: @{EffectiveJava}
+    ruleId: item-80
+    title: Run work with executors and tasks rather than raw threads
+    statement:
+        Use the executor framework, fork-join pools and parallel streams
+        instead of creating and managing Thread objects yourself.
+    rationale:
+        Executors separate the unit of work from how it is run, so policies
+        can change without rewriting the tasks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        new Thread(() -> resize(image)).start();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        ExecutorService pool = Executors.newFixedThreadPool(4);
+        pool.submit(() -> resize(image));
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, executors]
+    source: https://www.informit.com/store/effective-java-9780134686097

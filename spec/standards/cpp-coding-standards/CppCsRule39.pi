@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule39:
+    standard: @{CppCodingStandards}
+    ruleId: rule-39
+    title: Wrap private virtual hooks in public non-virtual functions
+    statement:
+        Expose non-virtual public functions that call private or protected
+        virtual functions, which derived classes override.
+    rationale:
+        The base keeps control of the interface and can add checks around
+        the customisable step.
+    exceptions:
+        Destructors follow their own rule, and simple callback interfaces
+        may be public and virtual.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Storage {
+        public:
+            virtual void write(const Bytes& b) = 0;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Storage {
+        public:
+            void write(const Bytes& b) { assert(!b.empty()); doWrite(b); }
+            virtual ~Storage() = default;
+        private:
+            virtual void doWrite(const Bytes& b) = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [class-design-and-inheritance, inheritance, interfaces]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

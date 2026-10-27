@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdUseQueueMacros:
+    standard: @{OpenBsdStyle}
+    ruleId: queue-macros
+    title: Use queue(3) macros for lists when possible
+    statement:
+        Build linked lists from the queue(3) macros instead of hand-written
+        link code.
+    rationale:
+        The macros are tested and give every list the same interface.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct peer {
+                struct peer     *next;
+                int              fd;
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <sys/queue.h>
+
+        struct peer {
+                SLIST_ENTRY(peer)        entry;
+                int                      fd;
+        };
+        SLIST_HEAD(, peer) peers;
+        \\\
+        ```
+    languages: [c]
+    tags: [data-structures, libraries]
+    source: https://man.openbsd.org/style.9#DESCRIPTION

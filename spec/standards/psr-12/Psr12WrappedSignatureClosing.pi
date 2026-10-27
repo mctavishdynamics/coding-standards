@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12WrappedSignatureClosing:
+    standard: @{Psr12}
+    ruleId: 4.5d
+    title:
+        Join the closing parenthesis and brace of a wrapped signature
+    statement:
+        If a parameter list wraps across lines, the final parenthesis and
+        the brace share a line of their own, with a single space between.
+    rationale:
+        The combined line clearly marks where the signature ends and the
+        body starts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        function createUser(
+            string $name,
+            string $email)
+        {
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        function createUser(
+            string $name,
+            string $email
+        ) {
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [functions, braces]
+    source: https://www.php-fig.org/psr/psr-12/#45-method-and-function-arguments

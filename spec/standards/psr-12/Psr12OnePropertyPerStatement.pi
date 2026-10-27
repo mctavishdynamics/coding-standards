@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12OnePropertyPerStatement:
+    standard: @{Psr12}
+    ruleId: 4.3d
+    title: Declare one property per statement
+    statement:
+        Declare each property in its own statement; never declare several
+        properties in one statement.
+    rationale:
+        Separate declarations are easier to read, document and change one at
+        a time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Point
+        {
+            private $x, $y;
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Point
+        {
+            private $x;
+            private $y;
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [properties, formatting]
+    source: https://www.php-fig.org/psr/psr-12/#43-properties-and-constants

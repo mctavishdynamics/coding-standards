@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleDeclareNearUse:
+    standard: @{TigerStyle}
+    ruleId: declare-near-use
+    title: Compute and check values close to where they are used
+    statement:
+        Do not introduce variables before they are needed, do not keep them
+        around afterwards, and check values close to the place they are
+        used.
+    rationale:
+        A gap in time or distance between where a value is checked and where
+        it is used breeds bugs of the same kind as TOCTOU races.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        const size = message.header.size;
+        try self.flush();          // may change message
+        self.copy(message.body[0..size]);
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        try self.flush();
+        const size = message.header.size;
+        assert(size <= message.body.len);
+        self.copy(message.body[0..size]);
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [variables, scope]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#cache-invalidation

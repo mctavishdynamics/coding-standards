@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStyleSplitCompoundConditions:
+    standard: @{TigerStyle}
+    ruleId: split-compound-conditions
+    title: Split compound conditions into nested branches
+    statement:
+        Break conditions that combine several booleans into nested if and
+        else branches, and turn long else-if chains into nested trees. Check
+        whether each if also needs an else.
+    rationale:
+        Nested simple conditions make it clear that every case is handled,
+        both the positive and the negative.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        if (leader and quorum) {
+            commit();
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        if (leader) {
+            if (quorum) {
+                commit();
+            } else {
+                wait_for_votes();
+            }
+        } else {
+            forward_to_leader();
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [control-flow, readability]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

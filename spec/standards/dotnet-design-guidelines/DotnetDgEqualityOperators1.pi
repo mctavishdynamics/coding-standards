@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEqualityOperators1:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: equality-operators-1
+    title: Overload both equality operators or neither
+    statement:
+        If you overload one of the equality and inequality operators,
+        overload the other too.
+    rationale:
+        Callers expect the two to be consistent, and C# reports an error if
+        only one is defined.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public static bool operator ==(Isbn left, Isbn right) => left.Equals(right);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static bool operator ==(Isbn left, Isbn right) => left.Equals(right);
+        public static bool operator !=(Isbn left, Isbn right) => !(left == right);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do-not, usage, equality, operators]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/equality-operators

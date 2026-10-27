@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoProverbs import GoProverbs
+
+export coding-rule GoProverbDontPanic:
+    standard: @{GoProverbs}
+    ruleId: dont-panic
+    title: Return errors instead of panicking
+    statement:
+        Ordinary failures travel back to the caller as error values. Panic is
+        not an error-handling mechanism for them.
+    rationale:
+        A panic stops the caller from deciding how to respond and can bring
+        down a whole program for a problem it could have handled.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func ParsePort(s string) int {
+            p, err := strconv.Atoi(s)
+            if err != nil {
+                panic(err)
+            }
+            return p
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func ParsePort(s string) (int, error) {
+            p, err := strconv.Atoi(s)
+            if err != nil {
+                return 0, fmt.Errorf("parse port %q: %w", s, err)
+            }
+            return p, nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, panics]
+    source: https://go-proverbs.github.io/

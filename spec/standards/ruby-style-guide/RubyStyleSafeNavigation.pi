@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleSafeNavigation:
+    standard: @{RubyStyleGuide}
+    ruleId: safe-navigation
+    title: Avoid long chains of safe navigation
+    statement:
+        Do not chain several safe navigation operators together. Use plain
+        method calls with an explicit nil check, or use delegation when that
+        check would become complicated.
+    rationale:
+        The longer the chain, the harder it is to tell which call might
+        return nil, and a nil from any link silently becomes the result.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        zip = order&.customer&.address&.zip_code
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        # every customer has an address with a zip code
+        zip = order.customer.address.zip_code if order
+        \\\
+        ```
+    languages: [ruby]
+    tags: [nil-safety, method-calls]
+    source: https://rubystyle.guide/#safe-navigation

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule112:
+    standard: @{AnssiC}
+    ruleId: rule-112
+    title: Parenthesise each part of a boolean expression
+    statement:
+        Put every operand of a logical expression in parentheses so that its
+        grouping is unambiguous.
+    rationale:
+        Readers should not need to recall the relative precedence of logical
+        and relational operators.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        ok = len > 0 && len < max || force;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        ok = ((len > 0) && (len < max)) || force;
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, expressions, operator-precedence]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=90

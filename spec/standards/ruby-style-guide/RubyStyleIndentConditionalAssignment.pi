@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleIndentConditionalAssignment:
+    standard: @{RubyStyleGuide}
+    ruleId: indent-conditional-assignment
+    title: Keep branch alignment when assigning a conditional
+    statement:
+        When a variable receives the result of an if or case expression,
+        keep the branches aligned the usual way, either aligned under the
+        keyword on the assignment line or with the whole conditional
+        starting on the next line.
+    rationale:
+        Preserving the normal alignment keeps the structure of the
+        conditional visible even though it sits on the right of an
+        assignment.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        fee = if member?
+          0
+        else
+          5
+        end
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        fee =
+          if member?
+            0
+          else
+            5
+          end
+        \\\
+        ```
+    languages: [ruby]
+    tags: [formatting, indentation, conditionals]
+    source: https://rubystyle.guide/#indent-conditional-assignment

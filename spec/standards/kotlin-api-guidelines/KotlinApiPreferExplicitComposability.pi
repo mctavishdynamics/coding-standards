@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiPreferExplicitComposability:
+    standard: @{KotlinApiGuidelines}
+    ruleId: prefer-explicit-composability
+    title: Compose behaviours instead of adding parameters
+    statement:
+        Rather than adding customisation parameters to every operation,
+        design separate pieces of behaviour that users can chain or combine.
+    rationale:
+        Extra parameters on each function multiply API complexity, while
+        composable parts stay small and reusable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        public fun Readings.average(retry: Int = 0, cacheMillis: Long = 0): Double
+        public fun Readings.max(retry: Int = 0, cacheMillis: Long = 0): Double
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        public fun Readings.retrying(times: Int): Readings
+        public fun Readings.cached(duration: Duration): Readings
+        public fun Readings.average(): Double
+
+        val avg = readings.retrying(3).cached(5.seconds).average()
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [api-design, composability]
+    source: https://kotlinlang.org/docs/api-guidelines-readability.html#prefer-explicit-composability

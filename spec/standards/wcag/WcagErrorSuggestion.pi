@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagErrorSuggestion:
+    standard: @{Wcag22}
+    ruleId: 3.3.3
+    title: Suggest how to fix detected input errors
+    statement:
+        When an input error is detected and a correction is known, tell the
+        user how to fix it.
+    rationale:
+        Specific suggestions help people with cognitive disabilities and
+        everyone else recover quickly.
+    exceptions:
+        Not required when the suggestion would compromise security or the
+        purpose of the content, as in a test.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <p id="qty-error">Invalid value.</p>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <p id="qty-error">Enter a quantity between 1 and 10.</p>
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, forms, errors]
+    source: https://www.w3.org/TR/WCAG22/#error-suggestion

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoBooleanLiteralComparison:
+    standard: @{EffectiveDart}
+    ruleId: dont-use-true-or-false-in-equality-operations
+    title: Do not compare booleans with true or false
+    statement:
+        Test a non-nullable boolean directly, negating it with `!` if
+        needed. For a nullable boolean, use `??` or an explicit `!= null`
+        check instead of `== true`.
+    rationale:
+        Comparing a non-nullable value to a literal is redundant. With a
+        nullable value, `== true` hides that null is involved and makes the
+        logic easy to misread.
+    exceptions:
+        If you need the variable promoted to non-nullable inside the body,
+        prefer an explicit `!= null` check, since `??` does not promote.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        if (isOnline == false) showBanner();
+        if (settings.darkMode == true) applyDarkTheme();
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        if (!isOnline) showBanner();
+        if (settings.darkMode ?? false) applyDarkTheme();
+        \\\
+        ```
+    languages: [dart]
+    tags: [dont, null-safety, booleans]
+    source: https://dart.dev/effective-dart/usage#dont-use-true-or-false-in-equality-operations

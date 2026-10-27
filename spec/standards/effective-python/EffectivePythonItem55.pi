@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectivePython import EffectivePython
+
+export coding-rule EffectivePythonItem55:
+    standard: @{EffectivePython}
+    ruleId: item-55
+    title: Mark internals with one underscore rather than name mangling
+    statement:
+        Use public attributes and document which ones subclasses may rely
+        on. Use a single leading underscore for internal names, and double
+        underscores only to avoid name clashes with subclasses you do not
+        control.
+    rationale:
+        Private name mangling does not enforce privacy and makes subclassing
+        and testing harder.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Account:
+            def __init__(self):
+                self.__balance = 0
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Account:
+            def __init__(self):
+                self._balance = 0  # internal, subclasses may use
+        \\\
+        ```
+    languages: [python]
+    tags: [classes-and-interfaces, classes, encapsulation]
+    source: https://effectivepython.com/

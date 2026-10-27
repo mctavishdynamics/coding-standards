@@ -5,30 +5,34 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreT11:
     standard: @{CppCoreGuidelines}
     ruleId: T.11
-    title: Whenever possible use standard concepts
+    title: Choose concepts from the standard library when one fits
     statement:
-        Use the concepts the standard library already provides, such as
-        sortable or totally_ordered, before defining your own.
+        Before inventing a concept, check whether the standard library already
+        offers it, for example std::sortable or std::totally_ordered, and use that
+        one if it does.
     rationale:
-        Standard concepts are better thought out than ones made in a hurry,
-        save design work and improve interoperability. Outside new generic
-        libraries, most needed concepts already exist.
+        Standard concepts were designed with care that a quick home-made version
+        rarely gets, they spare you the design effort, and they make your templates
+        work smoothly with other code. Apart from people building new generic
+        libraries, most programmers will find what they need already there.
     exceptions: null
     severity: null
     noncompliant:
         ```cpp
         \\\
         template<typename T>
-        concept Sortable_seq = Sequence<T> && Random_access<Iterator<T>>
-                               && Ordered<Value_type<T>>;
-
-        void sort_all(Sortable_seq auto& s);
+        concept Same_value = requires(const T& x, const T& y) {
+            bool(x == y);
+            bool(x != y);
+        };
+        bool all_same(const std::vector<Same_value auto>& v);
         \\\
         ```
     compliant:
         ```cpp
         \\\
-        void sort_all(std::sortable auto& s);
+        template<std::equality_comparable T>
+        bool all_same(const std::vector<T>& v);
         \\\
         ```
     languages: [cpp]

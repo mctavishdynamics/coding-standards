@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Psr12 import Psr12
+
+export coding-rule Psr12ClosureParenthesisSpacing:
+    standard: @{Psr12}
+    ruleId: 7c
+    title: Put no spaces just inside closure parentheses
+    statement:
+        Put no space after the opening or before the closing parenthesis of
+        a closure's argument list or variable list.
+    rationale:
+        This matches the spacing of ordinary function declarations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        $greet = function ( $name ) use ( $greeting ) {
+            return "$greeting, $name";
+        };
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        $greet = function ($name) use ($greeting) {
+            return "$greeting, $name";
+        };
+        \\\
+        ```
+    languages: [php]
+    tags: [closures, whitespace]
+    source: https://www.php-fig.org/psr/psr-12/#7-closures

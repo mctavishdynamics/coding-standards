@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./ZalandoApi import ZalandoApi
+
+export coding-rule Zalando125:
+    standard: @{ZalandoApi}
+    ruleId: 125
+    title: Write enum values in UPPER_SNAKE_CASE
+    statement:
+        Represent enumerations as strings and write every value in upper
+        snake case, both in closed enums and in extensible ones listed
+        through examples.
+    rationale:
+        Upper-case values stand out clearly from property names and other
+        elements.
+    exceptions:
+        Case-sensitive values defined outside the API, such as ISO language
+        codes, and the values of a sort parameter keep their own form.
+    severity: null
+    noncompliant:
+        ```yaml
+        \\\
+        status:
+          type: string
+          enum: [ inTransit, delivered ]
+        \\\
+        ```
+    compliant:
+        ```yaml
+        \\\
+        status:
+          type: string
+          enum: [ IN_TRANSIT, DELIVERED ]
+        \\\
+        ```
+    languages: [any]
+    tags: [should, json, naming]
+    source: https://opensource.zalando.com/restful-api-guidelines/#125

@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./TigerStyle import TigerStyle
+
+export coding-rule TigerStylePairAssertions:
+    standard: @{TigerStyle}
+    ruleId: pair-assertions
+    title: Check each property on at least two code paths
+    statement:
+        For every property you need to hold, find two different places to
+        assert it, for example just before data is written to disk and just
+        after it is read back.
+    rationale:
+        Checking from both sides of a boundary catches bugs that a single
+        check on one side would miss.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```zig
+        \\\
+        fn write_block(block: *const Block) !void {
+            assert(block.valid_checksum());
+            try storage.write(block);
+        }
+
+        fn read_block(buffer: *Block) !void {
+            try storage.read(buffer);
+        }
+        \\\
+        ```
+    compliant:
+        ```zig
+        \\\
+        fn write_block(block: *const Block) !void {
+            assert(block.valid_checksum());
+            try storage.write(block);
+        }
+
+        fn read_block(buffer: *Block) !void {
+            try storage.read(buffer);
+            assert(buffer.valid_checksum());
+        }
+        \\\
+        ```
+    languages: [zig, any]
+    tags: [assertions, storage]
+    source: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md#safety

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEnum12:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: enum-12
+    title: Give each flag its own bit
+    statement:
+        Assign each flag a distinct power of two so any combination can be
+        built with bitwise OR.
+    rationale:
+        Values that share bits make combinations ambiguous and impossible to
+        test reliably.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        [Flags]
+        public enum Alerts { None = 0, Email = 1, Sms = 2, Push = 3 }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        [Flags]
+        public enum Alerts { None = 0, Email = 1, Sms = 2, Push = 4 }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [do, type-design, enums, flags]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/enum#designing-flag-enums

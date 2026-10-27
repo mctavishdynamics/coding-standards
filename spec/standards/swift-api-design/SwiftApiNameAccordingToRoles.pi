@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./SwiftApiDesign import SwiftApiDesign
+
+export coding-rule SwiftApiNameAccordingToRoles:
+    standard: @{SwiftApiDesign}
+    ruleId: name-according-to-roles
+    title: Name things by their role, not their type
+    statement:
+        Name variables, parameters and associated types for the part the value
+        plays rather than for its type constraint. Sometimes an associated
+        type is bound so closely to its protocol that the protocol's own name
+        is the natural name for that role; in that case append Protocol to the
+        protocol name to keep the two apart.
+    rationale:
+        A type name repeated as a variable name carries no extra meaning,
+        while a role name tells the reader why the value is there.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let date = Date()
+        func ship(_ order: Order, using carrierService: CarrierService)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let shippedAt = Date()
+        func ship(_ order: Order, using carrier: CarrierService)
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming]
+    source: https://www.swift.org/documentation/api-design-guidelines/#name-according-to-roles

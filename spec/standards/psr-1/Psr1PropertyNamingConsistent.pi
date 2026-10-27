@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./Psr1 import Psr1
+
+export coding-rule Psr1PropertyNamingConsistent:
+    standard: @{Psr1}
+    ruleId: 4.2
+    title: Pick one property naming style and keep to it
+    statement:
+        The standard does not choose between StudlyCaps, camelCase and
+        snake_case property names. Whichever style you choose should be used
+        consistently within a sensible scope, such as the vendor, package,
+        class or method.
+    rationale:
+        Mixed naming inside one unit of code makes readers guess how each
+        property is spelled and invites typos.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```php
+        \\\
+        <?php
+        class Customer
+        {
+            public $firstName;
+            public $last_name;
+            public $EmailAddress;
+        }
+        \\\
+        ```
+    compliant:
+        ```php
+        \\\
+        <?php
+        class Customer
+        {
+            public $firstName;
+            public $lastName;
+            public $emailAddress;
+        }
+        \\\
+        ```
+    languages: [php]
+    tags: [naming, properties, consistency]
+    source: https://www.php-fig.org/psr/psr-1/#42-properties

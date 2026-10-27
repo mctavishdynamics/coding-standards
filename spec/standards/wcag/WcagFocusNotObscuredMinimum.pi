@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Wcag22 import Wcag22
+
+export coding-rule WcagFocusNotObscuredMinimum:
+    standard: @{Wcag22}
+    ruleId: 2.4.11
+    title: Do not let author content fully hide the focused element
+    statement:
+        When a component receives keyboard focus, make sure it is not
+        entirely hidden by content the author added, such as sticky headers,
+        footers or banners.
+    rationale:
+        Keyboard users lose track of focus when it moves behind an overlay.
+    exceptions:
+        Content the user opened and can dismiss or move without moving focus
+        does not count.
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        .cookie-bar { position: fixed; bottom: 0; height: 30vh; }
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        .site-header { position: sticky; top: 0; }
+        html { scroll-padding-top: 5rem; scroll-padding-bottom: 5rem; }
+        \\\
+        ```
+    languages: [html]
+    tags: [level-aa, focus, layout]
+    source: https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum

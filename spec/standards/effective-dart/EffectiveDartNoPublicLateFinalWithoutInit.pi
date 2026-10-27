@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoPublicLateFinalWithoutInit:
+    standard: @{EffectiveDart}
+    ruleId: avoid-public-late-final-fields-without-initializers
+    title: Do not expose late final fields that lack initializers
+    statement:
+        Avoid public `late final` fields with no initializer. Drop `late`,
+        use a factory constructor, initialize the field at its declaration,
+        or make it private behind a public getter.
+    rationale:
+        Such a field has a public setter, which is rarely intended.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class Report {
+          late final String summary;
+          Report(List<String> lines) {
+            summary = lines.take(3).join(' ');
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class Report {
+          final String summary;
+          Report(List<String> lines) : summary = lines.take(3).join(' ');
+        }
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, fields, late]
+    source: https://dart.dev/effective-dart/design#avoid-public-late-final-fields-without-initializers

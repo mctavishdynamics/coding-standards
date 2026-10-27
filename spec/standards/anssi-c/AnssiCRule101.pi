@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule101:
+    standard: @{AnssiC}
+    ruleId: rule-101
+    title: Declare every bit-field unsigned
+    statement:
+        Give all bit-fields an explicit unsigned type.
+    rationale:
+        The signedness of a plain int bit-field is implementation-defined,
+        so a one-bit field may hold 0 and -1 instead of 0 and 1.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        struct flags { int ready : 1; int mode : 3; };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct flags { unsigned int ready : 1; unsigned int mode : 3; };
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, structs, bit-fields]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=81

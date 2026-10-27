@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule63:
+    standard: @{AnssiC}
+    ruleId: rule-63
+    title: Declare file-local functions and variables static
+    statement:
+        Mark every global function and variable that is not used outside its
+        source file as static.
+    rationale:
+        Internal linkage keeps the symbol private to the file and avoids
+        name clashes and unintended use.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int helper_count;
+        int parse_digit(char c) { return c - '0'; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int helper_count;
+        static int parse_digit(char c) { return c - '0'; }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, linkage, encapsulation]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=47

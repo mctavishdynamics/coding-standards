@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./KotlinApiGuidelines import KotlinApiGuidelines
+
+export coding-rule KotlinApiUseExplicitApiMode:
+    standard: @{KotlinApiGuidelines}
+    ruleId: use-explicit-api-mode
+    title: Turn on explicit API mode
+    statement:
+        Enable the compiler's explicit API mode for library modules. It
+        requires every public declaration to carry a visibility modifier and
+        every public function and property to declare its type.
+    rationale:
+        It forces you to decide what you expose and stops inferred types
+        from changing the API by accident.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```kotlin
+        \\\
+        // build.gradle.kts
+        kotlin { }
+        \\\
+        ```
+    compliant:
+        ```kotlin
+        \\\
+        // build.gradle.kts
+        kotlin {
+            explicitApi()
+        }
+        \\\
+        ```
+    languages: [kotlin]
+    tags: [api-design, tooling]
+    source: https://kotlinlang.org/docs/api-guidelines-simplicity.html#use-explicit-api-mode

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectiveCpp import EffectiveCpp
+
+export coding-rule EffectiveCppItem20:
+    standard: @{EffectiveCpp}
+    ruleId: item-20
+    title: Take class-type parameters as const references
+    statement:
+        For parameters of class type, take a reference to const. Built-in
+        types, iterators and small function objects are fine by value.
+    rationale:
+        Pass by value copies and destroys the argument and slices derived
+        objects.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        bool isAdmin(User u);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        bool isAdmin(const User& u);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [designs-and-declarations, performance, parameters]
+    source: https://www.informit.com/store/effective-c-plus-plus-55-specific-ways-to-improve-your-9780321334879

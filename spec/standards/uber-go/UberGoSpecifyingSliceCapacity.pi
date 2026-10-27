@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./UberGo import UberGo
+
+export coding-rule UberGoSpecifyingSliceCapacity:
+    standard: @{UberGo}
+    ruleId: specifying-slice-capacity
+    title: Give make a capacity for slices you append to
+    statement:
+        When initializing a slice with make, provide the capacity where you
+        know it, especially before appending in a loop.
+    rationale:
+        Slice capacity is a real allocation, so appends up to that capacity
+        need no further allocations or copying.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var names []string
+        for _, u := range users {
+            names = append(names, u.Name)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        names := make([]string, 0, len(users))
+        for _, u := range users {
+            names = append(names, u.Name)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [performance, slices, allocation]
+    source: https://github.com/uber-go/guide/blob/master/style.md#specifying-slice-capacity

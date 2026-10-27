@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./PracticeOfProgramming import PracticeOfProgramming
+
+export coding-rule TpopPortability1:
+    standard: @{PracticeOfProgramming}
+    ruleId: portability-1
+    title: Write to the language standard
+    statement:
+        Code to the official language standard rather than to the behavior
+        of one compiler.
+    rationale:
+        Standard code builds and behaves the same across compilers and
+        systems.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        int n = 5;
+        int a[n] = { 0 };     /* depends on a compiler extension */
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum { N = 5 };
+        int a[N] = { 0 };
+        \\\
+        ```
+    languages: [any]
+    tags: [portability, standards]
+    source: https://www.cs.princeton.edu/~bwk/tpop.webpage/

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgEnum15:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: enum-15
+    title: Avoid zero-valued flags except a None member
+    statement:
+        In a flags enum, use the value zero only for a member that means no
+        flags are set.
+    rationale:
+        A flag with value zero can never be detected with a bitwise test,
+        because every value contains it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        [Flags]
+        public enum Styles { Bold = 0, Italic = 1, Underline = 2 }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        [Flags]
+        public enum Styles { None = 0, Bold = 1, Italic = 2, Underline = 4 }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, type-design, enums, flags]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/enum#designing-flag-enums

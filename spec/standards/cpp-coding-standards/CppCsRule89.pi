@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CppCodingStandards import CppCodingStandards
+
+export coding-rule CppCsRule89:
+    standard: @{CppCodingStandards}
+    ruleId: rule-89
+    title: Write function objects that are cheap to copy and well-behaved
+    statement:
+        Make custom function objects small and cheap to copy, with a const
+        call operator, and keep any heavy state behind a pointer.
+    rationale:
+        Algorithms pass function objects by value and may copy them freely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Matcher {
+            std::vector<std::string> words;   // copied with every pass
+            bool operator()(const std::string& s) { return contains(words, s); }
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Matcher {
+            const std::vector<std::string>* words;
+            bool operator()(const std::string& s) const { return contains(*words, s); }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [stl-algorithms, algorithms, functional]
+    source: https://www.informit.com/store/c-plus-plus-coding-standards-101-rules-guidelines-and-9780321113580

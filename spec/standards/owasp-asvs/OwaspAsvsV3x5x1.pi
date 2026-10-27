@@ -1,0 +1,23 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV3x5x1:
+    standard: @{OwaspAsvs}
+    ruleId: V3.5.1
+    title: Check that sensitive requests come from the application
+    statement:
+        When CORS preflight is not what blocks unwanted cross-origin calls,
+        confirm that requests to sensitive functions come from the
+        application itself, using anti-forgery tokens or a custom header
+        that is not CORS-safelisted.
+    rationale:
+        Without a check, another site can make the victim's browser submit
+        authenticated requests, which is cross-site request forgery.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-1, csrf, request-forgery]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x12-V3-Web-Frontend-Security.md#v35-browser-origin-separation

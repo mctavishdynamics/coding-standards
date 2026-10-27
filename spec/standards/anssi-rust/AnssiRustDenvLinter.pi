@@ -1,0 +1,26 @@
+use ../lib/CodingRule
+
+from ./AnssiRust import AnssiRust
+
+export coding-rule AnssiRustDenvLinter:
+    standard: @{AnssiRust}
+    ruleId: DENV-LINTER
+    title: Run a linter such as Clippy regularly
+    statement:
+        Run a linter, typically Clippy, often during development of a secure
+        application and address what it reports.
+    rationale:
+        Lints flag common mistakes, suspicious constructs and unidiomatic
+        code that the compiler accepts but that often hide bugs.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```shell
+        \\\
+        cargo clippy --all-targets -- -D warnings
+        \\\
+        ```
+    languages: [rust]
+    tags: [rule, tooling, static-analysis]
+    source: https://anssi-fr.github.io/rust-guide/devenv.html#DENV-LINTER

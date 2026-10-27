@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartUpperCamelCaseTypes:
+    standard: @{EffectiveDart}
+    ruleId: do-name-types-using-uppercamelcase
+    title: Write type names in UpperCamelCase
+    statement:
+        Give classes, enums, typedefs, type parameters and annotation
+        classes names that start every word with a capital letter and use no
+        separators. The camel_case_types lint checks this.
+    rationale:
+        One casing for every kind of type lets a reader tell a type from a
+        value at a glance.
+    exceptions:
+        For an annotation class whose constructor takes no arguments, you
+        may also expose a lowerCamelCase constant to use as the annotation.
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        class shopping_cart {}
+        enum paymentState { pending, settled }
+        typedef jsonMap = Map<String, Object?>;
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        class ShoppingCart {}
+        enum PaymentState { pending, settled }
+        typedef JsonMap = Map<String, Object?>;
+        \\\
+        ```
+    languages: [dart]
+    tags: [do, naming]
+    source: https://dart.dev/effective-dart/style#do-name-types-using-uppercamelcase

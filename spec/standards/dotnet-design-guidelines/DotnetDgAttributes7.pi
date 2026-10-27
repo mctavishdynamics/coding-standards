@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./DotnetDesignGuidelines import DotnetDesignGuidelines
+
+export coding-rule DotnetDgAttributes7:
+    standard: @{DotnetDesignGuidelines}
+    ruleId: attributes-7
+    title: Give custom attributes a single constructor
+    statement:
+        Give a custom attribute a single constructor.
+    rationale:
+        With only one constructor, its parameters are exactly the required
+        values and everything else is a named property.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public RetryAttribute() { }
+        public RetryAttribute(int attempts) { }
+        public RetryAttribute(int attempts, int delayMs) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public RetryAttribute(int attempts) { Attempts = attempts; }
+        public int DelayMilliseconds { get; set; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [avoid, usage, attributes, constructors]
+    source: https://learn.microsoft.com/dotnet/standard/design-guidelines/attributes

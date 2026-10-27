@@ -5,14 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreC64:
     standard: @{CppCoreGuidelines}
     ruleId: C.64
-    title: Make a move leave its source in a valid state
+    title: Leave a moved-from object usable
     statement:
-        A move operation should transfer the value to the target and leave
-        the source in a valid state that can be destroyed and assigned. The
-        empty or default state is usually best.
+        A move must give the target the source's former value. The source must
+        stay valid, so that it can still be destroyed or assigned to. An empty
+        or default state is usually the best choice.
     rationale:
-        Code assumes that after y = std::move(x), y holds the old value of x
-        and x is still a usable object.
+        Callers expect that y holds the old value of x after y = std::move(x),
+        and that x can still be used safely.
     exceptions: null
     severity: null
     noncompliant:

@@ -1,0 +1,23 @@
+use ../lib/CodingRule
+
+from ./OwaspAsvs import OwaspAsvs
+
+export coding-rule OwaspAsvsV7x4x1:
+    standard: @{OwaspAsvs}
+    ruleId: V7.4.1
+    title: Make terminated sessions unusable
+    statement:
+        After logout or expiry, refuse any further use of the session.
+        Delete server-side session data for stateful or reference tokens,
+        and for self-contained tokens use a revocation list, a per-user
+        cutoff time or per-user key rotation.
+    rationale:
+        Self-contained tokens otherwise stay valid until expiry, so logout
+        would not actually end access.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [level-1, session, logout]
+    source: https://github.com/OWASP/ASVS/blob/v5.0.0_release/5.0/en/0x16-V7-Session-Management.md#v74-session-termination

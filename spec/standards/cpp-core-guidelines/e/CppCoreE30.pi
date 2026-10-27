@@ -5,16 +5,15 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreE30:
     standard: @{CppCoreGuidelines}
     ruleId: E.30
-    title: Do not use exception specifications
+    title: Do not write dynamic exception specifications
     statement:
-        Do not write dynamic exception specifications that list the
-        exception types a function may throw. Use noexcept when a function
-        must not throw.
+        Never write a throw list naming the exception types a function may raise.
+        When a function must not throw, mark it noexcept.
     rationale:
-        Exception specifications make error handling brittle and impose a
-        run-time cost: a new exception deep in a library forces changes
-        through long call chains or crashes the program. They have been
-        removed from the C++ standard.
+        Such lists were checked at run time, which cost time and terminated the
+        program when a deep library change added a new exception type. Keeping them
+        accurate forced edits along whole call chains, and the language has since
+        dropped them.
     exceptions: null
     severity: null
     noncompliant:

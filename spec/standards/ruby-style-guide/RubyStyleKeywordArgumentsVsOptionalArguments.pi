@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleKeywordArgumentsVsOptionalArguments:
+    standard: @{RubyStyleGuide}
+    ruleId: keyword-arguments-vs-optional-arguments
+    title: Make optional parameters keywords
+    statement:
+        Define optional parameters as keyword arguments rather than
+        positional parameters with defaults.
+    rationale:
+        Keywords document themselves at the call site and let callers set
+        any option without supplying the ones before it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        def paginate(scope, page = 1, per_page = 25)
+        end
+
+        paginate(posts, 1, 50)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        def paginate(scope, page: 1, per_page: 25)
+        end
+
+        paginate(posts, per_page: 50)
+        \\\
+        ```
+    languages: [ruby]
+    tags: [methods, parameters, keyword-arguments]
+    source: https://rubystyle.guide/#keyword-arguments-vs-optional-arguments

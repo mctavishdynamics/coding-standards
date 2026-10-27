@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleUseHashBlocks:
+    standard: @{RubyStyleGuide}
+    ruleId: use-hash-blocks
+    title: Pass fetch a block for costly defaults
+    statement:
+        When the default value is expensive to compute or has side effects,
+        give fetch a block instead of a default argument.
+    rationale:
+        An argument is evaluated on every call, while the block runs only
+        when the key is missing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        cache.fetch(:rates, download_exchange_rates)
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        cache.fetch(:rates) { download_exchange_rates }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes, performance]
+    source: https://rubystyle.guide/#use-hash-blocks

@@ -5,15 +5,14 @@ from ../CppCoreGuidelines import CppCoreGuidelines
 export coding-rule CppCoreF60:
     standard: @{CppCoreGuidelines}
     ruleId: F.60
-    title: Prefer T* over T& when no argument is a valid option
+    title: Take a pointer instead of a reference when no argument is allowed
     statement:
-        Use a pointer parameter when passing no object is meaningful, and
-        check it for nullptr. Use a reference when an object is always
-        required.
+        Take T* when calling without an object is a valid choice, and test it
+        for nullptr. Take T& when an object must always be supplied.
     rationale:
-        A pointer can be nullptr and a reference cannot, so the choice tells
-        callers whether the argument is optional. A reference is also
-        simpler to use.
+        A pointer may be null and a reference may not. The parameter type
+        therefore tells callers whether the argument is optional, and a
+        reference is also easier to use.
     exceptions: null
     severity: null
     noncompliant:

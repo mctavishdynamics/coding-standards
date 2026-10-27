@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AnssiC import AnssiC
+
+export coding-rule AnssiCRule127:
+    standard: @{AnssiC}
+    ruleId: rule-127
+    title: Always use braces for conditionals and loops
+    statement:
+        Put braces around the body of every if, else, for, while and do,
+        even when it is a single statement.
+    rationale:
+        Without braces, an added line looks like part of the block but is
+        not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        if (err != 0)
+            log_error(err);
+            return err;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (err != 0) {
+            log_error(err);
+            return err;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [rule, control-flow, formatting]
+    source: https://messervices.cyber.gouv.fr/documents-guides/anssi-guide-rules_for_secure_c_language_software_development-v1.4.pdf#page=99

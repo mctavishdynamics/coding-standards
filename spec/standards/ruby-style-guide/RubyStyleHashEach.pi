@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RubyStyleGuide import RubyStyleGuide
+
+export coding-rule RubyStyleHashEach:
+    standard: @{RubyStyleGuide}
+    ruleId: hash-each
+    title: Iterate keys or values with each_key and each_value
+    statement:
+        Use each_key instead of keys.each, and each_value instead of
+        values.each. Also use them instead of each when the block ignores
+        the key or the value. RuboCop checks this with
+        Style/HashEachMethods.
+    rationale:
+        The dedicated methods state the intent and do not build a temporary
+        array.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```ruby
+        \\\
+        stock.keys.each { |sku| audit(sku) }
+        stock.each { |_sku, qty| total += qty }
+        \\\
+        ```
+    compliant:
+        ```ruby
+        \\\
+        stock.each_key { |sku| audit(sku) }
+        stock.each_value { |qty| total += qty }
+        \\\
+        ```
+    languages: [ruby]
+    tags: [collections, hashes, iteration]
+    source: https://rubystyle.guide/#hash-each

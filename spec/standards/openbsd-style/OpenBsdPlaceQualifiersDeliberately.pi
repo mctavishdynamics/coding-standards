@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OpenBsdStyle import OpenBsdStyle
+
+export coding-rule OpenBsdPlaceQualifiersDeliberately:
+    standard: @{OpenBsdStyle}
+    ruleId: qualifier-placement
+    title: Put volatile and const where they qualify the intended object
+    statement:
+        Place a qualifier to the right of the asterisk to qualify the
+        pointer itself, and to the left to qualify what it points to; use
+        both when both are qualified. const follows the same rules.
+    rationale:
+        The position decides which object the qualifier applies to, and
+        getting it wrong silently changes the meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        /* Intended: a read-only, volatile hardware register. */
+        volatile char *const reg;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        const volatile char *reg;
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, pointers, types]
+    source: https://man.openbsd.org/style.9#longjmp

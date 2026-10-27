@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveDart import EffectiveDart
+
+export coding-rule EffectiveDartNoUnneededInterpolationBraces:
+    standard: @{EffectiveDart}
+    ruleId: avoid-using-curly-braces-in-interpolation-when-not-needed
+    title: Drop interpolation braces around simple identifiers
+    statement:
+        When interpolating a plain identifier that is not followed by
+        letters or digits, write the dollar sign and name without braces.
+        The unnecessary_brace_in_string_interps lint checks this.
+    rationale:
+        The braces add clutter without changing the result.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```dart
+        \\\
+        print('Hello, ${name}! You have ${count} new messages.');
+        \\\
+        ```
+    compliant:
+        ```dart
+        \\\
+        print('Hello, $name! You have $count new messages.');
+        print('Saved ${count}x faster');
+        \\\
+        ```
+    languages: [dart]
+    tags: [avoid, strings]
+    source: https://dart.dev/effective-dart/usage#avoid-using-curly-braces-in-interpolation-when-not-needed

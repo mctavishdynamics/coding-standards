@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Dijkstra import Dijkstra
+
+export coding-rule DijkstraEwd249StateAssumptions:
+    standard: @{Dijkstra}
+    ruleId: EWD249-state-assumed-properties
+    title: State which properties of the platform you rely on
+    statement:
+        Know and write down the properties of arithmetic and other
+        primitives that a program depends on, and depend on as few of them
+        as possible.
+    rationale:
+        A proof made for an ideal machine can fail on a real one; stating
+        the assumptions shows when an implementation is suitable, and asking
+        little improves portability.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def average(a, b):
+            return (a + b) / 2   # silently assumes a + b cannot overflow
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def average(a: int, b: int) -> int:
+            # Requires exact integer arithmetic, which Python ints provide.
+            return (a + b) // 2
+        \\\
+        ```
+    languages: [any]
+    tags: [portability, correctness, numerics]
+    source: https://www.cs.utexas.edu/~EWD/transcriptions/EWD02xx/EWD249/EWD249.html
