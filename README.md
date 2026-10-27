@@ -11,7 +11,7 @@ The rules are written in [Piton](https://github.com/piton-lang) and compile to t
 ### In a Piton project
 
 ```sh
-piton tether <repo-url>
+piton tether https://github.com/mctavishdynamics/coding-standards.git
 ```
 
 This installs the package into `tethers/coding-standards` and adds it to the `dependencies` in your `piton.config.pi`. To get the audit skill, add this line to your entry file (usually `spec/index.pi`):
@@ -27,6 +27,7 @@ Then run `piton build`.
 The quickest way is to copy the prebuilt files. This repository already contains the compiled skill and rules for Claude Code, in two folders:
 
 ```sh
+git clone https://github.com/mctavishdynamics/coding-standards.git
 mkdir -p your-project/.claude/skills your-project/.claude/reference
 cp -r coding-standards/.claude/skills/coding-standards-audit your-project/.claude/skills/
 cp -r coding-standards/.claude/reference/standards your-project/.claude/reference/
