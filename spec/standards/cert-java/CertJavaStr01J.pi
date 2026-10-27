@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaStr01J:
+    standard: @{CertJava}
+    ruleId: STR01-J
+    title: Do not assume that a Java char fully represents a Unicode code point
+    statement:
+        Process text by code points, using codePointAt, Character.charCount
+        and the code point methods of Character, not one char at a time.
+    rationale:
+        Supplementary characters are stored as two surrogate chars, so
+        char-by-char code splits them and tests such as Character.isLetter
+        give wrong answers. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        for (int i = 0; i < s.length(); i++) {
+            if (!Character.isLetter(s.charAt(i))) return false;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        for (int i = 0; i < s.length(); ) {
+            int cp = s.codePointAt(i);
+            if (!Character.isLetter(cp)) return false;
+            i += Character.charCount(cp);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [strings, unicode]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/characters-and-strings-str/str01-j/

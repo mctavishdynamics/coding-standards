@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpAccessControl10:
+    standard: @{OwaspScp}
+    ruleId: access-control-10
+    title: Restrict direct object references to authorized users
+    statement:
+        When a request names an object directly, such as by ID, check that
+        the user is allowed to access that particular object.
+    rationale:
+        Without the check, users can change the ID and read or alter other
+        people's records.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def get_invoice(request, invoice_id):
+            return Invoice.get(invoice_id)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def get_invoice(request, invoice_id):
+            invoice = Invoice.get(invoice_id)
+            if invoice.owner_id != request.session.user.id:
+                raise PermissionDenied()
+            return invoice
+        \\\
+        ```
+    languages: [any]
+    tags: [access-control, idor]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#access-control

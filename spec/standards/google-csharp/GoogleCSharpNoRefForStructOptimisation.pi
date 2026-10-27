@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpNoRefForStructOptimisation:
+    standard: @{GoogleCSharp}
+    ruleId: no-ref-for-struct-optimisation
+    title: Do not use ref to optimise struct passing
+    statement:
+        Do not pass structs by ref just to avoid copying them.
+    rationale:
+        ref signals mutation, so using it for speed misleads readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        float Length(ref Vector3 v) => MathF.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        float Length(Vector3 v) => MathF.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [parameters, structs, performance]
+    source: https://google.github.io/styleguide/csharpguide.html#ref-and-out

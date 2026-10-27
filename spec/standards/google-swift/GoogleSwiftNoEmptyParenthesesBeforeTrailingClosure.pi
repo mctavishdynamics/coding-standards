@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftNoEmptyParenthesesBeforeTrailingClosure:
+    standard: @{GoogleSwift}
+    ruleId: trailing-closures-no-empty-parentheses
+    title: Omit empty parentheses before a lone trailing closure
+    statement:
+        When a call made with a trailing closure takes no other arguments,
+        do not write empty parentheses after the function name.
+    rationale:
+        The parentheses carry no information.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let doubled = values.map() { $0 * 2 }
+        let tripled = values.map({ $0 * 3 })
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let doubled = values.map { $0 * 2 }
+        \\\
+        ```
+    languages: [swift]
+    tags: [closures, syntax]
+    source: https://google.github.io/swift/#trailing-closures

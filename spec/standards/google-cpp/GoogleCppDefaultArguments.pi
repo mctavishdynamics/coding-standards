@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppDefaultArguments:
+    standard: @{GoogleCpp}
+    ruleId: Default_Arguments
+    title: Avoid default arguments on virtual functions
+    statement:
+        Default arguments are allowed on non-virtual functions when the
+        default always has the same value. Do not use them on virtual
+        functions or with defaults that can evaluate differently between
+        calls, and prefer overloads when in doubt.
+    rationale:
+        Defaults on virtual calls come from the static type, so overrides
+        can disagree. Defaults are re-evaluated at each call site, which
+        surprises readers when the value can change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Renderer {
+         public:
+          virtual void Draw(int scale = 1);
+        };
+        int NextId(int seed = counter++);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Renderer {
+         public:
+          void Draw() { Draw(1); }
+          virtual void Draw(int scale);
+        };
+        std::string Join(const std::vector<std::string>& parts,
+                         std::string_view separator = ", ");
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, parameters]
+    source: https://google.github.io/styleguide/cppguide.html#Default_Arguments

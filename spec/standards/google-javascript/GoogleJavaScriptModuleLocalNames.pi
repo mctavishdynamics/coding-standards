@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptModuleLocalNames:
+    standard: @{GoogleJavaScript}
+    ruleId: 6.2.10
+    title: Do not mark module-local names as private
+    statement:
+        Names that a module does not export are already private. Do not mark
+        them with @private, whether they are classes, functions, variables,
+        constants or enums.
+    rationale:
+        The module boundary already hides them, so the annotation is
+        redundant noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @private */
+        const cache = new Map();
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const cache = new Map();
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming, visibility, modules]
+    source: https://google.github.io/styleguide/jsguide.html#6210-module-local-names

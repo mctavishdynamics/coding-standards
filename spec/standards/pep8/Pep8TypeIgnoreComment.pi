@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8TypeIgnoreComment:
+    standard: @{Pep8}
+    ruleId: function-annotations-type-ignore
+    title: Mark files that use annotations for other purposes with type ignore
+    statement:
+        If code uses function annotations for something other than type
+        hints, put a type ignore comment near the top of the file so type
+        checkers skip its annotations.
+    rationale:
+        Type checkers would otherwise report the non-type annotations as
+        errors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        """Command line options declared through annotations."""
+
+
+        def main(verbose: "--verbose flag"):
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        # type: ignore
+        """Command line options declared through annotations."""
+
+
+        def main(verbose: "--verbose flag"):
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [type-hints, tooling]
+    source: https://peps.python.org/pep-0008/#function-annotations

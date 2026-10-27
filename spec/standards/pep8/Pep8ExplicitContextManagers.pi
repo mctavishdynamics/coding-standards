@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ExplicitContextManagers:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-context-managers
+    title: Invoke context managers through named methods when they do more than cleanup
+    statement:
+        If a context manager does something other than acquire and release a
+        resource, invoke it through a separate function or method whose name
+        says what it does.
+    rationale:
+        Using the object itself as the context manager hides the extra
+        behaviour, such as committing a transaction.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        with db:
+            db.insert(order)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        with db.transaction():
+            db.insert(order)
+        \\\
+        ```
+    languages: [python]
+    tags: [context-managers, readability]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

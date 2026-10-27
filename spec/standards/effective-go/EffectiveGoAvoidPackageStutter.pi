@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoAvoidPackageStutter:
+    standard: @{EffectiveGo}
+    ruleId: package-names-exported-names
+    title: Use the package name to keep exported names short
+    statement:
+        Choose exported names knowing callers see them qualified by the
+        package name. Call a type Reader rather than BufReader in package
+        bufio, and name the only constructor of package ring New rather than
+        NewRing. Prefer a helpful doc comment to an extra long name.
+    rationale:
+        The qualified name already says where a thing comes from, so
+        repeating it adds noise, and long names do not automatically make
+        code clearer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package queue
+
+        type QueueItem struct{ Payload []byte }
+
+        func NewQueue() *Queue
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package queue
+
+        type Item struct{ Payload []byte }
+
+        func New() *Queue
+        \\\
+        ```
+    languages: [go]
+    tags: [naming, packages]
+    source: https://go.dev/doc/effective_go#package-names

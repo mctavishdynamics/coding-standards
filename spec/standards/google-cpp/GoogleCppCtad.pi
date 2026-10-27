@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppCtad:
+    standard: @{GoogleCpp}
+    ruleId: CTAD
+    title: Use class template argument deduction only where opted in
+    statement:
+        Use class template argument deduction only with templates whose
+        maintainers opted in by providing at least one explicit deduction
+        guide; templates in namespace std count as opted in. Enforce this
+        with a compiler warning where available, and follow the general type
+        deduction rules.
+    rationale:
+        Without deduction guides, the deduced type comes from implicit rules
+        that are hard to predict and may change as the template evolves.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Matrix provides no deduction guide.
+        Matrix m(3, 4, 0.0);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Matrix<double> m(3, 4, 0.0);
+        std::array primes = {2, 3, 5, 7};  // std templates are opted in.
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, type-deduction]
+    source: https://google.github.io/styleguide/cppguide.html#CTAD

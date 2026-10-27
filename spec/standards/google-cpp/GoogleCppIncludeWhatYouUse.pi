@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppIncludeWhatYouUse:
+    standard: @{GoogleCpp}
+    ruleId: Include_What_You_Use
+    title: Include a header for every symbol you use
+    statement:
+        When a file uses a symbol defined elsewhere, include the header
+        meant to provide it directly, and include headers for no other
+        reason. Do not rely on transitive includes, even through your own
+        related header.
+    rationale:
+        Direct includes let people remove includes that are no longer needed
+        from their headers without breaking the files that depend on them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // report.cc -- report.h happens to include <vector>.
+        #include "myapp/report.h"
+
+        std::vector<Row> BuildRows();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // report.cc
+        #include "myapp/report.h"
+
+        #include <vector>
+
+        std::vector<Row> BuildRows();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [includes, headers, dependencies]
+    source: https://google.github.io/styleguide/cppguide.html#Include_What_You_Use

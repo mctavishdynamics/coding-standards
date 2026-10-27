@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp24:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.24
+    title: Think of a thread as a global container
+    statement:
+        Treat a thread that is, or might be, detached like a global object.
+        Pass it only pointers to objects with static storage or free-store
+        objects that will outlive it, never to locals.
+    rationale:
+        A detached thread may keep running after the scope that started it
+        has ended, and then use pointers to destroyed objects. Even statics
+        can be raced on while they are destroyed at program exit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void start_logging()
+        {
+            std::string prefix = "app";
+            std::thread t([&prefix] { log_forever(prefix); });
+            t.detach();   // prefix dies when start_logging returns
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void start_logging()
+        {
+            std::thread t([prefix = std::string("app")] { log_forever(prefix); });
+            t.detach();   // the thread owns its own copy
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, threads, lifetime]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-detach

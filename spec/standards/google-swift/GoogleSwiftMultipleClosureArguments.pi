@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftMultipleClosureArguments:
+    standard: @{GoogleSwift}
+    ruleId: trailing-closures-multiple-closures
+    title: Label every closure when a call takes several closures
+    statement:
+        When a call has more than one closure argument, do not use trailing
+        closure syntax; label all of them inside the parentheses.
+    rationale:
+        Treating one closure differently hides that the arguments are
+        parallel.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        loader.load(url, progress: { fraction in
+          bar.progress = fraction
+        }) { result in
+          show(result)
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        loader.load(
+          url,
+          progress: { fraction in
+            bar.progress = fraction
+          },
+          completion: { result in
+            show(result)
+          })
+        \\\
+        ```
+    languages: [swift]
+    tags: [closures, formatting]
+    source: https://google.github.io/swift/#trailing-closures

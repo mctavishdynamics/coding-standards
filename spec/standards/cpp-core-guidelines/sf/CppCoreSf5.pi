@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf5:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.5
+    title: A .cpp file must include the header file(s) that defines its interface
+    statement:
+        Each source file should include its own header so that the compiler
+        sees the declarations alongside the definitions.
+    rationale:
+        The compiler can then catch mismatches such as a wrong return type
+        when the file is compiled, instead of leaving them to the linker.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // parser.cpp (does not include parser.h)
+        long parse_port(const char* text) { return 0; }   // header says int
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // parser.cpp
+        #include "parser.h"
+
+        int parse_port(const char* text) { return 0; }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, consistency]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-consistency

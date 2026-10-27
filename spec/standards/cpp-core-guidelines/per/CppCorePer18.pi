@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCorePer18:
+    standard: @{CppCoreGuidelines}
+    ruleId: Per.18
+    title: Treat space as time
+    statement:
+        Keep the memory footprint of hot data small, since smaller data is
+        faster data.
+    rationale:
+        Performance is usually dominated by memory access, so every extra
+        byte that must be fetched costs time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Pixel {
+            double r, g, b, a;   // 32 bytes per pixel
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Pixel {
+            std::uint8_t r, g, b, a;   // 4 bytes per pixel
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [performance, memory]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rper-space

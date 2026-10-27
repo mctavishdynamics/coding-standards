@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./Solid import Solid
+
+export coding-rule SolidSrp:
+    standard: @{Solid}
+    ruleId: SRP
+    title: Give each class only one reason to change
+    statement:
+        Design a class so that there is never more than one reason for it to
+        change. A responsibility is a reason for change, so separate code
+        that changes for different reasons, such as connection handling and
+        data transfer, into different classes or at least different
+        interfaces.
+    rationale:
+        Responsibilities placed in one class become coupled, so a change
+        made for one can break the others and the design grows fragile in
+        unexpected ways.
+    exceptions:
+        Martin notes that an axis of change matters only if changes along it
+        actually occur. When hardware or platform details force
+        responsibilities into one implementation class, separating their
+        interfaces still keeps clients decoupled.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Invoice {
+            Money total() { /* pricing rules */ }
+            String toHtml() { /* page layout */ }
+            void save(Connection db) { /* SQL */ }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Invoice {
+            Money total() { /* pricing rules */ }
+        }
+
+        class InvoiceHtmlView {
+            String render(Invoice invoice) { /* page layout */ }
+        }
+
+        class InvoiceRepository {
+            void save(Invoice invoice) { /* SQL */ }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design, cohesion, classes]
+    source: https://web.archive.org/web/20110104023258/http://www.objectmentor.com/resources/articles/srp.pdf

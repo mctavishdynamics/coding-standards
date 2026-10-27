@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppImplementationComments:
+    standard: @{GoogleCpp}
+    ruleId: Implementation_Comments
+    title: Comment tricky code and clarify unclear arguments
+    statement:
+        Comment tricky, non-obvious or important parts of an implementation
+        before the code. For unclear function arguments, prefer named
+        constants, enums instead of bools, option structs or named
+        variables, and use call-site comments as a last resort. Do not state
+        the obvious; explain why, or make the code self-describing.
+    rationale:
+        Comments should add what the code cannot say for itself. Restating
+        code is noise, while a missing reason leaves readers guessing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Find the element in the vector.
+        auto it = std::find(v.begin(), v.end(), element);
+        ProductOptions options = CalculateProduct(values, 7, false, nullptr);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Process elements only once, so skip ones already seen.
+        if (!seen.contains(element)) Process(element);
+
+        ProductOptions options;
+        options.set_precision_decimals(7);
+        options.set_use_cache(ProductOptions::kDontUseCache);
+        const DecimalNumber product = CalculateProduct(values, options);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, readability]
+    source: https://google.github.io/styleguide/cppguide.html#Implementation_Comments

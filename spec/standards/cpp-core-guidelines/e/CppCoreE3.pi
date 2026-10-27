@@ -1,0 +1,45 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE3:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.3
+    title: Use exceptions for error handling only
+    statement:
+        Do not use exceptions for normal control flow, such as reporting
+        that a search found its value or that a loop has ended.
+    rationale:
+        Keeping exceptions for errors separates error handling from ordinary
+        code, and implementations are optimized on the assumption that
+        exceptions are rare.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::size_t position_of(const std::vector<int>& v, int target)
+        {
+            try {
+                for (std::size_t i = 0; i < v.size(); ++i)
+                    if (v[i] == target) throw i;
+            } catch (std::size_t found) {
+                return found;
+            }
+            return v.size();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::size_t position_of(const std::vector<int>& v, int target)
+        {
+            auto it = std::find(v.begin(), v.end(), target);
+            return static_cast<std::size_t>(it - v.begin());
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, exceptions, control-flow]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-errors

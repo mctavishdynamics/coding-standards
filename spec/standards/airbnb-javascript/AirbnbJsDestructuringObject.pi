@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsDestructuringObject:
+    standard: @{AirbnbJavaScript}
+    ruleId: 5.1
+    title: Destructure objects when using several properties
+    statement:
+        When you read and use several properties of an object, take them out
+        with object destructuring. Enforced by the ESLint rule
+        prefer-destructuring.
+    rationale:
+        Destructuring avoids repeated property access and temporary
+        variables, and it states in one place which parts of the object the
+        code uses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function formatName(person) {
+          const first = person.first;
+          const last = person.last;
+          return `${first} ${last}`;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function formatName({ first, last }) {
+          return `${first} ${last}`;
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [destructuring, objects, es6]
+    source: https://github.com/airbnb/javascript#destructuring--object

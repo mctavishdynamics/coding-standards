@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSer12J:
+    standard: @{CertJava}
+    ruleId: SER12-J
+    title: Prevent deserialization of untrusted data
+    statement:
+        Before deserializing untrusted data, restrict which classes may be
+        created, for example with an allow list in resolveClass() or an
+        ObjectInputFilter.
+    rationale:
+        Deserialization can create any class on the classpath, and some
+        classes run code when created, which can lead to remote code
+        execution. CERT's risk assessment gives likelihood likely,
+        detectable no, repairable no, priority P9 and level L2.
+    exceptions:
+        Data from a trusted source need not be filtered if the code
+        documents that it relies on that source being trusted.
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+        Order order = (Order) in.readObject();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+        in.setObjectInputFilter(ObjectInputFilter.Config.createFilter(
+                "com.example.Order;com.example.Line;!*"));
+        Order order = (Order) in.readObject();
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, untrusted-input, remote-code-execution]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/serialization-ser/ser12-j/

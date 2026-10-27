@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR33:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.33
+    title:
+        Take a unique_ptr reference to express that a function reseats the
+        object
+    statement:
+        When a function replaces the object a caller's unique_ptr owns, take
+        the parameter as a non-const reference to unique_ptr. Do not use
+        that form for anything else.
+    rationale:
+        The signature documents and enforces that the caller's pointer may
+        be changed to point at a different object.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void reload(std::unique_ptr<Shader>& shader) {
+            shader->bind();            // only uses it: should take Shader&
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void reload(std::unique_ptr<Shader>& shader) {
+            shader = std::make_unique<Shader>(read_source());
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-reseat

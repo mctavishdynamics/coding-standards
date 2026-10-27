@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoDocumentationConventionsCleanup:
+    standard: @{GoogleGo}
+    ruleId: best-practices/documentation-conventions-cleanup
+    title: Document cleanup the caller must perform
+    statement:
+        State any cleanup the caller is responsible for, and explain how to
+        do it when that is not obvious.
+    rationale:
+        Undocumented cleanup leads to resource leaks and misuse.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Open opens the archive.
+        func Open(path string) (*Archive, error)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Open opens the archive at path. Callers must call Close on the
+        // returned Archive when done to release the file handle.
+        func Open(path string) (*Archive, error)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, documentation, resources]
+    source: https://google.github.io/styleguide/go/best-practices#documentation-conventions-cleanup

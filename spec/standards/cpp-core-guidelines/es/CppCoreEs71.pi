@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs71:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.71
+    title:
+        Prefer a range-for statement to a for statement when there is a
+        choice
+    statement:
+        Loop over a whole range with a range-for statement instead of
+        managing an index or iterator by hand.
+    rationale:
+        It is more readable, rules out off-by-one and index errors, and can
+        be more efficient.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (std::size_t i = 0; i < users.size(); ++i)
+            greet(users[i]);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (const auto& user : users)
+            greet(user);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [loops, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-for-range

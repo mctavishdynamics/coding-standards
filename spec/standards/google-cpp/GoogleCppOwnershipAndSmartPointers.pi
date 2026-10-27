@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppOwnershipAndSmartPointers:
+    standard: @{GoogleCpp}
+    ruleId: Ownership_and_Smart_Pointers
+    title:
+        Keep single owners and transfer ownership with smart pointers
+    statement:
+        Give dynamically allocated objects a single, fixed owner, and
+        use std::unique_ptr to make ownership transfer explicit. Avoid
+        shared ownership without a very good reason, such as sharing an
+        immutable object to avoid costly copies, and then
+        use std::shared_ptr. Never use std::auto_ptr.
+    rationale:
+        Clear ownership removes doubt about who deletes an object and when.
+        Shared ownership makes lifetimes hard to predict.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Widget* MakeWidget();  // Caller must remember to delete.
+
+        void Use() {
+          Widget* w = MakeWidget();
+          w->Draw();
+          delete w;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::unique_ptr<Widget> MakeWidget();
+
+        void Use() {
+          std::unique_ptr<Widget> w = MakeWidget();
+          w->Draw();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, ownership, smart-pointers]
+    source: https://google.github.io/styleguide/cppguide.html#Ownership_and_Smart_Pointers

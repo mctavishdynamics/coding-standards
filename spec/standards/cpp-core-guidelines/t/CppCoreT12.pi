@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT12:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.12
+    title: Prefer concept names over auto for local variables
+    statement:
+        When declaring a deduced local variable, name the concept it must
+        satisfy rather than writing bare auto.
+    rationale:
+        Bare auto is the weakest possible concept. A concept name tells the
+        reader more about the value and is checked by the compiler.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto& first = names.front();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::copyable auto& first = names.front();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-auto

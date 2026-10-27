@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaNoModuleImports:
+    standard: @{GoogleJava}
+    ruleId: 3.3.1.1
+    title: Do not use module imports
+    statement:
+        Do not write module import declarations; import types individually
+        instead.
+    rationale:
+        A module import pulls in every exported package of the module, which
+        hides where names come from just as a wildcard does.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        import module java.sql;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        import java.sql.Connection;
+        import java.sql.PreparedStatement;
+        \\\
+        ```
+    languages: [java]
+    tags: [imports, modules]
+    source: https://google.github.io/styleguide/javaguide.html#s3.3.1.1-module-imports

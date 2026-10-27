@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactAlwaysUseJsx:
+    standard: @{AirbnbReact}
+    ruleId: basic-rules-2
+    title: Always use JSX syntax
+    statement:
+        Write React element trees with JSX rather than building them by
+        other means.
+    rationale:
+        JSX reads like the markup it produces, so the shape of the rendered
+        output is visible at a glance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        function Badge(props) {
+          return React.createElement('span', { className: 'badge' }, props.label);
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        function Badge(props) {
+          return <span className="badge">{props.label}</span>;
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [jsx, syntax]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#basic-rules

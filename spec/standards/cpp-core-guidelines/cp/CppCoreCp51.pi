@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp51:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.51
+    title: Do not use capturing lambdas that are coroutines
+    statement:
+        A lambda that is a coroutine must not capture anything. Pass the
+        values it needs as by-value parameters, or write the coroutine as an
+        ordinary function.
+    rationale:
+        Captures live in the closure object, which may be destroyed while
+        the coroutine is suspended. After the first suspension the coroutine
+        then reads freed memory, even when the captures are copies or shared
+        pointers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto upload = [client, path]() -> Task<void> {
+            co_await client->connect();
+            co_await client->send_file(path);   // closure may already be gone
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto upload = [](std::shared_ptr<Client> client, std::string path) -> Task<void> {
+            co_await client->connect();
+            co_await client->send_file(path);   // parameters live in the coroutine frame
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, coroutines, lifetime]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rcoro-capture

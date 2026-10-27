@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ArgumentKeywordClash:
+    standard: @{Pep8}
+    ruleId: function-and-method-arguments-keyword-clash
+    title: Append an underscore to arguments that clash with keywords
+    statement:
+        When an argument name clashes with a reserved keyword, add a single
+        trailing underscore rather than abbreviating or misspelling it. A
+        synonym that avoids the clash is better still.
+    rationale:
+        A trailing underscore keeps the intended word recognisable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def render(template, klass, lmbda):
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def render(template, class_, lambda_):
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, functions]
+    source: https://peps.python.org/pep-0008/#function-and-method-arguments

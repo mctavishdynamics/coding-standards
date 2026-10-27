@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNamingNamedImports:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.4.1.3.3
+    title: Keep the original name for named imports
+    statement:
+        Keep the exported name when using a named import and avoid aliasing
+        it. Resolve collisions with a namespace import or by renaming the
+        exports; if an alias is still needed, build it from parts of the
+        imported file's name or path.
+    rationale:
+        One name per symbol across the codebase makes code searchable, and a
+        path-based alias still points the reader to the source.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        import {Client as C} from './http/client.js';
+        import {Client as Other} from './grpc/client.js';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        import {Client as HttpClient} from './http/client.js';
+        import {Client as GrpcClient} from './grpc/client.js';
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, imports, naming]
+    source: https://google.github.io/styleguide/jsguide.html#34133-naming-named-imports

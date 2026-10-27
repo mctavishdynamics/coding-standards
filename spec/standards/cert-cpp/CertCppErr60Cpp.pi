@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppErr60Cpp:
+    standard: @{CertCpp}
+    ruleId: ERR60-CPP
+    title: Exception objects must be nothrow copy constructible
+    statement:
+        Throw only exception objects whose copy constructor cannot throw.
+        Store strings in a way that copying cannot fail, for example by
+        deriving from std::runtime_error.
+    rationale:
+        If copying the exception object throws while it is being thrown or
+        caught, std::terminate is called. CERT rates likelihood probable,
+        detectable yes, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        class ParseError : public std::exception {
+        public:
+            explicit ParseError(std::string msg) : msg_(std::move(msg)) {}
+            const char* what() const noexcept override { return msg_.c_str(); }
+        private:
+            std::string msg_;  // copying may throw bad_alloc
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class ParseError : public std::runtime_error {
+        public:
+            explicit ParseError(const std::string& msg)
+                : std::runtime_error(msg) {}
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [exceptions, copying]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/exceptions-and-error-handling-err/err60-cpp

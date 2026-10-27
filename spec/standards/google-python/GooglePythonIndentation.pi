@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonIndentation:
+    standard: @{GooglePython}
+    ruleId: 3.4
+    title: Indent with four spaces and never tabs
+    statement:
+        Indent blocks with four spaces and never use tabs. Align
+        continuation lines with the opening delimiter, or use a four-space
+        hanging indent with nothing after the opening bracket. A closing
+        bracket on its own line is indented like the line that opened it.
+    rationale:
+        A consistent indent makes the structure of code visible and avoids
+        tab width differences between editors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        result = compute_score(player_one, player_two,
+            round_number, bonus)
+        settings = load_settings(
+          path, strict=True)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        result = compute_score(player_one, player_two,
+                               round_number, bonus)
+        settings = load_settings(
+            path, strict=True)
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, indentation]
+    source: https://google.github.io/styleguide/pyguide.html#s3.4-indentation

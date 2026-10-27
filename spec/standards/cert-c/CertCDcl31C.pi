@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl31C:
+    standard: @{CertC}
+    ruleId: DCL31-C
+    title: Declare identifiers before using them
+    statement:
+        Give every variable and function an explicit type and declare every
+        function before calling it. Do not rely on implicit int or implicit
+        function declarations.
+    rationale:
+        C23 forbids implicit typing and implicit declarations. Where a
+        compiler still accepts them, it guesses the type, which can silently
+        truncate return values such as pointers. CERT rates likelihood
+        unlikely, detectable yes, repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int main(void) {
+            char *buf = make_buffer(64);
+            return buf == 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *make_buffer(int size);
+
+        int main(void) {
+            char *buf = make_buffer(64);
+            return buf == 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, functions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/declarations-and-initialization-dcl/dcl31-c

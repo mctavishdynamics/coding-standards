@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSer01J:
+    standard: @{CertJava}
+    ruleId: SER01-J
+    title: Do not deviate from the proper signatures of serialization methods
+    statement:
+        Declare writeObject, readObject and readObjectNoData as private with
+        the exact signatures the serialization specification gives. Do not
+        declare readResolve or writeReplace static, and make them protected
+        rather than private in classes that can be extended.
+    rationale:
+        A method with a different signature is silently ignored by
+        serialization. A public one can be called by untrusted code to
+        overwrite the object's state. CERT's risk assessment gives
+        likelihood likely, detectable yes, repairable no, priority P18 and
+        level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        public void readObject(ObjectInputStream in)
+                throws IOException, ClassNotFoundException {
+            in.defaultReadObject();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private void readObject(ObjectInputStream in)
+                throws IOException, ClassNotFoundException {
+            in.defaultReadObject();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, api-design]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/serialization-ser/ser01-j/

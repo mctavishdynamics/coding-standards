@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssTypeAttributes:
+    standard: @{GoogleHtmlCss}
+    ruleId: type-attributes
+    title: Omit type attributes for style sheets and scripts
+    statement:
+        Do not add type attributes to style sheet links and scripts, since
+        HTML5 defaults to CSS and JavaScript.
+    rationale:
+        The attributes are redundant, and leaving them out is safe even in
+        older browsers.
+    exceptions:
+        Keep type when not using CSS or JavaScript, and use type="module"
+        when loading a JavaScript module.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <link rel="stylesheet" href="/css/site.css" type="text/css">
+        <script src="/js/site.js" type="text/javascript"></script>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <link rel="stylesheet" href="/css/site.css">
+        <script src="/js/site.js"></script>
+        <script src="/js/app.js" type="module"></script>
+        \\\
+        ```
+    languages: [html]
+    tags: [markup, attributes]
+    source: https://google.github.io/styleguide/htmlcssguide.html#type-attributes

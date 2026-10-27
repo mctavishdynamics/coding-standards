@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoNamingDoublesSimple:
+    standard: @{GoogleGo}
+    ruleId: best-practices/naming-doubles-simple
+    title: Use a short name for a single test double
+    statement:
+        When the test package doubles only one type, name the double simply,
+        for example Stub, rather than repeating the type or package. With
+        Bazel, mark the library testonly.
+    rationale:
+        The package name and its domain types already imply what
+        creditcardtest.Stub stands in for.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package creditcardtest
+
+        type StubCreditCardService struct{ /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package creditcardtest
+
+        // Stub stubs creditcard.Service and returns no errors.
+        type Stub struct{}
+
+        func (Stub) Charge(*creditcard.Card, money.Money) error { return nil }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, naming, testing, test-doubles]
+    source: https://google.github.io/styleguide/go/best-practices#naming-doubles-simple

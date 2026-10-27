@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ExceptionHierarchyDesign:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-exception-hierarchy
+    title: Design exception hierarchies around what callers need to catch
+    statement:
+        Build exception hierarchies on the distinctions catching code will
+        need, not on where the exceptions are raised, so handlers can tell
+        what went wrong. Add the suffix Error to error classes; non-error
+        signalling exceptions need no suffix.
+    rationale:
+        Callers react to kinds of failure, and a hierarchy that mirrors them
+        lets each handler catch exactly what it can deal with.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class ParserModuleError(Exception):
+            pass
+
+        class ValidatorModuleError(Exception):
+            pass
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class ConfigError(Exception):
+            pass
+
+        class MissingSettingError(ConfigError):
+            pass
+
+        class InvalidValueError(ConfigError):
+            pass
+        \\\
+        ```
+    languages: [python]
+    tags: [exceptions, error-handling, api-design]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

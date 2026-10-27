@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR10:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.10
+    title: Avoid malloc and free
+    statement:
+        Do not use malloc() and free() to create C++ objects. Use
+        containers, smart pointers or, if needed, new and delete inside a
+        resource handle.
+    rationale:
+        malloc() and free() do not run constructors and destructors, and
+        memory from them must not be mixed with new and delete.
+    exceptions:
+        Where exceptions are not acceptable, such as some hard-real-time
+        code, use the nothrow forms of new rather than falling back to
+        malloc().
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto* order = static_cast<Order*>(std::malloc(sizeof(Order)));
+        order->id = 42;      // Order's constructor never ran
+        std::free(order);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto order = std::make_unique<Order>();
+        order->id = 42;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, allocation]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-mallocfree

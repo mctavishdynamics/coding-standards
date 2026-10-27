@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsFunctionsIife:
+    standard: @{AirbnbJavaScript}
+    ruleId: 7.2
+    title: Wrap immediately invoked function expressions in parentheses
+    statement:
+        Put parentheses around an immediately invoked function expression,
+        including its call. Enforced by the ESLint rule wrap-iife.
+    rationale:
+        The parentheses show that the function and its call form one unit.
+        With modules, an IIFE is rarely needed at all.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const config = function () {
+          return loadConfig();
+        }();
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const config = (function () {
+          return loadConfig();
+        }());
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, formatting]
+    source: https://github.com/airbnb/javascript#functions--iife

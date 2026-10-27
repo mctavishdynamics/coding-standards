@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp32C:
+    standard: @{CertC}
+    ruleId: FLP32-C
+    title: Prevent or detect domain and range errors in math functions
+    statement:
+        Validate arguments to math library functions so they are inside the
+        function's domain and cannot cause a pole error, and detect range
+        errors through errno or the floating-point exception flags.
+    rationale:
+        On a domain, pole or range error the function still returns a value,
+        but it is not the right result, and the program carries on with bad
+        data. CERT rates likelihood probable, detectable yes, repairable
+        yes, priority P12, level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        #include <math.h>
+
+        double side(double area) {
+            return sqrt(area);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <math.h>
+
+        int side(double area, double *out) {
+            if (isless(area, 0.0)) {
+                return -1;
+            }
+            *out = sqrt(area);
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [floating-point, math, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/floating-point-flp/flp32-c

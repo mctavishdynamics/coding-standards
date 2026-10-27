@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptLegacyGoogScope:
+    standard: @{GoogleJavaScript}
+    ruleId: 9.4.4.2
+    title: Use goog.scope once per file, unindented, for stable aliases
+    statement:
+        Do not use the deprecated goog.scope in new files. Where it remains,
+        use one call per file in global scope after the provides, requires
+        and top comments, preceded by one blank line and closed on the last
+        line with a goog.scope comment two spaces after the semicolon. Do
+        not indent its contents, and alias only names never reassigned,
+        using the last property of the global as the alias name.
+    rationale:
+        A single unindented scope keeps legacy files readable, and stable,
+        consistently named aliases cannot drift from their targets.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        goog.scope(function() {
+          var Btn = goog.ui.Button;
+          Btn = function() {};
+        });
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        goog.scope(function() {
+        var Button = goog.ui.Button;
+        var dom = goog.dom;
+
+        app.Panel.prototype.addButton = function() {
+          this.button = new Button(dom.getElement('ok'));
+        };
+        });  // goog.scope
+        \\\
+        ```
+    languages: [javascript]
+    tags: [legacy, closure, aliases]
+    source: https://google.github.io/styleguide/jsguide.html#9442-aliasing-with-googscope

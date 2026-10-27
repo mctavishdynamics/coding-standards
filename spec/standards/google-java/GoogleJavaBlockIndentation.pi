@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaBlockIndentation:
+    standard: @{GoogleJava}
+    ruleId: 4.2
+    title: Indent blocks by two spaces
+    statement:
+        Each new block or block-like construct indents its contents by two
+        more spaces, and the indent returns to the previous level when the
+        block ends. Comments follow the same indent as the code around them.
+    rationale:
+        A consistent, small indent shows nesting clearly without pushing
+        code toward the column limit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void reset() {
+            if (dirty) {
+                // drop pending changes
+                changes.clear();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void reset() {
+          if (dirty) {
+            // drop pending changes
+            changes.clear();
+          }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, indentation]
+    source: https://google.github.io/styleguide/javaguide.html#s4.2-block-indentation

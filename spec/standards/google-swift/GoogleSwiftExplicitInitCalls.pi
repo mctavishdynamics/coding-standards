@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftExplicitInitCalls:
+    standard: @{GoogleSwift}
+    ruleId: initializers-1-explicit-init
+    title: Omit .init when calling a type by name
+    statement:
+        Call an initializer through the type name without .init. Write .init
+        explicitly only when the receiver is a metatype variable.
+    rationale:
+        The shorter form is idiomatic; referring to Type.init as a closure
+        is still fine.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let formatter = DateFormatter.init()
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let formatter = DateFormatter()
+        let view = viewType.init(frame: .zero)
+        let labels = names.map(Label.init)
+        \\\
+        ```
+    languages: [swift]
+    tags: [initialization, syntax]
+    source: https://google.github.io/swift/#initializers-1

@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs23:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.23
+    title: Prefer the \ {} \ initializer syntax
+    statement:
+        Initialize objects with braces by default. Use the equals form only
+        when no narrowing is possible, and for built-in arithmetic types
+        only with auto. Avoid parenthesis initialization, which can be
+        parsed ambiguously.
+    rationale:
+        Brace initialization has simpler and more general rules than the
+        other forms, forbids narrowing conversions and avoids the most
+        vexing parse.
+    exceptions:
+        For containers, braces conventionally list elements while
+        parentheses give a size, so use parentheses when you mean a count.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int ratio(2.7);        // silently truncated to 2
+        Timer t();             // declares a function, not a Timer
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int ratio{2};          // int ratio{2.7} would not compile
+        Timer t{};
+        \\\
+        ```
+    languages: [cpp]
+    tags: [initialization, conversions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-list

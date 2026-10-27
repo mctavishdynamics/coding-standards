@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaSwitchExpressions:
+    standard: @{GoogleJava}
+    ruleId: 4.8.4.4
+    title: Write switch expressions in the new arrow style
+    statement:
+        Use new-style switches, with arrows after the labels, for every
+        switch expression.
+    rationale:
+        Arrow rules cannot fall through and need no yield statements, so the
+        expression reads as a plain mapping.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String label = switch (size) {
+          case SMALL:
+            yield "S";
+          case LARGE:
+            yield "L";
+          default:
+            yield "M";
+        };
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String label = switch (size) {
+          case SMALL -> "S";
+          case LARGE -> "L";
+          default -> "M";
+        };
+        \\\
+        ```
+    languages: [java]
+    tags: [switch]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.4.4-switch-expressions

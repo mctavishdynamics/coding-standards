@@ -1,0 +1,45 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC182:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.182
+    title: Use anonymous unions to implement tagged unions
+    statement:
+        When writing a tagged union by hand, put an anonymous union inside a
+        class next to the tag and keep both private behind accessors.
+    rationale:
+        A well-designed tagged union is type safe, and an anonymous union
+        makes the tag and union pair simpler to define.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        union Payload { int code; std::string* text; };
+
+        struct Message {
+            enum Kind { code, text } kind;
+            Payload payload;     // separate, named union; users touch it directly
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Message {
+        public:
+            int code() const { if (kind_ != Kind::code) throw BadAccess(); return code_; }
+        private:
+            enum class Kind { code, text } kind_;
+            union {
+                int code_;
+                std::string* text_;
+            };
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [unions, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ru-anonymous

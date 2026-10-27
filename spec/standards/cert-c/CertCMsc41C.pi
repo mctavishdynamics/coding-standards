@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc41C:
+    standard: @{CertC}
+    ruleId: MSC41-C
+    title: Never hard code sensitive information
+    statement:
+        Do not put passwords, keys or other secrets in source code or string
+        literals. Load them at run time from a protected store, such as a
+        permission-restricted file or a secrets service.
+    rationale:
+        Anyone with the binary can extract embedded secrets, and changing
+        one means shipping a new build. CERT rates likelihood probable,
+        detectable no, repairable no, priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        int connect_db(struct db *db) {
+            return db_login(db, "admin", "S3cr3t!2024");
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int connect_db(struct db *db) {
+            char password[128];
+            if (read_secret("/etc/app/db_password", password, sizeof password) != 0) {
+                return -1;
+            }
+            int rc = db_login(db, "admin", password);
+            memset_explicit(password, 0, sizeof password);
+            return rc;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [security, secrets]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/miscellaneous-msc/msc41-c

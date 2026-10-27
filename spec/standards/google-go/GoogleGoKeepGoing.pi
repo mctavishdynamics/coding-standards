@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoKeepGoing:
+    standard: @{GoogleGo}
+    ruleId: decisions/keep-going
+    title: Keep tests running after a failure
+    statement:
+        Report mismatches with t.Error so one run shows every failed check.
+        Use t.Fatal only when later checks would be meaningless or
+        misleading, such as after an unexpected error.
+    rationale:
+        Developers should not have to rerun a test after each fix to find
+        the next failure.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if got.Width != 10 {
+            t.Fatalf("Width = %d, want 10", got.Width)
+        }
+        if got.Height != 20 {
+            t.Fatalf("Height = %d, want 20", got.Height)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        got, err := Resize(img, 10, 20)
+        if err != nil {
+            t.Fatalf("Resize() failed: %v", err)
+        }
+        if got.Width != 10 {
+            t.Errorf("Resize().Width = %d, want 10", got.Width)
+        }
+        if got.Height != 20 {
+            t.Errorf("Resize().Height = %d, want 20", got.Height)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, test-failures]
+    source: https://google.github.io/styleguide/go/decisions#keep-going

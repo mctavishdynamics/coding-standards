@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs70:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.70
+    title: Prefer a switch statement to an if statement when there is a choice
+    statement:
+        When selecting among constant values of one expression, use a switch
+        rather than a chain of if and else if.
+    rationale:
+        A switch reads more clearly, is usually better optimized and lets
+        the compiler check that every enumerator is handled.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (state == State::idle) start();
+        else if (state == State::running) poll();
+        else if (state == State::stopped) cleanup();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        switch (state) {
+        case State::idle:    start();   break;
+        case State::running: poll();    break;
+        case State::stopped: cleanup(); break;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [control-flow, switch]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-switch-if

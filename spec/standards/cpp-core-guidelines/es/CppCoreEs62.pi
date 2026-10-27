@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs62:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.62
+    title: Don't compare pointers into different arrays
+    statement:
+        Only compare or subtract pointers that point into the same array or
+        object.
+    rationale:
+        Ordering comparisons between pointers into unrelated arrays have no
+        defined result.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int a[10];
+        int b[10];
+        bool before = &a[3] < &b[3];
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int a[10];
+        bool before = &a[3] < &a[7];
+        \\\
+        ```
+    languages: [cpp]
+    tags: [pointers, undefined-behavior]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-arr2

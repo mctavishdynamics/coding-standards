@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftNamingConventionsAreNotAccessControl:
+    standard: @{GoogleSwift}
+    ruleId: naming-conventions-are-not-access-control
+    title: Hide declarations with access control, not naming
+    statement:
+        Use internal, fileprivate or private to hide information rather than
+        a naming convention such as a leading underscore.
+    rationale:
+        The compiler enforces access levels, while names are only a hint.
+    exceptions:
+        A naming convention may mark a declaration that must be more visible
+        than intended to work around language limits, such as a method
+        public only for use across modules of one library.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        public final class Cache {
+          public func _evictAll() {}
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        public final class Cache {
+          private func evictAll() {}
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, access-control]
+    source: https://google.github.io/swift/#naming-conventions-are-not-access-control

@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptTemplateLiterals:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.6.2
+    title: Use template literals instead of complex concatenation
+    statement:
+        Prefer template literals to complex string concatenation, especially
+        with several literals. A multi-line template literal need not follow
+        the enclosing indentation.
+    rationale:
+        Template literals show the final string's shape directly and are
+        easier to edit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const line = 'Order ' + id + ' for ' + name + ' costs ' + total + ' EUR';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const line = `Order ${id} for ${name} costs ${total} EUR`;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [strings, literals]
+    source: https://google.github.io/styleguide/jsguide.html#562-template-literals

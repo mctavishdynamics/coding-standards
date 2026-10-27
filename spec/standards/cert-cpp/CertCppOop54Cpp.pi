@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppOop54Cpp:
+    standard: @{CertCpp}
+    ruleId: OOP54-CPP
+    title: Gracefully handle self-copy assignment
+    statement:
+        Make user-provided copy assignment operators handle assignment of an
+        object to itself correctly, for example with the copy-and-swap idiom
+        or by copying before releasing.
+    rationale:
+        A naive operator frees its own resources before copying from the
+        source, so self-assignment reads freed memory. CERT rates likelihood
+        probable, detectable yes, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        Image& Image::operator=(const Image& other) {
+            delete pixels_;
+            pixels_ = new Pixels(*other.pixels_);  // freed if this == &other
+            return *this;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Image& Image::operator=(const Image& other) {
+            Image copy(other);
+            std::swap(pixels_, copy.pixels_);
+            return *this;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, copy-assignment]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/object-oriented-programming-oop/oop54-cpp

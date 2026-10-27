@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactNoCreateElement:
+    standard: @{AirbnbReact}
+    ruleId: basic-rules-3
+    title: Do not call React.createElement directly
+    statement:
+        Avoid React.createElement in component code. Use it only when the
+        app is started from a file that is not written in JSX.
+    rationale:
+        JSX compiles to the same calls, and hand-written createElement calls
+        are harder to read and review.
+    exceptions:
+        A non-JSX entry file that initialises the app may call
+        React.createElement.
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        function Greeting({ name }) {
+          return React.createElement('h1', null, 'Hello, ', name);
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        function Greeting({ name }) {
+          return <h1>Hello, {name}</h1>;
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [jsx, syntax]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#basic-rules

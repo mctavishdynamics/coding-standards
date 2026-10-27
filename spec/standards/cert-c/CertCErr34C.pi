@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCErr34C:
+    standard: @{CertC}
+    ruleId: ERR34-C
+    title: Detect errors when converting a string to a number
+    statement:
+        Convert strings to numbers with the strto family, such as strtol and
+        strtod, and check for out-of-range results, an empty conversion and
+        trailing characters. Do not use atoi, atol, atof or sscanf for this.
+    rationale:
+        The ato functions and sscanf cannot report range errors or bad
+        input, so invalid text silently becomes a wrong value. CERT rates
+        likelihood unlikely, detectable yes, repairable yes, priority P6,
+        level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int parse_port(const char *s) {
+            return atoi(s);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int parse_port(const char *s, int *port) {
+            char *end;
+            errno = 0;
+            long v = strtol(s, &end, 10);
+            if (end == s || *end != '\0' || errno == ERANGE || v < 1 || v > 65535) {
+                return -1;
+            }
+            *port = (int)v;
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, input-validation, conversions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/error-handling-err/err34-c

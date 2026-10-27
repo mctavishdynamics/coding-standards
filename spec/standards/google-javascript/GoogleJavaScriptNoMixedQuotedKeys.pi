@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoMixedQuotedKeys:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.3.3
+    title: Do not mix quoted and unquoted object keys
+    statement:
+        An object literal is either struct-style with unquoted keys or dict-
+        style with quoted or computed keys; do not mix them. Do not pass
+        struct property names as strings, for example to hasOwnProperty.
+    rationale:
+        The compiler may rename unquoted properties but never string keys,
+        so mixing them breaks compiled code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const size = {width: 10, 'height': 20};
+        if (size.hasOwnProperty('width')) {}
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const size = {width: 10, height: 20};
+        if (size.width != null) {}
+        const headers = {'Content-Type': 'text/plain', 'Accept': '*/*'};
+        \\\
+        ```
+    languages: [javascript]
+    tags: [objects, closure, naming]
+    source: https://google.github.io/styleguide/jsguide.html#533-do-not-mix-quoted-and-unquoted-keys

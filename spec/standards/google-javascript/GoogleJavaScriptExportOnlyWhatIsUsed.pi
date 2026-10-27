@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptExportOnlyWhatIsUsed:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.4.2
+    title: Export only symbols meant for use outside the module
+    statement:
+        Export a symbol only when other modules are meant to use it. Do not
+        mark module-local symbols as private; they are private already.
+    rationale:
+        A small export surface keeps the module's API deliberate, and
+        private annotations on locals add noise without effect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @private */
+        function normalize(path) {
+          return path.replace(/\/+/g, '/');
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function normalize(path) {
+          return path.replace(/\/+/g, '/');
+        }
+
+        export function join(...parts) {
+          return normalize(parts.join('/'));
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, exports, visibility]
+    source: https://google.github.io/styleguide/jsguide.html#342-exports

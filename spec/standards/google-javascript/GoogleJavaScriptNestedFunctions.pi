@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNestedFunctions:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.5.2
+    title: Assign named nested functions to a local const
+    statement:
+        Functions may contain nested function definitions. When a nested
+        function deserves a name, assign it to a local const.
+    rationale:
+        A const binding cannot be reassigned and follows the same scoping as
+        other locals.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function render(items) {
+          var format = function(item) {
+            return item.label;
+          };
+          return items.map(format);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function render(items) {
+          const format = (item) => item.label;
+          return items.map(format);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, closures]
+    source: https://google.github.io/styleguide/jsguide.html#552-nested-functions-and-closures

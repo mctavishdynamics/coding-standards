@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF18:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.18
+    title: For will-move-from parameters, pass by X&& and std::move the parameter
+    statement:
+        When a function takes over the contents of an argument, take it by
+        rvalue reference and move from it in the body.
+    rationale:
+        It is efficient, and because an X&& does not bind to lvalues the
+        caller must write std::move explicitly, which prevents accidental
+        moves.
+    exceptions:
+        Cheap-to-move, move-only owners such as unique_ptr may be passed by
+        value instead. A shared_ptr that will be moved from should be passed
+        by value, as in R.34.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Queue::push(std::vector<Job>& jobs) {
+            pending_ = std::move(jobs);   // the caller's vector is emptied silently
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Queue::push(std::vector<Job>&& jobs) {
+            pending_ = std::move(jobs);
+        }
+
+        queue.push(std::move(batch));
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, parameters, move-semantics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-consume

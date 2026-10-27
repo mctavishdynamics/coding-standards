@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoFlags:
+    standard: @{GoogleGo}
+    ruleId: decisions/flags
+    title: Define flags only in main with snake case names
+    statement:
+        Define flags only in package main, name the flag in snake case and
+        its variable in mixedCaps, and group global flag variables in their
+        own var block after the imports. Configure libraries through Go
+        APIs, not by having them register flags.
+    rationale:
+        Libraries that export flags as an import side effect hide
+        configuration and couple code to the command line.
+    exceptions:
+        In the extremely rare case a library must define a flag, its name
+        must clearly identify the package it configures.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package cache
+
+        var MaxEntries = flag.Int("maxEntries", 1000, "cache size")
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package main
+
+        var (
+            maxEntries = flag.Int("max_entries", 1000, "cache size")
+        )
+
+        func main() {
+            flag.Parse()
+            c := cache.New(cache.Options{MaxEntries: *maxEntries})
+            // ...
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, flags, configuration]
+    source: https://google.github.io/styleguide/go/decisions#flags

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet03J:
+    standard: @{CertJava}
+    ruleId: MET03-J
+    title: Declare methods that perform a security check private or final
+    statement:
+        Declare any method that performs a security check private or final
+        so that subclasses cannot override it.
+    rationale:
+        A malicious subclass can override a nonfinal method and leave out
+        the check. CERT rates likelihood probable, detectable no, repairable
+        no, priority P4, level L3.
+    exceptions:
+        Methods of a final class are exempt, because they cannot be
+        overridden.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        public class Repository {
+            protected void checkAccess(User user) {
+                if (!user.isAdmin()) throw new SecurityException();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class Repository {
+            protected final void checkAccess(User user) {
+                if (!user.isAdmin()) throw new SecurityException();
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [security, inheritance]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met03-j/

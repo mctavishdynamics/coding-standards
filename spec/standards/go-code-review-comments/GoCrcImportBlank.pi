@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcImportBlank:
+    standard: @{GoCodeReviewComments}
+    ruleId: import-blank
+    title: Keep side-effect imports in main packages and tests
+    statement:
+        Import a package only for its side effects, with the blank
+        identifier, only in the main package of a program or in tests that
+        need it.
+    rationale:
+        A blank import in a library forces that side effect on every program
+        that uses the library, whether or not it wants it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Package store is a library used by several binaries.
+        package store
+
+        import (
+            "database/sql"
+
+            _ "github.com/lib/pq"
+        )
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package main
+
+        import (
+            "database/sql"
+
+            _ "github.com/lib/pq"
+
+            "example.com/app/store"
+        )
+        \\\
+        ```
+    languages: [go]
+    tags: [imports, side-effects]
+    source: https://go.dev/wiki/CodeReviewComments#import-blank

@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs3:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.3
+    title: Don't repeat yourself and avoid redundant code
+    statement:
+        Remove duplicated or redundant code, for example by factoring out
+        the shared part or using a standard algorithm instead of a
+        hand-written one.
+    rationale:
+        Duplication hides intent, makes the logic harder to follow and makes
+        maintenance harder. It often comes from copy and paste.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (is_admin) {
+            open_session();
+            show_admin_panel();
+        } else {
+            open_session();
+            show_dashboard();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        open_session();
+        if (is_admin)
+            show_admin_panel();
+        else
+            show_dashboard();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [duplication, maintainability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-dry

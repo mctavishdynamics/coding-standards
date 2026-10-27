@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCConvSpecific:
+    standard: @{RustApiGuidelines}
+    ruleId: C-CONV-SPECIFIC
+    title: Put conversions on the most specific type involved
+    statement:
+        Define a conversion on whichever of the two types adds an invariant
+        or interpretation, as str provides both as_bytes and from_utf8. When
+        in doubt, prefer to_, as_ and into_ methods over from_ constructors.
+    rationale:
+        It is intuitive to find conversions on the richer type, and it
+        avoids filling general types like byte slices with endless
+        conversion methods.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub trait BytesExt {
+            fn to_hostname(&self) -> Result<Hostname, InvalidHostname>;
+        }
+
+        impl BytesExt for [u8] { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl Hostname {
+            pub fn from_bytes(b: &[u8]) -> Result<Hostname, InvalidHostname> { /* ... */ }
+            pub fn as_bytes(&self) -> &[u8] { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [conversions, api-design]
+    source: https://rust-lang.github.io/api-guidelines/predictability.html#c-conv-specific

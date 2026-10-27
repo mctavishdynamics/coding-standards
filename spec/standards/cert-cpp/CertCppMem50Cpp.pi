@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppMem50Cpp:
+    standard: @{CertCpp}
+    ruleId: MEM50-CPP
+    title: Do not access freed memory
+    statement:
+        Do not read, write, dereference or otherwise use a pointer to memory
+        after that memory has been released. Reset owning pointers or use
+        smart pointers so freed memory cannot be reached.
+    rationale:
+        Using a dangling pointer is undefined behavior and a common
+        exploitable vulnerability, because the memory may already hold other
+        data. CERT rates likelihood likely, detectable no, repairable no,
+        priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        void shutdown(Connection* conn) {
+            delete conn;
+            log_closed(conn->id());
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void shutdown(Connection* conn) {
+            int id = conn->id();
+            delete conn;
+            log_closed(id);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, use-after-free, pointers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/memory-management-mem/mem50-cpp

@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre31C:
+    standard: @{CertC}
+    ruleId: PRE31-C
+    title: Avoid side effects in arguments to unsafe macros
+    statement:
+        Do not pass an argument with side effects, such as an increment, an
+        assignment, a volatile access or a function call, to a function-like
+        macro that evaluates its parameter more than once or not at all.
+    rationale:
+        An unsafe macro may repeat or skip the side effect, so a counter
+        advances twice or a call never happens, and the code reads as if it
+        ran once. CERT rates likelihood unlikely, detectable no, repairable
+        yes, priority P2, level L3.
+    exceptions:
+        A call to a function that truly has no side effects may be passed.
+        Use this with great care, because even setting errno counts as a
+        side effect.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #define SQUARE(x) ((x) * (x))
+
+        int next_square(int *counter) {
+            return SQUARE(++*counter);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define SQUARE(x) ((x) * (x))
+
+        int next_square(int *counter) {
+            ++*counter;
+            return SQUARE(*counter);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, macros, side-effects]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/preprocessor-pre/pre31-c

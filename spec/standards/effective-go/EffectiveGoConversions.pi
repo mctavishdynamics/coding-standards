@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoConversions:
+    standard: @{EffectiveGo}
+    ruleId: conversions
+    title: Convert to a related type to reuse its methods
+    statement:
+        When two types share an underlying type, convert between them to use
+        the other type's methods or default formatting instead of
+        reimplementing them.
+    rationale:
+        The conversion creates no new value and lets existing code, such as
+        sort.IntSlice or Sprint for slices, do the work.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Scores []int
+
+        func (s Scores) String() string {
+            out := "["
+            for i, v := range s {
+                if i > 0 {
+                    out += " "
+                }
+                out += strconv.Itoa(v)
+            }
+            return out + "]"
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Scores []int
+
+        func (s Scores) String() string {
+            return fmt.Sprint([]int(s))
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [types, conversions]
+    source: https://go.dev/doc/effective_go#conversions

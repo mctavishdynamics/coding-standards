@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR2:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.2
+    title: In interfaces, use raw pointers only to denote individual objects
+    statement:
+        A raw pointer parameter should point at a single object. Pass arrays
+        as a container or a span, which carry their size.
+    rationale:
+        A pointer to the first element loses the length, so the callee
+        cannot check its range. Containers and spans hold enough information
+        for range checking.
+    exceptions:
+        C-style strings are passed as a single pointer to a zero-terminated
+        sequence. Use zstring rather than char* to show that the code relies
+        on that convention.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        double average(const double* values, int count);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        double average(std::span<const double> values);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-use-ptr

@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCArr32C:
+    standard: @{CertC}
+    ruleId: ARR32-C
+    title:
+        Ensure size arguments for variable length arrays are in a valid
+        range
+    statement:
+        Check that the size of a variable length array is positive and small
+        enough to fit on the stack, especially when it comes from untrusted
+        data.
+    rationale:
+        A zero or negative size is undefined behavior, and an excessive size
+        can overflow the stack into other program data. CERT rates
+        likelihood probable, detectable no, repairable no, priority P6,
+        level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        #include <string.h>
+
+        void process(const char *data, size_t len) {
+            char buf[len];
+            memcpy(buf, data, len);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <string.h>
+
+        enum { MAX_LEN = 1024 };
+
+        int process(const char *data, size_t len) {
+            if (len == 0 || len > MAX_LEN) {
+                return -1;
+            }
+            char buf[len];
+            memcpy(buf, data, len);
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [arrays, vla, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/arrays-arr/arr32-c

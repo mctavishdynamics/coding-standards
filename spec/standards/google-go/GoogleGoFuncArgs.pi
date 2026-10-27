@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoFuncArgs:
+    standard: @{GoogleGo}
+    ruleId: best-practices/funcargs
+    title: Keep function signatures short
+    statement:
+        Do not let parameter lists grow long. Split a highly configurable
+        function into simpler ones, or move arguments into an option struct
+        or variadic options, choosing by how the calls will look.
+    rationale:
+        Long parameter lists blur each argument's role and make adjacent
+        arguments of the same type easy to swap.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func NewServer(addr string, readTimeout, writeTimeout time.Duration, maxConns, maxHeader int, tls bool, cert, key string) *Server
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func NewServer(addr string, opts ServerOptions) *Server
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, functions, api-design]
+    source: https://google.github.io/styleguide/go/best-practices#funcargs

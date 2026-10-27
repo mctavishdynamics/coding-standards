@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC161:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.161
+    title: Use non-member functions for symmetric operators
+    statement:
+        Define symmetric binary operators such as ==, + and < as non-member
+        functions, often friends, rather than members.
+    rationale:
+        A member operator converts only the right operand, so a == b and b
+        == a can behave differently, and a member version would be needed
+        for each side.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Money {
+        public:
+            Money(long cents);
+            Money operator+(const Money& o) const;
+        };
+        // m + 5 works, 5 + m does not
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Money {
+        public:
+            Money(long cents);
+            friend Money operator+(const Money& a, const Money& b);
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [operators, overloading]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ro-symmetric

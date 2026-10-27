@@ -1,0 +1,30 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF49:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.49
+    title: Do not return const T
+    statement:
+        Do not declare a by-value return type as const.
+    rationale:
+        The old advice to return const values is obsolete. It adds nothing
+        and prevents the result from being moved from.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        const std::string full_name(const Person& p);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string full_name(const Person& p);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, return-values, move-semantics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-return-const

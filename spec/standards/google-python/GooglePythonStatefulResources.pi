@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonStatefulResources:
+    standard: @{GooglePython}
+    ruleId: 3.11
+    title: Close files, sockets and similar resources explicitly
+    statement:
+        Explicitly close files, sockets, database connections and similar
+        resources when you are done with them, preferably with a with
+        statement, or contextlib.closing for objects that do not support it.
+    rationale:
+        Open resources consume limited handles, can block other operations
+        on files, and may be used after they are logically closed. Relying
+        on garbage collection to close them is unpredictable across Python
+        implementations.
+    exceptions:
+        Where context-based management is infeasible, document clearly how
+        the resource lifetime is managed.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        config_file = open('settings.ini')
+        settings = parse(config_file.read())
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        with open('settings.ini') as config_file:
+            settings = parse(config_file.read())
+        \\\
+        ```
+    languages: [python]
+    tags: [resources, files]
+    source: https://google.github.io/styleguide/pyguide.html#s3.11-files-sockets-closeables

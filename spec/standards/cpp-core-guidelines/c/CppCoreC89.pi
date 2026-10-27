@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC89:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.89
+    title: Make a hash noexcept
+    statement:
+        Write hash specializations and hash function objects so they cannot
+        throw, and declare them noexcept.
+    rationale:
+        Hashed containers call hash behind the scenes and users do not
+        expect a lookup to throw. The standard library also requires it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<> struct std::hash<Key> {
+            std::size_t operator()(const Key& k) const {
+                return std::hash<std::string>()(k.to_string());  // may allocate and throw
+            }
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<> struct std::hash<Key> {
+            std::size_t operator()(const Key& k) const noexcept {
+                return std::hash<int>()(k.id) ^ (std::hash<int>()(k.zone) << 1);
+            }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [hashing, noexcept]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-hash

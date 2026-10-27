@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs2:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.2
+    title: Prefer suitable abstractions to direct use of language features
+    statement:
+        Express code with a library or class that matches the problem rather
+        than with raw loops, pointers and arrays.
+    rationale:
+        A suitable abstraction sits closer to the application's concepts,
+        gives shorter and clearer code and is likely to be better tested.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        char* words[100];
+        int n = 0;
+        char buf[64];
+        while (n < 100 && std::scanf("%63s", buf) == 1)
+            words[n++] = strdup(buf);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<std::string> words;
+        for (std::string w; std::cin >> w; )
+            words.push_back(w);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [abstraction, simplicity]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-abstr

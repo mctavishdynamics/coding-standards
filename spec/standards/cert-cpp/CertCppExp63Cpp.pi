@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppExp63Cpp:
+    standard: @{CertCpp}
+    ruleId: EXP63-CPP
+    title: Do not rely on the value of a moved-from object
+    statement:
+        Do not rely on the value of an object after it has been moved from.
+        Reassign or reset it before use, unless the type documents a
+        specific moved-from state.
+    rationale:
+        Most moved-from objects are left valid but unspecified, so their
+        contents differ between library implementations. CERT rates
+        likelihood probable, detectable yes, repairable no, priority P8,
+        level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        void archive(std::vector<std::string>& store, std::string line) {
+            store.push_back(std::move(line));
+            std::cout << "archived " << line << '\n';
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void archive(std::vector<std::string>& store, std::string line) {
+            std::cout << "archived " << line << '\n';
+            store.push_back(std::move(line));
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [move-semantics, lifetime]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/expressions-exp/exp63-cpp

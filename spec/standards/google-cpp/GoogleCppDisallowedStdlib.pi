@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppDisallowedStdlib:
+    standard: @{GoogleCpp}
+    ruleId: Disallowed_Stdlib
+    title: Do not use the disallowed standard library features
+    statement:
+        Do not use compile-time rational numbers from the ratio header, the
+        cfenv and fenv.h headers, or the filesystem header.
+    rationale:
+        The ratio header encourages a template-heavy style, floating-point
+        environment support is unreliable across compilers, and filesystem
+        lacks test support and has inherent security weaknesses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #include <filesystem>
+
+        bool Exists(const std::string& path) {
+          return std::filesystem::exists(path);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Use the codebase's approved file API instead.
+        #include "myproject/file/file.h"
+
+        bool Exists(const std::string& path) { return file::Exists(path).ok(); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [standard-library]
+    source: https://google.github.io/styleguide/cppguide.html#Disallowed_Stdlib

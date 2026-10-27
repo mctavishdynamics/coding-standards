@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF55:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.55
+    title: Do not use va_arg arguments
+    statement:
+        Do not write functions that take C-style variadic arguments. Use
+        variadic templates, overloads or an initializer list instead.
+    rationale:
+        Reading a va_arg assumes the caller passed the right type, and the
+        language cannot check it, so correctness depends entirely on
+        discipline.
+    exceptions:
+        A ... parameter is acceptable where no arguments are actually read,
+        such as a catch-all overload or in template metaprogramming.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int sum(int count, ...) {
+            va_list args;
+            va_start(args, count);
+            int total = 0;
+            for (int i = 0; i < count; ++i) total += va_arg(args, int);
+            va_end(args);
+            return total;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename... Ints>
+        int sum(Ints... values) {
+            return (0 + ... + values);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, type-safety, varargs]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#f-varargs

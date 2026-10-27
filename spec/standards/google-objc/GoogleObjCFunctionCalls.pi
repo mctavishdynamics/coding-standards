@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCFunctionCalls:
+    standard: @{GoogleObjC}
+    ruleId: function-calls
+    title: Fill lines with arguments in function calls
+    statement:
+        Put as many arguments on each line as fit, unless shorter lines are
+        clearer. Align continuation lines with the opening parenthesis or
+        indent them four spaces, and use descriptive locals to shorten
+        nested calls.
+    rationale:
+        Compact calls stay readable, and named locals explain complex
+        arguments.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        ABCDrawText(context, ABCMeasure(font, text) + ABCPadding(style) * 2, origin.x,
+        origin.y);
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        CGFloat width = ABCMeasure(font, text) + ABCPadding(style) * 2;
+        ABCDrawText(context, width, origin.x, origin.y);
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [formatting, functions]
+    source: https://google.github.io/styleguide/objcguide.html#function-calls

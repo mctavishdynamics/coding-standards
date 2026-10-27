@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppStructsVsTuples:
+    standard: @{GoogleCpp}
+    ruleId: Structs_vs._Tuples
+    title: Prefer a struct to a pair or tuple when fields have meaning
+    statement:
+        Use a struct with named fields instead of std::pair or std::tuple
+        whenever the elements can have meaningful names.
+    rationale:
+        A field name is far clearer to readers than first, second or
+        a std::get index.
+    exceptions:
+        Pairs and tuples fit generic code whose elements have no specific
+        meaning, or where existing code and APIs require them.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::pair<std::string, int> LookupUser(int id);
+
+        auto user = LookupUser(42);
+        Greet(user.first, user.second);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct UserInfo {
+          std::string name;
+          int age;
+        };
+        UserInfo LookupUser(int id);
+
+        UserInfo user = LookupUser(42);
+        Greet(user.name, user.age);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [structs, readability]
+    source: https://google.github.io/styleguide/cppguide.html#Structs_vs._Tuples

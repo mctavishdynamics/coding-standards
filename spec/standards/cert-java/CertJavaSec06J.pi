@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec06J:
+    standard: @{CertJava}
+    ruleId: SEC06-J
+    title: Do not rely on the default automatic signature verification provided by URLClassLoader and java.util.jar
+    statement:
+        When loading signed code, verify the signatures yourself against a
+        trusted key or certificate chain, for example with jarsigner or by
+        checking the signer certificates.
+    rationale:
+        The default checks only confirm that the JAR is signed by some key,
+        not by a trusted one, so an attacker's self-signed JAR passes.
+        CERT's risk assessment gives likelihood probable, detectable no,
+        repairable no, priority P6 and level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        URLClassLoader loader = new URLClassLoader(new URL[] {pluginJar});
+        Class<?> plugin = loader.loadClass("com.example.Plugin");
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        verifySigners(pluginJar, trustedKeyStore);  // compare signer certificates
+        URLClassLoader loader = new URLClassLoader(new URL[] {pluginJar});
+        Class<?> plugin = loader.loadClass("com.example.Plugin");
+        \\\
+        ```
+    languages: [java]
+    tags: [security, code-signing, class-loading]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/platform-security-sec/sec06-j/

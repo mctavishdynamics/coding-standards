@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptExceptions:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.8.2
+    title: Throw Error objects created with new
+    statement:
+        Use exceptions for exceptional cases. Always throw Error or a
+        subclass, constructed with new, never strings or other objects, and
+        apply the same rule to promise rejections. Define custom errors
+        where Error is not enough, and prefer exceptions to ad hoc error
+        return values.
+    rationale:
+        Error objects carry stack traces and are what callers expect to
+        catch, while thrown strings lose the context needed to debug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        if (!user) {
+          throw 'user not found';
+        }
+        return Promise.reject({code: 404});
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        if (!user) {
+          throw new Error('user not found');
+        }
+        return Promise.reject(new NotFoundError('user'));
+        \\\
+        ```
+    languages: [javascript]
+    tags: [error-handling, exceptions]
+    source: https://google.github.io/styleguide/jsguide.html#582-exceptions

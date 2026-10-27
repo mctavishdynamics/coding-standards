@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppLocalVariables:
+    standard: @{GoogleCpp}
+    ruleId: Local_Variables
+    title: Declare locals in the narrowest scope and initialize them
+    statement:
+        Declare each local variable in the smallest scope possible, close to
+        its first use, and initialize it in the declaration rather than
+        assigning later. Declare variables used by if, while and for inside
+        those statements.
+    rationale:
+        A nearby, initialized declaration shows the reader the type and
+        starting value at once and limits where the variable can be misused.
+    exceptions:
+        An object with a costly constructor and destructor used inside a
+        loop may be declared outside the loop to avoid rebuilding it each
+        pass.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int count;
+        std::vector<int> ids;
+        count = CountUsers();
+        ids.push_back(1);
+        ids.push_back(2);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int count = CountUsers();
+        std::vector<int> ids = {1, 2};
+        while (const char* line = NextLine()) {
+          Process(line);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [variables, scoping, initialization]
+    source: https://google.github.io/styleguide/cppguide.html#Local_Variables

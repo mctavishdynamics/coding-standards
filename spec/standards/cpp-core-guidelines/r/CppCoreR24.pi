@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR24:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.24
+    title: Use weak_ptr to break cycles of shared_ptrs
+    statement:
+        When objects held by shared_ptr refer back to each other, make one
+        direction of the link a std::weak_ptr.
+    rationale:
+        Use counts in a cycle of shared_ptrs never reach zero, so the
+        objects are never destroyed. A weak_ptr does not keep its object
+        alive and breaks the cycle.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Parent;
+        struct Child  { std::shared_ptr<Parent> parent; };
+        struct Parent { std::vector<std::shared_ptr<Child>> children; };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Parent;
+        struct Child  { std::weak_ptr<Parent> parent; };
+        struct Parent { std::vector<std::shared_ptr<Child>> children; };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, ownership]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-weak_ptr

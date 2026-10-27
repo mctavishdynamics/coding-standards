@@ -1,0 +1,55 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaTsm01J:
+    standard: @{CertJava}
+    ruleId: TSM01-J
+    title: Do not let the this reference escape during object construction
+    statement:
+        Do not publish this from a constructor, for example by registering
+        listeners, storing it in a shared field, or starting a thread that
+        uses it. Finish construction first, then publish, for instance from
+        a static factory.
+    rationale:
+        Another thread may use the object before its constructor has
+        finished and see fields that are not yet set. CERT's risk assessment
+        gives likelihood probable, detectable yes, repairable no, priority
+        P8 and level L2.
+    exceptions:
+        A constructor may create a thread that refers to this if the thread
+        is started only after construction completes. The ObjectPreserver
+        pattern described in TSM02-J is also permitted.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        class Listener {
+            private final Config config;
+
+            Listener(EventBus bus, Config config) {
+                bus.register(this);
+                this.config = config;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Listener {
+            private final Config config;
+
+            private Listener(Config config) { this.config = config; }
+
+            static Listener create(EventBus bus, Config config) {
+                Listener l = new Listener(config);
+                bus.register(l);
+                return l;
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, initialization, publication]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-safety-miscellaneous-tsm/tsm01-j/

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsTypesPrimitives:
+    standard: @{AirbnbJavaScript}
+    ruleId: 1.1
+    title: Treat primitive values as copied by value
+    statement:
+        Remember that string, number, boolean, null, undefined, symbol and
+        bigint values are handled by value, so assigning one to another
+        variable copies it. Do not use Symbol or BigInt when targeting
+        environments that lack native support for them.
+    rationale:
+        Changing a copy of a primitive never changes the original. Symbols
+        and BigInts cannot be polyfilled faithfully, so code using them
+        breaks on older engines.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        // Targets an old browser without native BigInt
+        const total = 9007199254740993n;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        let price = 10;
+        const original = price;
+        price = 12;
+        console.log(original); // 10, the copy is unaffected
+        \\\
+        ```
+    languages: [javascript]
+    tags: [types, primitives]
+    source: https://github.com/airbnb/javascript#types--primitives

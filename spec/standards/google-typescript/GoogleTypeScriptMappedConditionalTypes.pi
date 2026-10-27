@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptMappedConditionalTypes:
+    standard: @{GoogleTypeScript}
+    ruleId: mapped-conditional-types
+    title: Use the simplest type construct that works
+    statement:
+        Mapped and conditional types may be used, but always choose the
+        simplest type construct that can express the code. Prefer plain
+        interfaces and extension over type operators when they do the job.
+    rationale:
+        Type operators make readers evaluate types in their heads, have an
+        underspecified evaluation model and defeat tooling such as find-
+        references.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        type ContactInfo = Pick<Customer, 'email'|'phone'>;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        interface ContactInfo {
+          email: string;
+          phone: string;
+        }
+        interface Customer extends ContactInfo {
+          id: string;
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, simplicity]
+    source: https://google.github.io/styleguide/tsguide.html#mapped-conditional-types

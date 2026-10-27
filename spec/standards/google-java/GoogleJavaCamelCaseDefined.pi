@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaCamelCaseDefined:
+    standard: @{GoogleJava}
+    ruleId: 5.3
+    title: Derive camel case names with the defined scheme
+    statement:
+        Turn the prose name into plain ASCII without apostrophes, split it
+        into words on spaces and punctuation, lowercase everything including
+        acronyms, then capitalise the first letter of each word, or of each
+        word but the first for lower camel case, and join them. Splitting
+        words that already look camel case, such as AdWords, is recommended.
+    rationale:
+        Treating acronyms as ordinary words gives one predictable spelling
+        for every name.
+    exceptions:
+        In rare cases, such as multipart version numbers, underscores may
+        separate adjacent numbers. Words with ambiguous hyphenation may be
+        cased either way.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class XMLHTTPRequest {}
+        String newCustomerID;
+        boolean supportsIPv6;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class XmlHttpRequest {}
+        String newCustomerId;
+        boolean supportsIpv6;
+        \\\
+        ```
+    languages: [java]
+    tags: [naming, camel-case]
+    source: https://google.github.io/styleguide/javaguide.html#s5.3-camel-case

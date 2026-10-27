@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsVariablesConstLetGroup:
+    standard: @{AirbnbJavaScript}
+    ruleId: 13.3
+    title: Group const declarations, then let declarations
+    statement:
+        Put all const declarations together, followed by all let
+        declarations.
+    rationale:
+        It helps when a later variable has to be assigned from one declared
+        earlier.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        let index = 0;
+        const items = loadItems();
+        let current;
+        const limit = 10;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const items = loadItems();
+        const limit = 10;
+        let index = 0;
+        let current;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [variables, ordering]
+    source: https://github.com/airbnb/javascript#variables--const-let-group

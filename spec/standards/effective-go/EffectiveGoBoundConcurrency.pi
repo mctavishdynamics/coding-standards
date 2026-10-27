@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoBoundConcurrency:
+    standard: @{EffectiveGo}
+    ruleId: channels
+    title: Bound concurrent work with buffered channels or workers
+    statement:
+        Limit how much work runs at once, for example with a buffered
+        channel used as a semaphore or a fixed number of worker goroutines
+        reading from a request channel. Gate the creation of goroutines, not
+        only the work inside them.
+    rationale:
+        Starting a goroutine per request without a limit lets a burst of
+        requests consume unbounded resources even if only a few can make
+        progress.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func serve(reqs <-chan *Request) {
+            for req := range reqs {
+                go handle(req)
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var sem = make(chan struct{}, maxOutstanding)
+
+        func serve(reqs <-chan *Request) {
+            for req := range reqs {
+                sem <- struct{}{}
+                go func() {
+                    defer func() { <-sem }()
+                    handle(req)
+                }()
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, channels, resource-management]
+    source: https://go.dev/doc/effective_go#channels

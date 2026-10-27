@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptNonAsciiCharacters:
+    standard: @{GoogleTypeScript}
+    ruleId: non-ascii-characters
+    title: Write printable non-ASCII characters directly
+    statement:
+        For other non-ASCII characters, put the actual Unicode character in
+        the source. Use a hex or Unicode escape only for non-printable
+        characters, and add a comment that explains it.
+    rationale:
+        A literal character is clear to the reader, while an escape for a
+        printable character is hard to read and easy to get wrong, even with
+        a comment.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const degrees = '\u00b0C';
+        const marker = '\u200b' + label;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const degrees = '°C';
+        const marker = '\u200b' + label;  // zero-width space
+        \\\
+        ```
+    languages: [typescript]
+    tags: [strings, unicode, readability]
+    source: https://google.github.io/styleguide/tsguide.html#non-ascii-characters

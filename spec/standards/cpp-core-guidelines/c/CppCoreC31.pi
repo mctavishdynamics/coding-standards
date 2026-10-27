@@ -1,0 +1,45 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC31:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.31
+    title: Release every resource a class acquires in its destructor
+    statement:
+        Any resource a class takes ownership of, such as memory, files,
+        locks or sockets, must be released when the object is destroyed.
+    rationale:
+        This prevents leaks, especially on error paths where cleanup code
+        written by callers is easily skipped.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Log {
+        public:
+            explicit Log(const char* path) : f_(std::fopen(path, "a")) {}
+            // file is never closed
+        private:
+            std::FILE* f_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Log {
+        public:
+            explicit Log(const char* path) : f_(std::fopen(path, "a")) {}
+            ~Log() { if (f_) std::fclose(f_); }
+            Log(const Log&) = delete;
+            Log& operator=(const Log&) = delete;
+        private:
+            std::FILE* f_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [destructors, resource-management, raii]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-dtor-release

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTestDifferentPackage:
+    standard: @{GoogleGo}
+    ruleId: decisions/test-different-package
+    title: Use a _test package for external tests
+    statement:
+        When a test cannot or should not live in the package, such as an
+        integration test with no obvious home or to avoid a dependency
+        cycle, put it in a package with the _test suffix.
+    rationale:
+        The _test suffix is the sanctioned exception to the rule against
+        underscores in package names.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package ledgertests
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package ledger_test
+
+        import (
+            "testing"
+
+            "example.com/ledger"
+            "example.com/ledgertestutil"
+        )
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, packages]
+    source: https://google.github.io/styleguide/go/decisions#test-different-package

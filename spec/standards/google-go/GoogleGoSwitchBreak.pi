@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoSwitchBreak:
+    standard: @{GoogleGo}
+    ruleId: decisions/switch-break
+    title: Do not end switch clauses with a bare break
+    statement:
+        Do not put an unlabeled break at the end of a switch clause; Go
+        clauses never fall through by default. Use a comment to explain an
+        empty clause, and use a labelled break to leave an enclosing loop.
+    rationale:
+        The break is redundant, and inside a loop it only leaves the switch,
+        which misleads readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        switch cmd {
+        case "stop":
+            stop()
+            break
+        case "noop":
+            break
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        switch cmd {
+        case "stop":
+            stop()
+        case "noop":
+            // Nothing to do.
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, control-flow]
+    source: https://google.github.io/styleguide/go/decisions#switch-break

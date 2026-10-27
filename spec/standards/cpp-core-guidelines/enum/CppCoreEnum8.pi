@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEnum8:
+    standard: @{CppCoreGuidelines}
+    ruleId: Enum.8
+    title: Specify enumerator values only when necessary
+    statement:
+        Let the compiler number enumerators unless the values matter, such
+        as for an external protocol or bit flags.
+    rationale:
+        It is simpler, avoids duplicate values by mistake, and the
+        consecutive default values suit switch statements.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        enum class Suit { clubs = 0, diamonds = 1, hearts = 2, spades = 2 };   // duplicate
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum class Suit { clubs, diamonds, hearts, spades };
+
+        enum class HttpStatus { ok = 200, not_found = 404 };   // values matter
+        \\\
+        ```
+    languages: [cpp]
+    tags: [enumerations]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#renum-value

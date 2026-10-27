@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpNamedArgumentsForClarity:
+    standard: @{GoogleCSharp}
+    ruleId: named-arguments-for-clarity
+    title: Consider named arguments at the call site
+    statement:
+        Consider using named arguments to make the meaning of an argument
+        clear at the call site.
+    rationale:
+        The parameter name documents the value where it is passed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        Resize(image, 800, 600, null);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        Resize(image, width: 800, height: 600, onProgress: null);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [readability, parameters]
+    source: https://google.github.io/styleguide/csharpguide.html#argument-naming

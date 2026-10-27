@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppDeclarationOrder:
+    standard: @{GoogleCpp}
+    ruleId: Declaration_Order
+    title: Order class sections public, protected, private
+    statement:
+        Start a class with public, then protected, then private, omitting
+        empty sections. Within a section group types and aliases, static
+        constants, factory functions, constructors and assignment, the
+        destructor, other functions, then data members. Do not define large
+        methods inline in the class.
+    rationale:
+        Readers looking for the interface find it first, and a consistent
+        grouping makes every class quick to navigate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Cache {
+         private:
+          std::map<std::string, Entry> entries_;
+         public:
+          void Clear();
+          Cache();
+          using Entry = std::string;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Cache {
+         public:
+          using Entry = std::string;
+
+          Cache();
+
+          void Clear();
+
+         private:
+          std::map<std::string, Entry> entries_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, declarations, readability]
+    source: https://google.github.io/styleguide/cppguide.html#Declaration_Order

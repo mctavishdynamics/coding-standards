@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet00J:
+    standard: @{CertJava}
+    ruleId: MET00-J
+    title: Validate method arguments
+    statement:
+        Check that a method's arguments fall within the range its design
+        allows before using them, on one side of each interface, usually
+        inside the method.
+    rationale:
+        Unvalidated arguments cause wrong results, runtime exceptions,
+        broken class invariants and inconsistent object state. CERT rates
+        likelihood likely, detectable no, repairable no, priority P9, level
+        L2.
+    exceptions:
+        Validation may be left to the caller when the method's contract
+        requires it, omitted when the argument's type already constrains it
+        adequately and this is documented, or limited to API boundaries when
+        full validation would cost more than it is worth.
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        public void setTimeout(int seconds) {
+            this.timeout = seconds;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public void setTimeout(int seconds) {
+            if (seconds < 1 || seconds > 3600) {
+                throw new IllegalArgumentException("timeout out of range: " + seconds);
+            }
+            this.timeout = seconds;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [input-validation, methods]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met00-j/

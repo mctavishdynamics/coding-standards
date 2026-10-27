@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC47:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.47
+    title: Initialize data members in declaration order
+    statement:
+        Write member initializer lists in the same order the members are
+        declared.
+    rationale:
+        Members are always initialized in declaration order, so a different
+        order in the list is misleading and can make one member read another
+        before it is set.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Range {
+            int lo_;
+            int hi_;
+        public:
+            Range(int a, int b) : hi_(b), lo_(hi_ - a) {}   // lo_ reads hi_ too early
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Range {
+            int lo_;
+            int hi_;
+        public:
+            Range(int a, int b) : lo_(b - a), hi_(b) {}
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, initialization]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-order

@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./Solid import Solid
+
+export coding-rule SolidIsp:
+    standard: @{Solid}
+    ruleId: ISP
+    title: Do not force clients to depend on interfaces they do not use
+    statement:
+        Split large interfaces into small, client-specific ones, so that
+        each client depends only on the methods it actually calls. One class
+        may still implement several of them.
+    rationale:
+        A client tied to a fat interface is affected by changes made for
+        other clients, creating accidental coupling, needless recompilation
+        and redeployment.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        interface Printer {
+            void print(Document d);
+            void scan(Document d);
+            void fax(Document d, String number);
+        }
+
+        class BasicPrinter implements Printer {
+            public void print(Document d) { /* ... */ }
+            public void scan(Document d) { throw new UnsupportedOperationException(); }
+            public void fax(Document d, String n) { throw new UnsupportedOperationException(); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        interface Printer { void print(Document d); }
+        interface Scanner { void scan(Document d); }
+        interface Fax { void fax(Document d, String number); }
+
+        class BasicPrinter implements Printer {
+            public void print(Document d) { /* ... */ }
+        }
+
+        class OfficeMachine implements Printer, Scanner, Fax { /* ... */ }
+        \\\
+        ```
+    languages: [any]
+    tags: [design, interfaces, coupling]
+    source: https://web.archive.org/web/20101223150917/http://www.objectmentor.com/resources/articles/isp.pdf

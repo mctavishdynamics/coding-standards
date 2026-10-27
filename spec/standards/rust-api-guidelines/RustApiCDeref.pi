@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCDeref:
+    standard: @{RustApiGuidelines}
+    ruleId: C-DEREF
+    title: Implement Deref and DerefMut only for smart pointers
+    statement:
+        Reserve Deref and DerefMut for smart pointer types. Do not use them
+        to fake inheritance or to forward methods from a wrapped field.
+    rationale:
+        The compiler applies Deref implicitly and during method resolution,
+        and those rules were designed for smart pointers only.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub struct Admin {
+            user: User,
+        }
+
+        impl Deref for Admin {
+            type Target = User;
+            fn deref(&self) -> &User { &self.user }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub struct Admin {
+            user: User,
+        }
+
+        impl Admin {
+            pub fn user(&self) -> &User { &self.user }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [traits, smart-pointers]
+    source: https://rust-lang.github.io/api-guidelines/predictability.html#c-deref

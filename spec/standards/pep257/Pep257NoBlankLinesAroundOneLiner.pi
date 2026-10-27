@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257NoBlankLinesAroundOneLiner:
+    standard: @{Pep257}
+    ruleId: one-line-docstrings-no-blank-lines
+    title: Do not put blank lines around a one-line docstring
+    statement:
+        Leave no blank line before or after a one-line docstring in a
+        function or method; the code follows on the next line.
+    rationale:
+        The docstring belongs to the definition directly above it, and extra
+        blank lines only spread a short function out.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def is_expired(token):
+
+            """Return True if the token has expired."""
+
+            return token.expires_at < time.time()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def is_expired(token):
+            """Return True if the token has expired."""
+            return token.expires_at < time.time()
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, formatting]
+    source: https://peps.python.org/pep-0257/#one-line-docstrings

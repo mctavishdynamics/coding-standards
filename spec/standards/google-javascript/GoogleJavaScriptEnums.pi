@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptEnums:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.3.8
+    title: Define enums as constant object literals with literal values
+    statement:
+        Define an enum by annotating an object literal with @enum. Keep it
+        module-local or directly on exports, never nested under another
+        type. Do not add properties after definition, and use only string
+        literals or numbers as values; string enum values must not be
+        computed.
+    rationale:
+        Fixed, literal enums can be checked by the compiler and migrate
+        cleanly to TypeScript.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const PREFIX = 'size-';
+        /** @enum {string} */
+        const Size = {
+          SMALL: PREFIX + 's',
+          LARGE: `${PREFIX}l`,
+        };
+        Size.MEDIUM = 'size-m';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * Available shirt sizes.
+         * @enum {string}
+         */
+        const Size = {
+          SMALL: 'size-s',
+          MEDIUM: 'size-m',
+          LARGE: 'size-l',
+        };
+        \\\
+        ```
+    languages: [javascript]
+    tags: [enums, jsdoc, constants]
+    source: https://google.github.io/styleguide/jsguide.html#538-enums

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppDcl59Cpp:
+    standard: @{CertCpp}
+    ruleId: DCL59-CPP
+    title: Do not define an unnamed namespace in a header file
+    statement:
+        Do not put an unnamed namespace in a header file. Declare the
+        entities in a named namespace in the header and define them in one
+        source file.
+    rationale:
+        Every translation unit that includes the header gets its own
+        distinct copy of the unnamed namespace, which wastes space and makes
+        supposedly shared state differ between files. CERT rates likelihood
+        unlikely, detectable yes, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        // settings.h
+        namespace {
+        int retry_limit = 3;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // settings.h
+        namespace settings {
+        extern int retry_limit;
+        }
+
+        // settings.cpp
+        namespace settings {
+        int retry_limit = 3;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces, headers, declarations]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/declarations-and-initialization-dcl/dcl59-cpp

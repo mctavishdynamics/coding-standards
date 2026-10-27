@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptTupleTypes:
+    standard: @{GoogleTypeScript}
+    ruleId: tuple-types
+    title: Use tuples instead of Pair types
+    statement:
+        Rather than defining a Pair-like interface, use a tuple type. When
+        named properties would be clearer, use an interface or an inline
+        object type.
+    rationale:
+        Tuples are lightweight and destructure naturally, while named fields
+        help when the meaning of each part is not obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        interface Pair {
+          first: number;
+          second: number;
+        }
+        function minMax(values: number[]): Pair {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function minMax(values: number[]): [number, number] {}
+
+        const [min, max] = minMax(readings);
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, tuples]
+    source: https://google.github.io/styleguide/tsguide.html#tuple-types

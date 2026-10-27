@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsHoistingNamedExpressions:
+    standard: @{AirbnbJavaScript}
+    ruleId: 14.3
+    title: Account for hoisting of named function expressions
+    statement:
+        Remember that a named function expression hoists only the variable
+        name. Neither the function's own name nor its body is available
+        before the assignment.
+    rationale:
+        The function's name is visible only inside its own body, so calling
+        it early fails.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        run(); // TypeError
+        var run = function execute() {
+          console.log('running');
+        };
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const run = function execute() {
+          console.log('running');
+        };
+        run();
+        \\\
+        ```
+    languages: [javascript]
+    tags: [hoisting, functions]
+    source: https://github.com/airbnb/javascript#hoisting--named-expressions

@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT21:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.21
+    title: Require a complete set of operations for a concept
+    statement:
+        A concept, and likewise a class, should require a coherent set of
+        operations, such as all of the comparison operators or all of the
+        arithmetic operators, not an odd subset.
+    rationale:
+        Complete sets are easier to understand, interoperate better and
+        avoid surprises where equality works but inequality does not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+        concept Subtractable = requires(T a, T b) { a - b; };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename T>
+        concept Arithmetic = requires(T a, T b) {
+            a + b; a - b; a * b; a / b;
+            a += b; a -= b; a *= b; a /= b;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts, operators]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-complete

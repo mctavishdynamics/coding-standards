@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppOop50Cpp:
+    standard: @{CertCpp}
+    ruleId: OOP50-CPP
+    title: Do not invoke virtual functions from constructors or destructors
+    statement:
+        Do not call virtual functions from a constructor or destructor
+        expecting them to dispatch to a derived class override.
+    rationale:
+        During construction and destruction the object's dynamic type is the
+        class being built, so the derived override is not called, and
+        calling a pure virtual function is undefined behavior. CERT rates
+        likelihood unlikely, detectable yes, repairable no, priority P2,
+        level L3.
+    exceptions:
+        A virtual function may be called with an explicitly qualified name,
+        which shows the current class's version is intended. A function
+        marked final may also be called.
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        class Report {
+        public:
+            Report() { render(); }  // never calls a derived render
+            virtual void render() = 0;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Report {
+        public:
+            virtual void render() = 0;
+            virtual ~Report() = default;
+        };
+
+        template <typename T>
+        std::unique_ptr<T> make_report() {
+            auto r = std::make_unique<T>();
+            r->render();
+            return r;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, virtual-functions, constructors]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/object-oriented-programming-oop/oop50-cpp

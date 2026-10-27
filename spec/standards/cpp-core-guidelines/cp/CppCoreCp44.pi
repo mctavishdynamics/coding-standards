@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp44:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.44
+    title: Name your lock_guards and unique_locks
+    statement:
+        Always give a lock object a variable name so that it lives until the
+        end of the scope.
+    rationale:
+        An unnamed lock is a temporary that unlocks again at the end of the
+        statement, and some spellings even declare a new unlocked variable
+        that shadows the mutex.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Counter::increment()
+        {
+            std::lock_guard<std::mutex>{mutex_};   // locks and unlocks immediately
+            ++count_;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Counter::increment()
+        {
+            std::lock_guard<std::mutex> lock{mutex_};
+            ++count_;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, locking]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-name

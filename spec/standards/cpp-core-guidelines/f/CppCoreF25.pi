@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF25:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.25
+    title: Use a zstring or a not_null<zstring> to designate a C-style string
+    statement:
+        Use zstring or czstring from the GSL for zero-terminated character
+        arrays, wrapped in not_null when null is not allowed. If you do not
+        need zero termination, use string_view.
+    rationale:
+        A C-style string is a convention, not a type. The name distinguishes
+        it from a pointer to a single character or to an unterminated array.
+        A zstring does not own.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::size_t name_length(const char* name);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::size_t name_length(gsl::not_null<gsl::czstring> name);
+
+        std::size_t title_length(std::string_view title);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, strings, pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-zstring

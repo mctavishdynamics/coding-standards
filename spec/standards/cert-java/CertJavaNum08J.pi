@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum08J:
+    standard: @{CertJava}
+    ruleId: NUM08-J
+    title: Check floating-point inputs for exceptional values
+    statement:
+        Validate floating-point input, especially from users, for NaN and
+        infinity with Double.isNaN and Double.isInfinite before using it.
+    rationale:
+        Exceptional values pass range checks unexpectedly, because NaN
+        compares false with everything, and then spread through later
+        calculations. CERT rates likelihood probable, detectable no,
+        repairable yes, priority P4, level L3.
+    exceptions:
+        A program may accept NaN or infinities as expected input if it
+        documents this, handles them gracefully and keeps them from reaching
+        code that cannot.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        double amount = Double.parseDouble(input);
+        if (amount > limit) {
+            throw new IllegalArgumentException();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        double amount = Double.parseDouble(input);
+        if (Double.isNaN(amount) || Double.isInfinite(amount) || amount > limit) {
+            throw new IllegalArgumentException();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [floating-point, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/numeric-types-and-operations-num/num08-j/

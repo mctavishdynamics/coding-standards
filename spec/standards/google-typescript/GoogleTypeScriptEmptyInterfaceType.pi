@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptEmptyInterfaceType:
+    standard: @{GoogleTypeScript}
+    ruleId: empty-interface-type
+    title: Do not use the empty object type
+    statement:
+        Avoid the empty object type in most cases. Use unknown for opaque
+        values, a Record type for dictionaries, or object for any non-
+        primitive.
+    rationale:
+        The empty object type accepts every non-nullish value, including
+        primitives, which is rarely what is meant.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function logEvent(details: {}) {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function logEvent(details: Record<string, unknown>) {}
+        function store(value: unknown) {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, type-safety]
+    source: https://google.github.io/styleguide/tsguide.html#empty-interface-type

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptContinuationIndent:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.5.2
+    title: Indent continuation lines at least four spaces
+    statement:
+        Indent each continuation line of a wrapped statement at least four
+        spaces from the original line, unless block indentation applies.
+        Deeper syntactic levels may use larger multiples of four, and lines
+        share an indent only if they begin with parallel elements.
+    rationale:
+        A deeper indent than a block's two spaces makes it obvious that a
+        line continues the one above.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const isEligible = user.age >= 18 &&
+          user.hasVerifiedEmail;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const isEligible = user.age >= 18 &&
+            user.hasVerifiedEmail;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, line-wrapping, indentation]
+    source: https://google.github.io/styleguide/jsguide.html#452-indent-continuation-lines-at-least-4-spaces

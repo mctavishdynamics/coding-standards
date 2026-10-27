@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppConstructorInitializerLists:
+    standard: @{GoogleCpp}
+    ruleId: Constructor_Initializer_Lists
+    title: Put initializer lists on one line or indent four spaces
+    statement:
+        Write a constructor initializer list on one line with the signature,
+        or break before the colon and indent the list four spaces, with each
+        member on its own line if it does not fit.
+    rationale:
+        These few accepted layouts keep constructors consistent and easy to
+        read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        MyClass::MyClass(int var) : some_var_(var),
+          some_other_var_(var + 1) {
+          DoSomething();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        MyClass::MyClass(int var) : some_var_(var) {}
+
+        MyClass::MyClass(int var)
+            : some_var_(var),
+              some_other_var_(var + 1) {
+          DoSomething();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, constructors]
+    source: https://google.github.io/styleguide/cppguide.html#Constructor_Initializer_Lists

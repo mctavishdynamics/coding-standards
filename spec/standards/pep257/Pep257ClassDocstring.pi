@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257ClassDocstring:
+    standard: @{Pep257}
+    ruleId: multi-line-docstrings-classes
+    title: Summarise a class and list its public interface
+    statement:
+        A class docstring should summarise its behaviour and list its public
+        methods and instance variables, with any separate subclass interface
+        listed apart. Document the constructor in the __init__ docstring and
+        each method in its own docstring.
+    rationale:
+        Each docstring then describes the level it belongs to, and users can
+        see the public surface at a glance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class RateLimiter:
+            """RateLimiter(rate, burst): rate is per second, burst is the
+            bucket size. allow() checks a request."""
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class RateLimiter:
+            """Token bucket that limits how often an action may run.
+
+            Public methods: allow(), reset()
+            Instance variables: rate, burst
+            """
+
+            def __init__(self, rate, burst):
+                """Create a limiter refilling rate tokens per second."""
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, classes]
+    source: https://peps.python.org/pep-0257/#multi-line-docstrings

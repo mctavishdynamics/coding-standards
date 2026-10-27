@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCFunctionDeclarationsAndDefinitions:
+    standard: @{GoogleObjC}
+    ruleId: function-declarations-and-definitions
+    title: Format function declarations on one line or wrapped by four spaces
+    statement:
+        Keep the return type and parameters on the function name line when
+        they fit, otherwise wrap parameters with a four space indent. The
+        opening parenthesis follows the name without a space, the opening
+        brace ends the last line after a space, and the body is indented two
+        spaces.
+    rationale:
+        A single layout for functions makes them consistent with function
+        calls and easy to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        NSString *ABCJoin ( NSArray<NSString *> *parts, NSString *separator )
+        {
+            return [parts componentsJoinedByString:separator];
+        }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        NSString *ABCJoin(NSArray<NSString *> *parts, NSString *separator) {
+          return [parts componentsJoinedByString:separator];
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [formatting, functions]
+    source: https://google.github.io/styleguide/objcguide.html#function-declarations-and-definitions

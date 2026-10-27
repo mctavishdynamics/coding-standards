@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC138:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.138
+    title: Bring base overloads into a derived class with using
+    statement:
+        When a derived class adds or overrides an overload, add a using
+        declaration for the base function so the whole overload set remains
+        visible.
+    rationale:
+        A member function in the derived class hides every base function of
+        the same name, which makes calls quietly pick the wrong overload or
+        fail.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Printer {
+            void print(int);
+            void print(double);
+        };
+        struct LabelPrinter : Printer {
+            void print(const std::string&);   // hides print(int) and print(double)
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct LabelPrinter : Printer {
+            using Printer::print;
+            void print(const std::string&);
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, overloading, name-hiding]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-using

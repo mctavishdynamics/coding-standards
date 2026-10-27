@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCInclusiveLanguage:
+    standard: @{GoogleObjC}
+    ruleId: inclusive-language
+    title: Use inclusive and gender-neutral language
+    statement:
+        In names and comments, avoid terms that others may find
+        disrespectful or offensive, such as master and slave or blacklist
+        and whitelist, even when they have a neutral technical sense. Use
+        gender-neutral words like they and them for people of unspecified
+        gender and it for things.
+    rationale:
+        Code is read by many people, and offensive terms make it less
+        welcoming without adding meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        NSArray<NSString *> *blacklistedHosts;
+        // The user must confirm his email first.
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        NSArray<NSString *> *blockedHosts;
+        // The user must confirm their email first.
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [naming, comments, inclusive-language]
+    source: https://google.github.io/styleguide/objcguide.html#inclusive-language

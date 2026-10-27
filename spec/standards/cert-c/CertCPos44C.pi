@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos44C:
+    standard: @{CertC}
+    ruleId: POS44-C
+    title: Do not use signals to terminate threads
+    statement:
+        Do not send a signal such as SIGTERM to a thread to make it stop.
+        Ask it to stop with pthread_cancel or a shared flag that the thread
+        checks.
+    rationale:
+        An uncaught signal whose default action is termination ends the
+        whole process, not just the target thread. CERT rates likelihood
+        probable, detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        pthread_kill(worker, SIGTERM);
+        pthread_join(worker, NULL);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        pthread_cancel(worker);
+        pthread_join(worker, NULL);
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, concurrency, signals]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos44-c

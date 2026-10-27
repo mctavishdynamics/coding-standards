@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonErrorMessages:
+    standard: @{GooglePython}
+    ruleId: 3.10.2
+    title: Write precise, greppable error messages
+    statement:
+        Error messages must match the actual error condition exactly, make
+        interpolated values clearly identifiable, and be easy to process
+        automatically, for example with grep.
+    rationale:
+        A misleading message sends whoever debugs the problem in the wrong
+        direction, and messages with values blended into the text are hard
+        to search for.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            os.remove(path)
+        except OSError:
+            logging.warning('File %s was already deleted.', path)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        try:
+            os.remove(path)
+        except OSError as error:
+            logging.warning('Could not remove file (reason: %r): %r', error, path)
+        \\\
+        ```
+    languages: [python]
+    tags: [error-handling, strings]
+    source: https://google.github.io/styleguide/pyguide.html#s3.10.2-error-messages

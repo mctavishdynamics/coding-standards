@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptLegacyNoBlockFunctions:
+    standard: @{GoogleJavaScript}
+    ruleId: 9.4.3
+    title: Do not declare functions inside blocks on legacy platforms
+    statement:
+        Do not put function declarations inside blocks. To define a function
+        within a block, assign a function expression to a var.
+    rationale:
+        Before ES6, block-level function declarations were non-standard and
+        behaved inconsistently across engines.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        if (debug) {
+          function trace(msg) {
+            console.log(msg);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        if (debug) {
+          var trace = function(msg) {
+            console.log(msg);
+          };
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [legacy, functions, scope]
+    source: https://google.github.io/styleguide/jsguide.html#943-do-not-use-block-scoped-functions-declarations

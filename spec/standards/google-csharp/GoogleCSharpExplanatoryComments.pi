@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpExplanatoryComments:
+    standard: @{GoogleCSharp}
+    ruleId: explanatory-comments
+    title: Comment tricky code before it
+    statement:
+        Put a comment before tricky or complicated blocks of code.
+    rationale:
+        It saves the next reader from reverse engineering the logic.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        // Walk the list backwards so that removing an item does not shift the
+        // indexes still to be visited.
+        for (int i = items.Count - 1; i >= 0; i--) {
+          if (items[i].IsStale) items.RemoveAt(i);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [comments]
+    source: https://google.github.io/styleguide/csharpguide.html#explanatory-comments

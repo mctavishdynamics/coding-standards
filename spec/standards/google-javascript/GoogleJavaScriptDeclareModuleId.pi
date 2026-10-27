@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptDeclareModuleId:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.4.4.3
+    title: Use goog.declareModuleId only to upgrade Closure files in place
+    statement:
+        Use goog.declareModuleId only when converting a Closure file to an
+        ES module in place, with named exports. End its argument with a
+        lowerCamelCase name, and never call
+        goog.module.declareLegacyNamespace in an ES module.
+    rationale:
+        Requiring a declared module ID always yields the module object, so
+        its name should look like a namespace import. Legacy namespaces
+        cannot be attached to ES modules.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        import * as goog from '../closure/goog/goog.js';
+
+        goog.declareModuleId('billing.Invoice');
+        goog.module.declareLegacyNamespace();
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        import * as goog from '../closure/goog/goog.js';
+
+        goog.declareModuleId('billing.invoice');
+
+        export class Invoice {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, closure, migration]
+    source: https://google.github.io/styleguide/jsguide.html#3443-declaring-closure-module-ids-in-es-modules

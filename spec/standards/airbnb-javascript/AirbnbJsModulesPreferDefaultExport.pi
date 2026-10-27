@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsModulesPreferDefaultExport:
+    standard: @{AirbnbJavaScript}
+    ruleId: 10.6
+    title: Prefer a default export in single-export modules
+    statement:
+        When a module exports only one thing, make it the default export.
+        Enforced by the ESLint rule import/prefer-default-export.
+    rationale:
+        It encourages files that export one thing, which are easier to read
+        and maintain.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        export function slugify(text) {
+          return text.toLowerCase().replace(/\s+/g, '-');
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        export default function slugify(text) {
+          return text.toLowerCase().replace(/\s+/g, '-');
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, exports]
+    source: https://github.com/airbnb/javascript#modules--prefer-default-export

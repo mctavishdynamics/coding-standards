@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaExp01J:
+    standard: @{CertJava}
+    ruleId: EXP01-J
+    title: Do not use a null in a case where an object is required
+    statement:
+        Do not call methods on, access fields of, index, take the length of,
+        or throw a null reference. Check for null, or design the code so the
+        value can never be null.
+    rationale:
+        Using null where an object is needed throws NullPointerException and
+        stops the thread; code that follows this standard may not catch it.
+        CERT rates likelihood likely, detectable no, repairable yes,
+        priority P6, level L2.
+    exceptions:
+        A method may dereference a parameter without checking it when it
+        documents that it can throw NullPointerException, although this
+        should be relied on sparingly.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        String city = customer.getAddress().getCity();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Address address = customer.getAddress();
+        String city = (address != null) ? address.getCity() : "unknown";
+        \\\
+        ```
+    languages: [java]
+    tags: [null-safety, robustness]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/expressions-exp/exp01-j/

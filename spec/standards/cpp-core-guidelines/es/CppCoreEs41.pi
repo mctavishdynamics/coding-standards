@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs41:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.41
+    title: If in doubt about operator precedence, parenthesize
+    statement:
+        Add parentheses when the grouping of operators is not obvious,
+        especially when mixing bitwise, comparison and logical operators.
+    rationale:
+        Not everyone remembers the precedence table, and parentheses prevent
+        mistakes and make intent clear.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (flags & mask == mask) enable();   // parsed as flags & (mask == mask)
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        if ((flags & mask) == mask) enable();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [expressions, operators]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-parens

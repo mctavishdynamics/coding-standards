@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR21:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.21
+    title: Prefer unique_ptr over shared_ptr unless you need to share ownership
+    statement:
+        Use unique_ptr by default and reach for shared_ptr only when several
+        owners really must keep an object alive together.
+    rationale:
+        A unique_ptr is simpler, makes the moment of destruction predictable
+        and costs nothing for a use count.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::shared_ptr<Parser> make_parser() {
+            return std::make_shared<Parser>();   // only ever one owner
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::unique_ptr<Parser> make_parser() {
+            return std::make_unique<Parser>();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [ownership, smart-pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-unique

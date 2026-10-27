@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftOtherExpressions:
+    standard: @{GoogleSwift}
+    ruleId: other-expressions
+    title: Indent wrapped expressions by two
+    statement:
+        Indent the line after the first break in a non-call expression
+        exactly two spaces from the original line, changing indentation in
+        steps of two and aligning only parallel elements. When there are
+        many continuation lines, split the expression with temporary
+        variables.
+    rationale:
+        Consistent small steps show the structure without drifting right.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let score = baseScore * difficultyMultiplier +
+            timeBonus - penaltyPoints * penaltyWeight
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let score = baseScore * difficultyMultiplier +
+          timeBonus - penaltyPoints * penaltyWeight
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, line-wrapping]
+    source: https://google.github.io/swift/#other-expressions

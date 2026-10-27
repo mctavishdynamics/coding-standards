@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptIteratingContainers:
+    standard: @{GoogleTypeScript}
+    ruleId: iterating-containers
+    title: Iterate arrays with for-of, not for-in
+    statement:
+        Prefer for-of to loop over arrays; forEach and indexed for loops are
+        also fine. Use for-in only on dict-style objects, never on arrays,
+        and filter it with hasOwnProperty. Prefer for-of over Object.keys,
+        values or entries to for-in.
+    rationale:
+        for-in over an array yields string indices rather than values, and
+        on objects it also visits inherited properties.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        for (const i in names) {
+          console.log(names[i]);
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        for (const name of names) {
+          console.log(name);
+        }
+        for (const [i, name] of names.entries()) {
+          console.log(i, name);
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [loops, iteration, arrays]
+    source: https://google.github.io/styleguide/tsguide.html#iterating-containers

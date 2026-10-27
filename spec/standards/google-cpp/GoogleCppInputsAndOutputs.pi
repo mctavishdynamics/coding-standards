@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppInputsAndOutputs:
+    standard: @{GoogleCpp}
+    ruleId: Inputs_and_Outputs
+    title: Prefer return values and put inputs before outputs
+    statement:
+        Prefer return values over output parameters, and return by value or
+        by reference rather than raw pointers unless null is possible. Pass
+        inputs by value or const reference and outputs by reference,
+        using std::optional or pointers for optional ones. Put input-only
+        parameters before output parameters, and avoid requiring reference
+        parameters to outlive the call.
+    rationale:
+        Return values read more clearly and often perform as well.
+        Consistent parameter conventions show the role of each argument, and
+        references that must outlive the call invite lifetime bugs with
+        temporaries.
+    exceptions:
+        Parameter order may bend for in/out parameters, consistency with
+        related functions, or variadic functions.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void ParseHeader(std::string* name, const std::string& line, bool* ok);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::optional<std::string> ParseHeader(const std::string& line);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, parameters, api-design]
+    source: https://google.github.io/styleguide/cppguide.html#Inputs_and_Outputs

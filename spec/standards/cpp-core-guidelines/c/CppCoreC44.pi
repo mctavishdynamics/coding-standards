@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC44:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.44
+    title: Keep default constructors simple and non-throwing
+    statement:
+        Prefer default constructors that do not allocate or perform other
+        operations that might fail.
+    rationale:
+        A default state reachable without failure simplifies error handling
+        and the design of move operations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Pool {
+        public:
+            Pool() : blocks_(new Block[1024]) {}   // may throw bad_alloc
+        private:
+            Block* blocks_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Pool {
+        public:
+            Pool() noexcept = default;   // empty pool, allocates on first use
+        private:
+            std::vector<Block> blocks_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, exceptions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-default00

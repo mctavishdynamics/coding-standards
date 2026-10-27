@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptAvoidStaticMethodDynamicDispatch:
+    standard: @{GoogleTypeScript}
+    ruleId: avoid-static-method-dynamic-dispatch
+    title: Do not rely on dynamic dispatch of static methods
+    statement:
+        Call a static method only on the class that defines it. Do not call
+        it through a variable that may hold a subclass constructor, and
+        never on a subclass that does not define the method itself.
+    rationale:
+        Static dispatch through subclasses is surprising and breaks under
+        optimisations that collapse static properties.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Shape {
+          static create() { return new Shape(); }
+        }
+        class Circle extends Shape {}
+
+        const shape = Circle.create();
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Shape {
+          static create() { return new Shape(); }
+        }
+        class Circle extends Shape {}
+
+        const shape = Shape.create();
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, static, inheritance]
+    source: https://google.github.io/styleguide/tsguide.html#avoid-static-method-dynamic-dispatch

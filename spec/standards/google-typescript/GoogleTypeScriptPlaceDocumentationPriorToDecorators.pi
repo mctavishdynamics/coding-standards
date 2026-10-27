@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptPlaceDocumentationPriorToDecorators:
+    standard: @{GoogleTypeScript}
+    ruleId: place-documentation-prior-to-decorators
+    title: Put JSDoc before decorators
+    statement:
+        When a class, method or property has both a decorator and JSDoc,
+        write the JSDoc first. Never place JSDoc between the decorator and
+        the decorated declaration.
+    rationale:
+        Tools associate the JSDoc with the declaration only when it comes
+        before the decorator.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        @Component({selector: 'app-cart', template: ''})
+        /** Shows the items in the cart. */
+        export class CartComponent {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /** Shows the items in the cart. */
+        @Component({selector: 'app-cart', template: ''})
+        export class CartComponent {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc, decorators]
+    source: https://google.github.io/styleguide/tsguide.html#place-documentation-prior-to-decorators

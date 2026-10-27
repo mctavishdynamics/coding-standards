@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoVariadicArrayConstructor:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.2.2
+    title: Do not use the variadic Array constructor
+    statement:
+        Create arrays with literals, not with new Array and a list of
+        elements.
+    rationale:
+        The constructor changes meaning with its argument count; a single
+        number makes a sparse array of that length instead of a one-element
+        array.
+    exceptions:
+        new Array with a single length argument may be used to allocate an
+        array of a given size.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const ids = new Array(firstId, secondId);
+        const one = new Array(count);  // meant [count]
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const ids = [firstId, secondId];
+        const one = [count];
+        \\\
+        ```
+    languages: [javascript]
+    tags: [arrays, constructors]
+    source: https://google.github.io/styleguide/jsguide.html#522-do-not-use-the-variadic-array-constructor

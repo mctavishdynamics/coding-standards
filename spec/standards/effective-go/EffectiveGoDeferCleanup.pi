@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoDeferCleanup:
+    standard: @{EffectiveGo}
+    ruleId: defer
+    title: Defer cleanup right after acquiring a resource
+    statement:
+        Release resources such as files and mutexes with a deferred call
+        placed immediately after acquiring them.
+    rationale:
+        The cleanup then runs on every return path, including ones added
+        later, and it sits next to the acquisition where readers expect it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func checksum(path string) (uint32, error) {
+            f, err := os.Open(path)
+            if err != nil {
+                return 0, err
+            }
+            data, err := io.ReadAll(f)
+            if err != nil {
+                return 0, err // f is never closed
+            }
+            f.Close()
+            return crc32.ChecksumIEEE(data), nil
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func checksum(path string) (uint32, error) {
+            f, err := os.Open(path)
+            if err != nil {
+                return 0, err
+            }
+            defer f.Close()
+            data, err := io.ReadAll(f)
+            if err != nil {
+                return 0, err
+            }
+            return crc32.ChecksumIEEE(data), nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [resource-management, defer]
+    source: https://go.dev/doc/effective_go#defer

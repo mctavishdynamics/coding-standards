@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleR import GoogleR
+
+export coding-rule GoogleRQualifyingNamespaces:
+    standard: @{GoogleR}
+    ruleId: qualifying-namespaces
+    title: Qualify the namespace of every external function
+    statement:
+        Call functions from other packages as package::function. Do not use
+        the Roxygen import tag to bring a whole package into the NAMESPACE,
+        and when you do import a function, put the importFrom tag in the
+        Roxygen header of the function that uses it.
+    rationale:
+        Importing every function of a package risks name collisions in a
+        very large codebase. The small cost of the double colon is repaid by
+        dependencies that are easy to see.
+    exceptions:
+        Infix functions such as %>% must be imported, as must certain rlang
+        pronouns such as .data. Functions from the default R packages
+        (datasets, utils, grDevices, graphics, stats and methods) need not
+        be qualified, and the whole package may be imported if needed.
+    severity: null
+    noncompliant:
+        ```r
+        \\\
+        #' @import dplyr
+        SummarizeSales <- function(sales) {
+          return(summarize(sales, total = sum(amount)))
+        }
+        \\\
+        ```
+    compliant:
+        ```r
+        \\\
+        SummarizeSales <- function(sales) {
+          return(dplyr::summarize(sales, total = sum(amount)))
+        }
+        \\\
+        ```
+    languages: [r]
+    tags: [namespaces, dependencies, packages]
+    source: https://google.github.io/styleguide/Rguide.html#qualifying-namespaces

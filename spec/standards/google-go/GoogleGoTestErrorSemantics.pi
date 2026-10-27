@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTestErrorSemantics:
+    standard: @{GoogleGo}
+    ruleId: decisions/test-error-semantics
+    title: Test error semantics, not error strings
+    statement:
+        Do not check what kind of error was returned by comparing its
+        message. Test only whether an error occurred, or use errors.Is or
+        cmp with cmpopts.EquateErrors for semantic matches. If wantErr
+        values are only nil or any error, use a bool.
+    rationale:
+        Message text is for humans and changes, turning string-matching
+        tests into change detectors.
+    exceptions:
+        String checks are fine for verifying properties of messages produced
+        by the package under test, such as including a parameter name.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        _, err := Open("missing.txt")
+        if err == nil || err.Error() != "open missing.txt: no such file or directory" {
+            t.Errorf("Open() error = %v", err)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        _, err := Open("missing.txt")
+        if !errors.Is(err, fs.ErrNotExist) {
+            t.Errorf("Open(%q) error = %v, want fs.ErrNotExist", "missing.txt", err)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, errors]
+    source: https://google.github.io/styleguide/go/decisions#test-error-semantics

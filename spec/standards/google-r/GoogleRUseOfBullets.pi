@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleR import GoogleR
+
+export coding-rule GoogleRUseOfBullets:
+    standard: @{GoogleR}
+    ruleId: use-of-bullets
+    title: Use ASCII bullets in error messages
+    statement:
+        When an error message contains a bulleted list, use the ASCII
+        asterisk as the bullet rather than a Unicode bullet character.
+    rationale:
+        Google prefers ASCII bullets to Unicode ones when producing error
+        messages.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```r
+        \\\
+        stop("Invalid input:\n\u2022 `x` must be numeric")
+        \\\
+        ```
+    compliant:
+        ```r
+        \\\
+        stop("Invalid input:\n* `x` must be numeric")
+        \\\
+        ```
+    languages: [r]
+    tags: [error-handling, messages]
+    source: https://google.github.io/styleguide/Rguide.html#use-of-bullets

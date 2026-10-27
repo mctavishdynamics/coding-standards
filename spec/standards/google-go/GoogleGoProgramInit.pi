@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoProgramInit:
+    standard: @{GoogleGo}
+    ruleId: best-practices/program-init
+    title: Report initialisation errors from main with log.Exit
+    statement:
+        Propagate initialisation errors such as bad flags or configuration
+        up to main, which should call log.Exit with a message explaining how
+        to fix the problem, rather than log.Fatal.
+    rationale:
+        A human-readable, actionable message helps more than a stack trace
+        pointing at the check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func loadConfig(path string) *Config {
+            cfg, err := parse(path)
+            if err != nil {
+                log.Fatal(err)
+            }
+            return cfg
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func main() {
+            cfg, err := loadConfig(*configPath)
+            if err != nil {
+                log.Exitf("Invalid --config %q: %v (see go/billing-config)", *configPath, err)
+            }
+            run(cfg)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, errors, initialization]
+    source: https://google.github.io/styleguide/go/best-practices#program-init

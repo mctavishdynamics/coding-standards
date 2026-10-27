@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoErrorPercentWSentinelPlacement:
+    standard: @{GoogleGo}
+    ruleId: best-practices/error-percent-w-sentinel-placement
+    title: Put a wrapped sentinel error at the start
+    statement:
+        When wrapping a sentinel error that categorises the failure, place
+        %w at the beginning of the message so the category is seen first.
+    rationale:
+        Readers can classify the failure, such as not found or invalid
+        argument, without reading the details.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        return fmt.Errorf("user %q has no email: %w", id, ErrInvalidArgument)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        return fmt.Errorf("%w: user %q has no email", ErrInvalidArgument, id)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, errors, wrapping]
+    source: https://google.github.io/styleguide/go/best-practices#error-percent-w-sentinel-placement

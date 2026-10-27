@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppMem53Cpp:
+    standard: @{CertCpp}
+    ruleId: MEM53-CPP
+    title: Explicitly construct and destruct objects when manually managing object lifetime
+    statement:
+        When you obtain raw storage yourself, start each object's lifetime
+        with placement new or an allocator's construct, and end it with an
+        explicit destructor call before releasing the storage.
+    rationale:
+        Raw memory from malloc or operator new holds no object, so using it
+        without construction, or freeing it without destruction, is
+        undefined behavior and can leak resources. CERT rates likelihood
+        likely, detectable no, repairable no, priority P9, level L2.
+    exceptions:
+        Objects of trivially constructible types need no constructor call,
+        and trivially destructible types need no destructor call.
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        std::string* make_label() {
+            void* raw = std::malloc(sizeof(std::string));
+            auto* label = static_cast<std::string*>(raw);
+            *label = "new";
+            return label;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string* make_label() {
+            void* raw = std::malloc(sizeof(std::string));
+            if (!raw) {
+                throw std::bad_alloc();
+            }
+            return new (raw) std::string("new");
+        }
+
+        void free_label(std::string* label) {
+            label->~basic_string();
+            std::free(label);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, lifetime, construction]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/memory-management-mem/mem53-cpp

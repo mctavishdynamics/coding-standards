@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon41C:
+    standard: @{CertC}
+    ruleId: CON41-C
+    title: Wrap functions that can fail spuriously in a loop
+    statement:
+        Call atomic_compare_exchange_weak and its explicit form inside a
+        loop that retries until the exchange succeeds or the expected value
+        really differs.
+    rationale:
+        The weak forms may fail even when the values match, so a single call
+        can silently skip a required update. CERT rates likelihood unlikely,
+        detectable yes, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        void raise_max(atomic_int *max, int v) {
+            int cur = atomic_load(max);
+            if (v > cur) {
+                atomic_compare_exchange_weak(max, &cur, v);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void raise_max(atomic_int *max, int v) {
+            int cur = atomic_load(max);
+            while (v > cur && !atomic_compare_exchange_weak(max, &cur, v)) {
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [concurrency, atomics]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/concurrency-con/con41-c

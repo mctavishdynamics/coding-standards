@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT140:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.140
+    title: If an operation can be reused, give it a name
+    statement:
+        Turn an operation that is used, or likely to be used, in more than
+        one place into a named function or function object rather than
+        repeating a lambda. This restates rule F.10.
+    rationale:
+        A named operation documents intent, can be tested on its own, and
+        keeps copies from drifting apart.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto a = std::count_if(v.begin(), v.end(), [](const Order& o) { return o.total > 1000 && !o.paid; });
+        auto b = std::find_if(w.begin(), w.end(), [](const Order& o) { return o.total > 1000 && !o.paid; });
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        bool is_large_unpaid(const Order& o) { return o.total > 1000 && !o.paid; }
+
+        auto a = std::count_if(v.begin(), v.end(), is_large_unpaid);
+        auto b = std::find_if(w.begin(), w.end(), is_large_unpaid);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, lambdas, reuse]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-name

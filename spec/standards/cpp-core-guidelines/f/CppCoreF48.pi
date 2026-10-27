@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF48:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.48
+    title: Do not return std::move(local)
+    statement:
+        Return a local variable by name, not wrapped in std::move.
+    rationale:
+        Returning a local already moves it implicitly. An explicit std::move
+        prevents return value optimization, which could have removed the
+        move entirely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::vector<int> squares(int n) {
+            std::vector<int> v;
+            for (int i = 0; i < n; ++i) v.push_back(i * i);
+            return std::move(v);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<int> squares(int n) {
+            std::vector<int> v;
+            for (int i = 0; i < n; ++i) v.push_back(i * i);
+            return v;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, return-values, move-semantics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-return-move-local

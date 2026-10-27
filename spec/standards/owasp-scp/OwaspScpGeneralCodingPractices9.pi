@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpGeneralCodingPractices9:
+    standard: @{OwaspScp}
+    ruleId: general-coding-practices-9
+    title: Never pass user data to dynamic execution functions
+    statement:
+        Do not give user-supplied data to any function that executes code
+        dynamically.
+    rationale:
+        Dynamic execution of user data lets the user run arbitrary code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def calculate(expression):
+            return eval(expression)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import operator
+
+        OPS = {"+": operator.add, "-": operator.sub, "*": operator.mul}
+
+        def calculate(left, op, right):
+            return OPS[op](float(left), float(right))
+        \\\
+        ```
+    languages: [any]
+    tags: [general, code-injection]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#general-coding-practices

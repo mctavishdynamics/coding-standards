@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoStringConstants:
+    standard: @{GoogleGo}
+    ruleId: best-practices/string-constants
+    title: Use raw string literals for multi-line constants
+    statement:
+        Prefer backtick raw string literals for constant multi-line strings.
+    rationale:
+        They read like the text itself, without escapes and concatenation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        const usage = "Usage of sync:\n" +
+            "  sync [flags] SRC DST\n" +
+            "  -n  dry run\n"
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        const usage = `Usage of sync:
+          sync [flags] SRC DST
+          -n  dry run
+        `
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, strings, literals]
+    source: https://google.github.io/styleguide/go/best-practices#string-constants

@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs28:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.28
+    title: Use lambdas for complex initialization, especially of const variables
+    statement:
+        When initializing a variable takes several steps, compute it in an
+        immediately invoked lambda so the variable can still be const.
+    rationale:
+        The lambda keeps the scratch variables local to the initialization
+        without inventing a one-off named function, and the result can be
+        const.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::string greeting;
+        if (user.vip()) greeting = "Welcome back, ";
+        else greeting = "Hello, ";
+        greeting += user.name();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        const std::string greeting = [&] {
+            std::string g = user.vip() ? "Welcome back, " : "Hello, ";
+            return g + user.name();
+        }();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [initialization, const, lambdas]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-lambda-init

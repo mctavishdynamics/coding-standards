@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSer02J:
+    standard: @{CertJava}
+    ruleId: SER02-J
+    title: Sign then seal objects before sending them outside a trust boundary
+    statement:
+        When an object crosses a trust boundary, sign it first with
+        SignedObject and then encrypt the signed object with SealedObject.
+        Use standard cryptography, not home-made schemes.
+    rationale:
+        Sealing protects confidentiality and signing protects integrity.
+        Signing after sealing lets an attacker strip the signature and
+        replace it, and home-made crypto is usually weak. CERT's risk
+        assessment gives likelihood probable, detectable no, repairable no,
+        priority P4 and level L3.
+    exceptions:
+        Signing a sealed object is acceptable to vouch for the sealed object
+        itself. Objects that never leave the trust boundary need not be
+        signed or sealed.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        SealedObject sealed = new SealedObject(order, cipher);
+        SignedObject signed = new SignedObject(sealed, privateKey, signature);
+        send(signed);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        SignedObject signed = new SignedObject(order, privateKey, signature);
+        SealedObject sealed = new SealedObject(signed, cipher);
+        send(sealed);
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, cryptography, trust-boundary]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/serialization-ser/ser02-j/

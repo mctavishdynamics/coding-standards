@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp42:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.42
+    title: Do not wait without a condition
+    statement:
+        Always wait on a condition variable with a predicate that states
+        what you are waiting for, so the waiter rechecks the shared state
+        after every wakeup.
+    rationale:
+        A bare wait can miss a notification sent before it started and block
+        forever, or wake spuriously and find no work.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Job JobQueue::pop()
+        {
+            std::unique_lock lock(mutex_);
+            ready_.wait(lock);   // may miss a notify or wake with an empty queue
+            Job job = std::move(jobs_.front());
+            jobs_.pop_front();
+            return job;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Job JobQueue::pop()
+        {
+            std::unique_lock lock(mutex_);
+            ready_.wait(lock, [this] { return !jobs_.empty(); });
+            Job job = std::move(jobs_.front());
+            jobs_.pop_front();
+            return job;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, condition-variables]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-wait

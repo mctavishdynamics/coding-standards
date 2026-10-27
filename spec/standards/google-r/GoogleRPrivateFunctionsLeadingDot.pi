@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleR import GoogleR
+
+export coding-rule GoogleRPrivateFunctionsLeadingDot:
+    standard: @{GoogleR}
+    ruleId: naming-conventions
+    title: Start private function names with a dot
+    statement:
+        Begin the name of a function that is internal to a package or script
+        with a dot, followed by its BigCamelCase name.
+    rationale:
+        The leading dot tells the reader where the function comes from and
+        that it is not meant to be called from outside.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```r
+        \\\
+        CleanColumnNames <- function(df) {
+          names(df) <- tolower(names(df))
+          return(df)
+        }
+        \\\
+        ```
+    compliant:
+        ```r
+        \\\
+        .CleanColumnNames <- function(df) {
+          names(df) <- tolower(names(df))
+          return(df)
+        }
+        \\\
+        ```
+    languages: [r]
+    tags: [naming, functions, visibility]
+    source: https://google.github.io/styleguide/Rguide.html#naming-conventions

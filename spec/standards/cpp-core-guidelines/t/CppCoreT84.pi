@@ -1,0 +1,51 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT84:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.84
+    title: Use a non-template core implementation to provide an ABI-stable interface
+    statement:
+        Put the real work in a non-template base or core implementation and
+        make the template a thin, type-safe wrapper around it.
+    rationale:
+        The core is compiled once and stays stable across instantiations,
+        which improves ABI stability and avoids code bloat.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+        class Stack {
+            struct Node { T value; Node* next; };
+            Node* top;
+        public:
+            void push(const T& v);   // linking logic duplicated for every T
+            void pop();
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Stack_base {
+        protected:
+            struct Node_base { Node_base* next; };
+            Node_base* top = nullptr;
+            void link(Node_base* n);   // compiled once
+            Node_base* unlink();
+        };
+
+        template<typename T>
+        class Stack : Stack_base {
+            struct Node : Node_base { T value; };
+        public:
+            void push(const T& v) { link(new Node{{nullptr}, v}); }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, abi, code-size]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-abi

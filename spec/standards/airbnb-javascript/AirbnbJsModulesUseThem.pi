@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsModulesUseThem:
+    standard: @{AirbnbJavaScript}
+    ruleId: 10.1
+    title: Use standard modules
+    statement:
+        Use import and export instead of a non-standard module system.
+        Transpile to another module system if a target needs it.
+    rationale:
+        ES modules are the standard and the direction the language is going.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const formatDate = require('./formatDate');
+        module.exports = formatDate.iso;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        import { iso } from './formatDate';
+        export default iso;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, es6]
+    source: https://github.com/airbnb/javascript#modules--use-them

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8WildcardImports:
+    standard: @{Pep8}
+    ruleId: imports-wildcard
+    title: Avoid wildcard imports
+    statement:
+        Do not use from module import star.
+    rationale:
+        Wildcard imports hide which names are in the namespace, which
+        confuses readers and automated tools.
+    exceptions:
+        Republishing an internal interface as part of a public API, such as
+        overlaying a pure Python module with an optional accelerator module,
+        is a defensible use. The rules on public and internal interfaces
+        still apply.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        from os.path import *
+
+        print(join(base, "data"))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from os.path import join
+
+        print(join(base, "data"))
+        \\\
+        ```
+    languages: [python]
+    tags: [imports, namespaces]
+    source: https://peps.python.org/pep-0008/#imports

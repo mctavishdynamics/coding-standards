@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsNamingUppercase:
+    standard: @{AirbnbJavaScript}
+    ruleId: 23.10
+    title: Upper-case only exported, unchanging constants
+    statement:
+        You may write a constant in UPPER_CASE only if it is exported,
+        declared with const and can be trusted never to change, including
+        its nested properties. Do not upper-case constants that are local to
+        a file. For an exported object, upper-case only the top-level name.
+    rationale:
+        Upper case then tells readers they can rely on the value never
+        changing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const MAX_ITEMS = 50; // local to this file
+        export let API_URL = 'https://example.test';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const maxItems = 50;
+        export const API_URL = 'https://example.test';
+        export const LIMITS = { upload: 10 };
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming, constants]
+    source: https://github.com/airbnb/javascript#naming--uppercase

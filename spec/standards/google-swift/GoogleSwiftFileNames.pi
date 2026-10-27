@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftFileNames:
+    standard: @{GoogleSwift}
+    ruleId: file-names
+    title: Name a source file after its primary entity
+    statement:
+        End Swift files in .swift and name each after the main entity it
+        holds. A file with a single extension adding a protocol conformance
+        is named Type+Protocol.swift, a file of several extensions uses a
+        Type+ prefix with a general name, and loose related declarations get
+        a descriptive name.
+    rationale:
+        Readers can locate a type or conformance from the file list alone.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        // File: Helpers.swift
+        extension Invoice: Codable {
+          // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        // File: Invoice+Codable.swift
+        extension Invoice: Codable {
+          // ...
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, files]
+    source: https://google.github.io/swift/#file-names

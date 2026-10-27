@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCImportAndInclude:
+    standard: @{GoogleObjC}
+    ruleId: import-and-include
+    title: Import Objective-C headers and include C headers
+    statement:
+        Use #import for Objective-C and Objective-C++ headers and #include
+        for C and C++ headers. C and C++ headers provide their own include
+        guards.
+    rationale:
+        Importing a C or C++ header blocks later includes of it and can
+        cause unexpected compilation behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        #include "ABCSession.h"
+        #import <vector>
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        #import "ABCSession.h"
+        #include <vector>
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [headers, preprocessor]
+    source: https://google.github.io/styleguide/objcguide.html#import-and-include

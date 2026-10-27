@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptGroupingParentheses:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.7
+    title: Use grouping parentheses unless clearly unnecessary
+    statement:
+        Omit optional grouping parentheses only when author and reviewer
+        agree the code cannot reasonably be misread without them. Do not
+        wrap the whole operand of delete, typeof, void, return, throw, case,
+        in, of or yield in parentheses. Type casts always need parentheses.
+    rationale:
+        Readers do not all remember the full precedence table, but redundant
+        parentheses around a whole operand only add clutter.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const ok = a && b || c;
+        return (items.length);
+        if (typeof (value) === 'string') {}
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const ok = (a && b) || c;
+        return items.length;
+        if (typeof value === 'string') {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, expressions, readability]
+    source: https://google.github.io/styleguide/jsguide.html#47-grouping-parentheses-recommended

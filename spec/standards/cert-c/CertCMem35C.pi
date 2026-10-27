@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem35C:
+    standard: @{CertC}
+    ruleId: MEM35-C
+    title: Allocate sufficient memory for an object
+    statement:
+        Compute allocation sizes from the type of the object being stored,
+        multiply by the element count without overflow, and add space for
+        any flexible array member.
+    rationale:
+        An undersized allocation turns every later write into a heap buffer
+        overflow. CERT rates likelihood probable, detectable no, repairable
+        no, priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+
+        long *make_counters(size_t n) {
+            return malloc(n * sizeof(int));
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdint.h>
+        #include <stdlib.h>
+
+        long *make_counters(size_t n) {
+            if (n > SIZE_MAX / sizeof(long)) {
+                return NULL;
+            }
+            return malloc(n * sizeof(long));
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, allocation, buffer-overflow]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/memory-management-mem/mem35-c

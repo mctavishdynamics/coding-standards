@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCNilChecks:
+    standard: @{GoogleObjC}
+    ruleId: nil-checks
+    title: Do not add nil checks only to avoid messaging nil
+    statement:
+        Do not wrap a message send in a nil check whose only purpose is to
+        avoid messaging nil. Still check C and C++ pointers and block
+        pointers before using them.
+    rationale:
+        A message to nil safely returns nil or zero, while dereferencing a
+        null C pointer or calling a nil block crashes.
+    exceptions:
+        This covers nil as a message target only; methods may not accept nil
+        as an argument.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        if (self.delegate) {
+          [self.delegate playerDidFinish:self];
+        }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        [self.delegate playerDidFinish:self];
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [null-safety, messaging]
+    source: https://google.github.io/styleguide/objcguide.html#nil-checks

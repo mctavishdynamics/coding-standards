@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio12J:
+    standard: @{CertJava}
+    ruleId: FIO12-J
+    title: Provide methods to read and write little-endian data
+    statement:
+        Java I/O streams use big-endian order. When exchanging little-endian
+        data, convert it explicitly, for example with ByteBuffer.order() or
+        Integer.reverseBytes().
+    rationale:
+        Reading little-endian data with big-endian methods produces wrong
+        values and unexpected behavior. CERT's risk assessment gives
+        likelihood unlikely, detectable no, repairable no, priority P1 and
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        int length = new DataInputStream(in).readInt();  // file is little-endian
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        byte[] raw = new byte[4];
+        new DataInputStream(in).readFully(raw);
+        int length = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        \\\
+        ```
+    languages: [java]
+    tags: [io, byte-order, interoperability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio12-j/

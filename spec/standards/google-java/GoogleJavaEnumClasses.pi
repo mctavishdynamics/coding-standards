@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaEnumClasses:
+    standard: @{GoogleJava}
+    ruleId: 4.8.1
+    title: Format enum classes like other classes, with some freedom for constants
+    statement:
+        A line break after the comma following an enum constant is optional,
+        and extra blank lines between constants are allowed. An enum with no
+        methods and no documentation on its constants may be written like an
+        array initializer. All other class formatting rules apply.
+    rationale:
+        Enums are classes, so they share class formatting, but simple
+        constant lists read best when kept compact.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```java
+        \\\
+        enum Direction { NORTH, EAST, SOUTH, WEST }
+
+        enum Level {
+          LOW,
+          HIGH {
+            @Override boolean isUrgent() {
+              return true;
+            }
+          };
+
+          boolean isUrgent() {
+            return false;
+          }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, enums]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.1-enum-classes

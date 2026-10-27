@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCStable:
+    standard: @{RustApiGuidelines}
+    ruleId: C-STABLE
+    title: Depend only on stable crates in the public API of a stable crate
+    statement:
+        A crate at version 1.0 or later uses only stable crates as public
+        dependencies, meaning crates whose types appear in its public API.
+        Watch for leaks such as a public From impl for another crate's type.
+    rationale:
+        A breaking release of a public dependency forces a breaking release
+        of every crate that exposes it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        // In a 1.x crate, with `fastqueue` at 0.3:
+        pub fn drain(q: fastqueue::Queue<Job>) -> Vec<Job> { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        // In a 1.x crate, with `fastqueue` kept private:
+        pub fn drain(q: JobQueue) -> Vec<Job> { /* ... */ }
+
+        pub struct JobQueue(fastqueue::Queue<Job>);
+        \\\
+        ```
+    languages: [rust]
+    tags: [dependencies, compatibility]
+    source: https://rust-lang.github.io/api-guidelines/necessities.html#c-stable

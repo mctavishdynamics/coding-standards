@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR4:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.4
+    title: Treat a raw reference as non-owning
+    statement:
+        A plain T& never owns the object it refers to. Do not delete through
+        a reference or hand ownership out as a reference.
+    rationale:
+        Most references are non-owning and readers and tools assume so.
+        Owners must be identifiable so that objects are deleted reliably.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Config& load_config() {
+            return *new Config(read_file("app.ini"));   // owner hidden behind a reference
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Config load_config() {
+            return Config(read_file("app.ini"));
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [ownership, references]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-ref

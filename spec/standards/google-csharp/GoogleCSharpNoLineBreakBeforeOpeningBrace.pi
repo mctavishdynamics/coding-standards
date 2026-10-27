@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpNoLineBreakBeforeOpeningBrace:
+    standard: @{GoogleCSharp}
+    ruleId: no-line-break-before-opening-brace
+    title: Do not break the line before an opening brace
+    statement:
+        Put an opening brace at the end of the line that starts the block,
+        not on a line of its own.
+    rationale:
+        This matches Google style in other languages and saves vertical
+        space.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public void Save()
+        {
+          _store.Write(this);
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Save() {
+          _store.Write(this);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [formatting, braces]
+    source: https://google.github.io/styleguide/csharpguide.html#whitespace-rules

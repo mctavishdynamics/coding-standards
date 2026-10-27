@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCIdentifyDesignatedInitializers:
+    standard: @{GoogleObjC}
+    ruleId: identify-designated-initializers
+    title: Mark designated initializers clearly
+    statement:
+        Annotate designated initializers with NS_DESIGNATED_INITIALIZER, or
+        name them in a comment if the attribute is unavailable, and prefer a
+        single one. Override inherited designated initializers so they route
+        through yours, or mark unsupported ones NS_UNAVAILABLE.
+    rationale:
+        Subclasses need to know which initializers to override, and clear
+        designated initializers make initialization easier to trace.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @interface ABCAccount : NSObject
+        - (instancetype)initWithID:(NSString *)accountID;
+        - (instancetype)initWithID:(NSString *)accountID name:(NSString *)name;
+        @end
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @interface ABCAccount : NSObject
+        - (instancetype)initWithID:(NSString *)accountID
+                              name:(NSString *)name NS_DESIGNATED_INITIALIZER;
+        - (instancetype)initWithID:(NSString *)accountID;
+        - (instancetype)init NS_UNAVAILABLE;
+        @end
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [initialization, classes]
+    source: https://google.github.io/styleguide/objcguide.html#identify-designated-initializers

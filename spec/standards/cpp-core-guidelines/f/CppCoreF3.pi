@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF3:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.3
+    title: Keep functions short and simple
+    statement:
+        Write functions that fit easily on a screen and have simple control
+        flow. Break large functions into smaller cohesive named functions.
+    rationale:
+        Long functions are hard to read, tend to contain complex code and
+        widely scoped variables, and hide logic errors. One to five lines
+        should feel normal.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int classify(const Reading& r) {
+            if (r.valid) {
+                if (r.value > 100) {
+                    if (r.sensor == Sensor::temp) { /* 30 lines */ }
+                    else { /* 30 lines */ }
+                } else { /* 40 lines */ }
+            }
+            return -1;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int classify(const Reading& r) {
+            if (!r.valid) return -1;
+            return r.value > 100 ? classify_high(r) : classify_normal(r);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, simplicity, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-single

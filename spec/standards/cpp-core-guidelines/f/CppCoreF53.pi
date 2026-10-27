@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF53:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.53
+    title: Avoid capturing by reference in lambdas that will be used non-locally
+    statement:
+        Capture by value in lambdas that may outlive the current scope, such
+        as those that are returned, stored on the heap or passed to another
+        thread.
+    rationale:
+        A reference capture stores a reference to a local, which dangles
+        once the scope ends if the lambda or a copy of it is still around.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::function<int()> make_counter() {
+            int count = 0;
+            return [&count] { return ++count; };   // count dies on return
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::function<int()> make_counter() {
+            int count = 0;
+            return [count]() mutable { return ++count; };
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, lambdas, captures, lifetime]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-value-capture

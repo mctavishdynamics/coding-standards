@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoComplexClis:
+    standard: @{GoogleGo}
+    ruleId: best-practices/complex-clis
+    title: Prefer the subcommands package for complex CLIs
+    statement:
+        For command-line tools with subcommands, use the subcommands package
+        unless you need features it lacks; with cobra, get the context from
+        cmd.Context. Keep library code separate so the CLI is just another
+        client.
+    rationale:
+        subcommands is simple and easy to use correctly, and a separate
+        library keeps the logic reusable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        RunE: func(cmd *cobra.Command, args []string) error {
+            ctx := context.Background()
+            return deploy(ctx, args)
+        },
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        RunE: func(cmd *cobra.Command, args []string) error {
+            return deploy(cmd.Context(), args)
+        },
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, cli, context]
+    source: https://google.github.io/styleguide/go/best-practices#complex-clis

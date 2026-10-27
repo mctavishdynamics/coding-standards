@@ -1,0 +1,58 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc39C:
+    standard: @{CertC}
+    ruleId: MSC39-C
+    title:
+        Do not call va_arg() on a va_list that has an indeterminate value
+    statement:
+        After passing a va_list to a function that calls va_arg on it, do
+        not use that va_list again in the caller without va_end and
+        va_start. Pass a pointer to the va_list when the callee should
+        advance it.
+    rationale:
+        Once another function has called va_arg on a copy, the caller's
+        va_list is indeterminate and reading from it is undefined behavior.
+        CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        static int next_int(va_list ap) {
+            return va_arg(ap, int);
+        }
+
+        int sum2(int count, ...) {
+            va_list ap;
+            va_start(ap, count);
+            int a = next_int(ap);
+            int b = va_arg(ap, int);
+            va_end(ap);
+            return a + b;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int next_int(va_list *ap) {
+            return va_arg(*ap, int);
+        }
+
+        int sum2(int count, ...) {
+            va_list ap;
+            va_start(ap, count);
+            int a = next_int(&ap);
+            int b = va_arg(ap, int);
+            va_end(ap);
+            return a + b;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [variadic-functions, undefined-behavior]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/miscellaneous-msc/msc39-c

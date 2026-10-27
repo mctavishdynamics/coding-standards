@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptIteratingObjects:
+    standard: @{GoogleTypeScript}
+    ruleId: iterating-objects
+    title: Do not use unfiltered for-in loops over objects
+    statement:
+        A for-in loop also visits enumerable properties inherited from the
+        prototype chain. Either filter it with a hasOwnProperty check or
+        iterate Object.keys or Object.entries with for-of.
+    rationale:
+        Unfiltered for-in loops pick up inherited properties, which leads to
+        subtle bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        for (const key in headers) {
+          request.setHeader(key, headers[key]);
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        for (const [key, value] of Object.entries(headers)) {
+          request.setHeader(key, value);
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [objects, iteration, loops]
+    source: https://google.github.io/styleguide/tsguide.html#iterating-objects

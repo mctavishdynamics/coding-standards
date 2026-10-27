@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum11J:
+    standard: @{CertJava}
+    ruleId: NUM11-J
+    title: Do not compare or inspect the string representation of floating-point values
+    statement:
+        Compare floating-point numbers as numbers, not through their string
+        forms. If you must use strings, format them explicitly and with
+        great care.
+    rationale:
+        The textual form of a float depends on its exact value and
+        formatting rules, so string checks can fail for numbers that look
+        equal. CERT rates likelihood likely, detectable yes, repairable yes,
+        priority P9, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        if (String.valueOf(ratio).equals("0.3")) {
+            apply();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (Math.abs(ratio - 0.3) < 1e-9) {
+            apply();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [floating-point, strings, comparison]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/numeric-types-and-operations-num/num11-j/

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8CommentsUpToDate:
+    standard: @{Pep8}
+    ruleId: comments-up-to-date
+    title: Keep comments up to date with the code
+    statement:
+        Update comments whenever the code they describe changes.
+    rationale:
+        A comment that contradicts the code is worse than no comment.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # Retry three times before giving up.
+        for attempt in range(5):
+            send(request)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        # Retry five times before giving up.
+        for attempt in range(5):
+            send(request)
+        \\\
+        ```
+    languages: [python]
+    tags: [comments, maintainability]
+    source: https://peps.python.org/pep-0008/#comments

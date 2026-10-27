@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpNamedClassOverTuple:
+    standard: @{GoogleCSharp}
+    ruleId: named-class-over-tuple
+    title: Return a named class instead of a tuple
+    statement:
+        In general, return a named class rather than a Tuple, especially for
+        complex results.
+    rationale:
+        Named members explain what each value means.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Tuple<int, int, string> ParseVersion(string text) { ... }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class Version {
+          public int Major { get; set; }
+          public int Minor { get; set; }
+          public string Label { get; set; }
+        }
+        public Version ParseVersion(string text) { ... }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [types, api-design]
+    source: https://google.github.io/styleguide/csharpguide.html#use-of-tuple-as-a-return-type

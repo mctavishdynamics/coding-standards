@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC90:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.90
+    title: Use constructors and assignment, not memset and memcpy
+    statement:
+        Initialize and copy objects with their constructors and assignment
+        operators. Do not use memset or memcpy on types that are not
+        trivially copyable.
+    rationale:
+        A constructor should produce a fully initialized object and copy
+        operations preserve invariants. Using memcpy on a
+        non-trivially-copyable type is undefined behavior and often corrupts
+        or slices data.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Base { virtual void f(); int n; };
+
+        Base b;
+        std::memset(&b, 0, sizeof b);   // wipes the vtable pointer
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Base { virtual void f(); int n = 0; };
+
+        Base b;          // constructor sets everything
+        Base c = b;      // copy constructor
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, copy, undefined-behavior]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-memset

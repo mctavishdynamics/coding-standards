@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaEnv05J:
+    standard: @{CertJava}
+    ruleId: ENV05-J
+    title: Do not deploy an application that can be remotely monitored
+    statement:
+        Disable remote monitoring and debugging interfaces such as JVMTI
+        agents, JPDA debugging and remote JMX before running a program in
+        production.
+    rationale:
+        An attacker who connects to these interfaces can inspect the
+        program's data, including sensitive information, and control its
+        behavior. CERT's risk assessment gives likelihood probable,
+        detectable no, repairable no, priority P6 and level L2.
+    exceptions:
+        Remote monitoring is allowed when no program outside the local trust
+        boundary can reach the program, such as on a fully trusted network
+        cut off from untrusted networks.
+    severity: high
+    noncompliant:
+        ```shell
+        \\\
+        java -agentlib:jdwp=transport=dt_socket,server=y,address=*:8000 \
+             -Dcom.sun.management.jmxremote.port=9010 -jar app.jar
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        java -jar app.jar
+        \\\
+        ```
+    languages: [java]
+    tags: [security, deployment, debugging]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/runtime-environment-env/env05-j/

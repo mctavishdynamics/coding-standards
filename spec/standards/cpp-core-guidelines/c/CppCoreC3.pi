@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC3:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.3
+    title: Use a class to separate interface from implementation
+    statement:
+        Expose the operations users need through public members and keep the
+        representation private, so the interface and the implementation are
+        visibly distinct.
+    rationale:
+        A clear boundary between what users call and how it works improves
+        readability and lets the implementation change without breaking
+        callers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Account {
+            double balance;        // anyone can edit it
+            std::vector<double> log;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Account {
+        public:
+            void deposit(double amount);
+            double balance() const;
+        private:
+            double balance_ = 0;
+            std::vector<double> log_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, encapsulation, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-interface

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaModuleDirectiveOrdering:
+    standard: @{GoogleJava}
+    ruleId: 3.5.1
+    title: Order module directives by kind
+    statement:
+        In a module declaration, group directives into blocks in this order:
+        requires, exports, opens, uses, then provides. Separate each block
+        that is present by a single blank line.
+    rationale:
+        A fixed order makes module descriptors easy to scan and compare.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        module com.example.store {
+          exports com.example.store.api;
+          requires java.sql;
+          provides com.example.spi.Codec with com.example.store.JsonCodec;
+          uses com.example.spi.Codec;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        module com.example.store {
+          requires java.sql;
+
+          exports com.example.store.api;
+
+          uses com.example.spi.Codec;
+
+          provides com.example.spi.Codec with com.example.store.JsonCodec;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [modules, ordering]
+    source: https://google.github.io/styleguide/javaguide.html#s3.5.1-ordering-module-directives

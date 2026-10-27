@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsVariablesNoChainAssignment:
+    standard: @{AirbnbJavaScript}
+    ruleId: 13.5
+    title: Do not chain variable assignments
+    statement:
+        Assign each variable in its own statement instead of chaining
+        assignments like a = b = c. Enforced by the ESLint rule
+        no-multi-assign.
+    rationale:
+        In a chained declaration only the first name is declared, so the
+        others become implicit globals.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const left = right = 0;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const left = 0;
+        const right = 0;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [variables, globals]
+    source: https://github.com/airbnb/javascript#variables--no-chain-assignment

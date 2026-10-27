@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaImportOrdering:
+    standard: @{GoogleJava}
+    ruleId: 3.3.3
+    title: Group static imports before non-static imports and sort each group
+    statement:
+        Put all static imports in one group, then all non-static imports in
+        another, with one blank line between the two groups and no other
+        blank lines. Within each group, sort the imported names in ASCII
+        order.
+    rationale:
+        A single deterministic order removes debate, makes duplicates
+        obvious and keeps merges of import blocks clean.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        import java.util.List;
+
+        import static com.google.common.base.Preconditions.checkNotNull;
+        import com.google.common.collect.ImmutableList;
+
+        import java.io.IOException;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        import static com.google.common.base.Preconditions.checkNotNull;
+
+        import com.google.common.collect.ImmutableList;
+        import java.io.IOException;
+        import java.util.List;
+        \\\
+        ```
+    languages: [java]
+    tags: [imports, ordering]
+    source: https://google.github.io/styleguide/javaguide.html#s3.3.3-import-ordering-and-spacing

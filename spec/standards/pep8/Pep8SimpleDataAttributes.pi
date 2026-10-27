@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8SimpleDataAttributes:
+    standard: @{Pep8}
+    ruleId: designing-for-inheritance-data-attributes
+    title: Expose simple data as attributes, not accessor methods
+    statement:
+        For simple public data, expose the attribute directly instead of
+        getter and setter methods. If it later needs behaviour, turn it into
+        a property. Keep properties free of side effects other than things
+        like caching, and avoid them for expensive operations.
+    rationale:
+        Python lets an attribute become a property without changing callers,
+        and attribute syntax tells callers that access is cheap.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Sensor:
+            def get_reading(self):
+                return self._reading
+
+            def set_reading(self, value):
+                self._reading = value
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Sensor:
+            def __init__(self):
+                self.reading = None
+        \\\
+        ```
+    languages: [python]
+    tags: [classes, api-design, properties]
+    source: https://peps.python.org/pep-0008/#designing-for-inheritance

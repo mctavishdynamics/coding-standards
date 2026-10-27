@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT25:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.25
+    title: Avoid complementary constraints
+    statement:
+        Do not overload templates on a constraint and its negation. Provide
+        a general template and a constrained one, or delete the general one
+        if no fallback exists.
+    rationale:
+        Negated constraints are brittle, and with several constraints the
+        number of required combinations grows exponentially. Overload
+        resolution already prefers the more constrained template.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T> requires (!Hashable<T>)
+        void index(const T&);
+
+        template<typename T> requires Hashable<T>
+        void index(const T&);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename T>
+        void index(const T&);          // general fallback
+
+        template<typename T> requires Hashable<T>
+        void index(const T&);          // chosen when Hashable holds
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts, overloading]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-not

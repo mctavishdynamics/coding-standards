@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet09J:
+    standard: @{CertJava}
+    ruleId: MET09-J
+    title: Define hashCode() whenever a class defines equals()
+    statement:
+        Whenever a class overrides equals, override hashCode so that equal
+        objects return the same hash code.
+    rationale:
+        Hash-based collections such as HashMap and HashSet fail to find
+        equal objects whose hash codes differ. CERT rates likelihood
+        unlikely, detectable yes, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        final class Point {
+            private final int x, y;
+            @Override public boolean equals(Object o) {
+                return o instanceof Point && ((Point) o).x == x && ((Point) o).y == y;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        final class Point {
+            private final int x, y;
+            @Override public boolean equals(Object o) {
+                return o instanceof Point && ((Point) o).x == x && ((Point) o).y == y;
+            }
+            @Override public int hashCode() { return Objects.hash(x, y); }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [equality, hashing, contracts]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met09-j/

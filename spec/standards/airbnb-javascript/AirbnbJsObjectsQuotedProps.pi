@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsObjectsQuotedProps:
+    standard: @{AirbnbJavaScript}
+    ruleId: 3.6
+    title: Quote only properties that are invalid identifiers
+    statement:
+        Leave property names unquoted unless the name is not a valid
+        identifier, such as one containing a hyphen. Enforced by the ESLint
+        rule quote-props.
+    rationale:
+        Unquoted names are easier to read, highlight better and are easier
+        for many engines to optimise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const headers = {
+          'accept': 'application/json',
+          'content-type': 'text/plain',
+        };
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const headers = {
+          accept: 'application/json',
+          'content-type': 'text/plain',
+        };
+        \\\
+        ```
+    languages: [javascript]
+    tags: [objects, formatting]
+    source: https://github.com/airbnb/javascript#objects--quoted-props

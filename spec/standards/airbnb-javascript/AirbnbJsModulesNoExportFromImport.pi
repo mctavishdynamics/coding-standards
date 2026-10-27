@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsModulesNoExportFromImport:
+    standard: @{AirbnbJavaScript}
+    ruleId: 10.3
+    title: Do not export directly from an import
+    statement:
+        Import a value first and then export it in a separate statement,
+        rather than re-exporting in one line.
+    rationale:
+        One clear way to import and one clear way to export keeps modules
+        consistent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        export { default } from './validators';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        import validators from './validators';
+        export default validators;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, exports]
+    source: https://github.com/airbnb/javascript#modules--no-export-from-import

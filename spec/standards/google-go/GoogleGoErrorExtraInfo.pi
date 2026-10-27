@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoErrorExtraInfo:
+    standard: @{GoogleGo}
+    ruleId: best-practices/error-extra-info
+    title: Add only useful context when wrapping errors
+    statement:
+        Annotate errors with context the underlying error lacks, and do not
+        repeat what it already says or add a note that merely says it
+        failed. Use %v to annotate or to translate errors at system
+        boundaries, and %w only when callers are meant to inspect the
+        underlying error.
+    rationale:
+        Redundant annotation clutters messages, and wrapping with %w makes
+        the wrapped error part of your API.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        f, err := os.Open(path)
+        if err != nil {
+            return fmt.Errorf("could not open %s: %w", path, err)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        f, err := os.Open(path)
+        if err != nil {
+            return fmt.Errorf("loading tenant overrides: %v", err)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, errors, wrapping]
+    source: https://google.github.io/styleguide/go/best-practices#error-extra-info

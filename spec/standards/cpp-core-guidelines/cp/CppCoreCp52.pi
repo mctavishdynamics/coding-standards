@@ -1,0 +1,48 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp52:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.52
+    title: Do not hold locks across coroutine suspension points
+    statement:
+        Release every lock and other synchronization primitive before a
+        co_await or other suspension point, typically by limiting the lock
+        object to a block.
+    rationale:
+        A coroutine suspended with a lock held can deadlock if the same
+        thread does other work needing that lock, resuming on another thread
+        makes the unlock undefined behavior, and the lock blocks other
+        threads for the whole suspension.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Task<void> Store::save(Record r)
+        {
+            std::lock_guard lock(mutex_);
+            pending_.push_back(r);
+            co_await disk_.flush(pending_);   // suspends while holding mutex_
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Task<void> Store::save(Record r)
+        {
+            std::vector<Record> batch;
+            {
+                std::lock_guard lock(mutex_);
+                pending_.push_back(r);
+                batch.swap(pending_);
+            }
+            co_await disk_.flush(batch);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, coroutines, locking]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rcoro-locks

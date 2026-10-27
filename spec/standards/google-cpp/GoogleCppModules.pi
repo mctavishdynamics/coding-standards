@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppModules:
+    standard: @{GoogleCpp}
+    ruleId: modules
+    title: Do not use C++20 modules
+    statement:
+        Do not use C++20 modules, including the module, export and import
+        keywords.
+    rationale:
+        Modules change how C++ is written and compiled, are not yet well
+        supported by build systems and tools, and their best practices are
+        still being explored.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        export module geometry;
+
+        export double Area(double w, double h);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // geometry.h
+        #ifndef MYPROJECT_GEOMETRY_H_
+        #define MYPROJECT_GEOMETRY_H_
+
+        double Area(double w, double h);
+
+        #endif  // MYPROJECT_GEOMETRY_H_
+        \\\
+        ```
+    languages: [cpp]
+    tags: [modules, tooling]
+    source: https://google.github.io/styleguide/cppguide.html#modules

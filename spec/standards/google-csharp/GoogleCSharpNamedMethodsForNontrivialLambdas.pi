@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpNamedMethodsForNontrivialLambdas:
+    standard: @{GoogleCSharp}
+    ruleId: named-methods-for-nontrivial-lambdas
+    title: Turn non-trivial or reused lambdas into methods
+    statement:
+        When a lambda has more than a couple of statements, not counting
+        declarations, or is used in several places, make it a named method.
+    rationale:
+        A named method documents intent, can be tested and avoids
+        duplication.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        orders.Where(o => {
+          var total = o.Lines.Sum(l => l.Price);
+          var limit = o.Customer.CreditLimit;
+          return total > limit && !o.IsPrepaid;
+        });
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        orders.Where(ExceedsCreditLimit);
+
+        private static bool ExceedsCreditLimit(Order order) {
+          var total = order.Lines.Sum(l => l.Price);
+          return total > order.Customer.CreditLimit && !order.IsPrepaid;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [lambdas, methods]
+    source: https://google.github.io/styleguide/csharpguide.html#lambdas-vs-named-methods

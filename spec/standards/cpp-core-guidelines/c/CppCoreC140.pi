@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC140:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.140
+    title: Use the same default arguments in a virtual function and its overriders
+    statement:
+        Do not give an overrider different default arguments from the
+        virtual function it overrides.
+    rationale:
+        Defaults are chosen from the static type of the call, not the
+        overrider, so different defaults produce confusing results.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Base {
+            virtual void scale(double factor = 1.0);
+        };
+        struct Derived : Base {
+            void scale(double factor = 2.0) override;
+        };
+
+        Base* p = new Derived;
+        p->scale();   // Derived::scale called with 1.0
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Base {
+            virtual void scale(double factor = 1.0);
+        };
+        struct Derived : Base {
+            void scale(double factor) override;   // no differing default
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, virtual-functions, default-arguments]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-virtual-default-arg

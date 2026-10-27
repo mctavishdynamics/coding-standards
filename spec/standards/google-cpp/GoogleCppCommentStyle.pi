@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppCommentStyle:
+    standard: @{GoogleCpp}
+    ruleId: Comment_Style
+    title: Use one comment syntax consistently
+    statement:
+        Use either line comments or block comments, and be consistent. Line
+        comments are much more common.
+    rationale:
+        Consistency in how and where you comment makes code easier to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        /* Loads the config. */
+        Config Load();
+        // Saves the config.
+        void Save(const Config& config);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Loads the config.
+        Config Load();
+        // Saves the config.
+        void Save(const Config& config);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, consistency]
+    source: https://google.github.io/styleguide/cppguide.html#Comment_Style

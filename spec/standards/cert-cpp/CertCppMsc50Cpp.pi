@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppMsc50Cpp:
+    standard: @{CertCpp}
+    ruleId: MSC50-CPP
+    title: Do not use std::rand() for generating pseudorandom numbers
+    statement:
+        Do not use std::rand to generate pseudorandom numbers. Use the
+        engines and distributions in the random header, or a cryptographic
+        generator when security depends on the values.
+    rationale:
+        The standard makes no quality guarantees for std::rand, which often
+        has a short, predictable cycle. CERT rates likelihood unlikely,
+        detectable yes, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        int roll_die() {
+            return std::rand() % 6 + 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int roll_die() {
+            static std::mt19937 engine(std::random_device{}());
+            std::uniform_int_distribution<int> dist(1, 6);
+            return dist(engine);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [random-numbers, security]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/miscellaneous-msc/msc50-cpp

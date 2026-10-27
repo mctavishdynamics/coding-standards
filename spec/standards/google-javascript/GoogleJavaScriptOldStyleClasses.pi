@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptOldStyleClasses:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.4.5
+    title: Use old-style class declarations only when ES6 classes are not feasible
+    statement:
+        Prefer ES6 classes. Use goog.defineClass or a constructor function
+        with goog.inherits only when subclasses or frameworks cannot use
+        class syntax. Define instance properties in the constructor after
+        the superclass call and methods on the prototype.
+    rationale:
+        Hand-built prototype chains are easy to get wrong, so the old form
+        is a fallback with helpers that do the wiring correctly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function Widget(id) {
+          this.id = id;
+          Base.call(this);
+        }
+        Widget.prototype = Object.create(Base.prototype);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * @constructor
+         * @extends {Base}
+         * @param {string} id
+         */
+        function Widget(id) {
+          Base.call(this);
+          /** @const */
+          this.id = id;
+        }
+        goog.inherits(Widget, Base);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, closure, legacy]
+    source: https://google.github.io/styleguide/jsguide.html#545-old-style-class-declarations

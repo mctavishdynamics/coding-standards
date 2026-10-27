@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptUseModulesNotNamespaces:
+    standard: @{GoogleTypeScript}
+    ruleId: use-modules-not-namespaces
+    title: Use ES modules, not namespaces or require
+    statement:
+        Organise code with ES module imports and exports. Do not use
+        namespace or module blocks, triple-slash reference directives, or
+        import x = require(...).
+    rationale:
+        Modules are the standard way to split code across files; namespaces
+        and require imports are legacy forms that tools handle poorly.
+    exceptions:
+        A namespace may be used when it is required to interface with
+        external third party code.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        namespace Billing {
+          export function charge(amount: number) {}
+        }
+
+        import fs = require('fs');
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        // billing.ts
+        export function charge(amount: number) {}
+
+        // caller.ts
+        import {charge} from './billing';
+        \\\
+        ```
+    languages: [typescript]
+    tags: [modules, imports]
+    source: https://google.github.io/styleguide/tsguide.html#use-modules-not-namespaces

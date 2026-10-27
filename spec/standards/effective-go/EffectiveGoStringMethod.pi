@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoStringMethod:
+    standard: @{EffectiveGo}
+    ruleId: printing
+    title: Define a String method to control printing
+    statement:
+        To give a type its own default format in fmt output, define a method
+        String with no arguments that returns a string.
+    rationale:
+        The fmt package calls String for the default verbs, so the type
+        prints the same way everywhere without special handling.
+    exceptions:
+        If both values and pointers of the type are printed, String needs a
+        value receiver.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        fmt.Printf("%d.%d.%d\n", v.Major, v.Minor, v.Patch)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (v Version) String() string {
+            return fmt.Sprintf("%d.%d.%d", v.Major, v.Minor, v.Patch)
+        }
+
+        fmt.Println(v)
+        \\\
+        ```
+    languages: [go]
+    tags: [printing, methods]
+    source: https://go.dev/doc/effective_go#printing

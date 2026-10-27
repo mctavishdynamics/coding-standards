@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs76:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.76
+    title: Avoid goto
+    statement:
+        Use structured control flow such as loops, functions, break and
+        return instead of goto.
+    rationale:
+        Better control structures exist for human readers, and goto makes
+        code harder to follow and more error-prone. It is best left to
+        generated code.
+    exceptions:
+        Breaking out of a nested loop is acceptable, provided the jump
+        always goes forward.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int i = 0;
+        again:
+        if (i < n) {
+            handle(i++);
+            goto again;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (int i = 0; i < n; ++i)
+            handle(i);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [control-flow, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-goto

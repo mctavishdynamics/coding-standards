@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8DeriveFromException:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-exception-base
+    title: Derive exceptions from Exception, not BaseException
+    statement:
+        Base custom exceptions on Exception. Inherit directly from
+        BaseException only for exceptions that should almost never be
+        caught.
+    rationale:
+        Handlers written as except Exception expect to catch program errors,
+        and BaseException subclasses slip past them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class QuotaExceededError(BaseException):
+            pass
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class QuotaExceededError(Exception):
+            pass
+        \\\
+        ```
+    languages: [python]
+    tags: [exceptions, error-handling]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

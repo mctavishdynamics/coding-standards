@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreP1:
+    standard: @{CppCoreGuidelines}
+    ruleId: P.1
+    title: Express ideas directly in code
+    statement:
+        State what the code means through types, names and standard
+        facilities rather than leaving it to comments or design documents.
+    rationale:
+        Compilers and many readers ignore comments. Ideas written as code
+        have defined meaning and can be checked by the compiler and other
+        tools.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Date {
+        public:
+            int month() const;   // returns 1..12
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum class Month { jan = 1, feb, mar, apr, may, jun,
+                           jul, aug, sep, oct, nov, dec };
+
+        class Date {
+        public:
+            Month month() const;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [philosophy, expressiveness, types]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rp-direct

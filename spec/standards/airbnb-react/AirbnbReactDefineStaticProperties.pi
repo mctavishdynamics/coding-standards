@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactDefineStaticProperties:
+    standard: @{AirbnbReact}
+    ruleId: ordering-2
+    title: Define propTypes and defaultProps outside the class
+    statement:
+        Declare propTypes, defaultProps and similar objects as constants in
+        the module, assign them to the component after the class, and export
+        the component last.
+    rationale:
+        Keeping these declarations together at module level makes a
+        component's interface easy to see in one place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        export default class Price extends React.Component {
+          render() {
+            return <span>{this.props.currency}{this.props.amount}</span>;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        const propTypes = {
+          amount: PropTypes.number.isRequired,
+          currency: PropTypes.string,
+        };
+
+        const defaultProps = {
+          currency: '$',
+        };
+
+        class Price extends React.Component {
+          render() {
+            return <span>{this.props.currency}{this.props.amount}</span>;
+          }
+        }
+
+        Price.propTypes = propTypes;
+        Price.defaultProps = defaultProps;
+
+        export default Price;
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [ordering, prop-types]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#ordering

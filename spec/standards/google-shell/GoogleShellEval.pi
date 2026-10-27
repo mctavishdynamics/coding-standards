@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellEval:
+    standard: @{GoogleShell}
+    ruleId: eval
+    title: Avoid eval
+    statement:
+        Do not use eval.
+    rationale:
+        eval mangles its input when used for assignment and can set
+        variables without any way to check what was set or whether it
+        succeeded.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        eval "$(load_settings)"
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        readarray -t settings < <(load_settings)
+        \\\
+        ```
+    languages: [shell]
+    tags: [security, error-prone]
+    source: https://google.github.io/styleguide/shellguide.html#eval

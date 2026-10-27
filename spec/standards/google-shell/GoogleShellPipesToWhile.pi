@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellPipesToWhile:
+    standard: @{GoogleShell}
+    ruleId: pipes-to-while
+    title: Use process substitution or readarray instead of piping to while
+    statement:
+        Feed a while loop through process substitution, or read the input
+        into an array with readarray, rather than piping into while. Be
+        careful with for loops over command output, which split on
+        whitespace rather than lines.
+    rationale:
+        A pipe runs the loop in a subshell, so variables set inside it never
+        reach the parent shell, which causes subtle bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        count=0
+        list_users | while read -r user; do
+          (( count += 1 ))
+        done
+        echo "${count}"  # always prints 0
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        count=0
+        while read -r user; do
+          (( count += 1 ))
+        done < <(list_users)
+        echo "${count}"
+        \\\
+        ```
+    languages: [shell]
+    tags: [subshells, loops]
+    source: https://google.github.io/styleguide/shellguide.html#pipes-to-while

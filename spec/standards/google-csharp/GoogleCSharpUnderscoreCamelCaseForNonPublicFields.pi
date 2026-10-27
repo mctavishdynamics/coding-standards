@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpUnderscoreCamelCaseForNonPublicFields:
+    standard: @{GoogleCSharp}
+    ruleId: underscore-camel-case-for-non-public-fields
+    title: Use _camelCase for non-public fields and properties
+    statement:
+        Name private, protected, internal and protected internal fields and
+        properties in camelCase with a leading underscore.
+    rationale:
+        The underscore marks member state and keeps it apart from locals and
+        parameters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        private int retryCount;
+        protected string m_userName;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        private int _retryCount;
+        protected string _userName;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [naming, fields]
+    source: https://google.github.io/styleguide/csharpguide.html#code

@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoUsefulZeroValue:
+    standard: @{EffectiveGo}
+    ruleId: allocation-new
+    title: Make the zero value useful
+    statement:
+        Design data structures so that the zero value of the type, as
+        returned by new or a plain declaration, is ready to use without
+        further initialization.
+    rationale:
+        Users can then declare or allocate a value and start working, as
+        with bytes.Buffer and sync.Mutex, and the property carries over to
+        types that embed them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Registry struct {
+            items map[string]Item
+        }
+
+        func (r *Registry) Add(name string, it Item) {
+            r.items[name] = it // panics unless a constructor ran
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Registry struct {
+            mu    sync.Mutex
+            items map[string]Item
+        }
+
+        func (r *Registry) Add(name string, it Item) {
+            r.mu.Lock()
+            defer r.mu.Unlock()
+            if r.items == nil {
+                r.items = make(map[string]Item)
+            }
+            r.items[name] = it
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [types, initialization, api-design]
+    source: https://go.dev/doc/effective_go#allocation_new

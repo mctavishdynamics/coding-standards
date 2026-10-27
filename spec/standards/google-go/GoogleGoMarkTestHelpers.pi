@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoMarkTestHelpers:
+    standard: @{GoogleGo}
+    ruleId: decisions/mark-test-helpers
+    title: Call t.Helper in test helpers
+    statement:
+        In a setup or cleanup helper that takes a testing.T, call t.Helper
+        so failures point at the caller, and put the testing.T after any
+        context and before other parameters. Do not use t.Helper to build
+        assertion libraries.
+    rationale:
+        Helper failures are environment failures and should be attributed to
+        the line that called the helper.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func newTestDB(name string, t *testing.T) *DB {
+            db, err := Open(name)
+            if err != nil {
+                t.Fatalf("Open(%q) failed: %v", name, err)
+            }
+            return db
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func newTestDB(t *testing.T, name string) *DB {
+            t.Helper()
+            db, err := Open(name)
+            if err != nil {
+                t.Fatalf("Setup: Open(%q) failed: %v", name, err)
+            }
+            return db
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, test-helpers]
+    source: https://google.github.io/styleguide/go/decisions#mark-test-helpers

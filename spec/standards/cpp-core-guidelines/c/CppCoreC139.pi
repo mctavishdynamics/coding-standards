@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC139:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.139
+    title: Use final on classes sparingly
+    statement:
+        Mark a class final only when there is a clear logical reason that it
+        must never be derived from.
+    rationale:
+        A logical need to cap a hierarchy is rare, and final classes hurt
+        extensibility.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Widget final { /* ... */ };       // just in case
+        class Panel final : public Widget {};
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Widget { /* ... */ };
+        class Panel : public Widget {};
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, final, extensibility]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-final

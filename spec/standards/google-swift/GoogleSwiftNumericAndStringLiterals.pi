@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftNumericAndStringLiterals:
+    standard: @{GoogleSwift}
+    ruleId: numeric-and-string-literals
+    title: Coerce literals with a type annotation or as
+    statement:
+        When a literal initializes a type other than its default and context
+        cannot infer it, give the declaration an explicit type or coerce the
+        literal with as. Do not use initializer syntax for this.
+    rationale:
+        Initializer syntax converts at run time and can give misleading
+        errors or crash, while coercion is checked at compile time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let mask = UInt64(0xFFFF_FFFF_FFFF_FFFF)
+        let initial = Character("A")
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let mask: UInt64 = 0xFFFF_FFFF_FFFF_FFFF
+        let initial = "A" as Character
+        \\\
+        ```
+    languages: [swift]
+    tags: [literals, types]
+    source: https://google.github.io/swift/#numeric-and-string-literals

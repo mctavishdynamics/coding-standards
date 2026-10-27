@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppThreadLocal:
+    standard: @{GoogleCpp}
+    ruleId: thread_local
+    title: Initialize namespace-scope thread_local with constinit
+    statement:
+        A thread_local variable outside a function must be initialized with
+        a true compile-time constant, enforced with constinit. Prefer
+        thread_local over other ways of making thread-local data, and prefer
+        types whose destructors run no user code.
+    rationale:
+        Non-constant thread_local globals suffer the same initialization
+        order problems as statics, and their destructors can touch
+        already-destroyed thread_locals, causing hard-to-diagnose
+        use-after-free bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        thread_local std::string request_id = MakeRequestId();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constinit thread_local int request_depth = 0;
+
+        std::string& RequestId() {
+          thread_local std::string id;
+          return id;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, globals, initialization]
+    source: https://google.github.io/styleguide/cppguide.html#thread_local

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8EnglishAsciiIdentifiers:
+    standard: @{Pep8}
+    ruleId: source-file-encoding-identifiers
+    title: Use ASCII identifiers made of English words
+    statement:
+        Identifiers in the standard library must be ASCII only and should
+        use English words where feasible. Open source projects with a global
+        audience are encouraged to do the same.
+    rationale:
+        ASCII English names can be read and typed by every contributor
+        regardless of keyboard or language.
+    exceptions:
+        Abbreviations and technical terms that are not English words are
+        fine.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def größe_berechnen(länge, breite):
+            return länge * breite
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def compute_area(length, width):
+            return length * width
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, encoding]
+    source: https://peps.python.org/pep-0008/#source-file-encoding

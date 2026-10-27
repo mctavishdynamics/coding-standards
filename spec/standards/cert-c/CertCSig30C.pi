@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCSig30C:
+    standard: @{CertC}
+    ruleId: SIG30-C
+    title:
+        Call only asynchronous-safe functions within signal handlers
+    statement:
+        From a signal handler, call only functions that are safe to call
+        asynchronously. In portable C those are abort, _Exit, quick_exit and
+        signal; POSIX adds a longer list. Do the real work outside the
+        handler.
+    rationale:
+        Calling a function such as printf or free from a handler can
+        re-enter it while it is mid-update, corrupting state or deadlocking.
+        CERT rates likelihood likely, detectable yes, repairable no,
+        priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        static void on_term(int sig) {
+            fprintf(stderr, "caught signal %d\n", sig);
+            free(session_buffer);
+            exit(EXIT_FAILURE);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static volatile sig_atomic_t stop_requested = 0;
+
+        static void on_term(int sig) {
+            (void)sig;
+            stop_requested = 1;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [signals, concurrency]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/signals-sig/sig30-c

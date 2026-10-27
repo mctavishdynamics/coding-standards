@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf3:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.3
+    title: Use header files for all declarations used in multiple source files
+    statement:
+        Declare anything used from more than one source file in a header and
+        include it, instead of repeating extern declarations.
+    rationale:
+        Scattered copies of a declaration cannot all be found when the type
+        changes, and mismatches surface late, if at all, from the linker.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // report.cpp
+        extern void flush_cache(int level);
+        void report() { flush_cache(2); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // cache.h
+        void flush_cache(int level);
+
+        // report.cpp
+        #include "cache.h"
+        void report() { flush_cache(2); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, maintainability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-declaration-header

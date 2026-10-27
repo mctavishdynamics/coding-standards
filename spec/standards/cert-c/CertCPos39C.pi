@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos39C:
+    standard: @{CertC}
+    ruleId: POS39-C
+    title:
+        Use the correct byte ordering when transferring data between systems
+    statement:
+        Convert multibyte integers to network byte order with htonl or htons
+        before sending them, and back with ntohl or ntohs after receiving
+        them.
+    rationale:
+        Hosts differ in endianness, so raw integers sent between them are
+        misread. CERT rates likelihood likely, detectable yes, repairable
+        no, priority P12, level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        uint32_t len = (uint32_t)payload_size;
+        send(sock, &len, sizeof len, 0);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        uint32_t len = htonl((uint32_t)payload_size);
+        send(sock, &len, sizeof len, 0);
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, networking, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos39-c

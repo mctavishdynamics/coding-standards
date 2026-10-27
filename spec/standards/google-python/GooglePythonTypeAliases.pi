@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonTypeAliases:
+    standard: @{GooglePython}
+    ruleId: 3.19.6
+    title: Name type aliases in CapWords and annotate them as TypeAlias
+    statement:
+        Give aliases of complex types CapWords names, with a leading
+        underscore when used only in the module, and annotate them with
+        typing.TypeAlias. Do not use aliases as a way around the rule
+        against importing individual names.
+    rationale:
+        The naming and annotation make an alias distinguishable from an
+        ordinary global variable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import collections
+
+        defaultdict = collections.defaultdict
+        scores_by_team = dict[str, list[int]]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from typing import TypeAlias
+
+        ScoresByTeam: TypeAlias = dict[str, list[int]]
+        _Point: TypeAlias = tuple[float, float]
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, aliases, naming]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.6-type-aliases

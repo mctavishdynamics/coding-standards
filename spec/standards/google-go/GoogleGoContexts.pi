@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoContexts:
+    standard: @{GoogleGo}
+    ruleId: decisions/contexts
+    title: Pass context as the first parameter and never store it
+    statement:
+        Pass context.Context explicitly down the call chain as the first
+        parameter, including in test helpers. Do not store a context in a
+        struct; give each method that needs one a parameter. Avoid
+        context.Background outside entry points, and in tests prefer the
+        test's Context method.
+    rationale:
+        Contexts carry deadlines, cancellation and credentials, and they
+        only work when every call passes them along visibly.
+    exceptions:
+        HTTP handlers, streaming RPC methods and tests take the context from
+        the request, stream or test. Entry points such as main and init may
+        use context.Background. A struct field is allowed only when a method
+        must match an interface outside your control.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Fetcher struct {
+            ctx context.Context
+        }
+
+        func (f *Fetcher) Fetch(url string) ([]byte, error)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Fetcher struct{}
+
+        func (f *Fetcher) Fetch(ctx context.Context, url string) ([]byte, error)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, context, api-design]
+    source: https://google.github.io/styleguide/go/decisions#contexts

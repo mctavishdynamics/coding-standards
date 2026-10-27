@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppExp57Cpp:
+    standard: @{CertCpp}
+    ruleId: EXP57-CPP
+    title: Do not cast or delete pointers to incomplete classes
+    statement:
+        Do not delete, or cast with static_cast or reinterpret_cast, a
+        pointer to a class type that is incomplete at that point. Make the
+        type complete where the pointer is destroyed or converted.
+    rationale:
+        Deleting an incomplete type skips a non-trivial destructor and is
+        undefined behavior, and casts may produce a wrong address when the
+        inheritance layout is unknown. CERT rates likelihood unlikely,
+        detectable yes, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        // widget.h
+        class WidgetImpl;
+        class Widget {
+        public:
+            ~Widget() { delete impl_; }  // WidgetImpl is incomplete here
+        private:
+            WidgetImpl* impl_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // widget.h
+        class WidgetImpl;
+        class Widget {
+        public:
+            ~Widget();
+        private:
+            WidgetImpl* impl_;
+        };
+
+        // widget.cpp
+        #include "widget_impl.h"
+        Widget::~Widget() { delete impl_; }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, classes, casts]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/expressions-exp/exp57-cpp

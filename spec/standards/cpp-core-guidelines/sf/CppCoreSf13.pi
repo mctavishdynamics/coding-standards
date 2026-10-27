@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf13:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.13
+    title: Use portable header identifiers in #include statements
+    statement:
+        Spell header names with the exact case of the real header or file
+        and separate path parts with forward slashes.
+    rationale:
+        The standard leaves case sensitivity and path handling to the
+        implementation, so other spellings may fail on another compiler or
+        system, and backslashes can be read as escapes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #include <Vector>
+        #include "Net\Socket.H"
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #include <vector>
+        #include "net/socket.h"
+        \\\
+        ```
+    languages: [cpp]
+    tags: [includes, portability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-portable-header-id

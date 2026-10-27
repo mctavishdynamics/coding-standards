@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsFunctionsConstructor:
+    standard: @{AirbnbJavaScript}
+    ruleId: 7.10
+    title: Never use the Function constructor
+    statement:
+        Do not create functions with new Function or Function called with
+        strings. Enforced by the ESLint rule no-new-func.
+    rationale:
+        Building a function from a string evaluates it like eval and carries
+        the same security risks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const add = new Function('a', 'b', 'return a + b');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const add = (a, b) => a + b;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, security]
+    source: https://github.com/airbnb/javascript#functions--constructor

@@ -1,0 +1,32 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreNl18:
+    standard: @{CppCoreGuidelines}
+    ruleId: NL.18
+    title: Use C++-style declarator layout
+    statement:
+        Attach the pointer or reference symbol to the type, not to the name.
+    rationale:
+        C++ style emphasizes the type, and the C argument about mirroring
+        use in expressions does not apply to references.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        const Config &current_config();
+        char *buffer_start;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        const Config& current_config();
+        char* buffer_start;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, declarations]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rl-ptr

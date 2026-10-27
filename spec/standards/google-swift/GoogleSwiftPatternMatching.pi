@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftPatternMatching:
+    standard: @{GoogleSwift}
+    ruleId: pattern-matching
+    title: Put let or var before each bound element
+    statement:
+        Write let or var in front of each element bound in a pattern, not
+        once in front of the whole pattern.
+    rationale:
+        A distributed let silently turns an intended match against an
+        existing variable into a new binding.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        switch event {
+        case let .keyPress(key, modifiers):
+          handle(key, modifiers)
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        switch event {
+        case .keyPress(let key, let modifiers):
+          handle(key, modifiers)
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [pattern-matching, safety]
+    source: https://google.github.io/swift/#pattern-matching

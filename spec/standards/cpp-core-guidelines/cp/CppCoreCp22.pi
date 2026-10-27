@@ -1,0 +1,47 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp22:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.22
+    title: Never call unknown code while holding a lock
+    statement:
+        Do not invoke callbacks, virtual functions or other code you do not
+        control while a lock is held. Copy what the callback needs, release
+        the lock, then call it.
+    rationale:
+        Unknown code may try to take the same lock, take other locks, or
+        block for a long time, risking deadlock or long delays for every
+        other thread.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void EventBus::publish(const Event& e)
+        {
+            std::lock_guard lock(mutex_);
+            for (auto& listener : listeners_)
+                listener(e);   // a listener may call subscribe() and deadlock
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void EventBus::publish(const Event& e)
+        {
+            std::vector<Listener> snapshot;
+            {
+                std::lock_guard lock(mutex_);
+                snapshot = listeners_;
+            }
+            for (auto& listener : snapshot)
+                listener(e);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, deadlock, callbacks]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-unknown

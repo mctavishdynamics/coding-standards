@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs50:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.50
+    title: Don't cast away const
+    statement:
+        Do not use const_cast or other casts to remove const and then modify
+        the object.
+    rationale:
+        It makes the const promise false, and modifying an object that was
+        declared const is undefined behavior.
+    exceptions:
+        You may need to cast away const to call a function that is not
+        const-correct. Wrap that function in a const-correct inline wrapper
+        so the cast lives in one place.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void clear(const std::vector<int>& v) {
+            const_cast<std::vector<int>&>(v).clear();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void clear(std::vector<int>& v) {
+            v.clear();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [const, casts]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-casts-const

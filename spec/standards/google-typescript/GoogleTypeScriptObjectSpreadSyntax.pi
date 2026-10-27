@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptObjectSpreadSyntax:
+    standard: @{GoogleTypeScript}
+    ruleId: object-spread-syntax
+    title: Spread only plain objects into objects
+    statement:
+        Use object spread to make shallow copies, remembering that later
+        keys override earlier ones. Spread only objects into objects, never
+        arrays or primitives, and avoid spreading objects whose prototype is
+        not Object.prototype, such as class instances.
+    rationale:
+        Spreading arrays gives index keys, spreading a falsy value hides
+        mistakes, and spreading class instances copies only own enumerable
+        fields, which is unintuitive.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const overrides = useCustom && {color: 'red'};
+        const style = {color: 'black', ...overrides};
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const overrides = useCustom ? {color: 'red'} : {};
+        const style = {color: 'black', ...overrides};
+        \\\
+        ```
+    languages: [typescript]
+    tags: [objects, spread]
+    source: https://google.github.io/styleguide/tsguide.html#object-spread-syntax

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl00J:
+    standard: @{CertJava}
+    ruleId: DCL00-J
+    title: Prevent class initialization cycles
+    statement:
+        Make sure static initializers do not depend, directly or through
+        other classes, on static fields that are not yet initialized. Order
+        static fields so each one's dependencies are set first.
+    rationale:
+        In a cycle, one class observes another's static fields at their
+        default values, giving wrong results that depend on initialization
+        order. CERT rates likelihood unlikely, detectable yes, repairable
+        no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        public class Rates {
+            private static final Rates INSTANCE = new Rates();
+            private static final int BASE = Integer.getInteger("base", 100);
+            private final int value;
+            private Rates() { value = BASE * 2; }  // BASE is still 0
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class Rates {
+            private static final int BASE = Integer.getInteger("base", 100);
+            private static final Rates INSTANCE = new Rates();
+            private final int value;
+            private Rates() { value = BASE * 2; }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [initialization, static]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/declarations-and-initialization-dcl/dcl00-j/

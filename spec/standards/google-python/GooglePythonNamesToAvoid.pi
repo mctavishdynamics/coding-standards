@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonNamesToAvoid:
+    standard: @{GooglePython}
+    ruleId: 3.16.1
+    title: Avoid single-letter, dashed, dunder, offensive and type-laden names
+    statement:
+        Avoid single-character names, dashes in package or module names,
+        names with double leading and trailing underscores, offensive terms,
+        and names that needlessly include the type, such as id_to_name_dict.
+        Make a name more descriptive the wider its scope.
+    rationale:
+        Such names are unclear, reserved by Python, or repeat what the code
+        already says.
+    exceptions:
+        Single letters are fine for counters and iterators, e for a caught
+        exception, f for a file handle in a with statement, unconstrained
+        private type variables, and names matching established notation in a
+        reference paper.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def __process__(d):
+            user_list = [u for u in d.values()]
+            return user_list
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def active_users(users_by_id):
+            users = [user for user in users_by_id.values() if user.active]
+            return users
+        \\\
+        ```
+    languages: [python]
+    tags: [naming]
+    source: https://google.github.io/styleguide/pyguide.html#s3.16.1-names-to-avoid

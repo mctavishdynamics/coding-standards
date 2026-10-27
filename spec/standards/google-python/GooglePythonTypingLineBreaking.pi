@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonTypingLineBreaking:
+    standard: @{GooglePython}
+    ruleId: 3.19.2
+    title: Break annotated signatures between parameters
+    statement:
+        Follow the indentation rules. When a signature does not fit, put
+        each parameter on its own line with a trailing comma, and the
+        closing parenthesis and return type on a line aligned with def.
+        Break between parameters, not between a name and its type, and avoid
+        breaking types; if a type is too long, use an alias, and as a last
+        resort break after the colon and indent four spaces.
+    rationale:
+        Breaking at parameter boundaries keeps each name next to its type
+        and keeps the return type easy to find.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def schedule(self,
+                     task: ScheduledTask | None,
+                    ) -> dict[TaskId, ScheduledTask]:
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def schedule(
+            self,
+            task: ScheduledTask | None,
+        ) -> dict[TaskId, ScheduledTask]:
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, formatting]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.2-line-breaking

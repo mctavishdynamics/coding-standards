@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoUsePackageTesting:
+    standard: @{GoogleGo}
+    ruleId: decisions/use-package-testing
+    title: Use only the standard testing package
+    statement:
+        Write tests with the standard testing package. Do not use assertion
+        libraries or third-party test frameworks.
+    rationale:
+        testing covers tests, benchmarks, examples, subtests, logging and
+        failures, and works with ordinary Go constructs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func TestAdd(t *testing.T) {
+            assert.Equal(t, 4, Add(2, 2))
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func TestAdd(t *testing.T) {
+            if got := Add(2, 2); got != 4 {
+                t.Errorf("Add(2, 2) = %d, want 4", got)
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing]
+    source: https://google.github.io/styleguide/go/decisions#use-package-testing

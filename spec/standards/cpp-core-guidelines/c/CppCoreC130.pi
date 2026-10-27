@@ -1,0 +1,49 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC130:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.130
+    title: Prefer a virtual clone function for deep copies of polymorphic classes
+    statement:
+        To copy a polymorphic object deeply, provide a virtual clone
+        function that returns an owning pointer to a copy of the most
+        derived type, instead of public copy operations.
+    rationale:
+        Public copying of polymorphic classes slices objects, while clone
+        always copies the actual dynamic type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Shape {
+        public:
+            Shape(const Shape&) = default;   // copies only the base part
+            virtual ~Shape() = default;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Shape {
+        public:
+            virtual std::unique_ptr<Shape> clone() const = 0;
+            virtual ~Shape() = default;
+        protected:
+            Shape(const Shape&) = default;
+        };
+
+        class Circle : public Shape {
+        public:
+            std::unique_ptr<Shape> clone() const override {
+                return std::unique_ptr<Shape>(new Circle(*this));
+            }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, copy, slicing]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-copy

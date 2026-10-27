@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCNonstandardExtensions:
+    standard: @{GoogleObjC}
+    ruleId: nonstandard-extensions
+    title: Do not use nonstandard C extensions
+    statement:
+        Do not use compiler extensions to C or Objective-C, such as compound
+        statement expressions, unless the guide allows them.
+    rationale:
+        Extensions are not portable across language variants and are often
+        unfamiliar to readers.
+    exceptions:
+        The __attribute__ keyword, the binary conditional operator A ?: B,
+        __typeof__ and limited __auto_type use are approved.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        NSInteger total = ({
+          NSInteger sum = 0;
+          for (NSNumber *n in values) sum += n.integerValue;
+          sum;
+        });
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        NSInteger total = ABCSumOfValues(values);
+        NSString *title = customTitle ?: defaultTitle;
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [language-features, portability]
+    source: https://google.github.io/styleguide/objcguide.html#nonstandard-extensions

@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC160:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.160
+    title: Define operators mainly to mimic conventional usage
+    statement:
+        Overload an operator only so that it behaves the way that operator
+        normally does, such as + adding, == comparing and << writing to a
+        stream.
+    rationale:
+        Conventional meanings minimize surprises for readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Vector operator+(const Vector& a, const Vector& b) {
+            return cross_product(a, b);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Vector operator+(const Vector& a, const Vector& b) {
+            return Vector(a.x + b.x, a.y + b.y, a.z + b.z);
+        }
+        Vector cross(const Vector& a, const Vector& b);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [operators, overloading, conventions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ro-conventional

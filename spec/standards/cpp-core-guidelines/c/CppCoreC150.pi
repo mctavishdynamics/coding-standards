@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC150:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.150
+    title: Use make_unique to construct objects owned by unique_ptr
+    statement:
+        Create objects that a unique_ptr will own with std::make_unique
+        instead of new. The guide refers to R.23 for the details.
+    rationale:
+        make_unique is shorter, names the type once and avoids leaks from
+        unsequenced evaluation of new expressions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::unique_ptr<Order> o(new Order(id, qty));
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto o = std::make_unique<Order>(id, qty);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, smart-pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-make_unique

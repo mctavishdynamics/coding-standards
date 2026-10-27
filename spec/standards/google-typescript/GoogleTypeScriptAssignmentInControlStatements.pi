@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptAssignmentInControlStatements:
+    standard: @{GoogleTypeScript}
+    ruleId: assignment-in-control-statements
+    title: Avoid assignments inside control statements
+    statement:
+        Avoid assigning variables inside conditions. When it is the clearest
+        option, wrap the assignment in an extra pair of parentheses to show
+        it is intended.
+    rationale:
+        An assignment in a condition is easily mistaken for an equality
+        check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        if (match = pattern.exec(line)) {
+          handle(match);
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const match = pattern.exec(line);
+        if (match) {
+          handle(match);
+        }
+
+        while ((chunk = reader.next())) {
+          process(chunk);
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [control-flow, assignment]
+    source: https://google.github.io/styleguide/tsguide.html#assignment-in-control-statements

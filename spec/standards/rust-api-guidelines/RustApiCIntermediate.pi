@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCIntermediate:
+    standard: @{RustApiGuidelines}
+    ruleId: C-INTERMEDIATE
+    title: Expose intermediate results to avoid duplicate work
+    statement:
+        When a function computes related data that the caller may want,
+        return it instead of discarding it, as binary_search returns the
+        insertion point when the value is missing.
+    rationale:
+        Returning the data saves callers from repeating the same work, such
+        as a second lookup.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl Cache {
+            pub fn insert(&mut self, key: Key, value: Value) {
+                self.map.insert(key, value);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl Cache {
+            /// Returns the value previously stored under `key`, if any.
+            pub fn insert(&mut self, key: Key, value: Value) -> Option<Value> {
+                self.map.insert(key, value)
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [api-design, performance]
+    source: https://rust-lang.github.io/api-guidelines/flexibility.html#c-intermediate

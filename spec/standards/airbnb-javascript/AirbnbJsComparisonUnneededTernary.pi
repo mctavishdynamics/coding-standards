@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsComparisonUnneededTernary:
+    standard: @{AirbnbJavaScript}
+    ruleId: 15.7
+    title: Avoid unneeded ternaries
+    statement:
+        Do not use a ternary where a simpler expression gives the same
+        result, such as one returning true or false, or one choosing a
+        default. Enforced by the ESLint rule no-unneeded-ternary.
+    rationale:
+        The simpler expression is shorter and states the intent directly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const isEmpty = count === 0 ? true : false;
+        const title = heading ? heading : 'Untitled';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const isEmpty = count === 0;
+        const title = heading || 'Untitled';
+        \\\
+        ```
+    languages: [javascript]
+    tags: [comparison, ternary]
+    source: https://github.com/airbnb/javascript#comparison--unneeded-ternary

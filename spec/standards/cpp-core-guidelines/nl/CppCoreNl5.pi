@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreNl5:
+    standard: @{CppCoreGuidelines}
+    ruleId: NL.5
+    title: Avoid encoding type information in names
+    statement:
+        Name things for what they do, not for their type. Do not use
+        Hungarian notation or type suffixes; overload one name instead.
+    rationale:
+        Names tied to types must change when the type changes, get out of
+        date like comments, and fight overload resolution.
+    exceptions:
+        General-purpose prefixes that do not encode a type, such as p for an
+        indirection, cnt for a count, a member suffix or capitalized type
+        names, are not covered.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void log_int(int value);
+        void log_str(const char* value);
+
+        int iRetries;
+        char* szHostName;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void log(int value);
+        void log(std::string_view value);
+
+        int retries;
+        std::string host_name;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rl-name-type

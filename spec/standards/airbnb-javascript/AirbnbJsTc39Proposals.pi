@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsTc39Proposals:
+    standard: @{AirbnbJavaScript}
+    ruleId: 28.2
+    title: Do not use TC39 proposals before stage 3
+    statement:
+        Do not use language proposals that have not yet reached TC39 stage
+        3.
+    rationale:
+        Earlier proposals are not final and may change or be withdrawn, so
+        they are not yet JavaScript.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        // stage 2 proposal
+        const result = value |> double(%) |> format(%);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const result = format(double(value));
+        \\\
+        ```
+    languages: [javascript]
+    tags: [language-features, es-next]
+    source: https://github.com/airbnb/javascript#tc39-proposals

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc04J:
+    standard: @{CertJava}
+    ruleId: MSC04-J
+    title: Do not leak memory
+    statement:
+        Drop references to objects that are no longer needed, for example by
+        removing listeners, clearing collections, narrowing field scope, or
+        using weak references.
+    rationale:
+        Reachable but unused objects are never collected. The heap fills,
+        causing OutOfMemoryError and denial of service. CERT's risk
+        assessment gives likelihood unlikely, detectable no, repairable no,
+        priority P1 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        private static final Map<Session, Cart> carts = new HashMap<>();
+
+        void logout(Session s) {
+            s.invalidate();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private static final Map<Session, Cart> carts = new HashMap<>();
+
+        void logout(Session s) {
+            carts.remove(s);
+            s.invalidate();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [memory, resource-management]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/miscellaneous-msc/msc04-j/

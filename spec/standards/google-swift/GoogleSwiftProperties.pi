@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftProperties:
+    standard: @{GoogleSwift}
+    ruleId: properties
+    title: Declare one variable per let or var near its use
+    statement:
+        Declare local variables close to their first use, and declare
+        exactly one variable in each let or var statement.
+    rationale:
+        Narrow scopes and single declarations are easier to read and change.
+    exceptions:
+        Tuple destructuring may declare several variables at once.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        var width = 0, height = 0
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        var width = 0
+        var height = 0
+        let (quotient, remainder) = total.quotientAndRemainder(dividingBy: 7)
+        \\\
+        ```
+    languages: [swift]
+    tags: [variables, declarations]
+    source: https://google.github.io/swift/#properties

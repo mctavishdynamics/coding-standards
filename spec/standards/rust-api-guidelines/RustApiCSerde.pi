@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCSerde:
+    standard: @{RustApiGuidelines}
+    ruleId: C-SERDE
+    title: Implement Serialize and Deserialize for data structures
+    statement:
+        Types that act as data structures implement Serde's Serialize and
+        Deserialize. If the crate does not otherwise need Serde, put the
+        impls behind an optional feature named simply serde.
+    rationale:
+        Users routinely need to read data structures from files or send them
+        between processes, and the orphan rule prevents them from adding the
+        impls themselves.
+    exceptions:
+        Types that are not data, such as compile-time markers that never
+        exist at runtime, do not need Serde impls.
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[cfg_attr(feature = "serde_impls", derive(Serialize, Deserialize))]
+        pub struct Coordinate {
+            pub lat: f64,
+            pub lon: f64,
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+        pub struct Coordinate {
+            pub lat: f64,
+            pub lon: f64,
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [serialization, interoperability]
+    source: https://rust-lang.github.io/api-guidelines/interoperability.html#c-serde

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpOutputContainerTypes:
+    standard: @{GoogleCSharp}
+    ruleId: output-container-types
+    title: Return the most capable interface when transferring ownership
+    statement:
+        When a returned container passes to the caller, return the interface
+        that gives the most capabilities without exposing the concrete type,
+        such as IList rather than List. When ownership is not transferred,
+        return the most restrictive type, as for inputs.
+    rationale:
+        Callers get what they need while the implementation stays free to
+        change its concrete type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public List<Order> CreateOrders() { return new List<Order>(); }
+        public List<Order> PendingOrders => _pending;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public IList<Order> CreateOrders() { return new List<Order>(); }
+        public IReadOnlyList<Order> PendingOrders => _pending;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [types, collections, api-design]
+    source: https://google.github.io/styleguide/csharpguide.html#containers-ienumerable-vs-ilist-vs-ireadonlylist

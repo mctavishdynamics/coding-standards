@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftCaselessEnumNamespaces:
+    standard: @{GoogleSwift}
+    ruleId: nesting-and-namespacing-caseless-enums
+    title: Use a caseless enum as a namespace
+    statement:
+        Group related constants or helper functions in an enum with no cases
+        rather than in a struct or class.
+    rationale:
+        A caseless enum cannot be instantiated, so no extra code is needed
+        to prevent it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        struct Layout {
+          private init() {}
+          static let gutter: CGFloat = 16
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        enum Layout {
+          static let gutter: CGFloat = 16
+          static let cornerRadius: CGFloat = 8
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [organization, namespacing, enums]
+    source: https://google.github.io/swift/#nesting-and-namespacing

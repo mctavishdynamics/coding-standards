@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftGuardsForEarlyExits:
+    standard: @{GoogleSwift}
+    ruleId: guards-for-early-exits
+    title: Use guard for early exits
+    statement:
+        Use guard rather than an if with an inverted condition for checks
+        that exit early, including guard with continue in loops.
+    rationale:
+        guard marks the special case, keeps each failure next to its
+        condition and leaves the main logic unindented.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func send(_ message: Message?) throws {
+          if let message = message {
+            if !message.body.isEmpty {
+              try transport.deliver(message)
+            } else {
+              throw SendError.emptyBody
+            }
+          } else {
+            throw SendError.missingMessage
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        func send(_ message: Message?) throws {
+          guard let message = message else { throw SendError.missingMessage }
+          guard !message.body.isEmpty else { throw SendError.emptyBody }
+          try transport.deliver(message)
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [control-flow, readability]
+    source: https://google.github.io/swift/#guards-for-early-exits

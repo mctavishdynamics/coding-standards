@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppDcl53Cpp:
+    standard: @{CertCpp}
+    ruleId: DCL53-CPP
+    title: Do not write syntactically ambiguous declarations
+    statement:
+        Write declarations so they cannot be read as something else. Avoid
+        forms that parse as a function declaration or as a new variable when
+        an object construction or expression was intended.
+    rationale:
+        Under the vexing parse rules the compiler treats ambiguous syntax as
+        a declaration, so a lock guard may never be created or an object may
+        silently become a function declaration. CERT rates likelihood
+        unlikely, detectable yes, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        std::mutex m;
+
+        void update() {
+            std::lock_guard<std::mutex>(m);  // declares a new guard named m
+            shared_total += 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::mutex m;
+
+        void update() {
+            std::lock_guard<std::mutex> guard(m);
+            shared_total += 1;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [declarations, initialization, syntax]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/declarations-and-initialization-dcl/dcl53-cpp

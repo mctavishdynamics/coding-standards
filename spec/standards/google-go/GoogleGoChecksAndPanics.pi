@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoChecksAndPanics:
+    standard: @{GoogleGo}
+    ruleId: best-practices/checks-and-panics
+    title: Return errors from libraries and do not recover panics
+    statement:
+        Libraries should return errors rather than abort, especially for
+        transient failures. Terminate on a violated invariant only when
+        state is unrecoverable, using log.Fatal rather than panic, and do
+        not recover panics just to avoid crashes.
+    rationale:
+        Deferred functions can deadlock or corrupt state during a panic, and
+        recovering far from the panic propagates corrupted state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func safeHandle(h Handler, req *Request) {
+            defer func() { recover() }()
+            h.Handle(req)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (q *Queue) pop() *Item {
+            if q.len < 0 {
+                log.Fatalf("queue length %d is negative: internal state corrupted", q.len)
+            }
+            // ...
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, errors, panics]
+    source: https://google.github.io/styleguide/go/best-practices#checks-and-panics

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcGofmt:
+    standard: @{GoCodeReviewComments}
+    ruleId: gofmt
+    title: Run gofmt on your code
+    statement:
+        Format every file with gofmt, or with goimports, which also adds and
+        removes import lines as needed. Leave mechanical layout to the tool.
+    rationale:
+        Nearly all Go code is gofmt-formatted, so running it removes most
+        mechanical style issues and lets review focus on the points a tool
+        cannot fix.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func total(items []Item)(sum int){
+          for _,it:=range items{ sum+=it.Price }
+          return
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func total(items []Item) (sum int) {
+            for _, it := range items {
+                sum += it.Price
+            }
+            return
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [formatting, tooling]
+    source: https://go.dev/wiki/CodeReviewComments#gofmt

@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC42:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.42
+    title: Throw if a constructor cannot construct a valid object
+    statement:
+        If a constructor cannot establish the class invariant, report the
+        failure by throwing an exception instead of leaving a half-built
+        object behind.
+    rationale:
+        An invalid object that looks constructed invites misuse later.
+    exceptions:
+        In some hard real-time domains exceptions are not predictable
+        enough. There an is_valid check may be used, but it must be called
+        consistently and immediately after construction.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        File::File(const char* path) : fd_(::open(path, O_RDONLY)) {
+            // fd_ may be -1; object is unusable but looks fine
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        File::File(const char* path) : fd_(::open(path, O_RDONLY)) {
+            if (fd_ < 0)
+                throw std::system_error(errno, std::generic_category(), path);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, exceptions, error-handling]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-throw

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptReturnTypeOnlyGenerics:
+    standard: @{GoogleTypeScript}
+    ruleId: return-type-only-generics
+    title: Avoid generics that appear only in the return type
+    statement:
+        Do not create APIs whose type parameter is used only in the return
+        type. When calling such existing APIs, always specify the type
+        argument explicitly.
+    rationale:
+        A generic that is not tied to any parameter is an unchecked cast in
+        disguise, and inference silently picks a type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function readSetting<T>(key: string): T {
+          return JSON.parse(localStorage.getItem(key) ?? 'null');
+        }
+        const theme = readSetting('theme');
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function readSetting(key: string): unknown {
+          return JSON.parse(localStorage.getItem(key) ?? 'null');
+        }
+        const cached = storage.get<Theme>('theme');
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, generics, api-design]
+    source: https://google.github.io/styleguide/tsguide.html#return-type-only-generics

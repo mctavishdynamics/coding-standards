@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoPrimitiveWrappers:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.11.5
+    title: Do not construct primitive wrapper objects
+    statement:
+        Never use new with Boolean, Number, String or Symbol, and never use
+        these wrapper types in type annotations. Calling them as functions
+        to coerce values is fine and preferred over unary plus or string
+        concatenation.
+    rationale:
+        Wrapper objects are always truthy and compare by identity, so they
+        behave unlike the primitives they wrap.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const active = new Boolean(false);
+        if (active) {}  // always runs
+        const label = '' + count;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const active = Boolean(flag);
+        const label = String(count);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [disallowed, types]
+    source: https://google.github.io/styleguide/jsguide.html#5115-wrapper-objects-for-primitive-types

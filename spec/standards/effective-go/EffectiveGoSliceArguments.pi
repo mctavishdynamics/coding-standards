@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoSliceArguments:
+    standard: @{EffectiveGo}
+    ruleId: slices
+    title: Accept a slice instead of a pointer and a count
+    statement:
+        Let functions take a slice, whose length sets the limit, rather than
+        a pointer and a separate count. Pass a sub-slice to work on part of
+        a buffer.
+    rationale:
+        A slice carries its own length and shares the caller's array, so
+        changes are visible without extra parameters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func fill(buf *byte, n int, b byte)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func fill(buf []byte, b byte) {
+            for i := range buf {
+                buf[i] = b
+            }
+        }
+
+        fill(header[:32], 0)
+        \\\
+        ```
+    languages: [go]
+    tags: [slices, api-design]
+    source: https://go.dev/doc/effective_go#slices

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCKeepThePublicAPISimple:
+    standard: @{GoogleObjC}
+    ruleId: keep-the-public-api-simple
+    title: Keep the public API simple
+    statement:
+        Keep methods out of the public interface unless consumers of the
+        class are expected to call them, including overridden superclass
+        methods. Give private methods distinctive names.
+    rationale:
+        Any message can be sent to any object, so a public method may be
+        called unexpectedly, and a common private name can accidentally
+        override a superclass method.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @interface ABCImageCache : NSObject
+        - (UIImage *)imageForKey:(NSString *)key;
+        - (void)evictOldEntries;
+        - (void)setup;
+        @end
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @interface ABCImageCache : NSObject
+        - (UIImage *)imageForKey:(NSString *)key;
+        @end
+
+        @interface ABCImageCache ()
+        - (void)evictOldImageCacheEntries;
+        @end
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [api-design, encapsulation]
+    source: https://google.github.io/styleguide/objcguide.html#keep-the-public-api-simple

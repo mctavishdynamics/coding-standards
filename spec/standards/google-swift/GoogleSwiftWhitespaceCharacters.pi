@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftWhitespaceCharacters:
+    standard: @{GoogleSwift}
+    ruleId: whitespace-characters
+    title: Use only the ASCII space as whitespace
+    statement:
+        Apart from line terminators, use only the ordinary space character
+        as whitespace anywhere in a file. Write other whitespace in string
+        literals as escape sequences, and never indent with tabs.
+    rationale:
+        Invisible or unusual whitespace is easy to miss and renders
+        differently between tools.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let columns = "Name	Price"  // Contains a literal tab.
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let columns = "Name\tPrice"
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, whitespace]
+    source: https://google.github.io/swift/#whitespace-characters

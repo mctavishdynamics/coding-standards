@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaTsm03J:
+    standard: @{CertJava}
+    ruleId: TSM03-J
+    title: Do not publish partially initialized objects
+    statement:
+        Make a shared object visible to other threads only after it is fully
+        initialized. Use final fields, a volatile reference, synchronization
+        or static initialization to publish it safely.
+    rationale:
+        The memory model lets other threads observe a reference before the
+        writes done by the constructor, so they may see default values in
+        the object's fields. CERT's risk assessment gives likelihood
+        probable, detectable yes, repairable no, priority P8 and level L2.
+    exceptions:
+        A class may publish partly built objects if it stops them from being
+        used, for example with a volatile flag set at the end of
+        initialization and checked by every method.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        class Holder {
+            private Helper helper;
+
+            void init(int n) { helper = new Helper(n); }
+            Helper get() { return helper; }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Holder {
+            private volatile Helper helper;
+
+            void init(int n) { helper = new Helper(n); }
+            Helper get() { return helper; }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, publication, memory-model]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-safety-miscellaneous-tsm/tsm03-j/

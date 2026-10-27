@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT60:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.60
+    title: Minimize a template's context dependencies
+    statement:
+        Make a template depend on its arguments and on names it deliberately
+        qualifies, not on whatever helpers, types or functions happen to be
+        visible where it is defined or instantiated.
+    rationale:
+        Fewer hidden dependencies make templates easier to understand and to
+        tool, and avoid surprises from include order, since templates
+        usually live in headers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename It>
+        void normalize(It first, It last)
+        {
+            for (; first != last; ++first)
+                *first = scale(*first);   // which scale? found from the context
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename It, typename F>
+        void normalize(It first, It last, F scale)
+        {
+            for (; first != last; ++first)
+                *first = scale(*first);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, dependencies, headers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-depend

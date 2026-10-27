@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftTrailingClosureOverloads:
+    standard: @{GoogleSwift}
+    ruleId: trailing-closures-overloads
+    title: Do not overload functions only by trailing closure label
+    statement:
+        Do not declare overloads that differ only in the label of their
+        trailing closure argument; vary another part of the name instead.
+    rationale:
+        Trailing closure calls drop the label, so such overloads become
+        ambiguous.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func fetch(onSuccess handler: (Data) -> Void) {}
+        func fetch(onFailure handler: (Data) -> Void) {}
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        func fetchData(_ handler: (Data) -> Void) {}
+        func fetchErrorDetails(_ handler: (Data) -> Void) {}
+        \\\
+        ```
+    languages: [swift]
+    tags: [closures, overloading, api-design]
+    source: https://google.github.io/swift/#trailing-closures

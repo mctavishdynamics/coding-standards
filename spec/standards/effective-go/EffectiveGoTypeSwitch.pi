@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoTypeSwitch:
+    standard: @{EffectiveGo}
+    ruleId: type-switch
+    title: Reuse the variable name in a type switch
+    statement:
+        To act on the dynamic type of an interface value, use a type switch,
+        and it is idiomatic to bind the result to the same name so each case
+        sees a variable of its own type.
+    rationale:
+        The type switch tests all cases in one construct and gives each
+        clause a correctly typed value without separate assertions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if s, ok := v.(string); ok {
+            return s
+        } else if n, ok := v.(int); ok {
+            return strconv.Itoa(n)
+        }
+        return "?"
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        switch v := v.(type) {
+        case string:
+            return v
+        case int:
+            return strconv.Itoa(v)
+        default:
+            return "?"
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [types, interfaces, switch]
+    source: https://go.dev/doc/effective_go#type_switch

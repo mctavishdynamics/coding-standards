@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoSignalBoost:
+    standard: @{GoogleGo}
+    ruleId: best-practices/signal-boost
+    title: Comment code that looks like a common idiom but differs
+    statement:
+        When a line resembles a familiar pattern but does something
+        different, such as checking err equals nil, add a comment that draws
+        attention to the difference.
+    rationale:
+        Readers pattern-match common idioms and will miss a subtle variation
+        unless it is called out.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if err := lock.TryAcquire(); err == nil {
+            return errAlreadyHeld
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if err := lock.TryAcquire(); err == nil { // if NO error
+            return errAlreadyHeld
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, comments, readability]
+    source: https://google.github.io/styleguide/go/best-practices#signal-boost

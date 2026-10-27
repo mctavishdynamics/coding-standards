@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp21:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.21
+    title: Use std::lock or std::scoped_lock to acquire multiple mutexes
+    statement:
+        When a piece of code needs more than one mutex, take them all at
+        once with std::scoped_lock or std::lock rather than locking them one
+        after another.
+    rationale:
+        Two threads that lock the same mutexes in different orders can
+        deadlock. The standard facilities acquire the set without deadlock
+        whatever order is written.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void transfer(Account& from, Account& to, int amount)
+        {
+            std::lock_guard a(from.mutex);
+            std::lock_guard b(to.mutex);   // another transfer may lock these in reverse
+            from.balance -= amount;
+            to.balance += amount;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void transfer(Account& from, Account& to, int amount)
+        {
+            std::scoped_lock lock(from.mutex, to.mutex);
+            from.balance -= amount;
+            to.balance += amount;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, deadlock, locking]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-lock

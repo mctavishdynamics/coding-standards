@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlIo10:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.io.10
+    title: Unless you use printf-family functions call ios_base::sync_with_stdio(false)
+    statement:
+        If the program does not mix printf-style I/O with iostreams, turn
+        off stream synchronization at the start of main.
+    rationale:
+        cin and cout are synchronized with C stdio by default, and that
+        synchronization can be costly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int main()
+        {
+            for (int x; std::cin >> x; ) std::cout << x * 2 << '\n';
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int main()
+        {
+            std::ios_base::sync_with_stdio(false);
+            for (int x; std::cin >> x; ) std::cout << x * 2 << '\n';
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [io, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rio-sync

@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC62:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.62
+    title: Make copy assignment safe for self-assignment
+    statement:
+        Ensure that x = x leaves x unchanged. Members that handle
+        self-assignment, or the copy-and-swap idiom, usually take care of
+        this.
+    rationale:
+        If self-assignment changes the value, users are surprised and
+        serious errors such as leaks or use of freed memory follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Buffer& Buffer::operator=(const Buffer& o) {
+            delete[] data_;                   // frees o.data_ if this == &o
+            data_ = new char[o.size_];
+            std::copy_n(o.data_, o.size_, data_);
+            size_ = o.size_;
+            return *this;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Buffer& Buffer::operator=(const Buffer& o) {
+            Buffer tmp(o);
+            swap(tmp);
+            return *this;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [copy, assignment, correctness]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-copy-self

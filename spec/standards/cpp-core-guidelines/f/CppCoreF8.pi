@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF8:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.8
+    title: Prefer pure functions
+    statement:
+        Write functions whose result depends only on their arguments and
+        that have no side effects, where practical.
+    rationale:
+        Pure functions are easier to reason about, sometimes easier to
+        optimize or parallelize, and can be memoized.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int offset = 0;
+
+        int next_index(int i) {
+            offset += i;           // hidden side effect
+            return offset;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int next_index(int offset, int i) {
+            return offset + i;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, purity, side-effects]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-pure

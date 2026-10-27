@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet12J:
+    standard: @{CertJava}
+    ruleId: MET12-J
+    title: Do not use finalizers
+    statement:
+        Do not write finalize methods in new classes. Release resources
+        explicitly, for example with try-with-resources or a Cleaner.
+    rationale:
+        Finalizers may run late or never, run on unknown threads, can
+        deadlock or hide exceptions, and are deprecated since Java 9. CERT
+        rates likelihood probable, detectable yes, repairable no, priority
+        P8, level L2.
+    exceptions:
+        Finalizers may be used to release memory held by native code, as
+        long as no critical work depends on them, and must call
+        super.finalize. A class may also declare an empty final finalizer to
+        block finalizer attacks.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        public class TempStore {
+            @Override protected void finalize() throws Throwable {
+                Files.deleteIfExists(path);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class TempStore implements AutoCloseable {
+            @Override public void close() throws IOException {
+                Files.deleteIfExists(path);
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [finalizers, resources]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met12-j/

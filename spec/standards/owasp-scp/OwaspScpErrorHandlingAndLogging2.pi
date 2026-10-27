@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpErrorHandlingAndLogging2:
+    standard: @{OwaspScp}
+    ruleId: error-handling-and-logging-2
+    title: Use error handlers that hide debug and stack trace output
+    statement:
+        Use error handlers that never show debugging information or stack
+        traces to users.
+    rationale:
+        Stack traces reveal code paths, library versions and file locations
+        that guide an attack.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        @app.errorhandler(Exception)
+        def on_error(exc):
+            return traceback.format_exc(), 500
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        @app.errorhandler(Exception)
+        def on_error(exc):
+            log.exception("unhandled error")
+            return render_template("error.html"), 500
+        \\\
+        ```
+    languages: [any]
+    tags: [error-handling, information-disclosure]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#error-handling-and-logging

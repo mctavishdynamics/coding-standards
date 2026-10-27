@@ -1,0 +1,48 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT80:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.80
+    title: Do not naively templatize a class hierarchy
+    statement:
+        Avoid making a class hierarchy with many virtual functions into a
+        template. Keep the virtual interface non-templated where you can.
+    rationale:
+        Every virtual function of every instantiation must be generated,
+        since the compiler cannot tell whether it is called, which bloats
+        code size.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+        struct Collection {
+            virtual T* at(int i);
+            virtual void sort();
+            virtual void shuffle();
+            virtual ~Collection();
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Collection_base {
+            virtual int size() const = 0;
+            virtual ~Collection_base() = default;
+        };
+
+        template<typename T>
+        class Collection : public Collection_base {
+        public:
+            T* at(int i);          // non-virtual, instantiated only if used
+            int size() const override;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, inheritance, code-size]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-hier

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCEnv32C:
+    standard: @{CertC}
+    ruleId: ENV32-C
+    title: Make all exit handlers return normally
+    statement:
+        Functions registered with atexit or at_quick_exit must finish by
+        returning. Do not call exit, quick_exit or longjmp from inside one.
+    rationale:
+        Calling an exit function from a handler is undefined behavior and
+        can skip other handlers that do safety-critical cleanup. CERT rates
+        likelihood likely, detectable yes, repairable no, priority P12,
+        level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        static void flush_journal(void) {
+            if (journal_flush() != 0) {
+                exit(EXIT_FAILURE);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static void flush_journal(void) {
+            if (journal_flush() != 0) {
+                fputs("journal flush failed\n", stderr);
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [termination, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/environment-env/env32-c

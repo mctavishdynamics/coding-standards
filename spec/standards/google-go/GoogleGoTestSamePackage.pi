@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTestSamePackage:
+    standard: @{GoogleGo}
+    ruleId: decisions/test-same-package
+    title: Write same-package tests without importing the package
+    statement:
+        To test inside the package, put tests in a _test.go file declaring
+        the same package name and do not import the package under test.
+        Remember that examples there lack the package qualifier users will
+        need.
+    rationale:
+        Same-package tests can reach unexported identifiers for better
+        coverage and more concise tests.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // In ledger/ledger_test.go:
+        package ledger
+
+        import "example.com/ledger"
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // In ledger/ledger_test.go:
+        package ledger
+
+        import "testing"
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, packages]
+    source: https://google.github.io/styleguide/go/decisions#test-same-package

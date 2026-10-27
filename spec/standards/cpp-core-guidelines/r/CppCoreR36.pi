@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR36:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.36
+    title:
+        Take a const shared_ptr reference to express that a function might
+        retain a reference count
+    statement:
+        Take a const reference to shared_ptr only when the function may copy
+        it and keep a share of ownership. If the function never copies the
+        pointer, take a plain pointer or reference instead.
+    rationale:
+        The signature tells callers the function might keep the object
+        alive. The source marks the full rationale of this rule as still to
+        be written.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void draw(const std::shared_ptr<Sprite>& sprite) {
+            sprite->render();          // never keeps a copy
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Watcher::maybe_watch(const std::shared_ptr<File>& file) {
+            if (file->is_config()) watched_.push_back(file);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-sharedptrparam-const

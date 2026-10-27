@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonThreading:
+    standard: @{GooglePython}
+    ruleId: 2.18
+    title: Do not rely on the atomicity of built-in types
+    statement:
+        Do not assume operations on built-in types or variable assignment
+        are atomic. Pass data between threads with queue.Queue, or otherwise
+        use the threading module's locks, preferring threading.Condition
+        over lower-level locks.
+    rationale:
+        Built-in operations that look atomic stop being so in corner cases,
+        for example when hash or equality is implemented in Python.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        results = {}
+
+
+        def worker(job):
+            results[job.id] = results.get(job.id, 0) + job.run()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        results = queue.Queue()
+
+
+        def worker(job):
+            results.put((job.id, job.run()))
+        \\\
+        ```
+    languages: [python]
+    tags: [concurrency, threading]
+    source: https://google.github.io/styleguide/pyguide.html#s2.18-threading

@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI10:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.10
+    title: Use exceptions to signal a failure to perform a required task
+    statement:
+        When a function cannot do what it promises, including establishing
+        its postconditions, throw an exception rather than returning an
+        error code that can be ignored.
+    rationale:
+        An ignored error can leave the program in an undefined or unexpected
+        state, which is a major source of bugs.
+    exceptions:
+        Traditional interfaces such as those that set errno report status
+        rather than errors and may be used as they are. Where exceptions
+        cannot be used, return a pair of result and error code, ideally
+        unpacked with structured bindings.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int open_config(const std::string& path, Config& out);   // returns -1 on failure
+
+        Config c;
+        open_config("app.ini", c);   // error silently ignored
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Config open_config(const std::string& path);   // throws on failure
+
+        Config c = open_config("app.ini");
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, error-handling, exceptions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-except

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCCopyPotentiallyMutableObjects:
+    standard: @{GoogleObjC}
+    ruleId: copy-potentially-mutable-objects
+    title: Copy potentially mutable objects you keep
+    statement:
+        When storing an object whose type has a mutable variant, keep a copy
+        rather than the original. Declare such properties copy, make
+        initializers and custom accessors copy too, return copies of
+        internal mutable state, and copy before dispatching asynchronous
+        work. Protos are mutable and should be copied too.
+    rationale:
+        The caller may mutate the object later and silently change your
+        state.
+    exceptions:
+        Types with no mutable variant, such as NSURL, NSNumber, NSDate and
+        UIColor, need no copy.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @property(nonatomic, strong) NSString *title;
+
+        - (void)setTags:(NSArray<NSString *> *)tags {
+          _tags = tags;
+        }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @property(nonatomic, copy) NSString *title;
+
+        - (void)setTags:(NSArray<NSString *> *)tags {
+          _tags = [tags copy];
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [memory, mutability, properties]
+    source: https://google.github.io/styleguide/objcguide.html#copy-potentially-mutable-objects

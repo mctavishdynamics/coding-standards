@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet10J:
+    standard: @{CertJava}
+    ruleId: MET10-J
+    title: Follow the general contract when implementing the compareTo() method
+    statement:
+        Make compareTo antisymmetric and transitive, keep equal elements
+        comparing the same to all others, and preferably keep it consistent
+        with equals.
+    rationale:
+        Sorted collections and sort routines rely on the contract, and a
+        broken compareTo can corrupt orderings or cause unexpected
+        exceptions. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        @Override public int compareTo(Version other) {
+            return this.major - other.major;  // may overflow
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Override public int compareTo(Version other) {
+            return Integer.compare(this.major, other.major);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [comparison, contracts]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met10-j/

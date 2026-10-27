@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppTodoComments:
+    standard: @{GoogleCpp}
+    ruleId: TODO_Comments
+    title: Write TODO comments with an owner or issue reference
+    statement:
+        Use TODO comments for temporary or imperfect code. Write TODO in
+        capitals followed by a bug ID, name or other identifier of the
+        person or issue with the best context. A TODO about a future date
+        must give a specific date or event.
+    rationale:
+        A consistent, searchable form lets anyone find who or what to ask
+        for more details.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // todo: fix this later
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // TODO: bug 12345 - Remove this fallback once all clients send v2.
+        // TODO(alice): Use a hash set when the list grows past 100 items.
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, todo]
+    source: https://google.github.io/styleguide/cppguide.html#TODO_Comments

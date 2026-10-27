@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTableTestsDataDriven:
+    standard: @{GoogleGo}
+    ruleId: decisions/table-tests-data-driven
+    title: Avoid table rows that drive conditional test logic
+    statement:
+        When rows would need flags that change how the test behaves, prefer
+        clearer, somewhat duplicated test code over a table that hides each
+        case's setup in conditionals.
+    rationale:
+        Row values that steer the logic make it hard to see what each case
+        actually does.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        tests := []struct {
+            name     string
+            useCache bool
+            fakeDB   bool
+        }{ /* ... */ }
+        for _, tc := range tests {
+            var s *Service
+            if tc.useCache && !tc.fakeDB {
+                s = newCachedService(t)
+            } else if tc.fakeDB {
+                s = newFakeService(t)
+            }
+            // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func TestServiceCached(t *testing.T) {
+            s := newCachedService(t)
+            // ...
+        }
+
+        func TestServiceFakeDB(t *testing.T) {
+            s := newFakeService(t)
+            // ...
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, table-driven-tests]
+    source: https://google.github.io/styleguide/go/decisions#table-tests-data-driven

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcSynchronousFunctions:
+    standard: @{GoCodeReviewComments}
+    ruleId: synchronous-functions
+    title: Prefer synchronous functions
+    statement:
+        Write functions that return their results directly, or finish their
+        callbacks and channel operations before returning, rather than
+        asynchronous ones.
+    rationale:
+        Synchronous functions keep goroutines inside the call, which makes
+        lifetimes, leaks and races easier to reason about and testing
+        simpler. Callers can add concurrency easily, but cannot remove it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func Resize(img image.Image, w, h int) <-chan image.Image {
+            out := make(chan image.Image, 1)
+            go func() { out <- resize(img, w, h) }()
+            return out
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func Resize(img image.Image, w, h int) image.Image {
+            return resize(img, w, h)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, api-design]
+    source: https://go.dev/wiki/CodeReviewComments#synchronous-functions

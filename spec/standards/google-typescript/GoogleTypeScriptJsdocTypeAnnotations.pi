@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptJsdocTypeAnnotations:
+    standard: @{GoogleTypeScript}
+    ruleId: jsdoc-type-annotations
+    title: Do not repeat types in JSDoc
+    statement:
+        Do not declare types in @param or @return tags, and do not write
+        tags such as @implements, @enum, @private or @override where the
+        code already uses the matching keyword.
+    rationale:
+        TypeScript already states these facts in the code, so repeating them
+        is redundant and can drift.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        /**
+         * @param {string} sku The product code.
+         * @return {number}
+         * @private
+         */
+        private stockFor(sku: string): number {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /** @param sku The product code. */
+        private stockFor(sku: string): number {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc, types]
+    source: https://google.github.io/styleguide/tsguide.html#jsdoc-type-annotations

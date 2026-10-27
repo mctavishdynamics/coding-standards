@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptBlockIndentation:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.2
+    title: Indent blocks by two spaces
+    statement:
+        Each new block or block-like construct increases the indent by two
+        spaces, and the indent returns to the previous level when it ends.
+        This applies to code and comments alike.
+    rationale:
+        A fixed, small indent makes nesting visible without pushing code
+        toward the column limit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function area(shape) {
+            if (shape.isCircle) {
+                return Math.PI * shape.r ** 2;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function area(shape) {
+          if (shape.isCircle) {
+            return Math.PI * shape.r ** 2;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, indentation]
+    source: https://google.github.io/styleguide/jsguide.html#42-block-indentation-2-spaces

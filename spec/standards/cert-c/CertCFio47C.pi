@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio47C:
+    standard: @{CertC}
+    ruleId: FIO47-C
+    title: Use valid format strings
+    statement:
+        Make every conversion specification in a format string valid, and
+        give it an argument of the matching type. Use only flags, length
+        modifiers and conversions that the standard allows together.
+    rationale:
+        A mismatched or invalid conversion is undefined behavior and can
+        print garbage, read the wrong memory or crash the program. CERT
+        rates likelihood unlikely, detectable yes, repairable no, priority
+        P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        void show_price(double price, long qty) {
+            printf("%d items at %s\n", qty, price);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void show_price(double price, long qty) {
+            printf("%ld items at %.2f\n", qty, price);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [io, format-strings]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/input-output-fio/fio47-c

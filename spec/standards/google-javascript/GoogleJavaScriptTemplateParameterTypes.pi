@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptTemplateParameterTypes:
+    standard: @{GoogleJavaScript}
+    ruleId: 7.10.3
+    title: Always specify template parameters
+    statement:
+        Always give generic types their template parameters, for example
+        Array of string rather than a bare Array.
+    rationale:
+        Specified parameters let the compiler check element types and tell
+        readers what the container holds.
+    exceptions:
+        Do not add template parameters when Object is used as a type in a
+        hierarchy rather than as a map.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const /** !Array */ tags = [];
+        const /** !Map */ byId = new Map();
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const /** !Array<string> */ tags = [];
+        const /** !Map<number, !User> */ byId = new Map();
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, types, generics]
+    source: https://google.github.io/styleguide/jsguide.html#7103-template-parameter-types

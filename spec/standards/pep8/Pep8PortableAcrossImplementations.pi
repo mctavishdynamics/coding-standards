@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8PortableAcrossImplementations:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-other-implementations
+    title: Do not disadvantage other Python implementations
+    statement:
+        Write code that works well on PyPy, Jython, IronPython, Cython and
+        others. For example, do not rely on CPython's fast in-place string
+        concatenation; use str.join in performance-sensitive code.
+    rationale:
+        The concatenation optimisation is fragile even in CPython and
+        missing elsewhere, whereas join runs in linear time everywhere.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        csv_line = ""
+        for field in fields:
+            csv_line += field + ","
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        csv_line = ",".join(fields)
+        \\\
+        ```
+    languages: [python]
+    tags: [performance, portability, strings]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

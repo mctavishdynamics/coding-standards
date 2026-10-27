@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8MaximumLineLength:
+    standard: @{Pep8}
+    ruleId: maximum-line-length
+    title: Limit lines to 79 characters
+    statement:
+        Keep code lines to at most 79 characters, and docstrings and
+        comments to 72.
+    rationale:
+        Short lines let several files sit side by side and work with side-
+        by-side review tools, and they avoid the automatic wrapping that
+        breaks up the shape of code.
+    exceptions:
+        A team that agrees on it may raise the code limit to 99 characters,
+        provided comments and docstrings still wrap at 72. The standard
+        library keeps the 79 and 72 limits.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        shipping_cost = calculate_shipping(order.weight, order.destination, express=True, insured=True)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        shipping_cost = calculate_shipping(
+            order.weight, order.destination, express=True, insured=True)
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, line-length]
+    source: https://peps.python.org/pep-0008/#maximum-line-length

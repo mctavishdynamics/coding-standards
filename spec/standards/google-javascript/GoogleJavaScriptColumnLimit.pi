@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptColumnLimit:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.4
+    title: Limit lines to 80 columns
+    statement:
+        Keep lines to at most 80 characters and wrap any longer line as
+        described in the line-wrapping rules.
+    rationale:
+        Short lines fit side-by-side diffs and narrow windows, and long
+        lines are hard to read.
+    exceptions:
+        goog.module, goog.require and goog.requireType lines, ES import and
+        export from statements, and lines where wrapping is impossible or
+        hurts discoverability, such as long URLs, shell commands to copy, or
+        long string literals that need to be searched for.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const message = buildMessage(currentUser.displayName, notification.subject, notification.body);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const message = buildMessage(
+            currentUser.displayName, notification.subject, notification.body);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, line-length]
+    source: https://google.github.io/styleguide/jsguide.html#44-column-limit-80

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoImportProtos:
+    standard: @{GoogleGo}
+    ruleId: best-practices/import-protos
+    title: Rename proto imports with descriptive pb or grpc suffixes
+    statement:
+        Rename generated proto imports with a pb suffix for proto libraries
+        and grpc for gRPC libraries, preferring whole descriptive words over
+        very short names. When unsure, use the proto package name up to _go
+        plus pb.
+    rationale:
+        Descriptive local names keep proto symbols clear at the call site.
+    exceptions:
+        Existing code with short names like xpb need not be changed, but
+        should not be copied.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        import (
+            pb "example.com/shipping/tracking_go_proto"
+        )
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        import (
+            trackingpb "example.com/shipping/tracking_go_proto"
+            trackinggrpc "example.com/shipping/tracking_go_grpc"
+        )
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, imports, naming, protobuf]
+    source: https://google.github.io/styleguide/go/best-practices#import-protos

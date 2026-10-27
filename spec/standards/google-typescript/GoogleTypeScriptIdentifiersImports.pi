@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptIdentifiersImports:
+    standard: @{GoogleTypeScript}
+    ruleId: identifiers-imports
+    title: Name namespace imports in lowerCamelCase
+    statement:
+        Give module namespace imports lowerCamelCase names, even though the
+        files they come from are snake_case.
+    rationale:
+        Namespace imports are values used like variables, so they follow the
+        variable naming style.
+    exceptions:
+        Libraries with an overwhelmingly common prefix keep it; currently
+        only jquery with the dollar sign and threejs with THREE.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        import * as PriceUtils from './price_utils';
+        import * as price_utils from './price_utils';
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        import * as priceUtils from './price_utils';
+        \\\
+        ```
+    languages: [typescript]
+    tags: [naming, imports]
+    source: https://google.github.io/styleguide/tsguide.html#identifiers-imports

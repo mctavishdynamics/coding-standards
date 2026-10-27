@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptEnums:
+    standard: @{GoogleTypeScript}
+    ruleId: enums
+    title: Use plain enum, not const enum
+    statement:
+        Do not declare const enum; use an ordinary enum.
+    rationale:
+        Enums are already immutable, and const enum is an optimisation
+        feature that hides the enum from JavaScript users of the module.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        export const enum Direction {
+          UP,
+          DOWN,
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        export enum Direction {
+          UP,
+          DOWN,
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [enums, types]
+    source: https://google.github.io/styleguide/tsguide.html#enums

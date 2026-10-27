@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppFloatingPointTypes:
+    standard: @{GoogleCpp}
+    ruleId: Floating-Point_Types
+    title: Use float and double, never long double
+    statement:
+        Use only float and double among the built-in floating-point types.
+        You may assume they are IEEE-754 binary32 and binary64. Do not use
+        long double.
+    rationale:
+        The size and precision of long double vary between platforms and
+        give non-portable results.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        long double Average(const std::vector<long double>& values);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        double Average(const std::vector<double>& values);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [types, floating-point, portability]
+    source: https://google.github.io/styleguide/cppguide.html#Floating-Point_Types

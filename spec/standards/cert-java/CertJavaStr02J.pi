@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaStr02J:
+    standard: @{CertJava}
+    ruleId: STR02-J
+    title: Specify an appropriate locale when comparing locale-dependent data
+    statement:
+        Pass an explicit locale, such as Locale.ROOT or Locale.ENGLISH, to
+        locale-dependent operations like toUpperCase, toLowerCase and
+        formatting when the result is compared to identifiers, keys or tags.
+    rationale:
+        The default locale changes behavior; in Turkish, for example, the
+        uppercase of i is a dotted capital I, which can break comparisons
+        and let input bypass filters. CERT rates likelihood probable,
+        detectable no, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        if (tag.toUpperCase().equals("SCRIPT")) {
+            reject();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (tag.toUpperCase(Locale.ROOT).equals("SCRIPT")) {
+            reject();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [strings, locale, comparison]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/characters-and-strings-str/str02-j/

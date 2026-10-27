@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257ImperativeMood:
+    standard: @{Pep257}
+    ruleId: one-line-docstrings-imperative
+    title: Write the docstring as a command ending in a period
+    statement:
+        Phrase the docstring as a command that states the effect and end it
+        with a period, for example Return the total. Do not write it as a
+        description such as Returns the total.
+    rationale:
+        The imperative form is short, direct and consistent across a code
+        base.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def total_price(items):
+            """Returns the total price of the items"""
+            return sum(item.price for item in items)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def total_price(items):
+            """Return the total price of the items."""
+            return sum(item.price for item in items)
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, wording]
+    source: https://peps.python.org/pep-0257/#one-line-docstrings

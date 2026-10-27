@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptMethodComments:
+    standard: @{GoogleJavaScript}
+    ruleId: 7.8
+    title: Document parameter and return types of methods and functions
+    statement:
+        Document parameter and return types for methods and named functions,
+        including overrides, which also need @override. Begin descriptions
+        with a third-person verb phrase; obvious descriptions may be
+        omitted. Inline type annotations may replace tags when only types
+        are needed, but descriptions and tags go in one JSDoc above the
+        function.
+    rationale:
+        Explicit types let the compiler check every call and match
+        TypeScript's expectations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class FileStore extends Store {
+          /** Save the file. */
+          save(file) {
+            return this.write(file);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class FileStore extends Store {
+          /**
+           * Writes the file to disk and returns its size in bytes.
+           * @param {!File} file
+           * @return {number}
+           * @override
+           */
+          save(file) {
+            return this.write(file);
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, functions, documentation]
+    source: https://google.github.io/styleguide/jsguide.html#78-method-and-function-comments

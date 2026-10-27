@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./TwelveFactor import TwelveFactor
+
+export coding-rule TwelveFactorPortBinding:
+    standard: @{TwelveFactor}
+    ruleId: VII
+    title: Export services via port binding
+    statement:
+        Make the app self-contained: include the web server as a library and
+        export HTTP, or any other service, by binding to a port and
+        listening on it, rather than relying on a server injected by the
+        runtime environment.
+    rationale:
+        The only contract with the environment is the port, and one app can
+        then serve as a backing service for another through a URL in its
+        config.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # Deployed as a module inside a server provided by the host,
+        # with no way to start the app on its own.
+        application = make_wsgi_app()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import os
+        from waitress import serve
+
+        serve(make_wsgi_app(), port=int(os.environ["PORT"]))
+        \\\
+        ```
+    languages: [any]
+    tags: [architecture, networking]
+    source: https://12factor.net/port-binding

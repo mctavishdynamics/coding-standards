@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsClassesNoDuplicateMembers:
+    standard: @{AirbnbJavaScript}
+    ruleId: 9.6
+    title: Avoid duplicate class members
+    statement:
+        Do not declare the same class member twice. Enforced by the ESLint
+        rule no-dupe-class-members.
+    rationale:
+        The last declaration silently wins, so a duplicate is almost always
+        a bug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Cart {
+          total() { return 0; }
+          total() { return this.items.length; }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Cart {
+          total() { return this.items.length; }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, correctness]
+    source: https://github.com/airbnb/javascript#classes--no-duplicate-members

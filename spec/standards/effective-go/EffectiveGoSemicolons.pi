@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoSemicolons:
+    standard: @{EffectiveGo}
+    ruleId: semicolons
+    title: Leave semicolons to the lexer
+    statement:
+        Do not write semicolons at the ends of statements. Use them only
+        where they separate parts, such as the clauses of a for loop or
+        several statements written on one line.
+    rationale:
+        The lexer inserts statement-ending semicolons automatically, so
+        writing them is noise that idiomatic Go does not have.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        count := 0;
+        for _, r := range rows {
+            count += r.Size;
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        count := 0
+        for i := 0; i < len(rows); i++ {
+            count += rows[i].Size
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [syntax, formatting]
+    source: https://go.dev/doc/effective_go#semicolons

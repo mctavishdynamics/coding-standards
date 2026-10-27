@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE17:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.17
+    title: Do not try to catch every exception in every function
+    statement:
+        Let an exception propagate until it reaches a function that can do
+        something useful about it, and leave cleanup on the way to RAII.
+    rationale:
+        Catching an exception where no meaningful recovery is possible only
+        adds complexity and waste.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void load_settings()
+        {
+            try {
+                read_settings_file();
+            } catch (...) {
+                throw;   // catches only to rethrow
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void load_settings()
+        {
+            read_settings_file();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, exceptions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-not-always

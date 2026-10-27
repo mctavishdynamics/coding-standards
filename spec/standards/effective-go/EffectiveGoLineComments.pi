@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoLineComments:
+    standard: @{EffectiveGo}
+    ruleId: commentary-line-comments
+    title: Prefer line comments to block comments
+    statement:
+        Use line comments as the norm. Keep block comments mainly for
+        package comments, comments inside an expression, or disabling a
+        large stretch of code.
+    rationale:
+        Line comments are the established Go convention, and block comments
+        have only a few places where they help.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        /* rate limits outgoing requests per host */
+        var limiter = newLimiter(10)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // limiter rate limits outgoing requests per host.
+        var limiter = newLimiter(10)
+        \\\
+        ```
+    languages: [go]
+    tags: [comments]
+    source: https://go.dev/doc/effective_go#commentary

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoGlobalsLitmusTests:
+    standard: @{GoogleGo}
+    ruleId: best-practices/globals-litmus-tests
+    title: Apply the litmus tests before using global state
+    statement:
+        Global state is unsafe when independent code or tests interact
+        through it, users want to swap it for tests, or callers must respect
+        ordering such as init or flag parsing. It is acceptable only when
+        logically constant, when behaviour is observably stateless, when it
+        does not leak outside the process, or when no predictability is
+        expected.
+    rationale:
+        The tests separate harmless globals, such as a private cache, from
+        ones that couple unrelated code.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```go
+        \\\
+        // Package-level state that is logically constant.
+        var crcTable = crc32.MakeTable(crc32.Castagnoli)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, global-state, api-design]
+    source: https://google.github.io/styleguide/go/best-practices#globals-litmus-tests

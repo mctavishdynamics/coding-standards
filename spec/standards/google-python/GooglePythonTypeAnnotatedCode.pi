@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonTypeAnnotatedCode:
+    standard: @{GooglePython}
+    ruleId: 2.21
+    title: Annotate public APIs and enable type checking
+    statement:
+        Enable Python type analysis when updating code. When adding or
+        changing public APIs, add type annotations and turn on type checking
+        in the build. If something prevents adoption, leave a TODO or bug
+        link describing the problem.
+    rationale:
+        Annotations document interfaces, help tools catch type errors early,
+        and make code easier to understand and maintain.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def parse_price(text, currency):
+            return Price(decimal.Decimal(text), currency)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def parse_price(text: str, currency: str) -> Price:
+            return Price(decimal.Decimal(text), currency)
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, annotations]
+    source: https://google.github.io/styleguide/pyguide.html#s2.21-type-annotated-code

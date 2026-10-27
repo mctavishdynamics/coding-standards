@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC9:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.9
+    title: Minimize exposure of members
+    statement:
+        Give each member the most restrictive access that still works.
+        Prefer private, then protected, and make members public only when
+        they are part of the interface.
+    rationale:
+        Hiding members protects the invariant from accidental access and
+        keeps maintenance local.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Buffer {
+        public:
+            char* data;
+            std::size_t size;
+            std::size_t capacity;
+            void append(char c);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Buffer {
+        public:
+            void append(char c);
+            std::size_t size() const { return size_; }
+        private:
+            char* data_ = nullptr;
+            std::size_t size_ = 0;
+            std::size_t capacity_ = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, encapsulation, access-control]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-private

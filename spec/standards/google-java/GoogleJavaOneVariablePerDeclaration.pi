@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaOneVariablePerDeclaration:
+    standard: @{GoogleJava}
+    ruleId: 4.8.2.1
+    title: Declare one variable per declaration
+    statement:
+        Each field or local variable declaration declares a single variable.
+    rationale:
+        Separate declarations are easier to read, annotate, document and
+        change one at a time.
+    exceptions:
+        The header of a for loop may declare several variables.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        int width, height;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int width;
+        int height;
+        for (int i = 0, j = size - 1; i < j; i++, j--) {
+          swap(i, j);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [declarations, variables]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.2.1-variables-per-declaration

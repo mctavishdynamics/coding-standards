@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC104:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.104
+    title: Give a container a default constructor that makes it empty
+    statement:
+        Provide a default constructor that creates an empty container.
+    rationale:
+        It makes the container regular and matches the behavior of standard
+        containers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Ring {
+        public:
+            explicit Ring(std::size_t capacity);   // no way to make an empty ring
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Ring {
+        public:
+            Ring() = default;                        // empty
+            explicit Ring(std::size_t capacity);
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, constructors]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rcon-empty

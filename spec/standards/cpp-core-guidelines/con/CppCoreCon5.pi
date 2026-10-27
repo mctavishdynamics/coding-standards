@@ -1,0 +1,32 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCon5:
+    standard: @{CppCoreGuidelines}
+    ruleId: Con.5
+    title: Use constexpr for values that can be computed at compile time
+    statement:
+        Define a value constexpr when its initializer can be evaluated at
+        compile time.
+    rationale:
+        constexpr gives better performance, better compile-time checking,
+        guaranteed compile-time evaluation and no possibility of race
+        conditions; const alone still allows run-time evaluation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        const double circle_area = area(2.0);   // may be computed at run time
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr double circle_area = area(2.0);   // error unless computable at compile time
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constexpr, compile-time]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconst-constexpr

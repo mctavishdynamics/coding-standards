@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8BlankLinesSparingly:
+    standard: @{Pep8}
+    ruleId: blank-lines-sparingly
+    title: Use extra blank lines sparingly
+    statement:
+        Use extra blank lines sparingly to separate groups of related
+        functions, and inside functions to mark logical sections. Blank
+        lines may be left out between a run of related one-liners.
+    rationale:
+        Blank lines carry meaning only when they are rare; too many spread
+        code out without showing structure.
+    exceptions:
+        A form feed character may be used to separate pages of related
+        sections, though some viewers show it as a glyph.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def checkout(cart):
+
+            total = cart.total()
+
+
+            tax = total * TAX_RATE
+
+            return total + tax
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def checkout(cart):
+            total = cart.total()
+            tax = total * TAX_RATE
+
+            return total + tax
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, blank-lines]
+    source: https://peps.python.org/pep-0008/#blank-lines

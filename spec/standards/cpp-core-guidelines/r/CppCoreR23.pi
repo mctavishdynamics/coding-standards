@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR23:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.23
+    title: Use make_unique to make unique_ptrs
+    statement:
+        Create unique_ptr objects with std::make_unique rather than by
+        passing the result of new to the unique_ptr constructor.
+    rationale:
+        make_unique is shorter, avoids repeating the type, and is exception
+        safe in complex expressions in pre-C++17 code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::unique_ptr<Texture> tex(new Texture("grass.png"));
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto tex = std::make_unique<Texture>("grass.png");
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, allocation]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-make_unique

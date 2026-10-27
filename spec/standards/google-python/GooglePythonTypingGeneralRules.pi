@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonTypingGeneralRules:
+    standard: @{GooglePython}
+    ruleId: 3.19.1
+    title: Annotate public APIs and error-prone code
+    statement:
+        Learn the type hint system. Annotating self, cls or the return of
+        __init__ is not needed; use Self when the type matters and Any where
+        a type cannot be expressed. Not every function needs annotations,
+        but annotate public APIs, error-prone or hard-to-understand code,
+        and code whose types have stabilized.
+    rationale:
+        Annotations where they matter most balance safety and clarity
+        against flexibility.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Vector:
+            def __init__(self: 'Vector', x, y) -> None:
+                ...
+
+            def dot(self, other):
+                ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Vector:
+            def __init__(self, x: float, y: float):
+                ...
+
+            def dot(self, other: Self) -> float:
+                ...
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, annotations]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.1-general-rules

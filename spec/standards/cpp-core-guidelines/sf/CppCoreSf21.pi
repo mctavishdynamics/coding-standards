@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf21:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.21
+    title: Don't use an unnamed (anonymous) namespace in a header
+    statement:
+        Do not open an unnamed namespace in a header file. Use a named
+        namespace and inline functions instead.
+    rationale:
+        Each file including the header gets its own separate copy of the
+        entities, which is almost always a bug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // limits.h
+        namespace {
+            int max_users = 100;
+            int scaled(int n) { return n * max_users; }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // limits.h
+        namespace limits {
+            inline constexpr int max_users = 100;
+            inline int scaled(int n) { return n * max_users; }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces, headers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-unnamed

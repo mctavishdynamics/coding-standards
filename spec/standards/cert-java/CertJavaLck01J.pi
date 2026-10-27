@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaLck01J:
+    standard: @{CertJava}
+    ruleId: LCK01-J
+    title: Do not synchronize on objects that may be reused
+    statement:
+        Never use a boxed primitive, an interned string, a string literal or
+        a Boolean constant as a lock. Lock on an object the class creates
+        for that purpose.
+    rationale:
+        Such values are cached and shared across the whole program, so
+        unrelated code may lock the same object. The result can be deadlock
+        or unexpected contention. CERT's risk assessment gives likelihood
+        probable, detectable yes, repairable no, priority P8 and level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        private final String lock = "cache-lock";
+
+        void refresh() {
+            synchronized (lock) {
+                reload();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private final Object lock = new Object();
+
+        void refresh() {
+            synchronized (lock) {
+                reload();
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, locking]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/locking-lck/lck01-j/

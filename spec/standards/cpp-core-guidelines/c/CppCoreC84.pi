@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC84:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.84
+    title: Do not let a swap function fail
+    statement:
+        Write swap so that it cannot fail, typically by exchanging pointers
+        and built-in values.
+    rationale:
+        Swap is used in many places that assume it never fails, and standard
+        containers and algorithms do not work correctly with a failing
+        element swap.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void swap(Doc& a, Doc& b) {
+            Doc tmp = a;      // copy may allocate and throw
+            a = b;
+            b = tmp;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void swap(Doc& a, Doc& b) noexcept {
+            using std::swap;
+            swap(a.body_, b.body_);   // swaps internal pointers only
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [swap, error-handling]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-swap-fail

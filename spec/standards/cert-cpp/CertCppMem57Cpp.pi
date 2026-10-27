@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppMem57Cpp:
+    standard: @{CertCpp}
+    ruleId: MEM57-CPP
+    title: Avoid using default operator new for over-aligned types
+    statement:
+        Do not create over-aligned types with the default operator new
+        unless the implementation supports the alignment. Provide a class
+        operator new and delete that honour the alignment, or use aligned
+        allocation.
+    rationale:
+        Before C++17 the default operator new only guarantees fundamental
+        alignment, so an over-aligned object may be misaligned, which is
+        undefined behavior. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        struct alignas(64) CacheLine {
+            char data[64];
+        };
+
+        CacheLine* line = new CacheLine;  // pre-C++17: may be misaligned
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct alignas(64) CacheLine {
+            char data[64];
+            static void* operator new(std::size_t size) {
+                if (void* p = std::aligned_alloc(alignof(CacheLine), size)) {
+                    return p;
+                }
+                throw std::bad_alloc();
+            }
+            static void operator delete(void* p) noexcept { std::free(p); }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, alignment, allocation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/memory-management-mem/mem57-cpp

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCDebugNonempty:
+    standard: @{RustApiGuidelines}
+    ruleId: C-DEBUG-NONEMPTY
+    title: Never produce an empty Debug representation
+    statement:
+        Make the Debug output visible even for conceptually empty values, as
+        an empty string prints as two quotes and an empty vector as two
+        brackets.
+    rationale:
+        Empty output is easy to miss in logs and makes it look as if nothing
+        was printed at all.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl fmt::Debug for Path {
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                f.write_str(&self.segments.join("/"))
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl fmt::Debug for Path {
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                write!(f, "Path({:?})", self.segments.join("/"))
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [debugging, formatting]
+    source: https://rust-lang.github.io/api-guidelines/debuggability.html#c-debug-nonempty

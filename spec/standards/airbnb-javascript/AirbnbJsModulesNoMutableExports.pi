@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsModulesNoMutableExports:
+    standard: @{AirbnbJavaScript}
+    ruleId: 10.5
+    title: Do not export mutable bindings
+    statement:
+        Export only constant references, not variables declared with let or
+        var. Enforced by the ESLint rule import/no-mutable-exports.
+    rationale:
+        Mutation is best avoided in general, and an exported binding that
+        can change is especially hard to follow.
+    exceptions:
+        Some special cases may need a mutable export.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        let retryLimit = 3;
+        export { retryLimit };
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const retryLimit = 3;
+        export { retryLimit };
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, exports, immutability]
+    source: https://github.com/airbnb/javascript#modules--no-mutable-exports

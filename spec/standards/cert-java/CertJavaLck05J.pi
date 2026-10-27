@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaLck05J:
+    standard: @{CertJava}
+    ruleId: LCK05-J
+    title: Synchronize access to static fields that can be modified by untrusted code
+    statement:
+        A method that untrusted code can call and that changes a static
+        field must do its own synchronization. Do not rely on callers to
+        lock.
+    rationale:
+        A static field is shared by every client, and an untrusted client
+        can ignore any documented locking contract. The field can then be
+        corrupted by concurrent updates. CERT's risk assessment gives
+        likelihood probable, detectable no, repairable no, priority P2 and
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        public final class IdGenerator {
+            private static int next;
+
+            // Callers are told to lock IdGenerator.class first.
+            public static int nextId() {
+                return next++;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public final class IdGenerator {
+            private static final Object lock = new Object();
+            private static int next;
+
+            public static int nextId() {
+                synchronized (lock) {
+                    return next++;
+                }
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, static-fields, untrusted-code]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/locking-lck/lck05-j/

@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem34C:
+    standard: @{CertC}
+    ruleId: MEM34-C
+    title: Only free memory allocated dynamically
+    statement:
+        Pass to free or realloc only null or a pointer returned by malloc,
+        calloc, realloc or aligned_alloc. Never free a pointer to static or
+        automatic storage, or a pointer into the middle of a block.
+    rationale:
+        Freeing memory that was not dynamically allocated is undefined
+        behavior and can corrupt the heap or crash the program. CERT rates
+        likelihood likely, detectable no, repairable no, priority P9, level
+        L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+
+        void handle(int use_heap) {
+            char local[64];
+            char *buf = use_heap ? malloc(64) : local;
+            /* ... */
+            free(buf);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+
+        void handle(int use_heap) {
+            char local[64];
+            char *buf = use_heap ? malloc(64) : local;
+            /* ... */
+            if (buf != local) {
+                free(buf);
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, free]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/memory-management-mem/mem34-c

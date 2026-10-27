@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI13:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.13
+    title: Do not pass an array as a single pointer
+    statement:
+        Pass a sequence as a span, a container or another object that
+        carries its size, not as a bare pointer with a separate or implied
+        length.
+    rationale:
+        Pointer and size interfaces are error-prone, and a bare pointer
+        forces the callee to rely on a convention to learn the size.
+    exceptions:
+        Use zstring and czstring for C-style zero-terminated strings, and
+        prefer string_view or span of char to prevent range errors.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        double average(const double* values, int n);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        double average(std::span<const double> values);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, arrays, bounds]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-array

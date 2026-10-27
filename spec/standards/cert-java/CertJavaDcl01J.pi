@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl01J:
+    standard: @{CertJava}
+    ruleId: DCL01-J
+    title: Do not reuse public identifiers from the Java Standard Library
+    statement:
+        Do not name your classes, interfaces, packages or other public
+        identifiers after public names in the Java Standard Library, such as
+        Vector or String.
+    rationale:
+        A reused name can shadow the library type, so maintainers and
+        imports may pick the wrong class and the program behaves
+        unexpectedly. CERT rates likelihood unlikely, detectable yes,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        class Vector {
+            private int x;
+            private int y;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Point2D {
+            private int x;
+            private int y;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [naming, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/declarations-and-initialization-dcl/dcl01-j/

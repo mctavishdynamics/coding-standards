@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppFormattingLambdaExpressions:
+    standard: @{GoogleCpp}
+    ruleId: Formatting_Lambda_Expressions
+    title: Format lambdas like functions and capture lists like lists
+    statement:
+        Format lambda parameters and bodies as for any function, and capture
+        lists like other comma-separated lists. Put no space between the
+        ampersand and the name in a by-reference capture. Short lambdas may
+        be written inline as arguments.
+    rationale:
+        Reusing the function and list layouts keeps lambdas familiar to
+        read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto add = [& total] (int x) { total += x; };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int total = 0;
+        auto add = [&total](int x) { total += x; };
+        std::sort(v.begin(), v.end(), [](int a, int b) { return a > b; });
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, lambdas]
+    source: https://google.github.io/styleguide/cppguide.html#Formatting_Lambda_Expressions

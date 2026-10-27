@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonTypingDefaultValues:
+    standard: @{GooglePython}
+    ruleId: 3.19.4
+    title: Put spaces around = for annotated defaults
+    statement:
+        Use spaces around = only for parameters that have both a type
+        annotation and a default value.
+    rationale:
+        This follows PEP 8 and visually separates the annotation from the
+        default.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def retry(attempts:int=3) -> bool:
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def retry(attempts: int = 3) -> bool:
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, formatting]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.4-default-values

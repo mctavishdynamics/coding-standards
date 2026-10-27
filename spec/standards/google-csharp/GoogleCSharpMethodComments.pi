@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpMethodComments:
+    standard: @{GoogleCSharp}
+    ruleId: method-comments
+    title: Comment methods with descriptive verb phrases
+    statement:
+        Precede almost every method with a comment saying what it does and
+        how to use it, written as a verb phrase like Opens the file. Mention
+        inputs and outputs, retained arguments, nullable arguments and
+        performance concerns, without stating the obvious. Override comments
+        cover only what is specific to the override.
+    rationale:
+        Method comments let callers use a method correctly without reading
+        its body.
+    exceptions:
+        Simple and obvious methods, such as plain accessors, may omit the
+        comment, and an override may need none.
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        // Open the connection.
+        public void Connect(Uri endpoint, TimeSpan timeout) { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        // Opens a connection to `endpoint`, waiting at most `timeout`. The
+        // endpoint must not be null. Blocks the calling thread.
+        public void Connect(Uri endpoint, TimeSpan timeout) { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [comments, documentation, methods]
+    source: https://google.github.io/styleguide/csharpguide.html#method-comments

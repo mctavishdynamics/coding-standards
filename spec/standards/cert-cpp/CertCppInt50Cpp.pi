@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppInt50Cpp:
+    standard: @{CertCpp}
+    ruleId: INT50-CPP
+    title: Do not cast to an out-of-range enumeration value
+    statement:
+        Before converting an integer to an enumeration type, check that the
+        value is within the range of that enumeration. This matters most for
+        unscoped enumerations without a fixed underlying type.
+    rationale:
+        Casting an out-of-range value to such an enumeration is undefined
+        behavior, and the compiler may optimise away later range checks.
+        CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        enum Color { Red, Green, Blue };
+
+        Color to_color(int value) {
+            return static_cast<Color>(value);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum Color { Red, Green, Blue };
+
+        Color to_color(int value) {
+            if (value < Red || value > Blue) {
+                throw std::out_of_range("bad color");
+            }
+            return static_cast<Color>(value);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [integers, enumerations, casts]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/integers-int/int50-cpp

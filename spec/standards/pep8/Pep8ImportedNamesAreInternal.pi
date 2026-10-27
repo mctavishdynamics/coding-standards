@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ImportedNamesAreInternal:
+    standard: @{Pep8}
+    ruleId: public-and-internal-interfaces-imported-names
+    title: Do not rely on names a module merely imports
+    statement:
+        Treat names a module imports as an implementation detail. Do not
+        reach them through that module unless it documents them as part of
+        its API.
+    rationale:
+        The module may drop or change those imports at any time.
+    exceptions:
+        Documented re-exports such as os.path, or a package __init__ that
+        exposes its submodules, are fine to use.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # reports.py happens to do "import json"
+        import reports
+
+        data = reports.json.loads(text)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import json
+
+        data = json.loads(text)
+        \\\
+        ```
+    languages: [python]
+    tags: [imports, api-design]
+    source: https://peps.python.org/pep-0008/#public-and-internal-interfaces

@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppNamesAndOrderOfIncludes:
+    standard: @{GoogleCpp}
+    ruleId: Names_and_Order_of_Includes
+    title: Order includes in the standard groups
+    statement:
+        Order includes as the related header, C system headers, C++ standard
+        library headers, other libraries' headers, then your project's
+        headers, with one blank line between groups and each group sorted
+        alphabetically. Write project paths from the source root without .
+        or .., and use angle brackets only where the library requires them.
+    rationale:
+        Putting the related header first makes a missing include in it break
+        the build for the people working on that file, not for unrelated
+        users. A fixed order makes includes easy to scan.
+    exceptions:
+        System-specific code may put conditional includes after the other
+        includes.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // myapp/net/server.cc
+        #include <vector>
+        #include "../util/strings.h"
+        #include <unistd.h>
+        #include "myapp/net/server.h"
+        #include "absl/status/status.h"
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // myapp/net/server.cc
+        #include "myapp/net/server.h"
+
+        #include <unistd.h>
+
+        #include <vector>
+
+        #include "absl/status/status.h"
+        #include "myapp/util/strings.h"
+        \\\
+        ```
+    languages: [cpp]
+    tags: [includes, headers, formatting]
+    source: https://google.github.io/styleguide/cppguide.html#Names_and_Order_of_Includes

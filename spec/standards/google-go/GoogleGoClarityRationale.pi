@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoClarityRationale:
+    standard: @{GoogleGo}
+    ruleId: guide/clarity-rationale
+    title: Explain why the code does what it does
+    statement:
+        When names alone do not convey the reason for the code, add a
+        comment that explains it, especially for language subtleties,
+        business-logic nuances or intricate performance code. Prefer
+        comments that explain why over comments that restate what the code
+        says.
+    rationale:
+        Without the reason, maintainers have to reverse-engineer intent and
+        may break a subtle requirement. Redundant comments add clutter and
+        drift out of date.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Check if the user is the owner.
+        if req.EffectiveUser != doc.Owner {
+            return errPermissionDenied
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Compare against the effective user, not the logged-in user, so that an
+        // administrator acting on someone's behalf gets that person's permissions.
+        if req.EffectiveUser != doc.Owner {
+            return errPermissionDenied
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [guide, clarity, comments]
+    source: https://google.github.io/styleguide/go/guide#clarity-rationale

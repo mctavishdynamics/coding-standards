@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftDelegateMethods:
+    standard: @{GoogleSwift}
+    ruleId: delegate-methods
+    title: Name delegate methods in the Cocoa style
+    statement:
+        Pass the delegate's source object as the first argument. With no
+        other arguments, name a Void or Bool method as the source type plus
+        a verb phrase with an unlabeled argument, and other methods with a
+        noun phrase and a prepositional label. With more arguments, use the
+        source type as the base name and label the second argument with a
+        verb or noun phrase.
+    rationale:
+        These names follow Cocoa protocols, so delegate APIs feel familiar.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        protocol PlayerViewDelegate: AnyObject {
+          func didFinish(player: PlayerView)
+          func numberOfTracks(player: PlayerView) -> Int
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        protocol PlayerViewDelegate: AnyObject {
+          func playerViewDidFinishPlaying(_ playerView: PlayerView)
+          func numberOfTracks(in playerView: PlayerView) -> Int
+          func playerView(_ playerView: PlayerView, didSelectTrackAt index: Int)
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, delegates, api-design]
+    source: https://google.github.io/swift/#delegate-methods

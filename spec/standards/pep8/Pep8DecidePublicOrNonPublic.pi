@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8DecidePublicOrNonPublic:
+    standard: @{Pep8}
+    ruleId: designing-for-inheritance
+    title: Decide whether each attribute is public or non-public
+    statement:
+        Always decide whether a class's methods and instance variables are
+        public or non-public, and choose non-public when in doubt. For
+        classes meant to be subclassed, also decide which attributes form
+        the subclass API.
+    rationale:
+        Public attributes carry a promise of backwards compatibility, and it
+        is easier to make an attribute public later than to take it back.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Downloader:
+            def __init__(self):
+                self.retry_queue = []
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Downloader:
+            def __init__(self):
+                self._retry_queue = []
+        \\\
+        ```
+    languages: [python]
+    tags: [classes, api-design, inheritance]
+    source: https://peps.python.org/pep-0008/#designing-for-inheritance

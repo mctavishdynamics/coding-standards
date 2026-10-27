@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftTypeVariableAndFunctionDeclarations:
+    standard: @{GoogleSwift}
+    ruleId: type-variable-and-function-declarations
+    title: Keep one top-level type per file in a logical order
+    statement:
+        Most files contain one top-level type. Order the declarations in a
+        file and the members of each type in some logical order the
+        maintainer could explain, not simply by date added. MARK comments
+        can label the groups.
+    rationale:
+        A deliberate order helps readers find code, and MARK comments appear
+        in Xcode navigation.
+    exceptions:
+        A class and its delegate protocol, or a type and small helper types,
+        may share a file.
+    severity: null
+    noncompliant: null
+    compliant:
+        ```swift
+        \\\
+        final class CartViewController: UIViewController {
+          // MARK: - Lifecycle
+
+          override func viewDidLoad() {
+            super.viewDidLoad()
+          }
+
+          // MARK: - Actions
+
+          @objc private func checkoutTapped() {
+            // ...
+          }
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [organization, ordering]
+    source: https://google.github.io/swift/#type-variable-and-function-declarations

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCWordOrder:
+    standard: @{RustApiGuidelines}
+    ruleId: C-WORD-ORDER
+    title: Use a consistent word order in names
+    statement:
+        Pick one word order for related names and keep to it within the
+        crate and in line with similar standard library items. Standard
+        library error types use verb-object-error order, as in
+        ParseIntError.
+    rationale:
+        A consistent order makes names guessable and keeps related items
+        together in documentation and completion lists.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub struct ParseConfigError;
+        pub struct ManifestReadError;
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub struct ParseConfigError;
+        pub struct ReadManifestError;
+        \\\
+        ```
+    languages: [rust]
+    tags: [naming, consistency]
+    source: https://rust-lang.github.io/api-guidelines/naming.html#c-word-order

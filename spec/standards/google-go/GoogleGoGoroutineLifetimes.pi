@@ -1,0 +1,57 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoGoroutineLifetimes:
+    standard: @{GoogleGo}
+    ruleId: decisions/goroutine-lifetimes
+    title: Make it clear when goroutines exit
+    statement:
+        Whenever you start a goroutine, make it obvious when or whether it
+        stops, typically by keeping synchronisation inside one function and
+        using a context or wait group. If that is still not obvious,
+        document when and why the goroutines exit.
+    rationale:
+        Goroutines blocked on channels leak, and in-flight goroutines can
+        send on closed channels, race on inputs and make tests unreliable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (s *Server) Start() {
+            go func() {
+                for {
+                    s.flush()
+                    time.Sleep(time.Second)
+                }
+            }()
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (s *Server) Run(ctx context.Context) {
+            var wg sync.WaitGroup
+            wg.Add(1)
+            go func() {
+                defer wg.Done()
+                ticker := time.NewTicker(time.Second)
+                defer ticker.Stop()
+                for {
+                    select {
+                    case <-ctx.Done():
+                        return
+                    case <-ticker.C:
+                        s.flush()
+                    }
+                }
+            }()
+            wg.Wait()
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, concurrency, goroutines]
+    source: https://google.github.io/styleguide/go/decisions#goroutine-lifetimes

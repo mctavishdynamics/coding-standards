@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellCommandSubstitution:
+    standard: @{GoogleShell}
+    ruleId: command-substitution
+    title: Use $(command) instead of backticks
+    statement:
+        Write command substitution as $(command) rather than with backticks.
+    rationale:
+        Nested backticks need the inner ones escaped, while the $(command)
+        form nests without change and reads more easily.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        kernel_dir="`dirname \`readlink -f /vmlinuz\``"
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        kernel_dir="$(dirname "$(readlink -f /vmlinuz)")"
+        \\\
+        ```
+    languages: [shell]
+    tags: [syntax, readability]
+    source: https://google.github.io/styleguide/shellguide.html#command-substitution

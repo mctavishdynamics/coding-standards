@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoNeverDiscardErrors:
+    standard: @{EffectiveGo}
+    ruleId: blank-assign-errors
+    title: Always check error returns
+    statement:
+        Never assign an error result to the blank identifier to ignore it.
+        Check every error return.
+    rationale:
+        Errors are returned for a reason; ignoring one is terrible practice
+        that hides failures.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        fi, _ := os.Stat(path)
+        if fi.IsDir() {
+            fmt.Println("directory")
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        fi, err := os.Stat(path)
+        if err != nil {
+            return err
+        }
+        if fi.IsDir() {
+            fmt.Println("directory")
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, blank-identifier]
+    source: https://go.dev/doc/effective_go#blank_assign

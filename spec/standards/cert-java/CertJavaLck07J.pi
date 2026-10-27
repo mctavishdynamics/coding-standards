@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaLck07J:
+    standard: @{CertJava}
+    ruleId: LCK07-J
+    title: Avoid deadlock by requesting and releasing locks in the same order
+    statement:
+        When code takes more than one lock, every thread must acquire them
+        in one consistent global order. Keep synchronization to the places
+        that need it.
+    rationale:
+        If one thread holds lock A and waits for B while another holds B and
+        waits for A, both wait forever. Java neither prevents nor detects
+        such deadlocks. CERT's risk assessment gives likelihood likely,
+        detectable no, repairable no, priority P3 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        void transfer(Account from, Account to, long amount) {
+            synchronized (from) {
+                synchronized (to) {
+                    from.withdraw(amount);
+                    to.deposit(amount);
+                }
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void transfer(Account from, Account to, long amount) {
+            Account first = from.id() < to.id() ? from : to;
+            Account second = first == from ? to : from;
+            synchronized (first) {
+                synchronized (second) {
+                    from.withdraw(amount);
+                    to.deposit(amount);
+                }
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, deadlock, locking]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/locking-lck/lck07-j/

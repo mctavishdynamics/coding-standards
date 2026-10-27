@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE18:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.18
+    title: Minimize the use of explicit try and catch
+    statement:
+        Use resource handles and RAII, or a final_action as a last resort,
+        so that most functions need no try block.
+    rationale:
+        Try and catch blocks are verbose and error-prone when non-trivial,
+        and often signal unsystematic, low-level resource management.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void print(const std::string& name)
+        {
+            Printer* p = nullptr;
+            try {
+                p = new Printer(name);
+                p->print_test_page();
+                delete p;
+            } catch (...) {
+                delete p;
+                throw;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void print(const std::string& name)
+        {
+            Printer p(name);
+            p.print_test_page();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, exceptions, raii]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-catch

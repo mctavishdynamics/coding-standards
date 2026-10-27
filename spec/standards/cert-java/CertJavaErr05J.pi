@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaErr05J:
+    standard: @{CertJava}
+    ruleId: ERR05-J
+    title: Do not let checked exceptions escape from a finally block
+    statement:
+        Handle checked exceptions thrown by methods called in a finally
+        block, such as close, inside the finally block, or use
+        try-with-resources.
+    rationale:
+        An exception escaping a finally block replaces the original
+        exception from the try block and skips the rest of the cleanup. CERT
+        rates likelihood unlikely, detectable yes, repairable no, priority
+        P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        BufferedReader in = Files.newBufferedReader(path);
+        try {
+            return in.readLine();
+        } finally {
+            in.close();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        try (BufferedReader in = Files.newBufferedReader(path)) {
+            return in.readLine();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, finally, resources]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/exceptional-behavior-err/err05-j/

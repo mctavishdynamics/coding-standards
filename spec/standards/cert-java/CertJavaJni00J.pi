@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaJni00J:
+    standard: @{CertJava}
+    ruleId: JNI00-J
+    title: Define wrappers around native methods
+    statement:
+        Declare every native method private and expose it only through a
+        Java wrapper that performs security checks, validates arguments and
+        results, and copies mutable inputs.
+    rationale:
+        Native code escapes Java's safety checks. A wrapper is the only
+        place to apply them before data reaches the native side. CERT's risk
+        assessment gives likelihood probable, detectable no, repairable no,
+        priority P4 and level L3.
+    exceptions:
+        Native methods that need no security checks, validation or defensive
+        copying, such as a call to C's rand(), need not be wrapped.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        public native void writeBlock(byte[] data, int offset, int length);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private native void nativeWriteBlock(byte[] data, int offset, int length);
+
+        public void writeBlock(byte[] data, int offset, int length) {
+            checkPermission();
+            Objects.checkFromIndexSize(offset, length, data.length);
+            nativeWriteBlock(data.clone(), offset, length);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [jni, native-code, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/java-native-interface-jni/jni00-j/

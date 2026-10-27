@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptRestParameters:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.5.5.2
+    title: Use rest parameters instead of arguments
+    statement:
+        Use a rest parameter rather than the arguments object. Make it the
+        last parameter, type it with a leading ellipsis in JSDoc, put no
+        space after the dots, and do not name it var_args. Never name a
+        variable or parameter arguments.
+    rationale:
+        Rest parameters are real arrays and visible in the signature, and a
+        variable called arguments shadows the built-in confusingly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function sum() {
+          return Array.from(arguments).reduce((a, b) => a + b, 0);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** @param {...number} values */
+        function sum(...values) {
+          return values.reduce((a, b) => a + b, 0);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, parameters]
+    source: https://google.github.io/styleguide/jsguide.html#5552-rest-parameters

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSer09J:
+    standard: @{CertJava}
+    ruleId: SER09-J
+    title: Do not invoke overridable methods from the readObject() method
+    statement:
+        readObject must not call methods that a subclass can override. Call
+        only private, final or static methods from it.
+    rationale:
+        readObject acts as a constructor. An overriding method would see the
+        object before it is fully initialized. CERT's risk assessment gives
+        likelihood probable, detectable yes, repairable no, priority P4 and
+        level L3.
+    exceptions:
+        readObject may call defaultReadObject() and readFields() on the
+        ObjectInputStream.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        private void readObject(ObjectInputStream in)
+                throws IOException, ClassNotFoundException {
+            in.defaultReadObject();
+            validate();   // public, overridable
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private void readObject(ObjectInputStream in)
+                throws IOException, ClassNotFoundException {
+            in.defaultReadObject();
+            checkInvariants();   // private
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, inheritance, initialization]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/serialization-ser/ser09-j/

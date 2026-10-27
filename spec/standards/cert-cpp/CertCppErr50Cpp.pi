@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppErr50Cpp:
+    standard: @{CertCpp}
+    ruleId: ERR50-CPP
+    title: Do not abruptly terminate the program
+    statement:
+        Do not end the program abruptly
+        with std::abort, std::quick_exit, std::_Exit or an implicit call
+        to std::terminate. Let errors propagate as exceptions to a handler
+        that can clean up.
+    rationale:
+        Abrupt termination skips destructors and exit handlers, so buffered
+        data may be lost, files left open and temporary files left behind.
+        CERT rates likelihood probable, detectable no, repairable no,
+        priority P2, level L3.
+    exceptions:
+        After reporting the problem to the operator, a program may
+        call std::abort, std::_Exit or std::terminate for a critical error
+        with no possible recovery. The assert macro is allowed for the same
+        reason.
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        void load(const std::string& path) {
+            std::ifstream in(path);
+            if (!in) {
+                std::abort();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void load(const std::string& path) {
+            std::ifstream in(path);
+            if (!in) {
+                throw std::runtime_error("cannot open " + path);
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, exceptions, termination]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/exceptions-and-error-handling-err/err50-cpp

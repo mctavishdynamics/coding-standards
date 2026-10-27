@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellPipelines:
+    standard: @{GoogleShell}
+    ruleId: pipelines
+    title: Split long pipelines one segment per line
+    statement:
+        Keep a pipeline on one line if it fits. Otherwise put each segment
+        on its own line, with the pipe at the start of the continuation
+        line, a backslash at the end of the previous one and a 2 space
+        indent. The same applies to chains joined by || and &&.
+    rationale:
+        The layout makes a pipeline easy to tell apart from an ordinary long
+        command continuation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        grep -v '^#' "${hosts_file}" | awk '{print $2}' | sort | uniq -c | sort -rn | head -n 10
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        grep -v '^#' "${hosts_file}" \
+          | awk '{print $2}' \
+          | sort \
+          | uniq -c \
+          | sort -rn \
+          | head -n 10
+        \\\
+        ```
+    languages: [shell]
+    tags: [formatting, pipelines]
+    source: https://google.github.io/styleguide/shellguide.html#pipelines

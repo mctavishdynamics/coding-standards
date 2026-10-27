@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactCamelCasePropNames:
+    standard: @{AirbnbReact}
+    ruleId: props-1
+    title: Use camelCase for prop names
+    statement:
+        Name props in camelCase. Use PascalCase only when the prop value is
+        a React component.
+    rationale:
+        camelCase matches JavaScript naming, and PascalCase marks props that
+        hold components.
+    exceptions:
+        A prop whose value is a React component uses PascalCase.
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        <Profile
+          FirstName="Ada"
+          birth_year={1815}
+        />
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        <Profile
+          firstName="Ada"
+          birthYear={1815}
+          Icon={UserIcon}
+        />
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [naming, props]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#props

@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreNl21:
+    standard: @{CppCoreGuidelines}
+    ruleId: NL.21
+    title: Declare one name (only) per declaration
+    statement:
+        Declare a single name in each declaration. See rule ES.10.
+    rationale:
+        It is easier to read and avoids confusion from the declarator
+        syntax, where a pointer star binds to only one name.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int* first, last;      // last is an int, not a pointer
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int* first;
+        int* last;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [declarations, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rl-dcl

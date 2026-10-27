@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcHandleErrors:
+    standard: @{GoCodeReviewComments}
+    ruleId: handle-errors
+    title: Do not discard errors
+    statement:
+        Do not throw away an error by assigning it to the blank identifier.
+        Check every error a function returns, and handle it, return it, or
+        in truly exceptional cases panic.
+    rationale:
+        An ignored error lets the program continue as if the call succeeded,
+        which hides the real cause of later failures.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        data, _ := json.Marshal(order)
+        _ = os.WriteFile("order.json", data, 0o644)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        data, err := json.Marshal(order)
+        if err != nil {
+            return fmt.Errorf("encode order: %w", err)
+        }
+        if err := os.WriteFile("order.json", data, 0o644); err != nil {
+            return fmt.Errorf("save order: %w", err)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling]
+    source: https://go.dev/wiki/CodeReviewComments#handle-errors

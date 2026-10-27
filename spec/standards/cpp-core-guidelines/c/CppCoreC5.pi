@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC5:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.5
+    title: Put helper functions in the namespace of their class
+    statement:
+        Declare non-member helpers that form part of a class's useful
+        interface in the same namespace as the class.
+    rationale:
+        Keeping them together shows they belong to the class and lets
+        argument-dependent lookup find them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        namespace geo {
+            struct Point { double x, y; };
+        }
+
+        double distance(const geo::Point& a, const geo::Point& b);  // global
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace geo {
+            struct Point { double x, y; };
+            double distance(const Point& a, const Point& b);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, namespaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-helper

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp37C:
+    standard: @{CertC}
+    ruleId: FLP37-C
+    title:
+        Do not use object representations to compare floating-point values
+    statement:
+        Compare floating-point values with the floating-point comparison
+        operators, not with memcmp over their bytes or over structures that
+        contain them.
+    rationale:
+        Equal values can have different bit patterns, such as 0.0 and
+        negative zero, and identical NaN bit patterns are never equal. CERT
+        rates likelihood unlikely, detectable yes, repairable yes, priority
+        P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include <string.h>
+
+        struct reading { double value; };
+
+        int same(const struct reading *a, const struct reading *b) {
+            return memcmp(a, b, sizeof *a) == 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct reading { double value; };
+
+        int same(const struct reading *a, const struct reading *b) {
+            return a->value == b->value;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [floating-point, comparison]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/floating-point-flp/flp37-c

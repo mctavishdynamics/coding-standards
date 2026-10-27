@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptCoercionNullCheck:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.10.1
+    title: Use loose equality only to check for null or undefined
+    statement:
+        Loose equality is acceptable when comparing with null to catch both
+        null and undefined at once.
+    rationale:
+        A double-equals null check catches both missing values without also
+        matching other falsy values like 0 or the empty string.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        if (value === null || value === undefined) {}
+        if (!value) {}  // also rejects 0 and ''
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        if (value == null) {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [expressions, equality]
+    source: https://google.github.io/styleguide/jsguide.html#5101-exceptions-where-coercion-is-desirable

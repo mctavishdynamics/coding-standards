@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppTypeDeduction:
+    standard: @{GoogleCpp}
+    ruleId: Type_deduction
+    title: Use type deduction only to make code clearer or safer
+    statement:
+        Use auto and other type deduction only when it makes code clearer to
+        readers outside your project, or safer, never just to avoid typing a
+        type. Avoid deduced return types in public headers, do not use auto
+        parameters in non-lambda functions, avoid decltype(auto) when
+        something simpler works, and prefer structured bindings for pairs
+        and map elements.
+    rationale:
+        Types you find obvious are often useful information for readers from
+        other teams. Deduced return types turn the implementation into the
+        interface.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto result = MyWidgetFactory();      // Type is not obvious.
+        auto Normalize(auto value) { return value / Scale(); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::unique_ptr<Widget> result = MyWidgetFactory();
+        auto widget = std::make_unique<Widget>();
+        for (const auto& [name, score] : scores) {
+          Print(name, score);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [type-deduction, auto, readability]
+    source: https://google.github.io/styleguide/cppguide.html#Type_deduction

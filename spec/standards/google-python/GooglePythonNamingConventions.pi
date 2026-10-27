@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonNamingConventions:
+    standard: @{GooglePython}
+    ruleId: 3.16.2
+    title: Follow PEP 8 naming conventions
+    statement:
+        Follow the PEP 8 naming conventions. Mark internal names with a
+        single leading underscore and avoid double-underscore name mangling.
+        Use CapWords for classes, with acronyms in capitals, and
+        lower_with_under.py for modules. Group related classes and functions
+        in one module. Name new unit test methods in lower_with_under form,
+        such as test_method_state.
+    rationale:
+        Shared conventions make the kind and visibility of a name obvious.
+        Double underscores hurt readability and testability without making
+        anything truly private.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # File: HttpClient.py
+        class HttpClient:
+            def __init__(self):
+                self.__session = None
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        # File: http_client.py
+        class HTTPClient:
+            def __init__(self):
+                self._session = None
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, conventions]
+    source: https://google.github.io/styleguide/pyguide.html#s3.16.2-naming-conventions

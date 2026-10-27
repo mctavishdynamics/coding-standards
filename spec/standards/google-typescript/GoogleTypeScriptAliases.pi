@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptAliases:
+    standard: @{GoogleTypeScript}
+    ruleId: aliases
+    title: Name local aliases like the symbol they alias
+    statement:
+        A local alias of an existing symbol keeps that symbol's name and
+        format. Declare variable aliases with const and class field aliases
+        as readonly.
+    rationale:
+        Matching names make it obvious that the alias and the original are
+        the same thing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const {OrderStatus: statuses} = orders;
+
+        class StatusBadge {
+          statuses = statuses;
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const {OrderStatus} = orders;
+
+        class StatusBadge {
+          protected readonly OrderStatus = OrderStatus;
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [naming, aliases]
+    source: https://google.github.io/styleguide/tsguide.html#aliases

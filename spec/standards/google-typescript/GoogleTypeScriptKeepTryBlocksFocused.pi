@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptKeepTryBlocksFocused:
+    standard: @{GoogleTypeScript}
+    ruleId: keep-try-blocks-focused
+    title: Keep try blocks small
+    statement:
+        Limit the code inside a try block to what may throw, as long as
+        readability does not suffer.
+    rationale:
+        A narrow try block shows readers which call can fail.
+    exceptions:
+        Widening a try block to cover a whole loop is fine when a try inside
+        the loop would hurt performance.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        try {
+          const data = JSON.parse(text);
+          renderChart(data);
+          logView();
+        } catch (error: unknown) {
+          showParseError();
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (error: unknown) {
+          showParseError();
+          return;
+        }
+        renderChart(data);
+        logView();
+        \\\
+        ```
+    languages: [typescript]
+    tags: [error-handling, exceptions]
+    source: https://google.github.io/styleguide/tsguide.html#keep-try-blocks-focused

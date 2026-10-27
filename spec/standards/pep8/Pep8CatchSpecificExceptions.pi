@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8CatchSpecificExceptions:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-bare-except
+    title: Catch specific exceptions instead of using a bare except
+    statement:
+        Name the specific exceptions you expect instead of writing a bare
+        except clause. To catch all program errors, use except Exception.
+    rationale:
+        A bare except also catches SystemExit and KeyboardInterrupt, which
+        makes the program hard to stop and hides other problems.
+    exceptions:
+        A bare except is reasonable when the handler logs or prints the
+        traceback, or when it does cleanup and then re-raises; try and
+        finally may be better for the latter.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            port = int(raw_port)
+        except:
+            port = 8080
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        try:
+            port = int(raw_port)
+        except ValueError:
+            port = 8080
+        \\\
+        ```
+    languages: [python]
+    tags: [exceptions, error-handling]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

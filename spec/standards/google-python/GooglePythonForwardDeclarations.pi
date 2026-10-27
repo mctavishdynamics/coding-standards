@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonForwardDeclarations:
+    standard: @{GooglePython}
+    ruleId: 3.19.3
+    title: Use future annotations or strings for forward references
+    statement:
+        To refer to a class from the same module that is not defined yet,
+        use from __future__ import annotations, or write the class name as a
+        string.
+    rationale:
+        Without one of these, the name is evaluated before the class exists.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        from __future__ import annotations
+
+
+        class TreeNode:
+            def add_child(self, child: TreeNode) -> None:
+                ...
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, annotations]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.3-forward-declarations

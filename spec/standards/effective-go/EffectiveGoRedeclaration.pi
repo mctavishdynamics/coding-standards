@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoRedeclaration:
+    standard: @{EffectiveGo}
+    ruleId: redeclaration
+    title: Reuse err through short-declaration redeclaration
+    statement:
+        Use the := form to declare a new result while reassigning an
+        existing err in the same scope, which keeps a single err variable
+        through a sequence of calls. Remember that := in an inner scope
+        creates a new variable instead of reassigning the outer one.
+    rationale:
+        Redeclaration exists to make the single-err pattern easy, but its
+        scope rule means an inner := can silently shadow the outer variable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var err error
+        if retry {
+            result, err := fetch(url) // new err shadows the outer one
+            use(result)
+        }
+        return err // always nil
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        f, err := os.Open(path)
+        if err != nil {
+            return err
+        }
+        info, err := f.Stat() // reassigns err, declares info
+        if err != nil {
+            return err
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [declarations, error-handling, scope]
+    source: https://go.dev/doc/effective_go#redeclaration

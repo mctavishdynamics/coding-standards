@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcImports:
+    standard: @{GoCodeReviewComments}
+    ruleId: imports
+    title: Group imports and avoid renaming them
+    statement:
+        Rename an import only to avoid a name collision, and then rename the
+        most local or project-specific one. Organize imports in groups
+        separated by blank lines, with the standard library first.
+    rationale:
+        Good package names do not need renaming, and consistent grouping
+        makes dependencies easy to scan. goimports produces this layout
+        automatically.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        import (
+            "github.com/acme/billing/invoice"
+            str "strings"
+            "fmt"
+            "github.com/google/uuid"
+        )
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        import (
+            "fmt"
+            "strings"
+
+            "github.com/acme/billing/invoice"
+            "github.com/google/uuid"
+        )
+        \\\
+        ```
+    languages: [go]
+    tags: [imports, formatting]
+    source: https://go.dev/wiki/CodeReviewComments#imports

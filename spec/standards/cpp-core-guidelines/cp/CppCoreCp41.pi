@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp41:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.41
+    title: Minimize thread creation and destruction
+    statement:
+        Reuse threads rather than starting one per unit of work. Use a pool
+        of worker threads fed from a queue, or the thread pool your system
+        provides.
+    rationale:
+        Creating and destroying threads is expensive.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void serve(Listener& listener)
+        {
+            while (auto conn = listener.accept())
+                std::thread(handle, std::move(*conn)).detach();   // one thread per connection
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void serve(Listener& listener, ThreadPool& pool)
+        {
+            while (auto conn = listener.accept())
+                pool.submit([c = std::move(*conn)]() mutable { handle(std::move(c)); });
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, performance, threads]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-create

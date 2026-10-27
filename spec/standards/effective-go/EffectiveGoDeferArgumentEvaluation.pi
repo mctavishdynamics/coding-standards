@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoDeferArgumentEvaluation:
+    standard: @{EffectiveGo}
+    ruleId: defer-argument-evaluation
+    title: Remember deferred arguments are evaluated at the defer
+    statement:
+        The arguments of a deferred call, including its receiver, are
+        evaluated when the defer statement runs, not when the call happens,
+        and deferred calls run in last-in first-out order. Use this
+        deliberately, for example to capture a value for a tracing call.
+    rationale:
+        Relying on later values of a variable in a deferred call gives the
+        wrong result, while the early evaluation is useful once understood.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        start := time.Now()
+        defer log.Printf("took %v", time.Since(start)) // evaluated now, logs about zero
+        runJob()
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        start := time.Now()
+        defer func() { log.Printf("took %v", time.Since(start)) }()
+        runJob()
+        \\\
+        ```
+    languages: [go]
+    tags: [defer, functions]
+    source: https://go.dev/doc/effective_go#defer

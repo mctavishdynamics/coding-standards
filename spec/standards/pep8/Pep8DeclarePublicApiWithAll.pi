@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8DeclarePublicApiWithAll:
+    standard: @{Pep8}
+    ruleId: public-and-internal-interfaces-all
+    title: Declare a module's public API with __all__
+    statement:
+        List the names of a module's public API in __all__. An empty __all__
+        says the module has no public API.
+    rationale:
+        An explicit list supports introspection and states what users may
+        rely on.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        """Shipping rate helpers."""
+
+
+        def quote(parcel):
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        """Shipping rate helpers."""
+
+        __all__ = ["quote"]
+
+
+        def quote(parcel):
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [api-design, modules]
+    source: https://peps.python.org/pep-0008/#public-and-internal-interfaces

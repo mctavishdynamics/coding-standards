@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssIdAttributes:
+    standard: @{GoogleHtmlCss}
+    ruleId: id-attributes
+    title: Avoid unnecessary id attributes
+    statement:
+        Prefer class attributes for styling and data attributes for
+        scripting. When an id is required, include a hyphen in its value,
+        such as user-profile rather than userProfile.
+    rationale:
+        Browsers expose elements with an id as named properties of the
+        global window object, which can cause unexpected behaviour. A
+        hyphenated value cannot be referenced as a global JavaScript
+        variable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <div id="cart"></div>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <button aria-controls="shopping-cart">Cart</button>
+        <div id="shopping-cart"></div>
+        \\\
+        ```
+    languages: [html]
+    tags: [attributes, javascript]
+    source: https://google.github.io/styleguide/htmlcssguide.html#id-attributes

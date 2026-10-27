@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs22:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.22
+    title: Don't declare a variable until you have a value to initialize it with
+    statement:
+        Delay a declaration until you can initialize the variable with its
+        real value.
+    rationale:
+        It limits scope, removes the risk of use-before-set and is often
+        cheaper than default construction followed by assignment.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::string name;
+        // ...
+        name = user.first() + " " + user.last();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // ...
+        const std::string name = user.first() + " " + user.last();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [initialization, declarations]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-init

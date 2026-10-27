@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsArraysPush:
+    standard: @{AirbnbJavaScript}
+    ruleId: 4.2
+    title: Use push to add items to an array
+    statement:
+        Add items to the end of an array with Array.prototype.push rather
+        than by assigning to an index.
+    rationale:
+        Assigning to computed indexes is easy to get wrong and hides the
+        intent of appending.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const names = [];
+        names[names.length] = 'Ada';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const names = [];
+        names.push('Ada');
+        \\\
+        ```
+    languages: [javascript]
+    tags: [arrays]
+    source: https://github.com/airbnb/javascript#arrays--push

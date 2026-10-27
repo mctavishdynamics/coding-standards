@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT26:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.26
+    title: Prefer to define concepts in terms of use-patterns rather than simple syntax
+    statement:
+        Write a concept as a requires expression showing how the type is
+        used, rather than as a conjunction of has-this-operator traits.
+    rationale:
+        Use patterns read like the code a user writes, take conversions into
+        account, and spare readers from remembering the names of many helper
+        traits.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+        concept Equality = has_equal<T> && has_not_equal<T>;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename T>
+        concept Equality = requires(T a, T b) {
+            { a == b } -> std::convertible_to<bool>;
+            { a != b } -> std::convertible_to<bool>;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-use

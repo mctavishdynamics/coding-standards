@@ -1,0 +1,51 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT5:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.5
+    title: Combine generic and OO techniques to amplify their strengths, not their costs
+    statement:
+        Use templates and class hierarchies together where each helps the
+        other, for example templates that implement a virtual interface, or
+        a generic front end that dispatches dynamically inside.
+    rationale:
+        Generic and object-oriented techniques are complementary. Mixing
+        them carelessly costs code size, because every virtual function of a
+        class template is instantiated even when unused.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+        class Store {
+        public:
+            virtual void save(const T&);     // instantiated for every T
+            virtual void export_csv();       // even if never called
+            virtual void export_xml();
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Shape {
+        public:
+            virtual ~Shape() = default;
+            virtual double area() const = 0;
+        };
+
+        template<typename Geometry>
+        class Shape_of : public Shape {
+        public:
+            double area() const override { return g.area(); }
+        private:
+            Geometry g;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, object-oriented, design]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-generic-oo

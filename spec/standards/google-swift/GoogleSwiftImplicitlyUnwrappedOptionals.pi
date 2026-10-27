@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftImplicitlyUnwrappedOptionals:
+    standard: @{GoogleSwift}
+    ruleId: implicitly-unwrapped-optionals
+    title: Avoid implicitly unwrapped optionals
+    statement:
+        Prefer non-optional or regular Optional declarations to implicitly
+        unwrapped optionals. When an Objective-C API lacks nullability
+        annotations, get them added or keep the implicitly unwrapped values
+        out of your own layers.
+    rationale:
+        Implicitly unwrapped optionals crash when accessed while nil.
+    exceptions:
+        They are allowed for UI objects tied to the UI lifecycle, such as
+        IBOutlets and views created in viewDidLoad, and for test fixtures
+        set up in setUp.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        final class ReportBuilder {
+          var title: String!
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        final class ReportBuilder {
+          var title: String?
+        }
+
+        final class LoginViewController: UIViewController {
+          @IBOutlet var passwordField: UITextField!
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [optionals, safety]
+    source: https://google.github.io/swift/#implicitly-unwrapped-optionals

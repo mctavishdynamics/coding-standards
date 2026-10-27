@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptJsdocMarkdown:
+    standard: @{GoogleTypeScript}
+    ruleId: jsdoc-markdown
+    title: Write JSDoc in Markdown
+    statement:
+        Format JSDoc text with Markdown, using HTML only when needed. Use
+        Markdown lists and paragraphs rather than relying on plain-text
+        layout.
+    rationale:
+        JSDoc tooling renders Markdown and ignores plain-text formatting, so
+        an indented list collapses into one run-on line.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        /**
+         * Ranks results by:
+         *   relevance
+         *   recency
+         */
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /**
+         * Ranks results by:
+         *
+         * - relevance
+         * - recency
+         */
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc, markdown]
+    source: https://google.github.io/styleguide/tsguide.html#jsdoc-markdown

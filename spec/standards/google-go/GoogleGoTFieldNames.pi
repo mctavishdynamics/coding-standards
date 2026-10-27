@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTFieldNames:
+    standard: @{GoogleGo}
+    ruleId: best-practices/t-field-names
+    title: Use field names in test case literals
+    statement:
+        In table-driven tests, name fields in test case literals, especially
+        when the table is long, adjacent fields share a type, or you want to
+        omit zero values.
+    rationale:
+        Named fields make each case readable and stop values being matched
+        to the wrong field.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        tests := []struct {
+            in, sep string
+            want    []string
+        }{
+            {"a,b", ",", []string{"a", "b"}},
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        tests := []struct {
+            in, sep string
+            want    []string
+        }{
+            {in: "a,b", sep: ",", want: []string{"a", "b"}},
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, testing, literals]
+    source: https://google.github.io/styleguide/go/best-practices#t-field-names

@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsStringsEval:
+    standard: @{AirbnbJavaScript}
+    ruleId: 6.4
+    title: Never use eval on a string
+    statement:
+        Never pass a string to eval. Enforced by the ESLint rule no-eval.
+    rationale:
+        Evaluating strings as code opens many security holes and makes the
+        code hard to analyse.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const value = eval(`settings.${key}`);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const value = settings[key];
+        \\\
+        ```
+    languages: [javascript]
+    tags: [strings, security]
+    source: https://github.com/airbnb/javascript#strings--eval

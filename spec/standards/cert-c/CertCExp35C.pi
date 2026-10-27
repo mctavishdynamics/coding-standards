@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp35C:
+    standard: @{CertC}
+    ruleId: EXP35-C
+    title: Do not modify objects with temporary lifetime
+    statement:
+        Do not modify, or keep a pointer into, an array member of a
+        structure or union returned by value from a function. Copy the
+        returned value into a named object first.
+    rationale:
+        Such a returned value is an object with temporary lifetime that ends
+        with the full expression. Modifying it or using it later is
+        undefined behavior. CERT rates likelihood probable, detectable yes,
+        repairable yes, priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        struct label { char text[16]; };
+        struct label make_label(void);
+
+        void shout(void) {
+            make_label().text[0] = 'A';
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct label { char text[16]; };
+        struct label make_label(void);
+
+        void shout(void) {
+            struct label l = make_label();
+            l.text[0] = 'A';
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [expressions, lifetime]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/expressions-exp/exp35-c

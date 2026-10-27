@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8BlockComments:
+    standard: @{Pep8}
+    ruleId: block-comments
+    title: Indent block comments with the code and start lines with a hash and a space
+    statement:
+        Indent a block comment to the level of the code it describes. Start
+        each line with a hash and one space, and separate paragraphs with a
+        line holding a single hash.
+    rationale:
+        Matching indentation ties the comment to the following code, and the
+        uniform prefix keeps it tidy.
+    exceptions:
+        Indented text inside the comment may use more spaces after the hash.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def refresh(token):
+        #Tokens expire after an hour.
+            #
+            #Refresh early to avoid races.
+            return renew(token)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def refresh(token):
+            # Tokens expire after an hour.
+            #
+            # Refresh early to avoid races.
+            return renew(token)
+        \\\
+        ```
+    languages: [python]
+    tags: [comments, formatting]
+    source: https://peps.python.org/pep-0008/#block-comments

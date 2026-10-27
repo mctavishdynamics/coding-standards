@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcInterfaces:
+    standard: @{GoCodeReviewComments}
+    ruleId: interfaces
+    title: Define interfaces in the package that uses them
+    statement:
+        Declare an interface in the package that consumes values of that
+        type, not in the package that implements them, and have the
+        implementing package return concrete types. Do not define interfaces
+        on the implementor side just for mocking, and do not define an
+        interface before there is a real use for it.
+    rationale:
+        Returning concrete types lets implementations gain methods without
+        broad refactoring. Without a realistic use it is hard to know
+        whether an interface is needed or what it should contain.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package storage
+
+        type Store interface {
+            Get(key string) ([]byte, error)
+        }
+
+        type diskStore struct{ dir string }
+
+        func NewStore(dir string) Store { return diskStore{dir: dir} }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package storage
+
+        type DiskStore struct{ dir string }
+
+        func NewDiskStore(dir string) *DiskStore { return &DiskStore{dir: dir} }
+
+        package cache // the consumer declares only what it needs
+
+        type getter interface {
+            Get(key string) ([]byte, error)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [interfaces, api-design, testing]
+    source: https://go.dev/wiki/CodeReviewComments#interfaces

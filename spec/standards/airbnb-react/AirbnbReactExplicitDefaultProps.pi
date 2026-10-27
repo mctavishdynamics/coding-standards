@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactExplicitDefaultProps:
+    standard: @{AirbnbReact}
+    ruleId: props-8
+    title: Define defaultProps for every non-required prop
+    statement:
+        Give each prop that is not marked required an explicit default in
+        defaultProps.
+    rationale:
+        Prop types document a component, and defaults tell the reader what
+        to expect when a prop is missing. They can also remove the need for
+        some type checks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        function Tag({ label, color }) {
+          return <span style={{ color }}>{label}</span>;
+        }
+        Tag.propTypes = {
+          label: PropTypes.string.isRequired,
+          color: PropTypes.string,
+        };
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        function Tag({ label, color }) {
+          return <span style={{ color }}>{label}</span>;
+        }
+        Tag.propTypes = {
+          label: PropTypes.string.isRequired,
+          color: PropTypes.string,
+        };
+        Tag.defaultProps = {
+          color: 'inherit',
+        };
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [props, prop-types, defaults]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#props

@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcCommentSentences:
+    standard: @{GoCodeReviewComments}
+    ruleId: comment-sentences
+    title: Write doc comments as full sentences
+    statement:
+        Write comments on declarations as complete sentences that begin with
+        the name of the thing described and end with a period, even when
+        that feels redundant.
+    rationale:
+        Full sentences read and format well when godoc extracts them into
+        documentation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // the cache for user sessions
+        type SessionCache struct {
+            entries map[string]Session
+        }
+
+        // flush everything
+        func (c *SessionCache) Flush() {
+            clear(c.entries)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // SessionCache holds user sessions keyed by session ID.
+        type SessionCache struct {
+            entries map[string]Session
+        }
+
+        // Flush removes every session from the cache.
+        func (c *SessionCache) Flush() {
+            clear(c.entries)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [comments, documentation]
+    source: https://go.dev/wiki/CodeReviewComments#comment-sentences

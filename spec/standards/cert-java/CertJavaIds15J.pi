@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds15J:
+    standard: @{CertJava}
+    ruleId: IDS15-J
+    title: Do not allow sensitive information to leak outside a trust boundary
+    statement:
+        Keep sensitive data, such as credentials, personal data and internal
+        details, from crossing a trust boundary unless it is protected and
+        the recipient is entitled to it.
+    rationale:
+        Data that leaves a trust boundary can be read by parties the program
+        does not control. CERT marks this rule as a stub that more specific
+        rules, such as ERR01-J, refine. CERT rates likelihood likely,
+        detectable no, repairable no, priority P6, level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        response.getWriter().println("Login failed for " + user + " with " + password);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        response.getWriter().println("Login failed");
+        \\\
+        ```
+    languages: [java]
+    tags: [information-leak, trust-boundary]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-validation-and-data-sanitization-ids/ids15-j/

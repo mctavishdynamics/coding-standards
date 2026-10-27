@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptWrapperTypes:
+    standard: @{GoogleTypeScript}
+    ruleId: wrapper-types
+    title: Use lowercase primitive types, not wrapper types
+    statement:
+        Never use String, Boolean, Number or Object as types; use string,
+        boolean, number, and the empty object type or object. Never call the
+        wrappers with new.
+    rationale:
+        The wrapper types mean something slightly different from the
+        primitives and cause confusing type errors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function label(text: String, bold: Boolean): Object {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function label(text: string, bold: boolean): object {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, primitives]
+    source: https://google.github.io/styleguide/tsguide.html#wrapper-types

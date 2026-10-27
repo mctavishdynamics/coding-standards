@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaNonConstantFieldNames:
+    standard: @{GoogleJava}
+    ruleId: 5.2.5
+    title: Write non-constant field names in lowerCamelCase
+    statement:
+        Name fields that are not constants, static or not, in
+        lowerCamelCase, usually as nouns or noun phrases.
+    rationale:
+        A separate case from constants signals that the field's state may
+        change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        private int RetryCount;
+        private static Logger LOG_SINK = createSink();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private int retryCount;
+        private static Logger logSink = createSink();
+        \\\
+        ```
+    languages: [java]
+    tags: [naming, fields]
+    source: https://google.github.io/styleguide/javaguide.html#s5.2.5-non-constant-field-names

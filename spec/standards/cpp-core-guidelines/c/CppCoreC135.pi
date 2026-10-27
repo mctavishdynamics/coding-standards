@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC135:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.135
+    title: Use multiple inheritance to represent multiple distinct interfaces
+    statement:
+        When a class supports several separate interfaces, inherit from each
+        interface rather than merging them into one large base.
+    rationale:
+        Not every class supports every interface and not every caller needs
+        all operations, so splitting interfaces into aspects keeps
+        dependencies small.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Device {
+        public:
+            virtual void read() = 0;
+            virtual void write() = 0;
+            virtual void seek() = 0;   // not all devices can seek
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Readable { public: virtual void read() = 0;  virtual ~Readable() = default; };
+        class Writable { public: virtual void write() = 0; virtual ~Writable() = default; };
+
+        class Pipe : public Readable, public Writable {
+            void read() override;
+            void write() override;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, interfaces, multiple-inheritance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-mi-interface

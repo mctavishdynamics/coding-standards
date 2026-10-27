@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptDefaultParameters:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.5.5.1
+    title: Write optional parameters with default values
+    statement:
+        Write optional parameters with an equals sign surrounded by spaces,
+        name them like required parameters without an opt prefix, mark them
+        with an equals suffix in JSDoc, and place them after required ones.
+        Concrete functions give every optional parameter a default, while
+        abstract and interface methods omit defaults. Avoid initializers
+        with side effects, and use defaults sparingly.
+    rationale:
+        Explicit defaults document behaviour in the signature, while side
+        effects or shared state in initializers couple calls unexpectedly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @param {number=} opt_limit */
+        function page(opt_limit, query) {}
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * @param {string} query
+         * @param {number=} limit
+         */
+        function page(query, limit = 20) {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, parameters, jsdoc]
+    source: https://google.github.io/styleguide/jsguide.html#5551-default-parameters

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCtr54Cpp:
+    standard: @{CertCpp}
+    ruleId: CTR54-CPP
+    title: Do not subtract iterators that do not refer to the same container
+    statement:
+        Subtract two iterators or pointers, including through std::distance,
+        only when both refer into the same container or array.
+    rationale:
+        Subtracting unrelated iterators is undefined behavior and the result
+        has no meaning. CERT rates likelihood probable, detectable no,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        bool in_buffer(const char* buffer, std::size_t size, const char* p) {
+            return p - buffer >= 0 && p - buffer < static_cast<long>(size);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        bool in_buffer(const char* buffer, std::size_t size, const char* p) {
+            for (std::size_t i = 0; i < size; ++i) {
+                if (buffer + i == p) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, iterators, pointers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/containers-ctr/ctr54-cpp

@@ -1,0 +1,48 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreNl16:
+    standard: @{CppCoreGuidelines}
+    ruleId: NL.16
+    title: Use a conventional class member declaration order
+    statement:
+        Declare types first, then constructors, assignments and the
+        destructor, then functions, then data, with public before protected
+        before private. Avoid several scattered blocks with the same access.
+    rationale:
+        A conventional order makes classes easier to read. Private types and
+        functions may sit with the private data when that separates the
+        interface better.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Account {
+            double balance;
+        public:
+            void deposit(double amount);
+        private:
+            void audit();
+        public:
+            Account();
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Account {
+        public:
+            Account();
+            void deposit(double amount);
+        private:
+            void audit();
+            double balance;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, classes, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rl-order

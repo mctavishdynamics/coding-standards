@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptIdentifiersTestNames:
+    standard: @{GoogleTypeScript}
+    ruleId: identifiers-test-names
+    title: Structure xUnit test method names with underscores if needed
+    statement:
+        In xUnit-style test frameworks, test method names may use
+        underscores to separate parts, such as testX_whenY_doesZ.
+    rationale:
+        Underscores make the condition and expected outcome of a long test
+        name easy to read.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```typescript
+        \\\
+        class CartTest {
+          testTotal_whenEmpty_isZero() {
+            expect(new Cart().total()).toBe(0);
+          }
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [naming, testing]
+    source: https://google.github.io/styleguide/tsguide.html#identifiers-test-names

@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCArr36C:
+    standard: @{CertC}
+    ruleId: ARR36-C
+    title:
+        Do not subtract or compare two pointers that do not refer to the
+        same array
+    statement:
+        Subtract pointers or compare them with less-than or greater-than
+        only when both point into, or one past the end of, the same array
+        object. Equality comparisons are always allowed.
+    rationale:
+        Relational comparison or subtraction of pointers into different
+        objects is undefined behavior, and the result has no meaning. CERT
+        rates likelihood probable, detectable no, repairable no, priority
+        P4, level L3.
+    exceptions:
+        Pointers to different members of the same structure object may be
+        compared; later members compare greater.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        #include <stddef.h>
+
+        static int nums[32];
+        static int end_marker;
+
+        ptrdiff_t free_slots(const int *next) {
+            return &end_marker - next;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stddef.h>
+
+        static int nums[32];
+
+        ptrdiff_t free_slots(const int *next) {
+            return &nums[32] - next;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [pointers, arrays]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/arrays-arr/arr36-c

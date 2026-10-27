@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoGlobalsForms:
+    standard: @{GoogleGo}
+    ruleId: best-practices/globals-forms
+    title: Avoid the common forms of package state APIs
+    statement:
+        Avoid top-level variables that hold mutable state, global service
+        locators, global callback registries and thick-client singletons for
+        backends or storage. Legacy APIs that use them are not a precedent.
+    rationale:
+        These forms create hidden coupling between otherwise independent
+        code and can hurt service reliability.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package useradmin
+
+        var client *Client
+
+        func DefaultClient() *Client {
+            if client == nil {
+                client = dial()
+            }
+            return client
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package useradmin
+
+        func NewClient(conn *grpc.ClientConn) *Client {
+            return &Client{conn: conn}
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, global-state, api-design]
+    source: https://google.github.io/styleguide/go/best-practices#globals-forms

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCNaming:
+    standard: @{GoogleObjC}
+    ruleId: naming
+    title: Use descriptive names without nonstandard abbreviations
+    statement:
+        Make names as descriptive as is reasonable and follow Apple's
+        Objective-C naming rules. Avoid nonstandard abbreviations, acronyms
+        and initialisms, and do not shorten names to save horizontal space.
+    rationale:
+        Immediate understanding by a new reader matters far more than saving
+        a few columns.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        int cnt;
+        NSString *usrNm = [account name];
+        NSMutableArray *rcpts = [[NSMutableArray alloc] init];
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        int retryCount;
+        NSString *userName = [account name];
+        NSMutableArray *recipients = [[NSMutableArray alloc] init];
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [naming]
+    source: https://google.github.io/styleguide/objcguide.html#naming

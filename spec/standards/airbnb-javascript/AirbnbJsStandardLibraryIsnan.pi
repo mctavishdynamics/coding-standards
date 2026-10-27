@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsStandardLibraryIsnan:
+    standard: @{AirbnbJavaScript}
+    ruleId: 29.1
+    title: Use Number.isNaN instead of global isNaN
+    statement:
+        Check for NaN with Number.isNaN, not the global isNaN. Enforced by
+        the ESLint rule no-restricted-globals.
+    rationale:
+        The global function first coerces its argument to a number, so it
+        returns true for anything that coerces to NaN. If you want that
+        behaviour, coerce explicitly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        isNaN('hello'); // true
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        Number.isNaN('hello'); // false
+        Number.isNaN(Number('hello')); // true
+        \\\
+        ```
+    languages: [javascript]
+    tags: [standard-library, numbers]
+    source: https://github.com/airbnb/javascript#standard-library--isnan

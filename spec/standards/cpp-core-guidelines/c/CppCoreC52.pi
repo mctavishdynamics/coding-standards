@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC52:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.52
+    title: Use inheriting constructors when a derived class adds no initialization
+    statement:
+        If a derived class needs the base class constructors and has no
+        extra members to initialize, bring them in with a using declaration.
+    rationale:
+        Re-implementing each base constructor by hand is tedious and
+        error-prone.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class SafeVector : public std::vector<int> {
+        public:
+            SafeVector() = default;
+            explicit SafeVector(std::size_t n) : std::vector<int>(n) {}
+            SafeVector(std::initializer_list<int> il) : std::vector<int>(il) {}
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class SafeVector : public std::vector<int> {
+        public:
+            using std::vector<int>::vector;
+            int& checked(std::size_t i) { return this->at(i); }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, inheritance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-inheriting

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsTypesComplex:
+    standard: @{AirbnbJavaScript}
+    ruleId: 1.2
+    title: Treat objects, arrays and functions as references
+    statement:
+        Remember that objects, arrays and functions are handled by
+        reference, so assigning one to another variable shares the same
+        value. Copy it explicitly when you need an independent value.
+    rationale:
+        A change made through one reference is visible through every other
+        reference, which surprises readers who expect a copy.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const defaults = ['a', 'b'];
+        const options = defaults;
+        options.push('c'); // defaults now has three items too
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const defaults = ['a', 'b'];
+        const options = [...defaults];
+        options.push('c'); // defaults is unchanged
+        \\\
+        ```
+    languages: [javascript]
+    tags: [types, references]
+    source: https://github.com/airbnb/javascript#types--complex

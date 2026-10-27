@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsGeneratorsSpacing:
+    standard: @{AirbnbJavaScript}
+    ruleId: 11.3
+    title: Space generator signatures correctly
+    statement:
+        If you do use a generator, attach the asterisk to the function
+        keyword with no space before it and one space after it. Enforced by
+        the ESLint rule generator-star-spacing.
+    rationale:
+        function* is a single construct, so the asterisk belongs with
+        function rather than being a modifier floating between the parts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function * pages() {
+          // ...
+        }
+        const rows = function *() {
+          // ...
+        };
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function* pages() {
+          // ...
+        }
+        const rows = function* () {
+          // ...
+        };
+        \\\
+        ```
+    languages: [javascript]
+    tags: [generators, formatting, whitespace]
+    source: https://github.com/airbnb/javascript#generators--spacing

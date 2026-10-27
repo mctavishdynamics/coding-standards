@@ -1,0 +1,47 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC48:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.48
+    title: Prefer default member initializers for constant initial values
+    statement:
+        When every constructor gives a member the same constant value, put
+        that value in a default member initializer instead of repeating it
+        in each constructor.
+    rationale:
+        It states that the value is shared by all constructors, avoids
+        repetition and maintenance mistakes, and produces short, efficient
+        code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Widget {
+        public:
+            Widget() : visible_(true), width_(0) {}
+            explicit Widget(int w) : visible_(true), width_(w) {}
+        private:
+            bool visible_;
+            int width_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Widget {
+        public:
+            Widget() = default;
+            explicit Widget(int w) : width_(w) {}
+        private:
+            bool visible_ = true;
+            int width_ = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, initialization]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-in-class-initializer

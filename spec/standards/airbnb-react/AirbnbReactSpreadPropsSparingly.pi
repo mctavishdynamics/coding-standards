@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactSpreadPropsSparingly:
+    standard: @{AirbnbReact}
+    ruleId: props-9
+    title: Use spread props sparingly
+    statement:
+        Avoid spreading whole props objects into child components. Filter
+        out props the child does not need, and consider prop-types-exact to
+        catch stray props.
+    rationale:
+        Spreading everything passes unneeded props down, and in React 15.6.1
+        and older it could put invalid attributes on DOM elements.
+    exceptions:
+        Higher-order components that proxy props and hoist propTypes may
+        spread props, as may code that spreads an object of known, explicit
+        props, which is handy in test setup.
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        render() {
+          const { analyticsId, ...fieldProps } = this.props;
+          return <TextField {...this.props} />;
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        render() {
+          const { analyticsId, ...fieldProps } = this.props;
+          return <TextField {...fieldProps} />;
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [props, spread]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#props

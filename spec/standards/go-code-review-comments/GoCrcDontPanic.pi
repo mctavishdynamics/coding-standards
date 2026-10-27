@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcDontPanic:
+    standard: @{GoCodeReviewComments}
+    ruleId: dont-panic
+    title: Do not use panic for normal error handling
+    statement:
+        Report ordinary failures with an error result and multiple return
+        values, not with panic.
+    rationale:
+        Callers can inspect and handle a returned error; a panic stops the
+        program unless someone happens to recover it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func LoadConfig(path string) Config {
+            data, err := os.ReadFile(path)
+            if err != nil {
+                panic(err)
+            }
+            return parseConfig(data)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func LoadConfig(path string) (Config, error) {
+            data, err := os.ReadFile(path)
+            if err != nil {
+                return Config{}, err
+            }
+            return parseConfig(data), nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, panic]
+    source: https://go.dev/wiki/CodeReviewComments#dont-panic

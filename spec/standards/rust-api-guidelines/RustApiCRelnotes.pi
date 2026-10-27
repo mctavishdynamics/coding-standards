@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCRelnotes:
+    standard: @{RustApiGuidelines}
+    ruleId: C-RELNOTES
+    title: Document all significant changes in release notes
+    statement:
+        Keep release notes for every published version, link them from the
+        crate docs or repository, and clearly mark breaking changes. Tag
+        each published release in version control, preferably with an
+        annotated tag.
+    rationale:
+        Users need to know what changed before upgrading, and tags let them
+        find the exact source of each release.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```shell
+        \\\
+        cargo publish
+        \\\
+        ```
+    compliant:
+        ```shell
+        \\\
+        git tag -a -m "Release 0.5.0" v0.5.0
+        git push --tags
+        cargo publish
+        \\\
+        ```
+    languages: [rust]
+    tags: [documentation, releases]
+    source: https://rust-lang.github.io/api-guidelines/documentation.html#c-relnotes

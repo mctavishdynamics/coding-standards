@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem30C:
+    standard: @{CertC}
+    ruleId: MEM30-C
+    title: Do not access freed memory
+    statement:
+        Do not read, write, free again or even evaluate a pointer after the
+        memory it points to has been freed or moved by realloc. Save what
+        you need before freeing, and set the pointer to null afterward when
+        it stays in scope.
+    rationale:
+        Using a dangling pointer is undefined behavior. Freed memory is
+        reused by the allocator, and use-after-free bugs are often
+        exploitable. CERT rates likelihood likely, detectable no, repairable
+        no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+
+        struct node { struct node *next; };
+
+        void free_list(struct node *head) {
+            for (struct node *p = head; p != NULL; p = p->next) {
+                free(p);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+
+        struct node { struct node *next; };
+
+        void free_list(struct node *head) {
+            struct node *next;
+            for (struct node *p = head; p != NULL; p = next) {
+                next = p->next;
+                free(p);
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, use-after-free]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/memory-management-mem/mem30-c

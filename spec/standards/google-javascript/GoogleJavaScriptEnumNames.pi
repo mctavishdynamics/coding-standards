@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptEnumNames:
+    standard: @{GoogleJavaScript}
+    ruleId: 6.2.4
+    title: Name enums in UpperCamelCase and their items in CONSTANT_CASE
+    statement:
+        Write enum names in UpperCamelCase, usually as singular nouns, and
+        name each enum item in CONSTANT_CASE.
+    rationale:
+        Enums behave like types while their items are constants, and the
+        names should show both.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @enum {string} */
+        const colors = {red: 'red', darkBlue: 'dark-blue'};
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** @enum {string} */
+        const Color = {RED: 'red', DARK_BLUE: 'dark-blue'};
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming, enums]
+    source: https://google.github.io/styleguide/jsguide.html#624-enum-names

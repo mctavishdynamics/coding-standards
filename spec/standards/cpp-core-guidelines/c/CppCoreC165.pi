@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC165:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.165
+    title: Use using for customization points
+    statement:
+        To call a customizable function such as swap in generic code, write
+        a using declaration for the general version and then make an
+        unqualified call.
+    rationale:
+        This finds a type-specific version through argument-dependent lookup
+        when one exists and falls back to the general one otherwise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<class T>
+        void exchange_items(T& a, T& b) {
+            std::swap(a, b);    // ignores a faster swap for T
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<class T>
+        void exchange_items(T& a, T& b) {
+            using std::swap;
+            swap(a, b);         // picks T's own swap if it has one
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [generic-programming, customization-points, adl]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ro-custom

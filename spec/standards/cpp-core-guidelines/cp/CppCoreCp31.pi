@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp31:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.31
+    title: Pass small amounts of data between threads by value
+    statement:
+        Give a thread or task its own copy of small data instead of a
+        reference or pointer to data another thread can touch.
+    rationale:
+        Copying a small amount of data is cheaper than sharing it under a
+        lock, gives the receiver sole ownership and rules out data races.
+        For large data the copy may cost too much.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void normalize(std::string& name);   // works on the caller's string
+
+        void handle(std::string& name)
+        {
+            auto job = std::async(normalize, std::ref(name));   // name is now shared
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string normalized(std::string name);   // works on its own copy
+
+        void handle(const std::string& name)
+        {
+            auto job = std::async(normalized, name);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, parameters, data-races]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-data-by-value

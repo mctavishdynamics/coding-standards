@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoInterfaceOwnershipAndVisibility:
+    standard: @{GoogleGo}
+    ruleId: best-practices/interface-ownership-and-visibility
+    title: Let the consumer own the interface
+    statement:
+        Define an interface in the package that uses it, with only the
+        methods it uses, and keep it unexported if it is only used
+        internally. A producer may export it when the interface is the
+        product, such as io.Writer, to prevent many identical copies, or to
+        resolve a dependency cycle.
+    rationale:
+        Exporting an interface commits you to maintaining it, and bigger
+        interfaces make weaker abstractions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package payments
+
+        // Exported only so package checkout can mock it.
+        type Charger interface {
+            Charge(amount int64) error
+            Refund(id string) error
+            History() ([]Txn, error)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package checkout
+
+        type charger interface {
+            Charge(amount int64) error
+        }
+
+        func Complete(c charger, total int64) error { return c.Charge(total) }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, interfaces, packages]
+    source: https://google.github.io/styleguide/go/best-practices#interface-ownership-and-visibility

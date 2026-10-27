@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppAliases:
+    standard: @{GoogleCpp}
+    ruleId: Aliases
+    title: Add public aliases only for clients and document them
+    statement:
+        Put an alias in a public API only when clients are meant to use it,
+        not to save typing in the implementation, and document its intent,
+        including whether it will always name the same type. Do not put
+        namespace aliases in a public API.
+    rationale:
+        Documented aliases tell users whether the types are interchangeable
+        and leave the implementation room to change.
+    exceptions:
+        Convenience aliases are fine in function bodies, private class
+        sections, internal namespaces and .cc files.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // public_api.h
+        namespace myproject {
+        using Map = std::unordered_map<std::string, std::vector<int>>;
+        namespace str = ::absl::strings_internal;
+        }  // namespace myproject
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // public_api.h
+        namespace myproject {
+        // Used to store field measurements. May change to a hash map later;
+        // do not rely on iteration order.
+        using MeasurementMap = std::map<std::string, std::vector<double>>;
+        }  // namespace myproject
+        \\\
+        ```
+    languages: [cpp]
+    tags: [aliases, api-design]
+    source: https://google.github.io/styleguide/cppguide.html#Aliases

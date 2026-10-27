@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaEnv06J:
+    standard: @{CertJava}
+    ruleId: ENV06-J
+    title: Production code must not contain debugging entry points
+    statement:
+        Remove debugging and test entry points, such as main() methods in
+        web application classes, before shipping production code.
+    rationale:
+        Leftover back doors were never designed or tested as part of the
+        application and give attackers unexpected ways to interact with it.
+        CERT's risk assessment gives likelihood probable, detectable no,
+        repairable no, priority P6 and level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        public class OrderServlet extends HttpServlet {
+            protected void doGet(HttpServletRequest req, HttpServletResponse res) { /* ... */ }
+
+            public static void main(String[] args) {
+                new OrderService().dumpAllOrders();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class OrderServlet extends HttpServlet {
+            protected void doGet(HttpServletRequest req, HttpServletResponse res) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [security, deployment, debugging]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/runtime-environment-env/env06-j/

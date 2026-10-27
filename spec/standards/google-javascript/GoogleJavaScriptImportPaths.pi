@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptImportPaths:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.4.1.1
+    title: Import ES modules with import statements
+    statement:
+        An ES module imports other ES modules with the import statement. Do
+        not goog.require an ES module.
+    rationale:
+        Using the native syntax keeps dependency resolution in one mechanism
+        that both the language and the tools understand.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const charts = goog.require('app.charts');  // charts.js is an ES module
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        import * as charts from './charts.js';
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, imports]
+    source: https://google.github.io/styleguide/jsguide.html#3411-import-paths

@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF42:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.42
+    title: Return a T* to indicate a position only
+    statement:
+        Return a raw pointer only to refer to an existing object, such as an
+        element found in a container, never to pass ownership.
+    rationale:
+        Indicating a position is what pointers are good for. Returning T* to
+        transfer ownership is a misuse that causes leaks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Node* clone(const Node& n) {
+            return new Node(n);         // returns ownership through T*
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Node* find(Node* head, int key) {
+            for (Node* p = head; p; p = p->next)
+                if (p->key == key) return p;
+            return nullptr;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, pointers, ownership]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-return-ptr

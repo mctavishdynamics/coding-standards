@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptEmptyCatchBlocks:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.8.2.1
+    title: Explain empty catch blocks with a comment
+    statement:
+        Doing nothing in a catch block is rarely right. When it is, explain
+        why in a comment inside the block. In tests, use assertThrows
+        instead of a catch that expects an error.
+    rationale:
+        A silent catch hides real failures, and the comment shows the
+        omission was deliberate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        try {
+          localStorage.setItem('theme', theme);
+        } catch (e) {
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        try {
+          localStorage.setItem('theme', theme);
+        } catch (e) {
+          // Storage may be disabled; the theme just won't persist.
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [error-handling, exceptions, comments]
+    source: https://google.github.io/styleguide/jsguide.html#5821-empty-catch-blocks

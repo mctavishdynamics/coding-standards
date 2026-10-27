@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptOnlyThrowErrors:
+    standard: @{GoogleTypeScript}
+    ruleId: only-throw-errors
+    title: Throw and reject only Error objects
+    statement:
+        Throw only Error or its subclasses, and reject promises only with
+        Error values.
+    rationale:
+        Values that are not Errors carry no stack trace, which makes
+        failures hard to debug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        throw 'Payment declined';
+        return Promise.reject('timeout');
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        throw new PaymentError('Payment declined');
+        return Promise.reject(new Error('timeout'));
+        \\\
+        ```
+    languages: [typescript]
+    tags: [error-handling, exceptions, promises]
+    source: https://google.github.io/styleguide/tsguide.html#only-throw-errors

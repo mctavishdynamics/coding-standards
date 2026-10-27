@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaGroupingParentheses:
+    standard: @{GoogleJava}
+    ruleId: 4.7
+    title: Use grouping parentheses unless clearly unneeded
+    statement:
+        Leave out optional grouping parentheses only when author and
+        reviewer agree the code cannot reasonably be misread without them
+        and they would not make it easier to read.
+    rationale:
+        Few readers remember the whole Java operator precedence table, so
+        explicit grouping prevents misreading.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        boolean allowed = isAdmin || isOwner && !isLocked;
+        int mask = flags & MASK << shift;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        boolean allowed = isAdmin || (isOwner && !isLocked);
+        int mask = flags & (MASK << shift);
+        \\\
+        ```
+    languages: [java]
+    tags: [readability, operators]
+    source: https://google.github.io/styleguide/javaguide.html#s4.7-grouping-parentheses

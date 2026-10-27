@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptInstantiateErrorsUsingNew:
+    standard: @{GoogleTypeScript}
+    ruleId: instantiate-errors-using-new
+    title: Create errors with new
+    statement:
+        Always write new Error() when creating an exception, never a bare
+        call to Error().
+    rationale:
+        Both forms produce an Error, but new matches how every other object
+        is created.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        throw Error('Quota exceeded');
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        throw new Error('Quota exceeded');
+        \\\
+        ```
+    languages: [typescript]
+    tags: [error-handling, exceptions]
+    source: https://google.github.io/styleguide/tsguide.html#instantiate-errors-using-new

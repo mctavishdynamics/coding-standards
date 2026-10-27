@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC164:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.164
+    title: Avoid implicit conversion operators
+    statement:
+        Mark conversion operators explicit, or provide a named function,
+        unless an implicit conversion is clearly essential.
+    rationale:
+        Implicit conversions are sometimes needed but often cause surprises,
+        such as a string type silently turning into a raw character pointer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Path {
+        public:
+            operator const char*() const;   // converts anywhere
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Path {
+        public:
+            const char* c_str() const;
+            explicit operator bool() const;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [operators, conversions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ro-conversion

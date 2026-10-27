@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj12J:
+    standard: @{CertJava}
+    ruleId: OBJ12-J
+    title: Respect object-based annotations
+    statement:
+        Honor the contracts that annotations place on objects, such as
+        nullness, immutability or thread-safety annotations, both when
+        implementing and when using the annotated code.
+    rationale:
+        Annotations record assumptions that tools and other code rely on,
+        and violating them causes defects those tools cannot catch. CERT
+        marks this rule as a stub. CERT rates likelihood probable,
+        detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        @Immutable
+        public final class Money {
+            public BigDecimal amount;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Immutable
+        public final class Money {
+            private final BigDecimal amount;
+            public Money(BigDecimal amount) { this.amount = amount; }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [annotations, contracts]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/object-orientation-obj/obj12-j/

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum01J:
+    standard: @{CertJava}
+    ruleId: NUM01-J
+    title: Do not perform bitwise and arithmetic operations on the same data
+    statement:
+        Treat a variable either as a number, using arithmetic, or as a set
+        of bits, using bitwise operators, but not both. Do not replace
+        arithmetic with shifts as an optimization.
+    rationale:
+        Mixing the two hides what the data means and often produces wrong
+        results, for example when shifting negative numbers to divide. CERT
+        rates likelihood unlikely, detectable yes, repairable no, priority
+        P4, level L3.
+    exceptions:
+        Bitwise operations may build constant expressions, and numeric data
+        may be handled bitwise for serialization or packed byte structures.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        int half = balance >> 1;
+        int scaled = (flags << 2) + 1;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int half = balance / 2;
+        int scaled = flags | MASK_ENABLED;
+        \\\
+        ```
+    languages: [java]
+    tags: [bitwise, arithmetic, readability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/numeric-types-and-operations-num/num01-j/

@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC134:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.134
+    title: Give all non-const data members the same access level
+    statement:
+        Make all non-const data members either private, for a type that
+        keeps an invariant, or public, for a plain collection of values.
+    rationale:
+        Mixed access means the type is unsure whether it protects an
+        invariant or just holds values, which causes logical errors.
+    exceptions:
+        Classes sometimes mix the two, usually for debugging, such as
+        non-const instrumentation that is not part of the value. Such
+        members may be public while the members that form the invariant stay
+        private.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Temperature {
+        public:
+            double celsius;        // public
+        private:
+            double fahrenheit;     // must match celsius
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Temperature {
+        public:
+            void set_celsius(double c);
+            double fahrenheit() const;
+        private:
+            double celsius_ = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, access-control, invariants]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-public

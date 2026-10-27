@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum02J:
+    standard: @{CertJava}
+    ruleId: NUM02-J
+    title: Ensure that division and remainder operations do not result in divide-by-zero errors
+    statement:
+        Check that the divisor of an integer division or remainder is not
+        zero before performing it.
+    rationale:
+        Integer division or remainder by zero throws ArithmeticException,
+        which can crash the program or deny service. CERT rates likelihood
+        likely, detectable no, repairable yes, priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        int average = total / count;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (count == 0) {
+            throw new IllegalStateException("No samples");
+        }
+        int average = total / count;
+        \\\
+        ```
+    languages: [java]
+    tags: [arithmetic, division]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/numeric-types-and-operations-num/num02-j/

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptRequireAliasNaming:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.6
+    title: Name a require alias after the final namespace component
+    statement:
+        A single alias for a goog.require matches the last dot-separated
+        part of the namespace. Longer aliases built from more namespace
+        parts may disambiguate or aid readability, keeping the original
+        casing, and must be used to avoid masking native types such as Map
+        or Event. When renaming destructured aliases, put a space after the
+        colon.
+    rationale:
+        Namespace-based names let readers trace an alias back to its module
+        and stop local names from hiding built-in types.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const Map = goog.require('jspb.Map');
+        const helpers = goog.require('app.dom.domHelpers');
+        const {Event:AppEvent} = goog.require('app.events');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const JspbMap = goog.require('jspb.Map');
+        const domHelpers = goog.require('app.dom.domHelpers');
+        const {Event: AppEvent} = goog.require('app.events');
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, closure, naming]
+    source: https://google.github.io/styleguide/jsguide.html#36-googrequire-and-googrequiretype-statements

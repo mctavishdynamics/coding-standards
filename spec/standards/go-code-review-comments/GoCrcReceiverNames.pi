@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcReceiverNames:
+    standard: @{GoCodeReviewComments}
+    ruleId: receiver-names
+    title: Use short, consistent receiver names
+    statement:
+        Name a receiver with a short abbreviation of its type, often one or
+        two letters, such as c for Client. Do not use generic names such as
+        this, self or me, and use the same receiver name in every method of
+        the type.
+    rationale:
+        A receiver is just another parameter, its role is obvious, and it
+        appears on nearly every line, so brevity and consistency help more
+        than description.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (self *Client) Connect() error { return self.dial() }
+
+        func (client *Client) Close() error { return client.conn.Close() }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (c *Client) Connect() error { return c.dial() }
+
+        func (c *Client) Close() error { return c.conn.Close() }
+        \\\
+        ```
+    languages: [go]
+    tags: [naming, methods]
+    source: https://go.dev/wiki/CodeReviewComments#receiver-names

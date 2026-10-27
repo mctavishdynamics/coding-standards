@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC181:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.181
+    title: Avoid naked unions
+    statement:
+        Do not use a union without something that records which member it
+        currently holds. Wrap it in a class with a type field, or use the
+        standard variant type.
+    rationale:
+        With a naked union the programmer must track the active member,
+        which is a source of type errors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        union Value {
+            int i;
+            double d;
+        };
+
+        Value v;
+        v.d = 2.5;
+        int n = v.i;      // wrong member, undefined behavior
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::variant<int, double> v = 2.5;
+        if (auto* d = std::get_if<double>(&v))
+            use(*d);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [unions, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ru-naked

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8SelfAndClsArguments:
+    standard: @{Pep8}
+    ruleId: function-and-method-arguments-self-cls
+    title: Name the first argument self or cls
+    statement:
+        Always call the first argument of an instance method self and the
+        first argument of a class method cls.
+    rationale:
+        Every Python reader expects these names, so other names slow them
+        down.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Temperature:
+            def to_fahrenheit(this):
+                return this.celsius * 9 / 5 + 32
+
+            @classmethod
+            def freezing(klass):
+                return klass(0)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Temperature:
+            def to_fahrenheit(self):
+                return self.celsius * 9 / 5 + 32
+
+            @classmethod
+            def freezing(cls):
+                return cls(0)
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, methods]
+    source: https://peps.python.org/pep-0008/#function-and-method-arguments

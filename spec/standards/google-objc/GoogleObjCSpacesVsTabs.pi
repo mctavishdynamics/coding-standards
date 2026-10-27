@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCSpacesVsTabs:
+    standard: @{GoogleObjC}
+    ruleId: spaces-vs-tabs
+    title: Indent with two spaces and never tabs
+    statement:
+        Indent with spaces only, two at a time, and set your editor to
+        insert spaces for the tab key and to trim trailing spaces.
+    rationale:
+        One indentation style keeps code aligned the same in every tool.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        - (void)stop {
+            [_timer invalidate];  // Indented four spaces (or a tab).
+        }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        - (void)stop {
+          [_timer invalidate];
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [formatting, indentation]
+    source: https://google.github.io/styleguide/objcguide.html#spaces-vs-tabs

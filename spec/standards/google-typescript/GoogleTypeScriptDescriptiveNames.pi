@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptDescriptiveNames:
+    standard: @{GoogleTypeScript}
+    ruleId: descriptive-names
+    title: Use descriptive names without unclear abbreviations
+    statement:
+        Names must be clear to a new reader. Do not use ambiguous or
+        project-specific abbreviations, and do not abbreviate by dropping
+        letters inside a word.
+    rationale:
+        Code is read far more often than written, and readers outside the
+        project should not have to guess.
+    exceptions:
+        Variables in scope for ten lines or fewer, including non-exported
+        parameters, may use short names such as single letters.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        let nErr = 0;
+        const cstmrAddr = lookup(id);
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        let errorCount = 0;
+        const customerAddress = lookup(id);
+        \\\
+        ```
+    languages: [typescript]
+    tags: [naming, readability]
+    source: https://google.github.io/styleguide/tsguide.html#descriptive-names

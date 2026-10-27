@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs79:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.79
+    title: Use default to handle common cases only
+    statement:
+        Use a default label for the values that genuinely share handling.
+        When every enumerator of an enum needs its own case, list them all
+        and omit default so the compiler can warn about a missing one.
+    rationale:
+        It keeps the code clear and lets the compiler detect enumerators
+        that were added later but not handled.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        switch (color) {
+        case Color::red:  paint_red();  break;
+        default:          paint_blue(); break;   // green silently lands here
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        switch (color) {
+        case Color::red:   paint_red();   break;
+        case Color::green: paint_green(); break;
+        case Color::blue:  paint_blue();  break;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [switch, control-flow]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-default

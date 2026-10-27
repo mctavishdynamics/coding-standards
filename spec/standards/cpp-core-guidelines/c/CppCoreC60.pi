@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC60:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.60
+    title: Make copy assignment non-virtual, take const& and return non-const&
+    statement:
+        Declare copy assignment as a non-virtual member that takes its
+        parameter by const reference and returns a non-const reference to
+        *this.
+    rationale:
+        This is the simple, efficient and conventional form. Add a separate
+        overload taking && if rvalues need optimizing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Text {
+        public:
+            virtual const Text& operator=(Text other);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Text {
+        public:
+            Text& operator=(const Text& other);
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [copy, assignment, special-members]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-copy-assignment

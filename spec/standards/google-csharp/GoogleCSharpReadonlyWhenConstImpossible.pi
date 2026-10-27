@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpReadonlyWhenConstImpossible:
+    standard: @{GoogleCSharp}
+    ruleId: readonly-when-const-impossible
+    title: Use readonly when const is not possible
+    statement:
+        When a value cannot be const, consider readonly instead.
+    rationale:
+        readonly still prevents reassignment after construction.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        private TimeSpan _timeout = TimeSpan.FromSeconds(30);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [constants, immutability]
+    source: https://google.github.io/styleguide/csharpguide.html#constants

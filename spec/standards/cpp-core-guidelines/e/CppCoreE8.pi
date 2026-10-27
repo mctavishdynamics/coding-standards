@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE8:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.8
+    title: State your postconditions
+    statement:
+        Make what a function guarantees about its result or the program
+        state explicit, for example with an assertion or Ensures, rather
+        than leaving it implicit.
+    rationale:
+        Stated postconditions prevent interface errors, where a caller
+        relies on a result the function does not actually guarantee.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int clamp_volume(int requested)
+        {
+            return std::min(requested, max_volume);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int clamp_volume(int requested)
+        {
+            int result = std::clamp(requested, 0, max_volume);
+            Ensures(result >= 0 && result <= max_volume);
+            return result;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, contracts, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-postcondition

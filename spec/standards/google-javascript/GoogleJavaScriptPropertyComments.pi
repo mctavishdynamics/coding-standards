@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptPropertyComments:
+    standard: @{GoogleJavaScript}
+    ruleId: 7.9
+    title: Document property types
+    statement:
+        Document the type of every property. A private property may omit the
+        description when its name and type say enough. Document exported
+        constants the same way as properties.
+    rationale:
+        Property types drive compiler checks, and descriptions explain what
+        is not obvious from the name.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        constructor() {
+          this.maxItems = 50;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        constructor() {
+          /**
+           * Largest number of items shown per page.
+           * @type {number}
+           */
+          this.maxItems = 50;
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, fields]
+    source: https://google.github.io/styleguide/jsguide.html#79-property-comments

@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE6:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.6
+    title: Use RAII to prevent leaks
+    statement:
+        Tie every resource to an object whose destructor releases it, such
+        as a container, smart pointer or file handle, so it is freed on
+        every exit path including exceptions. Prefer a local resource object
+        to a pointer when pointer semantics are not needed.
+    rationale:
+        Leaks are usually unacceptable and manual release is error-prone,
+        especially with several possible throw points. RAII is the simplest
+        and most systematic way to prevent leaks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void parse(const std::string& text)
+        {
+            char* buffer = new char[text.size() + 1];
+            tokenize(text, buffer);   // if this throws, buffer leaks
+            delete[] buffer;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void parse(const std::string& text)
+        {
+            std::vector<char> buffer(text.size() + 1);
+            tokenize(text, buffer.data());
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, raii, resources]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-raii

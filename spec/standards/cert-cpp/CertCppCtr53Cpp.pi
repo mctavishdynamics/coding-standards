@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCtr53Cpp:
+    standard: @{CertCpp}
+    ruleId: CTR53-CPP
+    title: Use valid iterator ranges
+    statement:
+        Pass algorithms only valid iterator ranges: both iterators from the
+        same container, the start not after the end, and neither
+        invalidated.
+    rationale:
+        An invalid range makes the algorithm walk off the container, which
+        is undefined behavior. CERT rates likelihood probable, detectable
+        no, repairable no, priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        void print_tail(const std::vector<int>& v) {
+            std::for_each(v.end(), v.begin(), [](int x) {
+                std::cout << x << '\n';
+            });
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void print_tail(const std::vector<int>& v) {
+            std::for_each(v.begin(), v.end(), [](int x) {
+                std::cout << x << '\n';
+            });
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, iterators, algorithms]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/containers-ctr/ctr53-cpp

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpAvoidForeachMethodForMultipleStatements:
+    standard: @{GoogleCSharp}
+    ruleId: avoid-foreach-method-for-multiple-statements
+    title: Do not use the ForEach method for multi-statement bodies
+    statement:
+        Avoid Container.ForEach for anything longer than a single statement;
+        use a foreach loop instead.
+    rationale:
+        A loop is clearer and easier to debug than a multi-statement lambda.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        users.ForEach(u => {
+          u.LastSeen = now;
+          _audit.Record(u);
+        });
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        foreach (var user in users) {
+          user.LastSeen = now;
+          _audit.Record(user);
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [linq, loops]
+    source: https://google.github.io/styleguide/csharpguide.html#linq

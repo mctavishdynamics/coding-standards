@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt34C:
+    standard: @{CertC}
+    ruleId: INT34-C
+    title:
+        Do not shift an expression by a negative number of bits or by
+        greater than or equal to the number of bits that exist in the
+        operand
+    statement:
+        Check that a shift count is not negative and is less than the
+        precision of the promoted left operand. Do not left-shift a negative
+        signed value or shift a signed value into overflow.
+    rationale:
+        Such shifts are undefined behavior, and processors handle them
+        differently, often by masking the count. CERT rates likelihood
+        unlikely, detectable no, repairable yes, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        unsigned int bit(unsigned int n) {
+            return 1u << n;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <limits.h>
+
+        unsigned int bit(unsigned int n) {
+            if (n >= UINT_WIDTH) {
+                return 0;
+            }
+            return 1u << n;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [integers, bitwise]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/integers-int/int34-c

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppSizeof:
+    standard: @{GoogleCpp}
+    ruleId: sizeof
+    title: Prefer sizeof on a variable to sizeof on a type
+    statement:
+        Write sizeof(varname) when taking the size of a particular variable,
+        rather than naming its type.
+    rationale:
+        The expression stays correct if someone later changes the variable's
+        type.
+    exceptions:
+        sizeof(type) is fine for code not tied to a particular variable,
+        such as code handling an external data format.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Header header;
+        memset(&header, 0, sizeof(Header));
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Header header;
+        memset(&header, 0, sizeof(header));
+        \\\
+        ```
+    languages: [cpp]
+    tags: [types, maintainability]
+    source: https://google.github.io/styleguide/cppguide.html#sizeof

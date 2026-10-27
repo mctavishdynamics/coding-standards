@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio14J:
+    standard: @{CertJava}
+    ruleId: FIO14-J
+    title: Perform proper cleanup at program termination
+    statement:
+        Before the program exits, flush and close resources. Use shutdown
+        hooks for cleanup that must happen when System.exit() or a signal
+        ends the JVM, and avoid Runtime.halt().
+    rationale:
+        Exiting skips finally blocks and leaves buffered data unwritten and
+        resources unreleased, which can lose or corrupt data. CERT's risk
+        assessment gives likelihood likely, detectable no, repairable no,
+        priority P6 and level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        PrintStream out = new PrintStream(new FileOutputStream("audit.log"));
+        out.println("starting");
+        System.exit(1);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        PrintStream out = new PrintStream(new FileOutputStream("audit.log"));
+        Runtime.getRuntime().addShutdownHook(new Thread(out::close));
+        out.println("starting");
+        System.exit(1);
+        \\\
+        ```
+    languages: [java]
+    tags: [cleanup, termination, resource-management]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio14-j/

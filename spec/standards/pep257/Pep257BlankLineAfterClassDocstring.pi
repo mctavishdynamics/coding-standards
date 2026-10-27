@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257BlankLineAfterClassDocstring:
+    standard: @{Pep257}
+    ruleId: multi-line-docstrings-class-blank-line
+    title: Insert a blank line after a class docstring
+    statement:
+        Put a blank line after every docstring that documents a class,
+        whether it is one line or several.
+    rationale:
+        Methods in a class are separated by single blank lines, so the
+        docstring needs the same offset from the first method.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Basket:
+            """A collection of items awaiting checkout."""
+            def __init__(self):
+                self.items = []
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Basket:
+            """A collection of items awaiting checkout."""
+
+            def __init__(self):
+                self.items = []
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, formatting]
+    source: https://peps.python.org/pep-0257/#multi-line-docstrings

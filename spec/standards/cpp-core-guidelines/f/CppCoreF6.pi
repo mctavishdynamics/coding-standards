@@ -1,0 +1,45 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF6:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.6
+    title: If your function must not throw, declare it noexcept
+    statement:
+        Mark functions noexcept when they must not throw, notably
+        destructors, swap, move operations and default constructors. Do not
+        add it everywhere without considering whether exceptions can occur
+        and be handled.
+    rationale:
+        If an exception is not expected the program cannot cope with it and
+        should terminate promptly. Fewer execution paths also help the
+        optimizer.
+    exceptions:
+        On virtual functions and public interfaces noexcept is a promise
+        that all current and future implementations must keep, so add it
+        with care.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Buffer {
+        public:
+            Buffer(Buffer&& other);            // may throw, so vector copies instead
+            void swap(Buffer& other);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Buffer {
+        public:
+            Buffer(Buffer&& other) noexcept;
+            void swap(Buffer& other) noexcept;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, exceptions, noexcept]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-noexcept

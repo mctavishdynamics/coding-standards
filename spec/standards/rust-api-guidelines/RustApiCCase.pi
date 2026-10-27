@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCCase:
+    standard: @{RustApiGuidelines}
+    ruleId: C-CASE
+    title: Follow the RFC 430 casing conventions
+    statement:
+        Use UpperCamelCase for type-level items such as types, traits and
+        enum variants, snake_case for value-level items such as functions,
+        methods, modules and locals, and SCREAMING_SNAKE_CASE for statics
+        and constants. Treat acronyms as one word (Uuid, not UUID) and do
+        not give crate names an -rs or -rust prefix or suffix.
+    rationale:
+        Consistent casing lets readers tell what kind of item a name refers
+        to at a glance, and matches the standard library and the rest of the
+        ecosystem.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub struct HTTPClient;
+        pub const maxRetries: u32 = 3;
+
+        pub fn SendRequest(c: &HTTPClient) {}
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub struct HttpClient;
+        pub const MAX_RETRIES: u32 = 3;
+
+        pub fn send_request(c: &HttpClient) {}
+        \\\
+        ```
+    languages: [rust]
+    tags: [naming, casing]
+    source: https://rust-lang.github.io/api-guidelines/naming.html#c-case

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc40C:
+    standard: @{CertC}
+    ruleId: MSC40-C
+    title: Do not violate constraints
+    statement:
+        Do not write code that breaks any constraint in the C standard, even
+        when a compiler accepts it with only a warning. Fix every constraint
+        diagnostic.
+    rationale:
+        After a constraint violation the standard only requires a
+        diagnostic; the program's behavior is undefined and differs between
+        compilers. CERT rates likelihood unlikely, detectable no, repairable
+        no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        static int calls;
+
+        inline void count_call(void) {
+            calls++;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int calls;
+
+        static inline void count_call(void) {
+            calls++;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [undefined-behavior, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/miscellaneous-msc/msc40-c

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoPassValues:
+    standard: @{GoogleGo}
+    ruleId: decisions/pass-values
+    title: Do not pass pointers just to save bytes
+    statement:
+        Pass small values such as strings and interface values directly
+        rather than as pointers. If a function only ever reads its argument
+        through the pointer, it should take a value.
+    rationale:
+        Pointers to fixed-size values add indirection and nil cases without
+        any real saving.
+    exceptions:
+        Large structs, structs likely to grow, and protocol buffer messages
+        should generally be passed by pointer.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func greet(name *string, out *io.Writer) {
+            fmt.Fprintf(*out, "hello, %s\n", *name)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func greet(name string, out io.Writer) {
+            fmt.Fprintf(out, "hello, %s\n", name)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, functions, pointers]
+    source: https://google.github.io/styleguide/go/decisions#pass-values

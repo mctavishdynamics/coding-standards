@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptTypeAssertionsSyntax:
+    standard: @{GoogleTypeScript}
+    ruleId: type-assertions-syntax
+    title: Write type assertions with as, not angle brackets
+    statement:
+        Use the as syntax for type assertions instead of angle brackets.
+    rationale:
+        as requires parentheses when accessing a member, which makes the
+        scope of the assertion unambiguous.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const size = (<Blob>payload).size;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        // payload is always a Blob from the upload API.
+        const size = (payload as Blob).size;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, assertions, syntax]
+    source: https://google.github.io/styleguide/tsguide.html#type-assertions-syntax

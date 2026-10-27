@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC43:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.43
+    title: Ensure that a copyable class has a default constructor
+    statement:
+        If a concrete class can be copied, also give it a default
+        constructor so that it is semiregular.
+    rationale:
+        Arrays, std::vector of a given size and many other facilities need a
+        default constructor, and it also gives a natural moved-from state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Color {
+        public:
+            Color(int r, int g, int b);
+        };
+
+        std::vector<Color> palette(16);   // error, no default constructor
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Color {
+        public:
+            Color() = default;            // black
+            Color(int r, int g, int b);
+        private:
+            int r_ = 0, g_ = 0, b_ = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, value-semantics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-default0

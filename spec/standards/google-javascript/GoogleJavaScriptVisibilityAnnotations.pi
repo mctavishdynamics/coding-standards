@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptVisibilityAnnotations:
+    standard: @{GoogleJavaScript}
+    ruleId: 7.11
+    title: Use visibility annotations only on exported symbols and properties
+    statement:
+        Put @private, @package or @protected on a fileoverview block or on
+        exported symbols and properties. Never put visibility on local
+        variables, inside a function or at the top level of a module.
+    rationale:
+        Locals are already invisible outside their scope, so visibility
+        annotations on them mean nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function load() {
+          /** @private */
+          const retries = 3;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Loader {
+          constructor() {
+            /** @private {number} */
+            this.retries_ = 3;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, visibility]
+    source: https://google.github.io/styleguide/jsguide.html#711-visibility-annotations

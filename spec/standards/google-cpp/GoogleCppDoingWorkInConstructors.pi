@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppDoingWorkInConstructors:
+    standard: @{GoogleCpp}
+    ruleId: Doing_Work_in_Constructors
+    title: Keep constructors free of virtual calls and failing work
+    statement:
+        Never call virtual functions from a constructor, and avoid
+        initialization that can fail when you have no way to report the
+        error. Where crashing is not appropriate, use a factory function or
+        an Init method instead, but avoid Init methods on objects that have
+        no other state affecting which methods may be called.
+    rationale:
+        Virtual calls in a constructor do not reach subclass overrides.
+        Constructors cannot return errors and exceptions are not used, so
+        failed work leaves a half-built object that needs an easy-to-forget
+        validity check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Connection {
+         public:
+          explicit Connection(const std::string& host) {
+            socket_ = OpenSocket(host);  // May fail; no way to report it.
+            OnConnected();               // Virtual: subclass override not called.
+          }
+          virtual void OnConnected();
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Connection {
+         public:
+          static absl::StatusOr<std::unique_ptr<Connection>> Create(
+              const std::string& host);
+
+         private:
+          explicit Connection(Socket socket) : socket_(std::move(socket)) {}
+          Socket socket_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, constructors, error-handling]
+    source: https://google.github.io/styleguide/cppguide.html#Doing_Work_in_Constructors

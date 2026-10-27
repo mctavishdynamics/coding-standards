@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8BlankLinesTopLevel:
+    standard: @{Pep8}
+    ruleId: blank-lines-top-level
+    title: Surround top-level functions and classes with two blank lines
+    statement:
+        Put two blank lines around top-level function and class definitions.
+    rationale:
+        The wider gap marks the boundaries between the main units of a
+        module.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import json
+        def load(path):
+            with open(path) as handle:
+                return json.load(handle)
+        class Config:
+            pass
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import json
+
+
+        def load(path):
+            with open(path) as handle:
+                return json.load(handle)
+
+
+        class Config:
+            pass
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, blank-lines]
+    source: https://peps.python.org/pep-0008/#blank-lines

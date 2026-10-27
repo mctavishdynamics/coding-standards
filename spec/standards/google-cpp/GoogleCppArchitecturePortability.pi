@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppArchitecturePortability:
+    standard: @{GoogleCpp}
+    ruleId: Architecture_Portability
+    title: Write architecture-portable code
+    statement:
+        Do not rely on features of one processor. Format numbers with
+        type-safe libraries rather than printf, serialize structured data
+        with a library such as Protocol Buffers instead of copying memory,
+        store addresses in uintptr_t, and make 64-bit constants with brace
+        initialization.
+    rationale:
+        Type sizes, layouts and byte order differ between architectures, so
+        code that assumes one breaks silently on another.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        printf("%ld\n", file_size);              // Format depends on platform.
+        uint32_t addr = reinterpret_cast<uint32_t>(ptr);
+        fwrite(&record, sizeof(record), 1, out);  // Raw memory layout on disk.
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::cout << absl::StrCat(file_size) << "\n";
+        uintptr_t addr = reinterpret_cast<uintptr_t>(ptr);
+        out << record_proto.SerializeAsString();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [portability, types]
+    source: https://google.github.io/styleguide/cppguide.html#Architecture_Portability

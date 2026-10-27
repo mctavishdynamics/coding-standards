@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftStringLiterals:
+    standard: @{GoogleSwift}
+    ruleId: string-literals
+    title: Do not mix literal non-ASCII characters and Unicode escapes
+    statement:
+        In one string literal, either write non-ASCII code points literally,
+        optionally with single character escapes, or use only ASCII with
+        Unicode escapes. Never mix literal non-ASCII characters with Unicode
+        escapes.
+    rationale:
+        Mixed forms are hard to read, and literal text is usually clearest.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let greeting = "Grüß Gott, M\u{00FC}ller"
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let greeting = "Grüß Gott, Müller\n"
+        \\\
+        ```
+    languages: [swift]
+    tags: [strings, unicode]
+    source: https://google.github.io/swift/#string-literals

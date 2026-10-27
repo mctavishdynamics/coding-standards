@@ -1,0 +1,30 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC85:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.85
+    title: Make swap noexcept
+    statement:
+        Declare every swap function noexcept.
+    rationale:
+        Swap must not fail, and if it tries to throw anyway the program
+        should terminate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void swap(Grid& a, Grid& b);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void swap(Grid& a, Grid& b) noexcept;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [swap, noexcept]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-swap-noexcept

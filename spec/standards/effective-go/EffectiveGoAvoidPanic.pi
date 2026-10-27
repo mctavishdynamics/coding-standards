@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoAvoidPanic:
+    standard: @{EffectiveGo}
+    ruleId: panic
+    title: Avoid panic in library code
+    statement:
+        Report errors to callers with an error result. Use panic only when
+        the program truly cannot continue or something impossible happened;
+        real library functions should avoid it.
+    rationale:
+        If a problem can be masked or worked around, it is better to keep
+        running than to take down the whole program.
+    exceptions:
+        A library that cannot set itself up during initialization may
+        reasonably panic.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (c *Client) Get(key string) []byte {
+            v, err := c.fetch(key)
+            if err != nil {
+                panic(err)
+            }
+            return v
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (c *Client) Get(key string) ([]byte, error) {
+            return c.fetch(key)
+        }
+
+        func init() {
+            if err := loadTables(); err != nil {
+                panic(fmt.Sprintf("codec: cannot load tables: %v", err))
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, panic]
+    source: https://go.dev/doc/effective_go#panic

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoInterfaceChecks:
+    standard: @{EffectiveGo}
+    ruleId: blank-implements
+    title: Add compile-time interface checks only where needed
+    statement:
+        When nothing in the code would make the compiler verify that a type
+        implements an interface, add a package-level blank declaration that
+        converts the type to the interface. Do not add one for every type
+        that satisfies an interface.
+    rationale:
+        Without a static conversion, a type that stops satisfying an
+        interface such as json.Marshaler would silently lose its custom
+        behaviour; the check turns that into a build error.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```go
+        \\\
+        // Ensure *Money keeps its custom JSON encoding.
+        var _ json.Marshaler = (*Money)(nil)
+
+        func (m *Money) MarshalJSON() ([]byte, error) {
+            return []byte(strconv.Quote(m.String())), nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [interfaces, blank-identifier, type-safety]
+    source: https://go.dev/doc/effective_go#blank_implements

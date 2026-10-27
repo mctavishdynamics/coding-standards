@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreNl2:
+    standard: @{CppCoreGuidelines}
+    ruleId: NL.2
+    title: State intent in comments
+    statement:
+        Use comments to say what code is meant to achieve, which the code
+        itself cannot express.
+    rationale:
+        Code shows what is done, not what was supposed to be done, and
+        intent is often clearer and shorter than the implementation. When
+        comment and code disagree, both are probably wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void merge_ranges(std::vector<Range>& rs)
+            // loop over rs, compare ends, erase some elements
+        {
+            // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void merge_ranges(std::vector<Range>& rs)
+            // replace overlapping or touching ranges by their union;
+            // the result is sorted by start
+        {
+            // ...
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, documentation]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rl-comments-intent

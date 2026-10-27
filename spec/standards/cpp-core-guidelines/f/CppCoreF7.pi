@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF7:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.7
+    title: For general use, take T* or T& arguments rather than smart pointers
+    statement:
+        A function that only uses an object should take a reference or raw
+        pointer, not a smart pointer. Take a smart pointer only when the
+        function affects ownership.
+    rationale:
+        A smart pointer parameter restricts callers to objects managed by
+        that smart pointer and, for shared_ptr, adds run-time cost.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void render(const std::shared_ptr<Widget>& w) {
+            w->draw();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void render(const Widget& w) {
+            w.draw();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, parameters, smart-pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-smart

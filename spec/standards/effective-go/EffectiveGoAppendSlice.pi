@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoAppendSlice:
+    standard: @{EffectiveGo}
+    ruleId: append-slice
+    title: Append one slice to another with an ellipsis
+    statement:
+        To append all elements of one slice to another, pass the second
+        slice followed by an ellipsis.
+    rationale:
+        The ellipsis expands the slice into individual arguments; without it
+        the types do not match.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        for _, x := range extra {
+            all = append(all, x)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        all = append(all, extra...)
+        \\\
+        ```
+    languages: [go]
+    tags: [slices, append]
+    source: https://go.dev/doc/effective_go#append

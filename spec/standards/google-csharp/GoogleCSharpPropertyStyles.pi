@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpPropertyStyles:
+    standard: @{GoogleCSharp}
+    ruleId: property-styles
+    title: Use expression bodies for single-line read-only properties
+    statement:
+        Write single-line read-only properties with an expression body where
+        possible. Use the get and set accessor syntax for all other
+        properties.
+    rationale:
+        Expression bodies keep trivial getters short, while accessor blocks
+        are clearer for anything more.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public string FullName {
+          get { return $"{First} {Last}"; }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public string FullName => $"{First} {Last}";
+        public int Age { get; set; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [properties, syntax]
+    source: https://google.github.io/styleguide/csharpguide.html#property-styles

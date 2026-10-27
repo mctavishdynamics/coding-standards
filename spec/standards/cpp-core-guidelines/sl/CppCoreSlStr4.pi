@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlStr4:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.str.4
+    title: Use char* to refer to a single character
+    statement:
+        Reserve a plain char pointer for pointing to one character. Use
+        zstring, string or string_view for sequences of characters.
+    rationale:
+        The many different uses of char pointers in existing code are a
+        major source of errors, such as passing an array that is not
+        zero-terminated to code expecting a C string.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        char code[] = {'O', 'K'};          // not zero-terminated
+
+        void show(const char* p) { std::cout << p; }
+        show(code);                         // reads past the array
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void show(std::string_view s) { std::cout << s; }
+        show(std::string_view{code, std::size(code)});
+        \\\
+        ```
+    languages: [cpp]
+    tags: [strings, pointers, bounds-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rstr-charp

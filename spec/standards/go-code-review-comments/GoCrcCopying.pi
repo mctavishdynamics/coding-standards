@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcCopying:
+    standard: @{GoCodeReviewComments}
+    ruleId: copying
+    title: Do not copy values whose methods use pointer receivers
+    statement:
+        Take care when copying a struct from another package, and in general
+        do not copy a value of type T when its methods are defined on the
+        pointer type.
+    rationale:
+        The copy may share internal state with the original, such as the
+        byte slice inside a bytes.Buffer, so later method calls on either
+        one can have surprising effects.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var header bytes.Buffer
+        header.WriteString("id,name\n")
+
+        body := header // copies the Buffer and aliases its storage
+        body.WriteString("1,alice\n")
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var header bytes.Buffer
+        header.WriteString("id,name\n")
+
+        var body bytes.Buffer
+        body.Write(header.Bytes())
+        body.WriteString("1,alice\n")
+        \\\
+        ```
+    languages: [go]
+    tags: [aliasing, structs]
+    source: https://go.dev/wiki/CodeReviewComments#copying

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8GlobalVariableNames:
+    standard: @{Pep8}
+    ruleId: global-variable-names
+    title: Name globals like functions and control their export
+    statement:
+        Name global variables with the function naming convention. In
+        modules meant for star-imports, use __all__ to keep globals out, or
+        prefix them with an underscore.
+    rationale:
+        Globals should usually stay inside one module, and these mechanisms
+        stop them leaking through star-imports.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        ConnectionPool = []
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        __all__ = ["connect"]
+
+        _connection_pool = []
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, modules]
+    source: https://peps.python.org/pep-0008/#global-variable-names

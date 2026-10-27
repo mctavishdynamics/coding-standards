@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptArrayConstructor:
+    standard: @{GoogleTypeScript}
+    ruleId: array-constructor
+    title: Do not use the Array constructor
+    statement:
+        Do not call Array(), with or without new. Create arrays with bracket
+        literals, or with Array.from when a given length is needed.
+    rationale:
+        The constructor behaves inconsistently: a single number creates
+        empty slots of that length, while several arguments become the
+        elements.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const sizes = new Array(3);
+        const ids = new Array(4, 8);
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const sizes = Array.from<number>({length: 3}).fill(0);
+        const ids = [4, 8];
+        \\\
+        ```
+    languages: [typescript]
+    tags: [arrays, constructors]
+    source: https://google.github.io/styleguide/tsguide.html#array-constructor

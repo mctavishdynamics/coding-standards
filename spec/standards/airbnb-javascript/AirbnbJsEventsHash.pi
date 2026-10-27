@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsEventsHash:
+    standard: @{AirbnbJavaScript}
+    ruleId: 25.1
+    title: Pass an object as an event payload
+    statement:
+        When attaching data to an event, whether a DOM event or a library
+        event, pass an object instead of a raw value.
+    rationale:
+        Later contributors can then add more data to the payload without
+        finding and updating every handler.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        emitter.emit('cartUpdated', cart.id);
+        emitter.on('cartUpdated', (cartId) => refresh(cartId));
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        emitter.emit('cartUpdated', { cartId: cart.id });
+        emitter.on('cartUpdated', ({ cartId }) => refresh(cartId));
+        \\\
+        ```
+    languages: [javascript]
+    tags: [events, api-design]
+    source: https://github.com/airbnb/javascript#events--hash

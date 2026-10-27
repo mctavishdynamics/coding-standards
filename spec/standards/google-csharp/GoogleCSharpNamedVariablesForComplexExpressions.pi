@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpNamedVariablesForComplexExpressions:
+    standard: @{GoogleCSharp}
+    ruleId: named-variables-for-complex-expressions
+    title: Replace complex argument expressions with named variables
+    statement:
+        Move large or complex nested expressions out of argument lists into
+        named variables.
+    rationale:
+        The variable name explains the value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        Notify(users.Where(u => u.IsActive && u.Plan == Plan.Pro).Select(u => u.Email).ToList());
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        var proEmails = users.Where(u => u.IsActive && u.Plan == Plan.Pro)
+                             .Select(u => u.Email)
+                             .ToList();
+        Notify(proEmails);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [readability, parameters]
+    source: https://google.github.io/styleguide/csharpguide.html#argument-naming

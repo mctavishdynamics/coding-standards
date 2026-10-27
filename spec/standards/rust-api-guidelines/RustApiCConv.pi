@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCConv:
+    standard: @{RustApiGuidelines}
+    ruleId: C-CONV
+    title: Name ad-hoc conversions with as_, to_ and into_
+    statement:
+        Prefix a conversion method with as_ when it is a free
+        borrowed-to-borrowed view, with to_ when it does real work or
+        copies, and with into_ when it consumes the receiver. A wrapper
+        around one value exposes it through into_inner, and a mut in the
+        name goes where it sits in the return type, as in as_mut_slice.
+    rationale:
+        The prefix tells the caller the cost and the ownership effect of the
+        call without reading its body or documentation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl Celsius {
+            // Does arithmetic, so it is not a free view.
+            pub fn as_fahrenheit(&self) -> Fahrenheit {
+                Fahrenheit(self.0 * 9.0 / 5.0 + 32.0)
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl Celsius {
+            pub fn to_fahrenheit(&self) -> Fahrenheit {
+                Fahrenheit(self.0 * 9.0 / 5.0 + 32.0)
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [naming, conversions]
+    source: https://rust-lang.github.io/api-guidelines/naming.html#c-conv

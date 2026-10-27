@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptMethodNames:
+    standard: @{GoogleJavaScript}
+    ruleId: 6.2.3
+    title: Write method names in lowerCamelCase as verb phrases
+    statement:
+        Write method names in lowerCamelCase, usually as verbs or verb
+        phrases. Private methods may end with an underscore. Name getters
+        getFoo, or isFoo or hasFoo for booleans, and setters setFoo. Test
+        method names may use underscores to separate logical parts.
+    rationale:
+        Verb names describe what a method does, and consistent accessor
+        names make an API predictable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Account {
+          Balance() {}
+          active() {}
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Account {
+          getBalance() {}
+          isActive() {}
+          recalculate_() {}
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming, methods]
+    source: https://google.github.io/styleguide/jsguide.html#623-method-names

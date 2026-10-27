@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaEmptyBlocks:
+    standard: @{GoogleJava}
+    ruleId: 4.1.3
+    title: Write empty blocks concisely only outside multi-block statements
+    statement:
+        An empty block may use K and R style or be closed right after it
+        opens, with nothing in between. The concise form is not allowed in a
+        multi-block statement such as if and else or try, catch and finally.
+    rationale:
+        Short empty bodies are fine for no-op methods, but inside a multi-
+        block statement the concise form hides a branch that readers should
+        notice.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        try {
+          cache.warmUp();
+        } catch (IOException e) {}
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void onShutdown() {}
+
+        try {
+          cache.warmUp();
+        } catch (IOException e) {
+          logger.warn("Cache warm-up failed", e);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, braces]
+    source: https://google.github.io/styleguide/javaguide.html#s4.1.3-braces-empty-blocks

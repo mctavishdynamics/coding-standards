@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftWhereToDocument:
+    standard: @{GoogleSwift}
+    ruleId: where-to-document
+    title: Document every open and public declaration
+    statement:
+        Write documentation comments for every open or public declaration
+        and each of its open or public members. Skip comments that only
+        restate the obvious, but do not skip information a typical reader
+        would need.
+    rationale:
+        Public API is used by people who cannot read its implementation.
+    exceptions:
+        Self-explanatory enum cases, overrides and protocol implementations,
+        test classes and methods, and extension declarations need not always
+        be documented. Override comments should describe new behaviour, not
+        copy the base documentation.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        public struct Invoice {
+          public var canonicalNumber: String
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// A bill sent to a customer for one or more orders.
+        public struct Invoice {
+          /// The invoice number in the tax authority's format, such as
+          /// `INV-2024-000123`.
+          public var canonicalNumber: String
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [comments, documentation, api-design]
+    source: https://google.github.io/swift/#where-to-document

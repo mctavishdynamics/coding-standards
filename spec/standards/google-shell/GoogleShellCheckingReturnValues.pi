@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellCheckingReturnValues:
+    standard: @{GoogleShell}
+    ruleId: checking-return-values
+    title: Always check return values
+    statement:
+        Check the return value of commands and give informative return
+        values. Test an unpiped command with if or $?, and use PIPESTATUS
+        for pipelines, copying it to another variable at once if each part
+        needs separate handling.
+    rationale:
+        Unchecked failures let a script carry on in a broken state.
+        PIPESTATUS is overwritten by the next command, including a test.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        mv "${tmp_file}" "${dest}"
+        echo "Installed ${dest}"
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        if ! mv "${tmp_file}" "${dest}"; then
+          echo "Unable to install ${dest}" >&2
+          exit 1
+        fi
+        echo "Installed ${dest}"
+        \\\
+        ```
+    languages: [shell]
+    tags: [error-handling]
+    source: https://google.github.io/styleguide/shellguide.html#checking-return-values

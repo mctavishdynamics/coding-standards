@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp40C:
+    standard: @{CertC}
+    ruleId: EXP40-C
+    title: Do not modify constant objects
+    statement:
+        Never modify an object defined with a const-qualified type, and do
+        not cast away const to get a writable pointer to one.
+    rationale:
+        Modifying a const object is undefined behavior. The object may live
+        in read-only memory, and some compilers allow it without any
+        warning. CERT rates likelihood unlikely, detectable yes, repairable
+        no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        static const int limit = 10;
+
+        void raise_limit(void) {
+            int *p = (int *)&limit;
+            *p = 20;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int limit = 10;
+
+        void raise_limit(void) {
+            limit = 20;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [expressions, const, qualifiers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/expressions-exp/exp40-c

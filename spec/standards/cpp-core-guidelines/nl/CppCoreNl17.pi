@@ -1,0 +1,52 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreNl17:
+    standard: @{CppCoreGuidelines}
+    ruleId: NL.17
+    title: Use K&R-derived layout
+    statement:
+        Use the K&R or Stroustrup layout. The opening brace of a class or
+        struct and of a control statement goes on the same line, a
+        function's opening brace goes on its own line, and each statement,
+        branch and loop body gets its own line.
+    rationale:
+        It is the original C and C++ layout, saves vertical space and
+        visually distinguishes functions from classes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Point
+        {
+            int x, y;
+        };
+
+        int clamp(int v, int lo, int hi) {
+            if (v < lo) { return lo; } else if (v > hi) return hi;
+            return v;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Point {
+            int x, y;
+        };
+
+        int clamp(int v, int lo, int hi)
+        {
+            if (v < lo)
+                return lo;
+            if (v > hi)
+                return hi;
+            return v;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, braces, layout]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rl-knr

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonModuleDocstrings:
+    standard: @{GooglePython}
+    ruleId: 3.8.2
+    title: Start each file with license boilerplate and a module docstring
+    statement:
+        Every file carries the license boilerplate for the project's
+        license, and starts with a docstring that describes the module's
+        contents and usage.
+    rationale:
+        The license header makes reuse terms clear, and the module docstring
+        tells readers what the file is for before they read it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import csv
+
+
+        def load(path):
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        # Copyright 2026 Example Corp. Licensed under the Apache License 2.0.
+        """Loads inventory records from CSV exports.
+
+        Typical usage:
+
+          records = load('stock.csv')
+        """
+
+        import csv
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, modules, licensing]
+    source: https://google.github.io/styleguide/pyguide.html#s3.8.2-comments-in-modules

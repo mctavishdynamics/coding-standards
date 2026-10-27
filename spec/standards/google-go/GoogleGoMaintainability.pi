@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoMaintainability:
+    standard: @{GoogleGo}
+    ruleId: guide/maintainability
+    title: Write code that is easy to change correctly
+    statement:
+        Make assumptions explicit, keep important details out of easily
+        overlooked places, use predictable names, minimise dependencies,
+        structure APIs so they can grow, and back the code with tests that
+        give clear failures.
+    rationale:
+        Code is edited many more times than it is written, and hidden
+        details or coupling make future changes error-prone.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if user, err = lookup(id); err != nil {
+            return err
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Assign to the outer user variable; it is used after this block.
+        if user, err = lookup(id); err != nil {
+            return err
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [guide, maintainability, design]
+    source: https://google.github.io/styleguide/go/guide#maintainability

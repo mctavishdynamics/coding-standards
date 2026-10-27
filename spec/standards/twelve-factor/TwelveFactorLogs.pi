@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./TwelveFactor import TwelveFactor
+
+export coding-rule TwelveFactorLogs:
+    standard: @{TwelveFactor}
+    ruleId: XI
+    title: Treat logs as event streams
+    statement:
+        Do not route, store or rotate log files from the app. Write each
+        process's event stream, unbuffered, to standard output and leave
+        capture, routing and archival to the execution environment.
+    rationale:
+        Logs are a continuous stream of time-ordered events, and the
+        environment can collate them from all processes and send them to
+        files, terminals or analysis systems the app need not know about.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import logging
+
+        logging.basicConfig(filename="/var/log/shop/app.log")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import logging
+        import sys
+
+        logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+        \\\
+        ```
+    languages: [any]
+    tags: [logging, observability]
+    source: https://12factor.net/logs

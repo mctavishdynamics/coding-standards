@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC149:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.149
+    title: Use unique_ptr or shared_ptr so new objects are deleted
+    statement:
+        Hold objects created with new in a unique_ptr or shared_ptr rather
+        than a raw owning pointer.
+    rationale:
+        Smart pointers delete the object automatically and avoid leaks,
+        including on early returns and exceptions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void process() {
+            Shape* s = new Circle(3.0);
+            if (!validate(*s)) return;   // leak
+            draw(*s);
+            delete s;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void process() {
+            std::unique_ptr<Shape> s = std::make_unique<Circle>(3.0);
+            if (!validate(*s)) return;
+            draw(*s);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, smart-pointers, ownership]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-smart

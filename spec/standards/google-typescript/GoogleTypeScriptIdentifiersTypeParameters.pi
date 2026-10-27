@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptIdentifiersTypeParameters:
+    standard: @{GoogleTypeScript}
+    ruleId: identifiers-type-parameters
+    title: Name type parameters with one capital letter or UpperCamelCase
+    statement:
+        A type parameter may be a single upper-case letter such as T, or an
+        UpperCamelCase name.
+    rationale:
+        Both forms are conventional and clearly distinguish type parameters
+        from values.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function first<item>(items: item[]): item {
+          return items[0];
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function first<T>(items: T[]): T {
+          return items[0];
+        }
+        class Cache<ValueType> {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [naming, generics]
+    source: https://google.github.io/styleguide/tsguide.html#identifiers-type-parameters

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsEs6Rest:
+    standard: @{AirbnbJavaScript}
+    ruleId: 7.6
+    title: Use rest parameters instead of arguments
+    statement:
+        Never use the arguments object. Collect extra arguments with rest
+        syntax instead. Enforced by the ESLint rule prefer-rest-params.
+    rationale:
+        Rest syntax names exactly which arguments are collected, and it
+        produces a real array rather than an array-like object.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function sum() {
+          const values = Array.prototype.slice.call(arguments);
+          return values.reduce((total, value) => total + value, 0);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function sum(...values) {
+          return values.reduce((total, value) => total + value, 0);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, es6]
+    source: https://github.com/airbnb/javascript#es6-rest

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoFormatting:
+    standard: @{EffectiveGo}
+    ruleId: formatting
+    title: Let gofmt decide the layout
+    statement:
+        Run gofmt, or go fmt at package level, on all source. When a layout
+        question comes up, use what gofmt produces; if the result looks
+        wrong, rearrange the program or report a bug rather than working
+        around the tool.
+    rationale:
+        Formatting debates cost time and matter little. A single
+        machine-enforced style means nobody has to adapt to another person's
+        layout, and details such as aligning field comments are done for
+        you.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Account struct {
+            ID int64 // primary key
+            Owner string // login name
+            Balance int64 // in cents
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Account struct {
+            ID      int64  // primary key
+            Owner   string // login name
+            Balance int64  // in cents
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [formatting, tooling]
+    source: https://go.dev/doc/effective_go#formatting

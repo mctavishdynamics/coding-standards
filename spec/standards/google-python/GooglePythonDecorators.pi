@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonDecorators:
+    standard: @{GooglePython}
+    ruleId: 2.17
+    title: Use decorators judiciously
+    statement:
+        Use decorators only when there is a clear advantage. Name and import
+        them like functions, say in the docstring that the function is a
+        decorator, and unit test them. Avoid external dependencies such as
+        files or sockets inside a decorator. Do not use staticmethod; write
+        a module-level function. Use classmethod only for named constructors
+        or class-specific routines that change global state such as a cache.
+    rationale:
+        Decorators run at import time, where external resources may be
+        unavailable and failures are hard to diagnose. They also hide
+        behavior, so their effect should be clear and tested.
+    exceptions:
+        staticmethod is acceptable when an existing library API requires it.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Temperature:
+            @staticmethod
+            def to_fahrenheit(celsius):
+                return celsius * 9 / 5 + 32
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def to_fahrenheit(celsius):
+            return celsius * 9 / 5 + 32
+
+
+        class Temperature:
+            @classmethod
+            def from_fahrenheit(cls, fahrenheit):
+                return cls((fahrenheit - 32) * 5 / 9)
+        \\\
+        ```
+    languages: [python]
+    tags: [decorators, functions]
+    source: https://google.github.io/styleguide/pyguide.html#s2.17-function-and-method-decorators

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptTemplateLiterals:
+    standard: @{GoogleTypeScript}
+    ruleId: template-literals
+    title: Use template literals instead of complex concatenation
+    statement:
+        Prefer template literals over complex string concatenation,
+        especially with several literal parts. A multi-line template literal
+        need not follow the indentation of the enclosing block.
+    rationale:
+        Template literals show the final text in one piece and make
+        interpolated values easy to see.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const line = 'Order ' + order.id + ' for ' + order.customer + ' totals ' +
+            order.total + ' EUR';
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const line =
+            `Order ${order.id} for ${order.customer} totals ${order.total} EUR`;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [strings, readability]
+    source: https://google.github.io/styleguide/tsguide.html#template-literals

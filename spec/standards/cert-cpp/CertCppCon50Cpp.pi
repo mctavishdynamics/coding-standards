@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCon50Cpp:
+    standard: @{CertCpp}
+    ruleId: CON50-CPP
+    title: Do not destroy a mutex while it is locked
+    statement:
+        Do not destroy a mutex while any thread holds it or is waiting for
+        it. Make the mutex outlive every thread that uses it, for example by
+        joining the threads first.
+    rationale:
+        Destroying a locked mutex is undefined behavior and leaves the
+        shared data it protected open to races. CERT rates likelihood
+        probable, detectable no, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        void start_workers() {
+            std::mutex m;
+            for (int i = 0; i < 4; ++i) {
+                std::thread([&m] {
+                    std::lock_guard<std::mutex> g(m);
+                    do_work();
+                }).detach();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void start_workers() {
+            std::mutex m;
+            std::vector<std::thread> workers;
+            for (int i = 0; i < 4; ++i) {
+                workers.emplace_back([&m] {
+                    std::lock_guard<std::mutex> g(m);
+                    do_work();
+                });
+            }
+            for (auto& t : workers) {
+                t.join();
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, mutexes, lifetime]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/concurrency-con/con50-cpp

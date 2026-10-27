@@ -1,0 +1,52 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp100:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.100
+    title: Do not use lock-free programming unless you absolutely have to
+    statement:
+        Avoid writing lock-free algorithms with atomics and compare-and-swap
+        loops. Use mutexes, or lock-free data structures from a well-tested
+        library.
+    rationale:
+        Lock-free code is error-prone and needs expert knowledge of the
+        language, the machine and data structures; bugs such as the ABA
+        problem rarely show up in testing.
+    exceptions:
+        Simple use of atomic variables with the default sequentially
+        consistent memory order is safe.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Stack::push(Node* n)
+        {
+            n->next = head_.load();
+            while (!head_.compare_exchange_weak(n->next, n)) {
+            }
+        }
+
+        Node* Stack::pop()   // suffers from the ABA problem
+        {
+            Node* old = head_.load();
+            while (old && !head_.compare_exchange_weak(old, old->next)) {
+            }
+            return old;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Stack::push(Item item)
+        {
+            std::lock_guard lock(mutex_);
+            items_.push_back(std::move(item));
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, lock-free, atomics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-lockfree

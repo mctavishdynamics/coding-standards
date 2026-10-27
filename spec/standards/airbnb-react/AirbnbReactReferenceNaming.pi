@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactReferenceNaming:
+    standard: @{AirbnbReact}
+    ruleId: naming-3
+    title: Use PascalCase for components and camelCase for their instances
+    statement:
+        Name references to React components in PascalCase and references to
+        rendered elements in camelCase. Enforced by the ESLint rule
+        react/jsx-pascal-case.
+    rationale:
+        JSX treats lowercase tag names as DOM elements, and the case
+        difference shows at a glance whether a name is a component or an
+        element.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        import bookingForm from './BookingForm';
+
+        const BookingFormElement = <bookingForm />;
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        import BookingForm from './BookingForm';
+
+        const bookingFormElement = <BookingForm />;
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [naming]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#naming

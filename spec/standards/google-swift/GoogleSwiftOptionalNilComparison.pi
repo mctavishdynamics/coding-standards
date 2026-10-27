@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftOptionalNilComparison:
+    standard: @{GoogleSwift}
+    ruleId: optional-types-nil-comparison
+    title: Compare with nil when the value is not used
+    statement:
+        When a condition only checks that an Optional is not nil and does
+        not use the value, compare it to nil instead of binding it to an
+        underscore.
+    rationale:
+        Binding and discarding the value hides the intent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        if let _ = cachedImage {
+          hidePlaceholder()
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        if cachedImage != nil {
+          hidePlaceholder()
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [optionals, readability]
+    source: https://google.github.io/swift/#optional-types

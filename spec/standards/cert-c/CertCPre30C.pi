@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre30C:
+    standard: @{CertC}
+    ruleId: PRE30-C
+    title:
+        Do not create a universal character name through concatenation
+    statement:
+        Never build a universal character name by pasting its pieces
+        together with the ## operator. Write the complete character name, or
+        the character itself, in one token.
+    rationale:
+        A universal character name produced by token concatenation is
+        undefined behavior, so the compiler may reject it or produce
+        something unexpected. CERT rates likelihood unlikely, detectable
+        yes, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #define ASSIGN(uc1, uc2, uc3, uc4, val) uc1##uc2##uc3##uc4 = val
+
+        int \u00e9t\u00e9;
+        ASSIGN(\u00e9, t, \u00e9, , 1);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #define ASSIGN(name, val) name = val
+
+        int \u00e9t\u00e9;
+        ASSIGN(\u00e9t\u00e9, 1);
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, macros]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/preprocessor-pre/pre30-c

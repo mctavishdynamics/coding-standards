@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptVisibility:
+    standard: @{GoogleTypeScript}
+    ruleId: visibility
+    title: Limit visibility and omit the public modifier
+    statement:
+        Restrict the visibility of properties, methods and types as far as
+        possible. Do not write public, except on non-readonly public
+        parameter properties in constructors.
+    rationale:
+        Narrow visibility keeps code decoupled, and members are already
+        public by default so the modifier is noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Printer {
+          public pages = 0;
+          constructor(public readonly queue: Queue) {}
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Printer {
+          pages = 0;
+          constructor(readonly queue: Queue, public label: string) {}
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, visibility, encapsulation]
+    source: https://google.github.io/styleguide/tsguide.html#visibility

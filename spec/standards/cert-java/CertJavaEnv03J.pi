@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaEnv03J:
+    standard: @{CertJava}
+    ruleId: ENV03-J
+    title: Do not grant dangerous combinations of permissions
+    statement:
+        Do not grant AllPermission, ReflectPermission suppressAccessChecks,
+        createClassLoader, or similarly powerful permissions to untrusted
+        code, either in a policy file or programmatically.
+    rationale:
+        These permissions, alone or combined, let code bypass access checks
+        or define classes with any privileges, which removes the security
+        model's protection.
+    exceptions:
+        Trusted library code, such as installed extension libraries, may be
+        granted AllPermission so that callbacks work.
+    severity: null
+    noncompliant:
+        ```text
+        \\\
+        grant codeBase "file:${user.home}/plugins/*" {
+            permission java.security.AllPermission;
+        };
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        grant codeBase "file:${user.home}/plugins/*" {
+            permission java.io.FilePermission "${user.home}/plugins/data/-", "read";
+        };
+        \\\
+        ```
+    languages: [java]
+    tags: [security, permissions, policy]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/runtime-environment-env/env03-j/

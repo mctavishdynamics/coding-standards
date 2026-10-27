@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCtr55Cpp:
+    standard: @{CertCpp}
+    ruleId: CTR55-CPP
+    title: Do not use an additive operator on an iterator if the result would overflow
+    statement:
+        Before adding an integer to an iterator or pointer, check that the
+        result stays within the container or one past its end.
+    rationale:
+        An additive operation that moves an iterator outside its container
+        is undefined behavior, even if the result is never dereferenced.
+        CERT rates likelihood likely, detectable no, repairable no, priority
+        P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        void show_first(const std::vector<int>& v, std::size_t n) {
+            for (auto it = v.begin(); it < v.begin() + n; ++it) {
+                std::cout << *it << '\n';
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void show_first(const std::vector<int>& v, std::size_t n) {
+            auto stop = v.begin() + std::min(n, v.size());
+            for (auto it = v.begin(); it != stop; ++it) {
+                std::cout << *it << '\n';
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, iterators, bounds-checking]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/containers-ctr/ctr55-cpp

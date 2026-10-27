@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssHtmlValidity:
+    standard: @{GoogleHtmlCss}
+    ruleId: html-validity
+    title: Use valid HTML where possible
+    statement:
+        Write valid HTML and check it with a tool such as the W3C HTML
+        validator.
+    rationale:
+        Validity is a measurable baseline of quality that ensures proper use
+        of HTML and teaches its requirements.
+    exceptions:
+        Invalid HTML is acceptable only when file size targets cannot be met
+        otherwise.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <title>Release notes</title>
+        <section>Version 2.1 fixes the login bug.
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <!doctype html>
+        <meta charset="utf-8">
+        <title>Release notes</title>
+        <section>Version 2.1 fixes the login bug.</section>
+        \\\
+        ```
+    languages: [html]
+    tags: [validity, quality]
+    source: https://google.github.io/styleguide/htmlcssguide.html#html-validity

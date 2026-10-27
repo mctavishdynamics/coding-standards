@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsNullishCoalescingOperator:
+    standard: @{AirbnbJavaScript}
+    ruleId: 15.9
+    title: Use nullish coalescing for null and undefined defaults
+    statement:
+        Use the ?? operator to supply a default only when a value is null or
+        undefined.
+    rationale:
+        Unlike ||, it keeps legitimate falsy values such as 0, false and the
+        empty string, which makes the intent precise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const retries = options.retries || 3; // 0 becomes 3
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const retries = options.retries ?? 3;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [operators, defaults]
+    source: https://github.com/airbnb/javascript#nullish-coalescing-operator

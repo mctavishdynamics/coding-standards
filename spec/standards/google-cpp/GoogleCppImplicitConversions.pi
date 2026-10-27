@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppImplicitConversions:
+    standard: @{GoogleCpp}
+    ruleId: Implicit_Conversions
+    title:
+        Mark conversion operators and single-argument constructors explicit
+    statement:
+        Do not define implicit conversions. Mark type conversion operators
+        and constructors callable with one argument as explicit. Copy and
+        move constructors, and constructors taking a
+        single std::initializer_list, are not marked explicit.
+    rationale:
+        Implicit conversions hide type mismatches, make overload resolution
+        hard to follow and cause call-site ambiguities. An unmarked
+        single-argument constructor leaves readers unsure whether the
+        conversion was intended.
+    exceptions:
+        Types designed to be interchangeable, such as two representations of
+        the same value, may get a waiver from project leads.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Meters {
+         public:
+          Meters(double value) : value_(value) {}
+          operator double() const { return value_; }
+         private:
+          double value_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Meters {
+         public:
+          explicit Meters(double value) : value_(value) {}
+          explicit operator double() const { return value_; }
+         private:
+          double value_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, conversions, type-safety]
+    source: https://google.github.io/styleguide/cppguide.html#Implicit_Conversions

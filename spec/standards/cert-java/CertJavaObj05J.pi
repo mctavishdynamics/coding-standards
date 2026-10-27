@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj05J:
+    standard: @{CertJava}
+    ruleId: OBJ05-J
+    title: Do not return references to private mutable class members
+    statement:
+        Do not return a private field that refers to a mutable object.
+        Return a defensive copy or an unmodifiable view instead.
+    rationale:
+        A returned reference lets callers change the object's internal
+        state, breaking encapsulation and possibly security. CERT rates
+        likelihood probable, detectable yes, repairable no, priority P12,
+        level L1.
+    exceptions:
+        A method that only ever exposes an immutable view may return it
+        without copying, if that choice is made early in the API design.
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        private final Date created = new Date();
+        public Date getCreated() {
+            return created;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private final Date created = new Date();
+        public Date getCreated() {
+            return (Date) created.clone();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [encapsulation, mutability, defensive-copy]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/object-orientation-obj/obj05-j/

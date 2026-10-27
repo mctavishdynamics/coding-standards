@@ -1,0 +1,49 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC50:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.50
+    title: Use a factory function when initialization needs virtual behavior
+    statement:
+        If construction must call a virtual function so that derived classes
+        can take part, construct the object fully and then call the virtual
+        step from a factory function that returns the finished object.
+    rationale:
+        Virtual calls in a constructor do not reach the derived class, and a
+        factory keeps users from touching the object before it is completely
+        set up.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Widget {
+        public:
+            Widget() { post_init(); }        // calls the base version only
+        protected:
+            virtual void post_init();
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Widget {
+        protected:
+            Widget() = default;
+            virtual void post_init();
+        public:
+            template<class T>
+            static std::unique_ptr<T> create() {
+                auto p = std::make_unique<T>();
+                p->post_init();
+                return p;
+            }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, virtual-functions, factory]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-factory

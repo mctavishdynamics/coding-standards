@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpBracesEvenWhenOptional:
+    standard: @{GoogleCSharp}
+    ruleId: braces-even-when-optional
+    title: Use braces even when they are optional
+    statement:
+        Use braces around the body of every if, else, for, while and similar
+        statement, even a single line.
+    rationale:
+        Without braces it is easy to add a line that looks inside the block
+        but is not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        if (items.Count == 0)
+          return;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        if (items.Count == 0) {
+          return;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [formatting, braces]
+    source: https://google.github.io/styleguide/csharpguide.html#whitespace-rules

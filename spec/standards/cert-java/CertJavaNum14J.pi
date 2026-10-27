@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum14J:
+    standard: @{CertJava}
+    ruleId: NUM14-J
+    title: Use shift operators correctly
+    statement:
+        Know how Java shifts work. Use >>> for a logical shift of unsigned
+        bits, keep shift distances within the operand's width, and promote
+        narrow types deliberately before shifting.
+    rationale:
+        Java masks the shift distance to 5 or 6 bits and promotes byte and
+        short to int, so shifts can produce results very different from what
+        the code suggests. CERT rates likelihood probable, detectable no,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        int bits = -16;
+        int unsigned = bits >> 4;
+        long mask = 1 << 40;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int bits = -16;
+        int unsigned = bits >>> 4;
+        long mask = 1L << 40;
+        \\\
+        ```
+    languages: [java]
+    tags: [bitwise, shift]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/numeric-types-and-operations-num/num14-j/

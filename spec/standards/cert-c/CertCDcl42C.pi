@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl42C:
+    standard: @{CertC}
+    ruleId: DCL42-C
+    title:
+        Only call functions with the unsequenced or reproducible attributes
+        if they actually have the asserted property
+    statement:
+        Mark a function with the C23 reproducible or unsequenced attribute
+        only when it really is effectless and idempotent, or also stateless
+        and independent. Remove the attribute or change the function when it
+        is not.
+    rationale:
+        The compiler may call such functions fewer times or at different
+        places than written. Calling one that does not have the asserted
+        property is undefined behavior. CERT rates likelihood unlikely,
+        detectable no, repairable yes, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        static int calls;
+
+        [[reproducible]] int next_id(void) {
+            return ++calls;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static int calls;
+
+        int next_id(void) {
+            return ++calls;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, functions, attributes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/declarations-and-initialization-dcl/dcl42-c

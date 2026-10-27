@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC20:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.20
+    title: Avoid defining default operations when you can
+    statement:
+        Let the compiler generate the copy, move and destructor operations
+        by building the class from members that already manage themselves.
+        This is the rule of zero.
+    rationale:
+        Generated operations are the simplest option and have the cleanest
+        semantics.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Names {
+        public:
+            Names() : data_(new std::string[10]) {}
+            ~Names() { delete[] data_; }
+            // copy and move must now be written by hand
+        private:
+            std::string* data_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Names {
+        public:
+            Names() : data_(10) {}
+        private:
+            std::vector<std::string> data_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, special-members, rule-of-zero]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-zero

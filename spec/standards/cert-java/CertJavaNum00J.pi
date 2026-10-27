@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum00J:
+    standard: @{CertJava}
+    ruleId: NUM00-J
+    title: Detect or prevent integer overflow
+    statement:
+        Do not let integer arithmetic exceed the range of its type. Check
+        operands before the operation, use Math.addExact and related
+        methods, widen to a larger type, or use BigInteger.
+    rationale:
+        Java integer operators wrap around silently, so overflow yields
+        wrong values that can break sizes, limits and security checks. CERT
+        rates likelihood unlikely, detectable no, repairable no, priority
+        P2, level L3.
+    exceptions:
+        Intentional, documented overflow, such as in hash code calculations,
+        is allowed. Fields used only in bitwise operations need no overflow
+        checks.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        int total = price * quantity;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int total = Math.multiplyExact(price, quantity);
+        \\\
+        ```
+    languages: [java]
+    tags: [integer-overflow, arithmetic]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/numeric-types-and-operations-num/num00-j/

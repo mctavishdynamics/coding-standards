@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptDecorators:
+    standard: @{GoogleTypeScript}
+    ruleId: decorators
+    title: Use only framework decorators and keep them attached
+    statement:
+        Do not define new decorators; use only those provided by frameworks
+        such as Angular and Polymer. Put a decorator directly before the
+        symbol it decorates with no blank line between them.
+    rationale:
+        TypeScript decorators were an experimental feature that diverged
+        from the TC39 proposal and have known bugs that will not be fixed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function logged(target: unknown) {}
+
+        @logged
+
+        class Checkout {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        @Component({selector: 'app-checkout', template: ''})
+        class Checkout {
+          @Input() total = 0;
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [decorators, frameworks]
+    source: https://google.github.io/styleguide/tsguide.html#decorators

@@ -1,0 +1,28 @@
+use @piton/belay
+use @piton/config
+use @piton/packaging
+
+from @piton/belay import ClaudeCodeAdapter
+
+export piton-config Project:
+    root: ./spec
+    entry: ./spec/index.pi
+
+    frameworks:
+        - {Belay}
+
+    packages:
+        - {CodingStandardsPackage}
+
+    dependencies:
+        - https://github.com/piton-lang/crux.git
+
+belay-config Belay:
+    codeRoot: .
+
+    adapters:
+        - {ClaudeCodeAdapter}
+
+piton-package CodingStandardsPackage:
+    name: coding-standards
+    root: ./spec/standards

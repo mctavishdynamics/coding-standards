@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC36:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.36
+    title: Do not let a destructor fail
+    statement:
+        Write destructors so they cannot fail. Handle or swallow errors
+        inside the destructor instead of throwing them out.
+    rationale:
+        Error-free code is very hard to write if destruction can fail, and
+        the standard library requires destructors that do not exit by
+        throwing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Connection::~Connection() {
+            if (!flush())
+                throw std::runtime_error("flush failed");
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Connection::~Connection() {
+            if (!flush())
+                log_error("flush failed on close");
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [destructors, error-handling, exceptions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-dtor-fail

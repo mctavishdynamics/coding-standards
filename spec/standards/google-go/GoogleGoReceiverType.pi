@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoReceiverType:
+    standard: @{GoogleGo}
+    ruleId: decisions/receiver-type
+    title: Choose pointer or value receivers for correctness
+    statement:
+        Use a pointer receiver when the method mutates the receiver, when it
+        holds fields that must not be copied, when it is large, or when it
+        holds pointers to mutable data. Use a value for maps, functions,
+        channels, unmodified built-in types, slices that are not resliced,
+        and small immutable structs. When in doubt use a pointer, and keep a
+        type's methods all one kind.
+    rationale:
+        The receiver kind decides which method set a method belongs to, and
+        correctness matters more than speed or simplicity.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Counter struct {
+            mu sync.Mutex
+            n  int
+        }
+
+        func (c Counter) Inc() {
+            c.mu.Lock()
+            defer c.mu.Unlock()
+            c.n++
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Counter struct {
+            mu sync.Mutex
+            n  int
+        }
+
+        func (c *Counter) Inc() {
+            c.mu.Lock()
+            defer c.mu.Unlock()
+            c.n++
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, methods, pointers]
+    source: https://google.github.io/styleguide/go/decisions#receiver-type

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCMacroAttr:
+    standard: @{RustApiGuidelines}
+    ruleId: C-MACRO-ATTR
+    title: Let item macros accept attributes
+    statement:
+        A macro that produces several items lets callers attach attributes
+        such as cfg to each one, and a macro that produces a struct or enum
+        lets callers add attributes such as derive to it.
+    rationale:
+        Users need to gate generated items on configuration and derive
+        traits on generated types just as they would for handwritten ones.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        macro_rules! id_type {
+            ($name:ident) => {
+                pub struct $name(u64);
+            };
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        macro_rules! id_type {
+            ($(#[$attr:meta])* $name:ident) => {
+                $(#[$attr])*
+                pub struct $name(u64);
+            };
+        }
+
+        id_type!(#[derive(Debug, Clone, Copy)] UserId);
+        \\\
+        ```
+    languages: [rust]
+    tags: [macros, attributes]
+    source: https://rust-lang.github.io/api-guidelines/macros.html#c-macro-attr

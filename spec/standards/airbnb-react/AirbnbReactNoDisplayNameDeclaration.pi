@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactNoDisplayNameDeclaration:
+    standard: @{AirbnbReact}
+    ruleId: declaration-1
+    title: Name components by reference, not with displayName
+    statement:
+        Do not set displayName to name a component. Give the class or
+        function itself the name.
+    rationale:
+        The reference name already serves as the display name, so a separate
+        string only duplicates it and can drift out of step.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        export default React.createClass({
+          displayName: 'InvoiceTable',
+          render() {
+            return <table />;
+          },
+        });
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        export default class InvoiceTable extends React.Component {
+          render() {
+            return <table />;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [naming, declaration]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#declaration

@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT124:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.124
+    title: Prefer to use standard-library TMP facilities
+    statement:
+        Use standard metaprogramming facilities such as conditional,
+        enable_if, type traits and tuple before writing your own.
+    rationale:
+        Standard facilities are portable and readers can be assumed to know
+        them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T> struct my_remove_ref      { using type = T; };
+        template<typename T> struct my_remove_ref<T&>  { using type = T; };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename T>
+        using Plain = std::remove_cvref_t<T>;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, metaprogramming, standard-library]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-std-tmp

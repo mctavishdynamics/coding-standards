@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio45C:
+    standard: @{CertC}
+    ruleId: FIO45-C
+    title: Avoid TOCTOU race conditions while accessing files
+    statement:
+        Do not check a file by name and then use it by name in a second
+        call. Open the file once in a way that enforces the check, such as
+        fopen with the x mode for exclusive creation, and work through the
+        resulting handle.
+    rationale:
+        Between the check and the use an attacker can replace the file or
+        swap in a link to another file, so the program acts on something it
+        never checked. CERT rates likelihood probable, detectable no,
+        repairable no, priority P6, level L2.
+    exceptions:
+        Repeated access by name is allowed when the file sits in a secure
+        directory, or when the program verifies that every operation reached
+        the same file.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        FILE *create_report(const char *path) {
+            FILE *probe = fopen(path, "r");
+            if (probe != NULL) {
+                fclose(probe);
+                return NULL;
+            }
+            return fopen(path, "w");
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        FILE *create_report(const char *path) {
+            return fopen(path, "wx");
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [io, files, race-conditions, security]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/input-output-fio/fio45-c

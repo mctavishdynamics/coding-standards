@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF21:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.21
+    title: To return multiple out values, prefer returning a struct
+    statement:
+        When a function produces several results, return them together,
+        preferably in a named struct. A tuple suits generic code, and
+        optional or expected suit a value with a failure.
+    rationale:
+        A returned struct is self-documenting as output, its members have
+        meaningful names, and structured bindings make the call site
+        convenient.
+    exceptions:
+        An object whose state the function manipulates, such as a stream, or
+        a buffer reused to avoid allocation, can be passed by non-const
+        reference as an in-out parameter.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        bool parse_point(const std::string& s, int& x, int& y);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Point { int x; int y; };
+
+        std::optional<Point> parse_point(const std::string& s);
+
+        if (auto p = parse_point(text)) use(p->x, p->y);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, return-values, structs]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-out-multi

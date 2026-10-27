@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCSmartPtr:
+    standard: @{RustApiGuidelines}
+    ruleId: C-SMART-PTR
+    title: Do not add inherent methods to smart pointers
+    statement:
+        Give smart pointer types associated functions that take the pointer
+        as an explicit argument instead of inherent methods with a self
+        receiver, as Box::into_raw does.
+    rationale:
+        Through Deref, method calls on a smart pointer may reach the
+        pointee, so an inherent method makes it unclear which type is being
+        called.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl<T> Shared<T> {
+            pub fn ref_count(&self) -> usize { /* ... */ }
+        }
+
+        let n = handle.ref_count();
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl<T> Shared<T> {
+            pub fn ref_count(this: &Shared<T>) -> usize { /* ... */ }
+        }
+
+        let n = Shared::ref_count(&handle);
+        \\\
+        ```
+    languages: [rust]
+    tags: [smart-pointers, methods]
+    source: https://rust-lang.github.io/api-guidelines/predictability.html#c-smart-ptr

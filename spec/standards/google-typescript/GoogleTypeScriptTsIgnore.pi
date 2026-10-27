@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptTsIgnore:
+    standard: @{GoogleTypeScript}
+    ruleId: ts-ignore
+    title: Do not use @ts-ignore, @ts-expect-error or @ts-nocheck
+    statement:
+        Do not silence compiler errors with @ts-ignore, @ts-expect-error or
+        @ts-nocheck. Fix the underlying problem instead.
+    rationale:
+        A compiler error usually points at a bigger problem, and suppression
+        leaves surrounding code with unpredictable types.
+    exceptions:
+        Unit tests may use @ts-expect-error, though generally they should
+        not; prefer a cast with an explanatory comment or a documented lint
+        suppression.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        // @ts-ignore
+        const port: number = process.env.PORT;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const port = Number(process.env.PORT ?? '8080');
+        \\\
+        ```
+    languages: [typescript]
+    tags: [tooling, type-checking, suppressions]
+    source: https://google.github.io/styleguide/tsguide.html#ts-ignore

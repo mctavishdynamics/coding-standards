@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlIo1:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.io.1
+    title: Use character-level input only when you have to
+    statement:
+        Read whole tokens, lines or values with the stream operators and
+        getline, and read single characters only when you really process
+        individual characters.
+    rationale:
+        Building tokens from single characters is error-prone and often
+        slower than letting the library do it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        char buf[64];
+        int n = 0;
+        char c;
+        while (std::cin.get(c) && !std::isspace(c) && n < 63)
+            buf[n++] = c;
+        buf[n] = '\0';
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string word;
+        std::cin >> word;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [io, input]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rio-low

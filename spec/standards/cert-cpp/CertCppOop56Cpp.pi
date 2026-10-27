@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppOop56Cpp:
+    standard: @{CertCpp}
+    ruleId: OOP56-CPP
+    title: Honor replacement handler requirements
+    statement:
+        When installing a replacement new handler, terminate handler or
+        unexpected handler, meet the standard's requirements for it. A new
+        handler must free memory, throw bad_alloc or end the program, and a
+        terminate handler must end the program without returning.
+    rationale:
+        Callers depend on these behaviors, so a handler that returns without
+        doing its job leads to loops or undefined behavior. CERT rates
+        likelihood probable, detectable no, repairable no, priority P2,
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        void on_out_of_memory() {
+            log("allocation failed");  // returns without freeing memory
+        }
+
+        void install() { std::set_new_handler(on_out_of_memory); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void on_out_of_memory() {
+            if (!release_cache_memory()) {
+                throw std::bad_alloc();
+            }
+        }
+
+        void install() { std::set_new_handler(on_out_of_memory); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, handlers, memory]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/object-oriented-programming-oop/oop56-cpp

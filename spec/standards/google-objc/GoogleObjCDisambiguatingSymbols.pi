@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCDisambiguatingSymbols:
+    standard: @{GoogleObjC}
+    ruleId: disambiguating-symbols
+    title: Quote symbols in comments with backticks or bars
+    statement:
+        When a symbol in a comment could be misread, mark it with backticks
+        or vertical bars rather than quotation marks. In Doxygen comments,
+        prefer a monospace command such as @c.
+    rationale:
+        Marking symbols keeps sentences that use common words like count
+        from reading as broken English.
+    exceptions:
+        Symbols whose meaning is obvious need no marking.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        // Returns NO if "index" is past the end.
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        // Returns NO if `index` is past the end.
+        /** @param limit The largest allowed value for @c index. */
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [comments, documentation]
+    source: https://google.github.io/styleguide/objcguide.html#disambiguating-symbols

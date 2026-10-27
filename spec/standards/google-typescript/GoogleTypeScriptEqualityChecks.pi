@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptEqualityChecks:
+    standard: @{GoogleTypeScript}
+    ruleId: equality-checks
+    title: Use strict equality operators
+    statement:
+        Always compare with === and !==.
+    rationale:
+        The loose operators perform confusing type coercions and are slower
+        for JavaScript engines.
+    exceptions:
+        Comparing against the literal null may use == or != to match both
+        null and undefined.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        if (count == '0' || mode != 'edit') {
+          reset();
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        if (count === 0 || mode !== 'edit') {
+          reset();
+        }
+        if (parent == null) return;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [equality, type-coercion]
+    source: https://google.github.io/styleguide/tsguide.html#equality-checks

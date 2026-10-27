@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF46:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.46
+    title: Declare main to return int
+    statement:
+        Give main the return type int, never void.
+    rationale:
+        The language requires it, but compilers often accept void main as an
+        extension, which limits portability. main need not contain an
+        explicit return statement.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void main() {
+            run();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int main() {
+            run();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, main, portability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-main

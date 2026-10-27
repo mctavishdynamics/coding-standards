@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt36C:
+    standard: @{CertC}
+    ruleId: INT36-C
+    title:
+        Convert between pointers and integers only in well-defined ways
+    statement:
+        Do not convert an integer to a pointer unless the result is properly
+        aligned and points to an object of the referenced type, and do not
+        convert a pointer to an integer type too small to hold it. Use
+        intptr_t or uintptr_t when such a conversion is needed.
+    rationale:
+        These conversions are implementation-defined, and a pointer that
+        does not fit its integer type is undefined behavior, so code breaks
+        when pointer sizes change. CERT rates likelihood probable,
+        detectable yes, repairable no, priority P4, level L3.
+    exceptions:
+        Zero may be converted to a pointer and becomes the null pointer. A
+        valid void pointer may be converted to intptr_t or uintptr_t and
+        back. An in-range integer may round-trip through a void pointer if
+        the pointer is never dereferenced.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        unsigned int handle_of(void *obj) {
+            return (unsigned int)obj;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdint.h>
+
+        uintptr_t handle_of(void *obj) {
+            return (uintptr_t)obj;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [integers, pointers, conversions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/integers-int/int36-c

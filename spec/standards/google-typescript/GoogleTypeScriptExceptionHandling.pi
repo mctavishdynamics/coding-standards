@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptExceptionHandling:
+    standard: @{GoogleTypeScript}
+    ruleId: exception-handling
+    title: Use exceptions for exceptional cases
+    statement:
+        Throw exceptions when exceptional cases occur, and define custom
+        error types where the native Error is not enough. Prefer throwing
+        over ad-hoc schemes such as error containers or result objects with
+        an error property.
+    rationale:
+        Exceptions are the language's standard error channel, and custom
+        error types carry extra information to the handler.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function loadUser(id: string): {user?: User, error?: string} {
+          const user = users.get(id);
+          return user ? {user} : {error: 'not found'};
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class UserNotFoundError extends Error {}
+
+        function loadUser(id: string): User {
+          const user = users.get(id);
+          if (!user) throw new UserNotFoundError(`No user ${id}`);
+          return user;
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [error-handling, exceptions]
+    source: https://google.github.io/styleguide/tsguide.html#exception-handling

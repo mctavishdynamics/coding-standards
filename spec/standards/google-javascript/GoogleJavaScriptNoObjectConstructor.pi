@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoObjectConstructor:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.3.2
+    title: Do not use the Object constructor
+    statement:
+        Create objects with object literals rather than new Object.
+    rationale:
+        The constructor gains nothing over a literal, and banning it keeps
+        object creation consistent with arrays.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const options = new Object();
+        options.verbose = true;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const options = {verbose: true};
+        \\\
+        ```
+    languages: [javascript]
+    tags: [objects, constructors]
+    source: https://google.github.io/styleguide/jsguide.html#532-do-not-use-the-object-constructor

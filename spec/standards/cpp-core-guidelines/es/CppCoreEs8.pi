@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs8:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.8
+    title: Avoid similar-looking names
+    statement:
+        Do not give names in the same scope spellings that differ only by
+        easily confused characters, such as l and 1, O and 0, or rn and m.
+    rationale:
+        Names that look alike slow down reading and make it easy to use the
+        wrong one.
+    exceptions:
+        Old header files may declare a type and a non-type with the same
+        name in the same scope.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int l1 = 10;
+        int ll = 20;
+        int lI = 30;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int min_len = 10;
+        int max_len = 20;
+        int avg_len = 30;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-name-similar

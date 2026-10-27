@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCGoodErr:
+    standard: @{RustApiGuidelines}
+    ruleId: C-GOOD-ERR
+    title: Make error types meaningful and well-behaved
+    statement:
+        Every error type returned from a public function implements the
+        standard Error trait, Send and Sync, and never uses the unit type as
+        an error. Display messages are lowercase, concise and have no
+        trailing punctuation, and Error::description is not implemented.
+    rationale:
+        Well-behaved errors work with error-handling libraries, the question
+        mark operator, io::Error::new and threads, while a unit error
+        carries no message and cannot be converted.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub fn parse_port(s: &str) -> Result<u16, ()> {
+            s.parse().map_err(|_| ())
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[derive(Debug)]
+        pub struct ParsePortError;
+
+        impl fmt::Display for ParsePortError {
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                f.write_str("invalid port number")
+            }
+        }
+
+        impl std::error::Error for ParsePortError {}
+
+        pub fn parse_port(s: &str) -> Result<u16, ParsePortError> {
+            s.parse().map_err(|_| ParsePortError)
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [error-handling, traits]
+    source: https://rust-lang.github.io/api-guidelines/interoperability.html#c-good-err

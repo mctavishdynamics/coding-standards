@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCDebug:
+    standard: @{RustApiGuidelines}
+    ruleId: C-DEBUG
+    title: Implement Debug for all public types
+    statement:
+        Every public type implements Debug.
+    rationale:
+        Users need to print values while debugging, and they cannot add the
+        impl to your types themselves.
+    exceptions:
+        The guidelines allow that exceptions exist but are rare.
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub struct Session {
+            id: u64,
+            user: String,
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[derive(Debug)]
+        pub struct Session {
+            id: u64,
+            user: String,
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [debugging, traits]
+    source: https://rust-lang.github.io/api-guidelines/debuggability.html#c-debug

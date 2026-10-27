@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCtr51Cpp:
+    standard: @{CertCpp}
+    ruleId: CTR51-CPP
+    title: Use valid references, pointers, and iterators to reference elements of a container
+    statement:
+        Use only references, pointers and iterators to container elements
+        that are still valid. Re-obtain them after any operation that may
+        invalidate them, such as insertion or erasure.
+    rationale:
+        Many container operations invalidate existing iterators and
+        references, and using an invalidated one is undefined behavior. CERT
+        rates likelihood probable, detectable no, repairable no, priority
+        P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        void drop_negatives(std::vector<int>& v) {
+            for (auto it = v.begin(); it != v.end(); ++it) {
+                if (*it < 0) {
+                    v.erase(it);
+                }
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void drop_negatives(std::vector<int>& v) {
+            for (auto it = v.begin(); it != v.end();) {
+                if (*it < 0) {
+                    it = v.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, iterators, lifetime]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/containers-ctr/ctr51-cpp

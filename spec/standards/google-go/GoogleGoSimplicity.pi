@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoSimplicity:
+    standard: @{GoogleGo}
+    ruleId: guide/simplicity
+    title: Write code in the simplest way that achieves its goal
+    statement:
+        Write code that reads easily from top to bottom, has no unnecessary
+        abstraction and avoids cleverness. Add complexity only deliberately,
+        for example for performance, and document and test it when you do.
+    rationale:
+        When complexity is rare, its presence signals code that needs care.
+        Unneeded complexity is a burden on everyone who later reads or
+        changes the code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func isEven(n int) bool {
+            return n&1^1 == 1
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func isEven(n int) bool {
+            return n%2 == 0
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [guide, simplicity, design]
+    source: https://google.github.io/styleguide/go/guide#simplicity

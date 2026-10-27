@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec01J:
+    standard: @{CertJava}
+    ruleId: SEC01-J
+    title: Do not allow tainted variables in privileged blocks
+    statement:
+        Do not use unvalidated input inside a privileged block. Validate or
+        sanitize it first, or use a fixed value.
+    rationale:
+        Attacker-controlled data inside a privileged block lets the attacker
+        steer privileged operations and escalate privileges. CERT's risk
+        assessment gives likelihood likely, detectable no, repairable no,
+        priority P9 and level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        FileInputStream open(String name) {
+            return AccessController.doPrivileged(
+                (PrivilegedExceptionAction<FileInputStream>) () -> new FileInputStream(name));
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        FileInputStream open(String name) {
+            String safe = validateReportName(name);
+            return AccessController.doPrivileged(
+                (PrivilegedExceptionAction<FileInputStream>)
+                    () -> new FileInputStream(REPORT_DIR + safe));
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [security, privileges, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/platform-security-sec/sec01-j/

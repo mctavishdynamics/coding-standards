@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoStaticContainerClasses:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.4.11
+    title: Do not create static container classes
+    statement:
+        Do not use classes that hold only static methods or properties as
+        namespaces. Export individual functions and constants instead.
+    rationale:
+        Modules already provide namespacing, and a container class adds an
+        unnecessary layer that cannot be tree-shaken well.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        export class MathUtils {
+          static clamp(v, lo, hi) {
+            return Math.min(Math.max(v, lo), hi);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        export function clamp(v, lo, hi) {
+          return Math.min(Math.max(v, lo), hi);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, modules]
+    source: https://google.github.io/styleguide/jsguide.html#5411-do-not-create-static-container-classes

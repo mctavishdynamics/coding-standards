@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaSwitchFallThrough:
+    standard: @{GoogleJava}
+    ruleId: 4.8.4.2
+    title: Comment fall-through in old-style switches
+    statement:
+        In an old-style switch, each statement group either ends abruptly
+        with break, continue, return or a throw, or ends with a comment
+        saying execution falls through to the next group.
+    rationale:
+        An explicit comment shows that falling through is intended and not a
+        forgotten break.
+    exceptions:
+        The last statement group needs no comment, and consecutive labels
+        with no statements between them need none. New-style switches never
+        fall through.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        switch (level) {
+          case WARN:
+            alertOnCall();
+          case INFO:
+            log(message);
+            break;
+          default:
+            ignore(message);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        switch (level) {
+          case WARN:
+            alertOnCall();
+            // fall through
+          case INFO:
+            log(message);
+            break;
+          default:
+            ignore(message);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [switch, control-flow, comments]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.4.2-switch-fall-through

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8MinimalTryClause:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-minimal-try
+    title: Keep try clauses as small as possible
+    statement:
+        Limit the try clause to the minimum code that can raise the
+        exception being handled, and put the rest in an else clause.
+    rationale:
+        A large try block can catch the same exception raised by unrelated
+        code and mask bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            return render(templates[name])
+        except KeyError:
+            return not_found(name)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        try:
+            template = templates[name]
+        except KeyError:
+            return not_found(name)
+        else:
+            return render(template)
+        \\\
+        ```
+    languages: [python]
+    tags: [exceptions, error-handling]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCorePer16:
+    standard: @{CppCoreGuidelines}
+    ruleId: Per.16
+    title: Use compact data structures
+    statement:
+        Prefer contiguous, compact representations such as std::vector or
+        arrays over node-based structures spread across the heap.
+    rationale:
+        Memory access time usually dominates performance, and compact data
+        fits better in caches.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::list<Particle> particles;   // one heap node per element
+        for (auto& p : particles) p.advance(dt);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<Particle> particles;   // elements stored next to each other
+        for (auto& p : particles) p.advance(dt);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [performance, data-structures, memory]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rper-compact

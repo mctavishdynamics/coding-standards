@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppErr59Cpp:
+    standard: @{CertCpp}
+    ruleId: ERR59-CPP
+    title: Do not throw an exception across execution boundaries
+    statement:
+        Do not let an exception cross an execution boundary, such as between
+        modules built by different compilers or between C++ and another
+        language. Catch it on the C++ side and report the error by other
+        means.
+    rationale:
+        Exception handling depends on runtime details that differ between
+        compilers and languages, so a foreign throw may not be caught or may
+        corrupt the program. CERT rates likelihood probable, detectable no,
+        repairable no, priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        extern "C" int plugin_run(const char* input) {
+            process(input);  // may throw into C code
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        extern "C" int plugin_run(const char* input) {
+            try {
+                process(input);
+                return 0;
+            } catch (...) {
+                return -1;
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [exceptions, interoperability, abi]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/exceptions-and-error-handling-err/err59-cpp

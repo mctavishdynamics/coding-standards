@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs42:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.42
+    title: Keep use of pointers simple and straightforward
+    statement:
+        Avoid pointer arithmetic and complicated pointer manipulation. Use
+        span, containers and range checked access instead.
+    rationale:
+        Complicated pointer manipulation is a major source of errors such as
+        out-of-range access.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void scale(double* data, int n, double k) {
+            for (double* p = data + n - 1; p >= data; --p)
+                *p *= k;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void scale(std::span<double> data, double k) {
+            for (double& x : data)
+                x *= k;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [pointers, bounds]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-ptr

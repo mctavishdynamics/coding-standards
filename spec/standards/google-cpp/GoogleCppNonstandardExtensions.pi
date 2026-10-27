@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppNonstandardExtensions:
+    standard: @{GoogleCpp}
+    ruleId: Nonstandard_Extensions
+    title: Do not use nonstandard C++ extensions
+    statement:
+        Do not use compiler extensions to C++, such as statement
+        expressions, variable-length arrays or vendor attributes, unless
+        otherwise specified.
+    rationale:
+        Extensions are not portable, not supported by all tools, and often
+        have subtly different semantics between compilers.
+    exceptions:
+        Portability wrappers built on extensions are allowed when they come
+        from a designated project-wide portability header.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Fill(int n) {
+          int buffer[n];  // Variable-length array extension.
+          __builtin_memset(buffer, 0, sizeof(buffer));
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Fill(int n) {
+          std::vector<int> buffer(n, 0);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [portability, language-version]
+    source: https://google.github.io/styleguide/cppguide.html#Nonstandard_Extensions

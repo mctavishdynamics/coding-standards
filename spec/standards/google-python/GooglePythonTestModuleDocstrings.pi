@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonTestModuleDocstrings:
+    standard: @{GooglePython}
+    ruleId: 3.8.2.1
+    title: Add test docstrings only when they say something new
+    statement:
+        Test modules, TestCase subclasses and test_ methods do not need
+        docstrings. Add one only when it gives extra information, such as
+        how to run the test or why the setup is unusual, and omit docstrings
+        that only repeat the name.
+    rationale:
+        Docstrings that restate the test name add noise without informing
+        the reader.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class ParserTest(unittest.TestCase):
+
+            def test_parse_empty(self):
+                """Tests parsing empty input."""
+                self.assertEqual(parse(''), [])
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class ParserTest(unittest.TestCase):
+
+            def test_parse_empty(self):
+                self.assertEqual(parse(''), [])
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, testing]
+    source: https://google.github.io/styleguide/pyguide.html#s3.8.2.1-test-modules

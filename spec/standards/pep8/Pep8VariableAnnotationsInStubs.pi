@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8VariableAnnotationsInStubs:
+    standard: @{Pep8}
+    ruleId: variable-annotations-stub-files
+    title: Use variable annotation syntax in stub files
+    statement:
+        In stub files, prefer the variable annotation syntax on all Python
+        versions, rather than type comments.
+    rationale:
+        Stub files are read only by type checkers, so the newer syntax works
+        regardless of the runtime version.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # settings.pyi
+        DEBUG = ...  # type: bool
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        # settings.pyi
+        DEBUG: bool
+        \\\
+        ```
+    languages: [python]
+    tags: [type-hints, stub-files]
+    source: https://peps.python.org/pep-0008/#variable-annotations

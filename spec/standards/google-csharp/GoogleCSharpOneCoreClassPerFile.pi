@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpOneCoreClassPerFile:
+    standard: @{GoogleCSharp}
+    ruleId: one-core-class-per-file
+    title: Prefer one core class per file
+    statement:
+        In general, put one core class in each file.
+    rationale:
+        Small files with one purpose are easier to find and review.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        // File: Shipping.cs
+        public class ShippingQuote { }
+        public class ShippingLabelPrinter { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        // File: ShippingQuote.cs
+        public class ShippingQuote { }
+
+        // File: ShippingLabelPrinter.cs
+        public class ShippingLabelPrinter { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [files, organization]
+    source: https://google.github.io/styleguide/csharpguide.html#files

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCImplementationComments:
+    standard: @{GoogleObjC}
+    ruleId: implementation-comments
+    title: Comment tricky code and separate trailing comments
+    statement:
+        Explain tricky, subtle or complicated code with comments, including
+        approaches that were tried and abandoned when that helps. Separate
+        an end-of-line comment from the code by at least two spaces, and
+        consider aligning comments on consecutive lines.
+    rationale:
+        Comments on non-obvious code save the next reader from rediscovering
+        the reasoning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        [self flushQueue]; // Flush first.
+        [self closeSocket];// Then close.
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        [self flushQueue];   // Flush first so pending writes are not lost.
+        [self closeSocket];  // Then close the connection.
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [comments, formatting]
+    source: https://google.github.io/styleguide/objcguide.html#implementation-comments

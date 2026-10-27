@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssCssQuotationMarks:
+    standard: @{GoogleHtmlCss}
+    ruleId: css-quotation-marks
+    title: Use single quotation marks in CSS
+    statement:
+        Quote attribute selectors and property values with single rather
+        than double quotation marks, and do not quote URI values inside
+        url().
+    rationale:
+        One quoting style keeps style sheets consistent.
+    exceptions:
+        If you need the charset at-rule, use double quotation marks there,
+        because single ones are not permitted.
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        .hero {
+          background: url("/img/hero.jpg");
+          font-family: "fira sans", sans-serif;
+        }
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        .hero {
+          background: url(/img/hero.jpg);
+          font-family: 'fira sans', sans-serif;
+        }
+        \\\
+        ```
+    languages: [css]
+    tags: [formatting, quotes]
+    source: https://google.github.io/styleguide/htmlcssguide.html#css-quotation-marks

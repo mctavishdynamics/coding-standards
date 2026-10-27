@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ImportingClasses:
+    standard: @{Pep8}
+    ruleId: imports-classes
+    title: Import the module when a class name would clash
+    statement:
+        Importing a class directly from its module is usually fine. If that
+        causes a local name clash, import the module and refer to the class
+        through it.
+    rationale:
+        Qualified names keep two classes with the same name apart.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        from billing.models import Order
+        from shipping.models import Order
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import billing.models
+        import shipping.models
+
+        invoice_order = billing.models.Order()
+        parcel_order = shipping.models.Order()
+        \\\
+        ```
+    languages: [python]
+    tags: [imports, naming]
+    source: https://peps.python.org/pep-0008/#imports

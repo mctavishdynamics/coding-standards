@@ -1,0 +1,47 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf10:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.10
+    title: Avoid dependencies on implicitly #included names
+    statement:
+        Include the header for every name you use, rather than relying on
+        another header happening to bring it in.
+    rationale:
+        Indirect inclusion is an implementation detail; when it changes,
+        code breaks in surprising ways, as when iostream exposes std::string
+        but not getline.
+    exceptions:
+        A header whose purpose is to collect a consistent set of other
+        headers may be relied on deliberately.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #include <iostream>
+
+        void greet()
+        {
+            std::string name;
+            std::getline(std::cin, name);   // may not compile
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #include <iostream>
+        #include <string>
+
+        void greet()
+        {
+            std::string name;
+            std::getline(std::cin, name);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, includes, dependencies]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-implicit

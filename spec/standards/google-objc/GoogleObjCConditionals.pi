@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCConditionals:
+    standard: @{GoogleObjC}
+    ruleId: conditionals
+    title: Format conditionals with spaces and braces
+    statement:
+        Put a space after if, while, for and switch and around comparison
+        operators. Braces may be dropped only when the body fits on the same
+        line; if there is an else, both clauses use braces, with else on the
+        closing brace line. Comment intentional switch fall-through unless
+        the cases are adjacent.
+    rationale:
+        A body on its own line without braces invites bugs when lines are
+        added.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        if(isReady)
+          [self start];
+        else [self wait];
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        if (isReady) {
+          [self start];
+        } else {
+          [self wait];
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [formatting, control-flow]
+    source: https://google.github.io/styleguide/objcguide.html#conditionals

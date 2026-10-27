@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptNonStandardFeatures:
+    standard: @{GoogleTypeScript}
+    ruleId: non-standard-features
+    title: Use only standard ECMAScript and Web Platform features
+    statement:
+        Do not use deprecated or removed features, unfinished TC39 or WHATWG
+        proposals, or non-standard language extensions from transpilers. Use
+        only what the current ECMA-262 specification and completed web
+        standards define.
+    rationale:
+        Non-standard features may change, disappear or work only in some
+        environments.
+    exceptions:
+        Projects that target a specific runtime, such as Node.js, Electron
+        or Chrome extensions, may use that runtime's APIs. Be careful with
+        APIs implemented only in some browsers.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const caller = arguments.callee.caller;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function caller(trace: string[]) {
+          return trace.at(-2);
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [portability, standards]
+    source: https://google.github.io/styleguide/tsguide.html#non-standard-features

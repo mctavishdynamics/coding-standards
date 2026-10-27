@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaVna04J:
+    standard: @{CertJava}
+    ruleId: VNA04-J
+    title: Ensure that calls to chained methods are atomic
+    statement:
+        Lock around a whole chain of method calls on a shared object, or
+        avoid chaining on shared mutable objects, for example by building
+        each object in one thread.
+    rationale:
+        Each call in a chain may be atomic, but the chain is not, so another
+        thread can interleave and leave the object with mixed values. CERT
+        rates likelihood probable, detectable yes, repairable no, priority
+        P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        sharedBuilder.setName(name).setAge(age);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        synchronized (sharedBuilder) {
+            sharedBuilder.setName(name).setAge(age);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, atomicity]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/visibility-and-atomicity-vna/vna04-j/

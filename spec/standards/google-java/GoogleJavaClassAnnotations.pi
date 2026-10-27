@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaClassAnnotations:
+    standard: @{GoogleJava}
+    ruleId: 4.8.5.2
+    title: Put class, package and module annotations one per line
+    statement:
+        Place annotations on a class, package or module declaration right
+        after its documentation, one annotation per line. These breaks are
+        not line-wrapping, so the indent does not increase.
+    rationale:
+        One annotation per line keeps declarations scannable and makes
+        adding or removing an annotation a one-line diff.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        /** Caches exchange rates. */
+        @ThreadSafe @Singleton public final class RateCache {}
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        /** Caches exchange rates. */
+        @ThreadSafe
+        @Singleton
+        public final class RateCache {}
+        \\\
+        ```
+    languages: [java]
+    tags: [annotations, formatting]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.5.2-class-annotation-style

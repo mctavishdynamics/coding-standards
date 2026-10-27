@@ -1,0 +1,32 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF23:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.23
+    title: Use a not_null<T> to indicate that null is not a valid value
+    statement:
+        Wrap pointer parameters and return values that must never be null in
+        not_null.
+    rationale:
+        It states that the caller must ensure a non-null argument, or that
+        callers need not check a result for nullptr. It has no run-time
+        overhead and also works with smart pointers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int length(const char* text);   // must text be non-null?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int length(gsl::not_null<const char*> text);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, pointers, null-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-nullptr

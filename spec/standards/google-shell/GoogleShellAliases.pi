@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellAliases:
+    standard: @{GoogleShell}
+    ruleId: aliases
+    title: Use functions instead of aliases in scripts
+    statement:
+        Do not define aliases in scripts. Write a shell function instead.
+    rationale:
+        Aliases need careful quoting and escaping, and mistakes are hard to
+        see. Functions do everything aliases do and more.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        alias stamp="echo build_${RANDOM}"
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        stamp() {
+          echo "build_${RANDOM}"
+        }
+        \\\
+        ```
+    languages: [shell]
+    tags: [functions, error-prone]
+    source: https://google.github.io/styleguide/shellguide.html#aliases

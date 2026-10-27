@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs48:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.48
+    title: Avoid casts
+    statement:
+        Write code that does not need casts. A cast should be rare and its
+        need should be a signal to reconsider the design.
+    rationale:
+        Casts are a well-known source of errors, defeat type checking and
+        make some optimizations unreliable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void on_event(void* data) {
+            auto* click = (ClickEvent*)data;
+            handle(click->x, click->y);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void on_event(const ClickEvent& click) {
+            handle(click.x, click.y);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [casts, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-casts

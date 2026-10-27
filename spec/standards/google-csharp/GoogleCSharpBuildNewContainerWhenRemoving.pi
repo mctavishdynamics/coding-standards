@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpBuildNewContainerWhenRemoving:
+    standard: @{GoogleCSharp}
+    ruleId: build-new-container-when-removing
+    title: Build a new container when removing during other work
+    statement:
+        When the loop must do other work as well, copy the items to keep
+        into a new container and replace the original with it after the
+        loop.
+    rationale:
+        C# does not allow removing items from a collection during iteration.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```csharp
+        \\\
+        var kept = new List<Job>();
+        foreach (var job in jobs) {
+          if (job.IsDone) {
+            _archive.Store(job);
+          } else {
+            kept.Add(job);
+          }
+        }
+        jobs = kept;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [collections, loops]
+    source: https://google.github.io/styleguide/csharpguide.html#removing-from-containers-while-iterating

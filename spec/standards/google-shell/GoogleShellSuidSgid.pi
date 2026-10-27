@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellSuidSgid:
+    standard: @{GoogleShell}
+    ruleId: suidsgid
+    title: Never set SUID or SGID on shell scripts
+    statement:
+        Do not give shell scripts the SUID or SGID bit. Use sudo when
+        elevated access is needed.
+    rationale:
+        Shell has too many security pitfalls to be secured well enough for
+        SUID or SGID, and some platforms still allow it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        chmod u+s /usr/local/bin/rotate_logs.sh
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        sudo /usr/local/bin/rotate_logs.sh
+        \\\
+        ```
+    languages: [shell]
+    tags: [security, permissions]
+    source: https://google.github.io/styleguide/shellguide.html#suidsgid

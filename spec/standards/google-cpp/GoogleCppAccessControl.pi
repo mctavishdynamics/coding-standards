@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppAccessControl:
+    standard: @{GoogleCpp}
+    ruleId: Access_Control
+    title: Make class data members private
+    statement:
+        Make a class's data members private unless they are constants, and
+        provide accessors where needed.
+    rationale:
+        Private data makes it much easier to reason about a class's
+        invariants, at the cost of a little accessor boilerplate.
+    exceptions:
+        Data members of a Google Test fixture class defined in a .cc file
+        may be protected.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Counter {
+         public:
+          int count;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Counter {
+         public:
+          int count() const { return count_; }
+          void Increment() { ++count_; }
+
+         private:
+          int count_ = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, encapsulation]
+    source: https://google.github.io/styleguide/cppguide.html#Access_Control

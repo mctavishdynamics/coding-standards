@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptParameterProperties:
+    standard: @{GoogleTypeScript}
+    ruleId: parameter-properties
+    title: Use parameter properties instead of plumbing constructor arguments
+    statement:
+        When a constructor parameter is simply stored in a field, declare it
+        as a parameter property. Document it with an @param tag if needed.
+    rationale:
+        Parameter properties remove a field declaration and an assignment
+        that add nothing but length.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Mailer {
+          private readonly transport: Transport;
+
+          constructor(transport: Transport) {
+            this.transport = transport;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Mailer {
+          constructor(private readonly transport: Transport) {}
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, constructors]
+    source: https://google.github.io/styleguide/tsguide.html#parameter-properties

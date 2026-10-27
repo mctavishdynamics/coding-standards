@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum13J:
+    standard: @{CertJava}
+    ruleId: NUM13-J
+    title: Avoid loss of precision when converting primitive integers to floating-point
+    statement:
+        Range-check int and long values before converting them to float, or
+        long values to double, or keep them as integers or BigDecimal when
+        exactness matters.
+    rationale:
+        These widening conversions silently round away low-order bits, so
+        large integers change value. CERT rates likelihood unlikely,
+        detectable no, repairable no, priority P1, level L3.
+    exceptions:
+        The conversion is permitted without a range check when numerical
+        analysis shows the loss of precision is acceptable.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        long id = 9007199254740993L;
+        double key = id;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        long id = 9007199254740993L;
+        if (Math.abs(id) > (1L << 53)) {
+            throw new ArithmeticException("Value not exactly representable");
+        }
+        double key = id;
+        \\\
+        ```
+    languages: [java]
+    tags: [conversion, floating-point, precision]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/numeric-types-and-operations-num/num13-j/

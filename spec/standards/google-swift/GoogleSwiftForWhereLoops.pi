@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftForWhereLoops:
+    standard: @{GoogleSwift}
+    ruleId: for-where-loops
+    title: Use for-where instead of a loop wrapping one if
+    statement:
+        When the whole body of a for loop would be a single if testing the
+        element, put the test in a where clause.
+    rationale:
+        It removes a level of nesting and states the filter up front.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        for file in files {
+          if file.isModified {
+            save(file)
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        for file in files where file.isModified {
+          save(file)
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [control-flow, loops]
+    source: https://google.github.io/swift/#for-where-loops

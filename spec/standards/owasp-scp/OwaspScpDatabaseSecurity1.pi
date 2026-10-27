@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpDatabaseSecurity1:
+    standard: @{OwaspScp}
+    ruleId: database-security-1
+    title: Use strongly typed parameterized queries
+    statement:
+        Pass values to the database through strongly typed parameterized
+        queries instead of building query strings from data.
+    rationale:
+        Parameters keep data separate from the query syntax, which prevents
+        SQL injection.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def find_user(cursor, email):
+            cursor.execute(f"SELECT id, name FROM users WHERE email = '{email}'")
+            return cursor.fetchone()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def find_user(cursor, email):
+            cursor.execute("SELECT id, name FROM users WHERE email = %s", (email,))
+            return cursor.fetchone()
+        \\\
+        ```
+    languages: [any]
+    tags: [database, sql-injection]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#database-security

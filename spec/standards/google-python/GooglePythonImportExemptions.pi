@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonImportExemptions:
+    standard: @{GooglePython}
+    ruleId: 2.2.4.1
+    title: Import typing symbols directly
+    statement:
+        Names from the typing, collections.abc and typing_extensions
+        modules, used for static analysis and type checking, are exempt from
+        the import-modules-only rule and may be imported as individual
+        symbols.
+    rationale:
+        These names appear in annotations constantly, and qualifying each
+        one with its module makes signatures long without making them
+        clearer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import collections.abc
+        import typing
+
+
+        def first(items: collections.abc.Sequence[str]) -> typing.Optional[str]:
+            return items[0] if items else None
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from collections.abc import Sequence
+
+
+        def first(items: Sequence[str]) -> str | None:
+            return items[0] if items else None
+        \\\
+        ```
+    languages: [python]
+    tags: [imports, typing]
+    source: https://google.github.io/styleguide/pyguide.html#imports-exemptions

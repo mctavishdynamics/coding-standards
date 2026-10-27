@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaThi05J:
+    standard: @{CertJava}
+    ruleId: THI05-J
+    title: Do not use Thread.stop() to terminate threads
+    statement:
+        Stop a thread by asking it to finish, with a volatile flag or an
+        interrupt that the thread checks, not with Thread.stop().
+    rationale:
+        Thread.stop() releases every lock the thread holds at an arbitrary
+        point, which can leave shared objects in an inconsistent state for
+        other threads. CERT's risk assessment gives likelihood probable,
+        detectable yes, repairable no, priority P4 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        Thread worker = new Thread(this::process);
+        worker.start();
+        // ...
+        worker.stop();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Thread worker = new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) process();
+        });
+        worker.start();
+        // ...
+        worker.interrupt();
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, threads, deprecated-api]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-apis-thi/thi05-j/

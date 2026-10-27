@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp9:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.9
+    title: Use tools to validate concurrent code whenever feasible
+    statement:
+        Check concurrent code with tools in addition to review and testing,
+        for example static thread-safety annotations in the compiler and
+        dynamic race detectors such as ThreadSanitizer run over
+        multi-threaded tests.
+    rationale:
+        Concurrency bugs are exceptionally hard to find with ordinary checks
+        and testing, and they can cause memory corruption, deadlocks and
+        security holes.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```cpp
+        \\\
+        class Account {
+        public:
+            void deposit(int amount)
+            {
+                std::lock_guard lock(mutex_);
+                balance_ += amount;
+            }
+        private:
+            std::mutex mutex_;
+            int balance_ __attribute__((guarded_by(mutex_))) = 0;   // checked by clang -Wthread-safety
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, tooling, testing]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-tools

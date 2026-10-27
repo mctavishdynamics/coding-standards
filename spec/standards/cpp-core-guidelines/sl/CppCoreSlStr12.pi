@@ -1,0 +1,32 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlStr12:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.str.12
+    title: Use the s suffix for string literals meant to be standard-library strings
+    statement:
+        When a literal is meant to be a std::string, write it with the s
+        suffix so deduction produces std::string rather than a char pointer.
+    rationale:
+        Expressing the idea directly avoids mistakes, such as a deduced pair
+        holding a C string when a std::string was intended.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto entry = std::make_pair("timeout", 30);   // pair<const char*, int>
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        using namespace std::string_literals;
+        auto entry = std::make_pair("timeout"s, 30);  // pair<std::string, int>
+        \\\
+        ```
+    languages: [cpp]
+    tags: [strings, literals, type-deduction]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rstr-s

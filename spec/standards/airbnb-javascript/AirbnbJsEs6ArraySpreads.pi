@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsEs6ArraySpreads:
+    standard: @{AirbnbJavaScript}
+    ruleId: 4.3
+    title: Copy arrays with spread
+    statement:
+        Copy an array with the spread syntax instead of looping over it.
+    rationale:
+        The spread copy is shorter and leaves no room for off-by-one
+        mistakes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const copy = [];
+        for (let i = 0; i < items.length; i += 1) {
+          copy[i] = items[i];
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const copy = [...items];
+        \\\
+        ```
+    languages: [javascript]
+    tags: [arrays, es6]
+    source: https://github.com/airbnb/javascript#es6-array-spreads

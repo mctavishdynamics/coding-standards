@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCStructPrivate:
+    standard: @{RustApiGuidelines}
+    ruleId: C-STRUCT-PRIVATE
+    title: Keep struct fields private
+    statement:
+        Make fields private and expose them through methods unless the
+        struct is a passive, C-style bundle of data.
+    rationale:
+        A public field fixes the representation forever and prevents the
+        type from validating its contents or keeping invariants.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub struct Percentage {
+            pub value: f32,
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub struct Percentage {
+            value: f32,
+        }
+
+        impl Percentage {
+            pub fn value(&self) -> f32 { self.value }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [encapsulation, compatibility]
+    source: https://rust-lang.github.io/api-guidelines/future-proofing.html#c-struct-private

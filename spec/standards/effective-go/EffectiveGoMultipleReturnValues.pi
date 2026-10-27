@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoMultipleReturnValues:
+    standard: @{EffectiveGo}
+    ruleId: multiple-returns
+    title:
+        Return multiple values instead of in-band codes or out parameters
+    statement:
+        Use multiple results to return a value together with an error, or
+        with other outputs, instead of signalling errors with special values
+        such as -1 or writing results through pointer arguments.
+    rationale:
+        Each result has a clear meaning, so a partial write can report both
+        its count and its error, and callers need no extra pointers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // readInt returns -1 on error and stores the next position in *next.
+        func readInt(b []byte, i int, next *int) int
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // readInt returns the number at b[i:] and the position after it.
+        func readInt(b []byte, i int) (value, next int)
+        \\\
+        ```
+    languages: [go]
+    tags: [functions, error-handling, api-design]
+    source: https://go.dev/doc/effective_go#multiple-returns

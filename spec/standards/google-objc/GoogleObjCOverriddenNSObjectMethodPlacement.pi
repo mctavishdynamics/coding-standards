@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCOverriddenNSObjectMethodPlacement:
+    standard: @{GoogleObjC}
+    ruleId: overridden-nsobject-method-placement
+    title: Put overridden NSObject methods first
+    statement:
+        Put overridden NSObject methods at the top of an @implementation.
+        Group all init methods together first, followed by methods such as
+        dealloc, copyWithZone, description, isEqual and hash.
+    rationale:
+        Readers know where to look for lifecycle and identity methods.
+    exceptions:
+        Convenience class factory methods may come before the NSObject
+        methods.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @implementation ABCTag
+        - (void)applyToView:(UIView *)view { ... }
+        - (instancetype)initWithName:(NSString *)name { ... }
+        - (NSUInteger)hash { ... }
+        @end
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @implementation ABCTag
+        - (instancetype)initWithName:(NSString *)name { ... }
+        - (NSUInteger)hash { ... }
+        - (void)applyToView:(UIView *)view { ... }
+        @end
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [ordering, classes]
+    source: https://google.github.io/styleguide/objcguide.html#overridden-nsobject-method-placement

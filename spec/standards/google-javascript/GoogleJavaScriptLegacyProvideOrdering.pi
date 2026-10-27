@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptLegacyProvideOrdering:
+    standard: @{GoogleJavaScript}
+    ruleId: 9.4.4.1
+    title: Group, sort and never wrap goog.provide and goog.require lines
+    statement:
+        Use goog.module for new files. In existing goog.provide files, put
+        all goog.provide lines first and goog.require lines second,
+        separated by one blank line, sort each group alphabetically with
+        uppercase first, and never wrap these lines.
+    rationale:
+        Grouped, sorted, single-line dependencies are easy to scan and
+        maintain with tools.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        goog.require('goog.dom');
+        goog.provide('app.Toolbar');
+        goog.require('goog.array');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        goog.provide('app.Toolbar');
+
+        goog.require('goog.array');
+        goog.require('goog.dom');
+        \\\
+        ```
+    languages: [javascript]
+    tags: [legacy, closure, dependencies]
+    source: https://google.github.io/styleguide/jsguide.html#9441-summary

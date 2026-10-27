@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoGodocFormatting:
+    standard: @{GoogleGo}
+    ruleId: best-practices/godoc-formatting
+    title: Use Godoc formatting conventions in comments
+    statement:
+        Separate paragraphs with a blank comment line, indent lines by two
+        extra spaces to show code, lists or tables verbatim, and write
+        headings as a single capitalised unpunctuated line followed by a
+        paragraph. Prefer runnable examples in test files over long code in
+        comments.
+    rationale:
+        Godoc renders comments using these rules, so following them makes
+        the documentation display as intended.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Load reads the config file.
+        // Supported keys:
+        // "include" pulls in another file.
+        // "env" is filled from the environment.
+        func Load(path string) (*Config, error)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Load reads the config file.
+        //
+        // Load treats these keys specially:
+        //   "include" pulls in another file.
+        //   "env" is filled from the environment.
+        func Load(path string) (*Config, error)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, documentation, comments, formatting]
+    source: https://google.github.io/styleguide/go/best-practices#godoc-formatting

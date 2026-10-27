@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon31C:
+    standard: @{CertC}
+    ruleId: CON31-C
+    title: Do not destroy a mutex while it is locked
+    statement:
+        Call mtx_destroy only when no thread holds the mutex or is waiting
+        for it, for example after joining every thread that uses it.
+    rationale:
+        Destroying a mutex that is in use is undefined behavior and leaves
+        the data it guarded unprotected. CERT rates likelihood probable,
+        detectable no, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        mtx_init(&lock, mtx_plain);
+        for (size_t i = 0; i < NTHREADS; i++) {
+            thrd_create(&tid[i], worker, NULL);
+        }
+        mtx_destroy(&lock);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        mtx_init(&lock, mtx_plain);
+        for (size_t i = 0; i < NTHREADS; i++) {
+            thrd_create(&tid[i], worker, NULL);
+        }
+        for (size_t i = 0; i < NTHREADS; i++) {
+            thrd_join(tid[i], NULL);
+        }
+        mtx_destroy(&lock);
+        \\\
+        ```
+    languages: [c]
+    tags: [concurrency, locking]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/concurrency-con/con31-c

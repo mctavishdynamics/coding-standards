@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs60:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.60
+    title: Avoid new and delete outside resource management functions
+    statement:
+        Keep new and delete inside the implementation of resource handles
+        such as containers and smart pointers, not in application code.
+    rationale:
+        Managing resources directly in application code is tedious and
+        error-prone.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void load_level() {
+            Level* level = new Level("castle");
+            play(*level);
+            delete level;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void load_level() {
+            auto level = std::make_unique<Level>("castle");
+            play(*level);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, allocation]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-new

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoErrorLogging:
+    standard: @{GoogleGo}
+    ruleId: best-practices/error-logging
+    title: Log errors carefully and without duplication
+    statement:
+        Make log messages explain what went wrong with useful detail. Do not
+        log an error you also return; let the caller decide. Keep PII out of
+        logs, and use the error level sparingly, for actionable messages.
+    rationale:
+        Duplicate logging causes log spam, error-level logs are expensive,
+        and many log sinks are unsuitable for sensitive data.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if err := charge(card); err != nil {
+            log.Errorf("charge failed for card %s: %v", card.Number, err)
+            return err
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if err := charge(card); err != nil {
+            return fmt.Errorf("charging card ending %s: %w", card.Last4, err)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, errors, logging]
+    source: https://google.github.io/styleguide/go/best-practices#error-logging

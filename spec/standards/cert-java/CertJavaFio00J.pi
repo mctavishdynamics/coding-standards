@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio00J:
+    standard: @{CertJava}
+    ruleId: FIO00-J
+    title: Do not operate on files in shared directories
+    statement:
+        Create, open and delete files only in secure directories, ones where
+        only the user and trusted administrators can create, rename or
+        remove entries.
+    rationale:
+        In a shared directory an attacker can swap a file for a link, a
+        device file or another file between the program's check and its use,
+        and so read or change data the attacker should not reach. CERT's
+        risk assessment gives likelihood unlikely, detectable no, repairable
+        no, priority P2 and level L3.
+    exceptions:
+        Programs on single-user systems, or on systems without shared
+        directories or file system vulnerabilities, need not check that
+        files live in secure directories.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        Path report = Paths.get("/tmp/report.txt");
+        Files.write(report, data);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Path dir = Paths.get(System.getProperty("user.home"), ".app");
+        if (!isSecureDirectory(dir)) {
+            throw new IOException("Insecure directory " + dir);
+        }
+        Files.write(dir.resolve("report.txt"), data);
+        \\\
+        ```
+    languages: [java]
+    tags: [file-io, file-system, race-condition]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio00-j/

@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcGoroutineLifetimes:
+    standard: @{GoCodeReviewComments}
+    ruleId: goroutine-lifetimes
+    title: Make it clear when goroutines exit
+    statement:
+        When you start a goroutine, make it clear when or whether it exits.
+        Keep concurrent code simple enough that lifetimes are obvious, and
+        if that is not possible, document when and why each goroutine exits.
+    rationale:
+        A goroutine blocked on a channel is never collected, so it leaks.
+        Goroutines left running after they are needed can panic on closed
+        channels, race on inputs and use unbounded memory.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func watch(events <-chan Event) {
+            go func() {
+                for e := range events {
+                    handle(e)
+                }
+            }()
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // watch handles events until ctx is cancelled or events is closed.
+        func watch(ctx context.Context, events <-chan Event) {
+            go func() {
+                for {
+                    select {
+                    case <-ctx.Done():
+                        return
+                    case e, ok := <-events:
+                        if !ok {
+                            return
+                        }
+                        handle(e)
+                    }
+                }
+            }()
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, goroutines, resource-management]
+    source: https://go.dev/wiki/CodeReviewComments#goroutine-lifetimes

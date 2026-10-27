@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc11J:
+    standard: @{CertJava}
+    ruleId: MSC11-J
+    title: Do not let session information leak within a servlet
+    statement:
+        Do not keep per-client data in servlet fields. Store it in the
+        HttpSession or in local variables.
+    rationale:
+        A servlet is a single shared instance used by many threads, so
+        fields can race and leak one client's data to another. CERT's risk
+        assessment gives likelihood likely, detectable no, repairable no,
+        priority P6 and level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        public class ProfileServlet extends HttpServlet {
+            private String email;
+
+            protected void doPost(HttpServletRequest req, HttpServletResponse res) {
+                email = req.getParameter("email");
+                show(res, email);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class ProfileServlet extends HttpServlet {
+            protected void doPost(HttpServletRequest req, HttpServletResponse res) {
+                String email = req.getParameter("email");
+                req.getSession().setAttribute("email", email);
+                show(res, email);
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [servlets, web, concurrency]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/miscellaneous-msc/msc11-j/

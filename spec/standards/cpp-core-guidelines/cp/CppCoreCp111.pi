@@ -1,0 +1,50 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp111:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.111
+    title: Use a conventional pattern if you really need double-checked locking
+    statement:
+        When a rare, costly action really needs double-checked locking,
+        follow the standard pattern exactly. Make the flag a std::atomic,
+        check it, lock, check it again, then act.
+    rationale:
+        Double-checked locking is easy to get wrong; with a volatile or
+        plain flag the first check is a data race.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        volatile bool rebuild_needed = true;
+        std::mutex rebuild_mutex;
+
+        void maybe_rebuild()
+        {
+            if (rebuild_needed) {
+                std::lock_guard lock(rebuild_mutex);
+                if (rebuild_needed) { rebuild(); rebuild_needed = false; }
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::atomic<bool> rebuild_needed{true};
+        std::mutex rebuild_mutex;
+
+        void maybe_rebuild()
+        {
+            if (rebuild_needed) {
+                std::lock_guard lock(rebuild_mutex);
+                if (rebuild_needed) { rebuild(); rebuild_needed = false; }
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, locking, atomics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-double-pattern

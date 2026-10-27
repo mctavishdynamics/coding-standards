@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppSwitchStatements:
+    standard: @{GoogleCpp}
+    ruleId: Switch_Statements
+    title: Give non-enum switches a default and annotate fall-through
+    statement:
+        A switch that is not on an enumerated value must have a default
+        case, and an impossible default should be treated as an error. Mark
+        every fall-through between case labels with the fallthrough
+        attribute.
+    rationale:
+        A default case catches unexpected values, and the attribute shows
+        that a fall-through is deliberate rather than a missing break.
+    exceptions:
+        Consecutive case labels with no code between them need no
+        annotation.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        switch (code) {
+          case 1:
+            Log();
+          case 2:
+            Retry();
+            break;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        switch (code) {
+          case 1:
+            Log();
+            [[fallthrough]];
+          case 2:
+            Retry();
+            break;
+          default:
+            LOG(FATAL) << "Unexpected code " << code;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [control-flow, switch]
+    source: https://google.github.io/styleguide/cppguide.html#Switch_Statements

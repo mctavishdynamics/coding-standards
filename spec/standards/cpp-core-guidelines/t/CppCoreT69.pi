@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT69:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.69
+    title: Inside a template, don't make an unqualified non-member function call unless you intend it to be a customization point
+    statement:
+        In a template, call your own helpers by a name qualified with their
+        namespace, such as a detail namespace. Leave a call unqualified only
+        when you want users to customize it through their own namespace.
+    rationale:
+        An unqualified call with a dependent argument is found by
+        argument-dependent lookup, so any function of that name in the
+        argument's namespace can be picked, including unconstrained
+        templates.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+        std::string describe(const T& t)
+        {
+            return format_value(t);   // any format_value near T may be chosen
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace detail {
+            template<typename T> std::string format_value(const T&);
+        }
+
+        template<typename T>
+        std::string describe(const T& t)
+        {
+            return detail::format_value(t);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, name-lookup, customization]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-customization

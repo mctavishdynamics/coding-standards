@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC10:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.10
+    title: Prefer concrete types over class hierarchies
+    statement:
+        Default to a self-contained concrete type. Introduce a class
+        hierarchy only when there is a real use case for runtime
+        polymorphism.
+    rationale:
+        Concrete types are simpler to design, implement and reason about,
+        and they are smaller and faster because they avoid indirection and
+        heap allocation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Shape { public: virtual double area() const = 0; virtual ~Shape() = default; };
+        class Square : public Shape { /* only shape ever used */ };
+
+        std::vector<std::unique_ptr<Shape>> squares;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Square {
+        public:
+            explicit Square(double side) : side_(side) {}
+            double area() const { return side_ * side_; }
+        private:
+            double side_;
+        };
+
+        std::vector<Square> squares;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, design, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-concrete

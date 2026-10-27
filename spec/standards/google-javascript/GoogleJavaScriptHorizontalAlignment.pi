@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptHorizontalAlignment:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.6.3
+    title: Avoid horizontal alignment
+    statement:
+        Do not add extra spaces to line tokens up under tokens on other
+        lines. It is permitted but discouraged, and existing alignment need
+        not be maintained.
+    rationale:
+        Alignment looks tidy, but a one-line change can force reformatting
+        of neighbouring lines, adding noise to history and merge conflicts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const defaults = {
+          host:    'localhost',
+          port:    8080,
+          timeout: 30,
+        };
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const defaults = {
+          host: 'localhost',
+          port: 8080,
+          timeout: 30,
+        };
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, whitespace]
+    source: https://google.github.io/styleguide/jsguide.html#463-horizontal-alignment-discouraged

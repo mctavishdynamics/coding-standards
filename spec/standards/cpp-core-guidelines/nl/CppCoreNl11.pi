@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreNl11:
+    standard: @{CppCoreGuidelines}
+    ruleId: NL.11
+    title: Make literals readable
+    statement:
+        Use digit separators for long numbers and literal suffixes where
+        they clarify the type or unit.
+    rationale:
+        Long digit strings are easy to mistype and hard to read, and a
+        suffix states whether a literal is a std::string or a duration.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        long long bytes = 10737418240;
+        auto mask = 0b1111000011110000;
+        auto delay = 250;          // milliseconds?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        long long bytes = 10'737'418'240;
+        auto mask = 0b1111'0000'1111'0000;
+        auto delay = 250ms;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [literals, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rl-literals

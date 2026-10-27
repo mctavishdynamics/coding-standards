@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsCoercionBitwise:
+    standard: @{AirbnbJavaScript}
+    ruleId: 22.5
+    title: Be careful with bit shift operations
+    statement:
+        Remember that bit shifts always produce a 32-bit integer although
+        numbers are 64-bit, so shifting a value above 2,147,483,647 gives a
+        wrong result.
+    rationale:
+        Bit shifting on large integers silently overflows and leads to
+        unexpected behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const bytes = 3000000000 >> 0; // -1294967296
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const bytes = Math.trunc(3000000000); // 3000000000
+        \\\
+        ```
+    languages: [javascript]
+    tags: [coercion, numbers, correctness]
+    source: https://github.com/airbnb/javascript#coercion--bitwise

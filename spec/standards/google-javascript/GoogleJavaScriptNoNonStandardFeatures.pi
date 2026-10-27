@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoNonStandardFeatures:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.11.4
+    title: Use only standard language features
+    statement:
+        Use only features defined in the current ECMA-262 or WHATWG
+        standards. Do not use removed features, unfinished proposals,
+        browser-specific extensions or transpiler-only syntax.
+    rationale:
+        Non-standard features break across environments and tools and may
+        change or disappear.
+    exceptions:
+        Projects targeting a specific platform, such as Node.js or Chrome
+        extensions, may use that platform's APIs.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const cache = new WeakMap();
+        cache.clear();
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        let cache = new WeakMap();
+        cache = new WeakMap();
+        \\\
+        ```
+    languages: [javascript]
+    tags: [disallowed, portability]
+    source: https://google.github.io/styleguide/jsguide.html#5114-non-standard-features

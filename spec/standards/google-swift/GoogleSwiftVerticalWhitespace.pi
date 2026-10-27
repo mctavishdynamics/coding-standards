@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftVerticalWhitespace:
+    standard: @{GoogleSwift}
+    ruleId: vertical-whitespace
+    title: Put one blank line between type members
+    statement:
+        Put a single blank line between consecutive members of a type, and
+        between statements only to separate logical sections. Blank lines
+        are optional between one-line stored properties or enum cases and
+        between closely related properties.
+    rationale:
+        Blank lines show where one member or idea ends and the next begins.
+    exceptions:
+        Several consecutive blank lines are allowed but never required; if
+        used, use them consistently.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        struct Timer {
+          var interval: TimeInterval
+          func start() {
+            // ...
+          }
+          func stop() {
+            // ...
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        struct Timer {
+          var interval: TimeInterval
+
+          func start() {
+            // ...
+          }
+
+          func stop() {
+            // ...
+          }
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, whitespace]
+    source: https://google.github.io/swift/#vertical-whitespace

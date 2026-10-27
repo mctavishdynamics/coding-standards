@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppMsc51Cpp:
+    standard: @{CertCpp}
+    ruleId: MSC51-CPP
+    title: Ensure your random number generator is properly seeded
+    statement:
+        Seed pseudorandom number engines from a source of real entropy such
+        as std::random_device. Do not rely on the default seed or a constant
+        or predictable value such as the current time.
+    rationale:
+        An unseeded or predictably seeded engine yields the same or a
+        guessable sequence, which attackers can reproduce. CERT rates
+        likelihood likely, detectable yes, repairable yes, priority P18,
+        level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        std::string session_token() {
+            std::mt19937 engine;  // default seed: same sequence every run
+            return std::to_string(engine());
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string session_token() {
+            std::random_device device;
+            std::mt19937 engine(device());
+            return std::to_string(engine());
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [random-numbers, security]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/miscellaneous-msc/msc51-cpp

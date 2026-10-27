@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptAnyUnknown:
+    standard: @{GoogleTypeScript}
+    ruleId: any-unknown
+    title: Use unknown instead of any for values of unknown type
+    statement:
+        When a value's type is genuinely unknown, type it as unknown and
+        narrow it with a type guard before use.
+    rationale:
+        unknown accepts any value but forbids unchecked property access, so
+        it is much safer than any.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const payload: any = JSON.parse(body);
+        payload.user.name.trim();
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const payload: unknown = JSON.parse(body);
+        if (isUserPayload(payload)) {
+          payload.user.name.trim();
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, any, type-safety]
+    source: https://google.github.io/styleguide/tsguide.html#any-unknown

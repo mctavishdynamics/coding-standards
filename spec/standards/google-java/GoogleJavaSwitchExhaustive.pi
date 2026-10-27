@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaSwitchExhaustive:
+    standard: @{GoogleJava}
+    ruleId: 4.8.4.3
+    title: Make every switch exhaustive
+    statement:
+        Every switch must cover every possible value, even where Java does
+        not require it. Add a default label, even an empty one, when the
+        labels do not otherwise cover all cases.
+    rationale:
+        An exhaustive switch makes the handling of unexpected values a
+        visible decision instead of a silent gap.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        switch (httpStatus) {
+          case 200:
+            handleOk();
+            break;
+          case 404:
+            handleMissing();
+            break;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        switch (httpStatus) {
+          case 200:
+            handleOk();
+            break;
+          case 404:
+            handleMissing();
+            break;
+          default:
+            handleUnexpected(httpStatus);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [switch, control-flow]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.4.3-switch-default

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsClassesMethodsUseThis:
+    standard: @{AirbnbJavaScript}
+    ruleId: 9.7
+    title: Make methods that do not use this static
+    statement:
+        A class method should use this, or be made a static method. An
+        instance method should behave differently depending on the instance
+        it is called on. Enforced by the ESLint rule class-methods-use-this.
+    rationale:
+        A method that ignores its instance is a plain function and should
+        not need an instance to call it.
+    exceptions:
+        An external library or framework may require particular non-static
+        methods.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Temperature {
+          toFahrenheit(celsius) {
+            return celsius * 1.8 + 32;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Temperature {
+          static toFahrenheit(celsius) {
+            return celsius * 1.8 + 32;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, design]
+    source: https://github.com/airbnb/javascript#classes--methods-use-this

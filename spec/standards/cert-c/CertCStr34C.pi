@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCStr34C:
+    standard: @{CertC}
+    ruleId: STR34-C
+    title:
+        Cast characters to unsigned char before converting to larger integer
+        sizes
+    statement:
+        Convert character data to unsigned char before assigning it to an
+        int or another wider integer type, when char is signed and the data
+        may hold values above 127.
+    rationale:
+        A signed char above 127 sign-extends to a negative int, which then
+        breaks comparisons, table lookups and checks against EOF. CERT rates
+        likelihood probable, detectable yes, repairable no, priority P8,
+        level L2.
+    exceptions:
+        Characters used to hold small integer values for arithmetic rather
+        than character data need not follow this rule.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int checksum(const char *s) {
+            int sum = 0;
+            while (*s) {
+                sum += *s++;
+            }
+            return sum;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int checksum(const char *s) {
+            int sum = 0;
+            while (*s) {
+                sum += (unsigned char)*s++;
+            }
+            return sum;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [strings, characters, conversions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/characters-and-strings-str/str34-c

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaModifierOrder:
+    standard: @{GoogleJava}
+    ruleId: 4.8.7
+    title: Write modifiers in the order the language specification recommends
+    statement:
+        Order class and member modifiers as public, protected, private,
+        abstract, default, static, final, sealed, non-sealed, transient,
+        volatile, synchronized, native, strictfp. On a requires module
+        directive, write transitive before static.
+    rationale:
+        A fixed modifier order lets readers spot what matters at a glance
+        and matches what most Java code already does.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        final static public int MAX_RETRIES = 3;
+        synchronized public void flush() {}
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public static final int MAX_RETRIES = 3;
+        public synchronized void flush() {}
+        \\\
+        ```
+    languages: [java]
+    tags: [modifiers, ordering]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.7-modifiers

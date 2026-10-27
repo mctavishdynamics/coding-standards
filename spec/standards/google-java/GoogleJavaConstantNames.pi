@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaConstantNames:
+    standard: @{GoogleJava}
+    ruleId: 5.2.4
+    title: Write constant names in UPPER_SNAKE_CASE
+    statement:
+        Name constants in uppercase letters with words separated by single
+        underscores. A constant is a static final field whose value is
+        deeply immutable and whose methods have no visible side effects; a
+        static final field holding mutable state is not a constant.
+    rationale:
+        The distinct style tells readers a value can never change, so it
+        must be reserved for values that truly cannot.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        static final int maxRetries = 3;
+        static final List<String> ALLOWED_HOSTS = new ArrayList<>();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        static final int MAX_RETRIES = 3;
+        static final ImmutableList<String> ALLOWED_HOSTS = ImmutableList.of("a.example", "b.example");
+        static final List<String> pendingHosts = new ArrayList<>();
+        \\\
+        ```
+    languages: [java]
+    tags: [naming, constants, immutability]
+    source: https://google.github.io/styleguide/javaguide.html#s5.2.4-constant-names

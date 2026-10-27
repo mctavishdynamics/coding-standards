@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoOpeningBraceSameLine:
+    standard: @{EffectiveGo}
+    ruleId: semicolons-opening-brace
+    title: Keep the opening brace on the same line
+    statement:
+        Put the opening brace of if, for, switch and select on the same line
+        as the keyword, never on the next line.
+    rationale:
+        A newline before the brace makes the lexer insert a semicolon there,
+        which changes or breaks the statement.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if user.Disabled()
+        {
+            return errDisabled
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if user.Disabled() {
+            return errDisabled
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [syntax, formatting]
+    source: https://go.dev/doc/effective_go#semicolons

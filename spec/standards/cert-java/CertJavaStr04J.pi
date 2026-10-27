@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaStr04J:
+    standard: @{CertJava}
+    ruleId: STR04-J
+    title: Use compatible character encodings when communicating string data between JVMs
+    statement:
+        Name the character encoding explicitly whenever you convert strings
+        to bytes or back for data exchanged with another JVM or system, and
+        make both sides use the same one.
+    rationale:
+        The default charset depends on the platform and startup settings, so
+        text written by one JVM can be garbled when read by another. CERT
+        rates likelihood unlikely, detectable no, repairable no, priority
+        P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        byte[] payload = message.getBytes();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        byte[] payload = message.getBytes(StandardCharsets.UTF_8);
+        \\\
+        ```
+    languages: [java]
+    tags: [strings, encoding, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/characters-and-strings-str/str04-j/

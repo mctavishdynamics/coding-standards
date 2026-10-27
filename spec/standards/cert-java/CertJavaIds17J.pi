@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds17J:
+    standard: @{CertJava}
+    ruleId: IDS17-J
+    title: Prevent XML external entity attacks
+    statement:
+        When parsing untrusted XML, disable external entity resolution and
+        DTDs, or restrict entity resolution to a whitelist of known local
+        resources.
+    rationale:
+        External entities let an attacker make the parser read local files,
+        contact internal hosts or hang on a device such as a never-ending
+        stream. CERT rates likelihood probable, detectable no, repairable
+        no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        Document doc = f.newDocumentBuilder().parse(untrustedStream);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        f.setExpandEntityReferences(false);
+        Document doc = f.newDocumentBuilder().parse(untrustedStream);
+        \\\
+        ```
+    languages: [java]
+    tags: [xml, xxe, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-validation-and-data-sanitization-ids/ids17-j/

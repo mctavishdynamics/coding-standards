@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaDcl02J:
+    standard: @{CertJava}
+    ruleId: DCL02-J
+    title: Do not modify the collection's elements during an enhanced for statement
+    statement:
+        Do not assign to the loop variable of an enhanced for statement.
+        Declare it final, and use a basic for loop or a separate variable
+        when you need to change values.
+    rationale:
+        Assigning to the loop variable does not change the collection or
+        array, which misleads readers into thinking the elements were
+        updated. CERT rates likelihood unlikely, detectable yes, repairable
+        no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        for (String name : names) {
+            name = name.trim();
+            process(name);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        for (final String name : names) {
+            String trimmed = name.trim();
+            process(trimmed);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [loops, collections]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/declarations-and-initialization-dcl/dcl02-j/

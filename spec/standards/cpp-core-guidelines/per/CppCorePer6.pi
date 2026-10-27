@@ -1,0 +1,32 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCorePer6:
+    standard: @{CppCoreGuidelines}
+    ruleId: Per.6
+    title: Do not make performance claims without measurements
+    statement:
+        Back every statement about speed with a measurement. Use a profiler
+        to find the critical parts, and at least time key operations with
+        simple benchmarks when the whole system cannot be measured.
+    rationale:
+        Performance folklore is often wrong. Modern hardware and optimizers
+        defeat naive assumptions and regularly surprise even experts.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```cpp
+        \\\
+        auto start = std::chrono::steady_clock::now();
+        rebuild_index(records);
+        auto elapsed = std::chrono::steady_clock::now() - start;
+        std::cout << "rebuild_index: "
+                  << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count()
+                  << " ms\n";
+        \\\
+        ```
+    languages: [cpp]
+    tags: [performance, measurement]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rper-measure

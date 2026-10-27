@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc05J:
+    standard: @{CertJava}
+    ruleId: MSC05-J
+    title: Do not exhaust heap space
+    statement:
+        Do not accept untrusted input in a way that lets it use unbounded
+        memory. Limit the size of files, lines, collections and other data
+        read from it.
+    rationale:
+        Unbounded input lets an attacker fill the heap and crash the program
+        with OutOfMemoryError. CERT's risk assessment gives likelihood
+        probable, detectable no, repairable no, priority P2 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        String line = reader.readLine();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        char[] buf = new char[MAX_LINE];
+        int n = reader.read(buf, 0, MAX_LINE);
+        String line = n < 0 ? null : new String(buf, 0, n);
+        \\\
+        ```
+    languages: [java]
+    tags: [memory, input-validation, denial-of-service]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/miscellaneous-msc/msc05-j/

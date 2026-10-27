@@ -1,0 +1,62 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcContexts:
+    standard: @{GoCodeReviewComments}
+    ruleId: contexts
+    title: Pass a Context explicitly as the first parameter
+    statement:
+        A function that uses a context.Context should take it as its first
+        parameter, usually named ctx. Default to passing a Context along the
+        call chain and use context.Background only with a good reason. Do
+        not store a Context in a struct, do not define custom Context types,
+        and put application data in parameters or receivers before reaching
+        for Context values.
+    rationale:
+        Contexts carry deadlines, cancellation, credentials and trace data
+        across API boundaries, and they only work if every call passes them
+        on. A Context hidden in a struct obscures its lifetime and which
+        calls it governs.
+    exceptions:
+        A method whose signature must match an interface from the standard
+        library or a third party library may get its Context another way.
+        Because Contexts are immutable, one ctx may be shared by several
+        calls with the same deadline and cancellation.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Fetcher struct {
+            ctx    context.Context
+            client *http.Client
+        }
+
+        func (f *Fetcher) Fetch(url string) (*http.Response, error) {
+            req, err := http.NewRequestWithContext(f.ctx, "GET", url, nil)
+            if err != nil {
+                return nil, err
+            }
+            return f.client.Do(req)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Fetcher struct {
+            client *http.Client
+        }
+
+        func (f *Fetcher) Fetch(ctx context.Context, url string) (*http.Response, error) {
+            req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+            if err != nil {
+                return nil, err
+            }
+            return f.client.Do(req)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [context, api-design, concurrency]
+    source: https://go.dev/wiki/CodeReviewComments#contexts

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCSealed:
+    standard: @{RustApiGuidelines}
+    ruleId: C-SEALED
+    title: Seal traits that only your crate should implement
+    statement:
+        When a trait is meant to be implemented only inside its crate, make
+        it require a private supertrait so downstream crates cannot
+        implement it, and say in its documentation that it is sealed.
+    rationale:
+        A sealed trait can gain methods in a minor release without breaking
+        anyone, which is otherwise a breaking change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub trait Encoding {
+            fn name(&self) -> &'static str;
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        /// This trait is sealed and cannot be implemented outside this crate.
+        pub trait Encoding: private::Sealed {
+            fn name(&self) -> &'static str;
+        }
+
+        mod private {
+            pub trait Sealed {}
+            impl Sealed for super::Utf8 {}
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [traits, compatibility]
+    source: https://rust-lang.github.io/api-guidelines/future-proofing.html#c-sealed

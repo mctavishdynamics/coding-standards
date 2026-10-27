@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCMetadata:
+    standard: @{RustApiGuidelines}
+    ruleId: C-METADATA
+    title: Include all common metadata in Cargo.toml
+    statement:
+        Fill in authors, description, license, repository, keywords and
+        categories in the package section. Set documentation only when docs
+        are hosted somewhere other than docs.rs, and homepage only when the
+        crate has its own website.
+    rationale:
+        crates.io and other tools rely on this metadata to describe,
+        categorise and link the crate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```toml
+        \\\
+        [package]
+        name = "tidy-csv"
+        version = "0.4.0"
+        homepage = "https://github.com/example/tidy-csv"
+        \\\
+        ```
+    compliant:
+        ```toml
+        \\\
+        [package]
+        name = "tidy-csv"
+        version = "0.4.0"
+        authors = ["Ana Ruiz <ana@example.com>"]
+        description = "Clean and normalise messy CSV files"
+        license = "MIT OR Apache-2.0"
+        repository = "https://github.com/example/tidy-csv"
+        keywords = ["csv", "cleaning"]
+        categories = ["parsing"]
+        \\\
+        ```
+    languages: [rust]
+    tags: [documentation, cargo, metadata]
+    source: https://rust-lang.github.io/api-guidelines/documentation.html#c-metadata

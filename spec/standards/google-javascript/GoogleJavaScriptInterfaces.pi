@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptInterfaces:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.4.9
+    title: Declare interfaces with empty methods and uninitialized fields
+    statement:
+        Declare interfaces with @interface or @record. Interface methods are
+        non-static with empty bodies, and fields are declared as
+        uninitialized members in the constructor.
+    rationale:
+        An interface describes a shape, not behaviour, so it must not carry
+        implementation or state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @interface */
+        class Storage {
+          constructor() {
+            this.capacity = 100;
+          }
+          static open() {}
+          read(key) {
+            return null;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** @interface */
+        class Storage {
+          constructor() {
+            /** @type {number} */
+            this.capacity;
+          }
+
+          /** @param {string} key */
+          read(key) {}
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, interfaces, jsdoc]
+    source: https://google.github.io/styleguide/jsguide.html#549-interfaces

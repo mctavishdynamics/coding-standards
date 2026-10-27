@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoEmbedding:
+    standard: @{EffectiveGo}
+    ruleId: embedding
+    title: Embed types instead of writing forwarding methods
+    statement:
+        To give a struct the methods of another type, embed that type
+        instead of declaring a named field and writing forwarding methods.
+        Refer to the embedded field by its type name when you need it
+        directly.
+    rationale:
+        Embedded methods are promoted automatically, so the outer type
+        satisfies the same interfaces without bookkeeping. The inner type
+        remains the receiver of those methods.
+    exceptions:
+        Embedding is not subclassing, and names at the same depth conflict;
+        a duplicate name is acceptable only if it is never used outside the
+        type definition.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Job struct {
+            Command string
+            logger  *log.Logger
+        }
+
+        func (j *Job) Printf(format string, args ...any) {
+            j.logger.Printf(format, args...)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Job struct {
+            Command string
+            *log.Logger
+        }
+
+        job := &Job{Command: cmd, Logger: log.New(os.Stderr, "job: ", log.Ldate)}
+        job.Printf("starting %s", job.Command)
+        \\\
+        ```
+    languages: [go]
+    tags: [embedding, structs, composition]
+    source: https://go.dev/doc/effective_go#embedding

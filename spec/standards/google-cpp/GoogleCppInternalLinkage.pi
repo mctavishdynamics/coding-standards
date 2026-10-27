@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppInternalLinkage:
+    standard: @{GoogleCpp}
+    ruleId: Internal_Linkage
+    title: Give file-local definitions internal linkage
+    statement:
+        When a definition in a .cc file is not used outside that file, give
+        it internal linkage with an unnamed namespace or static. Do not use
+        either construct in .h files. Close an unnamed namespace with a
+        comment that leaves the name empty.
+    rationale:
+        Internal linkage keeps helpers from colliding with same-named
+        entities in other files and makes clear they are not part of any
+        API.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // report.cc
+        std::string FormatRow(const Row& row) {  // Visible to every file.
+          return absl::StrCat(row.name, ": ", row.value);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // report.cc
+        namespace {
+
+        std::string FormatRow(const Row& row) {
+          return absl::StrCat(row.name, ": ", row.value);
+        }
+
+        }  // namespace
+        \\\
+        ```
+    languages: [cpp]
+    tags: [scoping, linkage, namespaces]
+    source: https://google.github.io/styleguide/cppguide.html#Internal_Linkage

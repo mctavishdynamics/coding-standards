@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptComputedPropertyNames:
+    standard: @{GoogleTypeScript}
+    ruleId: computed-property-names
+    title: Treat computed property names as quoted keys
+    statement:
+        Computed property names are allowed and count as quoted, dict-style
+        keys, so do not mix them with unquoted keys in the same object.
+        Symbol keys such as Symbol.iterator are the exception.
+    rationale:
+        Mixing quoted and unquoted keys confuses which properties may be
+        renamed by optimising tools and which are fixed strings.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const labels = {
+          title: 'Report',
+          ['col_' + index]: 'Amount',
+        };
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const labels = {
+          'title': 'Report',
+          ['col_' + index]: 'Amount',
+        };
+        \\\
+        ```
+    languages: [typescript]
+    tags: [objects, properties]
+    source: https://google.github.io/styleguide/tsguide.html#computed-property-names

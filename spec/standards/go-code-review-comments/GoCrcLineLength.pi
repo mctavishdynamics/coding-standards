@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcLineLength:
+    standard: @{GoCodeReviewComments}
+    ruleId: line-length
+    title: Break lines for meaning, not to meet a length limit
+    statement:
+        Go has no fixed line length, but avoid uncomfortably long lines.
+        Break lines where the meaning of the code calls for it, and do not
+        wrap a line that reads better long. If lines grow too long, shorten
+        names or restructure the code.
+    rationale:
+        Unnatural wrapping usually signals too many parameters or overly
+        long names, and fixing those helps more than counting characters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (s *InvoiceGenerationService) GenerateInvoiceForCustomerAccount(customerAccountIdentifier string,
+            invoiceGenerationOptions InvoiceGenerationOptions) (*Invoice, error)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (s *InvoiceService) Generate(account string, opts Options) (*Invoice, error)
+        \\\
+        ```
+    languages: [go]
+    tags: [formatting, line-length, naming]
+    source: https://go.dev/wiki/CodeReviewComments#line-length

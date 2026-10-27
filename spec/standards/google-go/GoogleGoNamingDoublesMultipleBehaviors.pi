@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoNamingDoublesMultipleBehaviors:
+    standard: @{GoogleGo}
+    ruleId: best-practices/naming-doubles-multiple-behaviors
+    title: Name test doubles after the behaviour they emulate
+    statement:
+        When you need several doubles for one type, name each for its
+        behaviour, such as AlwaysCharges and AlwaysDeclines.
+    rationale:
+        Behaviour names make it obvious in the test what each double will
+        do.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Stub1 struct{}
+        type Stub2 struct{}
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // AlwaysCharges stubs creditcard.Service and simulates success.
+        type AlwaysCharges struct{}
+
+        // AlwaysDeclines stubs creditcard.Service and simulates declined charges.
+        type AlwaysDeclines struct{}
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, naming, testing, test-doubles]
+    source: https://google.github.io/styleguide/go/best-practices#naming-doubles-multiple-behaviors

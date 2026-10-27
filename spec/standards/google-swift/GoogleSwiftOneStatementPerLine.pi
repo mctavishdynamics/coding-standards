@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftOneStatementPerLine:
+    standard: @{GoogleSwift}
+    ruleId: one-statement-per-line
+    title: Write at most one statement per line
+    statement:
+        Put at most one statement on a line, followed by a line break,
+        unless the line ends with a block holding zero or one statements.
+        Use judgement for one-line conditionals, and prefer several lines
+        when in doubt.
+    rationale:
+        Short guard and defer lines stay compact, while complex bodies get
+        their own lines.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let width = 10; let height = 20
+        if shouldRefresh { reloadAllSectionsAndNotifyObservers(animated: true, completion: done) }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        guard let user = currentUser else { return }
+        defer { lock.unlock() }
+        let width = 10
+        let height = 20
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, statements]
+    source: https://google.github.io/swift/#one-statement-per-line

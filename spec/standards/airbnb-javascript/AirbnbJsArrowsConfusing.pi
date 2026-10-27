@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsArrowsConfusing:
+    standard: @{AirbnbJavaScript}
+    ruleId: 8.5
+    title: Do not confuse arrows with comparison operators
+    statement:
+        Avoid writing arrow functions whose body could be misread as a
+        comparison with <= or >=. Wrap the body in parentheses or use a
+        block. Enforced by the ESLint rule no-confusing-arrow.
+    rationale:
+        An arrow followed by a comparison looks like a comparison operator
+        at first glance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const isAdult = (person) => person.age >= 18 ? 'yes' : 'no';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const isAdult = (person) => (person.age >= 18 ? 'yes' : 'no');
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, arrow-functions, readability]
+    source: https://github.com/airbnb/javascript#arrows--confusing

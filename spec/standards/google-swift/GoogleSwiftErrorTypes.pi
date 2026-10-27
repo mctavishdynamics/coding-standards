@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftErrorTypes:
+    standard: @{GoogleSwift}
+    ruleId: error-types
+    title: Throw errors when there are several failure states
+    statement:
+        Use thrown error types when an operation has several possible
+        failure states, instead of merging failures into the return value.
+    rationale:
+        Throwing separates valid results from failures and forces callers to
+        handle, propagate or explicitly ignore the error.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func loadConfig(at path: String) -> (Config?, String?) {
+          // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        enum ConfigError: Error {
+          case fileNotFound
+          case invalidSyntax(line: Int)
+        }
+
+        func loadConfig(at path: String) throws -> Config {
+          // ...
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [error-handling, api-design]
+    source: https://google.github.io/swift/#error-types

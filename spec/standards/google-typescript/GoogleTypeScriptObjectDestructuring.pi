@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptObjectDestructuring:
+    standard: @{GoogleTypeScript}
+    ruleId: object-destructuring
+    title: Keep destructured object parameters simple
+    statement:
+        Destructured parameters should use a single level of unquoted
+        shorthand properties, with no deeper nesting or computed keys. Put
+        defaults on the left-hand side, and default an optional destructured
+        object to an empty object.
+    rationale:
+        Simple patterns stay readable, and defaults inside the pattern apply
+        even when the caller passes only some of the fields.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function connect({server: {host, port}}: {server: Endpoint}) {}
+        function retry({times, delay}: RetryOptions = {times: 3, delay: 100}) {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function connect({host, port}: Endpoint) {}
+        function retry({times = 3, delay = 100}: RetryOptions = {}) {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [destructuring, parameters, objects]
+    source: https://google.github.io/styleguide/tsguide.html#object-destructuring

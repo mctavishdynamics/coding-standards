@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaBlockCommentStyle:
+    standard: @{GoogleJava}
+    ruleId: 4.8.6.1
+    title: Indent block comments with the code and do not box them
+    statement:
+        Indent block comments at the level of the surrounding code, in
+        either slash-star or double-slash style. In a multi-line slash-star
+        comment, start each later line with an asterisk aligned with the one
+        above. Do not draw boxes of asterisks or other characters around
+        comments.
+    rationale:
+        Comments indented with the code clearly belong to it, and boxes are
+        tedious to maintain and add no information.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void retry() {
+        /******************************
+         * Back off before retrying.  *
+         ******************************/
+          sleep(backoff);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void retry() {
+          /*
+           * Back off before retrying so the
+           * server can recover.
+           */
+          sleep(backoff);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [comments, formatting]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.6.1-block-comment-style

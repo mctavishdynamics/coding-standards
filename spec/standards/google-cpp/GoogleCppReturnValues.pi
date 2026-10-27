@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppReturnValues:
+    standard: @{GoogleCpp}
+    ruleId: Return_Values
+    title: Do not wrap return expressions in needless parentheses
+    statement:
+        Use parentheses around a return expression only where you would use
+        them in an assignment of the same expression.
+    rationale:
+        Extra parentheses add clutter and suggest return is a function call.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        return (result);
+        return(value);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        return result;
+        return (some_long_condition &&
+                another_condition);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, expressions]
+    source: https://google.github.io/styleguide/cppguide.html#Return_Values

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppVariableAndArrayInitialization:
+    standard: @{GoogleCpp}
+    ruleId: Variable_and_Array_Initialization
+    title:
+        Take care with braces on types with initializer_list constructors
+    statement:
+        You may initialize with =, parentheses or braces. Remember that a
+        non-empty braced list prefers a std::initializer_list constructor,
+        so use parentheses to reach the other constructors.
+    rationale:
+        Brace initialization can pick an unexpected constructor, though it
+        has the benefit of rejecting narrowing conversions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::vector<int> v{100, 1};  // Two elements, not 100 ones.
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<int> v(100, 1);  // 100 elements, each 1.
+        std::vector<int> w{100, 1};  // Two elements, when that is intended.
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, initialization]
+    source: https://google.github.io/styleguide/cppguide.html#Variable_and_Array_Initialization

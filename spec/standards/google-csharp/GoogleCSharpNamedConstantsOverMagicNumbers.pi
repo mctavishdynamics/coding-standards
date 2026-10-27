@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpNamedConstantsOverMagicNumbers:
+    standard: @{GoogleCSharp}
+    ruleId: named-constants-over-magic-numbers
+    title: Prefer named constants to magic numbers
+    statement:
+        Give literal values a name with a constant instead of writing bare
+        numbers in the code.
+    rationale:
+        A name explains what the number means and keeps every use in step.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        if (password.Length < 12) {
+          Reject();
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        private const int _minPasswordLength = 12;
+
+        if (password.Length < _minPasswordLength) {
+          Reject();
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [constants, readability]
+    source: https://google.github.io/styleguide/csharpguide.html#constants

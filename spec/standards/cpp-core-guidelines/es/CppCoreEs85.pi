@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs85:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.85
+    title: Make empty statements visible
+    statement:
+        When a loop or condition intentionally has an empty body, write
+        empty braces on their own rather than a lone semicolon after the
+        header.
+    rationale:
+        A stray semicolon after a for or if header is easy to miss and easy
+        to add by accident.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (p = head; p->next; p = p->next);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (p = head; p->next; p = p->next) {
+            // find the last node
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [readability, control-flow]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-empty

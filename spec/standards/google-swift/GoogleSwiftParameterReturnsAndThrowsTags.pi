@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftParameterReturnsAndThrowsTags:
+    standard: @{GoogleSwift}
+    ruleId: parameter-returns-and-throws-tags
+    title: Document parameters, returns and throws with tags
+    statement:
+        Document parameters, return value and thrown errors with the
+        Parameter or Parameters, Returns and Throws tags, in that order,
+        each with a non-empty description ending in a period. Use Parameter
+        for a single argument and a nested Parameters list for several,
+        indenting continuation lines two spaces.
+    rationale:
+        Consistent tags render properly in Xcode and help callers.
+    exceptions:
+        Parameter and Returns tags may be omitted when the summary already
+        says everything they would.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        /// Resizes an image.
+        ///
+        /// - Parameters:
+        ///   - image: The image to resize
+        /// - Returns:
+        func resized(_ image: Image) -> Image
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        /// Resizes an image to fit the given bounds.
+        ///
+        /// - Parameters:
+        ///   - image: The image to resize.
+        ///   - bounds: The size the result must fit within.
+        /// - Returns: A scaled copy of `image`.
+        /// - Throws: `ImageError.unsupportedFormat` if the image cannot be decoded.
+        func resized(_ image: Image, toFit bounds: CGSize) throws -> Image
+        \\\
+        ```
+    languages: [swift]
+    tags: [comments, documentation]
+    source: https://google.github.io/swift/#parameter-returns-and-throws-tags

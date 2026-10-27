@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssEntityReferences:
+    standard: @{GoogleHtmlCss}
+    ruleId: entity-references
+    title: Do not use entity references
+    statement:
+        Write characters such as dashes, quotation marks and symbols
+        directly instead of as entity references, given UTF-8 files and
+        editors.
+    rationale:
+        With a shared UTF-8 encoding the references add nothing and are
+        harder to read.
+    exceptions:
+        Characters with special meaning in HTML, such as the less-than sign
+        and ampersand, and control or invisible characters such as no-break
+        spaces, may still use references.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <p>Prices start at &euro;9 &mdash; billed monthly.
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <p>Prices start at €9 — billed monthly.
+        \\\
+        ```
+    languages: [html]
+    tags: [encoding, readability]
+    source: https://google.github.io/styleguide/htmlcssguide.html#entity-references

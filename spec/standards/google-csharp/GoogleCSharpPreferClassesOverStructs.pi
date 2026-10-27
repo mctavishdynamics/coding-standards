@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpPreferClassesOverStructs:
+    standard: @{GoogleCSharp}
+    ruleId: prefer-classes-over-structs
+    title: Almost always use a class rather than a struct
+    statement:
+        Use a class in almost all cases. Consider a struct only when the
+        type behaves like other value types, for example when instances are
+        small, short-lived or embedded in other objects, like a vector or
+        bounds.
+    rationale:
+        Structs are copied on every pass and return, so changing a member of
+        a returned struct silently changes only a copy.
+    exceptions:
+        Teams may use structs more often where performance demands it.
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public struct Customer {
+          public string Name;
+          public List<Order> Orders;
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class Customer {
+          public string Name;
+          public List<Order> Orders;
+        }
+        public struct Point2 {
+          public float X;
+          public float Y;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [types, structs]
+    source: https://google.github.io/styleguide/csharpguide.html#structs-and-classes

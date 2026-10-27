@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftNumericLiterals:
+    standard: @{GoogleSwift}
+    ruleId: numeric-literals
+    title: Group digits of long numeric literals
+    statement:
+        It is recommended to group digits of long numeric literals with
+        underscores, using three for decimal, four for hexadecimal, four or
+        eight for binary, or natural field boundaries. Do not group opaque
+        identifiers that have no numeric meaning.
+    rationale:
+        Grouping makes large values easy to read and check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let maxUploadBytes = 104857600
+        let accentColor = 0xFF8800FF
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let maxUploadBytes = 104_857_600
+        let accentColor = 0xFF88_00FF
+        let filePermissions = 0o755
+        \\\
+        ```
+    languages: [swift]
+    tags: [literals, readability]
+    source: https://google.github.io/swift/#numeric-literals

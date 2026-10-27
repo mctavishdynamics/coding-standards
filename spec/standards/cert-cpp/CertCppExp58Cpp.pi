@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppExp58Cpp:
+    standard: @{CertCpp}
+    ruleId: EXP58-CPP
+    title: Pass an object of the correct type to va_start
+    statement:
+        Pass va_start the last named parameter only when that parameter is
+        not a reference, not a type changed by default argument promotion,
+        and, for class types, a trivially copyable type.
+    rationale:
+        Using a reference, a promoted type or a non-trivial class as the
+        va_start argument is undefined or conditionally supported behavior.
+        CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        extern "C" void log_values(float first, ...) {
+            va_list args;
+            va_start(args, first);  // float is promoted to double
+            va_end(args);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        extern "C" void log_values(double first, ...) {
+            va_list args;
+            va_start(args, first);
+            va_end(args);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, variadic, type-safety]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/expressions-exp/exp58-cpp

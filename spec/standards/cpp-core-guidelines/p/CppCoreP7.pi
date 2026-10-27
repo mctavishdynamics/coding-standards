@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreP7:
+    standard: @{CppCoreGuidelines}
+    ruleId: P.7
+    title: Catch run-time errors early
+    statement:
+        Check for errors as close as possible to where they arise, ideally
+        at an interface boundary, so bad data does not travel deep into the
+        program.
+    rationale:
+        Errors caught late show up as mysterious crashes or as wrong results
+        that may never be noticed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void set_ratio(double r) {
+            ratio_ = r;            // a bad value fails much later
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void set_ratio(double r) {
+            if (r < 0.0 || r > 1.0) {
+                throw std::invalid_argument("ratio out of range");
+            }
+            ratio_ = r;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [philosophy, error-checking]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rp-early

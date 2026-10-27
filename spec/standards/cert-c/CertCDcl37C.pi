@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl37C:
+    standard: @{CertC}
+    ruleId: DCL37-C
+    title: Do not declare or define a reserved identifier
+    statement:
+        Do not declare or define names the C standard reserves, such as
+        names starting with a double underscore or an underscore followed by
+        a capital letter, file-scope names starting with an underscore, and
+        names of standard library functions and macros.
+    rationale:
+        Reserved names belong to the implementation. Reusing them is
+        undefined behavior and can clash with compiler or library internals.
+        CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P2, level L3.
+    exceptions:
+        A library function may be declared without its header if the
+        declaration matches the standard one. A macro may share a reserved
+        name when its expansion is idempotent, such as for compiler
+        compatibility. Compiler and standard library authors may use names
+        reserved for the implementation.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #ifndef _CONFIG_H
+        #define _CONFIG_H
+
+        static int _max_retries = 3;
+
+        #endif
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #ifndef CONFIG_H
+        #define CONFIG_H
+
+        static int max_retries = 3;
+
+        #endif
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, naming]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/declarations-and-initialization-dcl/dcl37-c

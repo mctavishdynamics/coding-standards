@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR35:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.35
+    title:
+        Take a shared_ptr reference to express that a function might reseat
+        the shared pointer
+    statement:
+        When a function may make the caller's shared_ptr point at another
+        object, take it as a non-const reference to shared_ptr.
+    rationale:
+        This makes the reseating explicit in the signature.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void refresh(std::shared_ptr<Token>& token) {
+            log(token->expiry());      // never reseats: take const Token&
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void refresh(std::shared_ptr<Token>& token) {
+            if (token->expired()) token = std::make_shared<Token>(fetch_token());
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-sharedptrparam

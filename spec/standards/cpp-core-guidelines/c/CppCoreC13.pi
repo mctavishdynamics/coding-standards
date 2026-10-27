@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC13:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.13
+    title: Declare a data member before the members that use it
+    statement:
+        If initializing or destroying member B relies on member A, declare A
+        earlier in the class than B.
+    rationale:
+        Members are initialized in declaration order and destroyed in
+        reverse order, whatever the order of the initializer list, so a
+        wrong order uses an object outside its lifetime.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Session {
+            Reader reader_;          // built from conn_, which is not ready yet
+            Connection conn_;
+        public:
+            Session() : conn_(), reader_(conn_) {}
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Session {
+            Connection conn_;
+            Reader reader_;
+        public:
+            Session() : conn_(), reader_(conn_) {}
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, initialization, lifetime]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-lifetime

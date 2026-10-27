@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoPackageNameMatchesDirectory:
+    standard: @{EffectiveGo}
+    ruleId: package-names-directory
+    title: Name a package after its source directory
+    statement:
+        Use the base name of the package's source directory as the package
+        name, so the package in encoding/base64 is named base64.
+    rationale:
+        Matching names let readers predict the name from the import path and
+        the reverse.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // file: internal/ratelimit/limiter.go
+        package rate_limit
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // file: internal/ratelimit/limiter.go
+        package ratelimit
+        \\\
+        ```
+    languages: [go]
+    tags: [naming, packages]
+    source: https://go.dev/doc/effective_go#package-names

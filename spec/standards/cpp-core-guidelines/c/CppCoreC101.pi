@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC101:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.101
+    title: Give a container value semantics
+    statement:
+        Make copying a container copy its elements, and make == compare
+        elements, as the standard containers do.
+    rationale:
+        Regular objects are simpler to reason about and match what users
+        already know from std::vector.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Bag {
+            int* elems_;
+            std::size_t n_;
+            // default copy shares elems_ between bags
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Bag {
+        public:
+            Bag(const Bag& o) : elems_(o.elems_) {}   // copies elements
+            friend bool operator==(const Bag&, const Bag&) = default;
+        private:
+            std::vector<int> elems_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, value-semantics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rcon-val

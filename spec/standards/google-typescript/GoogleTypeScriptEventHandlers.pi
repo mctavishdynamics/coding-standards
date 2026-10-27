@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptEventHandlers:
+    standard: @{GoogleTypeScript}
+    ruleId: event-handlers
+    title: Use arrow function properties for handlers that must be removed
+    statement:
+        An event handler may be an inline arrow function when it never needs
+        to be uninstalled. If it must be removed later, use an arrow
+        function property. Never call bind in the expression that installs a
+        handler.
+    rationale:
+        A stable reference is needed to remove a listener; bind creates a
+        new function each time, so the removal silently does nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Dialog {
+          open() {
+            window.addEventListener('resize', this.layout.bind(this));
+          }
+          close() {
+            window.removeEventListener('resize', this.layout.bind(this));
+          }
+          private layout() {}
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Dialog {
+          open() {
+            window.addEventListener('resize', this.layout);
+          }
+          close() {
+            window.removeEventListener('resize', this.layout);
+          }
+          private layout = () => {};
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [events, arrow-functions, memory]
+    source: https://google.github.io/styleguide/tsguide.html#event-handlers

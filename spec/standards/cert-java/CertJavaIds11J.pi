@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds11J:
+    standard: @{CertJava}
+    ruleId: IDS11-J
+    title: Perform any string modifications before validation
+    statement:
+        Finish every change to a string, such as removing or replacing
+        characters, before validating it. Do not modify the string after the
+        check.
+    rationale:
+        A modification after validation can create the very sequence the
+        check was meant to reject, for example deleting a character that
+        split a script tag. CERT rates likelihood probable, detectable no,
+        repairable no, priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        if (input.contains("<script>")) {
+            throw new IllegalArgumentException();
+        }
+        String clean = input.replaceAll("\\p{Cn}", "");
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String clean = input.replaceAll("\\p{Cn}", "\uFFFD");
+        if (clean.contains("<script>")) {
+            throw new IllegalArgumentException();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [input-validation, sanitization]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-validation-and-data-sanitization-ids/ids11-j/

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptForLoops:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.8.1
+    title: Prefer for-of loops and avoid for-in on arrays
+    statement:
+        Prefer for-of loops where possible. Use for-in only on dict-style
+        objects, never on arrays, and filter it with hasOwnProperty; prefer
+        for-of with Object.keys over for-in.
+    rationale:
+        for-in visits inherited properties and gives string indexes, which
+        causes bugs with arrays and prototypes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        for (const i in names) {
+          greet(names[i]);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        for (const name of names) {
+          greet(name);
+        }
+        for (const key of Object.keys(counts)) {
+          report(key, counts[key]);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [control-flow, loops]
+    source: https://google.github.io/styleguide/jsguide.html#581-for-loops

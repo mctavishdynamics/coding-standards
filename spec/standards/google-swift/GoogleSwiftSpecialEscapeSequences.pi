@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftSpecialEscapeSequences:
+    standard: @{GoogleSwift}
+    ruleId: special-escape-sequences
+    title: Use the short escape for special characters
+    statement:
+        For characters that have a special escape, such as newline, tab,
+        quote, backslash and null, use that escape instead of the equivalent
+        Unicode escape.
+    rationale:
+        The short escapes are familiar and easier to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let footer = "Thanks!\u{000A}"
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let footer = "Thanks!\n"
+        \\\
+        ```
+    languages: [swift]
+    tags: [strings, literals]
+    source: https://google.github.io/swift/#special-escape-sequences

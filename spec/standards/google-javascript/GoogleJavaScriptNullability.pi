@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNullability:
+    standard: @{GoogleJavaScript}
+    ruleId: 7.10.1
+    title: Mark reference types explicitly nullable or non-null
+    statement:
+        Put the nullability modifier before the type. Primitive and literal
+        types are non-null by default, so add a question mark only to make
+        them nullable and never add a redundant exclamation mark. Always
+        give reference types an explicit question or exclamation mark.
+    rationale:
+        A reference type name alone does not show whether null is allowed,
+        so explicit modifiers remove the ambiguity.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const /** User */ owner = null;
+        const /** !string */ title = 'Draft';
+        const /** number? */ score = null;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const /** ?User */ owner = null;
+        const /** string */ title = 'Draft';
+        const /** ?number */ score = null;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, types, nullability]
+    source: https://google.github.io/styleguide/jsguide.html#7101-nullability

@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppLoopingAndBranching:
+    standard: @{GoogleCpp}
+    ruleId: Formatting_Looping_Branching
+    title:
+        Brace controlled statements and space loop and branch components
+    statement:
+        Separate keywords, conditions and bodies with single spaces, put one
+        space after each semicolon in a for header and none inside the
+        parentheses, and put controlled statements in braces with line
+        breaks after the opening and before the closing brace. Write empty
+        loop bodies as empty braces or continue, not a lone semicolon.
+    rationale:
+        Uniform, braced control statements are easy to scan and safe to
+        extend with more statements.
+    exceptions:
+        Braces may be omitted, though this is discouraged, when the whole
+        statement fits on one line or on two lines without braces. This does
+        not apply to if-else or do-while.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if(condition){DoOneThing();}
+        else
+          DoOther();
+        while (Busy());
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        if (condition) {
+          DoOneThing();
+        } else {
+          DoOther();
+        }
+        while (Busy()) {
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, control-flow, braces]
+    source: https://google.github.io/styleguide/cppguide.html#Formatting_Looping_Branching

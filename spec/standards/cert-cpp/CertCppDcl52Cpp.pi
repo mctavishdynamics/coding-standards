@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppDcl52Cpp:
+    standard: @{CertCpp}
+    ruleId: DCL52-CPP
+    title: Do not qualify a reference type with const or volatile
+    statement:
+        Do not apply const or volatile to the reference itself, as in a type
+        written with const after the ampersand. Qualify the referred type
+        instead.
+    rationale:
+        A cv-qualified reference is ill-formed or the qualifier is silently
+        ignored, so code that seems to promise immutability may still modify
+        the referenced object. CERT rates likelihood unlikely, detectable
+        yes, repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        void increment(int& const counter) {
+            ++counter;  // still modifies the caller's value
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void show(const int& counter) {
+            std::cout << counter << '\n';
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [declarations, references, const]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/declarations-and-initialization-dcl/dcl52-cpp

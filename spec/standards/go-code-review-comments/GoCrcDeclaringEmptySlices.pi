@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcDeclaringEmptySlices:
+    standard: @{GoCodeReviewComments}
+    ruleId: declaring-empty-slices
+    title: Declare empty slices as nil slices
+    statement:
+        Prefer declaring an empty slice with var, giving a nil slice, over a
+        non-nil empty composite literal. When designing interfaces, do not
+        treat a nil slice and a non-nil empty slice differently.
+    rationale:
+        Both have zero length and capacity and behave the same, and the nil
+        form is the preferred style. APIs that distinguish them invite
+        subtle bugs.
+    exceptions:
+        A non-nil empty slice is sometimes needed, for example when encoding
+        JSON, where a nil slice becomes null rather than an empty array.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func activeUsers(users []User) []User {
+            active := []User{}
+            for _, u := range users {
+                if u.Active {
+                    active = append(active, u)
+                }
+            }
+            return active
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func activeUsers(users []User) []User {
+            var active []User
+            for _, u := range users {
+                if u.Active {
+                    active = append(active, u)
+                }
+            }
+            return active
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [slices, nil]
+    source: https://go.dev/wiki/CodeReviewComments#declaring-empty-slices

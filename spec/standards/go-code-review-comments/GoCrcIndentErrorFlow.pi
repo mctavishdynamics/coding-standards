@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcIndentErrorFlow:
+    standard: @{GoCodeReviewComments}
+    ruleId: indent-error-flow
+    title: Handle errors first and keep the normal path unindented
+    statement:
+        Deal with the error case first inside the if and return from it, so
+        the normal code path stays at minimal indentation without an else.
+        Move a short variable declaration out of the if statement when that
+        is needed to drop the else.
+    rationale:
+        Readers can scan the normal path quickly down the left margin while
+        each error is handled where it arises.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if f, err := os.Open(path); err != nil {
+            return err
+        } else {
+            defer f.Close()
+            return process(f)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        f, err := os.Open(path)
+        if err != nil {
+            return err
+        }
+        defer f.Close()
+        return process(f)
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, control-flow, readability]
+    source: https://go.dev/wiki/CodeReviewComments#indent-error-flow

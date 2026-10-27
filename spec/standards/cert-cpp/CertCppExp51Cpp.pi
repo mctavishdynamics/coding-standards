@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppExp51Cpp:
+    standard: @{CertCpp}
+    ruleId: EXP51-CPP
+    title: Do not delete an array through a pointer of the incorrect type
+    statement:
+        Delete an array only through a pointer whose static type is the
+        array's element type. Do not delete a derived-class array through a
+        base-class pointer.
+    rationale:
+        When the static and dynamic types of an array differ, the delete
+        expression is undefined behavior even if the base class has a
+        virtual destructor. CERT rates likelihood unlikely, detectable no,
+        repairable no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        struct Shape { virtual ~Shape() = default; };
+        struct Circle : Shape { double radius = 1.0; };
+
+        void release() {
+            Shape* shapes = new Circle[4];
+            delete[] shapes;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Shape { virtual ~Shape() = default; };
+        struct Circle : Shape { double radius = 1.0; };
+
+        void release() {
+            Circle* circles = new Circle[4];
+            delete[] circles;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, arrays, inheritance]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/expressions-exp/exp51-cpp

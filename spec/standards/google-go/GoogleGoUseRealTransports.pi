@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoUseRealTransports:
+    standard: @{GoogleGo}
+    ruleId: best-practices/use-real-transports
+    title: Test integrations over real transports
+    statement:
+        When testing code that talks over HTTP or RPC, use the real client
+        connected to a test double of the server, rather than
+        hand-implementing the client. Use testing libraries from the
+        service's authors where available.
+    rationale:
+        Imitating client behaviour correctly is hard, and the real client
+        exercises more of the production code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type fakeOpsClient struct{}
+
+        func (fakeOpsClient) GetOperation(ctx context.Context, req *lropb.GetOperationRequest, opts ...grpc.CallOption) (*lropb.Operation, error) {
+            return &lropb.Operation{Done: true}, nil
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        srv := grpc.NewServer()
+        lropb.RegisterOperationsServer(srv, &fakeOpsServer{})
+        lis := bufconn.Listen(1 << 20)
+        go srv.Serve(lis)
+        conn, err := grpc.NewClient("passthrough:///bufnet",
+            grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) { return lis.Dial() }),
+            grpc.WithTransportCredentials(insecure.NewCredentials()))
+        client := lropb.NewOperationsClient(conn)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, testing, test-doubles]
+    source: https://google.github.io/styleguide/go/best-practices#use-real-transports

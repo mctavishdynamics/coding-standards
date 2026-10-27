@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptStaticMethods:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.4.4
+    title: Call static methods only on the class that defines them
+    statement:
+        Prefer module-local functions to private static methods. Call static
+        methods only on the class that defines them, not on subclasses or on
+        variables holding a class, and do not use this inside static
+        methods.
+    rationale:
+        Dynamic dispatch of static methods interferes with Closure Compiler
+        optimizations such as collapsing properties.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Shape {
+          static create() {
+            return new this();
+          }
+        }
+        class Circle extends Shape {}
+        Circle.create();
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Shape {
+          static create() {
+            return new Shape();
+          }
+        }
+        Shape.create();
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, static, closure]
+    source: https://google.github.io/styleguide/jsguide.html#544-static-methods

@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC8:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.8
+    title: Use class rather than struct if any member is non-public
+    statement:
+        As soon as a type has a private or protected member, declare it with
+        the class keyword.
+    rationale:
+        The keyword signals that something is hidden behind an abstraction,
+        which helps readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Counter {
+            void increment() { ++n_; }
+            int value() const { return n_; }
+        private:
+            int n_ = 0;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Counter {
+        public:
+            void increment() { ++n_; }
+            int value() const { return n_; }
+        private:
+            int n_ = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, conventions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-class

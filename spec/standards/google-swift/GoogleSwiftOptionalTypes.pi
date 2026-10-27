@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftOptionalTypes:
+    standard: @{GoogleSwift}
+    ruleId: optional-types
+    title: Use Optional instead of sentinel values
+    statement:
+        Avoid sentinel values such as an index of minus one. Return an
+        Optional when a missing value is a valid outcome, or when an
+        operation can fail for one obvious, domain-specific reason.
+    rationale:
+        The type system cannot tell a sentinel from a real value, so
+        sentinels spread silently through other code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func position(of word: String) -> Int {
+          return words.firstIndex(of: word) ?? -1
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        func position(of word: String) -> Int? {
+          return words.firstIndex(of: word)
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [optionals, api-design, error-handling]
+    source: https://google.github.io/swift/#optional-types

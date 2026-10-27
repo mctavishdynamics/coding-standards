@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaPackageDeclaration:
+    standard: @{GoogleJava}
+    ruleId: 3.2
+    title: Give every file one unwrapped package declaration
+    statement:
+        Every source file declares a package, and compact source files are
+        not used. Keep the package declaration on one line; the column limit
+        does not apply to it.
+    rationale:
+        Explicit packages keep classes out of the unnamed package, and a
+        single-line declaration is easy to read and to search for.
+    exceptions:
+        A module-info.java file has its own syntax with no package
+        declaration.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        package com.example.analytics
+            .reporting.export;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        package com.example.analytics.reporting.export;
+        \\\
+        ```
+    languages: [java]
+    tags: [source-files, packages]
+    source: https://google.github.io/styleguide/javaguide.html#s3.2-package-declaration

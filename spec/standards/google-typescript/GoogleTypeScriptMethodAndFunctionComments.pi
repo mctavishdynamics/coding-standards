@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptMethodAndFunctionComments:
+    standard: @{GoogleTypeScript}
+    ruleId: method-and-function-comments
+    title: Begin method descriptions with a third-person verb phrase
+    statement:
+        Start a method description with a verb phrase in the third person,
+        as if preceded by the words This method. Parameter, return and
+        method descriptions may be omitted when obvious from the rest of the
+        JSDoc or the signature.
+    rationale:
+        A consistent phrasing reads naturally in generated documentation and
+        editor tooltips.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        /** Fetch the latest exchange rates. */
+        function refreshRates(): Promise<Rates> {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /** Fetches the latest exchange rates. */
+        function refreshRates(): Promise<Rates> {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc, functions]
+    source: https://google.github.io/styleguide/tsguide.html#method-and-function-comments

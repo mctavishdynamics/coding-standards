@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoDocumentationConventionsParams:
+    standard: @{GoogleGo}
+    ruleId: best-practices/documentation-conventions-params
+    title: Document only the non-obvious parameters
+    statement:
+        Do not enumerate every parameter, field or option in documentation.
+        Document the error-prone or non-obvious ones and say why they
+        matter, keeping the likely audience in mind.
+    rationale:
+        Restating what names and types already say adds noise and hides the
+        useful notes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Resize resizes img.
+        //
+        // img is the image and width is the width.
+        func Resize(img Image, width int) Image
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Resize scales img to the given width, keeping its aspect ratio.
+        // A width of zero returns img unchanged.
+        func Resize(img Image, width int) Image
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, documentation, comments]
+    source: https://google.github.io/styleguide/go/best-practices#documentation-conventions-params

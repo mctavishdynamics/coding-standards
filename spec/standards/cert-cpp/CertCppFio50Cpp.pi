@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppFio50Cpp:
+    standard: @{CertCpp}
+    ruleId: FIO50-CPP
+    title: Do not alternately input and output from a file stream without an intervening positioning call
+    statement:
+        On a stream opened for both reading and writing, call a positioning
+        function such as seekg or seekp, or flush, between output and input,
+        and seek between input and output.
+    rationale:
+        Switching direction without an intervening positioning call is
+        undefined behavior under the C file rules that file streams follow.
+        CERT rates likelihood likely, detectable yes, repairable no,
+        priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        void append_and_read(std::fstream& file) {
+            file << "entry\n";
+            std::string line;
+            std::getline(file, line);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void append_and_read(std::fstream& file) {
+            file << "entry\n";
+            file.seekg(0, std::ios::beg);
+            std::string line;
+            std::getline(file, line);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [input-output, file-streams]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/input-output-fio/fio50-cpp

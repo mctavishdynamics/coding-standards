@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8NameMangling:
+    standard: @{Pep8}
+    ruleId: method-names-and-instance-variables-name-mangling
+    title: Use double leading underscores only to avoid subclass clashes
+    statement:
+        Use two leading underscores to trigger name mangling only to avoid
+        name conflicts with attributes in classes designed to be subclassed.
+    rationale:
+        Mangled names are awkward to reach, so they should serve only the
+        purpose they were made for.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Point:
+            def __init__(self, x, y):
+                self.__x = x
+                self.__y = y
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Point:
+            def __init__(self, x, y):
+                self.x = x
+                self.y = y
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, classes, inheritance]
+    source: https://peps.python.org/pep-0008/#method-names-and-instance-variables

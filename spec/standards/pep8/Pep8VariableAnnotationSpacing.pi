@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8VariableAnnotationSpacing:
+    standard: @{Pep8}
+    ruleId: variable-annotations
+    title: Space variable annotations like function annotations
+    statement:
+        In variable annotations, put one space after the colon and none
+        before it. If there is an assignment, put exactly one space on each
+        side of the equals sign.
+    rationale:
+        This matches the spacing of function annotations and keeps
+        declarations uniform.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        timeout:float
+        class Job:
+            name : str
+            retries: int=3
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        timeout: float
+
+        class Job:
+            name: str
+            retries: int = 3
+        \\\
+        ```
+    languages: [python]
+    tags: [type-hints, formatting, whitespace]
+    source: https://peps.python.org/pep-0008/#variable-annotations

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppHorizontalWhitespace:
+    standard: @{GoogleCpp}
+    ruleId: Horizontal_Whitespace
+    title: Use horizontal whitespace consistently and never trail it
+    statement:
+        Place spaces according to location: after keywords in conditions and
+        loops, around assignment and binary operators, usually none inside
+        parentheses, none inside template angle brackets, and none after
+        unary operators. Never leave trailing whitespace; remove it on lines
+        you change or in a separate cleanup.
+    rationale:
+        Consistent spacing aids reading, and trailing whitespace causes
+        needless merge conflicts for others.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if(x==0){
+          y = - x ;
+          std::vector< int > v;
+          v.push_back( y );
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        if (x == 0) {
+          y = -x;
+          std::vector<int> v;
+          v.push_back(y);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, whitespace]
+    source: https://google.github.io/styleguide/cppguide.html#Horizontal_Whitespace

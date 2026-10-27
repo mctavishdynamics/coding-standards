@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppExp53Cpp:
+    standard: @{CertCpp}
+    ruleId: EXP53-CPP
+    title: Do not read uninitialized memory
+    statement:
+        Give every object a value before reading it. Local variables and
+        memory from new without an initializer start with indeterminate
+        values.
+    rationale:
+        Reading an indeterminate value is undefined behavior, which can
+        produce wrong results, crashes or leaks of stale data. CERT rates
+        likelihood probable, detectable no, repairable yes, priority P12,
+        level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        int count_positive(const std::vector<int>& values) {
+            int count;
+            for (int v : values) {
+                if (v > 0) {
+                    ++count;
+                }
+            }
+            return count;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int count_positive(const std::vector<int>& values) {
+            int count = 0;
+            for (int v : values) {
+                if (v > 0) {
+                    ++count;
+                }
+            }
+            return count;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, initialization]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/expressions-exp/exp53-cpp

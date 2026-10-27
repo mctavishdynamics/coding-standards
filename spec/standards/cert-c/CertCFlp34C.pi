@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp34C:
+    standard: @{CertC}
+    ruleId: FLP34-C
+    title:
+        Ensure that floating-point conversions are within range of the new
+        type
+    statement:
+        Before converting a floating-point value to an integer or to a
+        narrower floating type, check that it lies in the range of the
+        destination type.
+    rationale:
+        Converting a value whose integral part does not fit the destination
+        type is undefined behavior, and on many systems it yields an
+        arbitrary result. CERT rates likelihood unlikely, detectable yes,
+        repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int to_cents(double amount) {
+            return (int)(amount * 100.0);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <limits.h>
+
+        int to_cents(double amount, int *out) {
+            double cents = amount * 100.0;
+            if (cents >= (double)INT_MAX + 1.0 || cents <= (double)INT_MIN - 1.0) {
+                return -1;
+            }
+            *out = (int)cents;
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [floating-point, conversions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/floating-point-flp/flp34-c

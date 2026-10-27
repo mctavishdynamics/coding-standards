@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppErr54Cpp:
+    standard: @{CertCpp}
+    ruleId: ERR54-CPP
+    title: Order catch handlers from most derived to least derived type
+    statement:
+        Order the handlers of a try block so that a handler for a derived
+        exception type comes before any handler for one of its base classes.
+    rationale:
+        Handlers are tried in order, so a base-class handler first swallows
+        derived exceptions and the more specific handler never runs. CERT
+        rates likelihood likely, detectable yes, repairable yes, priority
+        P18, level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        try {
+            connect_to(host);
+        } catch (const std::exception& e) {
+            report(e);
+        } catch (const std::system_error& e) {  // never reached
+            retry(e.code());
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        try {
+            connect_to(host);
+        } catch (const std::system_error& e) {
+            retry(e.code());
+        } catch (const std::exception& e) {
+            report(e);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [exceptions, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/exceptions-and-error-handling-err/err54-cpp

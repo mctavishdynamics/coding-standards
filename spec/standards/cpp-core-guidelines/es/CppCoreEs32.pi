@@ -1,0 +1,32 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs32:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.32
+    title: Use ALL_CAPS for all macro names
+    statement:
+        Spell every macro name in ALL_CAPS.
+    rationale:
+        The convention makes macros stand out from ordinary names, so
+        readers know the preprocessor is involved.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #define max_retries 5
+        #define debug_log(msg) std::fprintf(stderr, "%s\n", msg)
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #define MAX_RETRIES 5
+        #define DEBUG_LOG(msg) std::fprintf(stderr, "%s\n", msg)
+        \\\
+        ```
+    languages: [cpp]
+    tags: [macros, naming]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-all_caps

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppLineLength:
+    standard: @{GoogleCpp}
+    ruleId: Line_Length
+    title: Keep lines to at most 80 characters
+    statement:
+        Keep each line of code to 80 characters or fewer.
+    rationale:
+        So much existing code follows this limit that consistency outweighs
+        the controversy around it.
+    exceptions:
+        A line may be longer for a comment that cannot be split without
+        harm, such as a long URL or command; a string literal that cannot
+        easily be wrapped; an include statement; a header guard; or a
+        using-declaration.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        absl::Status status = server.RegisterHandler(kPath, std::move(handler), options);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        absl::Status status =
+            server.RegisterHandler(kPath, std::move(handler), options);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, line-length]
+    source: https://google.github.io/styleguide/cppguide.html#Line_Length

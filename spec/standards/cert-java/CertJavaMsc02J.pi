@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc02J:
+    standard: @{CertJava}
+    ruleId: MSC02-J
+    title: Generate strong random numbers
+    statement:
+        Use java.security.SecureRandom, not java.util.Random, for values
+        that must be unpredictable, such as tokens, keys and session IDs.
+    rationale:
+        java.util.Random is deterministic, and its seed is often guessable,
+        so an attacker can predict its output. CERT's risk assessment gives
+        likelihood probable, detectable no, repairable no, priority P6 and
+        level L2.
+    exceptions:
+        The default Random constructor may be used for noncritical work on
+        nonsensitive data, such as games or tests, if that use is
+        documented.
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        Random random = new Random();
+        long sessionId = random.nextLong();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        SecureRandom random = new SecureRandom();
+        long sessionId = random.nextLong();
+        \\\
+        ```
+    languages: [java]
+    tags: [security, randomness, cryptography]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/miscellaneous-msc/msc02-j/

@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs105:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.105
+    title: Don't divide by integer zero
+    statement:
+        Check that an integer divisor is not zero before dividing or taking
+        a remainder.
+    rationale:
+        Integer division by zero is undefined behavior and usually crashes
+        the program.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int average(int sum, int count) {
+            return sum / count;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int average(int sum, int count) {
+            Expects(count != 0);
+            return sum / count;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [arithmetic, undefined-behavior]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-zero

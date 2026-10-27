@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp30C:
+    standard: @{CertC}
+    ruleId: FLP30-C
+    title: Do not use floating-point variables as loop counters
+    statement:
+        Use an integer as the loop counter and compute any floating-point
+        value from it inside the loop.
+    rationale:
+        Floating-point values cannot represent many decimal fractions
+        exactly, so the number of iterations can differ from what the code
+        suggests and between platforms. CERT rates likelihood probable,
+        detectable yes, repairable yes, priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        void sample(void (*emit)(float)) {
+            for (float x = 0.1f; x <= 1.0f; x += 0.1f) {
+                emit(x);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void sample(void (*emit)(float)) {
+            for (int i = 1; i <= 10; i++) {
+                emit(i / 10.0f);
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [floating-point, loops]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/floating-point-flp/flp30-c

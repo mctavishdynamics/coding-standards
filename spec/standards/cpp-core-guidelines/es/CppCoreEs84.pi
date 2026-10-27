@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs84:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.84
+    title: Don't try to declare a local variable with no name
+    statement:
+        Give an RAII object such as a lock guard a name so it lives until
+        the end of the scope.
+    rationale:
+        There is no unnamed local variable. What looks like one is a
+        temporary that is destroyed at the end of the statement.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void update() {
+            std::lock_guard<std::mutex>{mtx};   // unlocked again immediately
+            ++counter;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void update() {
+            std::lock_guard<std::mutex> lock{mtx};
+            ++counter;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [raii, declarations]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-noname

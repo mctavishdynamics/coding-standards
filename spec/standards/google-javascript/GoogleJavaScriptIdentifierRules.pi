@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptIdentifierRules:
+    standard: @{GoogleJavaScript}
+    ruleId: 6.1
+    title: Use descriptive ASCII identifiers without unclear abbreviations
+    statement:
+        Identifiers use only ASCII letters and digits, with underscores and
+        dollar signs only in the few cases the guide allows. Make names as
+        descriptive as is reasonable, avoid abbreviations unfamiliar outside
+        your project, do not drop letters inside words, and do not use
+        Hungarian notation.
+    rationale:
+        Code is read far more often than written, and a clear name helps a
+        new reader more than saved horizontal space.
+    exceptions:
+        Variables in scope for ten lines or fewer, including non-exported
+        arguments, may have short names such as a single letter.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const nUsrRq = 0;
+        const kMaxRetries = 5;
+        function calcTtl(cstmr) {}
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const pendingUserRequests = 0;
+        const MAX_RETRIES = 5;
+        function calculateTotal(customer) {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming, readability]
+    source: https://google.github.io/styleguide/jsguide.html#61-rules-common-to-all-identifiers

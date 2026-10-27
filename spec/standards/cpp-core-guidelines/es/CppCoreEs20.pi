@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs20:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.20
+    title: Always initialize an object
+    statement:
+        Give every variable an initial value at its declaration.
+    rationale:
+        It rules out use-before-set bugs and their undefined behavior, makes
+        complex initialization easier to follow and simplifies refactoring.
+    exceptions:
+        An object about to be filled from input, such as a large buffer, may
+        be left uninitialized to avoid double initialization, but treat that
+        with suspicion. Simple variables that are targets of input
+        operations are not exempt.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int status;
+        if (connected) status = 200;
+        send(status);       // may read garbage
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int status = connected ? 200 : 503;
+        send(status);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [initialization, undefined-behavior]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-always

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8AsciiCompatibility:
+    standard: @{Pep8}
+    ruleId: ascii-compatibility
+    title: Keep standard library identifiers ASCII compatible
+    statement:
+        Identifiers in the standard library must be ASCII compatible, as set
+        out in the policy section of PEP 3131.
+    rationale:
+        ASCII identifiers can be typed and read by every user of the
+        standard library.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def résumé(text):
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def summary(text):
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, encoding]
+    source: https://peps.python.org/pep-0008/#ascii-compatibility

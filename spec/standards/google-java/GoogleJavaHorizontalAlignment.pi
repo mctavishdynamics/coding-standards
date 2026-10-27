@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaHorizontalAlignment:
+    standard: @{GoogleJava}
+    ruleId: 4.6.3
+    title: Do not require horizontal alignment
+    statement:
+        Aligning tokens across lines with extra spaces is permitted but
+        never required, and existing alignment need not be maintained. When
+        an edit breaks alignment, do not touch neighbouring lines just to
+        realign them.
+    rationale:
+        Realigning unrelated lines pollutes version history, slows review
+        and causes merge conflicts, which outweighs any gain in looks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        private int    retries;   // edited lines force
+        private String hostName;  // realignment of others
+        private Duration timeout; // or leave a ragged mess
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private int retries; // no alignment to maintain
+        private String hostName;
+        private Duration timeout;
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, whitespace, alignment]
+    source: https://google.github.io/styleguide/javaguide.html#s4.6.3-horizontal-alignment

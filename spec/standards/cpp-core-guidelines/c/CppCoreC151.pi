@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC151:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.151
+    title: Use make_shared to construct objects owned by shared_ptr
+    statement:
+        Create objects that a shared_ptr will own with std::make_shared
+        instead of new. The guide refers to R.22 for the details.
+    rationale:
+        make_shared is shorter and can allocate the object and its reference
+        count together, saving an allocation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::shared_ptr<Session> s(new Session(user));
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto s = std::make_shared<Session>(user);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, smart-pointers, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-make_shared

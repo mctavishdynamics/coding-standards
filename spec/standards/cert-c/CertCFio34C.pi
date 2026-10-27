@@ -1,0 +1,57 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio34C:
+    standard: @{CertC}
+    ruleId: FIO34-C
+    title:
+        Distinguish between characters read from a file and EOF or WEOF
+    statement:
+        Keep the result of fgetc, getc, getchar and their wide forms in an
+        int or wint_t, never a char. When the result equals EOF or WEOF,
+        call feof and ferror to find out whether the stream really ended or
+        failed.
+    rationale:
+        Narrowing the result to char can turn a valid byte into EOF or make
+        EOF unreachable, and on platforms where char and int have the same
+        width a real character can compare equal to EOF. CERT rates
+        likelihood probable, detectable yes, repairable yes, priority P18,
+        level L1.
+    exceptions:
+        Functions such as fclose, fflush, fputs and scanf return EOF only as
+        a status code, so their results may be compared with EOF directly.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        size_t count_lines(FILE *in) {
+            size_t lines = 0;
+            char c;
+            while ((c = getc(in)) != EOF) {
+                if (c == '\n') {
+                    lines++;
+                }
+            }
+            return lines;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int count_lines(FILE *in, size_t *lines) {
+            int c;
+            *lines = 0;
+            while ((c = getc(in)) != EOF) {
+                if (c == '\n') {
+                    (*lines)++;
+                }
+            }
+            return ferror(in) ? -1 : 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [io, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/input-output-fio/fio34-c

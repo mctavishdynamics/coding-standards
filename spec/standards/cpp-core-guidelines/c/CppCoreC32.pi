@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC32:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.32
+    title: Decide whether a raw pointer or reference member owns its target
+    statement:
+        When a class holds a T* or T& member, determine whether it owns the
+        object. Make ownership explicit, for example with a smart pointer or
+        owner, rather than leaving it implied.
+    rationale:
+        Much code is vague about ownership, which leads to leaks or double
+        deletes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Node {
+            Node* next_;   // owned or not? nobody can tell
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Node {
+            std::unique_ptr<Node> next_;   // owns the next node
+            Node* parent_ = nullptr;       // non-owning
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [destructors, ownership, pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-dtor-ptr

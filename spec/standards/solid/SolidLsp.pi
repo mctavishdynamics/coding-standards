@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./Solid import Solid
+
+export coding-rule SolidLsp:
+    standard: @{Solid}
+    ruleId: LSP
+    title: Make derived classes substitutable for their base classes
+    statement:
+        Code that uses a base type must keep working, without knowing it,
+        when given any subtype. A subtype keeps the base type's contract, so
+        it may not demand more of callers or promise less to them than the
+        base does.
+    rationale:
+        Barbara Liskov defined subtyping as substitution that leaves program
+        behaviour unchanged. A subtype that breaks the contract forces
+        callers to check concrete types, which in turn violates the
+        open-closed principle.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Rectangle {
+            void setWidth(int w) { this.w = w; }
+            void setHeight(int h) { this.h = h; }
+        }
+
+        class Square extends Rectangle {
+            // Silently changes both sides, breaking callers that set them separately.
+            void setWidth(int w) { this.w = w; this.h = w; }
+            void setHeight(int h) { this.w = h; this.h = h; }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        interface Shape {
+            int area();
+        }
+
+        record Rectangle(int width, int height) implements Shape {
+            public int area() { return width * height; }
+        }
+
+        record Square(int side) implements Shape {
+            public int area() { return side * side; }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design, inheritance, contracts]
+    source: https://web.archive.org/web/20070121182736/http://www.objectmentor.com/resources/articles/lsp.pdf

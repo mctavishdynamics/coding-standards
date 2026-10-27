@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlStr2:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.str.2
+    title: Use std::string_view or gsl::span<char> to refer to character sequences
+    statement:
+        Take a string_view, or a span of char when the text must be mutable,
+        to refer to characters you do not own.
+    rationale:
+        These give simple, potentially safe access to characters regardless
+        of how they are stored, so one function accepts string literals, C
+        strings and std::string alike. string_view is read-only.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        bool has_prefix(const std::string& text, const std::string& prefix);
+
+        has_prefix(line, "GET ");   // builds a temporary std::string
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        bool has_prefix(std::string_view text, std::string_view prefix);
+
+        has_prefix(line, "GET ");
+        \\\
+        ```
+    languages: [cpp]
+    tags: [strings, interfaces, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rstr-view

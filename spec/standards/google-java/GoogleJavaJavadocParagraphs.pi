@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaJavadocParagraphs:
+    standard: @{GoogleJava}
+    ruleId: 7.1.2
+    title: Separate Javadoc paragraphs correctly
+    statement:
+        In traditional Javadoc, put a line holding only the aligned asterisk
+        between paragraphs and before the block tags, and start each
+        paragraph after the first with a p tag directly before its first
+        word. Do not put a p tag before other block elements such as lists
+        or tables. In Markdown Javadoc, separate paragraphs with an
+        otherwise blank triple-slash line and no p tag.
+    rationale:
+        Consistent paragraph markup renders correctly and reads cleanly in
+        the source.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        /**
+         * Sends the batch.
+         * <p> Retries up to three times.
+         * @param batch the messages to send
+         */
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        /**
+         * Sends the batch.
+         *
+         * <p>Retries up to three times.
+         *
+         * @param batch the messages to send
+         */
+        \\\
+        ```
+    languages: [java]
+    tags: [javadoc, documentation, formatting]
+    source: https://google.github.io/styleguide/javaguide.html#s7.1.2-javadoc-paragraphs

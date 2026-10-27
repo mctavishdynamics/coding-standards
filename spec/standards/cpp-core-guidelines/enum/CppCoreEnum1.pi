@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEnum1:
+    standard: @{CppCoreGuidelines}
+    ruleId: Enum.1
+    title: Prefer enumerations over macros
+    statement:
+        Define sets of named constants as enumerations rather than
+        preprocessor macros.
+    rationale:
+        Macros ignore scope and type rules, and their names disappear during
+        preprocessing, so debuggers usually cannot show them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #define LEVEL_DEBUG 0
+        #define LEVEL_INFO  1
+        #define LEVEL_ERROR 2
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum class Level { debug, info, error };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [enumerations, macros, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#renum-macro

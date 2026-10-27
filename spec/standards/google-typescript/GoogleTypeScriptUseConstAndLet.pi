@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptUseConstAndLet:
+    standard: @{GoogleTypeScript}
+    ruleId: use-const-and-let
+    title: Declare variables with const or let, never var
+    statement:
+        Use const by default and let only when the variable is reassigned.
+        Never use var, and never use a variable before its declaration.
+    rationale:
+        const and let are block scoped like variables in most languages,
+        while var is function scoped and causes confusing bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        var total = 0;
+        for (var i = 0; i < prices.length; i++) {
+          total += prices[i];
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        let total = 0;
+        for (const price of prices) {
+          total += price;
+        }
+        const average = total / prices.length;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [variables, scoping]
+    source: https://google.github.io/styleguide/tsguide.html#use-const-and-let

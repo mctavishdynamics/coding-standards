@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlCon2:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.con.2
+    title: Prefer using STL vector by default unless you have a reason to use a different container
+    statement:
+        Make std::vector the default container, std::array when the size is
+        fixed, and pick another container only for a good reason. Do not use
+        a std::string as a general container of characters.
+    rationale:
+        Contiguous storage gives the fastest access, prefetch-friendly
+        traversal and no per-element overhead, so a vector usually beats
+        lists and maps even for operations they are designed for, up to a
+        few kilobytes.
+    exceptions:
+        Use a map or unordered_map when you need guaranteed lookup
+        complexity on a large container with frequent inserts, where keeping
+        a sorted vector is infeasible.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::list<int> recent_ids;      // small, traversed often
+        for (int id : recent_ids) audit(id);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<int> recent_ids;
+        for (int id : recent_ids) audit(id);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rsl-vector

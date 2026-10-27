@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI11:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.11
+    title: Never transfer ownership by a raw pointer or reference
+    statement:
+        Do not pass or return ownership through T* or T&. Use a value, a
+        smart pointer such as unique_ptr, or owner from the GSL.
+    rationale:
+        When it is unclear whether caller or callee owns an object, the
+        result is leaks or premature destruction. Raw pointers are assumed
+        not to own.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Widget* make_widget(int id) {
+            return new Widget(id);   // who deletes it?
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::unique_ptr<Widget> make_widget(int id) {
+            return std::make_unique<Widget>(id);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, ownership, pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-raw

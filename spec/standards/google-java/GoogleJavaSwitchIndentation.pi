@@ -1,0 +1,55 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaSwitchIndentation:
+    standard: @{GoogleJava}
+    ruleId: 4.8.4.1
+    title: Indent switch contents by two spaces
+    statement:
+        Indent the switch labels two spaces inside the switch braces. In a
+        new-style switch, a rule may sit on one line if it fits, wrapped
+        lines follow the normal plus-four continuation indent, and a rule
+        with a block indents that block's contents two more spaces. In an
+        old-style switch, break the line after each label's colon and indent
+        the statements two more spaces.
+    rationale:
+        Switches then look like every other block, and the labels stand out
+        from the statements they guard.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        switch (status) {
+        case ACTIVE: activate(); break;
+        case CLOSED:
+        archive();
+        break;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        switch (status) {
+          case ACTIVE:
+            activate();
+            break;
+          case CLOSED:
+            archive();
+            break;
+        }
+
+        switch (status) {
+          case ACTIVE -> activate();
+          case CLOSED -> {
+            archive();
+            notifyOwner();
+          }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, switch, indentation]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.4.1-switch-indentation

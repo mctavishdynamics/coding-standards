@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc38C:
+    standard: @{CertC}
+    ruleId: MSC38-C
+    title:
+        Do not treat a predefined identifier as an object if it might only
+        be implemented as a macro
+    statement:
+        Do not declare, take the address of, or suppress the macro form of
+        identifiers that may exist only as macros, namely assert, errno,
+        math_errhandling, setjmp, va_arg, va_copy, va_end and va_start.
+        Include the header and use them as macros.
+    rationale:
+        Treating these as functions or objects is undefined behavior and may
+        fail to compile or refer to the wrong thing. CERT rates likelihood
+        unlikely, detectable yes, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        extern int errno;
+
+        int failed(void) {
+            return errno != 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <errno.h>
+
+        int failed(void) {
+            return errno != 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [macros, library, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/miscellaneous-msc/msc38-c

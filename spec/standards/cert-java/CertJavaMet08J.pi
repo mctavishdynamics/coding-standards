@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet08J:
+    standard: @{CertJava}
+    ruleId: MET08-J
+    title: Preserve the equality contract when overriding the equals() method
+    statement:
+        Make equals reflexive, symmetric, transitive and consistent, and
+        return false for null. Prefer composition over subclassing a
+        concrete class when adding fields that affect equality.
+    rationale:
+        Collections and other code rely on the contract, and a broken equals
+        gives erratic results such as an element that is in a set and also
+        not. CERT rates likelihood unlikely, detectable no, repairable no,
+        priority P1, level L3.
+    exceptions:
+        The contract may be relaxed when incompatible types are never
+        compared with each other.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        @Override public boolean equals(Object o) {
+            if (o instanceof String) return name.equalsIgnoreCase((String) o);
+            return o instanceof Tag && name.equalsIgnoreCase(((Tag) o).name);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Override public boolean equals(Object o) {
+            return o instanceof Tag && name.equalsIgnoreCase(((Tag) o).name);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [equality, contracts]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met08-j/

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppUseOfConst:
+    standard: @{GoogleCpp}
+    ruleId: Use_of_const
+    title: Use const in APIs wherever it is meaningful
+    statement:
+        Use const on reference and pointer parameters a function does not
+        modify, on methods that do not change logical state, and on
+        non-local variables where accurate. Do not put const on by-value
+        parameters in declarations. Const operations of a class must be safe
+        to call concurrently, or the class must be documented as
+        thread-unsafe.
+    rationale:
+        Const gives compiler-checked documentation of what an operation can
+        change, which is essential for writing thread-safe code.
+    exceptions:
+        Const on local variables is neither encouraged nor discouraged.
+        Writing const before the type is encouraged but not required.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Inventory {
+         public:
+          int Count(std::string& sku);
+          void Add(const int quantity);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Inventory {
+         public:
+          int Count(const std::string& sku) const;
+          void Add(int quantity);
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [const, api-design]
+    source: https://google.github.io/styleguide/cppguide.html#Use_of_const

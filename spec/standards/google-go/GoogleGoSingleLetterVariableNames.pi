@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoSingleLetterVariableNames:
+    standard: @{GoogleGo}
+    ruleId: decisions/v
+    title: Use single-letter names only where the meaning is obvious
+    statement:
+        Limit single-letter names to cases where the full word is obvious
+        and repeating it would be noisy, such as receivers, r for a reader
+        or request, w for a writer, and integer loop indexes or coordinates.
+        Short abbreviations are fine as loop variables over a short scope.
+    rationale:
+        A single letter cuts repetition in tight code but makes code opaque
+        when the reader cannot infer what it stands for.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func ship(o *Order) error {
+            q := o.Items
+            z := computeWeight(q)
+            return carrier.Book(z)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func handle(w http.ResponseWriter, r *http.Request) {
+            for i, item := range r.URL.Query()["item"] {
+                fmt.Fprintf(w, "%d: %s\n", i, item)
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, naming, variables]
+    source: https://google.github.io/styleguide/go/decisions#v

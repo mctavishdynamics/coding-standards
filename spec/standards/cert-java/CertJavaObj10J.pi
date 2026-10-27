@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj10J:
+    standard: @{CertJava}
+    ruleId: OBJ10-J
+    title: Do not use public static nonfinal fields
+    statement:
+        Do not declare public static fields that are not final. Make them
+        private with accessor methods, or final if they are constants.
+    rationale:
+        Any code can change such a field without a security check or
+        validation, threads can update it inconsistently, and untrusted code
+        can store an unexpected subtype in it. CERT rates likelihood
+        probable, detectable yes, repairable no, priority P8, level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        public static String endpoint = "https://api.example.com";
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public static final String ENDPOINT = "https://api.example.com";
+        \\\
+        ```
+    languages: [java]
+    tags: [static, encapsulation, access-control]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/object-orientation-obj/obj10-j/

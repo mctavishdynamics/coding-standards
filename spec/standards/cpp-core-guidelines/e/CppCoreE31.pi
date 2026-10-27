@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE31:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.31
+    title: Properly order your catch clauses
+    statement:
+        Put handlers for derived exception types before handlers for their
+        bases, and put a catch-all handler last.
+    rationale:
+        Catch clauses are tried in order, so a base class handler or a
+        catch-all placed early hides every handler after it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        try {
+            connect(server);
+        } catch (const std::exception& e) {
+            log(e.what());
+        } catch (const TimeoutError& e) {   // never reached
+            retry_later();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        try {
+            connect(server);
+        } catch (const TimeoutError& e) {
+            retry_later();
+        } catch (const std::exception& e) {
+            log(e.what());
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, exceptions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re_catch

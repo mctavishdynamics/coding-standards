@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonGenerics:
+    standard: @{GooglePython}
+    ruleId: 3.19.15
+    title: Give generic types their type parameters
+    statement:
+        Specify type parameters for generic types in annotations, since
+        missing parameters default to Any. If Any really is best, write it
+        explicitly, but consider whether a TypeVar fits better.
+    rationale:
+        Bare generics silently lose type information that the checker could
+        otherwise verify.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def index_by_id(items: Sequence) -> Mapping:
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def index_by_id(items: Sequence[Item]) -> Mapping[int, Item]:
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, generics]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.15-generics

@@ -1,0 +1,25 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec10J:
+    standard: @{CertJava}
+    ruleId: SEC10-J
+    title: Never permit untrusted code to invoke any API that may (possibly transitively) invoke the reflection APIs
+    statement:
+        Do not let untrusted code call any API that uses reflection with the
+        permissions of trusted code, directly or through other calls.
+    rationale:
+        Reflection with trusted permissions is among the most serious
+        breaches in Java. The source marks this proposed rule as under
+        construction and incomplete.
+    exceptions:
+        Such indirect calls are allowed when the arguments are fully
+        sanitized and the results of the reflective operations are fully
+        hidden from the caller.
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [java]
+    tags: [security, reflection, untrusted-code]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/platform-security-sec/sec10-j/

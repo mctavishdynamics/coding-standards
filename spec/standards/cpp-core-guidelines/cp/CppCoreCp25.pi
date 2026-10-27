@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp25:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.25
+    title: Prefer gsl::joining_thread over std::thread
+    statement:
+        Use a thread type that joins in its destructor, such
+        as gsl::joining_thread or C++20 std::jthread, instead
+        of std::thread.
+    rationale:
+        A std::thread that is still joinable when destroyed terminates the
+        program, and forgetting to join is easy. Threads that might be
+        detached are hard to monitor and to prove correct.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int main()
+        {
+            std::thread loader(load_assets);
+            std::thread audio(start_audio);
+        }   // destroyed while joinable: std::terminate
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int main()
+        {
+            std::jthread loader(load_assets);
+            std::jthread audio(start_audio);
+        }   // both join automatically
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, threads, raii]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-joining_thread

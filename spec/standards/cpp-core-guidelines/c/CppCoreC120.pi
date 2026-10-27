@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC120:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.120
+    title: Use class hierarchies only for inherently hierarchical concepts
+    statement:
+        Use inheritance to model ideas that really form a hierarchy, where
+        the base concept fits every derived type. Do not inherit when a data
+        member would do.
+    rationale:
+        Representing the problem directly eases comprehension and
+        maintenance, while inheritance used for convenience creates tight
+        coupling that does not reflect the design.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Engine { public: void start(); };
+        class Car : public Engine {};   // a car is not an engine
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Car {
+        public:
+            void start() { engine_.start(); }
+        private:
+            Engine engine_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, design]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-domain

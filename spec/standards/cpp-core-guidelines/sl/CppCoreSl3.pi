@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSl3:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.3
+    title: Do not add non-standard entities to namespace std
+    statement:
+        Declare your own types and functions in your own namespace, not in
+        std.
+    rationale:
+        Additions to std can change the meaning of conforming code and may
+        clash with future versions of the standard.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        namespace std {
+            template<typename T>
+            class ring_buffer { /* ... */ };
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace telemetry {
+            template<typename T>
+            class ring_buffer { /* ... */ };
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [standard-library, namespaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#sl-std

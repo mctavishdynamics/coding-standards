@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoNaming:
+    standard: @{GoogleGo}
+    ruleId: guide/naming
+    title: Choose names that fit their context without repetition
+    statement:
+        Pick names that take their context into account, do not feel
+        repetitive when used, and do not repeat concepts that are already
+        clear.
+    rationale:
+        Go names are read together with their package, type and scope, so
+        the context already supplies much of the meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package invoice
+
+        func ProcessInvoiceItems(invoiceItemList []InvoiceItem) error
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package invoice
+
+        func ProcessItems(items []Item) error
+        \\\
+        ```
+    languages: [go]
+    tags: [guide, naming]
+    source: https://google.github.io/styleguide/go/guide#naming

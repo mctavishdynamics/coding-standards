@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSer04J:
+    standard: @{CertJava}
+    ruleId: SER04-J
+    title: Do not allow serialization and deserialization to bypass the security manager
+    statement:
+        Repeat the security manager checks a class performs in its
+        constructors and accessors inside readObject, writeObject and
+        similar serialization methods.
+    rationale:
+        Deserialization builds objects without calling constructors, and
+        serialization exposes state without calling accessors, so checks
+        done only there are skipped. CERT's risk assessment gives likelihood
+        probable, detectable yes, repairable yes, priority P18 and level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        private void readObject(ObjectInputStream in)
+                throws IOException, ClassNotFoundException {
+            in.defaultReadObject();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private void readObject(ObjectInputStream in)
+                throws IOException, ClassNotFoundException {
+            performSecurityManagerCheck();
+            in.defaultReadObject();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, security-manager]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/serialization-ser/ser04-j/

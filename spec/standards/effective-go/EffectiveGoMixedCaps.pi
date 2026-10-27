@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoMixedCaps:
+    standard: @{EffectiveGo}
+    ruleId: mixed-caps
+    title: Write multiword names in MixedCaps
+    statement:
+        Use MixedCaps or mixedCaps for multiword names instead of
+        underscores.
+    rationale:
+        This is the Go convention, and the case of the first letter already
+        decides whether a name is exported.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var max_conn_count = 64
+
+        func Parse_Header(line string) Header
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var maxConnCount = 64
+
+        func ParseHeader(line string) Header
+        \\\
+        ```
+    languages: [go]
+    tags: [naming]
+    source: https://go.dev/doc/effective_go#mixed-caps

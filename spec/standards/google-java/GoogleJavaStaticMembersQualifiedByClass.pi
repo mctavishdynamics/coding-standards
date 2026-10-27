@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaStaticMembersQualifiedByClass:
+    standard: @{GoogleJava}
+    ruleId: 6.3
+    title: Qualify static members with the class name
+    statement:
+        When a static member needs qualifying, qualify it with its class
+        name, not with an instance or an expression of that class's type.
+    rationale:
+        Calling a static member through an instance suggests it depends on
+        that instance, which it does not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        Duration timeout = config.timeout();
+        timeout.ofSeconds(30);
+        newClock().systemUTC();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Duration timeout = Duration.ofSeconds(30);
+        Clock clock = Clock.systemUTC();
+        \\\
+        ```
+    languages: [java]
+    tags: [static-members, readability]
+    source: https://google.github.io/styleguide/javaguide.html#s6.3-static-members

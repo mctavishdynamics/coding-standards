@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCpl2:
+    standard: @{CppCoreGuidelines}
+    ruleId: CPL.2
+    title: If you must use C, use the common subset of C and C++, and compile the C code as C++
+    statement:
+        When code has to be C, keep it within the subset that is valid in
+        both languages and compile it with a C++ compiler.
+    rationale:
+        Such code builds with either compiler, and compiling it as C++ gives
+        better type checking than pure C.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int* ids = malloc(count * sizeof(int));   // valid C only
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int* ids = (int*) malloc(count * sizeof(int));   // valid C and C++
+        \\\
+        ```
+    languages: [cpp]
+    tags: [c-compatibility, build]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rcpl-subset

@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppExceptionsToNamingRules:
+    standard: @{GoogleCpp}
+    ruleId: Exceptions_to_Naming_Rules
+    title: Follow existing conventions for analogous entities
+    statement:
+        When naming something analogous to an existing C or C++ entity, or a
+        Rust entity reached through interop, you may follow that entity's
+        naming scheme.
+    rationale:
+        Matching the convention of the thing it mirrors, such as an STL-like
+        container, makes the new name familiar.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```cpp
+        \\\
+        template <typename Key, typename Value>
+        class sparse_hash_map;  // STL-like container follows STL naming.
+
+        constexpr int64_t LONGLONG_MAX = INT64_MAX;  // Mirrors INT_MAX.
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, consistency]
+    source: https://google.github.io/styleguide/cppguide.html#Exceptions_to_Naming_Rules

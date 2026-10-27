@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ClosingBracketPlacement:
+    standard: @{Pep8}
+    ruleId: indentation-closing-brackets
+    title: Line up the closing bracket of a multiline construct
+    statement:
+        Place the closing bracket of a multiline construct either under the
+        first non-whitespace character of the last line, or under the first
+        character of the line that opens the construct.
+    rationale:
+        Both placements make the end of the construct easy to find; anything
+        else looks accidental.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        ports = [
+            8000, 8001,
+            8443, 9000,
+                ]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        ports = [
+            8000, 8001,
+            8443, 9000,
+        ]
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, indentation]
+    source: https://peps.python.org/pep-0008/#indentation

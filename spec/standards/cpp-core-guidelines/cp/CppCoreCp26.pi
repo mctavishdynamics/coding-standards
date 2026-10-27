@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp26:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.26
+    title: Do not detach a thread
+    statement:
+        Instead of calling detach(), give a long-running thread an owner
+        whose scope matches how long the thread should live, such as a
+        global or an owning pointer.
+    rationale:
+        A detached thread is hard to monitor and communicate with, so it is
+        hard to know whether it finished correctly or is still alive when it
+        should be.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void start_service()
+        {
+            std::thread watchdog(run_watchdog);
+            watchdog.detach();   // nobody can tell if it is still running
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::unique_ptr<std::jthread> watchdog;
+
+        void start_service()
+        {
+            watchdog = std::make_unique<std::jthread>(run_watchdog);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, threads, lifetime]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-detached_thread

@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./Solid import Solid
+
+export coding-rule SolidDip:
+    standard: @{Solid}
+    ruleId: DIP
+    title: Depend on abstractions, not on concrete details
+    statement:
+        High-level modules do not depend on low-level modules; both depend
+        on abstractions. Abstractions do not depend on details; details
+        depend on abstractions, typically through interfaces owned by the
+        high-level policy.
+    rationale:
+        High-level modules hold the important business policy. If they
+        depend on low-level details, changes in those details force changes
+        in the policy and the policy cannot be reused in other contexts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class ReportService {
+            private final MySqlOrderTable orders = new MySqlOrderTable();
+
+            Report monthly(YearMonth month) {
+                return Report.of(orders.selectByMonth(month));
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        interface OrderSource {
+            List<Order> ordersIn(YearMonth month);
+        }
+
+        class ReportService {
+            private final OrderSource orders;
+
+            ReportService(OrderSource orders) { this.orders = orders; }
+
+            Report monthly(YearMonth month) {
+                return Report.of(orders.ordersIn(month));
+            }
+        }
+        \\\
+        ```
+    languages: [any]
+    tags: [design, dependencies, abstraction]
+    source: https://web.archive.org/web/20110104023210/http://www.objectmentor.com/resources/articles/dip.pdf

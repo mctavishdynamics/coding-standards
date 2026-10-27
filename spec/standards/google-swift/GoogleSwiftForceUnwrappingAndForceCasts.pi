@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftForceUnwrappingAndForceCasts:
+    standard: @{GoogleSwift}
+    ruleId: force-unwrapping-and-force-casts
+    title: Avoid force unwrapping and force casts
+    statement:
+        Strongly avoid force unwrapping and force casting. When one is used
+        and its safety is not obvious from the surrounding code, add a
+        comment stating the invariant that makes it safe.
+    rationale:
+        A wrong force unwrap or cast crashes the program.
+    exceptions:
+        Tests may force unwrap without comments, since a failure there
+        simply fails the test.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Row") as! RowCell
+        let port = Int(portText)!
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        guard let port = Int(portText) else {
+          throw ConfigError.invalidPort(portText)
+        }
+        // Safe: `Weekday` has a case for every raw value from 1 through 7.
+        let day = Weekday(rawValue: calendar.component(.weekday, from: date))!
+        \\\
+        ```
+    languages: [swift]
+    tags: [optionals, safety]
+    source: https://google.github.io/swift/#force-unwrapping-and-force-casts

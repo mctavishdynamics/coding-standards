@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCStr32C:
+    standard: @{CertC}
+    ruleId: STR32-C
+    title:
+        Do not pass a non-null-terminated character sequence to a library
+        function that expects a string
+    statement:
+        Make sure a character array is null-terminated before passing it to
+        a function that expects a string, such as strlen, strcpy or printf
+        with the s conversion.
+    rationale:
+        Without a terminator the function reads past the end of the array,
+        which is undefined behavior and can leak or corrupt memory. CERT
+        rates likelihood probable, detectable no, repairable yes, priority
+        P12, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        #include <stdio.h>
+        #include <string.h>
+
+        void show(const char *name) {
+            char buf[8];
+            strncpy(buf, name, sizeof buf);
+            puts(buf);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdio.h>
+        #include <string.h>
+
+        void show(const char *name) {
+            char buf[8];
+            strncpy(buf, name, sizeof buf - 1);
+            buf[sizeof buf - 1] = '\0';
+            puts(buf);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [strings, null-termination]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/characters-and-strings-str/str32-c

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoParallelAssignmentInFor:
+    standard: @{EffectiveGo}
+    ruleId: for-parallel-assignment
+    title: Use parallel assignment for several loop variables
+    statement:
+        To step more than one variable in a for loop, use parallel
+        assignment in the post statement, since Go has no comma operator and
+        increment is a statement.
+    rationale:
+        It is the only way to update several loop variables together in Go.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```go
+        \\\
+        // reverse reverses s in place.
+        func reverse(s []byte) {
+            for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+                s[i], s[j] = s[j], s[i]
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [loops, syntax]
+    source: https://go.dev/doc/effective_go#for

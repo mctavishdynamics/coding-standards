@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsFunctionsDeclarations:
+    standard: @{AirbnbJavaScript}
+    ruleId: 7.1
+    title: Use named function expressions instead of declarations
+    statement:
+        Define functions as named function expressions assigned to a const,
+        and give the expression an explicit name, rather than using function
+        declarations. Enforced by the ESLint rules func-style and
+        func-names.
+    rationale:
+        Declarations are hoisted, so it is too easy to call a function
+        before its definition in the file. An explicit name keeps call
+        stacks clear whatever name the engine would infer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function parseDate(text) {
+          return new Date(text);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const parseDate = function parseIsoDate(text) {
+          return new Date(text);
+        };
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, hoisting]
+    source: https://github.com/airbnb/javascript#functions--declarations

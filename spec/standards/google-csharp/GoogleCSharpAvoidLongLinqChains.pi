@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpAvoidLongLinqChains:
+    standard: @{GoogleCSharp}
+    ruleId: avoid-long-linq-chains
+    title: Prefer short LINQ calls over long chains
+    statement:
+        Prefer single-line LINQ calls and imperative code to long LINQ
+        chains, and avoid mixing imperative code with heavily chained LINQ.
+    rationale:
+        Long chains and mixtures are hard to read and debug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        var report = orders.Where(o => o.Paid).GroupBy(o => o.Region)
+            .Select(g => new { g.Key, Total = g.Sum(o => o.Total) })
+            .OrderByDescending(x => x.Total).Take(5).ToList();
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        var paidOrders = orders.Where(o => o.Paid);
+        var totalsByRegion = new Dictionary<string, decimal>();
+        foreach (var order in paidOrders) {
+          totalsByRegion.TryGetValue(order.Region, out var sum);
+          totalsByRegion[order.Region] = sum + order.Total;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [linq, readability]
+    source: https://google.github.io/styleguide/csharpguide.html#linq

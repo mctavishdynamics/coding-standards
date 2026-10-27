@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoImportGrouping:
+    standard: @{GoogleGo}
+    ruleId: decisions/import-grouping
+    title: Group imports in the standard order
+    statement:
+        Organise imports into blank-line separated groups in this order: the
+        standard library, other project and vendored packages, protocol
+        buffer packages, and blank imports for side effects.
+    rationale:
+        A fixed grouping makes the dependencies of a file easy to scan.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        import (
+            "example.com/billing/ledger"
+            "fmt"
+            _ "time/tzdata"
+            lpb "example.com/billing/ledger_go_proto"
+            "os"
+        )
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        import (
+            "fmt"
+            "os"
+
+            "example.com/billing/ledger"
+
+            lpb "example.com/billing/ledger_go_proto"
+
+            _ "time/tzdata"
+        )
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, imports, formatting]
+    source: https://google.github.io/styleguide/go/decisions#import-grouping

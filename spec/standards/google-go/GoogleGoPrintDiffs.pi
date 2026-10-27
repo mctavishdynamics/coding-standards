@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoPrintDiffs:
+    standard: @{GoogleGo}
+    ruleId: decisions/print-diffs
+    title: Print a diff for large outputs
+    statement:
+        When outputs are large, print a diff rather than both values,
+        preferably with cmp.Diff. State the diff direction in the message,
+        such as (-want +got), and put a newline before the diff.
+    rationale:
+        Differences in large values are hard to spot by eye, and without a
+        key the reader cannot tell which side is which.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if got != want {
+            t.Errorf("Render() = %s, want %s", got, want)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if diff := cmp.Diff(want, got); diff != "" {
+            t.Errorf("Render() mismatch (-want +got):\n%s", diff)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, test-failures]
+    source: https://google.github.io/styleguide/go/decisions#print-diffs

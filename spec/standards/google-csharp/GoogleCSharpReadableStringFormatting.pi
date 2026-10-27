@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpReadableStringFormatting:
+    standard: @{GoogleCSharp}
+    ruleId: readable-string-formatting
+    title: Build strings in the most readable way
+    statement:
+        Use whichever of interpolation, String.Format, String.Concat or the
+        plus operator is easiest to read, especially in logging and assert
+        messages.
+    rationale:
+        For most strings, readability matters more than the method used.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        _log.Info(String.Concat("User ", id, " logged in from ", ip, "."));
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        _log.Info($"User {id} logged in from {ip}.");
+        \\\
+        ```
+    languages: [csharp]
+    tags: [strings, readability]
+    source: https://google.github.io/styleguide/csharpguide.html#string-interpolation-vs-stringformat-vs-stringconcat-vs-operator

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpClosingBraceAlignment:
+    standard: @{GoogleCSharp}
+    ruleId: closing-brace-alignment
+    title: Align closing braces with the opening line
+    statement:
+        Align a closing brace with the first character of the line that
+        holds the opening brace, including for lambdas and other scoped
+        blocks.
+    rationale:
+        The block's extent is clear at a glance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        Func<int, int> square = x => {
+                                  return x * x;
+                                };
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        Func<int, int> square = x => {
+          return x * x;
+        };
+        \\\
+        ```
+    languages: [csharp]
+    tags: [formatting, braces, lambdas]
+    source: https://google.github.io/styleguide/csharpguide.html#expression-body-syntax

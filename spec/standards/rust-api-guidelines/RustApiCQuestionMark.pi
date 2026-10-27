@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCQuestionMark:
+    standard: @{RustApiGuidelines}
+    ruleId: C-QUESTION-MARK
+    title: Use the question mark operator in examples, not try! or unwrap
+    statement:
+        Write fallible doc examples with the question mark operator, using
+        hidden lines to wrap them in a function that returns a Result.
+    rationale:
+        Users often copy examples verbatim, and unwrapping an error should
+        be a deliberate choice they make, not one the example makes for
+        them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        /// ```
+        /// let cfg = Config::load("app.toml").unwrap();
+        /// ```
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        /// ```
+        /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+        /// let cfg = Config::load("app.toml")?;
+        /// # Ok(())
+        /// # }
+        /// ```
+        \\\
+        ```
+    languages: [rust]
+    tags: [documentation, examples, error-handling]
+    source: https://rust-lang.github.io/api-guidelines/documentation.html#c-question-mark

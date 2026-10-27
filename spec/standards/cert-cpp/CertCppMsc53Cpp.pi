@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppMsc53Cpp:
+    standard: @{CertCpp}
+    ruleId: MSC53-CPP
+    title: Do not return from a function declared noreturn
+    statement:
+        Make every path of a function declared with the noreturn attribute
+        end by throwing, looping forever or calling another noreturn
+        function.
+    rationale:
+        Returning from a noreturn function is undefined behavior because the
+        compiler does not generate code for the return. CERT rates
+        likelihood unlikely, detectable yes, repairable no, priority P4,
+        level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        [[noreturn]] void fail(const char* msg) {
+            if (msg) {
+                std::cerr << msg << '\n';
+                std::exit(EXIT_FAILURE);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        [[noreturn]] void fail(const char* msg) {
+            if (msg) {
+                std::cerr << msg << '\n';
+            }
+            std::exit(EXIT_FAILURE);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, control-flow, attributes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/miscellaneous-msc/msc53-cpp

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppVariableComments:
+    standard: @{GoogleCpp}
+    ruleId: Variable_Comments
+    title:
+        Comment variables whose purpose or invariants are not obvious
+    statement:
+        Make each class data member's purpose clear, and comment any
+        invariants, sentinel values or lifetime rules the type and name do
+        not express. Give every global variable a comment saying what it is,
+        what it is for and, if unclear, why it is global.
+    rationale:
+        A descriptive name usually suffices, but special values and global
+        state need explanation to be used correctly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        private:
+         int pool_size_;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        private:
+         // Number of connections kept open. -1 means grow without limit.
+         int pool_size_;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, documentation, variables]
+    source: https://google.github.io/styleguide/cppguide.html#Variable_Comments

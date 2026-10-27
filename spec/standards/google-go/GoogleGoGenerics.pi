@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoGenerics:
+    standard: @{GoogleGo}
+    ruleId: decisions/generics
+    title: Use generics only when they meet a real need
+    statement:
+        Use type parameters where they serve a real requirement, and
+        document exported generic APIs with examples. Do not use them only
+        because an algorithm is type-agnostic when one type is used in
+        practice, and do not build domain-specific languages or error or
+        assertion frameworks with them.
+    rationale:
+        Ordinary slices, maps and interfaces often work as well with less
+        complexity, and adding generality later is easier than removing it.
+    exceptions:
+        Prefer generics over heavy use of any with type switches, unless an
+        existing shared interface already models the problem.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Only ever used with []Order.
+        func SumBy[T any](items []T, f func(T) int64) int64 {
+            var total int64
+            for _, it := range items {
+                total += f(it)
+            }
+            return total
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func TotalCents(orders []Order) int64 {
+            var total int64
+            for _, o := range orders {
+                total += o.Cents
+            }
+            return total
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, generics, simplicity]
+    source: https://google.github.io/styleguide/go/decisions#generics

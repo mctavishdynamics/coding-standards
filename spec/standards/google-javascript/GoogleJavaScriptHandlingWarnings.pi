@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptHandlingWarnings:
+    standard: @{GoogleJavaScript}
+    ruleId: 8.2.2
+    title: Fix warnings first and suppress only proven false alarms
+    statement:
+        Understand a warning before acting, asking for help if needed. Then
+        try first to fix or avoid it; if it is a genuine false alarm,
+        explain why in a comment and add @suppress; otherwise, as a last
+        resort, leave a TODO and keep the warning visible.
+    rationale:
+        Warnings usually point at real problems, and hiding unresolved ones
+        lets them be forgotten.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @suppress {checkTypes} */
+        function parse(input) {
+          return input.trim();
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * @param {string} input
+         * @return {string}
+         */
+        function parse(input) {
+          return input.trim();
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [tooling, compiler-warnings]
+    source: https://google.github.io/styleguide/jsguide.html#822-how-to-handle-a-warning

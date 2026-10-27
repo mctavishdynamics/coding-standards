@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC1:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.1
+    title: Group related data into a struct or class
+    statement:
+        When several values belong together for a real reason, put them in
+        one struct or class instead of passing them around as separate
+        variables.
+    rationale:
+        Code that names the grouping is easier to read, and the relationship
+        between the values becomes visible to readers and tools.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void draw_rect(int x, int y, int width, int height);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Rect {
+            int x;
+            int y;
+            int width;
+            int height;
+        };
+
+        void draw_rect(const Rect& r);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, design]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-org

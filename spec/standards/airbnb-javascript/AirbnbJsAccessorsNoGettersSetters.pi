@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsAccessorsNoGettersSetters:
+    standard: @{AirbnbJavaScript}
+    ruleId: 24.2
+    title: Do not use JavaScript getters and setters
+    statement:
+        Avoid get and set accessor properties. If you need accessor
+        functions, write ordinary methods such as getValue() and
+        setValue(value).
+    rationale:
+        Getters and setters hide side effects behind property access and are
+        harder to test, maintain and reason about.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Thermostat {
+          get target() {
+            return this.value;
+          }
+          set target(value) {
+            this.value = value;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Thermostat {
+          getTarget() {
+            return this.value;
+          }
+          setTarget(value) {
+            this.value = value;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [accessors, classes, side-effects]
+    source: https://github.com/airbnb/javascript#accessors--no-getters-setters

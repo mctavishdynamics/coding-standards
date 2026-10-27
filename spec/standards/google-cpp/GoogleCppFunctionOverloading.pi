@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppFunctionOverloading:
+    standard: @{GoogleCpp}
+    ruleId: Function_Overloading
+    title:
+        Overload only when callers need not know which overload runs
+    statement:
+        Overload a function only when the variants have no semantic
+        differences, so a reader at a call site does not need to work out
+        which overload is chosen. Document the overload set with one
+        umbrella comment before the first declaration.
+    rationale:
+        Overloads distinguished only by argument types force readers to
+        apply C++'s complex matching rules to understand a call.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Same name, different behaviour.
+        void Send(const Message& msg);    // Sends now.
+        void Send(const Message* msg);    // Queues for later.
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Appends `text` to the buffer.
+        void Append(std::string_view text);
+        void Append(char c);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, overloading]
+    source: https://google.github.io/styleguide/cppguide.html#Function_Overloading

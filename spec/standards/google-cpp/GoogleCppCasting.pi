@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppCasting:
+    standard: @{GoogleCpp}
+    ruleId: Casting
+    title: Use C++-style casts instead of C-style casts
+    statement:
+        Use static_cast, const_cast, reinterpret_cast, std::bit_cast and
+        similar named casts, or brace initialization for arithmetic
+        conversions. Do not use C-style casts such as (int)x except to cast
+        to void. Use the function-style form T(x) only when T is a class
+        type.
+    rationale:
+        Named casts state what kind of conversion is intended and are easy
+        to search for. Brace initialization refuses conversions that lose
+        information.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        double ratio = 0.75;
+        int percent = (int)(ratio * 100);
+        char* bytes = (char*)&header;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        double ratio = 0.75;
+        int percent = static_cast<int>(ratio * 100);
+        int64_t big = int64_t{1} << 40;
+        const char* bytes = reinterpret_cast<const char*>(&header);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [casting, type-safety]
+    source: https://google.github.io/styleguide/cppguide.html#Casting

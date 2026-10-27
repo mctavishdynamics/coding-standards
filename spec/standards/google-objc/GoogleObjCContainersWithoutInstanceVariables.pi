@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCContainersWithoutInstanceVariables:
+    standard: @{GoogleObjC}
+    ruleId: containers-without-instance-variables
+    title: Omit empty ivar braces
+    statement:
+        Leave out the empty pair of braces on an interface, class extension
+        or implementation that declares no instance variables.
+    rationale:
+        Empty braces add noise without meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @interface ABCRouter () {
+        }
+        - (void)reset;
+        @end
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @interface ABCRouter ()
+        - (void)reset;
+        @end
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [formatting, classes]
+    source: https://google.github.io/styleguide/objcguide.html#containers-without-instance-variables

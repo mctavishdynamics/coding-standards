@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppInclusiveLanguage:
+    standard: @{GoogleCpp}
+    ruleId: Inclusive_Language
+    title: Use inclusive and gender-neutral language
+    statement:
+        In code, names and comments, avoid terms others may find
+        disrespectful, such as master and slave or blacklist and whitelist,
+        even when they have a neutral technical meaning. Use gender-neutral
+        language, with they for people of unspecified gender and it for
+        software and things.
+    rationale:
+        Respectful wording keeps the codebase welcoming to every reader and
+        contributor.
+    exceptions:
+        Refer to a specific person with that person's own pronouns.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // The master sends work to each slave. When he is done, the
+        // whitelist is refreshed.
+        std::vector<Host> whitelist;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // The primary sends work to each replica. When it is done, the
+        // allowlist is refreshed.
+        std::vector<Host> allowlist;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, comments, inclusive-language]
+    source: https://google.github.io/styleguide/cppguide.html#Inclusive_Language

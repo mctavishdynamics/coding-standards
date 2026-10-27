@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellArrays:
+    standard: @{GoogleShell}
+    ruleId: arrays
+    title: Use arrays for lists of elements
+    statement:
+        Store lists, especially argument lists, in Bash arrays and expand
+        them with the quoted array-at form. Do not pack several arguments
+        into one string, and do not use arrays to build more complex data
+        structures.
+    rationale:
+        Arrays hold arbitrary strings, including ones with whitespace,
+        without fragile nested quoting or eval. If more advanced data
+        handling is needed, shell is the wrong language.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        curl_opts='--silent --header "Accept: application/json"'
+        curl ${curl_opts} "${url}"
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        declare -a curl_opts
+        curl_opts=(--silent --header 'Accept: application/json')
+        curl "${curl_opts[@]}" "${url}"
+        \\\
+        ```
+    languages: [shell]
+    tags: [arrays, quoting]
+    source: https://google.github.io/styleguide/shellguide.html#arrays

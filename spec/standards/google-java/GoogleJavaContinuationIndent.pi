@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaContinuationIndent:
+    standard: @{GoogleJava}
+    ruleId: 4.5.2
+    title: Indent continuation lines at least four spaces
+    statement:
+        When wrapping, indent every continuation line at least four spaces
+        from the original line. With several continuation lines, give two
+        lines the same indent only when they start with syntactically
+        parallel elements.
+    rationale:
+        The deeper indent separates wrapped lines from nested blocks, and
+        matching indents signal parallel structure.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String summary = String.format(
+          "%s ordered %d items",
+          customer.name(),
+          order.size());
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String summary = String.format(
+            "%s ordered %d items",
+            customer.name(),
+            order.size());
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, line-wrapping, indentation]
+    source: https://google.github.io/styleguide/javaguide.html#s4.5.2-line-wrapping-indent

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssOptionalTags:
+    standard: @{GoogleHtmlCss}
+    ruleId: optional-tags
+    title: Omit optional tags
+    statement:
+        Consider leaving out tags that the HTML specification marks as
+        optional, and if you do, omit all of them rather than a selection.
+        This rule is optional.
+    rationale:
+        Omitting optional tags reduces file size and makes markup easier to
+        scan.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <!doctype html>
+        <html>
+          <head>
+            <title>Status</title>
+          </head>
+          <body>
+            <p>All systems normal.</p>
+          </body>
+        </html>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <!doctype html>
+        <title>Status</title>
+        <p>All systems normal.
+        \\\
+        ```
+    languages: [html]
+    tags: [markup, file-size]
+    source: https://google.github.io/styleguide/htmlcssguide.html#optional-tags

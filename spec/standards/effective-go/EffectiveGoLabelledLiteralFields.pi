@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoLabelledLiteralFields:
+    standard: @{EffectiveGo}
+    ruleId: composite-literals-field-labels
+    title: Label the fields in composite literals
+    statement:
+        Write composite literal elements as field and value pairs so they
+        can appear in any order and omitted fields take their zero values.
+        Index or key labels work the same way for arrays, slices and maps.
+    rationale:
+        Unlabelled literals must list every field in order and break or
+        silently change meaning when the type changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        cfg := Config{"localhost", 8080, false, 0}
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        cfg := Config{Host: "localhost", Port: 8080}
+        \\\
+        ```
+    languages: [go]
+    tags: [initialization, structs]
+    source: https://go.dev/doc/effective_go#composite_literals

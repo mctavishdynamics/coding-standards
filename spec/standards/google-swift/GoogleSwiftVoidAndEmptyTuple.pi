@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftVoidAndEmptyTuple:
+    standard: @{GoogleSwift}
+    ruleId: types-with-shorthand-names-void
+    title: Write Void return types and empty argument lists correctly
+    statement:
+        In function types, write the return type as Void, never as an empty
+        tuple. Omit the Void return type on func declarations, and write
+        empty argument lists as empty parentheses.
+    rationale:
+        Consistent spellings avoid confusion, since Void as an argument list
+        means something different.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        var onDismiss: () -> ()
+        func reload() -> Void {
+          // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        var onDismiss: () -> Void
+        func reload() {
+          // ...
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [types, syntax, functions]
+    source: https://google.github.io/swift/#types-with-shorthand-names

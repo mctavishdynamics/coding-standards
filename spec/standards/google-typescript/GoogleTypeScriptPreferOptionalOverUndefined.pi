@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptPreferOptionalOverUndefined:
+    standard: @{GoogleTypeScript}
+    ruleId: prefer-optional-over-undefined
+    title: Use optional fields and parameters instead of a union with undefined
+    statement:
+        Declare optional interface fields, class fields and parameters with
+        a question mark rather than adding undefined to the type. In
+        classes, prefer initialising fields instead.
+    rationale:
+        Optional members can simply be left out by callers, which a union
+        with undefined does not allow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        interface Filter {
+          category: string|undefined;
+        }
+        function paginate(page: number|undefined) {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        interface Filter {
+          category?: string;
+        }
+        function paginate(page?: number) {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, null-safety, optional]
+    source: https://google.github.io/styleguide/tsguide.html#prefer-optional-over-undefined

@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp53:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.53
+    title: Do not pass parameters to coroutines by reference
+    statement:
+        Give coroutine parameters by value, including what would otherwise
+        be const references, and avoid output parameters in coroutines.
+    rationale:
+        After the first suspension point the caller's frame may be gone, so
+        reference parameters dangle and using them is undefined behavior.
+        By-value parameters are copied into the coroutine frame and stay
+        valid.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Task<std::size_t> count_words(const std::string& text)
+        {
+            co_await scheduler.yield();
+            co_return split(text).size();   // text may refer to a destroyed string
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Task<std::size_t> count_words(std::string text)
+        {
+            co_await scheduler.yield();
+            co_return split(text).size();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, coroutines, parameters]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rcoro-reference-parameters

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptNoLineContinuations:
+    standard: @{GoogleTypeScript}
+    ruleId: no-line-continuations
+    title: Do not use line continuations in strings
+    statement:
+        Never end a line inside a string or template literal with a
+        backslash to continue it. Concatenate separate strings instead.
+    rationale:
+        Trailing whitespace after the backslash causes errors, the
+        indentation of the next line leaks into the string, and the
+        backslash is easy to miss.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const help = 'Run the command with --verbose to see \
+            every step it performs.';
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const help = 'Run the command with --verbose to see ' +
+            'every step it performs.';
+        \\\
+        ```
+    languages: [typescript]
+    tags: [strings, formatting]
+    source: https://google.github.io/styleguide/tsguide.html#no-line-continuations

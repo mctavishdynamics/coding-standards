@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC80:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.80
+    title: Use =default to be explicit about default semantics
+    statement:
+        When you need to declare a special member but want its default
+        behavior, write =default instead of implementing it by hand.
+    rationale:
+        The compiler gets the default semantics right and generates code at
+        least as good as a hand-written version.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Tag {
+        public:
+            virtual ~Tag() {}
+            Tag(const Tag& o) : name_(o.name_) {}
+        private:
+            std::string name_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Tag {
+        public:
+            virtual ~Tag() = default;
+            Tag(const Tag&) = default;
+        private:
+            std::string name_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [special-members, defaults]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-eqdefault

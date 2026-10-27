@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC65:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.65
+    title: Make move assignment safe for self-assignment
+    statement:
+        Ensure that moving an object into itself does not destroy its value
+        or corrupt it.
+    rationale:
+        Direct self-move is rare, but it can happen indirectly, for example
+        in std::swap of an object with itself, and the resulting bug is
+        subtle.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Buffer& Buffer::operator=(Buffer&& o) noexcept {
+            delete[] data_;
+            data_ = o.data_;     // dangling if this == &o
+            o.data_ = nullptr;
+            return *this;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Buffer& Buffer::operator=(Buffer&& o) noexcept {
+            if (this != &o) {
+                delete[] data_;
+                data_ = std::exchange(o.data_, nullptr);
+            }
+            return *this;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [move, assignment, correctness]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-move-self

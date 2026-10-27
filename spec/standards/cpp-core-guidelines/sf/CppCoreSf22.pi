@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf22:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.22
+    title: Use an unnamed (anonymous) namespace for all internal/non-exported entities
+    statement:
+        In an implementation file, put every helper that is not part of the
+        exported interface in an unnamed namespace, rather than marking it
+        static or leaving it global.
+    rationale:
+        Nothing outside the file can depend on entities in an unnamed
+        namespace, which keeps them truly internal.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // report.cpp
+        static int column_width(int n);
+        std::string pad(const std::string& s);   // helper, but externally visible
+
+        std::string render_report();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // report.cpp
+        namespace {
+            int column_width(int n);
+            std::string pad(const std::string& s);
+        }
+
+        std::string render_report();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces, linkage, encapsulation]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-unnamed2

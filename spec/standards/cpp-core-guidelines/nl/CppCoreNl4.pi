@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreNl4:
+    standard: @{CppCoreGuidelines}
+    ruleId: NL.4
+    title: Maintain a consistent indentation style
+    statement:
+        Indent consistently, and in particular indent the statement
+        controlled by an if, for or while.
+    rationale:
+        Consistent indentation aids reading and exposes silly mistakes such
+        as a stray semicolon ending a loop.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (i = 0; i < n; ++i);
+        total += v[i];
+        if (total > limit)
+        return total;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (i = 0; i < n; ++i)
+            total += v[i];
+        if (total > limit)
+            return total;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, indentation]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rl-indent

@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC35:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.35
+    title: Make a base class destructor public and virtual, or protected and non-virtual
+    statement:
+        If users may delete a derived object through a pointer to the base,
+        make the base destructor public and virtual. If not, make it
+        protected and non-virtual.
+    rationale:
+        Deleting a derived object through a base pointer whose destructor is
+        not virtual is undefined behavior. A protected destructor prevents
+        that deletion at compile time.
+    exceptions:
+        A protected virtual destructor could make sense when a derived
+        object must destroy another object through a base pointer, but the
+        guide has not seen this in practice.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Plugin {
+        public:
+            ~Plugin();             // public and non-virtual
+            virtual void run() = 0;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Plugin {
+        public:
+            virtual ~Plugin() = default;
+            virtual void run() = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [destructors, inheritance, undefined-behavior]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-dtor-virtual

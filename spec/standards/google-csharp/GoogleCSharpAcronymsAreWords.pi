@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpAcronymsAreWords:
+    standard: @{GoogleCSharp}
+    ruleId: acronyms-are-words
+    title: Capitalize acronyms as ordinary words
+    statement:
+        For casing, treat anything written without internal spaces as one
+        word, including acronyms, so write MyRpc rather than MyRPC.
+    rationale:
+        Treating acronyms as words keeps word boundaries visible in long
+        names.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class HTTPClientFactory {
+          public string XMLPayload { get; set; }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class HttpClientFactory {
+          public string XmlPayload { get; set; }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [naming, acronyms]
+    source: https://google.github.io/styleguide/csharpguide.html#code

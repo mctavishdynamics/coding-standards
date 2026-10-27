@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoVarDeclComposite:
+    standard: @{GoogleGo}
+    ruleId: best-practices/vardeclcomposite
+    title: Use composite literals when initial members are known
+    statement:
+        Declare a value with a composite literal when you know its initial
+        elements or fields, and use zero-value declarations for empty
+        values. For a pointer to a zero value, either an empty literal or
+        new is fine.
+    rationale:
+        Empty composite literals are visually noisy where a zero value says
+        the same thing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var primes []int
+        primes = append(primes, 2, 3, 5, 7)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        primes := []int{2, 3, 5, 7}
+        var seen map[string]bool // filled later with make
+        buf := new(bytes.Buffer)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, variables, literals]
+    source: https://google.github.io/styleguide/go/best-practices#vardeclcomposite

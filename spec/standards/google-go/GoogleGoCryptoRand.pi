@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoCryptoRand:
+    standard: @{GoogleGo}
+    ruleId: decisions/crypto-rand
+    title: Generate keys with crypto/rand
+    statement:
+        Never use math/rand to generate keys, even throwaway ones. Read from
+        the crypto/rand Reader and encode as hex or base64 if you need text.
+    rationale:
+        math/rand is predictable when unseeded and has very little entropy
+        when seeded with the time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func sessionID() string {
+            return strconv.FormatInt(mathrand.Int63(), 16)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func sessionID() (string, error) {
+            b := make([]byte, 16)
+            if _, err := cryptorand.Read(b); err != nil {
+                return "", err
+            }
+            return hex.EncodeToString(b), nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, security, randomness]
+    source: https://google.github.io/styleguide/go/decisions#crypto-rand

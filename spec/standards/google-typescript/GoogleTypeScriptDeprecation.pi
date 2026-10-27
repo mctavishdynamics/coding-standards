@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptDeprecation:
+    standard: @{GoogleTypeScript}
+    ruleId: deprecation
+    title: Mark deprecated APIs with @deprecated and migration steps
+    statement:
+        Mark deprecated methods, classes and interfaces with an @deprecated
+        JSDoc tag, and give simple, clear directions for fixing call sites.
+    rationale:
+        Tools flag deprecated symbols, and clear directions let callers
+        migrate without guessing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        /** @deprecated */
+        export function fetchUser(id: string) {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /** @deprecated Use loadUser(id) from './users' instead. */
+        export function fetchUser(id: string) {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [documentation, deprecation, jsdoc]
+    source: https://google.github.io/styleguide/tsguide.html#deprecation

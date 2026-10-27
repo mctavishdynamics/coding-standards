@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpRemoveAllForConditionalRemoval:
+    standard: @{GoogleCSharp}
+    ruleId: remove-all-for-conditional-removal
+    title: Use RemoveAll to remove matching items
+    statement:
+        When you only need to remove the items that match a condition, call
+        RemoveAll with a predicate.
+    rationale:
+        It avoids modifying a collection while iterating over it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        foreach (var session in sessions) {
+          if (session.IsExpired) sessions.Remove(session);
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        sessions.RemoveAll(session => session.IsExpired);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [collections, loops]
+    source: https://google.github.io/styleguide/csharpguide.html#removing-from-containers-while-iterating

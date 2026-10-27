@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptBugTag:
+    standard: @{GoogleJavaScript}
+    ruleId: 9.1.2.2
+    title: Give each @bug its own line
+    statement:
+        When a test covers regressions, list each bug number with its own
+        @bug tag.
+    rationale:
+        One bug per line makes regression tests easy to search for.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @bug 4411, 4412 */
+        function testRoundingEdgeCases() {}
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * @bug 4411
+         * @bug 4412
+         */
+        function testRoundingEdgeCases() {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, testing]
+    source: https://google.github.io/styleguide/jsguide.html#9122-bug

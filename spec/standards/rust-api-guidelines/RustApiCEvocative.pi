@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCEvocative:
+    standard: @{RustApiGuidelines}
+    ruleId: C-EVOCATIVE
+    title: Make macro input syntax evocative of the output
+    statement:
+        Design macro input to look like the Rust it expands to, reusing the
+        keywords and punctuation of the generated items, for example the
+        struct keyword before a generated struct name and semicolons after
+        constants.
+    rationale:
+        Familiar syntax lets readers guess what a macro produces and keeps
+        macro calls cohesive with the surrounding code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        make_settings! {
+            record Limits {
+                max_users => 100,
+                max_rooms => 10,
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        make_settings! {
+            struct Limits {
+                const MAX_USERS: u32 = 100;
+                const MAX_ROOMS: u32 = 10;
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [macros, syntax]
+    source: https://rust-lang.github.io/api-guidelines/macros.html#c-evocative

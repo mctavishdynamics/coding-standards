@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoDetailedErrors:
+    standard: @{EffectiveGo}
+    ruleId: errors
+    title: Return detailed errors that callers can inspect
+    statement:
+        Use the error result to report detailed information, such as the
+        operation, the input involved and the underlying cause, using an
+        error type when that helps. Callers that care can use a type switch
+        or assertion to examine it.
+    rationale:
+        A rich error stays useful when printed far from where it happened
+        and lets callers react to specific failures.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if err != nil {
+            return errors.New("failed")
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type ParseError struct {
+            File string
+            Line int
+            Err  error
+        }
+
+        func (e *ParseError) Error() string {
+            return fmt.Sprintf("%s:%d: %v", e.File, e.Line, e.Err)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, error-types]
+    source: https://go.dev/doc/effective_go#errors

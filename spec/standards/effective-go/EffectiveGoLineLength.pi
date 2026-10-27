@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoLineLength:
+    standard: @{EffectiveGo}
+    ruleId: formatting-line-length
+    title: Wrap long lines with an extra tab of indent
+    statement:
+        Go sets no line length limit. When a line feels too long, wrap it
+        and indent the continuation with one extra tab.
+    rationale:
+        Without a hard limit the author judges readability, and a consistent
+        continuation indent keeps wrapped lines recognisable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        err := notify.Send(ctx, user.Email, "Your order has shipped", renderShippingEmail(order, user.Locale))
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        err := notify.Send(ctx, user.Email, "Your order has shipped",
+            renderShippingEmail(order, user.Locale))
+        \\\
+        ```
+    languages: [go]
+    tags: [formatting, line-length]
+    source: https://go.dev/doc/effective_go#formatting

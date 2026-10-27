@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptOverridingTostring:
+    standard: @{GoogleTypeScript}
+    ruleId: overriding-tostring
+    title: Keep toString overrides safe and side-effect free
+    statement:
+        An overridden toString must always succeed and must not have visible
+        side effects. Be careful about calling other methods from it.
+    rationale:
+        toString is called implicitly in logging and string building; if it
+        can throw or call back into itself, failures become confusing or
+        loop forever.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Account {
+          toString() {
+            this.lastPrinted = Date.now();
+            return `Account ${this.describe()}`;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Account {
+          toString() {
+            return `Account ${this.id}`;
+          }
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, side-effects]
+    source: https://google.github.io/styleguide/tsguide.html#overriding-tostring

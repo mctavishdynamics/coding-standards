@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCInitialization:
+    standard: @{GoogleObjC}
+    ruleId: initialization
+    title: Do not zero instance variables in init
+    statement:
+        Do not set instance variables to 0 or nil in an init method.
+    rationale:
+        New objects already have every ivar zeroed, so the assignments only
+        add clutter.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        - (instancetype)init {
+          self = [super init];
+          if (self) {
+            _retryCount = 0;
+            _lastError = nil;
+          }
+          return self;
+        }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        - (instancetype)init {
+          self = [super init];
+          return self;
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [initialization]
+    source: https://google.github.io/styleguide/objcguide.html#initialization

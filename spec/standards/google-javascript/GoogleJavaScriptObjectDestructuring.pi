@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptObjectDestructuring:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.3.7
+    title: Keep destructured parameters to one level of shorthand
+    statement:
+        Destructured object parameters use a single level of unquoted
+        shorthand properties, with no nesting or computed keys. Put defaults
+        on the left-hand side, and default an optional destructured object
+        to an empty object. Destructured goog.require statements are never
+        wrapped.
+    rationale:
+        Simple patterns stay readable and typeable, and left-hand defaults
+        apply to each missing field individually.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function connect({options: {host, port}}) {}
+        function retry({count} = {count: 3}) {}
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** @param {{host: string, port: (number|undefined)}} options */
+        function connect({host, port = 443}) {}
+        function retry({count = 3} = {}) {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [destructuring, objects, functions]
+    source: https://google.github.io/styleguide/jsguide.html#537-destructuring

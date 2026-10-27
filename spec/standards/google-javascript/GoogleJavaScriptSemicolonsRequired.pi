@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptSemicolonsRequired:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.3.2
+    title: Terminate every statement with a semicolon
+    statement:
+        End every statement with a semicolon. Do not rely on automatic
+        semicolon insertion.
+    rationale:
+        Automatic insertion has surprising edge cases that can join or split
+        statements in ways the author did not intend.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const total = price * quantity
+        [discount, tax].forEach(apply)
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const total = price * quantity;
+        [discount, tax].forEach(apply);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, statements]
+    source: https://google.github.io/styleguide/jsguide.html#432-semicolons-are-required

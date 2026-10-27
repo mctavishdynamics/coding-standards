@@ -1,0 +1,30 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF17:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.17
+    title: For in-out parameters, pass by reference to non-const
+    statement:
+        When a function reads and modifies an argument, take it by non-const
+        reference.
+    rationale:
+        It tells callers clearly that the object may be changed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void normalize(Vector* v);   // may v be null? is it modified?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void normalize(Vector& v);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, parameters, references]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-inout

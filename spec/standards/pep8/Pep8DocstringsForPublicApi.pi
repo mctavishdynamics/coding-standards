@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8DocstringsForPublicApi:
+    standard: @{Pep8}
+    ruleId: documentation-strings
+    title: Write docstrings for all public modules, functions, classes and methods
+    statement:
+        Give every public module, function, class and method a docstring
+        following PEP 257. Non-public methods need no docstring but should
+        have a comment after the def line describing what they do.
+    rationale:
+        Docstrings document the public interface where tools and readers
+        expect it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def publish(article):
+            article.status = "live"
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def publish(article):
+            """Mark the article as live."""
+            article.status = "live"
+
+
+        def _reindex(article):
+            # Rebuild the search entries for one article.
+            search.update(article.id)
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings]
+    source: https://peps.python.org/pep-0008/#documentation-strings

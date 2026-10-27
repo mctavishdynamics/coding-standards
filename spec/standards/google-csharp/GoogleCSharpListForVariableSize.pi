@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpListForVariableSize:
+    standard: @{GoogleCSharp}
+    ruleId: list-for-variable-size
+    title: Use List when the size can change
+    statement:
+        Prefer List when the number of elements can change.
+    rationale:
+        A List can grow, while an array has a fixed capacity.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        var results = new Result[0];
+        results = results.Append(next).ToArray();
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        var results = new List<Result>();
+        results.Add(next);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [collections]
+    source: https://google.github.io/styleguide/csharpguide.html#array-vs-list

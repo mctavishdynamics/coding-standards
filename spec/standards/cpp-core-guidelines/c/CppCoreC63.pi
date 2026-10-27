@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC63:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.63
+    title: Make move assignment non-virtual, take && and return non-const&
+    statement:
+        Declare move assignment as a non-virtual member that takes an rvalue
+        reference and returns a non-const reference to *this.
+    rationale:
+        This is the simple, efficient form and mirrors the conventional copy
+        assignment.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Text {
+        public:
+            virtual const Text& operator=(Text&& other);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Text {
+        public:
+            Text& operator=(Text&& other) noexcept;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [move, assignment, special-members]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-move-assignment

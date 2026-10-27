@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos53C:
+    standard: @{CertC}
+    ruleId: POS53-C
+    title:
+        Do not use more than one mutex for concurrent waiting operations on
+        a condition variable
+    statement:
+        All threads that wait on the same condition variable at the same
+        time must pass the same mutex to pthread_cond_wait or
+        pthread_cond_timedwait.
+    rationale:
+        Waiting on one condition variable with different mutexes is
+        undefined behavior and may fail with EINVAL or misbehave. CERT rates
+        likelihood probable, detectable yes, repairable no, priority P8,
+        level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        void *reader(void *arg) {
+            pthread_mutex_lock(&read_lock);
+            while (!ready) pthread_cond_wait(&ready_cv, &read_lock);
+            pthread_mutex_unlock(&read_lock);
+            return NULL;
+        }
+
+        void *writer(void *arg) {
+            pthread_mutex_lock(&write_lock);
+            while (!ready) pthread_cond_wait(&ready_cv, &write_lock);
+            pthread_mutex_unlock(&write_lock);
+            return NULL;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void *waiter(void *arg) {
+            pthread_mutex_lock(&ready_lock);
+            while (!ready) pthread_cond_wait(&ready_cv, &ready_lock);
+            pthread_mutex_unlock(&ready_lock);
+            return NULL;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, concurrency, condition-variables]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos53-c

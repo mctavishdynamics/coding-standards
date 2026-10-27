@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptArrayDestructuring:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.2.4
+    title: Destructure arrays simply with defaults on the left
+    statement:
+        Array destructuring may unpack values, with an optional final rest
+        element written without a space after the dots; omit unused
+        elements. For an optional destructured parameter, default it to an
+        empty array and give element defaults on the left-hand side.
+    rationale:
+        Left-hand defaults apply per element, while a default array on the
+        right is ignored entirely as soon as any array is passed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function range([start, end] = [0, 10]) {}
+        const [first, unused, third] = parts;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function range([start = 0, end = 10] = []) {}
+        const [first, , third] = parts;
+        const [head, ...tail] = parts;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [destructuring, arrays, functions]
+    source: https://google.github.io/styleguide/jsguide.html#524-destructuring

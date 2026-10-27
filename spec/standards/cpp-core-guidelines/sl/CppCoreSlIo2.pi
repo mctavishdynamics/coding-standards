@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlIo2:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.io.2
+    title: When reading, always consider ill-formed input
+    statement:
+        Check input for errors and bad data as soon as it is read.
+    rationale:
+        Errors are best handled early; if input is not validated, every
+        function downstream must cope with bad data, which is not practical.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int age;
+        std::cin >> age;
+        register_user(age);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int age;
+        if (!(std::cin >> age) || age < 0 || age > 150)
+            throw std::invalid_argument("bad age");
+        register_user(age);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [io, input-validation, error-handling]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rio-validate

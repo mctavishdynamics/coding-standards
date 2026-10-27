@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCNoOut:
+    standard: @{RustApiGuidelines}
+    ruleId: C-NO-OUT
+    title: Return values instead of taking out-parameters
+    statement:
+        Return multiple values as a tuple or struct rather than writing them
+        through mutable reference parameters.
+    rationale:
+        Compound return types compile efficiently without heap allocation
+        and make the data flow obvious.
+    exceptions:
+        A function meant to modify data the caller already owns, such as
+        filling a reusable buffer, may take it by mutable reference.
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub fn min_max(values: &[i32], max: &mut i32) -> i32 { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub fn min_max(values: &[i32]) -> (i32, i32) { /* ... */ }
+        \\\
+        ```
+    languages: [rust]
+    tags: [functions, api-design]
+    source: https://rust-lang.github.io/api-guidelines/predictability.html#c-no-out

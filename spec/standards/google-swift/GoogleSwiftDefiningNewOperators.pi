@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftDefiningNewOperators:
+    standard: @{GoogleSwift}
+    ruleId: defining-new-operators
+    title: Avoid defining custom operators
+    statement:
+        Do not define new operators unless the operator has a clear,
+        well-established meaning in the domain and makes code much more
+        readable than function calls. Wrap third-party operator-only APIs in
+        readable methods.
+    rationale:
+        Custom operators lack familiar meaning and force readers to look
+        them up.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        infix operator <~: AssignmentPrecedence
+        func <~ (user: inout User, json: [String: Any]) {
+          // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        extension User {
+          mutating func update(from json: [String: Any]) {
+            // ...
+          }
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [operators, readability]
+    source: https://google.github.io/swift/#defining-new-operators

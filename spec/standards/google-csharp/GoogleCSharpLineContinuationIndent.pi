@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpLineContinuationIndent:
+    standard: @{GoogleCSharp}
+    ruleId: line-continuation-indent
+    title: Indent continuation lines four spaces
+    statement:
+        Indent line continuations by four spaces. Line breaks inside braces,
+        such as collection initializers, lambdas and object initializers,
+        are not continuations and use the normal block indent.
+    rationale:
+        The deeper indent tells a wrapped statement apart from a nested
+        block.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        var message =
+          $"Order {id} shipped to {city}";
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        var message =
+            $"Order {id} shipped to {city}";
+        var settings = new Settings {
+          Retries = 3,
+        };
+        \\\
+        ```
+    languages: [csharp]
+    tags: [formatting, line-wrapping]
+    source: https://google.github.io/styleguide/csharpguide.html#whitespace-rules

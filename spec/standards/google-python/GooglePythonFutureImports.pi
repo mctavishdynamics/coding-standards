@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonFutureImports:
+    standard: @{GooglePython}
+    ruleId: 2.20
+    title: Use from __future__ imports
+    statement:
+        Using from __future__ import statements is encouraged. Keep them in
+        place until you are confident the code only runs on versions where
+        the feature is the default.
+    rationale:
+        Future imports let a file adopt newer semantics early and make later
+        upgrades smoother. Keeping them stops later edits from depending on
+        the old behavior.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        from __future__ import annotations
+
+        import dataclasses
+
+
+        @dataclasses.dataclass
+        class Node:
+            children: list[Node]
+        \\\
+        ```
+    languages: [python]
+    tags: [imports, compatibility]
+    source: https://google.github.io/styleguide/pyguide.html#s2.20-modern-python

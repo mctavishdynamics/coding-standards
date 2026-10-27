@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoReturningErrors:
+    standard: @{GoogleGo}
+    ruleId: decisions/returning-errors
+    title: Return errors as the last result using the error type
+    statement:
+        Use error, as the last result, to signal that a function can fail,
+        and return nil on success. Callers must treat other results as
+        unspecified when an error is returned unless documented otherwise.
+        Exported functions return the error interface, not a concrete error
+        type.
+    rationale:
+        A nil pointer of a concrete error type becomes a non-nil error once
+        stored in an interface, a classic subtle bug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func Parse(b []byte) *ParseError {
+            var perr *ParseError
+            // ...
+            return perr // non-nil error interface even when perr is nil
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func Parse(b []byte) (*Config, error) {
+            cfg, err := decode(b)
+            if err != nil {
+                return nil, err
+            }
+            return cfg, nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, errors, functions]
+    source: https://google.github.io/styleguide/go/decisions#returning-errors

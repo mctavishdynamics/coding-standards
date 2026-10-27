@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpOutParametersLast:
+    standard: @{GoogleCSharp}
+    ruleId: out-parameters-last
+    title: Put out parameters after all other parameters
+    statement:
+        Place out parameters at the end of the parameter list.
+    rationale:
+        Inputs come first, so calls read naturally and consistently.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        bool TryFind(out Customer customer, string email, bool includeArchived);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        bool TryFind(string email, bool includeArchived, out Customer customer);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [parameters, methods, ordering]
+    source: https://google.github.io/styleguide/csharpguide.html#ref-and-out

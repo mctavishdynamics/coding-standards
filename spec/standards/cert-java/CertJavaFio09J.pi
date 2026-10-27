@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio09J:
+    standard: @{CertJava}
+    ruleId: FIO09-J
+    title: Do not rely on the write() method to output integers outside the range 0 to 255
+    statement:
+        OutputStream.write(int) writes only the low eight bits. Range-check
+        the value first, or use a method such as DataOutputStream.writeInt()
+        for wider values.
+    rationale:
+        Higher bits are silently dropped, so values outside 0 to 255 are
+        written as some other number. CERT's risk assessment gives
+        likelihood unlikely, detectable no, repairable yes, priority P2 and
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        void sendCount(OutputStream out, int count) throws IOException {
+            out.write(count);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void sendCount(OutputStream out, int count) throws IOException {
+            new DataOutputStream(out).writeInt(count);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [io, type-conversion, truncation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio09-j/

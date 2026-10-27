@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoFunctionNameConventions:
+    standard: @{GoogleGo}
+    ruleId: best-practices/function-name-conventions
+    title: Use nouns for getters and verbs for actions
+    statement:
+        Give functions that return something noun-like names without Get,
+        and functions that do something verb-like names. For variants that
+        differ only by type, append the type name, omitting it on a clear
+        primary version.
+    rationale:
+        Consistent naming patterns tell readers what a function does before
+        they read its documentation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (s *Session) GetUser() *User
+        func (s *Session) Expiry() error // refreshes the session
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (s *Session) User() *User
+        func (s *Session) Refresh() error
+
+        func FormatInt(n int) string
+        func FormatInt64(n int64) string
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, naming, functions]
+    source: https://google.github.io/styleguide/go/best-practices#function-name-conventions

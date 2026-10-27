@@ -1,0 +1,45 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE14:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.14
+    title: Use purpose-designed user-defined types as exceptions
+    statement:
+        Throw objects of types made for the purpose, such as classes derived
+        from std::runtime_error or an enum class, not built-in types like
+        int or string literals and not a bare std::exception.
+    rationale:
+        A dedicated type carries information about the error to the handler,
+        encodes it in the type itself and is unlikely to clash with
+        exceptions from other code.
+    exceptions:
+        Standard library exception types such as std::runtime_error
+        or std::invalid_argument are fine when there is no useful extra
+        information to add.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (balance < amount)
+            throw -1;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class InsufficientFunds : public std::runtime_error {
+        public:
+            explicit InsufficientFunds(long shortfall)
+                : std::runtime_error("insufficient funds"), shortfall(shortfall) {}
+            long shortfall;
+        };
+
+        if (balance < amount)
+            throw InsufficientFunds{amount - balance};
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, exceptions, types]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-exception-types

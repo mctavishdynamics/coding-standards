@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./TwelveFactor import TwelveFactor
+
+export coding-rule TwelveFactorDisposability:
+    standard: @{TwelveFactor}
+    ruleId: IX
+    title: Maximize robustness with fast startup and graceful shutdown
+    statement:
+        Make processes disposable: start in seconds, shut down gracefully on
+        SIGTERM by finishing or returning current work, and survive sudden
+        death by keeping jobs reentrant or idempotent.
+    rationale:
+        Disposable processes allow fast elastic scaling, quick deploys of
+        code and config changes, and robust production behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def main():
+            while True:
+                job = queue.reserve()
+                process(job)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import signal
+
+        stopping = False
+
+        def handle_term(signum, frame):
+            global stopping
+            stopping = True
+
+        def main():
+            signal.signal(signal.SIGTERM, handle_term)
+            while not stopping:
+                job = queue.reserve(timeout=5)
+                if job:
+                    process(job)
+        \\\
+        ```
+    languages: [any]
+    tags: [reliability, processes, shutdown]
+    source: https://12factor.net/disposability

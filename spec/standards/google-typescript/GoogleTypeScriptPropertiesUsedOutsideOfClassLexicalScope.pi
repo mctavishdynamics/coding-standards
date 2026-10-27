@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptPropertiesUsedOutsideOfClassLexicalScope:
+    standard: @{GoogleTypeScript}
+    ruleId: properties-used-outside-of-class-lexical-scope
+    title: Do not make properties private when used outside the class
+    statement:
+        A property used outside the class's lexical scope, such as from an
+        Angular template, must be protected or public rather than private.
+        Never use bracket access like obj['field'] to get around visibility.
+    rationale:
+        private tells tools and people that only the class's own methods
+        touch the property; unused-code checks and optimisers rely on that,
+        and bracket access breaks with build changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        @Component({template: '<p>{{greeting}}</p>'})
+        class Banner {
+          private greeting = 'Hello';
+        }
+
+        const text = banner['greeting'];
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        @Component({template: '<p>{{greeting}}</p>'})
+        class Banner {
+          protected greeting = 'Hello';
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, visibility, frameworks]
+    source: https://google.github.io/styleguide/tsguide.html#properties-used-outside-of-class-lexical-scope

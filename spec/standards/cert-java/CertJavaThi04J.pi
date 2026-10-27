@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaThi04J:
+    standard: @{CertJava}
+    ruleId: THI04-J
+    title: Ensure that threads performing blocking operations can be terminated
+    statement:
+        Threads and tasks that block on network or file I/O must give
+        callers a way to stop them, such as closing the socket or using an
+        interruptible channel.
+    rationale:
+        A thread blocked in I/O ignores flags and interrupts. Without an
+        explicit way to end it, it can hang forever and cause a denial of
+        service. CERT's risk assessment gives likelihood probable,
+        detectable no, repairable no, priority P2 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        class Reader implements Runnable {
+            private volatile boolean done;
+            public void run() {
+                while (!done) in.readLine();   // blocks; flag never seen
+            }
+            void shutdown() { done = true; }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Reader implements Runnable {
+            private final Socket socket;
+            public void run() {
+                try { while (in.readLine() != null) handle(); }
+                catch (IOException closed) { }
+            }
+            void shutdown() throws IOException { socket.close(); }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, threads, io]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-apis-thi/thi04-j/

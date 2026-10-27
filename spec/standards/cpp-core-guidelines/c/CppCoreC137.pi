@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC137:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.137
+    title: Use virtual bases to avoid overly general base classes
+    statement:
+        When several branches of a hierarchy share data or an interface,
+        consider a virtual base for the shared part instead of pushing
+        everything into one ultimate base class.
+    rationale:
+        Virtual bases allow shared data and interfaces to be separated
+        without loading a single root class with everything.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Node {               // root holds data only some nodes need
+        protected:
+            std::string label_;
+            Style style_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Labelled { protected: std::string label_; };
+        class Styled   { protected: Style style_; };
+
+        class Text   : public virtual Labelled, public virtual Styled {};
+        class Button : public virtual Labelled {};
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, multiple-inheritance, virtual-bases]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-vbase

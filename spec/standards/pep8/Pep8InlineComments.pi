@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8InlineComments:
+    standard: @{Pep8}
+    ruleId: inline-comments
+    title: Use inline comments sparingly and never for the obvious
+    statement:
+        Use inline comments rarely. Separate them from the statement by at
+        least two spaces, start them with a hash and one space, and do not
+        state what the code already says.
+    rationale:
+        An inline comment that repeats the code is a distraction; one that
+        explains intent is useful.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        count = count + 1 #Add one to count
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        count = count + 1  # Include the header row
+        \\\
+        ```
+    languages: [python]
+    tags: [comments, formatting]
+    source: https://peps.python.org/pep-0008/#inline-comments

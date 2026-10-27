@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI9:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.9
+    title: If an interface is a template, document its parameters using concepts
+    statement:
+        State the requirements on template parameters with concepts instead
+        of leaving them unconstrained.
+    rationale:
+        Concepts specify the interface precisely and make it checkable at
+        compile time, with clearer error messages.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename Iter, typename Val>
+        Iter find_value(Iter first, Iter last, const Val& v);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<std::input_iterator Iter, typename Val>
+            requires std::equality_comparable_with<std::iter_value_t<Iter>, Val>
+        Iter find_value(Iter first, Iter last, const Val& v);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, templates, concepts]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-concepts

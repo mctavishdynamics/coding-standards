@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonNestedFunctionsAndClasses:
+    standard: @{GooglePython}
+    ruleId: 2.6
+    title: Nest functions and classes only to close over local values
+    statement:
+        Nested functions and classes are fine when they close over a local
+        value other than self or cls. Do not nest a function only to hide
+        it; give it a leading underscore at module level instead.
+    rationale:
+        A nested helper cannot be tested directly and makes the enclosing
+        function longer and harder to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def summarize(orders):
+            def _total(order):
+                return sum(line.price for line in order.lines)
+            return [_total(order) for order in orders]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def _total(order):
+            return sum(line.price for line in order.lines)
+
+
+        def summarize(orders):
+            return [_total(order) for order in orders]
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, scoping]
+    source: https://google.github.io/styleguide/pyguide.html#s2.6-nested

@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF45:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.45
+    title: Do not return a T&&
+    statement:
+        Do not declare functions that return an rvalue reference.
+    rationale:
+        An rvalue reference attracts temporaries, so returning one almost
+        always means returning a reference to a destroyed temporary.
+    exceptions:
+        The standard functions std::move and std::forward return rvalue
+        references, but they are casts used within a single expression.
+        There are no other known good uses.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::string&& make_label(int id) {
+            return std::move(std::to_string(id));   // refers to a dead temporary
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string make_label(int id) {
+            return std::to_string(id);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, return-values, lifetime]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-return-ref-ref

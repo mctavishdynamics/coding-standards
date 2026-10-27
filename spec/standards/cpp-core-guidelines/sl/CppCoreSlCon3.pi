@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlCon3:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.con.3
+    title: Avoid bounds errors
+    statement:
+        Never read or write outside a container's range. Prefer range-for
+        loops, algorithms, span and checked access such as at() over raw
+        indexing and memory functions with hand-computed lengths.
+    rationale:
+        Out-of-bounds access causes wrong results, crashes and security
+        holes. Bounds-safe loops are as fast as unchecked ones, and a single
+        pre-check often replaces per-element checks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::array<int, 16> counts;
+        std::memset(counts.data(), 0, 16);          // clears only 16 bytes
+        int last = counts[index];                   // index never checked
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::array<int, 16> counts{};
+        counts.fill(0);
+        int last = counts.at(index);                // throws if out of range
+        \\\
+        ```
+    languages: [cpp]
+    tags: [bounds-safety, containers, security]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rsl-bounds

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptFieldInitializers:
+    standard: @{GoogleTypeScript}
+    ruleId: field-initializers
+    title: Initialise fields where they are declared
+    statement:
+        Initialise a class member that is not a constructor parameter at its
+        declaration. Do not add or remove properties after construction;
+        initialise optional fields to undefined instead.
+    rationale:
+        Declaration-site initialisers can make the constructor unnecessary,
+        and a stable object shape helps JavaScript engines optimise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Cache {
+          private readonly entries: Map<string, string>;
+
+          constructor() {
+            this.entries = new Map();
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Cache {
+          private readonly entries = new Map<string, string>();
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, initialization]
+    source: https://google.github.io/styleguide/tsguide.html#field-initializers

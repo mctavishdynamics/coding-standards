@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpMemoryManagement4:
+    standard: @{OwaspScp}
+    ruleId: memory-management-4
+    title: Check buffer boundaries when writing in a loop
+    statement:
+        When calling a writing function in a loop, check the buffer boundary
+        each time so nothing is written past the allocated space.
+    rationale:
+        Loops accumulate writes, so a missing bound check turns into an
+        overflow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        for (size_t i = 0; items[i] != NULL; i++) {
+            strcat(out, items[i]);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        size_t used = 0;
+        for (size_t i = 0; items[i] != NULL; i++) {
+            size_t len = strlen(items[i]);
+            if (used + len >= sizeof out) {
+                break;
+            }
+            memcpy(out + used, items[i], len);
+            used += len;
+        }
+        out[used] = '\0';
+        \\\
+        ```
+    languages: [any]
+    tags: [memory, buffer-overflow]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#memory-management

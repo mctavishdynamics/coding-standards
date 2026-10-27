@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppPreprocessorMacros:
+    standard: @{GoogleCpp}
+    ruleId: Preprocessor_Macros
+    title: Avoid macros and never use them to declare an API
+    statement:
+        Avoid defining macros, especially in headers; prefer inline
+        functions, enums and const variables. Do not use macros to declare
+        parts of a C++ API. If you must define one, define it just before
+        use and undefine it after, do not redefine existing macros, and give
+        any exported macro your project's upper-case prefix.
+    rationale:
+        Macros have global scope and make the code the compiler sees differ
+        from the code you read, which confuses error messages and
+        refactoring tools.
+    exceptions:
+        Header guards are the accepted use of conditional compilation. A
+        macro that declares an API needs a waiver from project leads.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #define SQUARE(x) ((x) * (x))
+        #define MAX_USERS 100
+        #define DECLARE_GETTER(name) int get_##name() const;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        inline int Square(int x) { return x * x; }
+        constexpr int kMaxUsers = 100;
+        int user_count() const;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [preprocessor, macros]
+    source: https://google.github.io/styleguide/cppguide.html#Preprocessor_Macros

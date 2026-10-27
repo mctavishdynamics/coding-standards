@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptSourceFileStructure:
+    standard: @{GoogleTypeScript}
+    ruleId: source-file-structure
+    title: Order the sections of a source file
+    statement:
+        A file contains, in this order and only when present: copyright
+        information, a JSDoc with @fileoverview, the imports, and then the
+        implementation. Separate each present section from the next with
+        exactly one blank line.
+    rationale:
+        A fixed layout lets readers and tools find the license, the overview
+        and the dependencies in the same place in every file.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        import {Cart} from './cart';
+        /**
+         * @fileoverview Checkout helpers.
+         */
+
+
+        export function total(cart: Cart): number {
+          return cart.sum();
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /**
+         * @fileoverview Checkout helpers.
+         */
+
+        import {Cart} from './cart';
+
+        export function total(cart: Cart): number {
+          return cart.sum();
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [source-files, formatting]
+    source: https://google.github.io/styleguide/tsguide.html#source-file-structure

@@ -1,0 +1,59 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppErr56Cpp:
+    standard: @{CertCpp}
+    ruleId: ERR56-CPP
+    title: Guarantee exception safety
+    statement:
+        Write functions so that, when an exception is thrown, the objects
+        they touch stay in a valid state and no resource leaks. Provide at
+        least the basic exception safety guarantee.
+    rationale:
+        Code that is not exception safe leaves objects half updated or
+        corrupted, which leads to later crashes or exploitable states. CERT
+        rates likelihood likely, detectable no, repairable no, priority P9,
+        level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        class Buffer {
+        public:
+            Buffer& operator=(const Buffer& other) {
+                delete[] data_;
+                data_ = new char[other.size_];  // throws: data_ dangles
+                size_ = other.size_;
+                std::copy(other.data_, other.data_ + size_, data_);
+                return *this;
+            }
+        private:
+            char* data_;
+            std::size_t size_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Buffer {
+        public:
+            Buffer& operator=(const Buffer& other) {
+                char* fresh = new char[other.size_];
+                std::copy(other.data_, other.data_ + other.size_, fresh);
+                delete[] data_;
+                data_ = fresh;
+                size_ = other.size_;
+                return *this;
+            }
+        private:
+            char* data_;
+            std::size_t size_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [exceptions, exception-safety, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/exceptions-and-error-handling-err/err56-cpp

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptPreferInterfaces:
+    standard: @{GoogleTypeScript}
+    ruleId: prefer-interfaces
+    title: Use interfaces rather than type aliases for object types
+    statement:
+        Declare object types with an interface, not a type alias of an
+        object literal type.
+    rationale:
+        The two forms are nearly equivalent, so picking one avoids
+        variation, and interfaces have better display and performance in the
+        compiler.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        type Address = {
+          street: string,
+          city: string,
+        };
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        interface Address {
+          street: string;
+          city: string;
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, interfaces, type-aliases]
+    source: https://google.github.io/styleguide/tsguide.html#prefer-interfaces

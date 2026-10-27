@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonTypingVariables:
+    standard: @{GooglePython}
+    ruleId: 3.19.8
+    title: Annotate hard-to-infer variables with annotated assignments
+    statement:
+        When a variable's type is hard or impossible to infer, declare it
+        with an annotated assignment. Do not add new type comments at the
+        end of lines.
+    rationale:
+        Annotated assignments are part of the language syntax, while type
+        comments were only a workaround for Python before 3.6.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        config = load_untyped_config()  # type: Config
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        config: Config = load_untyped_config()
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, variables]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.8-typing-variables

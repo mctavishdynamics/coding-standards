@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpVarWhenItAidsReadability:
+    standard: @{GoogleCSharp}
+    ruleId: var-when-it-aids-readability
+    title: Use var when the type is obvious or unimportant
+    statement:
+        Use var when it avoids noisy, obvious or unimportant type names,
+        such as after new or for values passed straight to another method.
+        Avoid it for basic types, compiler-resolved numeric types, and where
+        the reader benefits from seeing the type.
+    rationale:
+        var removes clutter, but hiding an important type hurts readability.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        var enabled = true;
+        var ratio = 3 * GetScale();
+        var entries = LoadEntries();
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        var reader = new StreamReader(path);
+        bool enabled = true;
+        float ratio = 3 * GetScale();
+        List<LogEntry> entries = LoadEntries();
+        \\\
+        ```
+    languages: [csharp]
+    tags: [types, readability]
+    source: https://google.github.io/styleguide/csharpguide.html#the-var-keyword

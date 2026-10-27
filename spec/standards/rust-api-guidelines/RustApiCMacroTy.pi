@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCMacroTy:
+    standard: @{RustApiGuidelines}
+    ruleId: C-MACRO-TY
+    title: Make macro type fragments flexible
+    statement:
+        A macro that accepts a ty fragment must work with primitives,
+        relative paths, absolute paths, super paths and generic types.
+    rationale:
+        Expansions that move a type into a new module or otherwise change
+        scope can break relative paths that work at the call site.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        macro_rules! wrapper {
+            ($m:ident, $t:ty) => {
+                // `$t` is resolved inside the new module, so `Item` is not found.
+                pub mod $m { pub struct Wrapper(pub $t); }
+            };
+        }
+
+        wrapper!(items, Item);
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        macro_rules! wrapper {
+            ($name:ident, $t:ty) => {
+                pub struct $name(pub $t);
+            };
+        }
+
+        wrapper!(ItemWrapper, Item);
+        wrapper!(Names, Vec<String>);
+        \\\
+        ```
+    languages: [rust]
+    tags: [macros, types]
+    source: https://rust-lang.github.io/api-guidelines/macros.html#c-macro-ty

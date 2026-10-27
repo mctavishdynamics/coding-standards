@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCBuilder:
+    standard: @{RustApiGuidelines}
+    ruleId: C-BUILDER
+    title: Use builders to construct complex values
+    statement:
+        When a value needs many inputs, optional settings or several
+        flavours, provide a builder whose constructor takes only the
+        required data, whose chainable methods set the rest, and whose
+        terminal method builds the value. Prefer non-consuming builders;
+        when the terminal method must take ownership, make every method take
+        and return self.
+    rationale:
+        A builder avoids a combinatorial set of constructors with long
+        argument lists and supports both one-liners and step-by-step
+        configuration.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        let server = Server::new("0.0.0.0", 8080, None, Some(30), true, 4)?;
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        let server = ServerBuilder::new("0.0.0.0", 8080)
+            .timeout(Duration::from_secs(30))
+            .workers(4)
+            .compression(true)
+            .build()?;
+        \\\
+        ```
+    languages: [rust]
+    tags: [constructors, builder]
+    source: https://rust-lang.github.io/api-guidelines/type-safety.html#c-builder

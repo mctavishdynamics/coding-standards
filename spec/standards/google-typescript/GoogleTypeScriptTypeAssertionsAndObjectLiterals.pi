@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptTypeAssertionsAndObjectLiterals:
+    standard: @{GoogleTypeScript}
+    ruleId: type-assertions-and-object-literals
+    title: Annotate object literals instead of asserting their type
+    statement:
+        Give an object literal its type with a type annotation rather than
+        an as assertion.
+    rationale:
+        An annotation reports unknown or misspelled fields when an interface
+        changes, while an assertion silently accepts them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const point = {
+          x: 1,
+          yy: 2,
+        } as Point;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const point: Point = {
+          x: 1,
+          y: 2,
+        };
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, assertions, objects]
+    source: https://google.github.io/styleguide/tsguide.html#type-assertions-and-object-literals

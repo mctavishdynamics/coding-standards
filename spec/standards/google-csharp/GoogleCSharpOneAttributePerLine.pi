@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpOneAttributePerLine:
+    standard: @{GoogleCSharp}
+    ruleId: one-attribute-per-line
+    title: Put each attribute on its own line
+    statement:
+        Separate multiple attributes with newlines.
+    rationale:
+        Attributes are then easy to add, remove and search for.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        [Serializable, DebuggerDisplay("Id")]
+        public class Ticket { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        [Serializable]
+        [DebuggerDisplay("Id")]
+        public class Ticket { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [formatting, attributes]
+    source: https://google.github.io/styleguide/csharpguide.html#attributes

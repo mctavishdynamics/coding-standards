@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCFeature:
+    standard: @{RustApiGuidelines}
+    ruleId: C-FEATURE
+    title: Keep placeholder words out of Cargo feature names
+    statement:
+        Name a Cargo feature after what it enables, such as std or serde,
+        not use-std or with-serde. Avoid negative names like no-std, since
+        features must be additive.
+    rationale:
+        Cargo names the implicit feature of an optional dependency after the
+        crate itself, so explicit features that follow the same pattern
+        behave consistently for users.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```toml
+        \\\
+        [features]
+        default = ["use-std"]
+        use-std = []
+        \\\
+        ```
+    compliant:
+        ```toml
+        \\\
+        [features]
+        default = ["std"]
+        std = []
+        \\\
+        ```
+    languages: [rust]
+    tags: [naming, cargo, features]
+    source: https://rust-lang.github.io/api-guidelines/naming.html#c-feature

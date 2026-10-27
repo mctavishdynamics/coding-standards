@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreP9:
+    standard: @{CppCoreGuidelines}
+    ruleId: P.9
+    title: Do not waste time or space
+    statement:
+        Avoid needless copies, allocations and computations. Spending time
+        or space to reach a real goal, such as safety or simpler testing, is
+        not waste.
+    rationale:
+        One small inefficiency rarely matters, but waste spread throughout a
+        code base adds up and is hard to remove later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::size_t count_long(std::vector<std::string> words) {  // copies all
+            std::size_t n = 0;
+            for (std::string w : words)                            // copies each
+                if (w.size() > 10) ++n;
+            return n;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::size_t count_long(const std::vector<std::string>& words) {
+            std::size_t n = 0;
+            for (const auto& w : words)
+                if (w.size() > 10) ++n;
+            return n;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [philosophy, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rp-waste

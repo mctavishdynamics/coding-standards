@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoNonNumericArrayProperties:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.2.3
+    title: Do not put non-numeric properties on arrays
+    statement:
+        Do not define or use properties on an array other than its indexes
+        and length. Use a Map or an object instead.
+    rationale:
+        Extra properties are invisible to array methods and serialization
+        and make the data's shape confusing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const results = fetchRows();
+        results.total = results.length;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const rows = fetchRows();
+        const results = {rows, total: rows.length};
+        \\\
+        ```
+    languages: [javascript]
+    tags: [arrays, data-structures]
+    source: https://google.github.io/styleguide/jsguide.html#523-non-numeric-properties

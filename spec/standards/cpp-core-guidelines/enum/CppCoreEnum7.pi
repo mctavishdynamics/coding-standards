@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEnum7:
+    standard: @{CppCoreGuidelines}
+    ruleId: Enum.7
+    title: Specify an enumeration's underlying type only when necessary
+    statement:
+        Leave the underlying type at its default unless you need a specific
+        size, for example to save space or to forward-declare a plain enum.
+    rationale:
+        The default is easiest to read and write, and int is the usual
+        integer type and compatible with C enums.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        enum class Mode : int { read, write };   // states the default for no reason
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum class Mode { read, write };
+
+        enum class Flag : std::uint8_t { a, b, c };   // packed into a byte on purpose
+        \\\
+        ```
+    languages: [cpp]
+    tags: [enumerations, types]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#renum-underlying

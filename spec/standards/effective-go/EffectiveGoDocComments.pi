@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoDocComments:
+    standard: @{EffectiveGo}
+    ruleId: commentary
+    title: Put doc comments directly before declarations
+    statement:
+        Document a top-level declaration with a comment placed immediately
+        before it, with no blank line in between.
+    rationale:
+        Go tools treat only an adjacent comment as the documentation of a
+        declaration, and these doc comments are the main documentation of a
+        package or command.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Backoff returns the delay before retry attempt n.
+
+        func Backoff(n int) time.Duration {
+            return time.Duration(1<<n) * 100 * time.Millisecond
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Backoff returns the delay before retry attempt n.
+        func Backoff(n int) time.Duration {
+            return time.Duration(1<<n) * 100 * time.Millisecond
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [comments, documentation]
+    source: https://go.dev/doc/effective_go#commentary

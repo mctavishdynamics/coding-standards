@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppUseOfConstexpr:
+    standard: @{GoogleCpp}
+    ruleId: Use_of_constexpr
+    title:
+        Use constexpr for true constants and constinit for constant
+        initialization
+    statement:
+        Use constexpr for true constants and the functions that define them,
+        and constinit to guarantee constant initialization of variables that
+        are not constant. Use consteval only for code that must not run at
+        runtime. Do not complicate functions to make them constexpr, and do
+        not use constexpr or consteval to force inlining.
+    rationale:
+        These keywords state precisely which parts of an interface are
+        constant and catch accidental dynamic initialization.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        const int kMaxRetries = ComputeDefault();  // Dynamic init, not checked.
+        int buffer_size = 4096;                    // Meant to be constant-initialized.
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr int kMaxRetries = 3;
+        constinit int buffer_size = 4096;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [const, initialization, compile-time]
+    source: https://google.github.io/styleguide/cppguide.html#Use_of_constexpr

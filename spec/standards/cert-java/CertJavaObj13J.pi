@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj13J:
+    standard: @{CertJava}
+    ruleId: OBJ13-J
+    title: Ensure that references to mutable objects are not exposed
+    statement:
+        Do not expose references to mutable objects to client code. Do not
+        store a client-supplied mutable object as a field, return such a
+        field from an accessor, or make it public static final.
+    rationale:
+        A final reference to a mutable object still lets clients change its
+        contents, such as the elements of a public static final array. CERT
+        rates likelihood likely, detectable yes, repairable no, priority
+        P12, level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        public static final String[] ALLOWED_HOSTS = {"a.example.com", "b.example.com"};
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private static final String[] ALLOWED_HOSTS = {"a.example.com", "b.example.com"};
+        public static final List<String> ALLOWED =
+            List.of(ALLOWED_HOSTS);
+        \\\
+        ```
+    languages: [java]
+    tags: [mutability, encapsulation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/object-orientation-obj/obj13-j/

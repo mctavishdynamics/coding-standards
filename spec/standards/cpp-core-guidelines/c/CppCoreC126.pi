@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC126:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.126
+    title: Do not usually give an abstract class a user-written constructor
+    statement:
+        An abstract class normally has no data, so it seldom needs a
+        constructor of its own.
+    rationale:
+        There is nothing for such a constructor to initialize.
+    exceptions:
+        A base constructor that does work, such as registering the object,
+        may be needed. Rarely an abstract class carries data shared by all
+        derived classes and then needs a constructor.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Reader {
+        public:
+            Reader() {}          // does nothing
+            virtual std::string read() = 0;
+            virtual ~Reader() = default;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Reader {
+        public:
+            virtual std::string read() = 0;
+            virtual ~Reader() = default;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, abstract-classes, constructors]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-abstract-ctor

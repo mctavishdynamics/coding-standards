@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellFileHeader:
+    standard: @{GoogleShell}
+    ruleId: file-header
+    title: Start each file with a description of its contents
+    statement:
+        Give every file a top-level comment with a brief overview of what it
+        contains. A copyright notice and author information are optional.
+    rationale:
+        A reader can tell what a file is for without reading its code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        #!/bin/bash
+        set -e
+        tar -czf "/backups/$(date +%F).tgz" /srv/data
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        #!/bin/bash
+        #
+        # Archive the data directory into a dated backup file.
+        set -e
+        tar -czf "/backups/$(date +%F).tgz" /srv/data
+        \\\
+        ```
+    languages: [shell]
+    tags: [comments, documentation]
+    source: https://google.github.io/styleguide/shellguide.html#file-header

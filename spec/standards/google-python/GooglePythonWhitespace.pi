@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonWhitespace:
+    standard: @{GooglePython}
+    ruleId: 3.6
+    title: Follow standard rules for whitespace
+    statement:
+        Put no spaces inside brackets, before a comma, semicolon or colon,
+        or before the parenthesis or bracket of a call, index or slice, and
+        no trailing whitespace. Put one space after a comma, semicolon or
+        colon and around assignment, comparison and Boolean operators. Do
+        not put spaces around = for keyword arguments or unannotated
+        defaults, and do not align tokens on consecutive lines with extra
+        spaces.
+    rationale:
+        Standard spacing is easy to read, and vertical alignment becomes a
+        maintenance burden whenever a line changes.
+    exceptions:
+        Use spaces around = for a default value when the parameter has a
+        type annotation.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        draw( shape[ 0 ], color = 'red' )
+        x , y = y , x
+        width     = 10
+        height    = 20
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        draw(shape[0], color='red')
+        x, y = y, x
+        width = 10
+        height = 20
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, whitespace]
+    source: https://google.github.io/styleguide/pyguide.html#s3.6-whitespace

@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp43:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.43
+    title: Minimize time spent in a critical section
+    statement:
+        Hold a lock only around the operations that need it. Do preparation
+        and cleanup outside, and use a nested block to bound the lock
+        object's scope.
+    rationale:
+        The shorter a mutex is held, the less often other threads must wait,
+        and suspending and resuming threads is expensive.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Cache::store(const Key& key, const Blob& raw)
+        {
+            std::lock_guard lock(mutex_);
+            Entry entry = decode(raw);   // slow and does not need the lock
+            entries_[key] = std::move(entry);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Cache::store(const Key& key, const Blob& raw)
+        {
+            Entry entry = decode(raw);
+            {
+                std::lock_guard lock(mutex_);
+                entries_[key] = std::move(entry);
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, locking, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-time

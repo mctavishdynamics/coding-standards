@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonCircularDependencies:
+    standard: @{GooglePython}
+    ruleId: 3.19.14
+    title: Break typing-caused circular dependencies
+    statement:
+        Treat circular dependencies caused by typing as a code smell and
+        refactor them. Where needed, replace the circular import with a
+        meaningfully named alias to Any, one line after the last import, and
+        keep using the real type name through it.
+    rationale:
+        Many build systems reject circular dependencies, and they signal
+        tangled module design.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        from typing import Any
+
+        orders = Any  # orders.py imports this module.
+
+
+        def attach(invoice: Invoice, order: 'orders.Order') -> None:
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, imports, dependencies]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.14-circular-dependencies

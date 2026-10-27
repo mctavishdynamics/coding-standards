@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftStaticAndClassProperties:
+    standard: @{GoogleSwift}
+    ruleId: static-and-class-properties
+    title: Do not suffix static properties with the type name
+    statement:
+        Do not add the type name as a suffix to static or class properties
+        that return an instance of the declaring type. Choose a sensible
+        name, such as shared or default, for singletons.
+    rationale:
+        The type is already clear from context, as in Color.red.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        extension Theme {
+          static let darkTheme = Theme(background: .black)
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        extension Theme {
+          static let dark = Theme(background: .black)
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, properties]
+    source: https://google.github.io/swift/#static-and-class-properties

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonMathematicalNotation:
+    standard: @{GooglePython}
+    ruleId: 3.16.5
+    title: Use established notation for math-heavy code
+    statement:
+        In mathematically heavy code, prefer short names that match
+        established notation in a reference paper or algorithm. Cite the
+        source in a comment or docstring, keep public APIs descriptive, and
+        silence lint with a narrowly scoped invalid-name disable.
+    rationale:
+        Matching the reference notation makes code easy to check against the
+        paper, while descriptive public names stay clear out of context.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def solve(matrix_a, vector_b):
+            lower_triangle, upper_triangle = decompose(matrix_a)
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def solve(a, b):
+            """Solves Ax = b by LU decomposition (Golub and Van Loan, section 3.2)."""
+            L, U = decompose(a)  # pylint: disable=invalid-name
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, math]
+    source: https://google.github.io/styleguide/pyguide.html#math-notation

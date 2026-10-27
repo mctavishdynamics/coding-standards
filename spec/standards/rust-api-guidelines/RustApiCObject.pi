@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCObject:
+    standard: @{RustApiGuidelines}
+    ruleId: C-OBJECT
+    title: Make traits object-safe if they may be used as trait objects
+    statement:
+        Decide early whether a trait will be used as an object or as a
+        generic bound. If it may be used as an object, keep its methods free
+        of generics, or exclude generic methods from the object with a where
+        Self is Sized clause.
+    rationale:
+        A trait that is not object-safe can never be used for dynamic
+        dispatch or in heterogeneous collections.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub trait Sink {
+            fn write_all(&mut self, data: &[u8]);
+            fn write_item<T: Serialize>(&mut self, item: &T);
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub trait Sink {
+            fn write_all(&mut self, data: &[u8]);
+            fn write_item<T: Serialize>(&mut self, item: &T)
+            where
+                Self: Sized;
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [traits, generics]
+    source: https://rust-lang.github.io/api-guidelines/flexibility.html#c-object

@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs43:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.43
+    title: Avoid expressions with undefined order of evaluation
+    statement:
+        Do not write expressions that modify a variable and also read or
+        modify it elsewhere in the same expression without a defined
+        sequence.
+    rationale:
+        The result is unknown and can change with the compiler, its version
+        or the optimizer settings, so the code is not portable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int i = 0;
+        v[i] = i++;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int i = 0;
+        v[i] = i;
+        ++i;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [undefined-behavior, expressions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-order

@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC66:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.66
+    title: Make move operations noexcept
+    statement:
+        Write move constructors and move assignment so they do not throw,
+        and declare them noexcept.
+    rationale:
+        A throwing move breaks reasonable expectations, and standard
+        containers such as std::vector only use moves they know will not
+        throw.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Track {
+        public:
+            Track(Track&& o);    // vector will copy instead of move when growing
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Track {
+        public:
+            Track(Track&& o) noexcept;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [move, noexcept, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-move-noexcept

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8DefNotLambdaAssignment:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-lambda
+    title: Use def instead of assigning a lambda to a name
+    statement:
+        Define a named function with def rather than binding a lambda
+        expression to a name in an assignment.
+    rationale:
+        A def gives the function a real name for tracebacks and repr, and
+        assigning a lambda throws away its only advantage, being usable
+        inside an expression.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        square = lambda n: n * n
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def square(n):
+            return n * n
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, lambdas]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssImportantDeclarations:
+    standard: @{GoogleHtmlCss}
+    ruleId: important-declarations
+    title: Avoid !important declarations
+    statement:
+        Do not use !important. Override properties with selector specificity
+        instead.
+    rationale:
+        !important breaks the natural cascade and makes styles hard to
+        reason about and compose.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        .notice {
+          color: black !important;
+        }
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        .sidebar .notice {
+          color: black;
+        }
+        \\\
+        ```
+    languages: [css]
+    tags: [cascade, specificity]
+    source: https://google.github.io/styleguide/htmlcssguide.html#important-declarations

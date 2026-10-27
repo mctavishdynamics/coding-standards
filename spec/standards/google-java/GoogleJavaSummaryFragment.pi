@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaSummaryFragment:
+    standard: @{GoogleJava}
+    ruleId: 7.2
+    title: Begin Javadoc with a summary fragment
+    statement:
+        Start each Javadoc block with a short noun or verb phrase, not a
+        full sentence, capitalised and punctuated like a sentence. Do not
+        open with phrases like A Foo is or This method returns, and do not
+        write a bare imperative such as Save the record.
+    rationale:
+        The summary fragment is the only text shown in class and method
+        indexes, so it must stand alone and read well there.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        /// This method returns the customer ID.
+        String customerId() { ... }
+
+        /// @return the order total.
+        Money total() { ... }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        /// Returns the customer ID.
+        String customerId() { ... }
+
+        /// Returns the order total, including tax.
+        Money total() { ... }
+        \\\
+        ```
+    languages: [java]
+    tags: [javadoc, documentation]
+    source: https://google.github.io/styleguide/javaguide.html#s7.2-summary-fragment

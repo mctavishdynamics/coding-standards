@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptLocalVariableNames:
+    standard: @{GoogleJavaScript}
+    ruleId: 6.2.8
+    title: Write local variable names in lowerCamelCase
+    statement:
+        Name local variables in lowerCamelCase, including constants inside
+        function scope and variables holding constructors. Only module-level
+        constants use CONSTANT_CASE.
+    rationale:
+        Function-scoped values are recreated on each call, so they are not
+        constants in the guide's sense.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function area(r) {
+          const PI_SQUARED = Math.PI ** 2;
+          const ShapeClass = Circle;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function area(r) {
+          const piSquared = Math.PI ** 2;
+          const shapeClass = Circle;
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming, variables]
+    source: https://google.github.io/styleguide/jsguide.html#628-local-variable-names

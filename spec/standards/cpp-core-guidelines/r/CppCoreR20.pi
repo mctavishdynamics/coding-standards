@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR20:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.20
+    title: Use unique_ptr or shared_ptr to represent ownership
+    statement:
+        When a pointer owns its object, make it a unique_ptr or a shared_ptr
+        instead of a raw pointer.
+    rationale:
+        Smart pointers release the object automatically and so prevent
+        resource leaks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void build() {
+            Mesh* mesh = new Mesh();
+            if (!mesh->load("tree.obj")) return;   // leak
+            upload(*mesh);
+            delete mesh;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void build() {
+            auto mesh = std::make_unique<Mesh>();
+            if (!mesh->load("tree.obj")) return;
+            upload(*mesh);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [ownership, smart-pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-owner

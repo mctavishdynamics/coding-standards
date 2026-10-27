@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF5:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.5
+    title: If a function is very small and time-critical, declare it inline
+    statement:
+        Declare small, frequently called functions inline, or define them in
+        the class body, and measure the effect.
+    rationale:
+        Optimizers do not always inline well without hints, and an inline
+        declaration encourages them to.
+    exceptions:
+        Do not put inline functions in a stable interface unless they will
+        not change, since an inline function is part of the ABI. Templates
+        and in-class member definitions are already inline, and functions
+        longer than about three statements are usually better out of line.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // point.cpp, called millions of times per frame
+        double Point::length_squared() const {
+            return x * x + y * y;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // point.h
+        inline double length_squared(const Point& p) {
+            return p.x * p.x + p.y * p.y;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, inline, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-inline

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsControlStatements:
+    standard: @{AirbnbJavaScript}
+    ruleId: 17.1
+    title: Break long conditions with operators leading each line
+    statement:
+        When the condition of a control statement is too long, put each
+        condition group on its own line and start each line with the logical
+        operator.
+    rationale:
+        Leading operators line up, follow the same pattern as method
+        chaining and make complex logic easier to follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        if ((order.paid && order.shipped) || order.cancelled || order.refunded) {
+          archive(order);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        if (
+          (order.paid && order.shipped)
+          || order.cancelled
+          || order.refunded
+        ) {
+          archive(order);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [control-flow, formatting]
+    source: https://github.com/airbnb/javascript#control-statements

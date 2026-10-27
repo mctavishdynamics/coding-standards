@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptHorizontalWhitespace:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.6.2
+    title: Use single spaces only where the guide calls for them
+    statement:
+        Never leave trailing whitespace. Use one space between a keyword and
+        a following parenthesis or a preceding closing brace, before an
+        opening brace, around binary and ternary operators, after commas,
+        semicolons and object-literal colons, and around the double slash of
+        an end-of-line comment.
+    rationale:
+        Fixed spacing rules remove whitespace debates and keep diffs free of
+        meaningless changes.
+    exceptions:
+        No space goes before an object literal that is the first argument or
+        first array element, or inside a template expansion; spaces never
+        precede commas or semicolons.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        if(count>limit){
+          notify (count,limit);
+        }else{
+          reset() ;//done
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        if (count > limit) {
+          notify(count, limit);
+        } else {
+          reset();  // done
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, whitespace]
+    source: https://google.github.io/styleguide/jsguide.html#462-horizontal-whitespace

@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs102:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.102
+    title: Use signed types for arithmetic
+    statement:
+        Use signed integer types for quantities you calculate with.
+    rationale:
+        Most arithmetic assumes signed behavior, where x minus y is negative
+        when y is larger. Unsigned types silently wrap instead.
+    exceptions:
+        Use unsigned types when you really want modular arithmetic, and add
+        a comment noting the reliance on wraparound because it surprises
+        many programmers.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        unsigned stock = 3;
+        unsigned ordered = 5;
+        auto shortfall = stock - ordered;    // 4294967294, not -2
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int stock = 3;
+        int ordered = 5;
+        auto shortfall = stock - ordered;    // -2
+        \\\
+        ```
+    languages: [cpp]
+    tags: [arithmetic, types]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-signed

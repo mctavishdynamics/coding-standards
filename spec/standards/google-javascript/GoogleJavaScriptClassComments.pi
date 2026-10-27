@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptClassComments:
+    standard: @{GoogleJavaScript}
+    ruleId: 7.6
+    title: Document classes with a description and relevant tags
+    statement:
+        Document classes, interfaces and records with a description that
+        explains how and when to use them, plus any template, implemented
+        interface, visibility or other tags. With the class keyword, do not
+        add @constructor, or @extends unless the superclass is generic.
+        Interfaces and records use @extends and never the extends keyword.
+    rationale:
+        A class comment is where users learn the contract, and redundant
+        annotations only drift from the code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /**
+         * @constructor
+         * @extends {Widget}
+         */
+        class Slider extends Widget {}
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * A horizontal range control that reports values between min and max.
+         * @implements {Focusable}
+         */
+        class Slider extends Widget {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, classes, documentation]
+    source: https://google.github.io/styleguide/jsguide.html#76-class-comments

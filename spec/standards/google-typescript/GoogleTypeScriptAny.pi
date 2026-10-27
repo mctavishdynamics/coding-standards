@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptAny:
+    standard: @{GoogleTypeScript}
+    ruleId: any
+    title: Avoid the any type
+    statement:
+        Try not to use any. Instead, give a more specific type, use unknown,
+        or suppress the lint warning and document why.
+    rationale:
+        any is both a supertype and subtype of everything and allows any
+        property access, so it hides serious errors and undermines static
+        typing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function total(order: any) {
+          return order.items.length * order.price;
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        interface Order {
+          items: Item[];
+          price: number;
+        }
+        function total(order: Order) {
+          return order.items.length * order.price;
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, any, type-safety]
+    source: https://google.github.io/styleguide/tsguide.html#any

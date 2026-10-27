@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR3:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.3
+    title: Treat a raw pointer as non-owning
+    statement:
+        A plain T* never owns the object it points to. When a pointer must
+        own, use a smart pointer or mark it with gsl::owner.
+    rationale:
+        Most raw pointers are non-owning and nothing in the language says
+        otherwise. Owners must be identifiable so that the objects they hold
+        are deleted reliably.
+    exceptions:
+        Legacy code, especially code that must stay compilable as C or that
+        crosses C-style ABIs, still uses owning raw pointers. Resource
+        handle implementations such as vector also need owning raw pointers
+        internally; annotate them with owner where possible.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Sensor* open_sensor(int port) {
+            return new Sensor(port);   // caller must guess it owns this
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::unique_ptr<Sensor> open_sensor(int port) {
+            return std::make_unique<Sensor>(port);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [ownership, pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-ptr

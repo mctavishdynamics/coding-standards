@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppFio51Cpp:
+    standard: @{CertCpp}
+    ruleId: FIO51-CPP
+    title: Close files when they are no longer needed
+    statement:
+        Close each file once it is no longer needed and before the program
+        exits, either by calling close or by letting a stream object go out
+        of scope.
+    rationale:
+        Files left open can lose buffered data and exhaust file handles, and
+        functions such as std::terminate do not flush them. CERT rates
+        likelihood unlikely, detectable no, repairable no, priority P2,
+        level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        void save(const std::string& text) {
+            std::fstream file("out.txt", std::ios::out);
+            file << text;
+            std::terminate();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void save(const std::string& text) {
+            std::fstream file("out.txt", std::ios::out);
+            file << text;
+            file.close();
+            if (!file) {
+                report_error("write failed");
+            }
+            std::terminate();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [input-output, resource-management, file-streams]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/input-output-fio/fio51-cpp

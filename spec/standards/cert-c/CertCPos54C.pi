@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos54C:
+    standard: @{CertC}
+    ruleId: POS54-C
+    title: Detect and handle POSIX library errors
+    statement:
+        Check the result of every POSIX function that can fail, such as
+        pthread_mutex_lock, fmemopen, mmap and setvbuf, against its
+        documented error value, and handle failures according to an
+        error-handling policy.
+    rationale:
+        Ignoring a failure lets the program run on with invalid state, which
+        can crash it, deny service or be exploited. CERT rates likelihood
+        likely, detectable yes, repairable yes, priority P27, level L1.
+    exceptions:
+        The exception for standard library functions in ERR33-C, which
+        allows ignoring results that cannot indicate a meaningful error,
+        also applies here.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        void *map_file(int fd, size_t len) {
+            void *p = mmap(NULL, len, PROT_READ, MAP_PRIVATE, fd, 0);
+            memcpy(header, p, sizeof header);
+            return p;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void *map_file(int fd, size_t len) {
+            void *p = mmap(NULL, len, PROT_READ, MAP_PRIVATE, fd, 0);
+            if (p == MAP_FAILED) {
+                return NULL;
+            }
+            memcpy(header, p, sizeof header);
+            return p;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, error-handling, library]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos54-c

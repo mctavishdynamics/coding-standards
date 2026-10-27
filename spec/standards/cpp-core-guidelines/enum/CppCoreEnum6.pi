@@ -1,0 +1,32 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEnum6:
+    standard: @{CppCoreGuidelines}
+    ruleId: Enum.6
+    title: Avoid unnamed enumerations
+    statement:
+        Give every enumeration a name. If the values do not belong together,
+        define them as separate constexpr constants instead.
+    rationale:
+        If you cannot name an enumeration, its values are not really
+        related.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        enum { max_users = 100, buffer_size = 4096 };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr int max_users = 100;
+        constexpr int buffer_size = 4096;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [enumerations, constants]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#renum-unnamed

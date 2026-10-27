@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCtr56Cpp:
+    standard: @{CertCpp}
+    ruleId: CTR56-CPP
+    title: Do not use pointer arithmetic on polymorphic objects
+    statement:
+        Do not do pointer arithmetic or array indexing through a pointer to
+        a base class when the array holds derived objects. Store pointers to
+        the objects, or use an array of the most derived type.
+    rationale:
+        Pointer arithmetic uses the static type's size, so stepping through
+        derived objects with a base pointer lands in the middle of objects
+        and is undefined behavior. CERT rates likelihood likely, detectable
+        no, repairable no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        struct Animal { virtual void speak() const; int age = 0; };
+        struct Dog : Animal { int tricks = 0; };
+
+        void speak_all(const Animal* animals, std::size_t n) {
+            for (std::size_t i = 0; i < n; ++i) {
+                animals[i].speak();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Animal { virtual void speak() const; int age = 0; };
+        struct Dog : Animal { int tricks = 0; };
+
+        void speak_all(const std::vector<std::unique_ptr<Animal>>& animals) {
+            for (const auto& a : animals) {
+                a->speak();
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, pointers, inheritance]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/containers-ctr/ctr56-cpp

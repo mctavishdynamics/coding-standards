@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC11:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.11
+    title: Make concrete types regular
+    statement:
+        Give a concrete type value semantics like the built-in types, with a
+        default constructor, copy, assignment and equality that agree with
+        each other.
+    rationale:
+        Regular types behave the way users expect from int and std::string,
+        so they are easier to understand and to use with the standard
+        library.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Money {
+            long cents;
+            // no operator==, so values cannot be compared
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Money {
+            long cents = 0;
+            friend bool operator==(const Money&, const Money&) = default;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, value-semantics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-regular

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCFloatingPointConstants:
+    standard: @{GoogleObjC}
+    ruleId: floating-point-constants
+    title: Do not mix float and double CGFloat constants
+    statement:
+        CGFloat constants may be written as plain double literals, since
+        Google iOS projects target 64-bit only. Teams may keep using the f
+        suffix for legacy consistency, but must not mix float and double
+        literals in the same code.
+    rationale:
+        Mixed literals are inconsistent and can cause conversion warnings.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        static const CGFloat kCornerRadius = 4.0f;
+        static const CGFloat kBorderWidth = 1.0;
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        static const CGFloat kCornerRadius = 4.0;
+        static const CGFloat kBorderWidth = 1.0;
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [types, constants, floating-point]
+    source: https://google.github.io/styleguide/objcguide.html#floating-point-constants

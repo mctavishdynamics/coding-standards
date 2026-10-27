@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppWindowsCode:
+    standard: @{GoogleCpp}
+    ruleId: Windows_Code
+    title: Follow the Google conventions in Windows code
+    statement:
+        Apply this guide to Windows code too. Do not use Hungarian notation
+        or pragma once, keep close to the underlying C++ types, wrap
+        dllimport and dllexport in macros, and compile with warning level 3
+        or higher treating warnings as errors.
+    rationale:
+        One set of conventions on every platform keeps code easy for anyone
+        to understand.
+    exceptions:
+        Multiple implementation inheritance is allowed for COM and ATL/WTL
+        classes, exceptions may be enabled in the compiler only so that the
+        STL compiles, Windows type names may be used when calling Windows
+        APIs, and resource headers need not conform.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #pragma once
+
+        DWORD dwCount;
+        LPCTSTR szName;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #ifndef MYPROJECT_WIN_REGISTRY_H_
+        #define MYPROJECT_WIN_REGISTRY_H_
+
+        int count;
+        const TCHAR* name;
+
+        #endif  // MYPROJECT_WIN_REGISTRY_H_
+        \\\
+        ```
+    languages: [cpp]
+    tags: [windows, portability, consistency]
+    source: https://google.github.io/styleguide/cppguide.html#Windows_Code

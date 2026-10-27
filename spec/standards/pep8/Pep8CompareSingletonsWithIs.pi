@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8CompareSingletonsWithIs:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-singletons
+    title: Compare to None with is or is not
+    statement:
+        Compare with singletons such as None using is or is not, never with
+        the equality operators.
+    rationale:
+        Equality can be overridden by a class, while identity is exact and
+        fast.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if result == None:
+            result = compute()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        if result is None:
+            result = compute()
+        \\\
+        ```
+    languages: [python]
+    tags: [comparisons, none]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

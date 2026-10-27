@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoInterfaceEmbedding:
+    standard: @{EffectiveGo}
+    ruleId: embedding-interfaces
+    title: Compose interfaces by embedding them
+    statement:
+        Build a larger interface by embedding smaller ones rather than
+        listing their methods again.
+    rationale:
+        Embedding is shorter and states that the new interface is the union
+        of the others.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type ReadCloser interface {
+            Read(p []byte) (n int, err error)
+            Close() error
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type ReadCloser interface {
+            io.Reader
+            io.Closer
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [embedding, interfaces, composition]
+    source: https://go.dev/doc/effective_go#embedding

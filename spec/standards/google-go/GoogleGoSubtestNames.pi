@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoSubtestNames:
+    standard: @{GoogleGo}
+    ruleId: decisions/subtest-names
+    title: Give subtests short identifier-like names
+    statement:
+        Name subtests so they read well in output and are easy to type on
+        the command line, more like identifiers than prose. Avoid spaces,
+        slashes and non-printing characters, and put longer descriptions and
+        inputs in a separate field or the failure message.
+    rationale:
+        The runner escapes spaces and special characters, and slashes have
+        special meaning in test filters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        t.Run("converts America/New_York times correctly!", func(t *testing.T) { /* ... */ })
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        t.Run("new_york", func(t *testing.T) { /* ... */ })
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, subtests, naming]
+    source: https://google.github.io/styleguide/go/decisions#subtest-names

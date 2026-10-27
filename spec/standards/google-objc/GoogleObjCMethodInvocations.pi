@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCMethodInvocations:
+    standard: @{GoogleObjC}
+    ruleId: method-invocations
+    title: Put all arguments on one line or one per line
+    statement:
+        Format a message send with all arguments on one line, or with one
+        argument per line and colons aligned. When the first keyword is
+        short, indent later lines at least four spaces while keeping colons
+        aligned.
+    rationale:
+        Mixed layouts and keyword alignment hide which argument belongs to
+        which keyword.
+    exceptions:
+        Calls with several inline blocks may left-align parameter names at a
+        four space indent.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        [store saveRecord:record inZone:zone
+               completion:handler];
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        [store saveRecord:record inZone:zone completion:handler];
+
+        [store saveRecord:record
+                   inZone:zone
+               completion:handler];
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [formatting, methods]
+    source: https://google.github.io/styleguide/objcguide.html#method-invocations

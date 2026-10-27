@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ConsistentReturns:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-consistent-returns
+    title: Be consistent in return statements
+    statement:
+        In a function, either every return statement returns an expression
+        or none does. If any does, write return None explicitly where no
+        value is returned, and end the function with an explicit return if
+        the end is reachable.
+    rationale:
+        Explicit returns show that returning None is intended rather than an
+        oversight.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def find_user(users, name):
+            for user in users:
+                if user.name == name:
+                    return user
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def find_user(users, name):
+            for user in users:
+                if user.name == name:
+                    return user
+            return None
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, readability]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

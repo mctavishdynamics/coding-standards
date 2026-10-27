@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellCaseStatement:
+    standard: @{GoogleShell}
+    ruleId: case-statement
+    title: Indent case alternatives by 2 spaces
+    statement:
+        Indent the patterns of a case one level and multi-line actions
+        another level. Put a long alternative's pattern, actions and ;; on
+        separate lines; a short one may sit on one line with a space after
+        the closing parenthesis and before ;;. Do not precede patterns with
+        an open parenthesis, and avoid the ;& and ;;& forms.
+    rationale:
+        A regular layout makes each alternative easy to find, and the
+        fall-through notations are easy to misread.
+    exceptions:
+        Simple commands may share a line with the pattern and ;; as long as
+        it stays readable, which suits single-letter option processing.
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        case "${mode}" in
+        (start) launch_server;;
+        stop)
+        kill "${pid}"; rm -f "${pid_file}";;
+        esac
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        case "${mode}" in
+          start) launch_server ;;
+          stop)
+            kill "${pid}"
+            rm -f "${pid_file}"
+            ;;
+          *)
+            err "Unknown mode '${mode}'"
+            ;;
+        esac
+        \\\
+        ```
+    languages: [shell]
+    tags: [formatting, control-flow]
+    source: https://google.github.io/styleguide/shellguide.html#case-statement

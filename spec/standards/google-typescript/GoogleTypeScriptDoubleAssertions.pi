@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptDoubleAssertions:
+    standard: @{GoogleTypeScript}
+    ruleId: double-assertions
+    title: Route double assertions through unknown
+    statement:
+        When an assertion between unrelated types is truly safe, assert
+        through unknown first, not through any or the empty object type.
+    rationale:
+        unknown is less specific than every type, so it permits the cast
+        without turning off type checking the way any does.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const config = (raw as any) as AppConfig;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        // raw was validated against the AppConfig schema above.
+        const config = raw as unknown as AppConfig;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, assertions]
+    source: https://google.github.io/styleguide/tsguide.html#double-assertions

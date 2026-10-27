@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsModulesNoWebpackLoaderSyntax:
+    standard: @{AirbnbJavaScript}
+    ruleId: 10.9
+    title: Do not use Webpack loader syntax in imports
+    statement:
+        Keep Webpack loader prefixes out of import paths. Configure loaders
+        in webpack.config.js instead. Enforced by the ESLint rule
+        import/no-webpack-loader-syntax.
+    rationale:
+        Loader syntax in imports ties the code to one bundler.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        import theme from 'style-loader!css-loader!./theme.css';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        import theme from './theme.css';
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, imports, tooling]
+    source: https://github.com/airbnb/javascript#modules--no-webpack-loader-syntax

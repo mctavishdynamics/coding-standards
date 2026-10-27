@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC132:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.132
+    title: Do not make a function virtual without reason
+    statement:
+        Make a function virtual only when derived classes are meant to
+        override it.
+    rationale:
+        Needless virtual functions cost time and code size, invite mistakes
+        in derived classes, and force code replication in templated
+        hierarchies.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<class T>
+        class Stack {
+        public:
+            virtual std::size_t size() const;   // nobody overrides it
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<class T>
+        class Stack {
+        public:
+            std::size_t size() const;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, virtual-functions, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-virtual

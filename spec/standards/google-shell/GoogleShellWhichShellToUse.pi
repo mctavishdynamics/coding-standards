@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellWhichShellToUse:
+    standard: @{GoogleShell}
+    ruleId: which-shell-to-use
+    title: Write executable scripts in Bash
+    statement:
+        Use Bash as the only shell language for executables. Start each
+        executable with #!/bin/bash and minimal flags, and set shell options
+        with set so that running the script as bash script_name still works.
+    rationale:
+        One shell that is installed everywhere gives a consistent language,
+        so there is no need to aim for POSIX compatibility or avoid
+        bashisms.
+    exceptions:
+        Use another shell only when the target forces it, such as a legacy
+        system or constrained environment that requires plain Bourne shell.
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        #!/bin/sh -eu
+        echo "Deploying to ${TARGET}"
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        #!/bin/bash
+        set -euo pipefail
+        echo "Deploying to ${TARGET}"
+        \\\
+        ```
+    languages: [shell]
+    tags: [shell-choice, portability]
+    source: https://google.github.io/styleguide/shellguide.html#which-shell-to-use

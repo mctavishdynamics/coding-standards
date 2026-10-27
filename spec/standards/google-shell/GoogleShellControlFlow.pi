@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellControlFlow:
+    standard: @{GoogleShell}
+    ruleId: control-flow
+    title: Put then and do on the same line as if, for and while
+    statement:
+        Place ; then and ; do on the same line as the if, for, while, until
+        or select. Put else on its own line, and align the closing fi or
+        done with the opening statement. Include in "$@" in for loops over
+        the arguments rather than omitting it.
+    rationale:
+        This mirrors how braces are placed for functions, and spelling out
+        the word list keeps the loop clear.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        for arg
+        do
+          if [[ -z "${arg}" ]]
+          then
+            echo "empty argument"
+          else echo "${arg}"
+          fi
+        done
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        for arg in "$@"; do
+          if [[ -z "${arg}" ]]; then
+            echo "empty argument"
+          else
+            echo "${arg}"
+          fi
+        done
+        \\\
+        ```
+    languages: [shell]
+    tags: [formatting, control-flow]
+    source: https://google.github.io/styleguide/shellguide.html#control-flow

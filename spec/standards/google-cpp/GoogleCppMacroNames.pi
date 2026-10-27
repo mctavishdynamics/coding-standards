@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppMacroNames:
+    standard: @{GoogleCpp}
+    ruleId: Macro_Names
+    title: Name macros in capitals with a project prefix
+    statement:
+        If you must define a macro, name it in all capitals with underscores
+        and a project-specific prefix.
+    rationale:
+        Macros ignore scope, so a loud and unique name warns readers and
+        avoids collisions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #define round(x) ...
+        #define PiRounded 3.0
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #define MYPROJECT_ROUND(x) ...
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, macros, preprocessor]
+    source: https://google.github.io/styleguide/cppguide.html#Macro_Names

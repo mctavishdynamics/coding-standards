@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaTps04J:
+    standard: @{CertJava}
+    ruleId: TPS04-J
+    title: Ensure ThreadLocal variables are reinitialized when using thread pools
+    statement:
+        When pool tasks change a ThreadLocal, reset it before the task ends,
+        for example in a finally block or a beforeExecute hook.
+    rationale:
+        Pool threads are reused, so a value left by one task leaks into the
+        next task that runs on the same thread. CERT's risk assessment gives
+        likelihood probable, detectable yes, repairable no, priority P8 and
+        level L2.
+    exceptions:
+        A ThreadLocal whose value never changes after initialization does
+        not need to be reset.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        pool.execute(() -> {
+            CurrentUser.set(request.user());
+            handle(request);
+        });
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        pool.execute(() -> {
+            CurrentUser.set(request.user());
+            try {
+                handle(request);
+            } finally {
+                CurrentUser.remove();
+            }
+        });
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, thread-pools, thread-local]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-pools-tps/tps04-j/

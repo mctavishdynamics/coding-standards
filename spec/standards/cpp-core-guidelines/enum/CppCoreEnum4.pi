@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEnum4:
+    standard: @{CppCoreGuidelines}
+    ruleId: Enum.4
+    title: Define operations on enumerations for safe and simple use
+    statement:
+        Provide the operations an enumeration needs, such as increment,
+        bitwise combination or printing, as functions or operators on the
+        enum type.
+    rationale:
+        This makes the type convenient to use without casts to int and
+        avoids mistakes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        enum class Day { mon, tue, wed, thu, fri, sat, sun };
+
+        Day d = Day::sun;
+        d = static_cast<Day>(static_cast<int>(d) + 1);   // past sun, invalid
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum class Day { mon, tue, wed, thu, fri, sat, sun };
+
+        Day& operator++(Day& d) {
+            d = (d == Day::sun) ? Day::mon : static_cast<Day>(static_cast<int>(d) + 1);
+            return d;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [enumerations, operators]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#renum-oper

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsConstructorsNoUseless:
+    standard: @{AirbnbJavaScript}
+    ruleId: 9.5
+    title: Do not write empty or delegating constructors
+    statement:
+        Leave out a constructor that is empty or only passes its arguments
+        to the parent class. Classes get a default constructor that does
+        this. Enforced by the ESLint rule no-useless-constructor.
+    rationale:
+        Such constructors add code without changing behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class AdminUser extends User {
+          constructor(...args) {
+            super(...args);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class AdminUser extends User {
+          get isAdmin() {
+            return true;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, dead-code]
+    source: https://github.com/airbnb/javascript#constructors--no-useless

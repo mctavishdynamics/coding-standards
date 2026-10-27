@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptImportSameFileOnce:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.4.1.2
+    title: Do not import the same file more than once
+    statement:
+        Import each file at most once, combining all the names you need from
+        it into a single import statement.
+    rationale:
+        Repeated imports of one path make it hard to see everything a file
+        depends on.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        import {parseDate} from './time/parsing.js';
+        import {parseDuration} from './time/parsing.js';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        import {parseDate, parseDuration} from './time/parsing.js';
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, imports]
+    source: https://google.github.io/styleguide/jsguide.html#3412-importing-the-same-file-multiple-times

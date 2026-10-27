@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaLck08J:
+    standard: @{CertJava}
+    ruleId: LCK08-J
+    title: Ensure actively held locks are released on exceptional conditions
+    statement:
+        Release explicit locks in a finally block that starts right after
+        the lock is acquired, so that every path out of the code unlocks it.
+    rationale:
+        An exception between lock() and unlock() leaves the lock held, and
+        every other thread that needs it blocks forever. Intrinsic locks
+        release themselves, but java.util.concurrent locks do not. CERT's
+        risk assessment gives likelihood likely, detectable yes, repairable
+        yes, priority P9 and level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        lock.lock();
+        writeRecord(record);   // may throw
+        lock.unlock();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        lock.lock();
+        try {
+            writeRecord(record);
+        } finally {
+            lock.unlock();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, locking, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/locking-lck/lck08-j/

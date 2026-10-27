@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8AnnotatedDefaultEquals:
+    standard: @{Pep8}
+    ruleId: other-recommendations-annotated-default
+    title: Space the equals sign when a parameter has an annotation and a default
+    statement:
+        When an annotated parameter has a default value, put spaces around
+        the equals sign.
+    rationale:
+        With an annotation present the parameter is already several tokens
+        long, and spacing keeps the default visually separate from the type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def connect(host: str, port: int=5432, retries = 3): ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def connect(host: str, port: int = 5432, retries=3): ...
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, whitespace, type-hints]
+    source: https://peps.python.org/pep-0008/#other-recommendations

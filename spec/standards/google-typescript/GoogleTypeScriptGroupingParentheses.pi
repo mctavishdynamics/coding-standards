@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptGroupingParentheses:
+    standard: @{GoogleTypeScript}
+    ruleId: grouping-parentheses
+    title: Keep grouping parentheses that aid reading
+    statement:
+        Omit optional grouping parentheses only when author and reviewer
+        agree the code cannot reasonably be misread without them. Do not
+        wrap the whole expression after delete, typeof, void, return, throw,
+        case, in, of or yield in parentheses.
+    rationale:
+        Readers should not need the full precedence table to understand an
+        expression, but parentheses around a whole operand are just noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const ok = a && b || c && !d;
+        return (total);
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const ok = (a && b) || (c && !d);
+        return total;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [formatting, expressions, readability]
+    source: https://google.github.io/styleguide/tsguide.html#grouping-parentheses

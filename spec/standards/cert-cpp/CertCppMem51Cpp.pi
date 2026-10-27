@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppMem51Cpp:
+    standard: @{CertCpp}
+    ruleId: MEM51-CPP
+    title: Properly deallocate dynamically allocated resources
+    statement:
+        Release every resource with the function that matches how it was
+        obtained, so use delete for new, delete with array form for new with
+        array form, free for malloc, and the matching deallocator for
+        placement and custom allocations.
+    rationale:
+        Mismatched allocation and deallocation is undefined behavior and can
+        corrupt the heap or skip destructors. CERT rates likelihood likely,
+        detectable no, repairable no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        void process(std::size_t n) {
+            int* values = new int[n];
+            compute(values, n);
+            delete values;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void process(std::size_t n) {
+            std::vector<int> values(n);
+            compute(values.data(), n);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, allocation, resource-management]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/memory-management-mem/mem51-cpp

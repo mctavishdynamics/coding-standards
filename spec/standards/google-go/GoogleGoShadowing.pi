@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoShadowing:
+    standard: @{GoogleGo}
+    ruleId: best-practices/shadowing
+    title: Avoid accidental shadowing
+    statement:
+        Reusing a variable with the short declaration operator in the same
+        scope is fine once the old value is no longer needed, but using it
+        in a new scope creates a separate variable that disappears after the
+        block. Use a new name when it is clearer, and do not name variables
+        after standard packages except in tiny scopes.
+    rationale:
+        A shadowed variable silently leaves the outer value unchanged, a
+        common source of bugs, and a variable named like a package hides
+        that package.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        deadline := time.Now().Add(time.Minute)
+        if urgent {
+            deadline := time.Now().Add(5 * time.Second)
+            log.Printf("tight deadline %v", deadline)
+        }
+        return send(msg, deadline) // still one minute
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        deadline := time.Now().Add(time.Minute)
+        if urgent {
+            deadline = time.Now().Add(5 * time.Second)
+            log.Printf("tight deadline %v", deadline)
+        }
+        return send(msg, deadline)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, variables, scope]
+    source: https://google.github.io/styleguide/go/best-practices#shadowing

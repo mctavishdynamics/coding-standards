@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTypeAliases:
+    standard: @{GoogleGo}
+    ruleId: decisions/type-aliases
+    title: Use type definitions and reserve aliases for migrations
+    statement:
+        Define new types with a type definition. Use a type alias only to
+        refer to an existing type, mainly when moving a type to a new
+        package, and not otherwise.
+    rationale:
+        An alias creates no new type and can confuse readers when it is not
+        needed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Celsius = float64
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Celsius float64
+
+        // Deprecated: use newpkg.Client.
+        type Client = newpkg.Client
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, types]
+    source: https://google.github.io/styleguide/go/decisions#type-aliases

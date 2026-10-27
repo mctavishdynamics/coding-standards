@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptParameterInitializers:
+    standard: @{GoogleTypeScript}
+    ruleId: parameter-initializers
+    title: Keep parameter initialisers simple and side-effect free
+    statement:
+        Default parameter values must have no observable side effects and
+        should be as simple as possible. Use defaults sparingly, and prefer
+        a destructured options object when there are several optional
+        parameters without a natural order.
+    rationale:
+        Side effects in defaults run invisibly on some calls only, and
+        shared mutable defaults couple unrelated calls.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        let nextId = 0;
+        function createTask(title: string, id = nextId++) {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function createTask(title: string, tags: string[] = []) {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [functions, parameters, side-effects]
+    source: https://google.github.io/styleguide/tsguide.html#parameter-initializers

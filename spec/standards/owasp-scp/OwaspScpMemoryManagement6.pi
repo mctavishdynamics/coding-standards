@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpMemoryManagement6:
+    standard: @{OwaspScp}
+    ruleId: memory-management-6
+    title: Close resources explicitly, without relying on garbage collection
+    statement:
+        Close resources such as connections and file handles explicitly
+        instead of waiting for garbage collection.
+    rationale:
+        Collection timing is unpredictable, so resources can run out and
+        remain exposed in the meantime.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def read_config(path):
+            return open(path).read()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def read_config(path):
+            with open(path) as f:
+                return f.read()
+        \\\
+        ```
+    languages: [any]
+    tags: [memory, resources]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#memory-management

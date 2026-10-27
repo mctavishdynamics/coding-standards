@@ -1,0 +1,47 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs78:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.78
+    title: Don't rely on implicit fallthrough in switch statements
+    statement:
+        End every non-empty case with break, return or throw. When
+        fallthrough is intended, mark it with the fallthrough attribute.
+    rationale:
+        A missing break is a common bug, and a deliberate fallthrough is a
+        maintenance hazard unless it is rare and explicit.
+    exceptions:
+        Several case labels may share one statement, and a case that ends in
+        return needs no break. A rare deliberate fallthrough must use the
+        fallthrough attribute.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        switch (level) {
+        case Level::error:
+            alert_oncall();
+        case Level::warning:            // fallthrough: accident or intent?
+            write_log();
+            break;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        switch (level) {
+        case Level::error:
+            alert_oncall();
+            [[fallthrough]];
+        case Level::warning:
+            write_log();
+            break;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [switch, control-flow]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-break

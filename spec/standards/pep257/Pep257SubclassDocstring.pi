@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257SubclassDocstring:
+    standard: @{Pep257}
+    ruleId: multi-line-docstrings-subclasses
+    title: Describe how a subclass differs from its base class
+    statement:
+        When a class inherits most of its behaviour, say so in its docstring
+        and summarise the differences. Use "override" for a method that
+        replaces the base method without calling it and "extend" for one
+        that calls it as well.
+    rationale:
+        Readers learn what is new without rereading the base class, and the
+        two verbs tell them whether the base behaviour still runs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class AuditedStore(Store):
+            """A store."""
+
+            def save(self, record):
+                """Save the record."""
+                self.log.append(record.id)
+                super().save(record)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class AuditedStore(Store):
+            """Store that also records every saved id; see Store."""
+
+            def save(self, record):
+                """Extend Store.save to log the record id first."""
+                self.log.append(record.id)
+                super().save(record)
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, inheritance]
+    source: https://peps.python.org/pep-0257/#multi-line-docstrings

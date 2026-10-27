@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF16:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.16
+    title: For in parameters, pass cheaply-copied types by value and others by reference to const
+    statement:
+        Pass small, cheap-to-copy types, roughly two or three machine words,
+        by value. Pass larger types by const reference.
+    rationale:
+        Both forms tell the caller the argument will not be modified and
+        accept rvalues. Copying small objects is simple, safe and faster
+        than an indirection.
+    exceptions:
+        For shared ownership with shared_ptr, follow R.34 or R.36.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void set_scale(const double& factor);
+        void print(std::vector<std::string> lines);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void set_scale(double factor);
+        void print(const std::vector<std::string>& lines);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, parameters, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-in

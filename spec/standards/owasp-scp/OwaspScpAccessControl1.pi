@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpAccessControl1:
+    standard: @{OwaspScp}
+    ruleId: access-control-1
+    title: Base authorization decisions on trusted system objects
+    statement:
+        Make access decisions only from trusted data, such as server-side
+        session objects, not from values the client sends.
+    rationale:
+        Client-supplied roles or flags can simply be edited to grant more
+        access.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def delete_post(request, post):
+            if request.form.get("is_admin") == "true":
+                post.delete()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def delete_post(request, post):
+            user = request.session.user
+            if user.is_admin:
+                post.delete()
+        \\\
+        ```
+    languages: [any]
+    tags: [access-control, trust-boundary]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#access-control

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCInstanceVariablesInHeaders:
+    standard: @{GoogleObjC}
+    ruleId: instance-variables-in-headers-should-be-protected-or-private
+    title: Mark ivars declared in headers protected or private
+    statement:
+        Declare instance variables in implementation files or let properties
+        synthesize them. When an ivar must appear in a header, mark it
+        @protected or @private.
+    rationale:
+        Ivars in headers expose implementation details to every importer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @interface ABCMeter : NSObject {
+          double _reading;
+        }
+        @end
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @interface ABCMeter : NSObject {
+         @private
+          double _reading;
+        }
+        @end
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [encapsulation, instance-variables]
+    source: https://google.github.io/styleguide/objcguide.html#instance-variables-in-headers-should-be-protected-or-private

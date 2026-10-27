@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8DocstringClosingQuotes:
+    standard: @{Pep8}
+    ruleId: documentation-strings-closing-quotes
+    title: Put closing docstring quotes on their own line for multi-line docstrings
+    statement:
+        End a multi-line docstring with the closing triple quotes on a line
+        by themselves. Keep the closing quotes of a one-line docstring on
+        the same line.
+    rationale:
+        This is the most important convention from PEP 257 for the shape of
+        docstrings.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def publish(article):
+            """Mark the article as live.
+
+            Readers can see it immediately."""
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def publish(article):
+            """Mark the article as live.
+
+            Readers can see it immediately.
+            """
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, formatting]
+    source: https://peps.python.org/pep-0008/#documentation-strings

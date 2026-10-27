@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCMacros:
+    standard: @{GoogleObjC}
+    ruleId: macros
+    title: Avoid macros
+    statement:
+        Prefer const variables, enums, Xcode snippets or C functions to
+        macros. When a macro is needed, give it a unique SHOUTY_SNAKE_CASE
+        name or a function-style name, and undefine it after use where
+        practical. Do not write macros that look like keywords, expand to
+        unbalanced constructs, introduce scope, or generate public API,
+        method bodies or variables used outside the macro.
+    rationale:
+        Macros make the code you read differ from the code the compiler sees
+        and hide where things are declared.
+    exceptions:
+        Assertion and debug logging macros that are compiled conditionally
+        on build settings are acceptable.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        #define kMaxRetries 3
+        #define until(X) while (!(X))
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        static const int kMaxRetries = 3;
+        #define ABC_ASSERT_MAIN_THREAD() NSAssert(NSThread.isMainThread, @"Not on main")
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [macros, preprocessor]
+    source: https://google.github.io/styleguide/objcguide.html#macros

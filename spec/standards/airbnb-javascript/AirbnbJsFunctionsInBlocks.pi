@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsFunctionsInBlocks:
+    standard: @{AirbnbJavaScript}
+    ruleId: 7.3
+    title: Do not declare functions inside non-function blocks
+    statement:
+        Never declare a function inside an if, while or other non-function
+        block. Assign a function expression to a variable instead. Enforced
+        by the ESLint rule no-loop-func.
+    rationale:
+        Engines have historically treated such declarations differently, so
+        their behaviour is unreliable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        if (debug) {
+          function log(message) {
+            console.log(message);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        let log = () => {};
+        if (debug) {
+          log = (message) => {
+            console.log(message);
+          };
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, scope]
+    source: https://github.com/airbnb/javascript#functions--in-blocks

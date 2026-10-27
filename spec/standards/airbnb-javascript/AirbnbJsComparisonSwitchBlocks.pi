@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsComparisonSwitchBlocks:
+    standard: @{AirbnbJavaScript}
+    ruleId: 15.5
+    title: Use braces for case clauses with lexical declarations
+    statement:
+        Wrap the body of a case or default clause in braces when it declares
+        something with let, const, function or class. Enforced by the ESLint
+        rule no-case-declarations.
+    rationale:
+        A declaration in one case is visible to the whole switch but only
+        initialised when its case runs, which breaks when several cases
+        declare the same name.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        switch (kind) {
+          case 'circle':
+            const area = Math.PI * r ** 2;
+            return area;
+          default:
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        switch (kind) {
+          case 'circle': {
+            const area = Math.PI * r ** 2;
+            return area;
+          }
+          default:
+            return 0;
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [comparison, switch, scope]
+    source: https://github.com/airbnb/javascript#comparison--switch-blocks

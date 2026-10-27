@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs5:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.5
+    title: Keep scopes small
+    statement:
+        Declare each name in the smallest scope that needs it, and keep
+        blocks and functions short.
+    rationale:
+        Small scopes are easier to read, release resources sooner and make
+        accidental use of a value outside its purpose less likely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void report() {
+            int i;
+            std::string line;
+            for (i = 0; i < count(); ++i) {
+                line = format_row(i);
+                print(line);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void report() {
+            for (int i = 0; i < count(); ++i) {
+                const std::string line = format_row(i);
+                print(line);
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [scope, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-scope

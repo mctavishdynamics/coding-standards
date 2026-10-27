@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt32C:
+    standard: @{CertC}
+    ruleId: INT32-C
+    title:
+        Ensure that operations on signed integers do not result in overflow
+    statement:
+        Check before a signed addition, subtraction, multiplication,
+        division, negation or left shift that the result is representable,
+        using precondition tests or wider types.
+    rationale:
+        Signed overflow is undefined behavior. Compilers may assume it never
+        happens and remove the checks a programmer wrote after the fact.
+        CERT rates likelihood likely, detectable no, repairable yes,
+        priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        int add(int a, int b) {
+            int sum = a + b;
+            if (sum < a) {
+                return -1;
+            }
+            return sum;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <limits.h>
+
+        int add(int a, int b, int *sum) {
+            if ((b > 0 && a > INT_MAX - b) || (b < 0 && a < INT_MIN - b)) {
+                return -1;
+            }
+            *sum = a + b;
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [integers, overflow, signed]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/integers-int/int32-c

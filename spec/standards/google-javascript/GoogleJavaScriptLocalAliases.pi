@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptLocalAliases:
+    standard: @{GoogleJavaScript}
+    ruleId: 6.2.5.2
+    title: Use const local aliases that keep the last name part
+    statement:
+        Use local aliases when they read better than fully qualified names.
+        Follow the goog.require naming rules by keeping the last part of the
+        aliased name, and always declare aliases with const.
+    rationale:
+        Aliases that mirror the original name stay recognisable, and const
+        prevents them drifting from what they alias.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        let fmt = i18n.formatting.formatDate;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const formatDate = i18n.formatting.formatDate;
+        const {MAX_LENGTH} = Limits;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming, aliases]
+    source: https://google.github.io/styleguide/jsguide.html#6252-local-aliases

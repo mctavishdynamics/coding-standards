@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf7:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.7
+    title: Don't write using namespace at global scope in a header file
+    statement:
+        Never put a using namespace directive at global scope in a header.
+    rationale:
+        It strips every including file of the ability to disambiguate names,
+        and it makes headers order-dependent because their meaning changes
+        with what was included before.
+    exceptions:
+        using namespace std::literals is acceptable, since users must give
+        their own literal suffixes names that cannot collide with the
+        standard ones.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // geometry.h
+        #include <cmath>
+        using namespace std;
+
+        double distance(double dx, double dy);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // geometry.h
+        #include <cmath>
+
+        double distance(double dx, double dy);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces, headers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-using-directive

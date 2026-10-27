@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsStringsEscaping:
+    standard: @{AirbnbJavaScript}
+    ruleId: 6.5
+    title: Do not escape characters needlessly
+    statement:
+        Only escape characters in strings when the escape is required.
+        Enforced by the ESLint rule no-useless-escape.
+    rationale:
+        Backslashes hurt readability, so each one should be there for a
+        reason.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const note = 'It\'s \"ready\"';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const note = `It's "ready"`;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [strings, readability]
+    source: https://github.com/airbnb/javascript#strings--escaping

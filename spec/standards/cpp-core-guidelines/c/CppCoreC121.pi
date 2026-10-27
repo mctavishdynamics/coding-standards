@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC121:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.121
+    title: Make a base class used as an interface pure abstract
+    statement:
+        When a base class serves only as an interface, give it public pure
+        virtual functions and a virtual destructor, and no data.
+    rationale:
+        A class with no data is more stable, so derived classes and callers
+        are not affected by implementation changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Storage {
+        public:
+            virtual void write(const Blob& b) = 0;
+            virtual ~Storage() = default;
+        protected:
+            std::string root_;      // data in an interface
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Storage {
+        public:
+            virtual void write(const Blob& b) = 0;
+            virtual ~Storage() = default;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, interfaces, abstract-classes]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-abstract

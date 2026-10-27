@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaErr08J:
+    standard: @{CertJava}
+    ruleId: ERR08-J
+    title: Do not catch NullPointerException or any of its ancestors
+    statement:
+        Do not catch NullPointerException, RuntimeException, Exception or
+        Throwable to deal with null values. Fix the null dereference or
+        check for null explicitly.
+    rationale:
+        Catching it is slower than a null check, hides which expression
+        failed, and can leave the program in an unknown state. CERT rates
+        likelihood likely, detectable yes, repairable no, priority P12,
+        level L1.
+    exceptions:
+        A handler may catch Throwable to filter and rethrow exceptions,
+        worker threads may catch RuntimeException around untrusted tasks,
+        and fault-tolerant systems may catch and log general exceptions at
+        suitable levels.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        try {
+            return user.getProfile().getEmail();
+        } catch (NullPointerException e) {
+            return null;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Profile profile = user.getProfile();
+        return (profile == null) ? null : profile.getEmail();
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, null-safety]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/exceptional-behavior-err/err08-j/

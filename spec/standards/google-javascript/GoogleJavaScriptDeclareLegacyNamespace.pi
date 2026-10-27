@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptDeclareLegacyNamespace:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.3.2
+    title: Avoid goog.module.declareLegacyNamespace
+    statement:
+        Avoid calling goog.module.declareLegacyNamespace when you can. If
+        you must, put it directly after the goog.module statement, and make
+        sure the module name is neither a parent nor a child of any other
+        goog.module.
+    rationale:
+        The call exists only to ease migration from global namespaces, and a
+        legacy namespace that overlaps another module cannot be created
+        safely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        goog.module('ui.menu');
+        goog.module.declareLegacyNamespace();
+        // elsewhere:
+        goog.module('ui.menu.item');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        goog.module('ui.menuBar');
+        goog.module.declareLegacyNamespace();
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, closure, legacy]
+    source: https://google.github.io/styleguide/jsguide.html#332-googmoduledeclarelegacynamespace

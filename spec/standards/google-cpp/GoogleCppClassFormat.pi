@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppClassFormat:
+    standard: @{GoogleCpp}
+    ruleId: Class_Format
+    title:
+        Indent access specifiers one space in public, protected, private
+        order
+    statement:
+        Order sections public, protected, then private, with each access
+        keyword indented one space. Precede each keyword except the first
+        with a blank line and put no blank line after it. Keep base classes
+        on the same line as the class name within the line limit.
+    rationale:
+        A fixed class layout makes interfaces quick to find and scan.
+    exceptions:
+        The blank line before access keywords is optional in small classes.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class MyClass:public OtherClass
+        {
+        private:
+
+          int count_;
+        public:
+          MyClass();
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class MyClass : public OtherClass {
+         public:
+          MyClass();
+
+         private:
+          int count_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, classes]
+    source: https://google.github.io/styleguide/cppguide.html#Class_Format

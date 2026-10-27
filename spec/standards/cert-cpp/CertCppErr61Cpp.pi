@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppErr61Cpp:
+    standard: @{CertCpp}
+    ruleId: ERR61-CPP
+    title: Catch exceptions by lvalue reference
+    statement:
+        Catch exceptions by lvalue reference, normally a const reference,
+        not by value or by pointer.
+    rationale:
+        Catching by value slices derived exception objects and loses their
+        information, and catching by pointer raises ownership questions.
+        CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        try {
+            open_database();
+        } catch (std::exception e) {
+            std::cerr << e.what() << '\n';
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        try {
+            open_database();
+        } catch (const std::exception& e) {
+            std::cerr << e.what() << '\n';
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [exceptions, slicing]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/exceptions-and-error-handling-err/err61-cpp

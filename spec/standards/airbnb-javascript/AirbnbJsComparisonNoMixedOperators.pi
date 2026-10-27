@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsComparisonNoMixedOperators:
+    standard: @{AirbnbJavaScript}
+    ruleId: 15.8
+    title: Parenthesise mixed operators
+    statement:
+        When an expression mixes different operators, use parentheses to
+        show the grouping. Plain mixes of +, - and ** may go without, but
+        wrap / and * when they are mixed. Enforced by the ESLint rule
+        no-mixed-operators.
+    rationale:
+        Parentheses make the intended order of evaluation obvious to every
+        reader.
+    exceptions:
+        The standard arithmetic operators +, - and ** may be mixed without
+        parentheses because their precedence is widely understood.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const ready = isLoaded && hasData || isCached;
+        const ratio = total / count * 100;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const ready = (isLoaded && hasData) || isCached;
+        const ratio = (total / count) * 100;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [operators, readability]
+    source: https://github.com/airbnb/javascript#comparison--no-mixed-operators

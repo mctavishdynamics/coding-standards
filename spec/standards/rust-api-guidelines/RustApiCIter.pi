@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCIter:
+    standard: @{RustApiGuidelines}
+    ruleId: C-ITER
+    title: Name collection iterator methods iter, iter_mut and into_iter
+    statement:
+        A collection method that iterates over shared references is named
+        iter, one over mutable references iter_mut, and one that yields
+        owned elements into_iter.
+    rationale:
+        Users expect these three names on any homogeneous collection, so
+        they can iterate without consulting the documentation.
+    exceptions:
+        The convention is for methods on conceptually homogeneous
+        collections. Types such as str, which can be viewed as bytes or
+        chars, use more specific names, and free functions that return
+        iterators need not follow it.
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl Playlist {
+            pub fn songs(&self) -> std::slice::Iter<'_, Song> { self.items.iter() }
+            pub fn songs_mutable(&mut self) -> std::slice::IterMut<'_, Song> {
+                self.items.iter_mut()
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl Playlist {
+            pub fn iter(&self) -> std::slice::Iter<'_, Song> { self.items.iter() }
+            pub fn iter_mut(&mut self) -> std::slice::IterMut<'_, Song> {
+                self.items.iter_mut()
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [naming, iterators]
+    source: https://rust-lang.github.io/api-guidelines/naming.html#c-iter

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaIdentifierCharacters:
+    standard: @{GoogleJava}
+    ruleId: 5.1
+    title: Use only ASCII letters and digits in identifiers, without prefixes
+    statement:
+        Build identifiers from ASCII letters and digits, with underscores
+        only where a later rule allows them. Do not use special prefixes or
+        suffixes such as a trailing underscore, an m or s_ prefix, or a k
+        prefix.
+    rationale:
+        Plain identifiers are portable and easy to type, and Hungarian-style
+        markers add clutter that the type system and IDE already make
+        unnecessary.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        private String mName;
+        private static int s_count;
+        private final Clock clock_;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private String name;
+        private static int count;
+        private final Clock clock;
+        \\\
+        ```
+    languages: [java]
+    tags: [naming]
+    source: https://google.github.io/styleguide/javaguide.html#s5.1-identifier-names

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptFunctionArguments:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.6.4
+    title: Keep arguments on one line or wrap them readably
+    statement:
+        Prefer putting all function arguments on the same line as the
+        function name. If that passes 80 columns, wrap them readably with a
+        four-space indent, either filling lines toward 80 or putting one
+        argument per line. Aligning to the parenthesis is allowed but
+        discouraged.
+    rationale:
+        A four-space continuation survives renaming without reindenting and
+        keeps argument lists easy to scan.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        scheduleDelivery(customerAddress, preferredDeliveryWindow,
+                         packagingInstructions, signatureRequired);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        scheduleDelivery(
+            customerAddress, preferredDeliveryWindow, packagingInstructions,
+            signatureRequired);
+
+        scheduleDelivery(
+            customerAddress,
+            preferredDeliveryWindow,
+            packagingInstructions,
+            signatureRequired);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, line-wrapping, functions]
+    source: https://google.github.io/styleguide/jsguide.html#464-function-arguments

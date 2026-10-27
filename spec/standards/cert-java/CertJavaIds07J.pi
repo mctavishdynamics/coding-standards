@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds07J:
+    standard: @{CertJava}
+    ruleId: IDS07-J
+    title: Sanitize untrusted data passed to the Runtime.exec() method
+    statement:
+        Avoid running external programs with untrusted data. When you must,
+        do not pass it through a shell, pass each argument separately, and
+        whitelist the allowed values; prefer a Java API that does the same
+        job.
+    rationale:
+        Untrusted text passed to a command interpreter can inject extra
+        commands or arguments and run arbitrary code with the program's
+        privileges. CERT rates likelihood probable, detectable yes,
+        repairable no, priority P12, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        Runtime.getRuntime().exec(new String[] {"sh", "-c", "ls " + dir});
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (!dir.matches("[A-Za-z0-9_]+")) {
+            throw new IllegalArgumentException("Bad directory name");
+        }
+        new ProcessBuilder("ls", dir).start();
+        \\\
+        ```
+    languages: [java]
+    tags: [injection, command-execution, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-validation-and-data-sanitization-ids/ids07-j/

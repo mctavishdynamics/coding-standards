@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs47:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.47
+    title: Use nullptr rather than 0 or NULL
+    statement:
+        Write nullptr for a null pointer value.
+    rationale:
+        nullptr cannot be mistaken for an int and has its own precise type,
+        so overload resolution and type deduction behave as expected.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void notify(int code);
+        void notify(Listener* l);
+
+        notify(NULL);      // may call notify(int)
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void notify(int code);
+        void notify(Listener* l);
+
+        notify(nullptr);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [pointers, types]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-nullptr

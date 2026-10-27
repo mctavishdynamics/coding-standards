@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257ModuleDocstring:
+    standard: @{Pep257}
+    ruleId: multi-line-docstrings-modules
+    title: List the exported objects in a module docstring
+    statement:
+        A module docstring should list the classes, exceptions, functions
+        and other objects the module exports, each with a one-line summary.
+        A package docstring in __init__.py should also list the modules and
+        subpackages it exports.
+    rationale:
+        Readers get an overview of the module without opening each
+        definition.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        """Utilities."""
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        """Parse and format ISO 8601 durations.
+
+        parse_duration -- turn a string such as "PT5M" into a timedelta
+        format_duration -- turn a timedelta into an ISO 8601 string
+        DurationError -- raised for malformed input
+        """
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, modules]
+    source: https://peps.python.org/pep-0257/#multi-line-docstrings

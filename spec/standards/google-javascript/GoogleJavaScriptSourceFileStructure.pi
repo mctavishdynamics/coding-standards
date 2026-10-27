@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptSourceFileStructure:
+    standard: @{GoogleJavaScript}
+    ruleId: 3
+    title: Order the sections of a source file
+    statement:
+        New files are goog.module files or ES modules. A file contains, in
+        order, any license or copyright notice, any fileoverview JSDoc, the
+        goog.module statement or the ES imports, the goog.require and
+        goog.requireType statements, and then the implementation. Separate
+        each present section with exactly one blank line, except that one or
+        two blank lines may precede the implementation.
+    rationale:
+        A fixed layout lets readers find a file's dependencies and entry
+        point without hunting through it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        goog.module('shop.cart');
+        /** @fileoverview Shopping cart model. */
+        const Item = goog.require('shop.Item');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** @fileoverview Shopping cart model. */
+
+        goog.module('shop.cart');
+
+        const Item = goog.require('shop.Item');
+
+        class Cart {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [source-files, modules, formatting]
+    source: https://google.github.io/styleguide/jsguide.html#3-source-file-structure

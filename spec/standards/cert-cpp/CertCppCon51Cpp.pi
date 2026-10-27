@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCon51Cpp:
+    standard: @{CertCpp}
+    ruleId: CON51-CPP
+    title: Ensure actively held locks are released on exceptional conditions
+    statement:
+        Make sure a held lock is released even when an exception is thrown.
+        Use lock_guard, unique_lock or scoped_lock instead of calling lock
+        and unlock by hand.
+    rationale:
+        An exception between manual lock and unlock leaves the mutex locked,
+        so other threads block forever. CERT rates likelihood probable,
+        detectable yes, repairable yes, priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        void record(std::mutex& m, Ledger& ledger, int amount) {
+            m.lock();
+            ledger.add(amount);  // may throw
+            m.unlock();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void record(std::mutex& m, Ledger& ledger, int amount) {
+            std::lock_guard<std::mutex> guard(m);
+            ledger.add(amount);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, mutexes, exceptions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/concurrency-con/con51-cpp

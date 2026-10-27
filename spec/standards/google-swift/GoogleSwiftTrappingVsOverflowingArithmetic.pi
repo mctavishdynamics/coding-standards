@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftTrappingVsOverflowingArithmetic:
+    standard: @{GoogleSwift}
+    ruleId: trapping-vs-overflowing-arithmetic
+    title: Use trapping arithmetic instead of masking operators
+    statement:
+        Use the normal trapping arithmetic and shift operators for ordinary
+        work, not the ampersand masking operators.
+    rationale:
+        Trapping on overflow stops bad data from spreading through the
+        system.
+    exceptions:
+        Masking operators are fine for modular arithmetic such as hashing
+        and cryptography, and in hot code where overflow cannot happen;
+        comment why and consider debug preconditions.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let total = subtotal &+ shippingFee
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let total = subtotal + shippingFee
+        \\\
+        ```
+    languages: [swift]
+    tags: [arithmetic, safety]
+    source: https://google.github.io/swift/#trapping-vs-overflowing-arithmetic

@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaLck00J:
+    standard: @{CertJava}
+    ruleId: LCK00-J
+    title: Use private final lock objects to synchronize classes that may interact with untrusted code
+    statement:
+        When a class can be reached by untrusted code, guard its state with
+        a private final lock object and synchronized blocks, not with
+        synchronized methods or a lock that callers can see or replace.
+    rationale:
+        Synchronized methods lock on this, which any caller can also lock
+        and hold forever. An attacker who holds that lock, or swaps a public
+        lock field, can block every other thread and cause a denial of
+        service. CERT's risk assessment gives likelihood probable,
+        detectable no, repairable no, priority P2 and level L3.
+    exceptions:
+        A class may break the rule if it documents that its objects must not
+        reach untrusted code, it does not call into untrusted classes that
+        break the rule, and its synchronization policy is documented.
+        Clients may use such a class under the same conditions.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        public class Account {
+            private long balance;
+
+            public synchronized void deposit(long amount) {
+                balance += amount;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class Account {
+            private final Object lock = new Object();
+            private long balance;
+
+            public void deposit(long amount) {
+                synchronized (lock) {
+                    balance += amount;
+                }
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, locking, denial-of-service]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/locking-lck/lck00-j/

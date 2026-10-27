@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI8:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.8
+    title: Prefer Ensures() for expressing postconditions
+    statement:
+        Write postconditions with Ensures rather than with ordinary code or
+        comments. A postcondition that a resource is released is best
+        expressed with RAII.
+    rationale:
+        Ensures makes the condition clearly a postcondition and lets tools
+        act on it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int clamp_percent(int v) {
+            int r = std::clamp(v, 0, 100);
+            assert(r >= 0 && r <= 100);
+            return r;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int clamp_percent(int v) {
+            int r = std::clamp(v, 0, 100);
+            Ensures(r >= 0 && r <= 100);
+            return r;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, contracts, postconditions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-ensures

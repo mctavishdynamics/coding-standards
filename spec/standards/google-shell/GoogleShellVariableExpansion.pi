@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellVariableExpansion:
+    standard: @{GoogleShell}
+    ruleId: variable-expansion
+    title: Quote and brace-delimit variable expansions
+    statement:
+        In order of precedence, stay consistent with existing code, quote
+        variables, and brace-delimit variable names. Do not add braces
+        around single-character specials and positional parameters unless
+        they are needed, such as for parameters past 9, or avoid confusion.
+    rationale:
+        Braced names cannot run into surrounding text. Braces are not
+        quoting, so double quotes are still needed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        echo Backing up $src to "$dest_dir" as PID ${$}
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        echo "Backing up ${src} to ${dest_dir} as PID $$"
+        \\\
+        ```
+    languages: [shell]
+    tags: [variables, quoting]
+    source: https://google.github.io/styleguide/shellguide.html#variable-expansion

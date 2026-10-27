@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssMultimediaFallback:
+    standard: @{GoogleHtmlCss}
+    ruleId: multimedia-fallback
+    title: Provide alternative content for multimedia
+    statement:
+        Give images meaningful alt text and give video and audio transcripts
+        and captions where available.
+    rationale:
+        Without alternatives, blind users and others cannot tell what the
+        media is about.
+    exceptions:
+        Use an empty alt attribute for images whose text would be redundant
+        or that are purely decorative and cannot be moved to CSS.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <img src="team-photo.jpg">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <img src="team-photo.jpg" alt="The support team at the 2024 offsite.">
+        \\\
+        ```
+    languages: [html]
+    tags: [accessibility, media]
+    source: https://google.github.io/styleguide/htmlcssguide.html#multimedia-fallback

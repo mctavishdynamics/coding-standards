@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon33C:
+    standard: @{CertC}
+    ruleId: CON33-C
+    title: Avoid race conditions when using library functions
+    statement:
+        In multithreaded code, do not call library functions that keep
+        hidden static state, such as strtok, localtime, asctime, strerror
+        and rand, from more than one thread. Use the reentrant forms, such
+        as localtime_r or strerror_s, or serialize the calls with a lock.
+    rationale:
+        These functions share a static buffer or state across threads, so
+        concurrent calls can return each other's results or corrupt data.
+        CERT rates likelihood probable, detectable no, repairable no,
+        priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int log_time(void *arg) {
+            time_t now = time(NULL);
+            struct tm *tm = localtime(&now);
+            printf("%02d:%02d\n", tm->tm_hour, tm->tm_min);
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int log_time(void *arg) {
+            time_t now = time(NULL);
+            struct tm tm;
+            if (localtime_r(&now, &tm) == NULL) {
+                return -1;
+            }
+            printf("%02d:%02d\n", tm.tm_hour, tm.tm_min);
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [concurrency, library, race-conditions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/concurrency-con/con33-c

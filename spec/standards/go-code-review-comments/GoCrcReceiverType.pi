@@ -1,0 +1,56 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcReceiverType:
+    standard: @{GoCodeReviewComments}
+    ruleId: receiver-type
+    title: Choose pointer or value receivers deliberately
+    statement:
+        Use a pointer receiver when the method mutates the receiver, when
+        the struct contains a sync.Mutex or similar field, when it is large,
+        or when outside changes must be visible. Use a value receiver for
+        maps, funcs, chans, slices that are not resliced, and small
+        immutable value types. Do not mix receiver kinds on one type, and
+        when in doubt use a pointer.
+    rationale:
+        A value receiver works on a copy, so mutations are lost and
+        synchronization fields are copied, while needless pointers to
+        reference types add nothing.
+    exceptions:
+        Do not pick a value receiver only to reduce garbage without
+        profiling first.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Counter struct {
+            mu sync.Mutex
+            n  int
+        }
+
+        func (c Counter) Inc() {
+            c.mu.Lock()
+            c.n++
+            c.mu.Unlock()
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Counter struct {
+            mu sync.Mutex
+            n  int
+        }
+
+        func (c *Counter) Inc() {
+            c.mu.Lock()
+            c.n++
+            c.mu.Unlock()
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [methods, pointers]
+    source: https://go.dev/wiki/CodeReviewComments#receiver-type

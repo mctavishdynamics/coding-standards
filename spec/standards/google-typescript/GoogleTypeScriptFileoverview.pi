@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptFileoverview:
+    standard: @{GoogleTypeScript}
+    ruleId: fileoverview
+    title: Write an unindented @fileoverview JSDoc when describing a file
+    statement:
+        A file may begin with a top-level JSDoc carrying @fileoverview that
+        describes its content, uses or dependencies. Wrapped lines of that
+        description are not indented.
+    rationale:
+        A short overview helps readers understand the file before reading
+        the code, and a fixed form keeps these comments uniform.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        /**
+         * @fileoverview Parses and validates shipping addresses entered on the
+         *     checkout form.
+         */
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /**
+         * @fileoverview Parses and validates shipping addresses entered on the
+         * checkout form.
+         */
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc, source-files]
+    source: https://google.github.io/styleguide/tsguide.html#fileoverview

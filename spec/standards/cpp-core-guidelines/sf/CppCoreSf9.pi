@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf9:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.9
+    title: Avoid cyclic dependencies among source files
+    statement:
+        Make sure headers and source files do not include each other in a
+        cycle. Remove the cycle rather than merely masking it with include
+        guards.
+    rationale:
+        Cycles make code harder to understand, slow compilation and
+        complicate moving to modules.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // order.h
+        #include "customer.h"
+
+        // customer.h
+        #include "order.h"
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // order.h
+        class Customer;              // forward declaration
+        class Order { Customer* owner; };
+
+        // customer.h
+        #include "order.h"
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, dependencies]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-cycles

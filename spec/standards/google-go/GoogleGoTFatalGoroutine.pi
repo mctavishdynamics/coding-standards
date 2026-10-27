@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTFatalGoroutine:
+    standard: @{GoogleGo}
+    ruleId: best-practices/t-fatal-goroutine
+    title: Do not call t.Fatal from other goroutines
+    statement:
+        Call t.Fatal, t.FailNow and similar only from the goroutine running
+        the test or subtest. In goroutines the test starts, use t.Error and
+        return.
+    rationale:
+        Package testing does not support these calls from other goroutines.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        go func() {
+            if err := client.Ping(ctx); err != nil {
+                t.Fatalf("Ping failed: %v", err)
+            }
+        }()
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        go func() {
+            defer wg.Done()
+            if err := client.Ping(ctx); err != nil {
+                t.Errorf("Ping failed: %v", err)
+                return
+            }
+        }()
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, testing, concurrency]
+    source: https://google.github.io/styleguide/go/best-practices#t-fatal-goroutine

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoErrorHandling:
+    standard: @{GoogleGo}
+    ruleId: best-practices/error-handling
+    title: Produce and consume errors deliberately
+    statement:
+        Neither ignore nor blindly propagate errors; consider whether the
+        current function is best placed to handle each one, whether a new
+        error needs structure, and what information to add.
+    rationale:
+        Errors are values read by code, maintainers and end users, so they
+        should be designed for those observers.
+    exceptions:
+        When orchestrating related operations where only the first error
+        matters, a helper like errgroup may drop the rest.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func syncAll(ctx context.Context, peers []Peer) {
+            for _, p := range peers {
+                go p.Sync(ctx) // errors lost
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func syncAll(ctx context.Context, peers []Peer) error {
+            g, ctx := errgroup.WithContext(ctx)
+            for _, p := range peers {
+                g.Go(func() error { return p.Sync(ctx) })
+            }
+            return g.Wait()
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, errors]
+    source: https://google.github.io/styleguide/go/best-practices#error-handling

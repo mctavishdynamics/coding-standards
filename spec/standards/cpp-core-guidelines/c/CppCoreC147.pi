@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC147:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.147
+    title: Use dynamic_cast to a reference when failure is an error
+    statement:
+        If the object must be of the target class and anything else is a
+        bug, cast to a reference type.
+    rationale:
+        A reference cast says you expect a valid object, and on failure it
+        throws a bad_cast exception instead of returning something that must
+        be checked.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void save(Document& d) {
+            auto* t = dynamic_cast<TextDocument*>(&d);
+            t->flush();                 // crashes on null
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void save(Document& d) {
+            auto& t = dynamic_cast<TextDocument&>(d);   // throws if wrong
+            t.flush();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, casts, error-handling]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-ref-cast

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8PrefixInternalNames:
+    standard: @{Pep8}
+    ruleId: public-and-internal-interfaces-underscore
+    title: Prefix internal names with an underscore
+    statement:
+        Even when __all__ is set, prefix internal packages, modules,
+        classes, functions and attributes with a single leading underscore.
+    rationale:
+        The underscore marks a name as internal wherever it is seen, not
+        only in star imports.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        __all__ = ["quote"]
+
+
+        def zone_for(postcode):
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        __all__ = ["quote"]
+
+
+        def _zone_for(postcode):
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, api-design]
+    source: https://peps.python.org/pep-0008/#public-and-internal-interfaces

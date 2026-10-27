@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppMsc52Cpp:
+    standard: @{CertCpp}
+    ruleId: MSC52-CPP
+    title: Value-returning functions must return a value from all exit paths
+    statement:
+        Return a value on every path out of a function with a non-void
+        return type, including the handlers of a function-try-block.
+    rationale:
+        Flowing off the end of a value-returning function is undefined
+        behavior, and the caller receives garbage. CERT rates likelihood
+        probable, detectable yes, repairable no, priority P8, level L2.
+    exceptions:
+        Flowing off the end of main is the same as returning 0. A path that
+        is never expected to run may skip the return when it calls a
+        noreturn function or throws an exception.
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        int sign(int x) {
+            if (x > 0) {
+                return 1;
+            } else if (x < 0) {
+                return -1;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int sign(int x) {
+            if (x > 0) {
+                return 1;
+            } else if (x < 0) {
+                return -1;
+            }
+            return 0;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, control-flow]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/miscellaneous-msc/msc52-cpp

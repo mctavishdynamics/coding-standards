@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptExportFrom:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.4.2.3
+    title: Do not wrap export from statements
+    statement:
+        Keep every export from statement, of either form, on a single line,
+        even past the 80-column limit.
+    rationale:
+        Like imports, unwrapped re-exports are easy to search for and to
+        process line by line.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        export {validateEmail, validatePhone} from
+            './validation/contact-validators.js';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        export {validateEmail, validatePhone} from './validation/contact-validators.js';
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, exports, formatting]
+    source: https://google.github.io/styleguide/jsguide.html#3423-export-from

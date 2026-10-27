@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptFunctionTypeExpressions:
+    standard: @{GoogleJavaScript}
+    ruleId: 7.10.4
+    title: Use function type expressions only without a definition, with a return type
+    statement:
+        Where a function definition is present, document it with @param and
+        @return or inline types rather than a function type expression. Use
+        function type expressions in typedefs, parameters, returns and
+        uninitialized properties, and always state their return type.
+    rationale:
+        A function type without a return type defaults to unknown, which
+        silently disables type checks on the result.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @param {function()} compute */
+        function cache(compute) {
+          const /** number */ value = compute();
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** @param {function(): number} compute */
+        function cache(compute) {
+          const /** number */ value = compute();
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, types, functions]
+    source: https://google.github.io/styleguide/jsguide.html#7104-function-type-expressions

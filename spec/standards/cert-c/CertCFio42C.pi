@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio42C:
+    standard: @{CertC}
+    ruleId: FIO42-C
+    title: Close files when they are no longer needed
+    statement:
+        Match every successful fopen or freopen with an fclose before the
+        last pointer to the stream goes away or the program ends. Apply the
+        same discipline to open and close on POSIX and CreateFile and
+        CloseHandle on Windows.
+    rationale:
+        Unclosed files leak descriptors, can lose buffered data and let an
+        attacker exhaust resources and deny service. CERT rates likelihood
+        unlikely, detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int save_config(const char *path, const char *text) {
+            FILE *f = fopen(path, "w");
+            if (f == NULL) {
+                return -1;
+            }
+            if (fputs(text, f) == EOF) {
+                return -1;
+            }
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int save_config(const char *path, const char *text) {
+            FILE *f = fopen(path, "w");
+            if (f == NULL) {
+                return -1;
+            }
+            int status = fputs(text, f) == EOF ? -1 : 0;
+            if (fclose(f) == EOF) {
+                status = -1;
+            }
+            return status;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [io, files, resource-management]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/input-output-fio/fio42-c

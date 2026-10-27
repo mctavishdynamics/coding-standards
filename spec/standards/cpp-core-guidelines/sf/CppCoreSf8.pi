@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf8:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.8
+    title: Use #include guards for all header files
+    statement:
+        Protect every header with an include guard whose name includes a
+        distinguishing key such as the library or component name, not just
+        the file name.
+    rationale:
+        Guards prevent a header from being processed more than once. pragma
+        once is non-standard and ties the program to a vendor and to file
+        system details.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // util.h
+        #ifndef UTIL_H
+        #define UTIL_H
+        int clamp_percent(int v);
+        #endif
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // util.h
+        #ifndef BILLING_CORE_UTIL_H
+        #define BILLING_CORE_UTIL_H
+        int clamp_percent(int v);
+        #endif // BILLING_CORE_UTIL_H
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, preprocessor]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-guards

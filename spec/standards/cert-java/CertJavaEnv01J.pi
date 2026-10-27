@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaEnv01J:
+    standard: @{CertJava}
+    ruleId: ENV01-J
+    title: Place all security-sensitive code in a single JAR and sign and seal it
+    statement:
+        Package privileged code and the security-sensitive code that depends
+        on it in one JAR file, and both sign it and seal its packages.
+    rationale:
+        Otherwise an attacker can mix trusted classes with malicious classes
+        in the same package, a mix-and-match attack, and misuse the
+        privileged code. CERT's risk assessment gives likelihood probable,
+        detectable no, repairable no, priority P6 and level L2.
+    exceptions:
+        Independent groups of privileged and security-sensitive code may go
+        in separate sealed packages and separate signed JARs if no group
+        depends on another and each group is wholly contained in sealed
+        packages of one signed JAR.
+    severity: high
+    noncompliant:
+        ```text
+        \\\
+        Manifest-Version: 1.0
+        Main-Class: com.example.Launcher
+        \\\
+        ```
+    compliant:
+        ```text
+        \\\
+        Manifest-Version: 1.0
+        Main-Class: com.example.Launcher
+        Name: com/example/secure/
+        Sealed: true
+        \\\
+        ```
+    languages: [java]
+    tags: [security, code-signing, packaging]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/runtime-environment-env/env01-j/

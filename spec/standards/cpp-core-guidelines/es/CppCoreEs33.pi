@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs33:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.33
+    title: If you must use macros, give them unique names
+    statement:
+        Give unavoidable macros long, distinctive names, for example with a
+        project prefix, so they cannot collide with other names.
+    rationale:
+        Macros do not respect scopes, so a short common macro name can
+        silently replace unrelated code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #define CHECK(x) if (!(x)) std::abort()
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #define ACME_NET_CHECK(x) if (!(x)) std::abort()
+        \\\
+        ```
+    languages: [cpp]
+    tags: [macros, naming]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-macros3

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoSmallInterfaces:
+    standard: @{EffectiveGo}
+    ruleId: interfaces
+    title: Keep interfaces small and behaviour-focused
+    statement:
+        Define interfaces that describe a behaviour, usually with only one
+        or two methods, and name them after that behaviour. A type may
+        implement several such interfaces.
+    rationale:
+        Small interfaces are easy to satisfy, so many types can be used
+        wherever the behaviour is needed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Storage interface {
+            Open(name string) (File, error)
+            Remove(name string) error
+            Rename(from, to string) error
+            Stat(name string) (FileInfo, error)
+            Walk(root string, fn WalkFunc) error
+        }
+
+        func Backup(s Storage, name string) error
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Opener interface {
+            Open(name string) (File, error)
+        }
+
+        func Backup(o Opener, name string) error
+        \\\
+        ```
+    languages: [go]
+    tags: [interfaces, api-design]
+    source: https://go.dev/doc/effective_go#interfaces

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoIotaConstants:
+    standard: @{EffectiveGo}
+    ruleId: constants
+    title: Build enumerated constants with iota
+    statement:
+        Create enumerated constants with iota, letting the expression repeat
+        implicitly, and give the constant type a String method so its values
+        print themselves.
+    rationale:
+        iota builds even intricate sequences compactly and keeps them
+        correct when constants are added.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        const (
+            Low    Priority = 0
+            Medium Priority = 1
+            High   Priority = 2
+        )
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        const (
+            Low Priority = iota
+            Medium
+            High
+        )
+        \\\
+        ```
+    languages: [go]
+    tags: [constants, enums]
+    source: https://go.dev/doc/effective_go#constants

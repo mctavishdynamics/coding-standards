@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaTsm02J:
+    standard: @{CertJava}
+    ruleId: TSM02-J
+    title: Do not use background threads during class initialization
+    statement:
+        Do not start threads from a static initializer that need the class
+        being initialized. Let class initialization finish before starting
+        threads.
+    rationale:
+        The background thread waits for initialization to finish while the
+        initializing thread waits for the background thread, which
+        deadlocks. CERT's risk assessment gives likelihood probable,
+        detectable yes, repairable no, priority P4 and level L3.
+    exceptions:
+        A static initializer may start a background thread if that thread
+        cannot access any fields of the class.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        class Registry {
+            static Connection conn;
+            static {
+                Thread t = new Thread(() -> conn = Db.open());
+                t.start();
+                try { t.join(); } catch (InterruptedException e) { }
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Registry {
+            static final Connection conn = Db.open();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, initialization, deadlock]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-safety-miscellaneous-tsm/tsm02-j/

@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp4:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.4
+    title: Think in terms of tasks rather than threads
+    statement:
+        Express concurrent work as tasks that produce results,
+        using std::async or a higher-level library, rather than managing raw
+        threads directly.
+    rationale:
+        A thread is a machine-level implementation concept while a task is
+        an application notion, and application concepts are easier to reason
+        about. Raising the level of abstraction helps productivity,
+        reliability and performance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int checksum = 0;
+        std::thread worker([&] { checksum = compute_checksum(file); });
+        // ...
+        worker.join();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto checksum = std::async([&] { return compute_checksum(file); });
+        // ...
+        use(checksum.get());
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, tasks, abstraction]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-task

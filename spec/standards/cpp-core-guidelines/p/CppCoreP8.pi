@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreP8:
+    standard: @{CppCoreGuidelines}
+    ruleId: P.8
+    title: Do not leak any resources
+    statement:
+        Release every resource you acquire, such as memory, files, locks and
+        sockets, preferably by tying it to an object whose destructor
+        releases it.
+    rationale:
+        Even slow leaks eventually exhaust a resource, which matters most in
+        long-running programs.
+    exceptions:
+        Allocations held by long-lived objects need not be released
+        explicitly at shutdown; relying on the system to reclaim memory and
+        close files at process exit is acceptable.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void log_line(const char* path, const char* text) {
+            FILE* f = std::fopen(path, "a");
+            if (!f) return;
+            if (std::fputs(text, f) < 0) return;   // leaks f
+            std::fclose(f);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void log_line(const std::string& path, const std::string& text) {
+            std::ofstream out(path, std::ios::app);
+            out << text;
+        }   // closed on every path
+        \\\
+        ```
+    languages: [cpp]
+    tags: [philosophy, resources, raii]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rp-leak

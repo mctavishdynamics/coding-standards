@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF51:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.51
+    title: Where there is a choice, prefer default arguments over overloading
+    statement:
+        When overloads would differ only by omitting trailing arguments of
+        the same types, use one function with default arguments.
+    rationale:
+        Default arguments give alternative calls to a single implementation,
+        avoiding duplicated code. A set of overloads may drift apart in
+        behavior.
+    exceptions:
+        When the functions perform the same operation on different types,
+        overloading is the only option.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void print(const Report& r);
+        void print(const Report& r, int indent);
+        void print(const Report& r, int indent, bool color);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void print(const Report& r, int indent = 0, bool color = false);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, overloading, default-arguments]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-default-args

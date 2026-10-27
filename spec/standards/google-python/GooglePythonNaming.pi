@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonNaming:
+    standard: @{GooglePython}
+    ruleId: 3.16
+    title: Use descriptive names without abbreviations
+    statement:
+        Give functions, classes, variables, attributes, files and other
+        entities descriptive names. Avoid abbreviations that are ambiguous
+        or unfamiliar outside your project, and do not shorten words by
+        dropping letters. Always use the .py extension and never dashes in
+        file names.
+    rationale:
+        Clear names let readers understand code without hunting for
+        definitions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def calc_cst(itms, dsc):
+            return sum(i.prc for i in itms) * (1 - dsc)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def calculate_cost(items, discount):
+            return sum(item.price for item in items) * (1 - discount)
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, readability]
+    source: https://google.github.io/styleguide/pyguide.html#s3.16-naming

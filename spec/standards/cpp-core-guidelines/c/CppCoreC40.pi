@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC40:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.40
+    title: Define a constructor if a class has an invariant
+    statement:
+        When a class has an invariant, give it a constructor that
+        establishes it.
+    rationale:
+        Establishing the invariant is exactly what constructors are for, and
+        it means every object starts out valid.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Percentage {
+        public:
+            void set(int v) { value_ = v; }   // no constructor checks the range
+        private:
+            int value_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Percentage {
+        public:
+            explicit Percentage(int v) : value_(v) {
+                if (v < 0 || v > 100) throw std::out_of_range("percentage");
+            }
+        private:
+            int value_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, invariants]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-ctor

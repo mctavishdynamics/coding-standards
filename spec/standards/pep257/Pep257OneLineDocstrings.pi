@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257OneLineDocstrings:
+    standard: @{Pep257}
+    ruleId: one-line-docstrings
+    title: Keep one-line docstrings on a single line
+    statement:
+        Use a one-line docstring only for obvious cases, and make it fit on
+        one line. Still use triple quotes, and put the closing quotes on the
+        same line as the opening ones.
+    rationale:
+        Triple quotes make it easy to expand the docstring later, and a
+        closed single line reads best for a short summary.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def cache_dir():
+            """
+            Return the cache directory.
+            """
+            return Path.home() / ".cache" / "inventory"
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def cache_dir():
+            """Return the cache directory."""
+            return Path.home() / ".cache" / "inventory"
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, formatting]
+    source: https://peps.python.org/pep-0257/#one-line-docstrings

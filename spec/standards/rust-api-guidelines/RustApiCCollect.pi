@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCCollect:
+    standard: @{RustApiGuidelines}
+    ruleId: C-COLLECT
+    title: Implement FromIterator and Extend for collections
+    statement:
+        A collection type implements FromIterator to build itself from an
+        iterator and Extend to add an iterator's items to an existing value.
+    rationale:
+        These traits make the collection work with collect, partition and
+        unzip like the standard collections do.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl TagSet {
+            pub fn from_vec(tags: Vec<Tag>) -> TagSet { /* ... */ }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl FromIterator<Tag> for TagSet {
+            fn from_iter<I: IntoIterator<Item = Tag>>(iter: I) -> TagSet { /* ... */ }
+        }
+
+        impl Extend<Tag> for TagSet {
+            fn extend<I: IntoIterator<Item = Tag>>(&mut self, iter: I) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [traits, collections, iterators]
+    source: https://rust-lang.github.io/api-guidelines/interoperability.html#c-collect

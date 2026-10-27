@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCLink:
+    standard: @{RustApiGuidelines}
+    ruleId: C-LINK
+    title: Link to relevant items from documentation prose
+    statement:
+        Add hyperlinks from documentation prose to the types, methods and
+        modules it mentions, using rustdoc link syntax.
+    rationale:
+        Links let readers jump straight to related items, as RFC 1574
+        recommends under the heading of linking all the things.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        /// Returns a Duration, or a ParseError if the input is malformed.
+        pub fn parse(s: &str) -> Result<Duration, ParseError> { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        /// Returns a [`Duration`], or a [`ParseError`] if the input is malformed.
+        pub fn parse(s: &str) -> Result<Duration, ParseError> { /* ... */ }
+        \\\
+        ```
+    languages: [rust]
+    tags: [documentation, links]
+    source: https://rust-lang.github.io/api-guidelines/documentation.html#c-link

@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaLck09J:
+    standard: @{CertJava}
+    ruleId: LCK09-J
+    title: Do not perform operations that can block while holding a lock
+    statement:
+        Do not do network, file or console I/O, serialization, sleeping or
+        other blocking work while holding a lock. Copy what you need under
+        the lock and do the slow work outside it.
+    rationale:
+        Every thread waiting for the lock stalls while the holder blocks.
+        This degrades performance, can starve threads and, with
+        interdependent threads, can deadlock. CERT's risk assessment gives
+        likelihood probable, detectable no, repairable no, priority P2 and
+        level L3.
+    exceptions:
+        Classes that give callers a proper way to terminate the blocked work
+        may hold a lock while blocking. Methods that need several locks may
+        hold some while waiting for the rest, provided they follow LCK07-J.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        synchronized void send(Socket socket) throws IOException {
+            socket.getOutputStream().write(buffer);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void send(Socket socket) throws IOException {
+            byte[] copy;
+            synchronized (this) {
+                copy = buffer.clone();
+            }
+            socket.getOutputStream().write(copy);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, locking, performance]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/locking-lck/lck09-j/

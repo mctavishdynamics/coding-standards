@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcErrorStrings:
+    standard: @{GoCodeReviewComments}
+    ruleId: error-strings
+    title: Start error strings in lower case without punctuation
+    statement:
+        Do not capitalize error strings, unless they begin with a proper
+        noun or acronym, and do not end them with punctuation.
+    rationale:
+        Error strings are usually printed after other context, so a capital
+        letter or a full stop ends up in the middle of the combined message.
+    exceptions:
+        Log messages are line-oriented and not embedded in other messages,
+        so the rule does not apply to them.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if len(name) == 0 {
+            return fmt.Errorf("Missing user name.")
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if len(name) == 0 {
+            return fmt.Errorf("missing user name")
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, error-messages]
+    source: https://go.dev/wiki/CodeReviewComments#error-strings

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptModifyingBuiltinObjects:
+    standard: @{GoogleTypeScript}
+    ruleId: modifying-builtin-objects
+    title: Do not modify built-in objects or the global object
+    statement:
+        Never add methods to built-in constructors or their prototypes, and
+        avoid libraries that do. Add symbols to the global object only when
+        truly necessary, such as for a third-party API.
+    rationale:
+        Changing shared built-ins affects all code in the program and can
+        conflict with future standard methods.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        Array.prototype.last = function() {
+          return this[this.length - 1];
+        };
+        window.appState = {};
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        export function last<T>(items: T[]): T|undefined {
+          return items[items.length - 1];
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [globals, builtins]
+    source: https://google.github.io/styleguide/tsguide.html#modifying-builtin-objects

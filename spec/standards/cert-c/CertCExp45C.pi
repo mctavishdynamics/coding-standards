@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp45C:
+    standard: @{CertC}
+    ruleId: EXP45-C
+    title: Do not perform assignments in selection statements
+    statement:
+        Do not use the assignment operator in the controlling expression of
+        if, while, do-while or the second clause of for, or in an operand of
+        the logical operators or the conditional operator in such a context.
+    rationale:
+        An assignment there is usually a typo for the equality operator,
+        which turns the test into an unconditional branch. CERT rates
+        likelihood likely, detectable yes, repairable no, priority P6, level
+        L2.
+    exceptions:
+        An assignment is allowed when its result is compared explicitly,
+        when the whole expression is a single parenthesized assignment, or
+        when it is a function argument or array index.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int is_admin(int role) {
+            if (role = 1) {
+                return 1;
+            }
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int is_admin(int role) {
+            if (role == 1) {
+                return 1;
+            }
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [expressions, control-flow]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/expressions-exp/exp45-c

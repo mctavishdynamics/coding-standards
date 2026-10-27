@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaVna03J:
+    standard: @{CertJava}
+    ruleId: VNA03-J
+    title: Do not assume that a group of calls to independently atomic methods is atomic
+    statement:
+        When several calls on a thread-safe object must act as one
+        operation, protect the whole group with a lock or use a single
+        atomic method such as putIfAbsent or computeIfAbsent.
+    rationale:
+        Each call is atomic on its own, but another thread can act between
+        them, producing race conditions. CERT rates likelihood probable,
+        detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        if (!cache.containsKey(id)) {
+            cache.put(id, load(id));
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        cache.computeIfAbsent(id, this::load);
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, atomicity]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/visibility-and-atomicity-vna/vna03-j/

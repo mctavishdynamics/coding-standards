@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppDefineGuard:
+    standard: @{GoogleCpp}
+    ruleId: The__define_Guard
+    title: Guard every header with a define based on its full path
+    statement:
+        Protect each header against multiple inclusion with a #define guard.
+        Name the guard symbol after the project and the file's full path in
+        the source tree, in the form PROJECT_PATH_FILE_H_.
+    rationale:
+        Basing the name on the full path makes the guard unique across the
+        project, so two headers never silently suppress each other.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // myapp/net/socket.h
+        #ifndef SOCKET_H
+        #define SOCKET_H
+        // ...
+        #endif
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // myapp/net/socket.h
+        #ifndef MYAPP_NET_SOCKET_H_
+        #define MYAPP_NET_SOCKET_H_
+        // ...
+        #endif  // MYAPP_NET_SOCKET_H_
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, preprocessor]
+    source: https://google.github.io/styleguide/cppguide.html#The__define_Guard

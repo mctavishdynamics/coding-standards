@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptClassesGettersAndSetters:
+    standard: @{GoogleTypeScript}
+    ruleId: classes-getters-and-setters
+    title: Keep getters pure and accessors non-trivial
+    statement:
+        Getters must be pure and must not change observable state. When
+        accessors hide a property, at least one of them must do real work;
+        otherwise make the property public or readonly. Do not define
+        accessors with Object.defineProperty.
+    rationale:
+        Callers expect reading a property to be free of effects, pass-
+        through accessors add code without value, and defineProperty
+        interferes with property renaming.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Ticket {
+          private counter = 0;
+          get nextNumber() {
+            return this.counter++;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Ticket {
+          private nameInternal = '';
+          get name() {
+            return this.nameInternal || 'untitled';
+          }
+          set name(value: string) {
+            this.nameInternal = value.trim();
+          }
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, accessors, side-effects]
+    source: https://google.github.io/styleguide/tsguide.html#classes-getters-and-setters

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppExp60Cpp:
+    standard: @{CertCpp}
+    ruleId: EXP60-CPP
+    title: Do not pass a nonstandard-layout type object across execution boundaries
+    statement:
+        Pass only standard-layout objects across execution boundaries, such
+        as between code built by different compilers or languages. Exchange
+        plain data and rebuild class objects on the other side.
+    rationale:
+        The layout of a nonstandard-layout type depends on the compiler, so
+        the other side may read members at the wrong offsets. CERT rates
+        likelihood probable, detectable no, repairable no, priority P6,
+        level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        class Session {
+        public:
+            virtual ~Session() = default;
+            int user_id;
+        };
+
+        extern "C" void plugin_open(Session* s);  // built by another compiler
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct SessionData {
+            int user_id;
+        };
+
+        extern "C" void plugin_open(SessionData* s);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interoperability, abi, classes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/expressions-exp/exp60-cpp

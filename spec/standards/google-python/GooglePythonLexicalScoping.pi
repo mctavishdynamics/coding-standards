@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonLexicalScoping:
+    standard: @{GooglePython}
+    ruleId: 2.16
+    title: Lexical scoping may be used
+    statement:
+        Nested functions may refer to variables of their enclosing scopes.
+        Remember that assigning to a name anywhere in a block makes it local
+        to the whole block.
+    rationale:
+        Closures often give clearer code, but a later assignment can turn an
+        apparent reference to an outer variable into an unbound local.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def make_counter():
+            count = 0
+
+            def increment():
+                count += 1  # UnboundLocalError: count is local here.
+                return count
+            return increment
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def make_counter():
+            count = 0
+
+            def increment():
+                nonlocal count
+                count += 1
+                return count
+            return increment
+        \\\
+        ```
+    languages: [python]
+    tags: [scoping, closures]
+    source: https://google.github.io/styleguide/pyguide.html#s2.16-lexical-scoping

@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC168:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.168
+    title: Define overloaded operators in the namespace of their operands
+    statement:
+        Put an overloaded operator in the same namespace as the type it
+        operates on.
+    rationale:
+        Argument-dependent lookup then finds it, it reads naturally, and
+        inconsistent definitions in different namespaces are avoided.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        namespace money { struct Amount { long cents; }; }
+
+        bool operator==(money::Amount a, money::Amount b);   // global namespace
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace money {
+            struct Amount { long cents; };
+            bool operator==(Amount a, Amount b);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [operators, namespaces, adl]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ro-namespace

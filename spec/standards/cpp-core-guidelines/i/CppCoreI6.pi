@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI6:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.6
+    title: Prefer Expects() for expressing preconditions
+    statement:
+        Write preconditions with Expects at the start of a function rather
+        than with ordinary if statements, asserts or comments.
+    rationale:
+        Expects marks the condition clearly as a precondition and lets tools
+        find and handle it. Plain if statements and asserts look like
+        ordinary code and may have the wrong semantics.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int element(const std::vector<int>& v, std::size_t i) {
+            if (i >= v.size()) std::abort();
+            return v[i];
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int element(const std::vector<int>& v, std::size_t i) {
+            Expects(i < v.size());
+            return v[i];
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, contracts, preconditions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-expects

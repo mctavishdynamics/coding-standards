@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCInstanceVariables:
+    standard: @{GoogleObjC}
+    ruleId: instance-variables
+    title: Prefix instance variable names with an underscore
+    statement:
+        Name instance variables in mixed case with a leading underscore.
+    rationale:
+        The underscore separates ivars from locals and properties at a
+        glance.
+    exceptions:
+        Projects that used Google's earlier trailing underscore convention
+        may keep it for consistency. Each class should use one form
+        consistently.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @implementation ABCLoginView {
+          UITextField *usernameField;
+        }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @implementation ABCLoginView {
+          UITextField *_usernameField;
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [naming, instance-variables]
+    source: https://google.github.io/styleguide/objcguide.html#instance-variables

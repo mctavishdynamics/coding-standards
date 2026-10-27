@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT123:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.123
+    title: Use constexpr functions to compute values at compile time
+    statement:
+        Compute compile-time values with constexpr functions rather than
+        template metaprograms.
+    rationale:
+        A function is the most obvious, conventional way to express
+        computing a value, and it usually costs less compile time than
+        template recursion.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<int B, int E>
+        struct Power { static constexpr int value = B * Power<B, E - 1>::value; };
+        template<int B>
+        struct Power<B, 0> { static constexpr int value = 1; };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr int power(int base, int exp)
+        {
+            int result = 1;
+            while (exp-- > 0) result *= base;
+            return result;
+        }
+
+        constexpr int kb = power(2, 10);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, constexpr, metaprogramming]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-fct

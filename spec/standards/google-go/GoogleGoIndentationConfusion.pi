@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoIndentationConfusion:
+    standard: @{GoogleGo}
+    ruleId: decisions/indentation-confusion
+    title: Do not wrap a line so it aligns with the indented block
+    statement:
+        Avoid a line break that lines up the continuation with the code
+        block that follows. If it cannot be avoided, leave a space so the
+        wrapped line is visibly separate from the block.
+    rationale:
+        A continuation at block indentation looks like part of the body and
+        misleads the reader.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if retries > maxRetries &&
+            !opts.Forever {
+            return errGaveUp
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        exhausted := retries > maxRetries
+        if exhausted && !opts.Forever {
+            return errGaveUp
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, formatting]
+    source: https://google.github.io/styleguide/go/decisions#indentation-confusion

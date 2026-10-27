@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc06J:
+    standard: @{CertJava}
+    ruleId: MSC06-J
+    title: Do not modify the underlying collection when an iteration is in progress
+    statement:
+        While iterating over a collection, change it only through the
+        iterator's own methods. For collections shared between threads, use
+        a thread-safe collection or iterate over a copy.
+    rationale:
+        Other modifications during iteration give unspecified behavior and
+        often throw ConcurrentModificationException. CERT's risk assessment
+        gives likelihood probable, detectable no, repairable no, priority P2
+        and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        for (String name : names) {
+            if (name.isEmpty()) names.remove(name);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        for (Iterator<String> it = names.iterator(); it.hasNext(); ) {
+            if (it.next().isEmpty()) it.remove();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [collections, concurrency]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/miscellaneous-msc/msc06-j/

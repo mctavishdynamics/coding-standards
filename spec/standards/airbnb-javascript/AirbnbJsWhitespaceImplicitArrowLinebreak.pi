@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsWhitespaceImplicitArrowLinebreak:
+    standard: @{AirbnbJavaScript}
+    ruleId: 8.6
+    title: Keep implicit arrow bodies next to the arrow
+    statement:
+        Start the body of an implicitly returning arrow function on the same
+        line as the arrow, opening parentheses there if the body needs more
+        lines. Enforced by the ESLint rule implicit-arrow-linebreak.
+    rationale:
+        A bare body on the next line is easy to misread as a separate
+        statement.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const fullName = (user) =>
+          `${user.first} ${user.last}`;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const fullName = (user) => `${user.first} ${user.last}`;
+        const summary = (user) => (
+          `${user.first} ${user.last} <${user.email}>`
+        );
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, arrow-functions, formatting]
+    source: https://github.com/airbnb/javascript#whitespace--implicit-arrow-linebreak

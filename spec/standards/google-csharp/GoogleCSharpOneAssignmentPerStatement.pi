@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpOneAssignmentPerStatement:
+    standard: @{GoogleCSharp}
+    ruleId: one-assignment-per-statement
+    title: Make at most one assignment per statement
+    statement:
+        Do not chain or combine several assignments in one statement.
+    rationale:
+        Chained assignments hide which variables change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        width = height = DefaultSize;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        width = DefaultSize;
+        height = DefaultSize;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [formatting, statements]
+    source: https://google.github.io/styleguide/csharpguide.html#whitespace-rules

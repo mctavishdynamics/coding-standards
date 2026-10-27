@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos36C:
+    standard: @{CertC}
+    ruleId: POS36-C
+    title:
+        Observe correct revocation order while relinquishing privileges
+    statement:
+        When dropping elevated privileges, give up group privileges with
+        setgid before giving up user privileges with setuid.
+    rationale:
+        Once the user id is unprivileged the process may no longer be
+        allowed to change its group id, so it keeps elevated group rights.
+        CERT rates likelihood probable, detectable yes, repairable yes,
+        priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        if (setuid(getuid()) == -1) {
+            abort();
+        }
+        if (setgid(getgid()) == -1) {
+            abort();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if (setgid(getgid()) == -1) {
+            abort();
+        }
+        if (setuid(getuid()) == -1) {
+            abort();
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, privileges, security]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos36-c

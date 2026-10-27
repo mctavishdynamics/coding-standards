@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppDcl56Cpp:
+    standard: @{CertCpp}
+    ruleId: DCL56-CPP
+    title: Avoid cycles during initialization of static objects
+    statement:
+        Do not let the initialization of a static object depend on itself,
+        directly or through other statics, and do not rely on an order of
+        initialization of statics across translation units.
+    rationale:
+        A recursive re-entry during static initialization is undefined
+        behavior, and statics in other translation units may still be
+        uninitialized when read. CERT rates likelihood unlikely, detectable
+        yes, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        int fib(int n) {
+            static const int cache = fib(n - 1) + fib(n - 2);  // re-enters itself
+            return n < 2 ? n : cache;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int fib(int n) {
+            static std::vector<int> cache = {0, 1};
+            while (static_cast<int>(cache.size()) <= n) {
+                cache.push_back(cache[cache.size() - 1] + cache[cache.size() - 2]);
+            }
+            return cache[n];
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [initialization, static, declarations]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/declarations-and-initialization-dcl/dcl56-cpp

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCLocalVariables:
+    standard: @{GoogleObjC}
+    ruleId: local-variables
+    title: Declare locals in the narrowest scope and initialize them
+    statement:
+        Declare variables in the narrowest practical scope, close to where
+        they are used, and initialize them in the declaration. When in
+        doubt, initialize every Objective-C local variable.
+    rationale:
+        Narrow scopes keep code easy to follow, and ARC does not zero every
+        pointer type, such as unsafe unretained and Core Foundation
+        pointers.
+    exceptions:
+        Efficiency may justify declaring a variable outside the scope where
+        it is used, for example to avoid repeating an expensive call in a
+        loop.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        int index;
+        NSString *label;
+        for (index = 0; index < 3; index++) {
+          label = [self labelForIndex:index];
+          [self show:label];
+        }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        for (int index = 0; index < 3; index++) {
+          NSString *label = [self labelForIndex:index];
+          [self show:label];
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [variables, scope, initialization]
+    source: https://google.github.io/styleguide/objcguide.html#local-variables

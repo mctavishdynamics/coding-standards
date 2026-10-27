@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsWhitespaceChains:
+    standard: @{AirbnbJavaScript}
+    ruleId: 19.6
+    title: Indent long method chains with leading dots
+    statement:
+        When chaining more than two method calls, put each call on its own
+        indented line that starts with the dot. Enforced by the ESLint rules
+        newline-per-chained-call and no-whitespace-before-property.
+    rationale:
+        The leading dot shows that the line continues a method call rather
+        than starting a new statement.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const names = users.filter((user) => user.active).map((user) => user.name).sort();
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const names = users
+          .filter((user) => user.active)
+          .map((user) => user.name)
+          .sort();
+        \\\
+        ```
+    languages: [javascript]
+    tags: [whitespace, formatting, chaining]
+    source: https://github.com/airbnb/javascript#whitespace--chains

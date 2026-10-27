@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoMakeVersusNew:
+    standard: @{EffectiveGo}
+    ruleId: allocation-make
+    title: Use make for slices, maps and channels
+    statement:
+        Create slices, maps and channels with make, which returns an
+        initialized value. Use new, or take an address, when you need a
+        pointer.
+    rationale:
+        These three types need their internal structures set up before use;
+        new would only give a pointer to a nil value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        counts := new(map[string]int)
+        (*counts)["a"]++ // panics, the map is nil
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        counts := make(map[string]int)
+        counts["a"]++
+        \\\
+        ```
+    languages: [go]
+    tags: [allocation, initialization]
+    source: https://go.dev/doc/effective_go#allocation_make

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoDocComments:
+    standard: @{GoogleGo}
+    ruleId: decisions/doc-comments
+    title: Document every exported name
+    statement:
+        Give every top-level exported name a doc comment, and also
+        unexported types and functions whose behaviour is not obvious. Write
+        full sentences that begin with the name being described, optionally
+        preceded by an article.
+    rationale:
+        Doc comments appear in Godoc and IDEs and are what users of the
+        package read. Starting with the name makes later exporting a simple
+        rename.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // returns a cache that holds up to n entries
+        func NewCache(n int) *Cache
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // NewCache returns a cache that holds up to n entries, evicting the
+        // least recently used entry when full.
+        func NewCache(n int) *Cache
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, comments, documentation]
+    source: https://google.github.io/styleguide/go/decisions#doc-comments

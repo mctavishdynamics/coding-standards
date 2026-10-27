@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8LineBreakBeforeBinaryOperator:
+    standard: @{Pep8}
+    ruleId: should-a-line-break-before-or-after-a-binary-operator
+    title: Break lines before binary operators in new code
+    statement:
+        Either break before or after a binary operator, as long as the
+        choice is consistent locally. For new code, break before the
+        operator.
+    rationale:
+        With the operator at the start of the line, each operator sits next
+        to its operand and the operators line up, so the expression is
+        easier to follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        net_pay = (gross_pay -
+                   income_tax -
+                   pension_contribution +
+                   expense_refund)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        net_pay = (gross_pay
+                   - income_tax
+                   - pension_contribution
+                   + expense_refund)
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, line-wrapping, operators]
+    source: https://peps.python.org/pep-0008/#should-a-line-break-before-or-after-a-binary-operator

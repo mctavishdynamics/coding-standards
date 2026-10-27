@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssEncoding:
+    standard: @{GoogleHtmlCss}
+    ruleId: encoding
+    title: Use UTF-8 without a byte order mark
+    statement:
+        Save files as UTF-8 without a BOM. Declare the encoding in HTML
+        documents and templates with a meta charset element, and do not
+        declare it in style sheets.
+    rationale:
+        Style sheets already assume UTF-8, and one encoding everywhere
+        avoids garbled characters.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <meta charset="utf-8">
+        \\\
+        ```
+    languages: [html, css]
+    tags: [encoding]
+    source: https://google.github.io/styleguide/htmlcssguide.html#encoding

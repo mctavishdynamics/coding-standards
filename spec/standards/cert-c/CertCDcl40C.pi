@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl40C:
+    standard: @{CertC}
+    ruleId: DCL40-C
+    title:
+        Do not create incompatible declarations of the same function or
+        object
+    statement:
+        Every declaration of a function or object across all translation
+        units must have a compatible type. Declare shared names once in a
+        header and include that header wherever they are used or defined.
+    rationale:
+        Incompatible declarations are undefined behavior. The caller and the
+        definition then disagree about sizes, types or arguments, and the
+        linker usually cannot tell. CERT rates likelihood unlikely,
+        detectable yes, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        /* a.c */
+        long timeout_ms = 5000;
+
+        /* b.c */
+        extern short timeout_ms;
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        /* config.h */
+        extern long timeout_ms;
+
+        /* a.c */
+        #include "config.h"
+        long timeout_ms = 5000;
+
+        /* b.c */
+        #include "config.h"
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, linkage]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/declarations-and-initialization-dcl/dcl40-c

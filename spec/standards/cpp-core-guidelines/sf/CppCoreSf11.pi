@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf11:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.11
+    title: Header files should be self-contained
+    statement:
+        Make every header compile on its own by including everything it
+        depends on.
+    rationale:
+        Clients should not have to manage a header's dependencies or include
+        things in a special order, and failures from missing includes are
+        hard to diagnose.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // invoice.h
+        struct Invoice {
+            std::string customer;          // relies on the includer for <string>
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // invoice.h
+        #include <string>
+
+        struct Invoice {
+            std::string customer;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, includes]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-contained

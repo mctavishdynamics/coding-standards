@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsObjectsPrototypeBuiltins:
+    standard: @{AirbnbJavaScript}
+    ruleId: 3.7
+    title: Do not call Object.prototype methods directly on objects
+    statement:
+        Do not call hasOwnProperty, propertyIsEnumerable or isPrototypeOf on
+        the object itself. Call them through Object.prototype with call, or
+        use Object.hasOwn where it is available. Enforced by the ESLint rule
+        no-prototype-builtins.
+    rationale:
+        The object may shadow these methods with its own properties, or it
+        may have no prototype at all when created with Object.create(null).
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        if (payload.hasOwnProperty('token')) {
+          authorize(payload.token);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const has = Object.prototype.hasOwnProperty;
+        if (has.call(payload, 'token')) {
+          authorize(payload.token);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [objects, prototypes, safety]
+    source: https://github.com/airbnb/javascript#objects--prototype-builtins

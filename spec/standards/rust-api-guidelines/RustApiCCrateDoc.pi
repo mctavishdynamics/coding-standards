@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCCrateDoc:
+    standard: @{RustApiGuidelines}
+    ruleId: C-CRATE-DOC
+    title: Write thorough crate-level docs with examples
+    statement:
+        Give the crate root thorough documentation that explains what the
+        crate is for and includes examples, as described in RFC 1687.
+    rationale:
+        The crate page is the first thing users read, and it should let them
+        decide whether and how to use the crate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        //! Utilities.
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        //! Parse and validate ISO 8601 durations.
+        //!
+        //! ```
+        //! let d: iso_duration::Duration = "PT1H30M".parse()?;
+        //! assert_eq!(d.as_secs(), 5400);
+        //! # Ok::<(), iso_duration::ParseError>(())
+        //! ```
+        \\\
+        ```
+    languages: [rust]
+    tags: [documentation, examples]
+    source: https://rust-lang.github.io/api-guidelines/documentation.html#c-crate-doc

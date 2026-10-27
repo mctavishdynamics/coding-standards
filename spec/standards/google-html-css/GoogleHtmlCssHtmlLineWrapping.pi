@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssHtmlLineWrapping:
+    standard: @{GoogleHtmlCss}
+    ruleId: html-line-wrapping
+    title: Break long lines consistently
+    statement:
+        Consider wrapping long HTML lines when it clearly helps readability.
+        Indent continuation lines so wrapped attributes are distinct from
+        child elements, and wrap consistently within a project. This rule is
+        optional.
+    rationale:
+        There is no column limit for HTML, but consistent wrapping keeps
+        long elements readable, ideally enforced by a formatter.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <input type="email"
+        name="email"
+        required>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <input type="email" name="email" autocomplete="email"
+            placeholder="you@example.com" required>
+        \\\
+        ```
+    languages: [html]
+    tags: [formatting, line-length]
+    source: https://google.github.io/styleguide/htmlcssguide.html#html-line-wrapping

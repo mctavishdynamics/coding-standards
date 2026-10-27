@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppErr58Cpp:
+    standard: @{CertCpp}
+    ruleId: ERR58-CPP
+    title: Handle all exceptions thrown before main() begins executing
+    statement:
+        Make sure exceptions thrown while initializing objects with static
+        or thread storage duration, before main runs, are caught. Use
+        constructors that cannot throw, or initialize such objects lazily
+        inside a function.
+    rationale:
+        No handler, not even a function-try-block on main, can catch these
+        exceptions, so the program terminates. CERT rates likelihood likely,
+        detectable no, repairable yes, priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        static const std::string config_path = load_path_or_throw();
+
+        int main() {
+            start(config_path);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        const std::string& config_path() {
+            static const std::string path = load_path_or_throw();
+            return path;
+        }
+
+        int main() {
+            try {
+                start(config_path());
+            } catch (const std::exception&) {
+                return EXIT_FAILURE;
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [exceptions, initialization, static]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/exceptions-and-error-handling-err/err58-cpp

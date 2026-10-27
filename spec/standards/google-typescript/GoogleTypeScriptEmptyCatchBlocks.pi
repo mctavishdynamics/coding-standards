@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptEmptyCatchBlocks:
+    standard: @{GoogleTypeScript}
+    ruleId: empty-catch-blocks
+    title: Explain every empty catch block
+    statement:
+        Doing nothing with a caught exception is rarely right. When it is,
+        explain why in a comment inside the catch block.
+    rationale:
+        A silent catch hides failures, and the comment tells readers it was
+        deliberate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        try {
+          localStorage.setItem(key, value);
+        } catch (e: unknown) {
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        try {
+          localStorage.setItem(key, value);
+        } catch (e: unknown) {
+          // Storage may be full or disabled; caching is optional here.
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [error-handling, exceptions, comments]
+    source: https://google.github.io/styleguide/tsguide.html#empty-catch-blocks

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptRedundantComments:
+    standard: @{GoogleTypeScript}
+    ruleId: redundant-comments
+    title: Write comments that add information
+    statement:
+        Do not write comments that only restate a parameter's name and type.
+        Include @param and @return lines only when they add information.
+    rationale:
+        Restating the signature costs reading time and gives nothing in
+        return.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        /** @param invoiceService The invoice service. */
+        constructor(invoiceService: InvoiceService) {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /**
+         * Sends the invoice by email.
+         * @param copies How many recipients to copy; at most five.
+         */
+        send(invoice: Invoice, copies: number) {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc, documentation]
+    source: https://google.github.io/styleguide/tsguide.html#redundant-comments

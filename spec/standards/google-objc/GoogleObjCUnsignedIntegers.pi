@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCUnsignedIntegers:
+    standard: @{GoogleObjC}
+    ruleId: unsigned-integers
+    title: Avoid unsigned integers
+    statement:
+        Use signed integers in arithmetic, and use unsigned types only to
+        match system interfaces such as NSUInteger.
+    rationale:
+        Unsigned arithmetic causes subtle bugs, such as loops counting down
+        that never end because the value cannot go below zero.
+    exceptions:
+        Unsigned integers may be used for flags and bitmasks, though
+        NS_OPTIONS or NS_ENUM is often a better choice.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        for (NSUInteger i = items.count - 1; i >= 0; --i) {
+          [self process:items[i]];
+        }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        for (NSInteger i = (NSInteger)items.count - 1; i >= 0; --i) {
+          [self process:items[i]];
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [types, integers]
+    source: https://google.github.io/styleguide/objcguide.html#unsigned-integers

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftMemberwiseInitializers:
+    standard: @{GoogleSwift}
+    ruleId: initializers-1
+    title: Rely on the synthesized memberwise initializer
+    statement:
+        When a struct's synthesized memberwise initializer is suitable, that
+        is, when a public one is not needed, use it and do not write an
+        explicit initializer.
+    rationale:
+        An explicit copy of the synthesized initializer is redundant code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        struct Tag {
+          var name: String
+          var color: Color
+
+          init(name: String, color: Color) {
+            self.name = name
+            self.color = color
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        struct Tag {
+          var name: String
+          var color: Color
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [initialization, structs]
+    source: https://google.github.io/swift/#initializers-1

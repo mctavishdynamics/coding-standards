@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppBracedInitializerListFormat:
+    standard: @{GoogleCpp}
+    ruleId: Braced_Initializer_List_Format
+    title: Format braced initializer lists like function calls
+    statement:
+        Format a braced initializer list exactly as a function call in the
+        same place, treating the braces as the call's parentheses and a
+        missing name as a zero-length name.
+    rationale:
+        Reusing the call layout means no separate rules to learn.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        SomeType variable{ some, other, values,
+          "and a few more" };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<std::string> names = {"alice", "bob"};
+        SomeType variable{
+            some, other, values,
+            "and a few more"};
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, initialization]
+    source: https://google.github.io/styleguide/cppguide.html#Braced_Initializer_List_Format

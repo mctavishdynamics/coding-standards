@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsVariablesLinebreak:
+    standard: @{AirbnbJavaScript}
+    ruleId: 13.7
+    title: Avoid line breaks around the assignment operator
+    statement:
+        Do not break a line just before or after the equals sign of an
+        assignment. If the value is too long for the line, wrap it in
+        parentheses. Enforced by the ESLint rule operator-linebreak.
+    rationale:
+        Line breaks around the equals sign obscure what is being assigned.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const greeting =
+          buildGreeting(user.firstName, user.locale, user.timezone);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const greeting = (
+          buildGreeting(user.firstName, user.locale, user.timezone)
+        );
+        \\\
+        ```
+    languages: [javascript]
+    tags: [variables, formatting]
+    source: https://github.com/airbnb/javascript#variables--linebreak

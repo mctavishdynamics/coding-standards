@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellIndentation:
+    standard: @{GoogleShell}
+    ruleId: indentation
+    title: Indent 2 spaces with no tabs
+    statement:
+        Indent by two spaces and never use tabs. Use blank lines between
+        blocks for readability, and keep to the existing indentation in
+        files you modify.
+    rationale:
+        A single indentation style keeps code readable and consistent across
+        the codebase.
+    exceptions:
+        Tabs may be used only for the body of a tab-indented here-document
+        written with the <<- operator.
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        if [[ -f "${config}" ]]; then
+            source "${config}"
+        fi
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        if [[ -f "${config}" ]]; then
+          source "${config}"
+        fi
+        \\\
+        ```
+    languages: [shell]
+    tags: [formatting, indentation]
+    source: https://google.github.io/styleguide/shellguide.html#indentation

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio03J:
+    standard: @{CertJava}
+    ruleId: FIO03-J
+    title: Remove temporary files before termination
+    statement:
+        Delete temporary files as soon as they are no longer needed, and
+        before the program exits. Prefer DELETE_ON_CLOSE or explicit
+        deletion over deleteOnExit().
+    rationale:
+        Leftover temporary files leak data and storage. deleteOnExit() runs
+        only on normal JVM exit and does not run if the file is still open
+        on some systems. CERT's risk assessment gives likelihood probable,
+        detectable no, repairable no, priority P4 and level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        File temp = File.createTempFile("upload", ".tmp");
+        temp.deleteOnExit();
+        process(temp);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Path temp = Files.createTempFile("upload", ".tmp");
+        try (OutputStream out = Files.newOutputStream(temp,
+                StandardOpenOption.DELETE_ON_CLOSE)) {
+            process(out);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [file-io, temporary-files, cleanup]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio03-j/

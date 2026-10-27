@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactPropsNaming:
+    standard: @{AirbnbReact}
+    ruleId: naming-6
+    title: Do not reuse DOM prop names for other purposes
+    statement:
+        Do not give props such as style or className a meaning different
+        from their DOM meaning. Pick a new prop name instead.
+    rationale:
+        Readers expect these props to mean one thing. Changing that meaning
+        in part of an app hurts readability and maintenance and can cause
+        bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        <Alert style="warning" />
+        <Alert className="dismissible" />
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        <Alert tone="warning" dismissible />
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [naming, props]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#naming

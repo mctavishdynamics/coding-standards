@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsIteratorsNope:
+    standard: @{AirbnbJavaScript}
+    ruleId: 11.1
+    title: Prefer higher-order functions to loops
+    statement:
+        Do not use iterators or for-in and for-of loops. Use array methods
+        such as map, filter, find, some and reduce, and use Object.keys,
+        Object.values or Object.entries to iterate over objects. Enforced by
+        the ESLint rules no-iterator and no-restricted-syntax.
+    rationale:
+        Pure functions that return values are easier to reason about than
+        loops built on side effects, and this supports the guide's
+        preference for immutability.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        let total = 0;
+        for (const line of lines) {
+          total += line.amount;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const total = lines.reduce((sum, line) => sum + line.amount, 0);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [iteration, functional]
+    source: https://github.com/airbnb/javascript#iterators--nope

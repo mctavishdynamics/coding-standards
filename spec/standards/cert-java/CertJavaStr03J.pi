@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaStr03J:
+    standard: @{CertJava}
+    ruleId: STR03-J
+    title: Do not encode noncharacter data as a string
+    statement:
+        Do not convert arbitrary binary data, such as hashes, ciphertext or
+        numbers in raw byte form, into a String with new String(bytes). Keep
+        it as bytes or encode it with Base64 or hex.
+    rationale:
+        Not every byte sequence is valid text in a character set, so the
+        conversion can replace or drop bytes and the original data cannot be
+        recovered. CERT rates likelihood unlikely, detectable no, repairable
+        no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        String stored = new String(digest);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String stored = Base64.getEncoder().encodeToString(digest);
+        \\\
+        ```
+    languages: [java]
+    tags: [strings, encoding, binary-data]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/characters-and-strings-str/str03-j/

@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppFunctionDeclarationsAndDefinitions:
+    standard: @{GoogleCpp}
+    ruleId: Function_Declarations_and_Definitions
+    title:
+        Format function declarations with the return type on the name line
+    statement:
+        Put the return type on the same line as the function name, and the
+        parameters too if they fit; otherwise wrap them like call arguments
+        with a four-space indent or aligned. Keep the open parenthesis with
+        the name, put no spaces inside the parentheses, and put the open
+        brace at the end of the last line after a space. Attributes come
+        before the return type.
+    rationale:
+        A single layout makes every signature quick to read.
+    exceptions:
+        If the return type and name cannot fit on one line, break between
+        them without indenting. Unused parameters may omit or comment out
+        their names.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        ReturnType
+            ClassName::FunctionName ( Type par1, Type par2 )
+        {
+          DoSomething();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        ReturnType ClassName::ReallyLongFunctionName(Type par_name1,
+                                                     Type par_name2) {
+          DoSomething();
+        }
+
+        [[nodiscard]] bool IsReady();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, functions]
+    source: https://google.github.io/styleguide/cppguide.html#Function_Declarations_and_Definitions

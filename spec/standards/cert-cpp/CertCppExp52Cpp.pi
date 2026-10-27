@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppExp52Cpp:
+    standard: @{CertCpp}
+    ruleId: EXP52-CPP
+    title: Do not rely on side effects in unevaluated operands
+    statement:
+        Do not put side effects inside operands that are never evaluated,
+        such as those of sizeof, typeid on non-polymorphic types, noexcept,
+        decltype and declval.
+    rationale:
+        The side effect never happens, so code that expects the increment or
+        call to run silently does nothing. CERT rates likelihood unlikely,
+        detectable yes, repairable yes, priority P3, level L3.
+    exceptions:
+        Side effects in unevaluated operands are allowed in a macro
+        definition or SFINAE context, where the code relies on the type of
+        the expression and not on its effects.
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        void advance(int& index) {
+            auto width = sizeof(index++);  // index is never incremented
+            use(width);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void advance(int& index) {
+            auto width = sizeof(index);
+            ++index;
+            use(width);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [expressions, side-effects, unevaluated-operands]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/expressions-exp/exp52-cpp

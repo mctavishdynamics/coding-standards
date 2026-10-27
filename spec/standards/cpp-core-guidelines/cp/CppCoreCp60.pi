@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp60:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.60
+    title: Use a future to return a value from a concurrent task
+    statement:
+        Get results from a concurrent task through a std::future rather than
+        through shared variables written by the task.
+    rationale:
+        A future keeps ordinary return semantics for asynchronous work. No
+        explicit locking is needed, and both values and exceptions are
+        delivered to the caller.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Report report;
+        std::mutex report_mutex;
+        std::thread t([&] {
+            Report r = build_report();
+            std::lock_guard lock(report_mutex);
+            report = std::move(r);
+        });
+        t.join();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::future<Report> pending = std::async(build_report);
+        Report report = pending.get();   // also rethrows any exception
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, futures, tasks]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-future

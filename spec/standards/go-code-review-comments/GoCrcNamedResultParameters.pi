@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcNamedResultParameters:
+    standard: @{GoCodeReviewComments}
+    ruleId: named-result-parameters
+    title: Name result parameters only when it helps the reader
+    statement:
+        Do not name results when the names only repeat the types in godoc.
+        Name them when a function returns several values of the same type or
+        when their meaning is otherwise unclear. Do not name results only to
+        avoid declaring a variable or to enable naked returns.
+    rationale:
+        Result names are part of the documented API; clear documentation
+        matters more than saving a line in the function body.
+    exceptions:
+        Naming a result so a deferred closure can change it is always
+        acceptable.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (n *Node) Parent() (node *Node, err error)
+
+        func (p *Place) Coordinates() (float64, float64, error)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (n *Node) Parent() (*Node, error)
+
+        // Coordinates returns the latitude and longitude of p.
+        func (p *Place) Coordinates() (lat, long float64, err error)
+        \\\
+        ```
+    languages: [go]
+    tags: [functions, documentation, naming]
+    source: https://go.dev/wiki/CodeReviewComments#named-result-parameters

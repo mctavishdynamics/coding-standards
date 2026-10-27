@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCCustomType:
+    standard: @{RustApiGuidelines}
+    ruleId: C-CUSTOM-TYPE
+    title: Convey argument meaning with types, not bool or Option
+    statement:
+        Use a purpose-built enum, struct or tuple for an argument instead of
+        a bare bool, integer or Option whose meaning depends on its
+        position.
+    rationale:
+        A named type says what the value means at the call site and can grow
+        new variants later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        let file = Archive::open("data.zip", true, false)?;
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        let file = Archive::open("data.zip", Mode::ReadOnly, Verify::Skip)?;
+        \\\
+        ```
+    languages: [rust]
+    tags: [types, type-safety, readability]
+    source: https://rust-lang.github.io/api-guidelines/type-safety.html#c-custom-type

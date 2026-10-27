@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp30C:
+    standard: @{CertC}
+    ruleId: EXP30-C
+    title: Do not depend on the order of evaluation for side effects
+    statement:
+        Do not modify an object twice, or modify it and also read it,
+        between two sequence points. Split such expressions so each side
+        effect is ordered.
+    rationale:
+        Unsequenced side effects on the same object are undefined behavior,
+        and the order of evaluation of function arguments and operands is
+        not specified. CERT rates likelihood probable, detectable no,
+        repairable yes, priority P8, level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        void fill(int *buf, int n) {
+            int i = 0;
+            while (i < n) {
+                buf[i] = i++;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void fill(int *buf, int n) {
+            int i = 0;
+            while (i < n) {
+                buf[i] = i;
+                i++;
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [expressions, side-effects, undefined-behavior]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/expressions-exp/exp30-c

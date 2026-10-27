@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec04J:
+    standard: @{CertJava}
+    ruleId: SEC04-J
+    title: Protect sensitive operations with security manager checks
+    statement:
+        Guard every sensitive operation with a security manager check,
+        usually SecurityManager.checkPermission() with a suitable
+        permission.
+    rationale:
+        Without a check, untrusted callers can perform the operation even
+        when the security policy forbids it. CERT's risk assessment gives
+        likelihood probable, detectable no, repairable yes, priority P12 and
+        level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        public void removeEntry(String key) {
+            store.remove(key);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public void removeEntry(String key) {
+            SecurityManager sm = System.getSecurityManager();
+            if (sm != null) {
+                sm.checkPermission(new StorePermission("remove"));
+            }
+            store.remove(key);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [security, security-manager]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/platform-security-sec/sec04-j/

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSer00J:
+    standard: @{CertJava}
+    ruleId: SER00-J
+    title: Enable serialization compatibility during class evolution
+    statement:
+        Give every serializable class an explicit serialVersionUID, and use
+        serialPersistentFields or custom serialized forms so the class can
+        change without breaking existing streams.
+    rationale:
+        Without them, any change to the class changes the computed version
+        and old serialized data can no longer be read. CERT's risk
+        assessment gives likelihood probable, detectable yes, repairable
+        yes, priority P6 and level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        class Profile implements Serializable {
+            private String name;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Profile implements Serializable {
+            private static final long serialVersionUID = 1L;
+            private String name;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, compatibility]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/serialization-ser/ser00-j/

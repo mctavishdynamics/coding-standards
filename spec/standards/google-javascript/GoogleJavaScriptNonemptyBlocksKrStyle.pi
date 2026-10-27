@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNonemptyBlocksKrStyle:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.1.2
+    title: Format nonempty blocks in K&R style
+    statement:
+        Put no line break before an opening brace, a break after it, and a
+        break before the closing brace. Break after the closing brace when
+        it ends a statement or a function, class or method body, but not
+        when else, catch, while, a comma, a semicolon or a closing
+        parenthesis follows.
+    rationale:
+        One consistent brace style keeps code compact and makes block
+        structure easy to scan.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function load(url)
+        {
+          try
+          {
+            return fetch(url);
+          }
+          catch (err)
+          {
+            report(err);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function load(url) {
+          try {
+            return fetch(url);
+          } catch (err) {
+            report(err);
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, braces]
+    source: https://google.github.io/styleguide/jsguide.html#412-nonempty-blocks-kr-style

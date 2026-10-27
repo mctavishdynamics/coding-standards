@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF9:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.9
+    title: Leave unused parameters unnamed
+    statement:
+        When a parameter is required by a signature but not used, omit its
+        name. If it is unused only in some build configurations, mark it
+        with the maybe_unused attribute.
+    rationale:
+        It shows readers the parameter is ignored on purpose and suppresses
+        unused parameter warnings.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void on_resize(Window& window, int width, int height) {
+            redraw(window);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void on_resize(Window& window, int /*width*/, int /*height*/) {
+            redraw(window);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, parameters, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-unused

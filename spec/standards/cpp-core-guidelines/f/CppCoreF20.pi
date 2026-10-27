@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF20:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.20
+    title: For out values, prefer return values to output parameters
+    statement:
+        Return results by value instead of writing them through reference or
+        pointer parameters. This holds for large objects such as containers
+        too.
+    rationale:
+        A return value documents itself, whereas a reference parameter may
+        be read as in-out. Move semantics and return value optimization make
+        returning containers cheap.
+    exceptions:
+        A struct of many members can be expensive to move in total, and
+        reusing an existing object can avoid repeated allocation.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void split(const std::string& s, std::vector<std::string>& parts);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<std::string> split(const std::string& s);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, return-values]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-out

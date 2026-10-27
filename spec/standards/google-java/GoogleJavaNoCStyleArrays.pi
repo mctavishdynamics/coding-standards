@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaNoCStyleArrays:
+    standard: @{GoogleJava}
+    ruleId: 4.8.3.2
+    title: Do not use C-style array declarations
+    statement:
+        Attach the square brackets to the type, not to the variable name.
+    rationale:
+        The brackets are part of the type, so putting them on the type keeps
+        the full type in one place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String names[];
+        public static void main(String args[]) {}
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String[] names;
+        public static void main(String[] args) {}
+        \\\
+        ```
+    languages: [java]
+    tags: [declarations, arrays]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.3.2-array-declarations

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptFunctionDeclarations:
+    standard: @{GoogleTypeScript}
+    ruleId: function-declarations
+    title: Prefer function declarations for named functions
+    statement:
+        Define named functions with function declarations rather than arrow
+        functions or function expressions assigned to a variable.
+    rationale:
+        Declarations read clearly as named units of code and are hoisted.
+    exceptions:
+        An arrow function may be used when an explicit type annotation is
+        required, for example to implement a function interface.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const square = (n: number) => n * n;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function square(n: number) {
+          return n * n;
+        }
+
+        const compare: Comparator = (a, b) => a.rank - b.rank;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [functions, declarations]
+    source: https://google.github.io/styleguide/tsguide.html#function-declarations

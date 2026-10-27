@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaNonRequiredJavadoc:
+    standard: @{GoogleJava}
+    ruleId: 7.3.4
+    title: Use Javadoc for any comment describing a class or member's purpose
+    statement:
+        Other classes and members get Javadoc as needed. Whenever a comment
+        would describe the overall purpose or behaviour of a class or
+        member, write it as Javadoc instead of an implementation comment.
+    rationale:
+        Javadoc is where tools and readers look for a description of what an
+        element does.
+    exceptions:
+        Non-required Javadoc need not strictly follow the formatting rules
+        of 7.1 and 7.2, though following them is recommended.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        // Holds parsed rows until the batch is flushed.
+        private static final class RowBuffer { ... }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        /** Holds parsed rows until the batch is flushed. */
+        private static final class RowBuffer { ... }
+        \\\
+        ```
+    languages: [java]
+    tags: [javadoc, documentation, comments]
+    source: https://google.github.io/styleguide/javaguide.html#s7.3.4-javadoc-non-required

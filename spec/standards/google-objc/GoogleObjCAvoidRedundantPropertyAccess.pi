@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCAvoidRedundantPropertyAccess:
+    standard: @{GoogleObjC}
+    ruleId: avoid-redundant-property-access
+    title: Avoid redundant property access
+    statement:
+        When a property value will not change and is needed several times,
+        store it in a local variable, including repeated chains of property
+        access.
+    rationale:
+        Each access is a message send and, under ARC, extra retains and
+        releases that the compiler cannot remove, which slows code and grows
+        the binary.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        self.player.queue.title = title;
+        self.player.queue.artist = artist;
+        self.player.queue.artwork = artwork;
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        ABCQueue *queue = self.player.queue;
+        queue.title = title;
+        queue.artist = artist;
+        queue.artwork = artwork;
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [performance, properties]
+    source: https://google.github.io/styleguide/objcguide.html#avoid-redundant-property-access

@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcInBandErrors:
+    standard: @{GoCodeReviewComments}
+    ruleId: in-band-errors
+    title: Return an extra value instead of an in-band error
+    statement:
+        Do not signal failure or a missing result with a special value such
+        as -1, an empty string or nil. Return an additional final result, an
+        error or an ok boolean, that says whether the other results are
+        valid.
+    rationale:
+        A separate result cannot be ignored by accident, so callers cannot
+        pass an invalid value along, and the checking code reads more
+        clearly.
+    exceptions:
+        Values such as nil, the empty string, 0 and -1 are fine when they
+        are valid results the caller need not treat specially. Some standard
+        library packages, such as strings, use in-band values for
+        convenience.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Price returns the price of sku, or -1 if it is unknown.
+        func Price(sku string) int
+
+        total += Price(sku)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Price returns the price of sku and whether sku is known.
+        func Price(sku string) (cents int, ok bool)
+
+        cents, ok := Price(sku)
+        if !ok {
+            return fmt.Errorf("unknown sku %q", sku)
+        }
+        total += cents
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, api-design]
+    source: https://go.dev/wiki/CodeReviewComments#in-band-errors

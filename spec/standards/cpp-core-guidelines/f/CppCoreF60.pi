@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF60:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.60
+    title: Prefer T* over T& when no argument is a valid option
+    statement:
+        Use a pointer parameter when passing no object is meaningful, and
+        check it for nullptr. Use a reference when an object is always
+        required.
+    rationale:
+        A pointer can be nullptr and a reference cannot, so the choice tells
+        callers whether the argument is optional. A reference is also
+        simpler to use.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void draw(const Shape& shape, const Style& style);   // callers fake a style
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void draw(const Shape& shape, const Style* style = nullptr) {
+            if (style) apply(*style);
+            // ...
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, parameters, pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-ptr-ref

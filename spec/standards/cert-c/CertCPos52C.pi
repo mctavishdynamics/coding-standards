@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos52C:
+    standard: @{CertC}
+    ruleId: POS52-C
+    title:
+        Do not perform operations that can block while holding a POSIX lock
+    statement:
+        Do not perform network, file or console I/O, or other blocking
+        calls, while holding a POSIX mutex. Do the blocking work first, then
+        lock only to update shared state.
+    rationale:
+        Every thread that needs the lock stalls while the holder blocks,
+        which hurts performance and can cause deadlock. CERT rates
+        likelihood probable, detectable no, repairable no, priority P2,
+        level L3.
+    exceptions:
+        A thread may block waiting for another lock while holding locks,
+        provided the locks are taken in an order that avoids deadlock.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        pthread_mutex_lock(&inbox_lock);
+        ssize_t n = recv(sock, inbox, sizeof inbox, 0);
+        inbox_len = n > 0 ? (size_t)n : 0;
+        pthread_mutex_unlock(&inbox_lock);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char tmp[sizeof inbox];
+        ssize_t n = recv(sock, tmp, sizeof tmp, 0);
+        pthread_mutex_lock(&inbox_lock);
+        if (n > 0) {
+            memcpy(inbox, tmp, (size_t)n);
+        }
+        inbox_len = n > 0 ? (size_t)n : 0;
+        pthread_mutex_unlock(&inbox_lock);
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, concurrency, locking]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos52-c

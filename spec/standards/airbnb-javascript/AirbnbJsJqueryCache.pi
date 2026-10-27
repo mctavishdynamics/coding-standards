@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsJqueryCache:
+    standard: @{AirbnbJavaScript}
+    ruleId: 26.2
+    title: Cache jQuery lookups
+    statement:
+        Store the result of a jQuery lookup in a variable and reuse it,
+        instead of querying the DOM again.
+    rationale:
+        Each repeated lookup searches the DOM again for the same elements.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        $('.panel').addClass('open');
+        $('.panel').css('height', 'auto');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const $panel = $('.panel');
+        $panel.addClass('open');
+        $panel.css('height', 'auto');
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jquery, performance]
+    source: https://github.com/airbnb/javascript#jquery--cache

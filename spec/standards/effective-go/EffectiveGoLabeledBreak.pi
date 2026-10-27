@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoLabeledBreak:
+    standard: @{EffectiveGo}
+    ruleId: switch-labeled-break
+    title: Use a labelled break to leave a loop from a switch
+    statement:
+        Inside a switch, a plain break ends only the switch. To leave the
+        surrounding loop, put a label on the loop and break to that label.
+    rationale:
+        Without the label, break stops the switch and the loop keeps
+        running, which is a common mistake.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        for _, tok := range tokens {
+            switch tok.Kind {
+            case EOF:
+                break // only leaves the switch
+            case Word:
+                words++
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        Scan:
+            for _, tok := range tokens {
+                switch tok.Kind {
+                case EOF:
+                    break Scan
+                case Word:
+                    words++
+                }
+            }
+        \\\
+        ```
+    languages: [go]
+    tags: [control-flow, loops, switch]
+    source: https://go.dev/doc/effective_go#switch

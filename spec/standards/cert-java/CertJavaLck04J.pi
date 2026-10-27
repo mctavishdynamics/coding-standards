@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaLck04J:
+    standard: @{CertJava}
+    ruleId: LCK04-J
+    title: Do not synchronize on a collection view if the backing collection is accessible
+    statement:
+        When iterating over a view of a synchronized collection, such as a
+        map's keySet(), lock the backing collection rather than the view.
+    rationale:
+        Synchronized wrappers guard their operations with the backing
+        collection's lock. Locking the view gives a second, unrelated lock,
+        so other threads can modify the collection during the iteration.
+        CERT's risk assessment gives likelihood probable, detectable yes,
+        repairable no, priority P4 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        private final Map<String, Integer> scores =
+                Collections.synchronizedMap(new HashMap<>());
+
+        void print() {
+            Set<String> names = scores.keySet();
+            synchronized (names) {
+                for (String n : names) System.out.println(n);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private final Map<String, Integer> scores =
+                Collections.synchronizedMap(new HashMap<>());
+
+        void print() {
+            synchronized (scores) {
+                for (String n : scores.keySet()) System.out.println(n);
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, collections, locking]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/locking-lck/lck04-j/

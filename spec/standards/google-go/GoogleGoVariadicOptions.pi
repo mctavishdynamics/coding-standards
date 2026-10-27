@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoVariadicOptions:
+    standard: @{GoogleGo}
+    ruleId: best-practices/variadic-options
+    title: Use variadic options when most callers need none
+    statement:
+        Use functional variadic options when most callers set no options,
+        options are many or rarely used, take arguments or can fail. Options
+        should take a value rather than signal by presence, be applied in
+        order with the last winning, and usually use an unexported parameter
+        type.
+    rationale:
+        They cost nothing at simple call sites, but need substantial code,
+        so use them only when the benefits outweigh that.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func EnableFailFast() DialOption
+        func DisableFailFast() DialOption
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type DialOption func(*dialOptions)
+
+        func FailFast(enable bool) DialOption {
+            return func(o *dialOptions) { o.failFast = enable }
+        }
+
+        func Dial(addr string, opts ...DialOption) (*Conn, error)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, functions, api-design]
+    source: https://google.github.io/styleguide/go/best-practices#variadic-options

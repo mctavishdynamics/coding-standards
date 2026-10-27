@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp34C:
+    standard: @{CertC}
+    ruleId: EXP34-C
+    title: Do not dereference null pointers
+    statement:
+        Check any pointer that can be null, such as one returned by malloc,
+        a lookup function or an untrusted caller, before dereferencing it.
+    rationale:
+        Dereferencing a null pointer is undefined behavior. It usually
+        crashes the program, and in some environments it has been exploited
+        to run code. CERT rates likelihood likely, detectable no, repairable
+        yes, priority P18, level L1.
+    exceptions:
+        The expressions &*p and &p[i] do not dereference p, so they do not
+        break this rule even when p is null.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+        #include <string.h>
+
+        char *dup_name(const char *name) {
+            char *copy = malloc(strlen(name) + 1);
+            strcpy(copy, name);
+            return copy;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+        #include <string.h>
+
+        char *dup_name(const char *name) {
+            char *copy = malloc(strlen(name) + 1);
+            if (copy == NULL) {
+                return NULL;
+            }
+            strcpy(copy, name);
+            return copy;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [pointers, null-pointer, memory]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/expressions-exp/exp34-c

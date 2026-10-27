@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellVariableNames:
+    standard: @{GoogleShell}
+    ruleId: variable-names
+    title: Name variables like functions
+    statement:
+        Name variables in lower case with underscores between words. Name a
+        loop variable after the items being looped over.
+    rationale:
+        A consistent naming style and loop names that match their collection
+        make the code easier to follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        for x in "${HostNames[@]}"; do
+          ping -c 1 "${x}"
+        done
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        for host_name in "${host_names[@]}"; do
+          ping -c 1 "${host_name}"
+        done
+        \\\
+        ```
+    languages: [shell]
+    tags: [naming, variables]
+    source: https://google.github.io/styleguide/shellguide.html#variable-names

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptAnySpecific:
+    standard: @{GoogleTypeScript}
+    ruleId: any-specific
+    title: Replace any with a more specific type
+    statement:
+        Where any is tempting, describe the value with an interface, an
+        inline object type, a type alias, or a generic type parameter.
+    rationale:
+        A specific type keeps type checking and editor help working for that
+        value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function pickRandom(items: any[]): any {
+          return items[Math.floor(Math.random() * items.length)];
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function pickRandom<T>(items: T[]): T {
+          return items[Math.floor(Math.random() * items.length)];
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, any, generics]
+    source: https://google.github.io/styleguide/tsguide.html#any-specific

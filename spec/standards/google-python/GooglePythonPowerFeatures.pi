@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonPowerFeatures:
+    standard: @{GooglePython}
+    ruleId: 2.19
+    title: Avoid power features
+    statement:
+        Avoid features such as custom metaclasses, bytecode access, on-the-
+        fly compilation, dynamic inheritance, object reparenting, import
+        hacks, reflection and system-internal changes in your own code.
+    rationale:
+        Code built on unusual features is harder to read, understand and
+        debug than longer but straightforward code.
+    exceptions:
+        Standard library modules that use these features internally, such as
+        abc.ABCMeta, dataclasses and enum, are fine to use.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class AutoRegister(type):
+            registry = {}
+
+            def __new__(mcs, name, bases, namespace):
+                cls = super().__new__(mcs, name, bases, namespace)
+                mcs.registry[name] = cls
+                return cls
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        _REGISTRY = {}
+
+
+        def register(cls):
+            _REGISTRY[cls.__name__] = cls
+            return cls
+        \\\
+        ```
+    languages: [python]
+    tags: [simplicity, metaprogramming]
+    source: https://google.github.io/styleguide/pyguide.html#s2.19-power-features

@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptFallThroughCommented:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.8.3.1
+    title: Comment fall-through in switch statements
+    statement:
+        Every statement group in a switch either ends abruptly with break,
+        return or throw, or has a comment saying execution continues into
+        the next group. The last group does not need the comment.
+    rationale:
+        Unmarked fall-through looks like a forgotten break; a comment makes
+        the intent clear.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        switch (level) {
+          case 'warn':
+            notify();
+          case 'info':
+            log();
+            break;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        switch (level) {
+          case 'warn':
+            notify();
+            // fall through
+          case 'info':
+            log();
+            break;
+          default:
+            break;
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [control-flow, switch, comments]
+    source: https://google.github.io/styleguide/jsguide.html#5831-fall-through-commented

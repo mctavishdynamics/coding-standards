@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoNamingDoublesMultipleTypes:
+    standard: @{GoogleGo}
+    ruleId: best-practices/naming-doubles-multiple-types
+    title: Qualify double names when doubling several types
+    statement:
+        When the test package holds doubles for several types, include the
+        doubled type in each name, such as StubService and StubStoredValue,
+        or name them by both type and behaviour.
+    rationale:
+        With several types a bare Stub becomes ambiguous.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Stub struct{}      // for Service
+        type OtherStub struct{} // for StoredValue
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type StubService struct{}
+        type StubStoredValue struct{}
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, naming, testing, test-doubles]
+    source: https://google.github.io/styleguide/go/best-practices#naming-doubles-multiple-types

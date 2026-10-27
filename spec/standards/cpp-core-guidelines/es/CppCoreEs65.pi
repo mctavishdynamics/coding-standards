@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs65:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.65
+    title: Don't dereference an invalid pointer
+    statement:
+        Do not dereference a null pointer, a dangling pointer or a pointer
+        past the end of its object.
+    rationale:
+        Dereferencing an invalid pointer is undefined behavior and typically
+        causes crashes, wrong results or memory corruption.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int* find_slot();
+
+        void reserve() {
+            *find_slot() = 1;          // find_slot may return nullptr
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int* find_slot();
+
+        void reserve() {
+            if (int* slot = find_slot())
+                *slot = 1;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [pointers, undefined-behavior]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-deref

@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCFailure:
+    standard: @{RustApiGuidelines}
+    ruleId: C-FAILURE
+    title: Document errors, panics and safety requirements
+    statement:
+        Describe error conditions in an Errors section, panic conditions in
+        a Panics section and, for unsafe functions, every invariant the
+        caller must uphold in a Safety section. This applies to trait
+        methods too.
+    rationale:
+        Callers cannot handle failures or uphold invariants they do not know
+        about.
+    exceptions:
+        Panics that come from caller-supplied logic, such as a panicking
+        Display impl, need not be listed, though when in doubt document
+        more.
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        /// Returns the element at `index`.
+        pub fn at(&self, index: usize) -> &T {
+            &self.items[index]
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        /// Returns the element at `index`.
+        ///
+        /// # Panics
+        ///
+        /// Panics if `index` is out of bounds.
+        pub fn at(&self, index: usize) -> &T {
+            &self.items[index]
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [documentation, error-handling, safety]
+    source: https://rust-lang.github.io/api-guidelines/documentation.html#c-failure

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpGeneratorsVsContainers:
+    standard: @{GoogleCSharp}
+    ruleId: generators-vs-containers
+    title: Choose between generators and containers deliberately
+    statement:
+        Use judgement when choosing between a generator and a filled
+        container. Generators are often less readable, can be faster for
+        lazily used results, are slower when immediately converted with
+        ToList, and are much slower when iterated many times.
+    rationale:
+        The right choice depends on how the results are consumed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        IEnumerable<int> Evens(int limit) {
+          for (int i = 0; i < limit; i += 2) yield return i;
+        }
+        var evens = Evens(1000).ToList();
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        List<int> Evens(int limit) {
+          var result = new List<int>();
+          for (int i = 0; i < limit; i += 2) result.Add(i);
+          return result;
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [performance, collections]
+    source: https://google.github.io/styleguide/csharpguide.html#generators-vs-containers

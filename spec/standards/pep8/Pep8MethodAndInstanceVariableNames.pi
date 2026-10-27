@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8MethodAndInstanceVariableNames:
+    standard: @{Pep8}
+    ruleId: method-names-and-instance-variables
+    title: Name methods and instance variables like functions
+    statement:
+        Use lower case with underscores for method names and instance
+        variables. Use one leading underscore only for non-public methods
+        and instance variables.
+    rationale:
+        The shared style keeps classes consistent with functions, and the
+        underscore marks what is internal.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Session:
+            def StartTimer(self):
+                self.TimerStarted = True
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Session:
+            def start_timer(self):
+                self._timer_started = True
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, methods, classes]
+    source: https://peps.python.org/pep-0008/#method-names-and-instance-variables

@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTestFunctions:
+    standard: @{GoogleGo}
+    ruleId: best-practices/test-functions
+    title: Fail tests from the Test function
+    statement:
+        Keep validation and failure reporting inside the Test function.
+        Inline repeated checks, use a table-driven test, or have shared
+        validation return a value or error that the test reports, rather
+        than writing assertion helpers that take a testing.T.
+    rationale:
+        Failing in the Test function keeps failure messages and logic clear,
+        and value-returning validators are reusable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func checkValid(t *testing.T, p *Polygon) {
+            if len(p.Points) < 3 {
+                t.Fatalf("too few points")
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func validate(p *Polygon) error {
+            if len(p.Points) < 3 {
+                return fmt.Errorf("polygon has %d points, want at least 3", len(p.Points))
+            }
+            return nil
+        }
+
+        if err := validate(got); err != nil {
+            t.Errorf("Simplify(%v) returned invalid polygon: %v", in, err)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, testing, test-helpers]
+    source: https://google.github.io/styleguide/go/best-practices#test-functions

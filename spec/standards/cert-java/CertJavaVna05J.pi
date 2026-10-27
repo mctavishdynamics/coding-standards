@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaVna05J:
+    standard: @{CertJava}
+    ruleId: VNA05-J
+    title: Ensure atomicity when reading and writing 64-bit values
+    statement:
+        Declare shared long and double variables volatile, or access them
+        only under synchronization, so that reads and writes are atomic.
+    rationale:
+        The JVM may split a non-volatile 64-bit write into two 32-bit
+        writes, so another thread can see half of one value and half of
+        another. CERT rates likelihood unlikely, detectable yes, repairable
+        no, priority P2, level L3.
+    exceptions:
+        Variables read and written only inside synchronized code are already
+        safe, and platforms that guarantee atomic 64-bit access are exempt,
+        though that is not portable.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        private long lastSeen;
+        public void touch() { lastSeen = System.nanoTime(); }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private volatile long lastSeen;
+        public void touch() { lastSeen = System.nanoTime(); }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, atomicity]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/visibility-and-atomicity-vna/vna05-j/

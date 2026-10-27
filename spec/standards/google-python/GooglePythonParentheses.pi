@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonParentheses:
+    standard: @{GooglePython}
+    ruleId: 3.3
+    title: Use parentheses sparingly
+    statement:
+        Do not put parentheses around the condition of an if or while, or
+        around the value of a return, unless they are needed for line
+        continuation or to mark a tuple. Parentheses around tuples are fine
+        but optional.
+    rationale:
+        Unneeded parentheses add noise and suggest a grouping that is not
+        there.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if (ready):
+            start()
+        if not(done):
+            wait()
+        return (result)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        if ready:
+            start()
+        if not done:
+            wait()
+        return result
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, parentheses]
+    source: https://google.github.io/styleguide/pyguide.html#s3.3-parentheses

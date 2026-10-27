@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoStringConcatFmt:
+    standard: @{GoogleGo}
+    ruleId: best-practices/string-concat-fmt
+    title: Use fmt.Sprintf for formatted strings
+    statement:
+        Prefer fmt.Sprintf when building a string that needs formatting, and
+        fmt.Fprintf when the destination is an io.Writer. Use text/template
+        or safehtml/template for still more complex output.
+    rationale:
+        Many plus operators obscure the result, and a temporary string for a
+        writer is wasted work.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        msg := "user " + name + " has " + strconv.Itoa(n) + " items"
+        w.Write([]byte(fmt.Sprintf("total: %d\n", n)))
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        msg := fmt.Sprintf("user %s has %d items", name, n)
+        fmt.Fprintf(w, "total: %d\n", n)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, strings, formatting]
+    source: https://google.github.io/styleguide/go/best-practices#string-concat-fmt

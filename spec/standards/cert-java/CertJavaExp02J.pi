@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaExp02J:
+    standard: @{CertJava}
+    ruleId: EXP02-J
+    title: Do not use the Object.equals() method to compare two arrays
+    statement:
+        Compare array contents with Arrays.equals, or Arrays.deepEquals for
+        nested arrays. Use == only when you mean reference identity.
+    rationale:
+        Arrays inherit equals from Object, so it compares references only
+        and is easily misread as a content comparison. CERT rates likelihood
+        likely, detectable yes, repairable yes, priority P9, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        if (expected.equals(actual)) {
+            accept();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (Arrays.equals(expected, actual)) {
+            accept();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [arrays, equality]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/expressions-exp/exp02-j/

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoGettersAndSetters:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.4.7
+    title: Do not use getter and setter properties
+    statement:
+        Do not define JavaScript getter and setter properties; provide
+        ordinary methods instead.
+    rationale:
+        Accessors are surprising, hard to reason about and poorly supported
+        by the compiler.
+    exceptions:
+        When a framework or external API requires them, use the get and set
+        shorthand or Object.defineProperties, never Object.defineProperty,
+        and never change observable state in a getter.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Ticket {
+          get number() {
+            return this.counter++;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Ticket {
+          nextNumber() {
+            return this.counter++;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, properties]
+    source: https://google.github.io/styleguide/jsguide.html#547-getters-and-setters

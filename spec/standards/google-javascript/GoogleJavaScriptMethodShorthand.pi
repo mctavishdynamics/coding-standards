@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptMethodShorthand:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.3.5
+    title: Define object literal methods with method shorthand
+    statement:
+        Methods on object literals may use method shorthand instead of a
+        colon followed by a function or arrow function. Remember that this
+        inside a shorthand method is the object, while inside an arrow
+        function it is the outer scope.
+    rationale:
+        Shorthand is concise and gives the method the expected this binding.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const counter = {
+          count: 0,
+          increment: function() {
+            this.count++;
+          },
+        };
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const counter = {
+          count: 0,
+          increment() {
+            this.count++;
+          },
+        };
+        \\\
+        ```
+    languages: [javascript]
+    tags: [objects, functions]
+    source: https://google.github.io/styleguide/jsguide.html#535-method-shorthand

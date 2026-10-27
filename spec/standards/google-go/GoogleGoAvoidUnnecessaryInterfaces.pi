@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoAvoidUnnecessaryInterfaces:
+    standard: @{GoogleGo}
+    ruleId: best-practices/avoid-unnecessary-interfaces
+    title: Create interfaces only for a real need
+    statement:
+        Do not add an interface just because a design is called a service or
+        repository, do not wrap generated RPC clients, and do not export
+        test doubles as back doors. Create one for multiple implementations,
+        to decouple packages, or to narrow a large concrete API to the
+        methods a function needs.
+    rationale:
+        Each extra exported type adds cognitive load, and interfaces made
+        too early hide the concrete behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type UserRepository interface {
+            Find(id string) (*User, error)
+        }
+
+        type userRepository struct{ db *sql.DB }
+
+        func NewUserRepository(db *sql.DB) UserRepository { return &userRepository{db} }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type UserStore struct{ db *sql.DB }
+
+        func NewUserStore(db *sql.DB) *UserStore { return &UserStore{db: db} }
+
+        func (s *UserStore) Find(id string) (*User, error) { /* ... */ }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, interfaces, simplicity]
+    source: https://google.github.io/styleguide/go/best-practices#avoid-unnecessary-interfaces

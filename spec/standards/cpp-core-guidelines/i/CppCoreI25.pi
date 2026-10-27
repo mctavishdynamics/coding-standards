@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI25:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.25
+    title: Prefer empty abstract classes as interfaces to class hierarchies
+    statement:
+        Use abstract classes with no data members as interfaces, rather than
+        base classes that carry state.
+    rationale:
+        Abstract classes without data are more stable than stateful base
+        classes, so changing an implementation does not force changes on
+        users.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Shape {
+        public:
+            virtual double area() const = 0;
+        protected:
+            Point center_;       // state every user now depends on
+            Color color_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Shape {
+        public:
+            virtual ~Shape() = default;
+            virtual double area() const = 0;
+            virtual Point center() const = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, abstract-classes, inheritance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-abstract

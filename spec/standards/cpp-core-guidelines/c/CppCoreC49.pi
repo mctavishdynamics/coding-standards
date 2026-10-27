@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC49:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.49
+    title: Prefer initialization to assignment in constructors
+    statement:
+        Set members in the member initializer list rather than assigning
+        them in the constructor body.
+    rationale:
+        Initialization says what is meant, can be more efficient, and avoids
+        using a member before it has a value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class User {
+        public:
+            User(const std::string& name) { name_ = name; }  // default-construct, then assign
+        private:
+            std::string name_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class User {
+        public:
+            explicit User(const std::string& name) : name_(name) {}
+        private:
+            std::string name_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, initialization, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-initialize

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpNamedConstantsForSharedLiterals:
+    standard: @{GoogleCSharp}
+    ruleId: named-constants-for-shared-literals
+    title: Name a literal shared by several calls
+    statement:
+        When the same literal argument is passed to several calls that
+        implicitly assume it is the same value, replace it with a named
+        constant.
+    rationale:
+        The constant makes the constraint explicit and guarantees it holds.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        var header = Truncate(title, 40);
+        var footer = Truncate(summary, 40);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        private const int _maxLabelLength = 40;
+
+        var header = Truncate(title, _maxLabelLength);
+        var footer = Truncate(summary, _maxLabelLength);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [readability, constants, parameters]
+    source: https://google.github.io/styleguide/csharpguide.html#argument-naming

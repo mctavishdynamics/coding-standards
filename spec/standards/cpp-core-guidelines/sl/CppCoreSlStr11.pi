@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlStr11:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.str.11
+    title: Use gsl::span<char> rather than std::string_view when you need to mutate a string
+    statement:
+        To give a function writable access to characters it does not own,
+        pass a span of char, not a string_view.
+    rationale:
+        A std::string_view is read-only, and the compiler rejects writes
+        through it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void to_upper(std::string_view s)
+        {
+            for (char& c : s) c = std::toupper(c);   // error: read-only
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void to_upper(gsl::span<char> s)
+        {
+            for (char& c : s) c = static_cast<char>(std::toupper(c));
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [strings, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rstr-span

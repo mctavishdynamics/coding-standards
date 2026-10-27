@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptJsdocClassComments:
+    standard: @{GoogleTypeScript}
+    ruleId: jsdoc-class-comments
+    title: Explain how and when to use a class in its JSDoc
+    statement:
+        A class JSDoc gives readers enough to know how and when to use the
+        class and any considerations for using it correctly. The constructor
+        may omit a text description.
+    rationale:
+        Class-level documentation is where readers look first to decide
+        whether and how to use a type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        /** The rate limiter class. */
+        export class RateLimiter {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /**
+         * Limits calls to a fixed number per time window. Create one instance per
+         * remote service and share it; instances are not thread-safe across workers.
+         */
+        export class RateLimiter {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc, classes]
+    source: https://google.github.io/styleguide/tsguide.html#jsdoc-class-comments

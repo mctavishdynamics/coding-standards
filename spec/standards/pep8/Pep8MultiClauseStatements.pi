@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8MultiClauseStatements:
+    standard: @{Pep8}
+    ruleId: other-recommendations-multi-clause
+    title: Never put multi-clause statements on one line
+    statement:
+        A short if, for or while body may occasionally share its line, but
+        never do that for statements with several clauses such as if and
+        else or try and finally, and never fold long lines this way.
+    rationale:
+        Squeezed clauses hide control flow and become unreadable as they
+        grow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try: conn = open_connection()
+        finally: release_lock()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        try:
+            conn = open_connection()
+        finally:
+            release_lock()
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, statements]
+    source: https://peps.python.org/pep-0008/#other-recommendations

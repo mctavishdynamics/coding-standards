@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf6:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.6
+    title: Use using namespace directives for transition, for foundation libraries (such as std), or within a local scope (only)
+    statement:
+        Limit using namespace directives to transition work, to pervasive
+        foundation libraries such as std, or to a local scope. A source file
+        counts as a local scope.
+    rationale:
+        Using directives can cause name clashes, so they should be rare, but
+        qualifying every name from a pervasive namespace is verbose and
+        distracting.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        using namespace network;
+        using namespace storage;     // both declare Connection
+
+        Connection c;                // ambiguous
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void transfer()
+        {
+            using namespace storage;     // limited to this function
+            Connection c = open_default();
+            network::Connection n = network::dial();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces, naming]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-using

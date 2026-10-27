@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR6:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.6
+    title: Avoid non-const global variables
+    statement:
+        Do not use mutable global variables. This rule defers to I.2, which
+        gives the full reasoning.
+    rationale:
+        Mutable globals create hidden dependencies between functions, make
+        code hard to reason about and cause data races between threads.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int g_retry_count = 3;
+
+        void connect() {
+            for (int i = 0; i < g_retry_count; ++i) try_connect();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void connect(int retry_count) {
+            for (int i = 0; i < retry_count; ++i) try_connect();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [globals, state]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-global

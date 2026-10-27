@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSer10J:
+    standard: @{CertJava}
+    ruleId: SER10-J
+    title: Avoid memory and resource leaks during serialization
+    statement:
+        When writing many objects to a long-lived ObjectOutputStream, call
+        reset() periodically so the stream drops its references to objects
+        already written.
+    rationale:
+        The stream keeps every written object reachable for back references,
+        so a long stream of objects keeps growing until memory runs out.
+        CERT's risk assessment gives likelihood unlikely, detectable no,
+        repairable no, priority P1 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        while (sensor.hasNext()) {
+            out.writeObject(sensor.next());
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        while (sensor.hasNext()) {
+            out.writeObject(sensor.next());
+            out.reset();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, memory]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/serialization-ser/ser10-j/

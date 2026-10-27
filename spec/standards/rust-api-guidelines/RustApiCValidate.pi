@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCValidate:
+    standard: @{RustApiGuidelines}
+    ruleId: C-VALIDATE
+    title: Validate function arguments
+    statement:
+        Enforce the validity of inputs instead of accepting anything. Prefer
+        argument types that rule out bad values, then runtime checks, then
+        debug_assert for expensive checks, and offer _unchecked variants
+        only where performance demands it.
+    rationale:
+        Rust APIs reject the robustness principle of being liberal in what
+        they accept, because early, explicit failures catch bugs before they
+        spread.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl Mixer {
+            pub fn set_volume(&mut self, level: u8) {
+                // Silently accepts values above 100.
+                self.level = level;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub struct Volume(u8);
+
+        impl Volume {
+            pub fn new(level: u8) -> Option<Volume> {
+                (level <= 100).then_some(Volume(level))
+            }
+        }
+
+        impl Mixer {
+            pub fn set_volume(&mut self, level: Volume) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [input-validation, type-safety]
+    source: https://rust-lang.github.io/api-guidelines/dependability.html#c-validate

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptDoNotDefinePropertiesOnArrays:
+    standard: @{GoogleTypeScript}
+    ruleId: do-not-define-properties-on-arrays
+    title: Do not define non-numeric properties on arrays
+    statement:
+        Do not add or use properties other than numeric indices and length
+        on an array. Use a Map or an object for named data.
+    rationale:
+        Extra properties on arrays are surprising, are ignored by most array
+        operations and are lost when the array is copied.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const scores = [90, 75, 82];
+        scores.owner = 'team-a';
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const result = {
+          owner: 'team-a',
+          scores: [90, 75, 82],
+        };
+        \\\
+        ```
+    languages: [typescript]
+    tags: [arrays, data-structures]
+    source: https://google.github.io/styleguide/tsguide.html#do-not-define-properties-on-arrays

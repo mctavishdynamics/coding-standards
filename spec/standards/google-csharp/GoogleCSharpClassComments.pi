@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpClassComments:
+    standard: @{GoogleCSharp}
+    ruleId: class-comments
+    title: Comment every non-obvious class
+    statement:
+        Give every non-obvious class a comment that explains what it is for,
+        how and when to use it, and anything needed to use it correctly.
+    rationale:
+        Readers should be able to use a class without studying its
+        implementation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class RateLimiter {
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        // Limits how often a caller may perform an action. Each key gets a token
+        // bucket refilled once per second. Not thread-safe; use one per thread.
+        public class RateLimiter {
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [comments, documentation]
+    source: https://google.github.io/styleguide/csharpguide.html#class-comments

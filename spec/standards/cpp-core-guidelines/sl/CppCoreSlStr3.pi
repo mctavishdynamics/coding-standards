@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlStr3:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.str.3
+    title: Use zstring or czstring to refer to a C-style, zero-terminated, sequence of characters
+    statement:
+        Mark parameters that point to zero-terminated strings with the GSL
+        zstring or czstring aliases instead of plain char pointers. Like
+        other plain pointers, they do not own.
+    rationale:
+        A plain char pointer may mean a single character, an array, a C
+        string or even a small integer. Naming the intent prevents
+        misunderstandings and a major class of bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void set_title(const char* t);   // a string? one character? nullable?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void set_title(gsl::czstring t); // zero-terminated string or nullptr
+        \\\
+        ```
+    languages: [cpp]
+    tags: [strings, pointers, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rstr-zstring

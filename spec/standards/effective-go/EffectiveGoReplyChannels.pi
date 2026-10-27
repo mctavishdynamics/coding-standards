@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoReplyChannels:
+    standard: @{EffectiveGo}
+    ruleId: chan-of-chan
+    title: Carry a reply channel inside the request
+    statement:
+        When clients send requests to a server goroutine, include a channel
+        in each request on which the server sends the answer.
+    rationale:
+        Each client gets its own reply path, giving safe parallel
+        demultiplexing without a mutex.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```go
+        \\\
+        type Request struct {
+            args  []int
+            reply chan int
+        }
+
+        func server(reqs <-chan *Request) {
+            for req := range reqs {
+                req.reply <- sum(req.args)
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, channels]
+    source: https://go.dev/doc/effective_go#chan_of_chan

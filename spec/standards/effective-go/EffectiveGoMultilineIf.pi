@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoMultilineIf:
+    standard: @{EffectiveGo}
+    ruleId: if
+    title: Write simple if statements on multiple lines
+    statement:
+        Put the body of an if on its own lines rather than squeezing it onto
+        one, especially when the body is a control statement such as return
+        or break. Use the optional initialization statement to set up a
+        variable local to the if.
+    rationale:
+        Go requires braces anyway, and a multi-line body makes control flow
+        stand out.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        err := cache.Put(key, val)
+        if err != nil { return err }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if err := cache.Put(key, val); err != nil {
+            return err
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [control-flow, formatting]
+    source: https://go.dev/doc/effective_go#if

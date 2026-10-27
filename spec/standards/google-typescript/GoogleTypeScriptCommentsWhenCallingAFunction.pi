@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptCommentsWhenCallingAFunction:
+    standard: @{GoogleTypeScript}
+    ruleId: comments-when-calling-a-function
+    title: Label unclear arguments with parameter-name comments
+    statement:
+        When a call's meaning is unclear from the method name and value, add
+        a comment with the parameter name and an equals sign before the
+        value. First consider refactoring to an options object that can be
+        destructured.
+    rationale:
+        Bare literals such as true or null tell the reader nothing at the
+        call site.
+    exceptions:
+        Files that already use the older style, with the comment after the
+        value and no equals sign, may keep it for consistency.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        exportReport(report, true, false);
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        exportReport(report, /* includeDrafts= */ true, /* compress= */ false);
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, readability, functions]
+    source: https://google.github.io/styleguide/tsguide.html#comments-when-calling-a-function

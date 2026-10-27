@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoMethodsOnAnyType:
+    standard: @{EffectiveGo}
+    ruleId: interface-methods
+    title: Satisfy interfaces with methods on any suitable type
+    statement:
+        A type of almost any kind can have methods and so satisfy an
+        interface. Use a function type or a basic type with methods, as
+        http.HandlerFunc does, instead of wrapping it in a struct for no
+        reason.
+    rationale:
+        Interfaces are just sets of methods, so the simplest type that
+        carries the needed state is usually the clearest.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type pingHandler struct{}
+
+        func (pingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+            io.WriteString(w, "pong")
+        }
+
+        http.Handle("/ping", pingHandler{})
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func ping(w http.ResponseWriter, r *http.Request) {
+            io.WriteString(w, "pong")
+        }
+
+        http.Handle("/ping", http.HandlerFunc(ping))
+        \\\
+        ```
+    languages: [go]
+    tags: [interfaces, methods, types]
+    source: https://go.dev/doc/effective_go#interface_methods

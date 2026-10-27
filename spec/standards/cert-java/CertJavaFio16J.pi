@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio16J:
+    standard: @{CertJava}
+    ruleId: FIO16-J
+    title: Canonicalize path names before validating them
+    statement:
+        Resolve a path to its canonical form, with links, dot and dot-dot
+        segments resolved, before checking that it lies where it is allowed
+        to.
+    rationale:
+        A path such as one containing ../ or a symbolic link can pass a
+        check on its text while naming a file outside the permitted
+        directory. CERT's risk assessment gives likelihood unlikely,
+        detectable no, repairable no, priority P2 and level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        File f = new File(baseDir, userName);
+        if (!f.getPath().startsWith(baseDir)) {
+            throw new SecurityException();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        File f = new File(baseDir, userName).getCanonicalFile();
+        if (!f.getPath().startsWith(new File(baseDir).getCanonicalPath() + File.separator)) {
+            throw new SecurityException();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [file-io, input-validation, path-traversal]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio16-j/

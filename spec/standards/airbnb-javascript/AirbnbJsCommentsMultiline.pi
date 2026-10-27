@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsCommentsMultiline:
+    standard: @{AirbnbJavaScript}
+    ruleId: 18.1
+    title: Use block comments for multiline comments
+    statement:
+        Write comments that span several lines as /** ... */ block comments.
+    rationale:
+        A single block comment holds the description and its annotations
+        together, rather than a stack of separate line comments.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        // Formats a price for display.
+        // Takes the amount in cents.
+        function formatPrice(cents) {
+          return (cents / 100).toFixed(2);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * Formats a price for display.
+         * Takes the amount in cents.
+         */
+        function formatPrice(cents) {
+          return (cents / 100).toFixed(2);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [comments, documentation]
+    source: https://github.com/airbnb/javascript#comments--multiline

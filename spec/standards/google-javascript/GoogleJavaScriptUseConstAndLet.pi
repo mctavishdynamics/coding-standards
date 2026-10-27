@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptUseConstAndLet:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.1.1
+    title: Declare local variables with const or let, never var
+    statement:
+        Declare every local variable with const, or with let when it must be
+        reassigned. Do not use var.
+    rationale:
+        const and let are block scoped and make reassignment explicit,
+        avoiding the hoisting surprises of var.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        var retries = 3;
+        var name = user.name;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        let retries = 3;
+        const name = user.name;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [variables, declarations]
+    source: https://google.github.io/styleguide/jsguide.html#511-use-const-and-let

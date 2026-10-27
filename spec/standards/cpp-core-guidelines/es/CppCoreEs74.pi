@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs74:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.74
+    title:
+        Prefer to declare a loop variable in the initializer part of a for
+        statement
+    statement:
+        Declare the loop variable in the for initializer rather than before
+        the loop. This rule defers to ES.6.
+    rationale:
+        It limits the variable to the loop and prevents it being reused for
+        other purposes afterwards.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int i;
+        for (i = 0; i < n; ++i)
+            process(i);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (int i = 0; i < n; ++i)
+            process(i);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [loops, scope]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-for-init

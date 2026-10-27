@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptExports:
+    standard: @{GoogleTypeScript}
+    ruleId: exports
+    title: Use named exports, never default exports
+    statement:
+        Export everything by name. Do not use default exports, and use file
+        scope rather than a wrapper class to group related exports.
+    rationale:
+        A default export has no canonical name, so importers can call it
+        anything and a wrong import still compiles. Named exports give
+        uniform imports and an error when a name does not exist.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        export default class PriceFormatter {
+          format(cents: number): string {
+            return (cents / 100).toFixed(2);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        export class PriceFormatter {
+          format(cents: number): string {
+            return (cents / 100).toFixed(2);
+          }
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [exports, modules]
+    source: https://google.github.io/styleguide/tsguide.html#exports

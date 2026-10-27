@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR31:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.31
+    title: Make non-std smart pointers follow the basic pattern from std
+    statement:
+        If you use custom or third-party smart pointers, give them the same
+        shape as the standard ones, so a copyable smart pointer behaves like
+        shared_ptr and a non-copyable one like unique_ptr.
+    rationale:
+        The smart pointer parameter rules and the tools that check them then
+        work on all the smart pointers in a codebase. Any type that
+        overloads unary * and -> is treated as a smart pointer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // copyable, but copies do not share a count: copies double-delete
+        template<class T> class Handle {
+            T* p;
+        public:
+            T* operator->() const { return p; }
+            ~Handle() { delete p; }
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<class T> class Handle {      // unique-ownership, like unique_ptr
+            T* p;
+        public:
+            Handle(const Handle&) = delete;
+            Handle(Handle&& other) noexcept : p(std::exchange(other.p, nullptr)) {}
+            T* operator->() const { return p; }
+            ~Handle() { delete p; }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-smart

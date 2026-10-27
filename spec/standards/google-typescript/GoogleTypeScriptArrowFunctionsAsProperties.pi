@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptArrowFunctionsAsProperties:
+    standard: @{GoogleTypeScript}
+    ruleId: arrow-functions-as-properties
+    title: Avoid class properties initialised to arrow functions
+    statement:
+        Classes usually should not have properties set to arrow functions.
+        Call instance methods through an arrow function at the call site
+        instead of passing method references around.
+    rationale:
+        Bound arrow properties hide that this is already bound, so call
+        sites look broken and need non-local knowledge to verify.
+    exceptions:
+        Arrow function properties can be clearer in some cases, such as
+        binding functions in a template or event handlers that must be
+        uninstalled; use judgement.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Poller {
+          start() {
+            setInterval(this.tick, 1000);
+          }
+          private tick = () => {
+            this.count++;
+          };
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Poller {
+          start() {
+            setInterval(() => {
+              this.tick();
+            }, 1000);
+          }
+          private tick() {
+            this.count++;
+          }
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, arrow-functions, this]
+    source: https://google.github.io/styleguide/tsguide.html#arrow-functions-as-properties

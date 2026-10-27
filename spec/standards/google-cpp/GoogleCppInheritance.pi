@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppInheritance:
+    standard: @{GoogleCpp}
+    ruleId: Inheritance
+    title: Prefer composition and make inheritance public
+    statement:
+        Prefer composition, and limit inheritance to the is-a case. All
+        inheritance should be public; use a member instead of private
+        inheritance. Mark every override with exactly one of override or
+        final and not virtual. Avoid multiple implementation inheritance.
+    rationale:
+        Implementation spread between base and subclass is harder to follow,
+        and multiple inheritance adds cost and diamond ambiguities. The
+        override specifier documents intent and makes the compiler catch
+        functions that override nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Logger : private FileWriter {
+         public:
+          virtual void Flush();  // Is this an override? Reader must check bases.
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Logger : public Sink {
+         public:
+          void Flush() override;
+
+         private:
+          FileWriter writer_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, inheritance]
+    source: https://google.github.io/styleguide/cppguide.html#Inheritance

@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR30:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.30
+    title: Take smart pointers as parameters only to express lifetime semantics
+    statement:
+        Accept a smart pointer parameter only when the function takes part
+        in the object's lifetime, by keeping, sharing or reseating it.
+        Otherwise take a raw pointer or a reference. This rule defers to
+        F.7.
+    rationale:
+        A function that only uses the object should not force callers to
+        hold it in a particular smart pointer type, and passing a smart
+        pointer by value has a cost.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void print(std::shared_ptr<Report> report) {
+            std::cout << report->title();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void print(const Report& report) {
+            std::cout << report.title();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-smartptrparam

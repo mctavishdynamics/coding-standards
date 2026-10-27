@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlStr5:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.str.5
+    title: Use std::byte to refer to byte values that do not necessarily represent characters
+    statement:
+        Use std::byte, available since C++17, for raw memory and byte values
+        that are not text.
+    rationale:
+        Using char pointers for things that are not characters causes
+        confusion and disables valuable optimizations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void checksum(const char* data, std::size_t n);   // binary buffer, not text
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::uint32_t checksum(std::span<const std::byte> data);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [strings, memory, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rstr-byte

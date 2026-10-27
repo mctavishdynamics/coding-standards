@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpOptionsObjectForManySettings:
+    standard: @{GoogleCSharp}
+    ruleId: options-object-for-many-settings
+    title: Pass an options object for many configuration settings
+    statement:
+        For methods with several configuration options, define one class or
+        struct that holds the options and pass an instance of it.
+    rationale:
+        Options are named at the call site, the argument count drops, and
+        adding an option does not change existing callers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        var csv = Export(rows, ';', true, false, 2, null);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        var options = new ExportOptions {
+          Delimiter = ';',
+          IncludeHeader = true,
+          DecimalPlaces = 2,
+        };
+        var csv = Export(rows, options);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [api-design, parameters]
+    source: https://google.github.io/styleguide/csharpguide.html#argument-naming

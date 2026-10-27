@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptJsdocUsage:
+    standard: @{GoogleJavaScript}
+    ruleId: 7
+    title: Use JSDoc on all classes, fields and methods
+    statement:
+        Document every class, field and method with JSDoc.
+    rationale:
+        JSDoc both documents the code and gives the compiler the type
+        information it checks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Queue {
+          push(item) {}
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** A first-in, first-out list of jobs. */
+        class Queue {
+          /** @param {!Job} item */
+          push(item) {}
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, documentation]
+    source: https://google.github.io/styleguide/jsguide.html#7-jsdoc

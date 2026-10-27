@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT81:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.81
+    title: Do not mix hierarchies and arrays
+    statement:
+        Do not pass an array of derived objects where a pointer to the base
+        class is expected. Use a typed container instead.
+    rationale:
+        An array of derived objects decays to a base pointer, and indexing
+        or assigning through it breaks type safety and can step into the
+        middle of objects.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void reset_all(Shape* shapes, int n)
+        {
+            for (int i = 0; i != n; ++i) shapes[i].reset();
+        }
+
+        Circle circles[8];
+        reset_all(circles, 8);    // wrong stride when sizeof(Circle) != sizeof(Shape)
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void reset_all(std::span<Circle> circles)
+        {
+            for (auto& c : circles) c.reset();
+        }
+
+        std::vector<Circle> circles(8);
+        reset_all(circles);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, arrays, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-array

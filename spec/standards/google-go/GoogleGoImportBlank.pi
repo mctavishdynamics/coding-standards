@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoImportBlank:
+    standard: @{GoogleGo}
+    ruleId: decisions/import-blank
+    title: Use blank imports only in main packages and tests
+    statement:
+        Import a package only for its side effects with import underscore in
+        a main package or in a test that needs it, not in a library. A
+        library that indirectly needs such an import should document it.
+    rationale:
+        Keeping side-effect imports in main controls dependencies and lets
+        tests choose a different import without conflict.
+    exceptions:
+        A blank import may bypass the nogo disallowed-import check, and a
+        file that uses the go:embed directive may blank-import embed.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Package thumbnail, a library.
+        package thumbnail
+
+        import _ "image/png"
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Command thumbnailer.
+        package main
+
+        import _ "image/png"
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, imports, dependencies]
+    source: https://google.github.io/styleguide/go/decisions#import-blank

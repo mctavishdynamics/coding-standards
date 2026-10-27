@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoMustFunctions:
+    standard: @{GoogleGo}
+    ruleId: decisions/must-functions
+    title: Reserve Must functions for startup and test setup
+    statement:
+        Name helpers that stop the program on failure MustXYZ, and call them
+        only at program start, such as for package-level variables, or in
+        test helpers that call t.Fatal and are marked with t.Helper. Do not
+        use them where ordinary error handling is possible, such as on user
+        input.
+    rationale:
+        Must helpers are convenient in value contexts, but stopping on bad
+        runtime input turns a recoverable error into a crash.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func handle(w http.ResponseWriter, r *http.Request) {
+            re := regexp.MustCompile(r.FormValue("pattern"))
+            // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var datePattern = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`)
+
+        func handle(w http.ResponseWriter, r *http.Request) {
+            re, err := regexp.Compile(r.FormValue("pattern"))
+            if err != nil {
+                http.Error(w, "bad pattern", http.StatusBadRequest)
+                return
+            }
+            // ...
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, errors, naming]
+    source: https://google.github.io/styleguide/go/decisions#must-functions

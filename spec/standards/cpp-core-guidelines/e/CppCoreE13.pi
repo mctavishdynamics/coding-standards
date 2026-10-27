@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE13:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.13
+    title: Never throw while being the direct owner of an object
+    statement:
+        Do not throw, or call code that can throw, while a raw pointer is
+        the only owner of a resource. Hold it in a resource handle or local
+        object first.
+    rationale:
+        Throwing past a raw owning pointer skips the delete, so the object
+        leaks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void process(int id)
+        {
+            Session* s = new Session(id);
+            if (!s->authorized()) throw AccessDenied{id};   // leaks s
+            s->run();
+            delete s;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void process(int id)
+        {
+            auto s = std::make_unique<Session>(id);
+            if (!s->authorized()) throw AccessDenied{id};
+            s->run();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, exceptions, resources]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-never-throw

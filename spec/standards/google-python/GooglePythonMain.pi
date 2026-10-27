@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonMain:
+    standard: @{GooglePython}
+    ruleId: 3.17
+    title: Put executable code in a main function
+    statement:
+        In a file meant to be run, put the main logic in a main function and
+        call it only under an if __name__ == '__main__' check, using app.run
+        when using absl. Do not do work at the top level that should not
+        happen on import.
+    rationale:
+        Modules must be importable by pydoc and unit tests without running
+        the program.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import sys
+
+        records = load(sys.argv[1])
+        print(summarize(records))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import sys
+
+
+        def main():
+            records = load(sys.argv[1])
+            print(summarize(records))
+
+
+        if __name__ == '__main__':
+            main()
+        \\\
+        ```
+    languages: [python]
+    tags: [structure, executables]
+    source: https://google.github.io/styleguide/pyguide.html#s3.17-main

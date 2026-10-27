@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCorePer11:
+    standard: @{CppCoreGuidelines}
+    ruleId: Per.11
+    title: Move computation from run time to compile time
+    statement:
+        When a value can be computed from constants, compute it at compile
+        time with constexpr functions and variables, or select types at
+        compile time. Do not try to push every computation to compile time.
+    rationale:
+        Compile-time computation removes run-time cost and dynamic
+        initialization, rules out data races on the result because it is a
+        constant, and turns some run-time errors into compile errors.
+    exceptions:
+        Very heavy compile-time computation can blow up build times,
+        complicate debugging and occasionally even slow the program, so keep
+        it proportionate.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int cube(int n) { return n * n * n; }
+        static int table_size = cube(16);   // computed during dynamic initialization
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr int cube(int n) { return n * n * n; }
+        constexpr int table_size = cube(16);   // computed by the compiler
+        \\\
+        ```
+    languages: [cpp]
+    tags: [performance, constexpr, compile-time]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rper-comp

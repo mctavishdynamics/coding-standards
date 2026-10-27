@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpGroupInterfaceImplementations:
+    standard: @{GoogleCSharp}
+    ruleId: group-interface-implementations
+    title: Group interface implementations together
+    statement:
+        Where possible, keep the members that implement one interface next
+        to each other.
+    rationale:
+        Readers can see an interface's whole implementation in one place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class Logger : IDisposable, IFlushable {
+          public void Flush() { }
+          public void Write(string line) { }
+          public void Dispose() { }
+          public void FlushAsync() { }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class Logger : IDisposable, IFlushable {
+          public void Write(string line) { }
+
+          public void Flush() { }
+          public void FlushAsync() { }
+
+          public void Dispose() { }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [organization, interfaces]
+    source: https://google.github.io/styleguide/csharpguide.html#organization

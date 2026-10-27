@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC109:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.109
+    title: Provide * and -> for resource handles with pointer semantics
+    statement:
+        If a resource handle behaves like a pointer, give it operator* and
+        operator->.
+    rationale:
+        That is what users expect from anything pointer-like.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<class T>
+        class Ref {
+        public:
+            T& get() const { return *p_; }
+        private:
+            T* p_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<class T>
+        class Ref {
+        public:
+            T& operator*() const { return *p_; }
+            T* operator->() const { return p_; }
+        private:
+            T* p_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [resource-management, operators, pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rcon-ptr

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppPreprocessorDirectives:
+    standard: @{GoogleCpp}
+    ruleId: Preprocessor_Directives
+    title: Start preprocessor directives at the beginning of the line
+    statement:
+        Always put the hash mark of a preprocessor directive at the start of
+        the line, even inside indented code.
+    rationale:
+        Directives stand out from ordinary code when they are not indented
+        with it.
+    exceptions:
+        Nested directives may put spaces after the hash mark.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (lopsided_score) {
+          #if DISASTER_PENDING
+          DropEverything();
+          #endif
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+          if (lopsided_score) {
+        #if DISASTER_PENDING
+            DropEverything();
+        # if NOTIFY
+            NotifyClient();
+        # endif
+        #endif
+          }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, preprocessor]
+    source: https://google.github.io/styleguide/cppguide.html#Preprocessor_Directives

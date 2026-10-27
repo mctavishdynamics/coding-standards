@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptCamelCaseDefined:
+    standard: @{GoogleJavaScript}
+    ruleId: 6.3
+    title: Convert phrases to camel case with the deterministic scheme
+    statement:
+        To form a camel case name, convert the phrase to plain ASCII, drop
+        apostrophes, split it into words, lowercase everything including
+        acronyms, then capitalize the first letter of each word, or of each
+        word but the first for lowerCamelCase, and join them.
+    rationale:
+        A fixed procedure gives one predictable spelling for names
+        containing acronyms such as XML, ID or IPv6.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const XMLHTTPRequest = null;
+        let newCustomerID;
+        function supportsIPv6OnIOS() {}
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const xmlHttpRequest = null;
+        let newCustomerId;
+        function supportsIpv6OnIos() {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming]
+    source: https://google.github.io/styleguide/jsguide.html#63-camel-case-defined

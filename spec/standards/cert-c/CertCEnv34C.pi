@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCEnv34C:
+    standard: @{CertC}
+    ruleId: ENV34-C
+    title: Do not store pointers returned by certain functions
+    statement:
+        Use the pointer returned by getenv, setlocale, localeconv, asctime
+        or strerror right away, before calling the same function again. Copy
+        the string if you need it later.
+    rationale:
+        A later call, or a change to the environment, may overwrite or free
+        the static buffer the pointer refers to. CERT rates likelihood
+        probable, detectable yes, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        const char *src = getenv("SRC_DIR");
+        const char *dst = getenv("DST_DIR");
+        if (src != NULL && dst != NULL) {
+            copy_tree(src, dst);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *src = getenv("SRC_DIR") ? strdup(getenv("SRC_DIR")) : NULL;
+        char *dst = getenv("DST_DIR") ? strdup(getenv("DST_DIR")) : NULL;
+        if (src != NULL && dst != NULL) {
+            copy_tree(src, dst);
+        }
+        free(src);
+        free(dst);
+        \\\
+        ```
+    languages: [c]
+    tags: [environment, memory, lifetime]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/environment-env/env34-c

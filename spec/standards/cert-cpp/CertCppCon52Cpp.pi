@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCon52Cpp:
+    standard: @{CertCpp}
+    ruleId: CON52-CPP
+    title: Prevent data races when accessing bit-fields from multiple threads
+    statement:
+        Protect bit-fields that share storage with a single lock, or give
+        each field touched by different threads its own memory location,
+        when threads access them concurrently.
+    rationale:
+        Adjacent bit-fields share one memory location, so writing one field
+        rewrites its neighbours and creates a data race even on fields a
+        thread never names. CERT rates likelihood probable, detectable no,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        struct Flags {
+            unsigned ready : 1;
+            unsigned failed : 1;
+        };
+        Flags flags;
+
+        void mark_ready() { flags.ready = 1; }    // thread 1
+        void mark_failed() { flags.failed = 1; }  // thread 2
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Flags {
+            unsigned ready : 1;
+            unsigned failed : 1;
+        };
+        Flags flags;
+        std::mutex flags_mutex;
+
+        void mark_ready() {
+            std::lock_guard<std::mutex> g(flags_mutex);
+            flags.ready = 1;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, bit-fields, data-races]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/concurrency-con/con52-cpp

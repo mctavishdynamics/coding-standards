@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftIndirectEnums:
+    standard: @{GoogleSwift}
+    ruleId: enum-cases-indirect
+    title: Mark the enum indirect when every case is
+    statement:
+        When every case of an enum must be indirect, declare the enum itself
+        indirect and leave the keyword off each case.
+    rationale:
+        One keyword says the same thing with less repetition.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        enum Expression {
+          indirect case sum(Expression, Expression)
+          indirect case product(Expression, Expression)
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        indirect enum Expression {
+          case sum(Expression, Expression)
+          case product(Expression, Expression)
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [enums]
+    source: https://google.github.io/swift/#enum-cases

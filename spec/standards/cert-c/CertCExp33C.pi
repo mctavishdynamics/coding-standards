@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp33C:
+    standard: @{CertC}
+    ruleId: EXP33-C
+    title: Do not read uninitialized memory
+    statement:
+        Give an object a value before reading it. Local variables and memory
+        from malloc, aligned_alloc or the grown part of realloc start with
+        indeterminate values.
+    rationale:
+        Reading an indeterminate value is undefined behavior. The program
+        may crash, leak data or behave differently between builds. CERT
+        rates likelihood probable, detectable no, repairable yes, priority
+        P12, level L1.
+    exceptions:
+        Reading uninitialized bytes through an unsigned char lvalue is
+        allowed when the object could not have been declared register.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        int sign(int x) {
+            int result;
+            if (x > 0) {
+                result = 1;
+            }
+            return result;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int sign(int x) {
+            int result = 0;
+            if (x > 0) {
+                result = 1;
+            }
+            return result;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, initialization]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/expressions-exp/exp33-c

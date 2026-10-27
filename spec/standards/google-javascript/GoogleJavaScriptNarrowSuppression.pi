@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNarrowSuppression:
+    standard: @{GoogleJavaScript}
+    ruleId: 8.2.3
+    title: Suppress warnings at the narrowest reasonable scope
+    statement:
+        Suppress a warning at the smallest reasonable scope, usually a
+        single variable or a very small method, extracting one if needed.
+        Many small suppressions are better than one covering a whole class.
+    rationale:
+        A broad suppression hides future, unrelated warnings of the same
+        type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @suppress {uselessCode} */
+        class Worker {
+          start() {}
+          initAsm() {
+            'use asm';
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Worker {
+          start() {}
+          /** @suppress {uselessCode} Asm.js directive is intentional. */
+          initAsm() {
+            'use asm';
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [tooling, compiler-warnings]
+    source: https://google.github.io/styleguide/jsguide.html#823-suppress-a-warning-at-the-narrowest-reasonable-scope

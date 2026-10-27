@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsFunctionsDefaultsLast:
+    standard: @{AirbnbJavaScript}
+    ruleId: 7.9
+    title: Put default parameters last
+    statement:
+        Place parameters that have default values after all parameters
+        without defaults. Enforced by the ESLint rule default-param-last.
+    rationale:
+        A defaulted parameter before a required one can only use its default
+        if the caller passes undefined explicitly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function connect(port = 5432, host) {
+          // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function connect(host, port = 5432) {
+          // ...
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, parameters]
+    source: https://github.com/airbnb/javascript#functions--defaults-last

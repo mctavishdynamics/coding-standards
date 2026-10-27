@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaNoFinalizers:
+    standard: @{GoogleJava}
+    ruleId: 6.4
+    title: Do not override finalize
+    statement:
+        Do not override Object.finalize.
+    rationale:
+        Finalization is unreliable and is scheduled for removal from Java.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        final class TempFile {
+          @Override
+          protected void finalize() {
+            path.toFile().delete();
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        final class TempFile implements AutoCloseable {
+          @Override
+          public void close() throws IOException {
+            Files.deleteIfExists(path);
+          }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [resources, deprecated-features]
+    source: https://google.github.io/styleguide/javaguide.html#s6.4-finalizers

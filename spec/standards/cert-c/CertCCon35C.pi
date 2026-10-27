@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon35C:
+    standard: @{CertC}
+    ruleId: CON35-C
+    title: Avoid deadlock by locking in a predefined order
+    statement:
+        When a thread must hold several mutexes at once, acquire them in one
+        fixed global order, for example by an id or address, everywhere in
+        the program.
+    rationale:
+        Two threads that take the same locks in opposite orders can each
+        wait forever for the other. CERT rates likelihood probable,
+        detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        void transfer(struct account *from, struct account *to, long amount) {
+            mtx_lock(&from->lock);
+            mtx_lock(&to->lock);
+            from->balance -= amount;
+            to->balance += amount;
+            mtx_unlock(&to->lock);
+            mtx_unlock(&from->lock);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void transfer(struct account *from, struct account *to, long amount) {
+            struct account *first = from->id < to->id ? from : to;
+            struct account *second = from->id < to->id ? to : from;
+            mtx_lock(&first->lock);
+            mtx_lock(&second->lock);
+            from->balance -= amount;
+            to->balance += amount;
+            mtx_unlock(&second->lock);
+            mtx_unlock(&first->lock);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [concurrency, locking, deadlock]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/concurrency-con/con35-c

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaExp03J:
+    standard: @{CertJava}
+    ruleId: EXP03-J
+    title: Do not use the equality operators when comparing values of boxed primitives
+    statement:
+        Compare boxed values such as Integer or Long with equals, or unbox
+        them first. Do not use == or != on the wrapper objects.
+    rationale:
+        The operators compare references. Autoboxing caches only some
+        values, so == happens to work for small numbers and fails for
+        others. CERT rates likelihood likely, detectable yes, repairable
+        yes, priority P9, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        Integer a = order.getQuantity();
+        Integer b = stock.getQuantity();
+        if (a == b) {
+            reserve();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Integer a = order.getQuantity();
+        Integer b = stock.getQuantity();
+        if (a.equals(b)) {
+            reserve();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [boxing, equality]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/expressions-exp/exp03-j/

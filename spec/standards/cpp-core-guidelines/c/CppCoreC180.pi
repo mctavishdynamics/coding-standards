@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC180:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.180
+    title: Use unions to save memory
+    statement:
+        Use a union when several objects are never needed at the same time
+        and they can share one piece of memory.
+    rationale:
+        A union lets the same storage hold different types at different
+        times, which saves space.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Token {
+            int kind;
+            long integer;        // only one of these is ever used
+            double real;
+            char op;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Token {
+            int kind;
+            union {
+                long integer;
+                double real;
+                char op;
+            };
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [unions, memory]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ru-union

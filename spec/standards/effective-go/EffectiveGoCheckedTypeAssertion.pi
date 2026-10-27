@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoCheckedTypeAssertion:
+    standard: @{EffectiveGo}
+    ruleId: interface-conversions
+    title: Use the comma ok form for type assertions
+    statement:
+        When an interface value might not hold the asserted type, use the
+        two result form of the type assertion and test ok before using the
+        value.
+    rationale:
+        A single result assertion that fails crashes the program with a
+        run-time error.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        name := v.(string)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        name, ok := v.(string)
+        if !ok {
+            return fmt.Errorf("name has type %T, want string", v)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [types, interfaces, error-handling]
+    source: https://go.dev/doc/effective_go#interface_conversions

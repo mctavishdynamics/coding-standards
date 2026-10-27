@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoLeakyBuffer:
+    standard: @{EffectiveGo}
+    ruleId: leaky-buffer
+    title: Use a buffered channel as a free list
+    statement:
+        To reuse buffers without a mutex, keep them on a buffered channel
+        and use select with a default case so taking a buffer or returning
+        one never blocks.
+    rationale:
+        The channel does the bookkeeping, a fresh buffer is allocated when
+        the list is empty, and surplus buffers fall to the garbage
+        collector.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```go
+        \\\
+        var freeList = make(chan *Buffer, 100)
+
+        func getBuffer() *Buffer {
+            select {
+            case b := <-freeList:
+                return b
+            default:
+                return new(Buffer)
+            }
+        }
+
+        func putBuffer(b *Buffer) {
+            select {
+            case freeList <- b:
+            default: // list full, let the GC take it
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, channels, memory]
+    source: https://go.dev/doc/effective_go#leaky_buffer

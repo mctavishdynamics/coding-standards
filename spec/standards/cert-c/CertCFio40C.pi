@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio40C:
+    standard: @{CertC}
+    ruleId: FIO40-C
+    title: Reset strings on fgets() or fgetws() failure
+    statement:
+        When fgets or fgetws returns a null pointer, set the buffer to a
+        known value, such as an empty string, before anything else reads it.
+    rationale:
+        After a read error the array contents are indeterminate, so later
+        string functions may run past the end of the buffer. CERT rates
+        likelihood probable, detectable yes, repairable yes, priority P6,
+        level L2.
+    exceptions:
+        The buffer need not be reset if it goes out of scope right after the
+        failed call or is never read on the failure path.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        char line[256];
+        if (fgets(line, sizeof line, stream) == NULL) {
+            log_warning("read failed");
+        }
+        printf("last line: %s", line);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char line[256];
+        if (fgets(line, sizeof line, stream) == NULL) {
+            line[0] = '\0';
+            log_warning("read failed");
+        }
+        printf("last line: %s", line);
+        \\\
+        ```
+    languages: [c]
+    tags: [io, strings, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/input-output-fio/fio40-c

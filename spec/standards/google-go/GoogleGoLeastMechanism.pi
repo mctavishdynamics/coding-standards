@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoLeastMechanism:
+    standard: @{GoogleGo}
+    ruleId: guide/least-mechanism
+    title: Prefer the most standard tool that does the job
+    statement:
+        Reach first for a core language construct such as a slice, map,
+        channel or struct, then the standard library, then an existing core
+        library, before adding a dependency or writing your own machinery.
+    rationale:
+        Complexity is easy to add later and hard to remove once it turns out
+        to be unnecessary.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        seen := sets.New[string]()
+        for _, tag := range tags {
+            seen.Insert(tag)
+        }
+        if seen.Has("urgent") {
+            escalate()
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        seen := make(map[string]bool)
+        for _, tag := range tags {
+            seen[tag] = true
+        }
+        if seen["urgent"] {
+            escalate()
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [guide, simplicity, dependencies]
+    source: https://google.github.io/styleguide/go/guide#least-mechanism

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCMethodDeclarationsAndDefinitions:
+    standard: @{GoogleObjC}
+    ruleId: method-declarations-and-definitions
+    title: Format method declarations with aligned colons
+    statement:
+        Put one space between the minus or plus sign and the return type and
+        no other spacing except between parameters. When a declaration does
+        not fit on one line, put each parameter on its own line with colons
+        aligned and indent later lines at least four spaces.
+    rationale:
+        Aligned colons make long selectors easy to scan.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        -(void) scheduleReminder: (NSString *)text
+            at: (NSDate *)date repeats: (BOOL)repeats;
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        - (void)scheduleReminder:(NSString *)text
+                              at:(NSDate *)date
+                         repeats:(BOOL)repeats;
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [formatting, methods]
+    source: https://google.github.io/styleguide/objcguide.html#method-declarations-and-definitions

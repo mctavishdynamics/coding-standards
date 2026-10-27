@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCExceptions:
+    standard: @{GoogleObjC}
+    ruleId: exceptions
+    title: Put @catch and @finally on the closing brace line
+    statement:
+        Write @catch and @finally on the same line as the preceding closing
+        brace, with a space before each opening brace and after @catch.
+    rationale:
+        It matches the layout of if and else blocks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @try {
+          [parser parse];
+        }
+        @catch(NSException *e) {
+          [self log:e];
+        }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @try {
+          [parser parse];
+        } @catch (NSException *e) {
+          [self log:e];
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [formatting, exceptions]
+    source: https://google.github.io/styleguide/objcguide.html#exceptions

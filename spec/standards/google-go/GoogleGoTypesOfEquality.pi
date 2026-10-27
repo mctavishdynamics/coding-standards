@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTypesOfEquality:
+    standard: @{GoogleGo}
+    ruleId: decisions/types-of-equality
+    title: Use cmp for equality and diffs, not reflect.DeepEqual
+    statement:
+        Compare complex values in tests with cmp.Equal and cmp.Diff, adding
+        options such as protocmp.Transform where needed. Do not use
+        reflect.DeepEqual, and do not use cmp in production code.
+    rationale:
+        reflect.DeepEqual depends on unexported implementation details,
+        while cmp is configurable and stable. cmp may panic on misuse, which
+        is unsafe in production.
+    exceptions:
+        Existing code may keep using older libraries such as pretty for
+        consistency.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if !reflect.DeepEqual(got, want) {
+            t.Errorf("Load() = %v, want %v", got, want)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if diff := cmp.Diff(want, got, protocmp.Transform()); diff != "" {
+            t.Errorf("Load() mismatch (-want +got):\n%s", diff)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, comparison]
+    source: https://google.github.io/styleguide/go/decisions#types-of-equality

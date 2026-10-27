@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppNamingAliases:
+    standard: @{GoogleCpp}
+    ruleId: Naming_Aliases
+    title: Name aliases like any other new name in their context
+    statement:
+        Name an alias by the same principles as any other new name, judged
+        in the place where the alias is defined rather than where the
+        original name lives.
+    rationale:
+        An alias is read where it is declared and used, so its name must
+        make sense there.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        namespace billing {
+        using absl_flat_hash_map_of_invoices =
+            absl::flat_hash_map<InvoiceId, Invoice>;
+        }  // namespace billing
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace billing {
+        using InvoiceTable = absl::flat_hash_map<InvoiceId, Invoice>;
+        }  // namespace billing
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, aliases]
+    source: https://google.github.io/styleguide/cppguide.html#Naming_Aliases

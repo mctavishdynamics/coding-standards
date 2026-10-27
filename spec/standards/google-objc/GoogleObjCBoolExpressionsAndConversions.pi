@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCBoolExpressionsAndConversions:
+    standard: @{GoogleObjC}
+    ruleId: bool-expressions-and-conversions
+    title: Do not convert integers directly to BOOL or compare BOOLs
+    statement:
+        Do not cast or convert general integer values, pointers or bitmask
+        results directly to BOOL; use a comparison or conditional operator.
+        Do not compare a BOOL with YES or compare two BOOLs with comparison
+        operators. Use BOOL in Objective-C method signatures.
+    rationale:
+        On some platforms BOOL is a signed char, so a truncated value can
+        become NO and two true values may differ.
+    exceptions:
+        Results of the logical operators and, or and not are safe to use as
+        BOOL values and to compare.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        - (BOOL)isItalic {
+          return self.traits & ABCTraitItalic;
+        }
+        if (isMuted == YES) { ... }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        - (BOOL)isItalic {
+          return (self.traits & ABCTraitItalic) != 0;
+        }
+        if (isMuted) { ... }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [types, booleans]
+    source: https://google.github.io/styleguide/objcguide.html#bool-expressions-and-conversions

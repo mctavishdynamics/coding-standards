@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellConstantsAndEnvironmentVariableNames:
+    standard: @{GoogleShell}
+    ruleId: constants-environment-variables-and-readonly-variables
+    title: Capitalize constants and exported variables
+    statement:
+        Name constants and anything exported to the environment in capitals
+        with underscores, and declare them at the top of the file. Prefer
+        readonly and export to the equivalent declare flags. A constant set
+        at runtime or in a conditional is made readonly immediately
+        afterwards.
+    rationale:
+        Capitals mark values that do not change or that leave the script,
+        and readonly guarantees they stay fixed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        cache_dir='/var/cache/app'
+        export log_level='info'
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        readonly CACHE_DIR='/var/cache/app'
+        export LOG_LEVEL='info'
+        \\\
+        ```
+    languages: [shell]
+    tags: [naming, constants]
+    source: https://google.github.io/styleguide/shellguide.html#constants-environment-variables-and-readonly-variables

@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCEnv33C:
+    standard: @{CertC}
+    ruleId: ENV33-C
+    title: Do not call system()
+    statement:
+        Do not run commands through system, popen or _popen, which hand a
+        string to a command shell. Start the program directly with an exec
+        function or a dedicated API, using a full path and an explicit
+        argument list.
+    rationale:
+        A command processor interprets the whole string, so tainted input or
+        a changed search path can make it run arbitrary commands. CERT rates
+        likelihood probable, detectable yes, repairable no, priority P12,
+        level L1.
+    exceptions:
+        Calling system with a null pointer to test whether a command
+        processor exists is allowed.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        void open_manual(const char *topic) {
+            char cmd[256];
+            snprintf(cmd, sizeof cmd, "man %s", topic);
+            system(cmd);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void open_manual(const char *topic) {
+            pid_t pid = fork();
+            if (pid == 0) {
+                char *const args[] = { "man", (char *)topic, NULL };
+                execv("/usr/bin/man", args);
+                _exit(127);
+            } else if (pid > 0) {
+                waitpid(pid, NULL, 0);
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [security, command-injection, processes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/environment-env/env33-c

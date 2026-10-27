@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppFunctionComments:
+    standard: @{GoogleCpp}
+    ruleId: Function_Comments
+    title:
+        Comment function use at declarations and operation at definitions
+    statement:
+        Precede almost every function declaration with a comment, written
+        with an implied subject such as Opens the file, describing inputs,
+        outputs, nullability, retained references and performance. At the
+        definition, comment anything tricky about how the function works,
+        without repeating the declaration comment.
+    rationale:
+        Callers need to know how to use a function, while maintainers need
+        to know why it is written as it is.
+    exceptions:
+        Simple, obvious functions such as plain accessors, and overrides
+        that add nothing new, may omit the comment.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Open the file.
+        File* Open(const char* path);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Opens the file at `path` for reading. Returns nullptr if the file
+        // does not exist. The caller owns the returned file.
+        std::unique_ptr<File> Open(const char* path);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, documentation, functions]
+    source: https://google.github.io/styleguide/cppguide.html#Function_Comments

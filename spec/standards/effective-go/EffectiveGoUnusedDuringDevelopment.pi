@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoUnusedDuringDevelopment:
+    standard: @{EffectiveGo}
+    ruleId: blank-unused
+    title: Mark temporary unused imports and variables clearly
+    statement:
+        While code is under development, you may silence unused import and
+        variable errors with blank assignments. Put the declarations for
+        imports right after the import block with a comment, and remove them
+        once the code is finished.
+    rationale:
+        This keeps a half-written program compiling while making the
+        placeholders easy to find and a reminder to clean up.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```go
+        \\\
+        import (
+            "fmt"
+            "os"
+        )
+
+        var _ = fmt.Printf // TODO: remove when debugging is done.
+
+        func main() {
+            f, _ := os.Open("input.txt")
+            _ = f // TODO: read from f.
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [imports, blank-identifier, development]
+    source: https://go.dev/doc/effective_go#blank_unused

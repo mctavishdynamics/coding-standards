@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoUseAppendResult:
+    standard: @{EffectiveGo}
+    ruleId: append
+    title: Always assign the result of append
+    statement:
+        Use the built-in append to add elements to a slice and always store
+        its result, usually back into the same variable.
+    rationale:
+        append may move the elements to a new underlying array, so the old
+        slice value can be stale.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        ids := make([]int, 0, 1)
+        append(ids, 7) // does not compile; result discarded
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        ids := make([]int, 0, 1)
+        ids = append(ids, 7)
+        \\\
+        ```
+    languages: [go]
+    tags: [slices, append]
+    source: https://go.dev/doc/effective_go#append

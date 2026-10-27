@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT144:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.144
+    title: Don't specialize function templates
+    statement:
+        Overload function templates instead of specializing them. If you
+        truly need specialization, have the function template delegate to a
+        class template and specialize that.
+    rationale:
+        Function templates cannot be partially specialized, and full
+        specializations do not take part in overload resolution, so they
+        rarely behave as intended.
+    exceptions:
+        When there is a valid reason, delegate to a class template and
+        specialize the class, including partially.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+        std::string to_text(const T& v);
+
+        template<>
+        std::string to_text<bool>(const bool& v);   // specialization
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename T>
+        std::string to_text(const T& v);
+
+        std::string to_text(bool v);                // overload
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, specialization, overloading]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-specialize-function

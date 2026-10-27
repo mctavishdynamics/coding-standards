@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaTextBlocks:
+    standard: @{GoogleJava}
+    ruleId: 4.8.9
+    title: Put text block delimiters on their own lines
+    statement:
+        Start the opening triple quote of a text block on a new line,
+        indented normally or at the left margin. Put the closing triple
+        quote on a new line at the same indent as the opening one; code may
+        follow it on that line. Indent every content line at least as far as
+        the delimiters.
+    rationale:
+        Aligned delimiters make the extent of the text block obvious and
+        control the leading whitespace of the resulting string.
+    exceptions:
+        Text block contents may exceed the column limit.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String query = """
+        SELECT id, name
+        FROM users
+                """;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String query =
+            """
+            SELECT id, name
+            FROM users
+            """;
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, strings, text-blocks]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.9-text-blocks

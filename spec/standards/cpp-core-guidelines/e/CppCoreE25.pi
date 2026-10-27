@@ -1,0 +1,47 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE25:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.25
+    title: If you cannot throw exceptions, simulate RAII for resource management
+    statement:
+        Without exceptions, still manage resources with handles whose
+        destructors release them. Give each handle a way to report failed
+        construction, such as a valid() member, and check it right after
+        construction.
+    rationale:
+        RAII is usually the best and most systematic way of handling
+        resources even without exceptions. The caller has to remember the
+        check, which nodiscard can help enforce.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int run(const char* path)
+        {
+            FILE* f = std::fopen(path, "r");
+            if (!f) return -1;
+            if (!parse(f)) return -2;   // f leaks
+            std::fclose(f);
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int run(const char* path)
+        {
+            File f(path);               // destructor closes the file
+            if (!f.valid()) return -1;
+            if (!parse(f)) return -2;
+            return 0;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, raii, no-exceptions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-no-throw-raii

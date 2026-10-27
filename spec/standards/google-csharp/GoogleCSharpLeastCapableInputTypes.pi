@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpLeastCapableInputTypes:
+    standard: @{GoogleCSharp}
+    ruleId: least-capable-input-types
+    title: Accept the least capable collection type a method needs
+    statement:
+        Declare input parameters with the type that grants the fewest
+        capabilities the implementation needs, such as IReadOnlyCollection.
+        Use IEnumerable only when the method iterates the input at most
+        once.
+    rationale:
+        Narrow types let callers pass more kinds of collection, and
+        IEnumerable tells them a generator is safe.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public decimal Sum(List<decimal> amounts) {
+          return amounts.Count == 0 ? 0 : amounts.Sum();
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public decimal Sum(IReadOnlyCollection<decimal> amounts) {
+          return amounts.Count == 0 ? 0 : amounts.Sum();
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [types, collections, api-design]
+    source: https://google.github.io/styleguide/csharpguide.html#containers-ienumerable-vs-ilist-vs-ireadonlylist

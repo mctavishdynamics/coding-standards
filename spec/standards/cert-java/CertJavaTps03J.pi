@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaTps03J:
+    standard: @{CertJava}
+    ruleId: TPS03-J
+    title: Ensure that tasks executing in a thread pool do not fail silently
+    statement:
+        Give every pool task a way to report abnormal termination, such as
+        an afterExecute hook, an uncaught exception handler, or checking the
+        Future that submit() returns.
+    rationale:
+        The pool swallows exceptions thrown by tasks. Failures then leave no
+        trace, which makes diagnosis very hard. CERT's risk assessment gives
+        likelihood probable, detectable yes, repairable no, priority P4 and
+        level L3.
+    exceptions:
+        The rule may be relaxed only when every task has been audited so
+        that no exceptional condition can occur, though a handler is still
+        good practice.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        pool.submit(() -> importFile(path));
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Future<?> result = pool.submit(() -> importFile(path));
+        try {
+            result.get();
+        } catch (ExecutionException e) {
+            log.error("import failed", e.getCause());
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, thread-pools, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-pools-tps/tps03-j/

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptClassComputedProperties:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.4.3
+    title: Use computed class properties only for symbols
+    statement:
+        In classes, use computed properties only when the key is a symbol;
+        quoted or computed string keys are not allowed. Give logically
+        iterable classes a Symbol.iterator method, and use other symbols
+        sparingly.
+    rationale:
+        Dict-style members defeat compiler renaming, and many built-in
+        symbols are not polyfilled for older browsers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Playlist {
+          ['play' + 'All']() {}
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Playlist {
+          *[Symbol.iterator]() {
+            yield* this.tracks;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, symbols]
+    source: https://google.github.io/styleguide/jsguide.html#543-computed-properties

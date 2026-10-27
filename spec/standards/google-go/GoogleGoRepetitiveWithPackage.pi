@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoRepetitiveWithPackage:
+    standard: @{GoogleGo}
+    ruleId: decisions/repetitive-with-package
+    title: Do not repeat the package name in exported names
+    statement:
+        Callers always see the package name, so remove words from exported
+        names that the package already says. If a package exports one type
+        named after itself, call its constructor New.
+    rationale:
+        Repetition between package and symbol, as in widget.NewWidget, is
+        noise at every call site.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package invoice
+
+        func NewInvoice(id string) *Invoice
+        func LoadInvoiceFromDatabase(id string) (*Invoice, error)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package invoice
+
+        func New(id string) *Invoice
+        func Load(id string) (*Invoice, error)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, naming, packages, repetition]
+    source: https://google.github.io/styleguide/go/decisions#repetitive-with-package

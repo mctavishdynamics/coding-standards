@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs11:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.11
+    title: Use auto to avoid redundant repetition of type names
+    statement:
+        Declare a variable with auto when its type is already stated or
+        obvious in the initializer.
+    rationale:
+        Repeating a long type is tedious and error-prone, and auto puts the
+        declared name in a fixed place, which helps reading.
+    exceptions:
+        Avoid auto with initializer lists and where you know exactly which
+        type you want and the initializer might need a conversion.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::map<std::string, std::vector<int>>::const_iterator it = index.find(word);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto it = index.find(word);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [declarations, types]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-auto

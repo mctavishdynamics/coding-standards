@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoAssert:
+    standard: @{GoogleGo}
+    ruleId: decisions/assert
+    title: Do not create assertion libraries
+    statement:
+        Do not write assertion helpers that combine checking and failure
+        reporting. Compare with cmp and format messages with fmt in the
+        test, and have domain-specific helpers return a value or error that
+        the test reports.
+    rationale:
+        Assertion helpers stop tests early or drop context from the failure,
+        and many competing libraries fragment the codebase.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func assertEqual(t *testing.T, got, want any) {
+            t.Helper()
+            if !reflect.DeepEqual(got, want) {
+                t.Fatal("not equal")
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if diff := cmp.Diff(want, got); diff != "" {
+            t.Errorf("ParseConfig(%q) mismatch (-want +got):\n%s", input, diff)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, test-failures]
+    source: https://google.github.io/styleguide/go/decisions#assert

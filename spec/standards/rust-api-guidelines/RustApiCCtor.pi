@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCCtor:
+    standard: @{RustApiGuidelines}
+    ruleId: C-CTOR
+    title: Write constructors as static inherent methods
+    statement:
+        Construct a type through associated functions without self on the
+        type itself, using new for the primary constructor, domain names
+        such as open or connect for I/O resources, and from_ for conversion
+        constructors. A type with both new and Default gives them the same
+        behaviour.
+    rationale:
+        With the type name imported, Type::new reads clearly and users know
+        where to look for constructors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub fn make_parser() -> Parser { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl Parser {
+            pub fn new() -> Parser { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [constructors, api-design]
+    source: https://rust-lang.github.io/api-guidelines/predictability.html#c-ctor

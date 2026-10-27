@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoVlog:
+    standard: @{GoogleGo}
+    ruleId: best-practices/vlog
+    title: Guard expensive verbose logging
+    statement:
+        Use verbose logging levels by convention, such as small extras at 1,
+        tracing at 2 and state dumps at 3, and make sure expensive arguments
+        are not computed when the level is off by checking log.V first.
+    rationale:
+        Arguments to a disabled log call are still evaluated, which can be
+        costly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        log.V(2).Infof("cache state: %s", cache.Dump())
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if log.V(2) {
+            log.Infof("cache state: %s", cache.Dump())
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, logging, performance]
+    source: https://google.github.io/styleguide/go/best-practices#vlog

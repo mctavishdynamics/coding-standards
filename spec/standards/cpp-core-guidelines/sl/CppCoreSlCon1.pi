@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlCon1:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.con.1
+    title: Prefer using STL array or vector instead of a C array
+    statement:
+        Use std::array for fixed-size sequences and std::vector for
+        variable-size ones instead of built-in arrays or new[]. Use span for
+        non-owning views.
+    rationale:
+        C arrays decay to pointers, lose their size and need manual memory
+        management, and they offer no advantage over the standard
+        containers. A std::array lives on the stack just like a built-in
+        array.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int scores[MAX_PLAYERS];
+        double* samples = new double[n];
+        // ...
+        delete[] samples;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::array<int, MAX_PLAYERS> scores{};
+        std::vector<double> samples(n);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, arrays, memory]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rsl-arrays

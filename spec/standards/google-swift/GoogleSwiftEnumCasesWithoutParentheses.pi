@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftEnumCasesWithoutParentheses:
+    standard: @{GoogleSwift}
+    ruleId: enum-cases-no-empty-parentheses
+    title: Do not write empty parentheses on enum cases
+    statement:
+        A case without associated values never has empty parentheses.
+    rationale:
+        Empty parentheses add noise and suggest values that do not exist.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        enum LoadState {
+          case idle()
+          case failed(Error)
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        enum LoadState {
+          case idle
+          case failed(Error)
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [enums, syntax]
+    source: https://google.github.io/swift/#enum-cases

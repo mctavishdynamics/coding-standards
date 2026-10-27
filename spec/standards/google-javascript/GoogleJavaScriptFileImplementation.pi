@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptFileImplementation:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.7
+    title: Put the implementation after all dependency declarations
+    statement:
+        Start the implementation, meaning module-local declarations and
+        exported symbols, only after all dependency information, separated
+        by at least one blank line.
+    rationale:
+        Keeping dependencies above the code means a reader sees everything
+        the file relies on before reading how it works.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const asserts = goog.require('goog.asserts');
+        const LIMIT = 10;
+        const dom = goog.require('goog.dom');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const asserts = goog.require('goog.asserts');
+        const dom = goog.require('goog.dom');
+
+        const LIMIT = 10;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [source-files, modules]
+    source: https://google.github.io/styleguide/jsguide.html#37-the-files-implementation

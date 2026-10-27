@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpListForPublicApi:
+    standard: @{GoogleCSharp}
+    ruleId: list-for-public-api
+    title: Prefer List over arrays in public members
+    statement:
+        In general, prefer List to arrays for public variables, properties
+        and return types, while following the interface guidance for inputs
+        and outputs.
+    rationale:
+        List is more flexible than a fixed-capacity array.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public string[] Tags { get; set; }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public List<string> Tags { get; set; }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [collections, api-design]
+    source: https://google.github.io/styleguide/csharpguide.html#array-vs-list

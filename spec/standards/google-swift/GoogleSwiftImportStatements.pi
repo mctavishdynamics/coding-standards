@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftImportStatements:
+    standard: @{GoogleSwift}
+    ruleId: import-statements
+    title: Import exactly the modules a file needs
+    statement:
+        Import every top-level module the file uses, and nothing else,
+        without relying on transitive imports. Prefer importing whole
+        modules to individual declarations or submodules.
+    rationale:
+        Explicit, whole-module imports are the common Swift style and work
+        best with tooling.
+    exceptions:
+        Import individual declarations when a whole module would pollute the
+        global namespace, such as some C interfaces, and import a submodule
+        when it exposes functionality the top-level module does not.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        import UIKit  // Also relied on for Foundation types.
+        import struct Foundation.URL
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        import Foundation
+        import UIKit
+        \\\
+        ```
+    languages: [swift]
+    tags: [imports]
+    source: https://google.github.io/swift/#import-statements

@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio32C:
+    standard: @{CertC}
+    ruleId: FIO32-C
+    title:
+        Do not perform operations on devices that are only appropriate for
+        files
+    statement:
+        When a program opens a path supplied by a user, check that it names
+        an ordinary file before reading or writing it as one. Reject device
+        names such as CON or /dev/kmem, and on POSIX open without blocking
+        and check S_ISREG on the open descriptor.
+    rationale:
+        Treating a device as a regular file can hang the program, crash it
+        or give an attacker access to hardware or kernel memory. CERT rates
+        likelihood unlikely, detectable no, repairable no, priority P2,
+        level L3.
+    exceptions:
+        Code that opens a device on purpose, rather than a path from an
+        untrusted source, does not violate the rule.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        FILE *open_upload(const char *path) {
+            return fopen(path, "rb");
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        FILE *open_upload(const char *path) {
+            struct stat st;
+            int fd = open(path, O_RDONLY | O_NONBLOCK | O_NOFOLLOW);
+            if (fd == -1) {
+                return NULL;
+            }
+            if (fstat(fd, &st) == -1 || !S_ISREG(st.st_mode)) {
+                close(fd);
+                return NULL;
+            }
+            return fdopen(fd, "rb");
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [io, files, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/input-output-fio/fio32-c

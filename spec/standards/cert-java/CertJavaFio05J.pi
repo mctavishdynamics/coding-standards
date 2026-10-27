@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio05J:
+    standard: @{CertJava}
+    ruleId: FIO05-J
+    title: Do not expose buffers or their backing arrays methods to untrusted code
+    statement:
+        Do not hand untrusted code a buffer that wraps or shares a private
+        array, such as one made by wrap(), duplicate() or slice(). Return a
+        read-only view or a copy.
+    rationale:
+        Such buffers share the original backing array, so the caller can
+        change the class's private data through them. CERT's risk assessment
+        gives likelihood likely, detectable no, repairable no, priority P6
+        and level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        private final char[] secret = loadSecret();
+
+        public CharBuffer getBuffer() {
+            return CharBuffer.wrap(secret);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private final char[] secret = loadSecret();
+
+        public CharBuffer getBuffer() {
+            return CharBuffer.wrap(secret).asReadOnlyBuffer();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [io, encapsulation, untrusted-code]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio05-j/

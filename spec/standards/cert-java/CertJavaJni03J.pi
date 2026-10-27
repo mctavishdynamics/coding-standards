@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaJni03J:
+    standard: @{CertJava}
+    ruleId: JNI03-J
+    title: Do not use direct pointers to Java objects in JNI code
+    statement:
+        Refer to Java objects from native code only through JNI local or
+        global references. Never store or dereference raw pointers to Java
+        objects.
+    rationale:
+        The garbage collector may move objects, so a raw pointer can become
+        invalid while the JNI reference stays valid. CERT's risk assessment
+        gives likelihood probable, detectable no, repairable no, priority P6
+        and level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        static jobject *saved;
+
+        JNIEXPORT void JNICALL Java_Cache_store(JNIEnv *env, jobject self, jobject value) {
+            saved = &value;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static jobject saved;
+
+        JNIEXPORT void JNICALL Java_Cache_store(JNIEnv *env, jobject self, jobject value) {
+            saved = (*env)->NewGlobalRef(env, value);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [jni, native-code, memory]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/java-native-interface-jni/jni03-j/

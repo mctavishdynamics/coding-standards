@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf4:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.4
+    title: Include header files before other declarations in a file
+    statement:
+        Put all includes at the top of a header or source file, before any
+        of its own declarations.
+    rationale:
+        It minimizes context dependencies and makes a file's dependencies
+        easy to see.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #include <vector>
+
+        void tally(std::vector<int>& v);
+
+        #include <string>
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #include <string>
+        #include <vector>
+
+        void tally(std::vector<int>& v);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, includes, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-include-order

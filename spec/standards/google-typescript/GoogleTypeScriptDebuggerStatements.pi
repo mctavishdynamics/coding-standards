@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptDebuggerStatements:
+    standard: @{GoogleTypeScript}
+    ruleId: debugger-statements
+    title: Do not leave debugger statements in production code
+    statement:
+        Remove every debugger statement before code reaches production.
+    rationale:
+        A debugger statement pauses execution whenever developer tools are
+        open and serves no purpose in shipped code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function applyDiscount(total: number) {
+          debugger;
+          return total * 0.9;
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function applyDiscount(total: number) {
+          return total * 0.9;
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [debugging, production]
+    source: https://google.github.io/styleguide/tsguide.html#debugger-statements

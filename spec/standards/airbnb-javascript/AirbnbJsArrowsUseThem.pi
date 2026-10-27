@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsArrowsUseThem:
+    standard: @{AirbnbJavaScript}
+    ruleId: 8.1
+    title: Use arrow functions for anonymous callbacks
+    statement:
+        When you need an anonymous function, such as an inline callback,
+        write it as an arrow function, with spaces around the arrow.
+        Enforced by the ESLint rules prefer-arrow-callback and
+        arrow-spacing.
+    rationale:
+        An arrow function keeps the surrounding this, which is usually what
+        is wanted, and it is more concise.
+    exceptions:
+        If the callback is complicated, move its logic into a separate named
+        function expression instead.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        prices.map(function (price) {
+          return price * 1.2;
+        });
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        prices.map((price) => price * 1.2);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, arrow-functions, es6]
+    source: https://github.com/airbnb/javascript#arrows--use-them

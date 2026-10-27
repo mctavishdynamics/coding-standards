@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaThi00J:
+    standard: @{CertJava}
+    ruleId: THI00-J
+    title: Do not invoke Thread.run()
+    statement:
+        Start a thread with start(). Do not call a Thread object's run()
+        method directly.
+    rationale:
+        Calling run() executes the body on the current thread, so no new
+        thread is created. The code may look correct while it runs serially
+        on the wrong thread. CERT's risk assessment gives likelihood
+        probable, detectable yes, repairable yes, priority P6 and level L2.
+    exceptions:
+        run() may be called directly in unit tests, ideally after casting to
+        Runnable to show the call is intentional. Runtime system code that
+        starts threads may also call it.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        Thread worker = new Thread(task);
+        worker.run();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Thread worker = new Thread(task);
+        worker.start();
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, threads]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-apis-thi/thi00-j/

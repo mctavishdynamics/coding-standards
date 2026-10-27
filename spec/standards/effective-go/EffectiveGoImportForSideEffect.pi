@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoImportForSideEffect:
+    standard: @{EffectiveGo}
+    ruleId: blank-import
+    title: Import for side effects with the blank identifier
+    statement:
+        When a package is needed only for its side effects, such as
+        registering handlers in its init function, import it under the blank
+        identifier.
+    rationale:
+        The blank name makes clear that the package is imported for its side
+        effects, since it cannot be used for anything else in the file.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        import "net/http/pprof"
+
+        var _ = pprof.Index // only here to keep the import
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        import _ "net/http/pprof"
+        \\\
+        ```
+    languages: [go]
+    tags: [imports, blank-identifier, side-effects]
+    source: https://go.dev/doc/effective_go#blank_import

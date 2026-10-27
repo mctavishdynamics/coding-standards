@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptLegacyPlatformExceptions:
+    standard: @{GoogleJavaScript}
+    ruleId: 9.4.1
+    title: Relax modern-syntax rules only on legacy platforms
+    statement:
+        Only when modern ECMAScript syntax is unavailable, var declarations,
+        the arguments object and optional parameters without default values
+        are allowed.
+    rationale:
+        Old engines cannot run the preferred syntax, so a narrow set of
+        exceptions keeps such code as close to the guide as possible.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```javascript
+        \\\
+        /** @param {number=} limit */
+        function take(limit) {
+          var max = limit === undefined ? 10 : limit;
+          return Array.prototype.slice.call(arguments, 1, max);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [legacy, compatibility]
+    source: https://google.github.io/styleguide/jsguide.html#941-overview

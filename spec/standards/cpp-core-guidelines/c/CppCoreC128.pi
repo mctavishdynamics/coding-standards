@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC128:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.128
+    title: Mark virtual functions with exactly one of virtual, override or final
+    statement:
+        Use virtual only for a new virtual function, override for an
+        overrider that can be overridden further, and final for a last
+        overrider. Never combine them.
+    rationale:
+        One keyword documents intent and lets the compiler catch signature
+        and name mismatches, while writing more than one is redundant and
+        error-prone.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Button : public Widget {
+        public:
+            virtual void draw() const override;   // redundant
+            void resize(int w);                   // meant to override resize(long)?
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Button : public Widget {
+        public:
+            void draw() const override;
+            void resize(long w) override;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, virtual-functions, override]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-override

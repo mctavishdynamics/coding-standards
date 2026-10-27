@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppErr62Cpp:
+    standard: @{CertCpp}
+    ruleId: ERR62-CPP
+    title: Detect errors when converting a string to a number
+    statement:
+        When converting a string to a number, detect a missing number, an
+        out-of-range value and unexpected trailing text. Check the stream
+        state after formatted input, or use a conversion that reports these
+        errors.
+    rationale:
+        Unchecked conversions leave the variable with a wrong or unchanged
+        value, so later logic runs on bad data. CERT rates likelihood
+        unlikely, detectable yes, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        int read_age(std::istream& in) {
+            int age;
+            in >> age;
+            return age;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int read_age(std::istream& in) {
+            int age = 0;
+            if (!(in >> age)) {
+                throw std::invalid_argument("age is not a valid number");
+            }
+            return age;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, input-validation, strings]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/exceptions-and-error-handling-err/err62-cpp

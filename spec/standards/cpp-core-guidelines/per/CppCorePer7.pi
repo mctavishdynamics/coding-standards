@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCorePer7:
+    standard: @{CppCoreGuidelines}
+    ruleId: Per.7
+    title: Design to enable optimization
+    statement:
+        Shape interfaces so that a better implementation can be swapped in
+        later. Pass enough information through the interface (types, sizes,
+        comparison criteria), prefer compact data, use conventional argument
+        passing, and wrap messy legacy code behind an interface of your own.
+    rationale:
+        Designs nearly always need tuning later, and an interface that
+        throws information away, such as one taking untyped memory, is hard
+        to change and starves the compiler of what it needs to optimize.
+    exceptions:
+        One-off implementation details do not need a stable,
+        optimization-ready interface.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Element type and size are lost; caller must supply a byte-level comparator.
+        void sort_records(void* base, std::size_t count, std::size_t size,
+                          int (*compare)(const void*, const void*));
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<std::random_access_iterator It, class Compare = std::less<>>
+        void sort_records(It first, It last, Compare compare = {});
+        \\\
+        ```
+    languages: [cpp]
+    tags: [performance, interfaces, design]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rper-efficiency

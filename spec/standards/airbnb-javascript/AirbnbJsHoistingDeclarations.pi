@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsHoistingDeclarations:
+    standard: @{AirbnbJavaScript}
+    ruleId: 14.4
+    title: Account for hoisting of function declarations
+    statement:
+        Remember that a function declaration hoists both its name and its
+        body, so it can be called before the line that defines it.
+    rationale:
+        This is why declarations make it easy to use a function before
+        reading its definition.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        greet(); // works, but reads out of order
+        function greet() {
+          console.log('hello');
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const greet = function greet() {
+          console.log('hello');
+        };
+        greet();
+        \\\
+        ```
+    languages: [javascript]
+    tags: [hoisting, functions]
+    source: https://github.com/airbnb/javascript#hoisting--declarations

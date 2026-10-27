@@ -1,0 +1,32 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs44:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.44
+    title: Don't depend on order of evaluation of function arguments
+    statement:
+        Do not write calls whose result changes depending on which argument
+        is evaluated first.
+    rationale:
+        The order in which function arguments are evaluated is unspecified.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        draw_line(read_point(in), read_point(in));   // which point comes first?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        const Point from = read_point(in);
+        const Point to = read_point(in);
+        draw_line(from, to);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [expressions, portability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-order-fct

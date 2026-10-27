@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCCallerControl:
+    standard: @{RustApiGuidelines}
+    ruleId: C-CALLER-CONTROL
+    title: Let the caller decide where data is copied and placed
+    statement:
+        Take an argument by value when the function needs to own it, instead
+        of borrowing and cloning inside. Borrow it when ownership is not
+        needed. Use Copy as a bound only when it is truly required.
+    rationale:
+        The caller knows whether it can give up a value or must keep it, so
+        it should choose when a copy happens.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub fn register(name: &String) -> Account {
+            Account { name: name.clone() }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub fn register(name: String) -> Account {
+            Account { name }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [ownership, performance]
+    source: https://rust-lang.github.io/api-guidelines/flexibility.html#c-caller-control

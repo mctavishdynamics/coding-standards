@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs10:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.10
+    title: Declare one name only per declaration
+    statement:
+        Put each variable in its own declaration statement.
+    rationale:
+        One name per declaration reads more easily, avoids mistakes caused
+        by the C declarator grammar and leaves room for a comment.
+    exceptions:
+        A function declaration lists several parameters, and a structured
+        binding is meant to introduce several names at once.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int* first, last;   // last is an int, not a pointer
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int* first = nullptr;
+        int* last = nullptr;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [declarations, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-name-one

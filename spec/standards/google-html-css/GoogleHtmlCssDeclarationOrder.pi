@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssDeclarationOrder:
+    standard: @{GoogleHtmlCss}
+    ruleId: declaration-order
+    title: Alphabetize declarations
+    statement:
+        Sort declarations in a consistent order within a project. Without
+        tooling to enforce an order, use alphabetical order, ignoring vendor
+        prefixes but keeping several prefixed forms of a property sorted
+        among themselves. This rule is optional.
+    rationale:
+        Alphabetical order is easy to learn, remember and maintain by hand,
+        and it gives consistent code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        .badge {
+          padding: 2px 6px;
+          color: white;
+          border-radius: 4px;
+          background: teal;
+        }
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        .badge {
+          background: teal;
+          -webkit-border-radius: 4px;
+          border-radius: 4px;
+          color: white;
+          padding: 2px 6px;
+        }
+        \\\
+        ```
+    languages: [css]
+    tags: [formatting, ordering]
+    source: https://google.github.io/styleguide/htmlcssguide.html#declaration-order

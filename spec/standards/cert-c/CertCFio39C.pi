@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio39C:
+    standard: @{CertC}
+    ruleId: FIO39-C
+    title:
+        Do not alternately input and output from a stream without an
+        intervening flush or positioning call
+    statement:
+        On a stream opened for update, call fflush or a positioning function
+        such as fseek between an output and a following input, and call a
+        positioning function between an input and a following output unless
+        the input reached end of file.
+    rationale:
+        Switching direction without the required call is undefined behavior
+        and can read stale buffered data or write to the wrong place in the
+        file. CERT rates likelihood likely, detectable yes, repairable no,
+        priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        void append_and_reread(FILE *f, const char *rec, char *out, size_t n) {
+            fputs(rec, f);
+            fgets(out, (int)n, f);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void append_and_reread(FILE *f, const char *rec, char *out, size_t n) {
+            fputs(rec, f);
+            if (fseek(f, 0L, SEEK_SET) != 0) {
+                return;
+            }
+            fgets(out, (int)n, f);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [io, files]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/input-output-fio/fio39-c

@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonIgnoringTypes:
+    standard: @{GooglePython}
+    ruleId: 3.19.7
+    title: Disable type checking on a line with a special comment
+    statement:
+        To disable type checking on a line, use a type ignore comment. Where
+        the checker supports it, such as pyrefly, ignore only the specific
+        error.
+    rationale:
+        A line-level comment keeps the suppression narrow and visible, and
+        naming the error avoids hiding unrelated problems.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        result = legacy_api.fetch()  # type: ignore
+        # pyrefly: ignore[attribute-error]
+        value = result.payload
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, tooling]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.7-ignoring-types

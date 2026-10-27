@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT44:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.44
+    title: Use function templates to deduce class template argument types (where feasible)
+    statement:
+        Let template arguments be deduced, through a make function or class
+        template argument deduction, instead of spelling them out when they
+        match the arguments.
+    rationale:
+        Writing template argument types explicitly is tedious and verbose,
+        and it is easy to get them slightly wrong.
+    exceptions:
+        Spell the arguments out when they cannot be deduced well or when you
+        deliberately want a different type, such as an empty list of
+        pointers.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::pair<std::string, int> entry = std::pair<std::string, int>("port"s, 8080);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto entry = std::make_pair("port"s, 8080);
+        std::pair other("host"s, 443);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, type-deduction, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-deduce

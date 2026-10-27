@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC162:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.162
+    title: Overload operations that are roughly equivalent
+    statement:
+        When the same logical operation applies to different argument types,
+        give it one overloaded name instead of a different name for each
+        type.
+    rationale:
+        Separate names for the same operation encode types in names, confuse
+        readers and get in the way of generic code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void print_int(int v);
+        void print_double(double v);
+        void print_string(const std::string& v);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void print(int v);
+        void print(double v);
+        void print(const std::string& v);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [overloading, naming, generic-programming]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ro-equivalent

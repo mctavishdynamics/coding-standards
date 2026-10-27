@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCPrefixes:
+    standard: @{GoogleObjC}
+    ruleId: prefixes
+    title: Prefix global names with three or more capital letters
+    statement:
+        Name classes, protocols, global functions and global constants with
+        a prefix made of a capital letter followed by more capitals or
+        digits. Use at least three characters, because Apple reserves
+        two-letter prefixes.
+    rationale:
+        Objective-C has a single global namespace, so prefixes prevent name
+        collisions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        extern NSString *const ErrorDomain;
+        @interface Uploader : NSObject
+        @end
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        extern NSString *const ABCUploadErrorDomain;
+        @interface ABCUploader : NSObject
+        @end
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [naming, prefixes]
+    source: https://google.github.io/styleguide/objcguide.html#prefixes

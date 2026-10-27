@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoInBandErrors:
+    standard: @{GoogleGo}
+    ruleId: decisions/in-band-errors
+    title: Return an extra value instead of in-band error values
+    statement:
+        Do not signal failure or absence with special values like -1, nil or
+        an empty string. Return an additional final result, an error or a
+        bool, that says whether the other results are valid.
+    rationale:
+        Callers forget to check in-band values, and the extra result forces
+        an explicit check that the compiler helps enforce.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Lookup returns "" if the key is missing.
+        func Lookup(key string) string
+
+        port := parsePort(Lookup("port"))
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Lookup reports whether the key was present.
+        func Lookup(key string) (string, bool)
+
+        v, ok := Lookup("port")
+        if !ok {
+            return errMissingPort
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, errors, api-design]
+    source: https://google.github.io/styleguide/go/decisions#in-band-errors

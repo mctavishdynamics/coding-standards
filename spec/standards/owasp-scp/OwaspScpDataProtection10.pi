@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpDataProtection10:
+    standard: @{OwaspScp}
+    ruleId: data-protection-10
+    title: Disable client-side caching of sensitive pages
+    statement:
+        Prevent browsers from caching pages that contain sensitive
+        information, for example with a no-store cache control header.
+    rationale:
+        Cached pages can be read later from the device by someone else.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def account_page(request):
+            return render("account.html", user=request.user)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def account_page(request):
+            response = render("account.html", user=request.user)
+            response.headers["Cache-Control"] = "no-store"
+            response.headers["Pragma"] = "no-cache"
+            return response
+        \\\
+        ```
+    languages: [any]
+    tags: [data-protection, caching, http]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#data-protection

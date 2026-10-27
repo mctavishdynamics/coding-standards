@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCIterTy:
+    standard: @{RustApiGuidelines}
+    ruleId: C-ITER-TY
+    title: Name iterator types after the methods that return them
+    statement:
+        A method called into_iter returns a type called IntoIter, iter
+        returns Iter, keys returns Keys, and so on. The names read best
+        qualified by their module, as in vec::IntoIter.
+    rationale:
+        Matching names make it obvious which type a method produces and keep
+        the API consistent with the standard library.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl Graph {
+            pub fn edges(&self) -> EdgeWalker<'_> { EdgeWalker::new(self) }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl Graph {
+            pub fn edges(&self) -> Edges<'_> { Edges::new(self) }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [naming, iterators]
+    source: https://rust-lang.github.io/api-guidelines/naming.html#c-iter-ty

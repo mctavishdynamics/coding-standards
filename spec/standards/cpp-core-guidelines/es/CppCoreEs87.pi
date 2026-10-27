@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs87:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.87
+    title: Don't add redundant == or != to conditions
+    statement:
+        Test a pointer or boolean directly in a condition rather than
+        comparing it with nullptr, true or false.
+    rationale:
+        It avoids verbosity, removes some chances for mistakes and keeps
+        style conventional.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (session != nullptr && session->active() == true) refresh();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        if (session && session->active()) refresh();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [expressions, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-if

@@ -1,0 +1,55 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactBindInConstructor:
+    standard: @{AirbnbReact}
+    ruleId: methods-2
+    title: Bind event handlers in the constructor
+    statement:
+        Bind the event handlers a class uses in render once, in the
+        constructor. Do not bind in render and do not define handlers as
+        arrow functions in class fields. Enforced by the ESLint rule
+        react/jsx-no-bind.
+    rationale:
+        Binding in render creates a new function on every render. Arrow
+        class fields are harder to test and debug, can hurt performance, and
+        put logic where data belongs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        class Toggle extends React.Component {
+          handleClick() {
+            this.props.onToggle();
+          }
+
+          render() {
+            return <button onClick={this.handleClick.bind(this)} />;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        class Toggle extends React.Component {
+          constructor(props) {
+            super(props);
+            this.handleClick = this.handleClick.bind(this);
+          }
+
+          handleClick() {
+            this.props.onToggle();
+          }
+
+          render() {
+            return <button onClick={this.handleClick} />;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [events, classes, performance]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#methods

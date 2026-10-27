@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptClassMethodDeclarations:
+    standard: @{GoogleTypeScript}
+    ruleId: class-method-declarations
+    title: Separate methods with one blank line and no semicolons
+    statement:
+        Do not put semicolons between method declarations. Separate each
+        method from the surrounding code with a single blank line.
+    rationale:
+        Stray semicolons are noise, and a blank line between members makes
+        the class easy to scan.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Timer {
+          start() {
+            this.running = true;
+          };
+          stop() {
+            this.running = false;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Timer {
+          start() {
+            this.running = true;
+          }
+
+          stop() {
+            this.running = false;
+          }
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, formatting]
+    source: https://google.github.io/styleguide/tsguide.html#class-method-declarations

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoFunctionNameRepetition:
+    standard: @{GoogleGo}
+    ruleId: best-practices/function-name-repetition
+    title: Keep function names free of repeated context
+    statement:
+        Leave out of function and method names the input and output types,
+        the receiver type, whether values are pointers, the package name,
+        parameter names and result names. Add extra words only when needed
+        to tell similar functions apart.
+    rationale:
+        Names are read at the call site, where the package, receiver and
+        arguments already supply that context.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package csvexport
+
+        func WriteCSVExport(w io.Writer, rows []Row) error
+        func (r *Report) SaveReportToFile(path string) error
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package csvexport
+
+        func Write(w io.Writer, rows []Row) error
+        func (r *Report) Save(path string) error
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, naming, functions, repetition]
+    source: https://google.github.io/styleguide/go/best-practices#function-name-repetition

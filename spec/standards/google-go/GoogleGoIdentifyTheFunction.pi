@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoIdentifyTheFunction:
+    standard: @{GoogleGo}
+    ruleId: decisions/identify-the-function
+    title: Name the function under test in failure messages
+    statement:
+        Include the name of the function that failed in the message, in the
+        form YourFunc(input) = got, want want, rather than just got and
+        want.
+    rationale:
+        The test name alone does not always make clear which call failed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        t.Errorf("got %d, want %d", got, want)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        t.Errorf("Abs(%d) = %d, want %d", in, got, want)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, test-failures]
+    source: https://google.github.io/styleguide/go/decisions#identify-the-function

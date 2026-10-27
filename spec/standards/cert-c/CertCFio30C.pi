@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio30C:
+    standard: @{CertC}
+    ruleId: FIO30-C
+    title: Exclude user input from format strings
+    statement:
+        Never pass a string that an untrusted source can influence as the
+        format argument of printf, fprintf, syslog or a similar function.
+        Pass the text as an argument to a fixed format such as "%s", or
+        write it with fputs.
+    rationale:
+        A caller who controls a format string can read the stack, crash the
+        process or write to memory with the %n conversion, which can lead to
+        arbitrary code execution. CERT rates likelihood likely, detectable
+        yes, repairable no, priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        void log_login_failure(const char *username) {
+            char line[128];
+            snprintf(line, sizeof line, "login failed for %s\n", username);
+            fprintf(stderr, line);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void log_login_failure(const char *username) {
+            fprintf(stderr, "login failed for %s\n", username);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [input-validation, io, format-strings]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/input-output-fio/fio30-c

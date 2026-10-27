@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptThis:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.9
+    title: Use this only in class code or with an explicit @this
+    statement:
+        Use this only in class constructors and methods, in arrow functions
+        defined inside them, or in functions whose JSDoc declares @this.
+        Never use it for the global object, an eval context, an event
+        target, or needlessly in call or apply.
+    rationale:
+        Outside these places the value of this depends on how a function is
+        called, which is a common source of bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function onClick() {
+          this.classList.toggle('active');
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        button.addEventListener('click', (event) => {
+          event.currentTarget.classList.toggle('active');
+        });
+        \\\
+        ```
+    languages: [javascript]
+    tags: [this, functions]
+    source: https://google.github.io/styleguide/jsguide.html#59-this

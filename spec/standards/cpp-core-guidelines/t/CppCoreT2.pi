@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT2:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.2
+    title: Use templates to express algorithms that apply to many argument types
+    statement:
+        When one algorithm makes sense for many types, write it once as a
+        template instead of copying it per type. Do not template code that
+        realistically only ever sees one type.
+    rationale:
+        A single generic algorithm means less source code, better
+        interoperability and more reuse, which is the foundation of the STL.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int max_of(const std::vector<int>& v);
+        double max_of(const std::vector<double>& v);
+        long max_of(const std::vector<long>& v);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<std::ranges::forward_range R>
+            requires std::totally_ordered<std::ranges::range_value_t<R>>
+        auto max_of(const R& r)
+        {
+            return *std::ranges::max_element(r);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, algorithms, generic-programming]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-algo

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNonConstantFieldNames:
+    standard: @{GoogleJavaScript}
+    ruleId: 6.2.6
+    title: Write non-constant field names in lowerCamelCase
+    statement:
+        Name non-constant fields, static or not, in lowerCamelCase, usually
+        as nouns. Private fields may end with an underscore.
+    rationale:
+        Consistent field names separate state from constants and types.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        this.Retry_count = 0;
+        this.CACHE = new Map();
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        this.retryCount = 0;
+        /** @private */
+        this.cache_ = new Map();
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming, fields]
+    source: https://google.github.io/styleguide/jsguide.html#626-non-constant-field-names

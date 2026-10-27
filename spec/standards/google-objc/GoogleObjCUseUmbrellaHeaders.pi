@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCUseUmbrellaHeaders:
+    standard: @{GoogleObjC}
+    ruleId: use-umbrella-headers-for-system-frameworks
+    title: Import umbrella headers for system frameworks
+    statement:
+        Import the umbrella header of a system framework or library rather
+        than its individual headers, using @import or #import for
+        Objective-C frameworks.
+    rationale:
+        The root framework header is usually precompiled and loads faster
+        than separate headers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        #import <Foundation/NSDate.h>
+        #import <Foundation/NSTimer.h>
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        #import <Foundation/Foundation.h>
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [headers, frameworks]
+    source: https://google.github.io/styleguide/objcguide.html#use-umbrella-headers-for-system-frameworks

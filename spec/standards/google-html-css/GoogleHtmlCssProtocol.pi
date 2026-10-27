@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssProtocol:
+    standard: @{GoogleHtmlCss}
+    ruleId: protocol
+    title: Use HTTPS for embedded resources
+    statement:
+        Load images, media, style sheets and scripts over https, and do not
+        leave the protocol out of their URLs.
+    rationale:
+        Protocol-relative and plain HTTP URLs can load resources insecurely.
+    exceptions:
+        Use another protocol only when a resource is not available over
+        HTTPS.
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <link rel="stylesheet" href="//cdn.example.com/theme.css">
+        <script src="http://cdn.example.com/menu.js"></script>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <link rel="stylesheet" href="https://cdn.example.com/theme.css">
+        <script src="https://cdn.example.com/menu.js"></script>
+        \\\
+        ```
+    languages: [html, css]
+    tags: [security, urls]
+    source: https://google.github.io/styleguide/htmlcssguide.html#protocol

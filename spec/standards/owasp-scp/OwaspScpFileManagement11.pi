@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpFileManagement11:
+    standard: @{OwaspScp}
+    ruleId: file-management-11
+    title: Map index values to paths instead of passing paths
+    statement:
+        Do not accept directory or file paths from the client. Use index
+        values that map to a predefined list of paths.
+    rationale:
+        An index cannot be manipulated into a path outside the list, which
+        removes path traversal entirely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def report(request):
+            return open("/srv/reports/" + request.args["file"]).read()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        REPORTS = {"1": "/srv/reports/daily.csv", "2": "/srv/reports/weekly.csv"}
+
+        def report(request):
+            path = REPORTS.get(request.args.get("id"))
+            if path is None:
+                raise NotFound()
+            return open(path).read()
+        \\\
+        ```
+    languages: [any]
+    tags: [files, path-traversal]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#file-management

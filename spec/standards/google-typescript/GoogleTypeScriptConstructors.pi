@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptConstructors:
+    standard: @{GoogleTypeScript}
+    ruleId: constructors
+    title: Call constructors with parentheses and omit empty constructors
+    statement:
+        Always write parentheses when calling a constructor, even with no
+        arguments. Leave out constructors that are empty or only call super,
+        but keep ones with parameter properties, visibility modifiers or
+        parameter decorators. Surround a constructor with single blank
+        lines.
+    rationale:
+        Without parentheses, member access binds differently and causes
+        subtle mistakes, and the language already supplies a default
+        constructor.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Queue extends Base {
+          constructor(size: number) {
+            super(size);
+          }
+        }
+
+        const queue = new Queue;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Queue extends Base {}
+
+        class Worker {
+          private constructor() {}
+        }
+
+        const queue = new Queue(10);
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, constructors, formatting]
+    source: https://google.github.io/styleguide/tsguide.html#constructors

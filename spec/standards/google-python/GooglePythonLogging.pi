@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonLogging:
+    standard: @{GooglePython}
+    ruleId: 3.10.1
+    title: Pass logging a literal pattern string and separate arguments
+    statement:
+        Call logging functions that take a pattern string with a string
+        literal containing %-placeholders, and pass the values as separate
+        arguments. Do not pass an f-string.
+    rationale:
+        Some logging systems store the unexpanded pattern as a searchable
+        field, and deferred formatting avoids rendering messages no logger
+        will output.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        logging.info(f'Uploaded {count} files to {bucket}')
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        logging.info('Uploaded %d files to %s', count, bucket)
+        \\\
+        ```
+    languages: [python]
+    tags: [logging, strings]
+    source: https://google.github.io/styleguide/pyguide.html#s3.10.1-logging

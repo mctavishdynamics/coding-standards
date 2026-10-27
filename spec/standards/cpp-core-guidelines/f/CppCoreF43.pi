@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF43:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.43
+    title: Never return a pointer or a reference to a local object
+    statement:
+        Do not let the address of a non-static local variable escape a
+        function, whether by return, through an out parameter, inside a
+        returned object or by storing it in a longer-lived container.
+    rationale:
+        The local is destroyed when the function returns, so any pointer or
+        reference to it dangles and its use causes crashes and data
+        corruption.
+    exceptions:
+        This applies only to non-static locals; pointers to static variables
+        cannot dangle.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        const std::string& greeting(const std::string& name) {
+            std::string s = "Hello, " + name;
+            return s;                // dangling reference
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string greeting(const std::string& name) {
+            return "Hello, " + name;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, lifetime, dangling-pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-dangle

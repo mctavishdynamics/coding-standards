@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos34C:
+    standard: @{CertC}
+    ruleId: POS34-C
+    title:
+        Do not call putenv() with a pointer to an automatic variable as the
+        argument
+    statement:
+        Do not pass putenv a buffer with automatic storage duration. Use
+        setenv, which copies its arguments, or pass a string with static or
+        allocated storage that stays valid.
+    rationale:
+        putenv stores the pointer itself, so once the function returns the
+        environment refers to reused stack memory. CERT rates likelihood
+        unlikely, detectable yes, repairable no, priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        int set_timezone(const char *zone) {
+            char entry[64];
+            snprintf(entry, sizeof entry, "TZ=%s", zone);
+            return putenv(entry);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int set_timezone(const char *zone) {
+            return setenv("TZ", zone, 1);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, environment, lifetime]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos34-c

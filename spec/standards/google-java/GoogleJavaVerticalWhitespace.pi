@@ -1,0 +1,58 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaVerticalWhitespace:
+    standard: @{GoogleJava}
+    ruleId: 4.6.1
+    title: Separate class members with a single blank line
+    statement:
+        Put one blank line between consecutive members and initializers of a
+        class, and wherever other sections of the guide require one. Blank
+        lines may also be added where they help readability, such as between
+        logical groups of statements. Multiple consecutive blank lines are
+        allowed but never required or encouraged.
+    rationale:
+        Blank lines between members make the boundaries of methods and
+        fields easy to see.
+    exceptions:
+        A blank line between consecutive fields is optional and can be used
+        to group them. Blank lines between enum constants are covered in
+        4.8.1.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        final class Counter {
+          private int value;
+          Counter() {}
+          void increment() {
+            value++;
+          }
+          int value() {
+            return value;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        final class Counter {
+          private int value;
+
+          Counter() {}
+
+          void increment() {
+            value++;
+          }
+
+          int value() {
+            return value;
+          }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, whitespace, blank-lines]
+    source: https://google.github.io/styleguide/javaguide.html#s4.6.1-vertical-whitespace

@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR11:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.11
+    title: Avoid calling new and delete explicitly
+    statement:
+        Do not write naked new and delete in ordinary code. Let a resource
+        handle such as a container or smart pointer do the allocation and
+        release.
+    rationale:
+        A pointer returned by new that lands in a plain pointer can be
+        leaked by an early return or an exception. Resource handles call
+        delete for you.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void process() {
+            Buffer* buf = new Buffer(4096);
+            fill(*buf);
+            delete buf;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void process() {
+            auto buf = std::make_unique<Buffer>(4096);
+            fill(*buf);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, allocation]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-newdelete

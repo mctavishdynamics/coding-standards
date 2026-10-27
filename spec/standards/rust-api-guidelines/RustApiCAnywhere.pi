@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCAnywhere:
+    standard: @{RustApiGuidelines}
+    ruleId: C-ANYWHERE
+    title: Make item macros work anywhere items are allowed
+    statement:
+        An item macro must work at module scope and inside narrower scopes
+        such as function bodies, and its tests should invoke it in at least
+        both of these places.
+    rationale:
+        Expansions that rely on paths like super can compile at module level
+        yet fail inside a function, which users only discover later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[cfg(test)]
+        mod tests {
+            // Only tested at module scope.
+            declare_handler!(ping);
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[cfg(test)]
+        mod tests {
+            declare_handler!(ping);
+
+            #[test]
+            fn works_in_function_scope() {
+                declare_handler!(pong);
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [macros, testing]
+    source: https://rust-lang.github.io/api-guidelines/macros.html#c-anywhere

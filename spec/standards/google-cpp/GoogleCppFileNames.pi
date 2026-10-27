@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppFileNames:
+    standard: @{GoogleCpp}
+    ruleId: File_Names
+    title: Name files in lowercase with specific names
+    statement:
+        Use all-lowercase file names with underscores or dashes, following
+        the project's convention and preferring underscores when there is
+        none. Use .cc for source, .h for headers and .inc for textual
+        includes. Make names specific and avoid names already in
+        /usr/include.
+    rationale:
+        Consistent, specific file names are easy to find and do not collide
+        with system headers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // MyUsefulClass.cpp
+        // logs.h
+        // db.h
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // my_useful_class.cc
+        // http_server_logs.h
+        // user_database.h
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, files]
+    source: https://google.github.io/styleguide/cppguide.html#File_Names

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptNamespaceVersusNamedImports:
+    standard: @{GoogleTypeScript}
+    ruleId: namespace-versus-named-imports
+    title: Choose between named and namespace imports by readability
+    statement:
+        Prefer named imports for symbols used often or with clear names of
+        their own. Prefer a namespace import when using many symbols from a
+        large API, especially ones with generic names.
+    rationale:
+        Named imports keep frequent calls short, while a namespace import
+        gives generic names like Model a clear owner without a pile of
+        aliases.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        import {Row as GridRow, Column as GridColumn, Cell as GridCell,
+          Model as GridModel} from './grid';
+
+        let cell: GridCell|undefined;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        import * as grid from './grid';
+
+        let cell: grid.Cell|undefined;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [imports, readability]
+    source: https://google.github.io/styleguide/tsguide.html#namespace-versus-named-imports

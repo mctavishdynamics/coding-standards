@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppStr51Cpp:
+    standard: @{CertCpp}
+    ruleId: STR51-CPP
+    title: Do not attempt to create a std::string from a null pointer
+    statement:
+        Do not construct or assign a std::string from a null pointer. Check
+        pointers that may be null before turning them into a string.
+    rationale:
+        Creating a string from a null pointer is undefined behavior, usually
+        a crash, because the length of the input is computed by reading
+        through the pointer. CERT rates likelihood likely, detectable no,
+        repairable yes, priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        std::string home_directory() {
+            return std::string(std::getenv("HOME"));
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string home_directory() {
+            const char* home = std::getenv("HOME");
+            return home ? std::string(home) : std::string();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [strings, null-pointer]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/characters-and-strings-str/str51-cpp

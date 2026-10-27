@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF47:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.47
+    title: Return T& from assignment operators
+    statement:
+        Make copy and move assignment operators, and compound assignment
+        operators, return a non-const reference to *this.
+    rationale:
+        It matches the built-in and standard library types, following the
+        principle to do as the ints do.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Money {
+        public:
+            void operator=(const Money& other);
+            const Money& operator+=(const Money& other);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Money {
+        public:
+            Money& operator=(const Money& other);
+            Money& operator+=(const Money& other);
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, operators, conventions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-assignment-op

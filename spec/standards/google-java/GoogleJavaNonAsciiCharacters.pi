@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaNonAsciiCharacters:
+    standard: @{GoogleJava}
+    ruleId: 2.3.3
+    title: Write non-ASCII characters in the most readable form
+    statement:
+        For other non-ASCII characters, use either the actual character or
+        its Unicode escape, whichever makes the code easier to understand.
+        Avoid Unicode escapes outside string literals and comments, and add
+        a comment when an escape is not self-evident.
+    rationale:
+        A literal character such as a Greek letter is clear at a glance,
+        while an unexplained escape tells the reader nothing. Fear that some
+        tool mishandles non-ASCII is not a reason to make code less
+        readable.
+    exceptions:
+        Non-printable characters, such as a byte order mark, are better
+        written as escapes, with a comment if needed.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String temperatureUnit = "\u00b0C";
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String temperatureUnit = "°C";
+        String withBom = '\ufeff' + body;  // byte order mark
+        \\\
+        ```
+    languages: [java]
+    tags: [literals, encoding, readability]
+    source: https://google.github.io/styleguide/javaguide.html#s2.3.3-non-ascii-characters

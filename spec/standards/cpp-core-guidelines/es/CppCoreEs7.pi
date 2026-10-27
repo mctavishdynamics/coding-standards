@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs7:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.7
+    title:
+        Keep common and local names short, and uncommon and non-local names
+        longer
+    statement:
+        Use short names such as i or x for local, conventional uses and
+        longer, descriptive names for entities that are used rarely or far
+        from their declaration.
+    rationale:
+        Short local names keep code readable, while longer non-local names
+        explain themselves and are less likely to clash.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int number_of_the_current_element_index = 0;   // local loop counter
+        void p(Order& o);                               // public function
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (int i = 0; i < n; ++i) total += v[i];
+        void print_invoice(const Order& order);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-name-length

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsConstructorsExtends:
+    standard: @{AirbnbJavaScript}
+    ruleId: 9.2
+    title: Use extends for inheritance
+    statement:
+        Inherit from another class with extends.
+    rationale:
+        It is the built-in way to inherit prototype behaviour and it keeps
+        instanceof working.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const inherits = require('inherits');
+        function PriorityQueue(items) {
+          Queue.call(this, items);
+        }
+        inherits(PriorityQueue, Queue);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class PriorityQueue extends Queue {
+          peek() {
+            return this.items[0];
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, inheritance, es6]
+    source: https://github.com/airbnb/javascript#constructors--extends

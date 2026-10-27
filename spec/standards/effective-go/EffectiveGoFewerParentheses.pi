@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoFewerParentheses:
+    standard: @{EffectiveGo}
+    ruleId: formatting-parentheses
+    title: Leave out unneeded parentheses
+    statement:
+        Do not put parentheses around the conditions of if, for and switch,
+        and rely on Go's short precedence hierarchy instead of extra
+        grouping, using spacing to show precedence.
+    rationale:
+        Go's control structures have no parentheses in their syntax, and its
+        precedence rules are simple enough that code means what its spacing
+        suggests.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if (len(queue) > (limit*2)) {
+            drain(queue)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if len(queue) > limit*2 {
+            drain(queue)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [formatting, syntax]
+    source: https://go.dev/doc/effective_go#formatting

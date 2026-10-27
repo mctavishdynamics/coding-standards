@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptPrivateFields:
+    standard: @{GoogleTypeScript}
+    ruleId: private-fields
+    title: Use the private modifier instead of #private fields
+    statement:
+        Do not declare private identifiers with the # prefix. Use
+        TypeScript's private visibility modifier.
+    rationale:
+        Private identifiers bloat output and slow code when down-levelled,
+        cannot target below ES2015, and add little when the type checker
+        already enforces visibility.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Counter {
+          #count = 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Counter {
+          private count = 0;
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, visibility]
+    source: https://google.github.io/styleguide/tsguide.html#private-fields

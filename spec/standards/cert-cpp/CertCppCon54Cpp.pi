@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCon54Cpp:
+    standard: @{CertCpp}
+    ruleId: CON54-CPP
+    title: Wrap functions that can spuriously wake up in a loop
+    statement:
+        Call wait, wait_for and wait_until on a condition variable inside a
+        loop that rechecks the condition, or use the overloads that take a
+        predicate.
+    rationale:
+        A waiting thread can wake spuriously or after the condition changed
+        again, so acting without rechecking uses invalid state. CERT rates
+        likelihood unlikely, detectable yes, repairable no, priority P2,
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        void consume(std::queue<int>& q, std::mutex& m,
+                     std::condition_variable& cv) {
+            std::unique_lock<std::mutex> lock(m);
+            if (q.empty()) {
+                cv.wait(lock);
+            }
+            q.pop();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void consume(std::queue<int>& q, std::mutex& m,
+                     std::condition_variable& cv) {
+            std::unique_lock<std::mutex> lock(m);
+            cv.wait(lock, [&q] { return !q.empty(); });
+            q.pop();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, condition-variables]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/concurrency-con/con54-cpp

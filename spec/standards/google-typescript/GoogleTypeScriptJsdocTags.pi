@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptJsdocTags:
+    standard: @{GoogleTypeScript}
+    ruleId: jsdoc-tags
+    title: Put each JSDoc tag on its own line
+    statement:
+        Use only the supported subset of JSDoc tags. Most tags occupy their
+        own line, with the tag at the start of the line.
+    rationale:
+        Tools parse tags line by line, so combined tags are misread.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        /**
+         * Moves a file.
+         * @param from @param to
+         */
+        function move(from: string, to: string) {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /**
+         * Moves a file.
+         * @param from The current path.
+         * @param to The destination path.
+         */
+        function move(from: string, to: string) {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc]
+    source: https://google.github.io/styleguide/tsguide.html#jsdoc-tags

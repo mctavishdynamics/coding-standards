@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreNl7:
+    standard: @{CppCoreGuidelines}
+    ruleId: NL.7
+    title: Make the length of a name roughly proportional to the length of its scope
+    statement:
+        Use short names in small scopes and longer, more descriptive names
+        as the scope grows.
+    rationale:
+        The larger the scope, the more chance of confusion and accidental
+        name clashes. Conventional short names like p or x are fine in a
+        tiny scope.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int n;              // global with a cryptic name
+
+        int count_of_number_of_characters_in_string(const char* zero_terminated_text);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int active_connection_count;   // global, descriptive
+
+        int length(const char* p);     // short parameter in a small scope
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, scope]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rl-name-length

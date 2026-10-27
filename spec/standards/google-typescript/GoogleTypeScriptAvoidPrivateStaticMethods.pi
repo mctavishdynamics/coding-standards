@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptAvoidPrivateStaticMethods:
+    standard: @{GoogleTypeScript}
+    ruleId: avoid-private-static-methods
+    title: Prefer module-local functions over private static methods
+    statement:
+        Where readability does not suffer, write a non-exported function in
+        the module instead of a private static method.
+    rationale:
+        A module-local function is just as hidden, needs no class prefix,
+        and is easier for tools to optimise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        export class Slugger {
+          slug(title: string) {
+            return Slugger.clean(title).replace(/ /g, '-');
+          }
+          private static clean(text: string) {
+            return text.trim().toLowerCase();
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function clean(text: string) {
+          return text.trim().toLowerCase();
+        }
+
+        export class Slugger {
+          slug(title: string) {
+            return clean(title).replace(/ /g, '-');
+          }
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, static, encapsulation]
+    source: https://google.github.io/styleguide/tsguide.html#avoid-private-static-methods

@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonClassDocstrings:
+    standard: @{GooglePython}
+    ruleId: 3.8.4
+    title: Document classes and their public attributes
+    statement:
+        Give each class a docstring whose first line says what an instance
+        represents, and list public attributes other than properties in an
+        Attributes section formatted like Args. Do not say that the class is
+        a class, and describe exceptions by what they represent rather than
+        when they are raised. For a decorated class, describe the behavior
+        after decoration.
+    rationale:
+        The summary tells readers what the object is, and the attribute list
+        documents the public state in one place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Invoice:
+            """Class that holds invoice data."""
+
+
+        class PaymentDeclinedError(Exception):
+            """Raised when the bank rejects a payment."""
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Invoice:
+            """A bill sent to a customer.
+
+            Attributes:
+              number: The invoice number shown to the customer.
+              total: The amount due, including tax.
+            """
+
+
+        class PaymentDeclinedError(Exception):
+            """The bank rejected a payment."""
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, classes]
+    source: https://google.github.io/styleguide/pyguide.html#s3.8.4-comments-in-classes

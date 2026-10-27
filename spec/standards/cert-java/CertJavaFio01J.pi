@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio01J:
+    standard: @{CertJava}
+    ruleId: FIO01-J
+    title: Create files with appropriate access permissions
+    statement:
+        Set restrictive access permissions at the moment a file is created,
+        not afterwards.
+    rationale:
+        A file created with loose default permissions can be read or
+        modified by another user before the program tightens them. CERT's
+        risk assessment gives likelihood probable, detectable no, repairable
+        no, priority P4 and level L3.
+    exceptions:
+        Files created inside a secure directory that untrusted users cannot
+        read may use default permissions. Files that hold no privileged
+        information need no special permissions.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        Path key = Paths.get(dir, "secret.key");
+        Files.createFile(key);
+        Files.setPosixFilePermissions(key, PosixFilePermissions.fromString("rw-------"));
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Path key = Paths.get(dir, "secret.key");
+        FileAttribute<Set<PosixFilePermission>> ownerOnly =
+                PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-------"));
+        Files.createFile(key, ownerOnly);
+        \\\
+        ```
+    languages: [java]
+    tags: [file-io, permissions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio01-j/

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj11J:
+    standard: @{CertJava}
+    ruleId: OBJ11-J
+    title: Be wary of letting constructors throw exceptions
+    statement:
+        When a constructor can throw, make sure the partly built object
+        cannot be used. Make the class final, do the checks before Object's
+        constructor runs, or add a final empty finalize method.
+    rationale:
+        An attacker can subclass a class whose constructor throws and
+        capture the half-built object in a finalizer, bypassing the
+        constructor's security checks. CERT rates likelihood probable,
+        detectable yes, repairable no, priority P12, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        public class Vault {
+            public Vault() {
+                if (!authorized()) throw new SecurityException();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public final class Vault {
+            public Vault() {
+                if (!authorized()) throw new SecurityException();
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [constructors, exceptions, finalizers]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/object-orientation-obj/obj11-j/

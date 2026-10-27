@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpModifiersDoNotAffectNaming:
+    standard: @{GoogleCSharp}
+    ruleId: modifiers-do-not-affect-naming
+    title: Do not change naming for const, static or readonly
+    statement:
+        Apply the same naming rule regardless of modifiers such as const,
+        static or readonly.
+    rationale:
+        Names depend on visibility, not on storage modifiers, which keeps
+        the scheme simple.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        private const int MAX_ATTEMPTS = 3;
+        public static readonly string default_region = "eu";
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        private const int _maxAttempts = 3;
+        public static readonly string DefaultRegion = "eu";
+        \\\
+        ```
+    languages: [csharp]
+    tags: [naming, constants]
+    source: https://google.github.io/styleguide/csharpguide.html#code

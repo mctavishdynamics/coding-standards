@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellUseLocalVariables:
+    standard: @{GoogleShell}
+    ruleId: use-local-variables
+    title: Declare function variables with local
+    statement:
+        Declare variables used only inside a function with local. When the
+        value comes from a command substitution, declare the variable and
+        assign it in separate statements.
+    rationale:
+        local keeps variables out of the global namespace. Combining local
+        with a command substitution hides the command's exit status, because
+        $? then reports the status of local.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        fetch_version() {
+          local version="$(curl -fsS "${VERSION_URL}")"
+          (( $? == 0 )) || return
+          echo "${version}"
+        }
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        fetch_version() {
+          local version
+          version="$(curl -fsS "${VERSION_URL}")"
+          (( $? == 0 )) || return
+          echo "${version}"
+        }
+        \\\
+        ```
+    languages: [shell]
+    tags: [variables, functions, error-handling]
+    source: https://google.github.io/styleguide/shellguide.html#use-local-variables

@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonProperties:
+    standard: @{GooglePython}
+    ruleId: 2.13
+    title: Use properties only for cheap, unsurprising access
+    statement:
+        Use a property only when it is needed and behaves like ordinary
+        attribute access, such as controlling access or computing a
+        trivially derived value. Do not use a property just to wrap a plain
+        internal attribute, create properties with the property decorator,
+        and do not use them for computations a subclass may want to
+        override.
+    rationale:
+        Callers expect attribute access to be cheap and free of side
+        effects. Properties that hide real work surprise readers, and
+        inheritance with properties is not obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Account:
+            def __init__(self, owner):
+                self._owner = owner
+
+            @property
+            def owner(self):
+                return self._owner
+
+            @owner.setter
+            def owner(self, value):
+                self._owner = value
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Rectangle:
+            def __init__(self, width, height):
+                self.width = width
+                self.height = height
+
+            @property
+            def area(self):
+                return self.width * self.height
+        \\\
+        ```
+    languages: [python]
+    tags: [classes, properties]
+    source: https://google.github.io/styleguide/pyguide.html#s2.13-properties

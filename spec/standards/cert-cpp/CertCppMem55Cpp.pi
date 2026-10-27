@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppMem55Cpp:
+    standard: @{CertCpp}
+    ruleId: MEM55-CPP
+    title: Honor replacement dynamic storage management requirements
+    statement:
+        When replacing the global allocation or deallocation functions, meet
+        the requirements the standard sets for them, such as throwing
+        bad_alloc on failure from the throwing forms and returning null from
+        the nothrow forms.
+    rationale:
+        Callers rely on those guarantees, so a replacement that returns null
+        from throwing new leads to null pointer dereferences and undefined
+        behavior. CERT rates likelihood likely, detectable no, repairable
+        no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        void* operator new(std::size_t size) {
+            return tracked_malloc(size);  // may return nullptr
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void* operator new(std::size_t size) {
+            if (void* p = tracked_malloc(size)) {
+                return p;
+            }
+            throw std::bad_alloc();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, allocation, replacement-functions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/memory-management-mem/mem55-cpp

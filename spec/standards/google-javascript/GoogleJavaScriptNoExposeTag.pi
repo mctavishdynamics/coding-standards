@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoExposeTag:
+    standard: @{GoogleJavaScript}
+    ruleId: 9.1.4.1
+    title: Do not use @expose
+    statement:
+        Do not use the deprecated @expose annotation; use @export,
+        @nocollapse or both.
+    rationale:
+        @expose is no longer supported as a standard Closure annotation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @expose */
+        MyApi.prototype.start = function() {};
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** @export */
+        MyApi.prototype.start = function() {};
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, deprecated, closure]
+    source: https://google.github.io/styleguide/jsguide.html#9141-expose---deprecated-do-not-use

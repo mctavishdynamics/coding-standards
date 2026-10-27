@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonFunctionDocstrings:
+    standard: @{GooglePython}
+    ruleId: 3.8.3
+    title: Document public, long or non-obvious functions
+    statement:
+        Give a docstring to every function that is public, of nontrivial
+        size or has non-obvious logic. Describe how to call it and what it
+        does, not its implementation, using Args, Returns or Yields, and
+        Raises sections as needed, in a consistent descriptive or imperative
+        style. A decorated function's docstring describes its behavior after
+        decoration.
+    rationale:
+        A reader should be able to call the function correctly from the
+        docstring alone, without reading its code.
+    exceptions:
+        The sections may be left out when the name and signature make a one-
+        line docstring sufficient, and Returns may be omitted when the
+        function returns only None or the opening sentence already describes
+        the return value.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def transfer(source, target, amount):
+            # Moves money.
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def transfer(source: Account, target: Account, amount: Decimal) -> Receipt:
+            """Moves money from one account to another.
+
+            Args:
+              source: The account to debit.
+              target: The account to credit.
+              amount: A positive amount in the accounts' currency.
+
+            Returns:
+              A receipt recording both balances after the transfer.
+
+            Raises:
+              InsufficientFundsError: The source balance is lower than amount.
+            """
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, functions]
+    source: https://google.github.io/styleguide/pyguide.html#s3.8.3-functions-and-methods

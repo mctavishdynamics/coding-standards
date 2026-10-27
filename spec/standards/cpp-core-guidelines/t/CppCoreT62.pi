@@ -1,0 +1,48 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT62:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.62
+    title: Place non-dependent class template members in a non-templated base class
+    statement:
+        Members of a class template that do not depend on any template
+        parameter belong in a non-template base class.
+    rationale:
+        Base class members can then be used without naming template
+        arguments and without instantiating the template.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+        class Queue {
+        public:
+            enum class Status { ok, full, closed };
+            Status push(T value);
+        };
+
+        Queue<int>::Status s = Queue<int>::Status::ok;   // needs a T
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Queue_base {
+            enum class Status { ok, full, closed };
+        };
+
+        template<typename T>
+        class Queue : public Queue_base {
+        public:
+            Status push(T value);
+        };
+
+        Queue_base::Status s = Queue_base::Status::ok;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, code-size, design]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-nondependent

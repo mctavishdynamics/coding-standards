@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs73:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.73
+    title:
+        Prefer a while statement to a for statement when there is no obvious
+        loop variable
+    statement:
+        When a loop runs until a condition changes rather than over a
+        counter, write it as a while loop.
+    rationale:
+        A for statement with empty parts suggests a loop variable that does
+        not exist, while a while statement says what it means.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (; !queue.empty(); )
+            dispatch(queue.pop());
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        while (!queue.empty())
+            dispatch(queue.pop());
+        \\\
+        ```
+    languages: [cpp]
+    tags: [loops, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-while-for

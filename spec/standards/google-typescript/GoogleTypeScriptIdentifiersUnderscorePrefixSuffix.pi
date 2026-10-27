@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptIdentifiersUnderscorePrefixSuffix:
+    standard: @{GoogleTypeScript}
+    ruleId: identifiers-underscore-prefix-suffix
+    title: Do not use underscores as a prefix or suffix
+    statement:
+        Identifiers must not start or end with an underscore, and an
+        underscore alone must not be used as a name, even for unused
+        parameters. Skip unwanted destructured elements with extra commas.
+    rationale:
+        Visibility and usage are expressed by the language and tooling, not
+        by name decoration.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const [_, second] = pair;
+        let count_ = 0;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const [, second] = pair;
+        let count = 0;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [naming]
+    source: https://google.github.io/styleguide/tsguide.html#identifiers-underscore-prefix-suffix

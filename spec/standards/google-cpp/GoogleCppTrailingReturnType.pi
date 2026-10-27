@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppTrailingReturnType:
+    standard: @{GoogleCpp}
+    ruleId: trailing_return
+    title: Use trailing return types only where clearly needed
+    statement:
+        Write the return type before the function name in most cases. Use
+        the trailing return type form only where it is required, as in some
+        lambdas, or where it makes a complicated type much more readable.
+    rationale:
+        Most existing code uses leading return types, and a single style is
+        more uniform and familiar to readers coming from C or Java.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto Area(double width, double height) -> double;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        double Area(double width, double height);
+
+        template <typename T, typename U>
+        auto Add(T t, U u) -> decltype(t + u);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, declarations]
+    source: https://google.github.io/styleguide/cppguide.html#trailing_return

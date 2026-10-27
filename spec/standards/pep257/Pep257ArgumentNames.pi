@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257ArgumentNames:
+    standard: @{Pep257}
+    ruleId: multi-line-docstrings-argument-names
+    title: Write argument names in their real case
+    statement:
+        Do not mention arguments in upper case in running text, as the Emacs
+        convention does. Use the exact argument names, and preferably list
+        each argument on its own line.
+    rationale:
+        Python is case sensitive and arguments can be passed by keyword, so
+        the docstring must give the names a caller actually types.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def resize(image, width, height):
+            """Scale IMAGE to WIDTH by HEIGHT pixels."""
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def resize(image, width, height):
+            """Scale an image to the given size.
+
+            image -- the Image to scale
+            width -- target width in pixels
+            height -- target height in pixels
+            """
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, naming]
+    source: https://peps.python.org/pep-0257/#multi-line-docstrings

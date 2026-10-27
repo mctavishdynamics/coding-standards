@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT43:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.43
+    title: Prefer using over typedef for defining aliases
+    statement:
+        Define type aliases with using rather than typedef.
+    rationale:
+        With using the new name comes first, the form works for alias
+        templates where typedef cannot, and it reads like an auto
+        declaration.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        typedef void (*Callback)(int, const char*);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        using Callback = void (*)(int, const char*);
+
+        template<typename T>
+        using Handler = void (*)(const T&);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, aliases, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-using

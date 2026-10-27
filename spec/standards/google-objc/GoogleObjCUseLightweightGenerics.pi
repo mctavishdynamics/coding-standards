@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCUseLightweightGenerics:
+    standard: @{GoogleObjC}
+    ruleId: use-lightweight-generics-to-document-contained-types
+    title: Declare collection element types with lightweight generics
+    statement:
+        Declare every NSArray, NSDictionary and NSSet with lightweight
+        generics. Use the most specific common type, id for heterogeneous
+        collections, and a typedef when the full type becomes hard to read.
+    rationale:
+        Generics improve type safety and document what the collection holds.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @property(nonatomic, copy) NSArray *attendees;
+        NSDictionary *scoresByName = [self loadScores];
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @property(nonatomic, copy) NSArray<ABCPerson *> *attendees;
+        NSDictionary<NSString *, NSNumber *> *scoresByName = [self loadScores];
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [types, collections, generics]
+    source: https://google.github.io/styleguide/objcguide.html#use-lightweight-generics-to-document-contained-types

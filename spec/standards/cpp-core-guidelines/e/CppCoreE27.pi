@@ -1,0 +1,54 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE27:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.27
+    title: If you cannot throw exceptions, use error codes systematically
+    statement:
+        Without exceptions, report errors in one consistent way, for example
+        a result type with named value and error members or a valid()
+        indicator, check it at every call, and release resources on every
+        error exit.
+    rationale:
+        Systematic use of any error-handling strategy minimizes the chance
+        of forgetting to handle an error.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Gadget make_gadget(int n);   // failure indicated sometimes by -1, sometimes by null
+
+        void user()
+        {
+            Gadget g = make_gadget(17);
+            g.start();   // never checked
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct GadgetResult {
+            Gadget value;
+            ErrorCode error;
+        };
+
+        [[nodiscard]] GadgetResult make_gadget(int n);
+
+        void user()
+        {
+            auto r = make_gadget(17);
+            if (r.error != ErrorCode::none) {
+                report(r.error);
+                return;
+            }
+            r.value.start();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, error-codes, no-exceptions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-no-throw-codes

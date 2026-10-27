@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaVna01J:
+    standard: @{CertJava}
+    ruleId: VNA01-J
+    title: Ensure visibility of shared references to immutable objects
+    statement:
+        Make shared references to immutable objects visible to all threads,
+        by declaring the reference volatile or by synchronizing access to
+        it.
+    rationale:
+        The object is immutable but the reference is a mutable shared
+        variable, so other threads may not see a new value assigned to it.
+        CERT rates likelihood probable, detectable yes, repairable no,
+        priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        private Config config;
+        public void reload() { config = Config.load(); }
+        public Config current() { return config; }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private volatile Config config;
+        public void reload() { config = Config.load(); }
+        public Config current() { return config; }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, visibility, immutability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/visibility-and-atomicity-vna/vna01-j/

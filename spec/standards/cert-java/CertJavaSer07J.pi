@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSer07J:
+    standard: @{CertJava}
+    ruleId: SER07-J
+    title: Do not use the default serialized form for classes with implementation-defined invariants
+    statement:
+        For a class whose constructors enforce invariants, provide custom
+        readObject logic that rechecks them, or a readResolve, rather than
+        relying on the default serialized form.
+    rationale:
+        Deserialization bypasses constructors, so a forged stream can create
+        objects that violate the invariants or duplicate singletons. CERT's
+        risk assessment gives likelihood probable, detectable no, repairable
+        no, priority P4 and level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        class Range implements Serializable {
+            private final int low, high;
+            Range(int low, int high) {
+                if (low > high) throw new IllegalArgumentException();
+                this.low = low; this.high = high;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Range implements Serializable {
+            private final int low, high;
+            // constructor as before
+            private void readObject(ObjectInputStream in)
+                    throws IOException, ClassNotFoundException {
+                in.defaultReadObject();
+                if (low > high) throw new InvalidObjectException("low > high");
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, invariants]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/serialization-ser/ser07-j/

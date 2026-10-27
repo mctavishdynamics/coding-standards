@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftImportStatementsOrder:
+    standard: @{GoogleSwift}
+    ruleId: import-statements-order
+    title: Group and sort imports at the top of the file
+    statement:
+        Put imports first after any comments, never line-wrapped. Group them
+        as module imports, then individual declaration imports, then
+        testable imports, with each group sorted and one blank line between
+        groups.
+    rationale:
+        A fixed layout shows dependencies at a glance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        import UIKit
+        @testable import Checkout
+        import Combine
+        import func Darwin.sqrt
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        import Combine
+        import UIKit
+
+        import func Darwin.sqrt
+
+        @testable import Checkout
+        \\\
+        ```
+    languages: [swift]
+    tags: [imports, ordering]
+    source: https://google.github.io/swift/#import-statements

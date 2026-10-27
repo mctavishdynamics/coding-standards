@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCClassNames:
+    standard: @{GoogleObjC}
+    ruleId: class-names
+    title: Start class names with a capital and use mixed case
+    statement:
+        Class, category and protocol names start with an uppercase letter
+        and use mixed case to separate words. Classes and protocols in code
+        shared across applications must carry a project prefix.
+    rationale:
+        A consistent shape makes type names recognisable, and prefixes keep
+        shared code free of collisions.
+    exceptions:
+        A prefix is recommended but not required for classes and protocols
+        that are not shared between applications.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @interface photo_album_view : UIView
+        @end
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @interface ABCPhotoAlbumView : UIView
+        @end
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [naming, classes]
+    source: https://google.github.io/styleguide/objcguide.html#class-names

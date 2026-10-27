@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoDeclChan:
+    standard: @{GoogleGo}
+    ruleId: best-practices/decl-chan
+    title: Specify channel direction
+    statement:
+        Declare channel parameters and results as send-only or receive-only
+        where possible.
+    rationale:
+        The compiler then catches misuse such as closing a channel you only
+        read, and the type shows ownership.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func sum(values chan int) int {
+            total := 0
+            for v := range values {
+                total += v
+            }
+            close(values) // compiles, but is a bug
+            return total
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func sum(values <-chan int) int {
+            total := 0
+            for v := range values {
+                total += v
+            }
+            return total
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, concurrency, channels]
+    source: https://google.github.io/styleguide/go/best-practices#decl-chan

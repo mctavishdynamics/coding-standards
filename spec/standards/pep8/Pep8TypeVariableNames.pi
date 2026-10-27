@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8TypeVariableNames:
+    standard: @{Pep8}
+    ruleId: type-variable-names
+    title: Use short CapWords names for type variables
+    statement:
+        Name type variables in CapWords, preferring short names such as T or
+        AnyStr. Add the suffix _co for covariant and _contra for
+        contravariant type variables.
+    rationale:
+        Short names keep generic signatures compact, and the suffixes
+        document variance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        from typing import TypeVar
+
+        item_type = TypeVar('item_type', covariant=True)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from typing import TypeVar
+
+        T = TypeVar('T')
+        Item_co = TypeVar('Item_co', covariant=True)
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, type-hints]
+    source: https://peps.python.org/pep-0008/#type-variable-names

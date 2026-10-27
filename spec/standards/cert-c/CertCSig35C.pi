@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCSig35C:
+    standard: @{CertC}
+    ruleId: SIG35-C
+    title: Do not return from a computational exception signal handler
+    statement:
+        A handler for SIGFPE, SIGILL, SIGSEGV or another signal raised by a
+        computational exception must not return. End the program from the
+        handler, and prefer checking operands so the exception never
+        happens.
+    rationale:
+        Returning from such a handler is undefined behavior; the faulting
+        instruction may simply run again forever. CERT rates likelihood
+        unlikely, detectable no, repairable no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        static void on_fpe(int sig) {
+            (void)sig;
+            division_failed = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static void on_fpe(int sig) {
+            (void)sig;
+            _Exit(EXIT_FAILURE);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [signals, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/signals-sig/sig35-c

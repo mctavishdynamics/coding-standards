@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCIndicatingStyleExceptions:
+    standard: @{GoogleObjC}
+    ruleId: indicating-style-exceptions
+    title: Mark intentional style violations with NOLINT
+    statement:
+        When a line must break these rules, for example generated code, end
+        it with a NOLINT comment or put a NOLINTNEXTLINE comment at the end
+        of the line before, with one space after the slashes.
+    rationale:
+        The marker tells readers and linters that the deviation is
+        intentional.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        static NSString *const kGeneratedSchema = @"...a very long generated line that runs well past the column limit...";
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        static NSString *const kGeneratedSchema = @"...a very long generated line that runs well past the column limit...";  // NOLINT
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [formatting, tooling]
+    source: https://google.github.io/styleguide/objcguide.html#indicating-style-exceptions

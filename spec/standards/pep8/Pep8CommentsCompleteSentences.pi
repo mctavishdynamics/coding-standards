@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8CommentsCompleteSentences:
+    standard: @{Pep8}
+    ruleId: comments-complete-sentences
+    title: Write comments as complete sentences
+    statement:
+        Write comments as complete sentences. Capitalise the first word
+        unless it is an identifier starting with a lower-case letter, end
+        block comment sentences with a period, and use one or two spaces
+        after a sentence-ending period except after the last sentence.
+    rationale:
+        Full sentences are clearer than fragments, and changing an
+        identifier's case would misname it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # check cache first
+        # Parse_config returns none if missing
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        # Check the cache before hitting the database.
+        # parse_config returns None when the file is missing.
+        \\\
+        ```
+    languages: [python]
+    tags: [comments, wording]
+    source: https://peps.python.org/pep-0008/#comments

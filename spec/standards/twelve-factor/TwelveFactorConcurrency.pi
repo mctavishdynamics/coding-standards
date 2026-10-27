@@ -1,0 +1,25 @@
+use ../lib/CodingRule
+
+from ./TwelveFactor import TwelveFactor
+
+export coding-rule TwelveFactorConcurrency:
+    standard: @{TwelveFactor}
+    ruleId: VIII
+    title: Scale out via the process model
+    statement:
+        Assign each kind of work to a process type, such as web or worker,
+        and scale by running more processes. Do not daemonize or write PID
+        files; let the platform's process manager handle output, crashes and
+        restarts.
+    rationale:
+        Share-nothing processes make adding concurrency simple and reliable,
+        since a single process or virtual machine can only grow so large.
+    exceptions:
+        Processes may still multiplex internally with threads or an event
+        loop.
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [any]
+    tags: [scalability, concurrency, processes]
+    source: https://12factor.net/concurrency

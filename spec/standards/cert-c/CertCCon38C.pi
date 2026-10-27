@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon38C:
+    standard: @{CertC}
+    ruleId: CON38-C
+    title:
+        Preserve thread safety and liveness when using condition variables
+    statement:
+        When threads wait on one condition variable for different
+        predicates, wake them with cnd_broadcast, or give each predicate its
+        own condition variable. Use cnd_signal only when any waiting thread
+        can make progress.
+    rationale:
+        cnd_signal may wake a thread whose predicate is still false while
+        the thread that could proceed keeps sleeping, which can stall the
+        program. CERT rates likelihood unlikely, detectable no, repairable
+        yes, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        mtx_lock(&lock);
+        current_turn = next;
+        cnd_signal(&turn_changed);
+        mtx_unlock(&lock);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        mtx_lock(&lock);
+        current_turn = next;
+        cnd_broadcast(&turn_changed);
+        mtx_unlock(&lock);
+        \\\
+        ```
+    languages: [c]
+    tags: [concurrency, condition-variables, liveness]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/concurrency-con/con38-c

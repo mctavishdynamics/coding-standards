@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonDefaultIteratorsAndOperators:
+    standard: @{GooglePython}
+    ruleId: 2.8
+    title: Use default iterators and operators
+    statement:
+        Iterate directly over lists, dictionaries and files and use
+        operators such as in on types that support them, rather than calling
+        methods that build lists. Do not mutate a container while iterating
+        over it.
+    rationale:
+        The default forms are simple, efficient and work for any type that
+        supports them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        for name in prices.keys():
+            print(name)
+        for line in log_file.readlines():
+            process(line)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        for name in prices:
+            print(name)
+        for line in log_file:
+            process(line)
+        \\\
+        ```
+    languages: [python]
+    tags: [iteration, idioms]
+    source: https://google.github.io/styleguide/pyguide.html#s2.8-default-iterators-and-operators

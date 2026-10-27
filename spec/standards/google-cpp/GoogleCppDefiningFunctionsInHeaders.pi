@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppDefiningFunctionsInHeaders:
+    standard: @{GoogleCpp}
+    ruleId: Defining_Functions_in_Header_Files
+    title: Define only short functions at their header declaration
+    statement:
+        Define a function where it is declared in a header only when the
+        body is short, about 10 lines or fewer. Put longer bodies in the .cc
+        file, or when they must stay in the header, in an internal part such
+        as a private section or an internal namespace. Any definition in a
+        header must be ODR-safe, for example by marking it inline.
+    rationale:
+        Long bodies in the public API make it hard to skim and expose
+        implementation details. A non-inline definition in a header breaks
+        the One Definition Rule when the header is included twice.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // math_util.h
+        int Clamp(int v, int lo, int hi) {  // Not inline: ODR violation.
+          if (v < lo) return lo;
+          if (v > hi) return hi;
+          return v;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // math_util.h
+        inline int Clamp(int v, int lo, int hi) {
+          if (v < lo) return lo;
+          if (v > hi) return hi;
+          return v;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, functions, inline]
+    source: https://google.github.io/styleguide/cppguide.html#Defining_Functions_in_Header_Files

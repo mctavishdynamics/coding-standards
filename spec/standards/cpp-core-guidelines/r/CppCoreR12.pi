@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR12:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.12
+    title:
+        Immediately give the result of an explicit allocation to a manager
+        object
+    statement:
+        When you must allocate a resource explicitly, hand the result
+        straight to the object that will release it, in the same statement.
+    rationale:
+        Any code between the allocation and the hand-over can return or
+        throw, and then the resource leaks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void copy_file(const char* name) {
+            FILE* f = std::fopen(name, "r");
+            check_permissions(name);           // may throw: f leaks
+            std::unique_ptr<FILE, decltype(&std::fclose)> file(f, &std::fclose);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void copy_file(const char* name) {
+            std::unique_ptr<FILE, decltype(&std::fclose)> file(
+                std::fopen(name, "r"), &std::fclose);
+            check_permissions(name);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [resource-management, exception-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-immediate-alloc

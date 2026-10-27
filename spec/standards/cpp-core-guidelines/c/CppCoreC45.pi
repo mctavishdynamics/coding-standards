@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC45:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.45
+    title: Use default member initializers instead of a default constructor that only initializes
+    statement:
+        If a default constructor would only assign constant initial values
+        to members, write those values as default member initializers and
+        let the compiler generate the constructor.
+    rationale:
+        The generated constructor can be more efficient, and the values stay
+        next to the members.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Retry {
+        public:
+            Retry() : attempts_(3), delay_ms_(100) {}
+        private:
+            int attempts_;
+            int delay_ms_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Retry {
+        private:
+            int attempts_ = 3;
+            int delay_ms_ = 100;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, initialization]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-default

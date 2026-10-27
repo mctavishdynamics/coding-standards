@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaKAndRBraces:
+    standard: @{GoogleJava}
+    ruleId: 4.1.2
+    title: Format nonempty blocks in K and R style
+    statement:
+        For nonempty blocks, put no line break before the opening brace, a
+        line break after it, and a line break before the closing brace.
+        Break after the closing brace only when it ends a statement or the
+        body of a method, constructor or named class, so else, catch or a
+        comma follow it on the same line.
+    rationale:
+        A single brace style makes block structure look the same everywhere
+        and keeps code compact.
+    exceptions:
+        Where a single statement could appear, a standalone block may be
+        used, and its opening brace is then preceded by a line break; such
+        blocks usually limit variable scope. Enum classes have some extra
+        freedom, covered in 4.8.1.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        if (ready)
+        {
+          start();
+        }
+        else
+        {
+          wait(); }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (ready) {
+          start();
+        } else {
+          wait();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, braces]
+    source: https://google.github.io/styleguide/javaguide.html#s4.1.2-blocks-k-r-style

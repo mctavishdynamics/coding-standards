@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds01J:
+    standard: @{CertJava}
+    ruleId: IDS01-J
+    title: Normalize strings before validating them
+    statement:
+        Normalize untrusted strings, usually to Unicode form NFKC, before
+        checking them against a blacklist or whitelist, and validate the
+        normalized form.
+    rationale:
+        Unicode allows the same text to be encoded in several ways. A filter
+        applied before normalization can miss a dangerous sequence that
+        normalization later produces. CERT rates likelihood probable,
+        detectable no, repairable no, priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        if (Pattern.compile("[<>]").matcher(input).find()) {
+            throw new IllegalArgumentException("Invalid input");
+        }
+        String text = Normalizer.normalize(input, Form.NFKC);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String text = Normalizer.normalize(input, Form.NFKC);
+        if (Pattern.compile("[<>]").matcher(text).find()) {
+            throw new IllegalArgumentException("Invalid input");
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [unicode, input-validation, normalization]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-validation-and-data-sanitization-ids/ids01-j/

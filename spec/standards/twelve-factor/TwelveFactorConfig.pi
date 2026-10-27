@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./TwelveFactor import TwelveFactor
+
+export coding-rule TwelveFactorConfig:
+    standard: @{TwelveFactor}
+    ruleId: III
+    title: Store config in the environment
+    statement:
+        Keep everything that varies between deploys, such as resource
+        handles, credentials and per-deploy hostnames, out of the code and
+        in environment variables. Manage each variable independently per
+        deploy instead of grouping them into named environments.
+    rationale:
+        Config varies across deploys while code does not. Environment
+        variables are easy to change, unlikely to be committed by accident
+        and language-neutral, and a good test is whether the code could be
+        open-sourced at any moment without exposing credentials.
+    exceptions:
+        Internal application config that does not vary between deploys, such
+        as route tables or how modules are wired together, belongs in the
+        code.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        DATABASE_URL = "postgres://admin:s3cret@db.internal:5432/shop"
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import os
+
+        DATABASE_URL = os.environ["DATABASE_URL"]
+        \\\
+        ```
+    languages: [any]
+    tags: [configuration, secrets]
+    source: https://12factor.net/config

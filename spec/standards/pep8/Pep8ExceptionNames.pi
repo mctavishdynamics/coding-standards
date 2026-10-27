@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ExceptionNames:
+    standard: @{Pep8}
+    ruleId: exception-names
+    title: Suffix error exception names with Error
+    statement:
+        Name exceptions as classes, and add the suffix Error when the
+        exception really is an error.
+    rationale:
+        The suffix tells readers the class signals a failure.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class InvalidCoupon(Exception):
+            pass
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class InvalidCouponError(Exception):
+            pass
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, exceptions]
+    source: https://peps.python.org/pep-0008/#exception-names

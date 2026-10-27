@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaExp00J:
+    standard: @{CertJava}
+    ruleId: EXP00-J
+    title: Do not ignore values returned by methods
+    statement:
+        Check and act on the values that methods return, especially those
+        that report success or failure or that return a new object instead
+        of changing the receiver.
+    rationale:
+        Ignoring a return value can hide a failed operation, such as a file
+        that was not deleted, or discard the result of a method on an
+        immutable object. CERT rates likelihood probable, detectable yes,
+        repairable no, priority P8, level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        tempFile.delete();
+        label.replace('_', ' ');
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (!tempFile.delete()) {
+            log.warning("Could not delete " + tempFile);
+        }
+        label = label.replace('_', ' ');
+        \\\
+        ```
+    languages: [java]
+    tags: [return-values, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/expressions-exp/exp00-j/

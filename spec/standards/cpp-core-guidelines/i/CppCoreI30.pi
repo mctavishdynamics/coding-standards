@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI30:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.30
+    title: Encapsulate rule violations
+    statement:
+        When an unsafe or unusual technique is truly needed, keep it inside
+        the implementation and present a clean, safe interface to users.
+    rationale:
+        Implementation complexity that leaks through an interface forces
+        every user to understand its subtleties. Keeping it local keeps the
+        rest of the code simple and safe.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // every caller must remember to free the result
+        char* read_name(int id);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string read_name(int id) {
+            char* raw = legacy_read_name(id);   // the C API stays inside
+            std::string name(raw);
+            std::free(raw);
+            return name;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, encapsulation]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-encapsulate

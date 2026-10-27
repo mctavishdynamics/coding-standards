@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoIndentErrorFlow:
+    standard: @{GoogleGo}
+    ruleId: decisions/indent-error-flow
+    title: Handle errors first and keep the normal path unindented
+    statement:
+        Handle errors and other terminating conditions early, then continue
+        the normal code after the if block rather than in an else clause. If
+        a variable is used for more than a few lines, declare it before the
+        if instead of in an if initialiser.
+    rationale:
+        Readers find the main path quickly when it runs down the left edge
+        without nesting.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if user, err := load(id); err != nil {
+            return err
+        } else {
+            user.Touch()
+            return save(user)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        user, err := load(id)
+        if err != nil {
+            return err
+        }
+        user.Touch()
+        return save(user)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, errors, control-flow]
+    source: https://google.github.io/styleguide/go/decisions#indent-error-flow

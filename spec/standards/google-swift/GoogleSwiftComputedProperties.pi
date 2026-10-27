@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftComputedProperties:
+    standard: @{GoogleSwift}
+    ruleId: properties-1
+    title: Omit get for read-only computed properties
+    statement:
+        In a read-only computed property, leave out the get block and put
+        the body directly inside the property.
+    rationale:
+        The get wrapper is redundant noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        var isEmpty: Bool {
+          get {
+            return items.isEmpty
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        var isEmpty: Bool {
+          return items.isEmpty
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [properties, syntax]
+    source: https://google.github.io/swift/#properties-1

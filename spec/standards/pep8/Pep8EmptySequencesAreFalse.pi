@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8EmptySequencesAreFalse:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-empty-sequences
+    title: Rely on empty sequences being false
+    statement:
+        Test whether a string, list or tuple is empty by its truth value,
+        not by its length.
+    rationale:
+        Empty sequences are false, so the plain test is shorter and
+        idiomatic.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if len(pending) == 0:
+            return
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        if not pending:
+            return
+        \\\
+        ```
+    languages: [python]
+    tags: [comparisons, readability]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

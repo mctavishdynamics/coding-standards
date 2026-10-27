@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsNamingPascalCaseSingleton:
+    standard: @{AirbnbJavaScript}
+    ruleId: 23.8
+    title: Use PascalCase for exported classes, singletons and libraries
+    statement:
+        Use PascalCase when the export is a constructor, class, singleton,
+        function library or bare object.
+    rationale:
+        PascalCase marks these exports as named things that group behaviour,
+        not single functions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const httpClient = {
+          get() {},
+          post() {},
+        };
+        export default httpClient;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const HttpClient = {
+          get() {},
+          post() {},
+        };
+        export default HttpClient;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming, modules]
+    source: https://github.com/airbnb/javascript#naming--PascalCase-singleton

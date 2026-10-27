@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257ClosingQuotesOnOwnLine:
+    standard: @{Pep257}
+    ruleId: multi-line-docstrings-closing-quotes
+    title: Put the closing quotes of a multi-line docstring on their own line
+    statement:
+        Unless the whole docstring fits on one line, place the closing
+        triple quotes on a line by themselves.
+    rationale:
+        Editors can then refill the paragraph without pulling the quotes
+        into the text.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def archive(path):
+            """Move a file into the archive.
+
+            The original is removed once the copy succeeds."""
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def archive(path):
+            """Move a file into the archive.
+
+            The original is removed once the copy succeeds.
+            """
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, formatting]
+    source: https://peps.python.org/pep-0257/#multi-line-docstrings

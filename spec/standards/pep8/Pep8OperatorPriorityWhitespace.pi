@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8OperatorPriorityWhitespace:
+    standard: @{Pep8}
+    ruleId: other-recommendations-operator-priority
+    title: Space the lowest-priority operators in mixed expressions
+    statement:
+        When operators of different priority are mixed, consider adding
+        whitespace only around the lowest-priority ones. Never use more than
+        one space, and always use the same amount on both sides of a binary
+        operator.
+    rationale:
+        Tighter spacing on higher-priority operators shows how the
+        expression groups.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        distance = dx * dx + dy * dy
+        midpoint = (low+ high) // 2
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        distance = dx*dx + dy*dy
+        midpoint = (low+high) // 2
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, whitespace, operators]
+    source: https://peps.python.org/pep-0008/#other-recommendations

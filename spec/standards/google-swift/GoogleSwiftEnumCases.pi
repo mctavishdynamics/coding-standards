@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftEnumCases:
+    standard: @{GoogleSwift}
+    ruleId: enum-cases
+    title: Declare one enum case per line
+    statement:
+        Write one case per line. Use the comma form only when no case has
+        associated or raw values, all fit on one line, and the names need no
+        documentation.
+    rationale:
+        Separate lines leave room for values and documentation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        enum Command {
+          case start, stop, seek(TimeInterval)
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        enum Command {
+          case start
+          case stop
+          case seek(TimeInterval)
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [enums, formatting]
+    source: https://google.github.io/swift/#enum-cases

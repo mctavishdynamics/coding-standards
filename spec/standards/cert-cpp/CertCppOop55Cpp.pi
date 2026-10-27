@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppOop55Cpp:
+    standard: @{CertCpp}
+    ruleId: OOP55-CPP
+    title: Do not use pointer-to-member operators to access nonexistent members
+    statement:
+        Use a pointer-to-member with .* or ->* only on an object whose
+        dynamic type actually contains that member, and never with a null
+        pointer-to-member.
+    rationale:
+        Applying a pointer-to-member to an object without that member, or
+        using a null pointer-to-member, is undefined behavior. CERT rates
+        likelihood probable, detectable no, repairable no, priority P6,
+        level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        struct Base { virtual ~Base() = default; };
+        struct Derived : Base { void reset() {} };
+
+        void call(Base* b) {
+            auto pm = static_cast<void (Base::*)()>(&Derived::reset);
+            (b->*pm)();  // b may not be a Derived
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Base { virtual ~Base() = default; };
+        struct Derived : Base { void reset() {} };
+
+        void call(Base* b) {
+            if (auto* d = dynamic_cast<Derived*>(b)) {
+                void (Derived::*pm)() = &Derived::reset;
+                (d->*pm)();
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, pointers, inheritance]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/object-oriented-programming-oop/oop55-cpp

@@ -1,0 +1,56 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppDcl55Cpp:
+    standard: @{CertCpp}
+    ruleId: DCL55-CPP
+    title: Avoid information leakage when passing a class object across a trust boundary
+    statement:
+        Before passing a class object to less trusted code, such as across a
+        system call or network boundary, make sure padding bytes and unused
+        storage cannot carry leftover data. Copy members explicitly or clear
+        the whole object first.
+    rationale:
+        Padding and bits between members keep whatever was in memory before,
+        so sending the raw object can leak sensitive data such as keys or
+        pointers. CERT rates likelihood unlikely, detectable no, repairable
+        yes, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        struct Reply {
+            char status;
+            int length;
+        };
+
+        void send_reply(int sock, char status, int length) {
+            Reply r;
+            r.status = status;
+            r.length = length;
+            write(sock, &r, sizeof(r));  // padding bytes are uninitialized
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Reply {
+            char status;
+            int length;
+        };
+
+        void send_reply(int sock, char status, int length) {
+            Reply r;
+            std::memset(&r, 0, sizeof(r));
+            r.status = status;
+            r.length = length;
+            write(sock, &r, sizeof(r));
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [security, information-leak, classes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/declarations-and-initialization-dcl/dcl55-cpp

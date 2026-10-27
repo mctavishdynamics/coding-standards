@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptMultiLineComments:
+    standard: @{GoogleTypeScript}
+    ruleId: multi-line-comments
+    title: Write multi-line comments as several line comments
+    statement:
+        Indent multi-line implementation comments like the surrounding code
+        and write them as consecutive // comments, not block comments. Do
+        not draw boxes around comments.
+    rationale:
+        Line comments are uniform, easy to edit and do not get confused with
+        JSDoc.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        /*
+         * Retry once because the first request
+         * often hits a cold cache.
+         */
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        // Retry once because the first request
+        // often hits a cold cache.
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, formatting]
+    source: https://google.github.io/styleguide/tsguide.html#multi-line-comments

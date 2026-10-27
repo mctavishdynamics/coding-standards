@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCDelegatePattern:
+    standard: @{GoogleObjC}
+    ruleId: delegate-pattern
+    title: Do not retain delegates in a way that creates a cycle
+    statement:
+        Do not retain delegates, targets or blocks where that would create a
+        retain cycle. Release them as soon as they are no longer needed, or
+        hold them weakly when there is no clear point. Use blocks for
+        callbacks only when they can be released after use; otherwise use a
+        weak delegate.
+    rationale:
+        Retain cycles leak both objects, and block pointers cannot be held
+        weakly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @property(nonatomic, strong) id<ABCPickerDelegate> delegate;
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @property(nonatomic, weak) id<ABCPickerDelegate> delegate;
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [memory, delegates, ownership]
+    source: https://google.github.io/styleguide/objcguide.html#delegate-pattern

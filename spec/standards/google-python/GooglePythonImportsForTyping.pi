@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonImportsForTyping:
+    standard: @{GooglePython}
+    ruleId: 3.19.12
+    title: Import typing symbols directly and prefer abstract containers
+    statement:
+        Import symbols from typing and collections.abc directly; several may
+        share one line. Treat those names like keywords and do not redefine
+        them; alias with import as on a clash. In signatures prefer abstract
+        types such as Sequence over list, and built-in generics such as
+        tuple over typing.Tuple.
+    rationale:
+        Direct imports keep annotations short, and abstract parameter types
+        accept more callers' values.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        from typing import List, Tuple
+
+
+        def centroid(points: List[Tuple[float, float]]) -> Tuple[float, float]:
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from collections.abc import Sequence
+
+
+        def centroid(points: Sequence[tuple[float, float]]) -> tuple[float, float]:
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, imports]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.12-imports-for-typing

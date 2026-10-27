@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellBuiltinCommandsVsExternalCommands:
+    standard: @{GoogleShell}
+    ruleId: builtin-commands-vs-external-commands
+    title: Prefer builtins to external commands
+    statement:
+        Given a choice between a shell builtin and a separate process, use
+        the builtin, such as Bash parameter expansion and the =~ operator
+        instead of sed or expr.
+    rationale:
+        Builtins are more efficient, robust and portable than external
+        tools.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        base_name="$(echo "${path}" | sed -e 's|.*/||')"
+        sum="$(expr "${a}" + "${b}")"
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        base_name="${path##*/}"
+        sum="$(( a + b ))"
+        \\\
+        ```
+    languages: [shell]
+    tags: [performance, builtins]
+    source: https://google.github.io/styleguide/shellguide.html#builtin-commands-vs-external-commands

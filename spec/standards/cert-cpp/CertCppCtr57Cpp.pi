@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCtr57Cpp:
+    standard: @{CertCpp}
+    ruleId: CTR57-CPP
+    title: Provide a valid ordering predicate
+    statement:
+        Give associative containers and sorting algorithms a comparison that
+        is a strict weak ordering: irreflexive, asymmetric and transitive.
+    rationale:
+        An invalid ordering predicate such as less-or-equal breaks the
+        container's invariants and leads to erratic behavior, lost elements
+        or crashes. CERT rates likelihood probable, detectable no,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        std::set<int, std::less_equal<int>> ids;
+
+        void add(int id) {
+            ids.insert(id);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::set<int, std::less<int>> ids;
+
+        void add(int id) {
+            ids.insert(id);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, algorithms, predicates]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/containers-ctr/ctr57-cpp

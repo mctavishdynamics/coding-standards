@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet01J:
+    standard: @{CertJava}
+    ruleId: MET01-J
+    title: Never use assertions to validate method arguments
+    statement:
+        Validate the arguments of public methods with explicit checks that
+        throw a suitable exception, such as IllegalArgumentException, not
+        with assert statements.
+    rationale:
+        Assertions can be disabled, so the method's contract would go
+        unchecked, and a failed assertion does not throw the exception
+        callers expect. CERT rates likelihood probable, detectable no,
+        repairable yes, priority P8, level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        public void withdraw(long amount) {
+            assert amount > 0;
+            balance -= amount;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public void withdraw(long amount) {
+            if (amount <= 0) throw new IllegalArgumentException("amount must be positive");
+            balance -= amount;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [assertions, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met01-j/

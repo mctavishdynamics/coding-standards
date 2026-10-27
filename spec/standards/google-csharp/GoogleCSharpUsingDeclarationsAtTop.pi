@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpUsingDeclarationsAtTop:
+    standard: @{GoogleCSharp}
+    ruleId: using-declarations-at-top
+    title: Put using declarations at the top in order
+    statement:
+        Place namespace using declarations at the top of the file, before
+        any namespace. Sort them alphabetically, except that System imports
+        come first.
+    rationale:
+        Readers find a file's dependencies in one predictable place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        namespace Shop.Billing {
+          using Shop.Common;
+          using System.Linq;
+          using Newtonsoft.Json;
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        using System.Linq;
+        using Newtonsoft.Json;
+        using Shop.Common;
+
+        namespace Shop.Billing {
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [organization, imports]
+    source: https://google.github.io/styleguide/csharpguide.html#organization

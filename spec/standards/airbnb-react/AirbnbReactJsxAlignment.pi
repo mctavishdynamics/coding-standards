@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactJsxAlignment:
+    standard: @{AirbnbReact}
+    ruleId: alignment-1
+    title: Follow the standard JSX alignment style
+    statement:
+        Keep props on the tag line when they fit. Otherwise put each prop on
+        its own indented line and the closing bracket on its own line
+        aligned with the tag. Wrap multi-line JSX inside a logical or
+        ternary expression in parentheses. Enforced by the ESLint rules
+        react/jsx-closing-bracket-location and react/jsx-closing-tag-
+        location.
+    rationale:
+        A single alignment style makes long tags and conditional markup easy
+        to scan and keeps diffs small.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        <Modal title="Delete item"
+               onConfirm={removeItem} />
+
+        {isOpen &&
+          <Modal title="Delete item" />
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        <Modal
+          title="Delete item"
+          onConfirm={removeItem}
+        />
+
+        {isOpen && (
+          <Modal title="Delete item" />
+        )}
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [formatting, alignment, jsx]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#alignment

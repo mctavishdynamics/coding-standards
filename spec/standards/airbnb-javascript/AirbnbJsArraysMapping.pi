@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsArraysMapping:
+    standard: @{AirbnbJavaScript}
+    ruleId: 4.6
+    title: Map over iterables with Array.from
+    statement:
+        When you convert an iterable and map it at the same time, pass the
+        mapping function to Array.from instead of spreading and then calling
+        map.
+    rationale:
+        Array.from with a mapper avoids building an intermediate array.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const labels = [...inputs].map((input) => input.value);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const labels = Array.from(inputs, (input) => input.value);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [arrays, es6, iterables]
+    source: https://github.com/airbnb/javascript#arrays--mapping

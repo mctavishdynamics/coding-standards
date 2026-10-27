@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs61:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.61
+    title: Delete arrays using delete[] and non-arrays using delete
+    statement:
+        Release memory from new[] with delete[] and memory from new with
+        delete, never the other way around.
+    rationale:
+        The language requires the match, and a mismatch can corrupt memory
+        or fail to release resources.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int* samples = new int[256];
+        // ...
+        delete samples;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int* samples = new int[256];
+        // ...
+        delete[] samples;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, undefined-behavior]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-del

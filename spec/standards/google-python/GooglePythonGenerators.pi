@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonGenerators:
+    standard: @{GooglePython}
+    ruleId: 2.9
+    title: Use generators and document them with Yields
+    statement:
+        Use generators as needed. Document generator functions with a Yields
+        section rather than Returns. If a generator holds an expensive
+        resource, make sure it gets cleaned up, for example by wrapping it
+        in a context manager.
+    rationale:
+        Generators keep memory use low, but a resource held by an unfinished
+        generator may stay open until it is garbage collected.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def read_records(path):
+            """Returns records from the file."""
+            handle = open(path)
+            for line in handle:
+                yield parse(line)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def read_records(path):
+            """Reads records from the file.
+
+            Yields:
+              One parsed record per line.
+            """
+            with open(path) as handle:
+                for line in handle:
+                    yield parse(line)
+        \\\
+        ```
+    languages: [python]
+    tags: [generators, docstrings]
+    source: https://google.github.io/styleguide/pyguide.html#s2.9-generators

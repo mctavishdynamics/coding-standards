@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftForceTry:
+    standard: @{GoogleSwift}
+    ruleId: error-types-force-try
+    title: Do not use try!
+    statement:
+        Do not use force try. If failure would be unrecoverable, use
+        do-catch or try? and give a meaningful message.
+    rationale:
+        try! crashes without any useful context.
+    exceptions:
+        try! is allowed in tests, and in other code when only a programmer
+        error could make it throw, such as compiling a regular expression
+        from a string literal.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let data = try! Data(contentsOf: userSelectedURL)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let pattern = try! NSRegularExpression(pattern: "[0-9]+")
+        do {
+          let data = try Data(contentsOf: userSelectedURL)
+          show(data)
+        } catch {
+          report("Could not read \(userSelectedURL): \(error)")
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [error-handling, safety]
+    source: https://google.github.io/swift/#error-types

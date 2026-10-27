@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactArrowFunctionsForClosures:
+    standard: @{AirbnbReact}
+    ruleId: methods-1
+    title: Use arrow functions to close over local variables
+    statement:
+        Use an arrow function when an event handler needs local data such as
+        a loop item or index. Watch the performance cost when passing new
+        functions to custom components that may be pure.
+    rationale:
+        An arrow function captures the values it needs without extra
+        plumbing, but a new function on each render can cause needless
+        rerenders of pure components.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        function TrackList({ tracks, play }) {
+          return (
+            <ol>
+              {tracks.map((track) => (
+                <Track key={track.id} onClick={play} data-id={track.id} />
+              ))}
+            </ol>
+          );
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        function TrackList({ tracks, play }) {
+          return (
+            <ol>
+              {tracks.map((track, position) => (
+                <Track
+                  key={track.id}
+                  onClick={() => { play(track.id, position); }}
+                />
+              ))}
+            </ol>
+          );
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [functions, events, performance]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#methods

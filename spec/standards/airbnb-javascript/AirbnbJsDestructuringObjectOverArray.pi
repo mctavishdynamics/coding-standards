@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsDestructuringObjectOverArray:
+    standard: @{AirbnbJavaScript}
+    ruleId: 5.3
+    title: Return objects for multiple return values
+    statement:
+        When a function returns several values, return an object and
+        destructure it by name, not an array destructured by position.
+    rationale:
+        Callers can then pick only what they need, and new values can be
+        added or reordered without breaking call sites.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function measure(box) {
+          return [box.width, box.height, box.depth];
+        }
+        const [width, , depth] = measure(box);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function measure(box) {
+          return { width: box.width, height: box.height, depth: box.depth };
+        }
+        const { width, depth } = measure(box);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [destructuring, functions, api-design]
+    source: https://github.com/airbnb/javascript#destructuring--object-over-array

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftFallthroughInSwitchStatements:
+    standard: @{GoogleSwift}
+    ruleId: fallthrough-in-switch-statements
+    title: Combine cases instead of using fallthrough-only cases
+    statement:
+        When several cases run the same code, combine their patterns into a
+        range or list. Never write a case whose body is only fallthrough.
+    rationale:
+        Combined patterns are shorter and clearer.
+    exceptions:
+        A case with other statements that then falls through is allowed.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        switch key {
+        case "y": fallthrough
+        case "Y": confirm()
+        default: break
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        switch key {
+        case "y", "Y": confirm()
+        default: break
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [control-flow, switch]
+    source: https://google.github.io/swift/#fallthrough-in-switch-statements

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpNoObjectInitializersWithConstructors:
+    standard: @{GoogleCSharp}
+    ruleId: no-object-initializers-with-constructors
+    title: Avoid object initializers for types with constructors
+    statement:
+        Do not use object initializer syntax for classes or structs that
+        have constructors.
+    rationale:
+        Mixing a constructor with initializer assignments splits setup
+        across two mechanisms and can bypass the constructor's checks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        var account = new Account("alice") {
+          Balance = 100,
+        };
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        var account = new Account("alice", balance: 100);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [initialization, syntax]
+    source: https://google.github.io/styleguide/csharpguide.html#object-initializer-syntax

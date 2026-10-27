@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC46:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.46
+    title: Declare single-argument constructors explicit by default
+    statement:
+        Mark constructors that can be called with one argument explicit
+        unless you deliberately want an implicit conversion.
+    rationale:
+        Implicit conversions through constructors happen silently and can
+        cause unintended calls.
+    exceptions:
+        When an implicit conversion from the argument type is really wanted,
+        such as a complex number built from a double, omit explicit.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Timeout {
+        public:
+            Timeout(int ms);
+        };
+
+        void wait(Timeout t);
+        wait(42);   // compiles, intent unclear
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Timeout {
+        public:
+            explicit Timeout(int ms);
+        };
+
+        wait(Timeout(42));
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, conversions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-explicit

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8OverridingPrinciple:
+    standard: @{Pep8}
+    ruleId: overriding-principle
+    title: Name public API for its usage, not its implementation
+    statement:
+        Names visible to users as part of a public API should reflect how
+        they are used rather than how they are implemented.
+    rationale:
+        Users think in terms of what a name does for them, and
+        implementation details may change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def query_redis_hash(user_id):
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def get_user_profile(user_id):
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, api-design]
+    source: https://peps.python.org/pep-0008/#overriding-principle

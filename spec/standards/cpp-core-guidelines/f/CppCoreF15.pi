@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF15:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.15
+    title: Prefer simple and conventional ways of passing information
+    statement:
+        Pass and return values using the standard conventions described in
+        F.16 to F.21. Use advanced techniques only after measuring a real
+        need, and document it.
+    rationale:
+        Unusual, clever techniques surprise readers, slow understanding and
+        encourage bugs, and their gains may not be portable.
+    exceptions:
+        For shared ownership with shared_ptr, follow R.34, R.35 and R.36
+        instead.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // result returned through a static buffer to avoid a copy
+        const char* format_name(const Person& p);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string format_name(const Person& p);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, parameters, simplicity]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-conventional

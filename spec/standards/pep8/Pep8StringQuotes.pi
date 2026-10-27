@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8StringQuotes:
+    standard: @{Pep8}
+    ruleId: string-quotes
+    title: Pick one quote style and avoid escaped quotes
+    statement:
+        Single and double quotes are equivalent; choose one and use it
+        consistently. When a string contains one kind of quote, delimit it
+        with the other to avoid backslashes.
+    rationale:
+        Consistent quoting reads smoothly, and avoiding escapes keeps
+        strings legible.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        message = 'Can\'t open the file'
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        message = "Can't open the file"
+        \\\
+        ```
+    languages: [python]
+    tags: [strings, consistency]
+    source: https://peps.python.org/pep-0008/#string-quotes

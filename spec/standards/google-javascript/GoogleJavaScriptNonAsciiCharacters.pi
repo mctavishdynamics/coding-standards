@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNonAsciiCharacters:
+    standard: @{GoogleJavaScript}
+    ruleId: 2.3.3
+    title: Write non-ASCII characters in the most readable form
+    statement:
+        For other non-ASCII characters, write either the character itself or
+        its escape, choosing whichever is easier to read and understand. Add
+        an explanatory comment when an escape is not self-evident.
+    rationale:
+        A printable character is clear at a glance, while an unexplained
+        escape tells the reader nothing. Fear that some tool mishandles non-
+        ASCII is not a reason to make code harder to read.
+    exceptions:
+        Non-printable characters, such as a byte order mark, are better
+        written as escapes with a comment.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const unit = '\u00b5g';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const unit = 'µg';
+        const withBom = '\ufeff' + csv;  // Prepend a byte order mark.
+        \\\
+        ```
+    languages: [javascript]
+    tags: [literals, encoding, readability]
+    source: https://google.github.io/styleguide/jsguide.html#233-non-ascii-characters

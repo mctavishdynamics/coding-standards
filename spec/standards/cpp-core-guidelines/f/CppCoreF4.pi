@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF4:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.4
+    title: If a function might have to be evaluated at compile time, declare it constexpr
+    statement:
+        Mark a function constexpr when it may be needed in constant
+        expressions such as array bounds or template arguments.
+    rationale:
+        The compiler only allows compile-time evaluation of functions
+        declared constexpr.
+    exceptions:
+        Do not make every function constexpr; most work belongs at run time.
+        Avoid constexpr on APIs that may later depend on run-time
+        configuration or business logic.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int kib(int n) { return n * 1024; }
+
+        std::array<char, kib(4)> buffer;   // error: not a constant expression
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr int kib(int n) { return n * 1024; }
+
+        std::array<char, kib(4)> buffer;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, constexpr, compile-time]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-constexpr

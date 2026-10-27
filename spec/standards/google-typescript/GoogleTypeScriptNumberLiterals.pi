@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptNumberLiterals:
+    standard: @{GoogleTypeScript}
+    ruleId: number-literals
+    title: Use lowercase 0x, 0o and 0b prefixes for number literals
+    statement:
+        Numbers may be decimal, hex, octal or binary. Use exactly the 0x, 0o
+        and 0b prefixes with lowercase letters, and never write a leading
+        zero unless an x, o or b follows it.
+    rationale:
+        A bare leading zero once meant octal, and consistent lowercase
+        prefixes make the base unambiguous.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const mode = 0755;
+        const mask = 0XFF;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const mode = 0o755;
+        const mask = 0xff;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [numbers, literals]
+    source: https://google.github.io/styleguide/tsguide.html#number-literals

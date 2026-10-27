@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpArraysForFixedSize:
+    standard: @{GoogleCSharp}
+    ruleId: arrays-for-fixed-size
+    title: Use arrays when the size is fixed at construction
+    statement:
+        Prefer an array when the size of the container is fixed and known at
+        construction time.
+    rationale:
+        Arrays can be faster and state that the size will not change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        var weekdays = new List<string>(7) { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        var weekdays = new[] { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+        \\\
+        ```
+    languages: [csharp]
+    tags: [collections, performance]
+    source: https://google.github.io/styleguide/csharpguide.html#array-vs-list

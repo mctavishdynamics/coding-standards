@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj14J:
+    standard: @{CertJava}
+    ruleId: OBJ14-J
+    title: Do not use an object that has been freed
+    statement:
+        Do not use a resource after a call that invalidates it, such as
+        reading from a stream after closing it or using a connection after
+        releasing it.
+    rationale:
+        Operations on a released resource fail or act on state that no
+        longer belongs to the program. CERT marks this rule as a stub. CERT
+        rates likelihood likely, detectable no, repairable no, priority P6,
+        level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        reader.close();
+        String line = reader.readLine();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String line;
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            line = reader.readLine();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [resources, lifecycle]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/object-orientation-obj/obj14-j/

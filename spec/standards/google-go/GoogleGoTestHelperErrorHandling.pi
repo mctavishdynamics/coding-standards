@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTestHelperErrorHandling:
+    standard: @{GoogleGo}
+    ruleId: best-practices/test-helper-error-handling
+    title: Call t.Fatal in setup helpers with a clear message
+    statement:
+        When a setup helper fails, call a Fatal function inside the helper
+        rather than returning the error, mark it with t.Helper, and describe
+        what went wrong. A helper that cannot fail should not take a
+        testing.T.
+    rationale:
+        This keeps calling tests clean and points failures at the right
+        line.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func addFixtures(dir string) error {
+            return os.WriteFile(filepath.Join(dir, "a.txt"), []byte("a"), 0o644)
+        }
+
+        if err := addFixtures(dir); err != nil {
+            t.Fatal(err)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func addFixtures(t *testing.T, dir string) {
+            t.Helper()
+            if err := os.WriteFile(filepath.Join(dir, "a.txt"), []byte("a"), 0o644); err != nil {
+                t.Fatalf("Setup: writing fixture: %v", err)
+            }
+        }
+
+        addFixtures(t, dir)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, testing, test-helpers]
+    source: https://google.github.io/styleguide/go/best-practices#test-helper-error-handling

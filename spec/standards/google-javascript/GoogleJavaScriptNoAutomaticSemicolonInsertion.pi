@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoAutomaticSemicolonInsertion:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.11.3
+    title: Do not rely on automatic semicolon insertion
+    statement:
+        Always end statements with semicolons, except function and class
+        declarations.
+    rationale:
+        Relying on insertion invites statements to merge across lines in
+        unexpected ways.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const next = current + 1
+        (pending || []).forEach(run)
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const next = current + 1;
+        (pending || []).forEach(run);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [disallowed, statements]
+    source: https://google.github.io/styleguide/jsguide.html#5113-automatic-semicolon-insertion

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoReceiverNames:
+    standard: @{GoogleGo}
+    ruleId: decisions/receiver-names
+    title: Use short consistent receiver names
+    statement:
+        Name a receiver with one or two letters that abbreviate its type,
+        use the same name on every method of that type, never use this or
+        self, and omit the name rather than using an underscore when it is
+        unused.
+    rationale:
+        Receivers appear on every method, so short consistent names keep
+        signatures readable and predictable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (this *Ledger) Balance() int64 { return this.total }
+        func (ledger *Ledger) Reset()       { ledger.total = 0 }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (l *Ledger) Balance() int64 { return l.total }
+        func (l *Ledger) Reset()         { l.total = 0 }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, naming, methods]
+    source: https://google.github.io/styleguide/go/decisions#receiver-names

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppLambdaExpressions:
+    standard: @{GoogleCpp}
+    ruleId: Lambda_expressions
+    title: Capture explicitly when a lambda may escape its scope
+    statement:
+        Use lambdas where appropriate, and prefer explicit captures when the
+        lambda may outlive the current scope. Use default capture by
+        reference only when the lambda clearly dies first, and by value only
+        for short lambdas that do not implicitly capture this. Do not use
+        init captures to introduce new names.
+    rationale:
+        Explicit captures show which objects the lambda depends on, which
+        prevents dangling references and hidden copies of this.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Widget::Start() {
+          executor_->Schedule([&] { Refresh(timeout); });  // Escapes the scope.
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Widget::Start() {
+          executor_->Schedule([this, timeout = timeout_] { Refresh(timeout); });
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [lambdas, lifetime]
+    source: https://google.github.io/styleguide/cppguide.html#Lambda_expressions

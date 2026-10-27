@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoSignalGoroutineCompletion:
+    standard: @{EffectiveGo}
+    ruleId: goroutines
+    title: Give background goroutines a way to signal completion
+    statement:
+        Start concurrent work by prefixing a call with go, and when the
+        caller needs the result or must wait for it, give the goroutine a
+        channel or similar way to signal that it has finished.
+    rationale:
+        A goroutine exits silently when its call completes, so without a
+        signal nothing can tell when its work is done.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        go sort.Ints(values)
+        fmt.Println(values[0]) // may run before the sort finishes
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        done := make(chan struct{})
+        go func() {
+            sort.Ints(values)
+            close(done)
+        }()
+        <-done
+        fmt.Println(values[0])
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, goroutines]
+    source: https://go.dev/doc/effective_go#goroutines

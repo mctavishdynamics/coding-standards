@@ -1,0 +1,45 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC100:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.100
+    title: Follow the STL when defining a container
+    statement:
+        Design a container type with the interface and conventions of the
+        standard containers, such as begin, end, size, value_type and
+        iterators.
+    rationale:
+        The STL design is sound and familiar to most C++ programmers, and
+        following it lets the container work with standard algorithms.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class IntBag {
+        public:
+            int count() const;
+            int get(int index) const;
+            void put(int value);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class IntBag {
+        public:
+            using value_type = int;
+            using iterator = int*;
+            iterator begin();
+            iterator end();
+            std::size_t size() const;
+            void push_back(int value);
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, stl, conventions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rcon-stl

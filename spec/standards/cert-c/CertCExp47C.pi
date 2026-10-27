@@ -1,0 +1,55 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp47C:
+    standard: @{CertC}
+    ruleId: EXP47-C
+    title: Do not call va_arg with an argument of the incorrect type
+    statement:
+        Pass va_arg the promoted type of the argument the caller really
+        supplied, and never read more arguments than were passed. Remember
+        that char and short arrive as int and float arrives as double.
+    rationale:
+        A type mismatch in va_arg is undefined behavior and reads the wrong
+        bytes from the argument list. CERT rates likelihood likely,
+        detectable no, repairable no, priority P6, level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        #include <stdarg.h>
+
+        double sum(int n, ...) {
+            va_list ap;
+            double total = 0;
+            va_start(ap, n);
+            for (int i = 0; i < n; i++) {
+                total += va_arg(ap, float);
+            }
+            va_end(ap);
+            return total;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdarg.h>
+
+        double sum(int n, ...) {
+            va_list ap;
+            double total = 0;
+            va_start(ap, n);
+            for (int i = 0; i < n; i++) {
+                total += va_arg(ap, double);
+            }
+            va_end(ap);
+            return total;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [functions, variadic, types]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/expressions-exp/exp47-c

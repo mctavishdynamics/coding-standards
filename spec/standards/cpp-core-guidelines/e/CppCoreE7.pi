@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE7:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.7
+    title: State your preconditions
+    statement:
+        Make the conditions a function requires of its arguments explicit,
+        in code where possible, for example with an assertion or Expects,
+        rather than leaving them implicit.
+    rationale:
+        Stated preconditions prevent interface errors, where a caller passes
+        a value the function cannot handle.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        double average(const std::vector<double>& values)
+        {
+            return std::accumulate(values.begin(), values.end(), 0.0) / values.size();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        double average(const std::vector<double>& values)
+        {
+            Expects(!values.empty());
+            return std::accumulate(values.begin(), values.end(), 0.0) / values.size();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, contracts, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-precondition

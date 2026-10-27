@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptConstructorParentheses:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.11.7
+    title: Always use parentheses when invoking a constructor
+    statement:
+        Always write parentheses after the constructor in a new expression.
+    rationale:
+        Without them, member access binds differently, so new Foo.Bar() and
+        new Foo().Bar() mean different things.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const started = new Date;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const started = new Date();
+        \\\
+        ```
+    languages: [javascript]
+    tags: [disallowed, constructors]
+    source: https://google.github.io/styleguide/jsguide.html#5117-omitting--when-invoking-a-constructor

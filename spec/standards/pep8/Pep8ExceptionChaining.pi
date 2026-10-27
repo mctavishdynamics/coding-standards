@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ExceptionChaining:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-exception-chaining
+    title: Use exception chaining appropriately
+    statement:
+        Use raise X from Y to replace an exception explicitly while keeping
+        the original traceback. When deliberately suppressing the cause with
+        from None, carry the relevant details into the new exception.
+    rationale:
+        Chaining preserves the debugging trail, and copying details keeps
+        the new error useful when the old one is hidden.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        try:
+            return self._fields[name]
+        except KeyError:
+            raise AttributeError("lookup failed") from None
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        try:
+            return self._fields[name]
+        except KeyError:
+            raise AttributeError(name) from None
+        \\\
+        ```
+    languages: [python]
+    tags: [exceptions, error-handling]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

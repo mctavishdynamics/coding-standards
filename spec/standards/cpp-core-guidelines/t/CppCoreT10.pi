@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT10:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.10
+    title: Specify concepts for all template arguments
+    statement:
+        Constrain every template type parameter with a concept that states
+        what the template assumes about it. Use plain typename only when
+        nothing more than being a type can be assumed.
+    rationale:
+        The assumed meaning of a template argument is part of the template's
+        interface. A concept documents it and turns deep instantiation
+        errors into clear messages at the call site.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename It, typename V>
+        It locate(It first, It last, const V& value);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<std::input_iterator It, typename V>
+            requires std::equality_comparable_with<std::iter_value_t<It>, V>
+        It locate(It first, It last, const V& value);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-concepts

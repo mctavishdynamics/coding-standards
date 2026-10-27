@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoPanicsStayInPackage:
+    standard: @{EffectiveGo}
+    ruleId: recover-package-boundary
+    title: Do not let internal panics escape a package
+    statement:
+        If a package uses panic and recover internally to simplify error
+        handling, convert those panics into error values at its API and
+        re-panic on anything unexpected.
+    rationale:
+        Clients expect errors, not panics, and re-panicking on unknown
+        values keeps real bugs such as index errors visible.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Parse panics with a parseError on malformed input.
+        func Parse(src string) *AST {
+            return newParser(src).parse()
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func Parse(src string) (ast *AST, err error) {
+            defer func() {
+                if r := recover(); r != nil {
+                    pe, ok := r.(parseError)
+                    if !ok {
+                        panic(r)
+                    }
+                    ast, err = nil, pe
+                }
+            }()
+            return newParser(src).parse(), nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, panic, api-design]
+    source: https://go.dev/doc/effective_go#recover

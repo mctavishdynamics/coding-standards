@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaLck03J:
+    standard: @{CertJava}
+    ruleId: LCK03-J
+    title: Do not synchronize on the intrinsic locks of high-level concurrency objects
+    statement:
+        Do not use a Lock or Condition object as the target of a
+        synchronized block. Use its own lock() and unlock() methods.
+    rationale:
+        The intrinsic monitor of a ReentrantLock is unrelated to the lock it
+        implements. Code mixing the two believes it shares one lock while it
+        uses two, so the data is not protected. CERT's risk assessment gives
+        likelihood probable, detectable yes, repairable no, priority P8 and
+        level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        private final Lock lock = new ReentrantLock();
+
+        void update() {
+            synchronized (lock) {
+                state++;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private final Lock lock = new ReentrantLock();
+
+        void update() {
+            lock.lock();
+            try {
+                state++;
+            } finally {
+                lock.unlock();
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, locking]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/locking-lck/lck03-j/

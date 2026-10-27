@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaOneTopLevelClass:
+    standard: @{GoogleJava}
+    ruleId: 3.4.1
+    title: Declare exactly one top-level class per file
+    statement:
+        Put each top-level class in its own source file.
+    rationale:
+        One class per file keeps the file name meaningful and makes every
+        class easy to locate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        // File: Shapes.java
+        public final class Circle {}
+
+        final class Square {}
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        // File: Circle.java
+        public final class Circle {}
+
+        // File: Square.java
+        final class Square {}
+        \\\
+        ```
+    languages: [java]
+    tags: [source-files, classes]
+    source: https://google.github.io/styleguide/javaguide.html#s3.4.1-one-top-level-class

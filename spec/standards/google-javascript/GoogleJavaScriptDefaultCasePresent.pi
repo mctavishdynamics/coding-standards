@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptDefaultCasePresent:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.8.3.2
+    title: Include a default case last in every switch
+    statement:
+        Every switch statement has a default statement group, even if it is
+        empty, and the default group comes last.
+    rationale:
+        An explicit default shows that unexpected values were considered.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        switch (direction) {
+          case 'up':
+            moveUp();
+            break;
+          case 'down':
+            moveDown();
+            break;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        switch (direction) {
+          case 'up':
+            moveUp();
+            break;
+          case 'down':
+            moveDown();
+            break;
+          default:
+            throw new Error(`Unknown direction ${direction}`);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [control-flow, switch]
+    source: https://google.github.io/styleguide/jsguide.html#5832-the-default-case-is-present

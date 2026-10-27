@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonLineLength:
+    standard: @{GooglePython}
+    ruleId: 3.2
+    title: Keep lines to 80 characters
+    statement:
+        Limit lines to 80 characters. Do not use backslashes for line
+        continuation; use implicit joining inside parentheses, brackets and
+        braces, adding parentheses if needed. Break at the highest syntactic
+        level possible, and put a long URL in a comment on its own line
+        instead of splitting it.
+    rationale:
+        Short lines are easier to read and review side by side, and
+        backslash continuations are fragile.
+    exceptions:
+        Long import statements, URLs, paths or flags in comments, long
+        module-level string constants without whitespace, and pylint disable
+        comments may exceed the limit. A line may also be longer when the
+        Black or Pyink formatter cannot shorten it. Docstring summary lines
+        must stay within 80 characters.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if user.is_active and user.email_verified and \
+                user.plan == 'pro':
+            grant_access(user)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        if (user.is_active and user.email_verified and
+                user.plan == 'pro'):
+            grant_access(user)
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, line-length]
+    source: https://google.github.io/styleguide/pyguide.html#s3.2-line-length

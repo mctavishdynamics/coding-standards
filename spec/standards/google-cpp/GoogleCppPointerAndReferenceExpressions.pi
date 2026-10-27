@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppPointerAndReferenceExpressions:
+    standard: @{GoogleCpp}
+    ruleId: Pointer_and_Reference_Expressions
+    title: Attach pointer and reference symbols to the type
+    statement:
+        Put no spaces around the period or arrow and none after a unary
+        asterisk or ampersand. In declarations put no space before the
+        asterisk or ampersand and one space before the name. Do not declare
+        several variables in one declaration if any is a pointer or
+        reference.
+    rationale:
+        Consistent spacing makes pointer use easy to recognize, and mixed
+        declarations such as a pointer beside a plain variable are easily
+        misread.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int * p = & value;
+        int* a, *b;
+        std::string &name = user . name;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int* p = &value;
+        int* a = nullptr;
+        int* b = nullptr;
+        const std::string& name = user.name;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, pointers]
+    source: https://google.github.io/styleguide/cppguide.html#Pointer_and_Reference_Expressions

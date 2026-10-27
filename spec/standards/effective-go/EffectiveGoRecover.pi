@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoRecover:
+    standard: @{EffectiveGo}
+    ruleId: recover
+    title: Recover in deferred functions to contain a failure
+    statement:
+        Call recover only from a deferred function. Use it, for example, to
+        stop one failing goroutine in a server from killing the others.
+    rationale:
+        recover returns nil unless called directly from a deferred function,
+        and recovering at a goroutine boundary lets the rest of the program
+        keep running.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func safely(work func()) {
+            if r := recover(); r != nil { // not deferred, never catches anything
+                log.Println("work failed:", r)
+            }
+            work()
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func safely(work func()) {
+            defer func() {
+                if r := recover(); r != nil {
+                    log.Println("work failed:", r)
+                }
+            }()
+            work()
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, panic, concurrency]
+    source: https://go.dev/doc/effective_go#recover

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptFunctionExpressions:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.2.4
+    title: Indent function expression bodies two spaces from the statement
+    statement:
+        When an anonymous function is passed as an argument, indent its body
+        two spaces more than the indentation of the line on which the call
+        starts.
+    rationale:
+        Tying the indent to the enclosing statement keeps callback bodies
+        close to the left margin and visually tied to the call.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        orders.forEach((order) => {
+                         ship(order);
+                       });
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        orders.forEach((order) => {
+          ship(order);
+        });
+
+        fetchOrders()
+            .then((orders) => {
+              render(orders);
+            });
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, indentation, functions]
+    source: https://google.github.io/styleguide/jsguide.html#424-function-expressions

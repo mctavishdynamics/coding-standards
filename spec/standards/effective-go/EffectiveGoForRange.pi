@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoForRange:
+    standard: @{EffectiveGo}
+    ruleId: for
+    title: Use a range clause to loop over collections
+    statement:
+        Loop over an array, slice, string or map, or receive from a channel,
+        with a range clause. Ranging over a string yields Unicode code
+        points decoded from UTF-8.
+    rationale:
+        Range handles indexing and bounds for you, and over strings it
+        decodes runes correctly where manual byte indexing would not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        for i := 0; i < len(title); i++ {
+            if title[i] == ' ' {
+                words++
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        for _, r := range title {
+            if unicode.IsSpace(r) {
+                words++
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [control-flow, loops]
+    source: https://go.dev/doc/effective_go#for

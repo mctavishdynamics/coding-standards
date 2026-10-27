@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT49:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.49
+    title: Where possible, avoid type-erasure
+    statement:
+        Prefer templates or ordinary interfaces over hiding types behind a
+        type-erased wrapper, unless the erasure buys something you need.
+    rationale:
+        Type erasure adds a level of indirection by hiding type information
+        behind a separate compilation boundary, which costs run time and
+        optimization opportunities.
+    exceptions:
+        Type erasure is sometimes the right tool, as with std::function.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int apply_twice(std::function<int(int)> f, int x)  // called with fixed lambdas
+        {
+            return f(f(x));
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int apply_twice(std::invocable<int> auto f, int x)
+        {
+            return f(f(x));
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, performance, type-erasure]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-erasure

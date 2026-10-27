@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCStr38C:
+    standard: @{CertC}
+    ruleId: STR38-C
+    title:
+        Do not confuse narrow and wide character strings and functions
+    statement:
+        Use narrow string functions such as strlen and strcpy with char
+        strings, and wide functions such as wcslen and wcscpy with wchar_t
+        strings. Size wide buffers in wchar_t units.
+    rationale:
+        Mixing them is undefined behavior. A wide string can contain zero
+        bytes and its elements are larger, so lengths and copies come out
+        wrong. CERT rates likelihood likely, detectable yes, repairable no,
+        priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+        #include <string.h>
+        #include <wchar.h>
+
+        wchar_t *wide_copy(const wchar_t *src) {
+            wchar_t *dst = malloc(strlen((const char *)src) + 1);
+            if (dst) {
+                wcscpy(dst, src);
+            }
+            return dst;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+        #include <wchar.h>
+
+        wchar_t *wide_copy(const wchar_t *src) {
+            wchar_t *dst = malloc((wcslen(src) + 1) * sizeof(wchar_t));
+            if (dst) {
+                wcscpy(dst, src);
+            }
+            return dst;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [strings, wide-characters]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/characters-and-strings-str/str38-c

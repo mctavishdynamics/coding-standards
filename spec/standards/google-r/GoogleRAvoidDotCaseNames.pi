@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleR import GoogleR
+
+export coding-rule GoogleRAvoidDotCaseNames:
+    standard: @{GoogleR}
+    ruleId: naming-conventions
+    title: Do not name objects with dot.case
+    statement:
+        Stop using dot-separated names such as monthly.total for new
+        objects. Google previously recommended dot.case and is moving away
+        from it.
+    rationale:
+        A dotted name looks like an S3 method, such as print.default, and
+        readers may mistake one for the other.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```r
+        \\\
+        monthly.total <- sum(sales$amount)
+        \\\
+        ```
+    compliant:
+        ```r
+        \\\
+        monthly_total <- sum(sales$amount)
+        \\\
+        ```
+    languages: [r]
+    tags: [naming, s3]
+    source: https://google.github.io/styleguide/Rguide.html#naming-conventions

@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCOverrideDesignatedInitializers:
+    standard: @{GoogleObjC}
+    ruleId: override-designated-initializers
+    title: Override the superclass designated initializers
+    statement:
+        When a subclass adds a new designated initializer, override every
+        designated initializer of the superclass, and make convenience
+        initializers call through to a designated initializer.
+    rationale:
+        The superclass designated initializers become convenience
+        initializers of the subclass, and calling them unchanged leaves
+        subclass state uninitialized.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @implementation ABCBadgeView
+        - (instancetype)initWithCount:(NSInteger)count {
+          self = [super initWithFrame:CGRectZero];
+          if (self) {
+            _count = count;
+          }
+          return self;
+        }
+        @end
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @implementation ABCBadgeView
+        - (instancetype)initWithFrame:(CGRect)frame {
+          return [self initWithCount:0];
+        }
+
+        - (instancetype)initWithCount:(NSInteger)count {
+          self = [super initWithFrame:CGRectZero];
+          if (self) {
+            _count = count;
+          }
+          return self;
+        }
+        @end
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [initialization, inheritance]
+    source: https://google.github.io/styleguide/objcguide.html#override-designated-initializers

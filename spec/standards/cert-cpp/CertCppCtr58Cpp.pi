@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCtr58Cpp:
+    standard: @{CertCpp}
+    ruleId: CTR58-CPP
+    title: Do not use mutable predicate function objects
+    statement:
+        Do not pass algorithms predicate objects whose result depends on
+        state they change between calls. Keep predicates free of mutable
+        state.
+    rationale:
+        Algorithms may copy a predicate freely, so state that changes across
+        calls gives results that depend on the library implementation. CERT
+        rates likelihood likely, detectable yes, repairable no, priority P6,
+        level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        class EveryThird {
+        public:
+            bool operator()(int) { return ++calls_ == 3; }
+        private:
+            int calls_ = 0;
+        };
+
+        void prune(std::vector<int>& v) {
+            v.erase(std::remove_if(v.begin(), v.end(), EveryThird()), v.end());
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void prune(std::vector<int>& v) {
+            if (v.size() >= 3) {
+                v.erase(v.begin() + 2);
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [algorithms, predicates, function-objects]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/containers-ctr/ctr58-cpp

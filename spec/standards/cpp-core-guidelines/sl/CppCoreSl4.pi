@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSl4:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.4
+    title: Use the standard library in a type-safe manner
+    statement:
+        Use standard library facilities only in ways that respect their
+        types, without casts, untyped buffers or mismatched arguments. More
+        specific rules elaborate this.
+    rationale:
+        Breaking type safety with the library leads to undefined behavior
+        and memory corruption.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::vector<double> values(8);
+        std::memset(values.data(), 1, values.size());   // wrong size, meaningless bytes
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<double> values(8);
+        std::ranges::fill(values, 1.0);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [standard-library, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#sl-safe

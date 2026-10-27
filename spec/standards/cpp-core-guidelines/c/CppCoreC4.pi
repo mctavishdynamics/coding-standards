@@ -1,0 +1,54 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC4:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.4
+    title: Make a function a member only if it needs the representation
+    statement:
+        If a function can be written using only the public interface of a
+        class, make it a non-member. Reserve member functions for operations
+        that need direct access to private state.
+    rationale:
+        Fewer members means less coupling, fewer functions that can break
+        the invariant, and fewer functions to revisit when the
+        representation changes.
+    exceptions:
+        Virtual functions and the operators =, (), [] and -> must be
+        members. Some members of an overload set or of a chainable set of
+        functions may be members for consistency even if they do not touch
+        private data.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Date {
+        public:
+            int year() const;
+            int month() const;
+            int day() const;
+            Date next_weekday() const;   // uses only the accessors above
+        private:
+            int y_, m_, d_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Date {
+        public:
+            int year() const;
+            int month() const;
+            int day() const;
+        private:
+            int y_, m_, d_;
+        };
+
+        Date next_weekday(const Date& d);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, coupling, encapsulation]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-member

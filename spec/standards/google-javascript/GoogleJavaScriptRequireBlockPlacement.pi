@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptRequireBlockPlacement:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.6
+    title: Keep goog.require statements in one block after the module
+    statement:
+        Write goog.require and goog.requireType statements as one contiguous
+        block with no blank lines, one blank line after the goog.module
+        declaration, and nowhere else in the file. Each argument is a
+        namespace defined by a goog.module in another file. Use requireType
+        for names used only in type annotations.
+    rationale:
+        Dependencies collected in one place are easy to audit, and requires
+        inside functions hide what a file really needs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function render(data) {
+          const dom = goog.require('goog.dom');
+          return dom.createDom('div', null, data);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        goog.module('app.view');
+
+        const dom = goog.require('goog.dom');
+        const {Model} = goog.requireType('app.Model');
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, closure, imports]
+    source: https://google.github.io/styleguide/jsguide.html#36-googrequire-and-googrequiretype-statements

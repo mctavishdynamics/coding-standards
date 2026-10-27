@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp36C:
+    standard: @{CertC}
+    ruleId: FLP36-C
+    title:
+        Preserve precision when converting integral values to floating-point
+        type
+    statement:
+        Before converting a large integer to a floating-point type, make
+        sure the type has enough precision to hold the value exactly, or
+        detect when it does not.
+    rationale:
+        A float or double may not hold every value of a wide integer type,
+        and the low bits are lost without any runtime error. CERT rates
+        likelihood unlikely, detectable yes, repairable no, priority P2,
+        level L3.
+    exceptions:
+        Loss of precision is acceptable when the program needs it,
+        preferably with a comment saying so.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include <stdint.h>
+
+        float to_float(int64_t id) {
+            return (float)id;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdint.h>
+
+        int to_double(int64_t id, double *out) {
+            if (id > (INT64_C(1) << 53) || id < -(INT64_C(1) << 53)) {
+                return -1;
+            }
+            *out = (double)id;
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [floating-point, conversions, precision]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/floating-point-flp/flp36-c

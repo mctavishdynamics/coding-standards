@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptLegacyDeclareLegacyNamespace:
+    standard: @{GoogleJavaScript}
+    ruleId: 9.4.4.5
+    title: Use declareLegacyNamespace only while migrating
+    statement:
+        Call goog.module.declareLegacyNamespace only while migrating a file
+        and its consumers from goog.provide to goog.module, and remove it as
+        soon as consumers are updated. If they cannot move soon, have them
+        use goog.scope and goog.module.get instead.
+    rationale:
+        Declaring a global namespace undoes the isolation modules provide
+        and is meant only as a transition aid.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```javascript
+        \\\
+        goog.module('app.charts');
+
+        exports = {draw};
+        \\\
+        ```
+    languages: [javascript]
+    tags: [legacy, closure, migration]
+    source: https://google.github.io/styleguide/jsguide.html#9445-googmoduledeclarelegacynamespace

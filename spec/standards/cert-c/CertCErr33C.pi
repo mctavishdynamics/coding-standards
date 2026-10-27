@@ -1,0 +1,56 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCErr33C:
+    standard: @{CertC}
+    ruleId: ERR33-C
+    title: Detect and handle standard library errors
+    statement:
+        Check the result of every standard library call that can fail,
+        comparing its return value with the documented error value or
+        calling the documented error query, and handle the failure according
+        to an error-handling policy.
+    rationale:
+        Ignoring a failed call such as malloc, fopen or fseek lets the
+        program continue with bad data or null pointers, leading to crashes
+        or exploitable behavior. CERT rates likelihood likely, detectable
+        yes, repairable yes, priority P27, level L1.
+    exceptions:
+        A return value may be ignored when the function cannot fail, when
+        the value does not signal an error, or for the few functions whose
+        results are traditionally unchecked, such as printf; casting the
+        call to void documents the choice.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        char *load(FILE *f, size_t n) {
+            char *buf = malloc(n + 1);
+            size_t got = fread(buf, 1, n, f);
+            buf[got] = '\0';
+            return buf;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *load(FILE *f, size_t n) {
+            char *buf = malloc(n + 1);
+            if (buf == NULL) {
+                return NULL;
+            }
+            size_t got = fread(buf, 1, n, f);
+            if (got < n && ferror(f)) {
+                free(buf);
+                return NULL;
+            }
+            buf[got] = '\0';
+            return buf;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, library]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/error-handling-err/err33-c

@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppDcl54Cpp:
+    standard: @{CertCpp}
+    ruleId: DCL54-CPP
+    title: Overload allocation and deallocation functions as a pair in the same scope
+    statement:
+        When you overload an allocation function in a scope, overload the
+        matching deallocation function in the same scope, and the reverse.
+        This applies at global and class scope and to placement forms.
+    rationale:
+        Memory obtained from a custom allocator and released by the default
+        deallocator, or the reverse, corrupts the heap and is undefined
+        behavior. CERT rates likelihood probable, detectable yes, repairable
+        no, priority P4, level L3.
+    exceptions:
+        A placement deallocation function may be omitted when the placement
+        allocation and construction cannot throw. A partner function whose
+        behavior would equal the default need not be written, provided a
+        comment says so.
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        struct Packet {
+            static void* operator new(std::size_t size) {
+                return pool_allocate(size);
+            }
+            // operator delete not provided: uses global delete on pool memory
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Packet {
+            static void* operator new(std::size_t size) {
+                return pool_allocate(size);
+            }
+            static void operator delete(void* ptr) noexcept {
+                pool_release(ptr);
+            }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, allocation, overloading]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/declarations-and-initialization-dcl/dcl54-cpp

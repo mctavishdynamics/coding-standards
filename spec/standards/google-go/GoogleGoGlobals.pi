@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoGlobals:
+    standard: @{GoogleGo}
+    ruleId: best-practices/globals
+    title: Do not force clients to depend on global state
+    statement:
+        Libraries should not expose APIs or package-level variables that
+        control behaviour for all clients. Let clients create instances and
+        pass them as explicit dependencies, and treat any global state with
+        extreme scrutiny.
+    rationale:
+        Global state makes tests order-dependent, blocks parallel and
+        sharded runs, and leaves registration conflicts and timing without
+        good answers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package sidecar
+
+        var plugins = map[string]Plugin{}
+
+        func Register(name string, p Plugin) { plugins[name] = p }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package sidecar
+
+        type Registry struct{ plugins map[string]Plugin }
+
+        func NewRegistry() *Registry { return &Registry{plugins: map[string]Plugin{}} }
+
+        func (r *Registry) Register(name string, p Plugin) { r.plugins[name] = p }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, global-state, api-design, dependencies]
+    source: https://google.github.io/styleguide/go/best-practices#globals

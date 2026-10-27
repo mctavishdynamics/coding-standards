@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppErr51Cpp:
+    standard: @{CertCpp}
+    ruleId: ERR51-CPP
+    title: Handle all exceptions
+    statement:
+        Catch every exception the program can throw, at least in main and in
+        each thread's initial function, so none escapes without a handler.
+    rationale:
+        An unhandled exception calls std::terminate, and whether the stack
+        is unwound first is implementation defined, so cleanup may never
+        run. CERT rates likelihood probable, detectable yes, repairable yes,
+        priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        int main() {
+            run_server();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int main() {
+            try {
+                run_server();
+            } catch (const std::exception& e) {
+                std::cerr << "fatal: " << e.what() << '\n';
+                return EXIT_FAILURE;
+            } catch (...) {
+                return EXIT_FAILURE;
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [exceptions, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/exceptions-and-error-handling-err/err51-cpp

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoConditionalFormatting:
+    standard: @{GoogleGo}
+    ruleId: decisions/conditional-formatting
+    title: Do not line-break if, for or switch statements
+    statement:
+        Keep if, for, switch and case headers on one line. When a condition
+        is long, extract operands or other locals; when that is not elegant,
+        let the line be long. Closures or literals inside a condition must
+        keep matching braces. When comparing a variable with a constant, put
+        the variable on the left rather than writing Yoda conditions.
+    rationale:
+        Multi-line headers cause indentation confusion with the block that
+        follows.
+    exceptions:
+        An excessively long switch may indent all cases and separate them
+        with blank lines.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if user.IsAdmin() || user.HasRole("billing") ||
+            user.ID == invoice.OwnerID {
+            return allow()
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        isPrivileged := user.IsAdmin() || user.HasRole("billing")
+        isOwner := user.ID == invoice.OwnerID
+        if isPrivileged || isOwner {
+            return allow()
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, formatting, control-flow]
+    source: https://google.github.io/styleguide/go/decisions#conditional-formatting

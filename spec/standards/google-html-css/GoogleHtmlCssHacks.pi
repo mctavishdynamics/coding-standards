@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssHacks:
+    standard: @{GoogleHtmlCss}
+    ruleId: hacks
+    title: Avoid user agent detection and CSS hacks
+    statement:
+        Address styling differences with a different approach before
+        resorting to user agent detection or CSS filters, workarounds and
+        hacks. Treat both as a last resort.
+    rationale:
+        Projects follow the path of least resistance, so making hacks easy
+        leads to using them far too often, which hurts the code base in the
+        long run.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        .panel {
+          width: 300px;
+          *width: 310px; /* IE7 hack */
+        }
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        .panel {
+          box-sizing: border-box;
+          width: 300px;
+        }
+        \\\
+        ```
+    languages: [css]
+    tags: [compatibility, maintainability]
+    source: https://google.github.io/styleguide/htmlcssguide.html#hacks

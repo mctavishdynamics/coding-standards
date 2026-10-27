@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoNilSlices:
+    standard: @{GoogleGo}
+    ruleId: decisions/nil-slices
+    title: Prefer nil slices and do not distinguish nil from empty
+    statement:
+        Declare an empty local slice as nil rather than as an empty literal.
+        Do not design APIs that make callers tell a nil slice from an empty
+        one, and check emptiness with len rather than comparing with nil.
+    rationale:
+        Nil and empty slices behave the same for len, cap, range and append,
+        and APIs that separate them cause subtle bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        names := []string{}
+
+        if tags == nil {
+            return errNoTags
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var names []string
+
+        if len(tags) == 0 {
+            return errNoTags
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, slices, api-design]
+    source: https://google.github.io/styleguide/go/decisions#nil-slices

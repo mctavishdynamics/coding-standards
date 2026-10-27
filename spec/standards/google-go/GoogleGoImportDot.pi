@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoImportDot:
+    standard: @{GoogleGo}
+    ruleId: decisions/import-dot
+    title: Do not use dot imports
+    statement:
+        Do not use import with a dot to pull another package's exported
+        names into the current file unqualified.
+    rationale:
+        Unqualified names make it hard to tell where functionality comes
+        from.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        import . "example.com/geo/units"
+
+        var d = Kilometers(3)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        import "example.com/geo/units"
+
+        var d = units.Kilometers(3)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, imports]
+    source: https://google.github.io/styleguide/go/decisions#import-dot

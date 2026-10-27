@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs27:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.27
+    title: Use std::array or stack_array for arrays on the stack
+    statement:
+        For local arrays use std::array when the size is fixed at compile
+        time, or gsl::stack_array when it is only known at run time, rather
+        than built-in or variable-length arrays.
+    rationale:
+        They are readable, do not decay to pointers, and cannot be confused
+        with non-standard variable-length array extensions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void sample(int n) {
+            int fixed[16];
+            double readings[n];    // non-standard VLA
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void sample(int n) {
+            std::array<int, 16> fixed{};
+            gsl::stack_array<double> readings(n);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [arrays, containers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-stack

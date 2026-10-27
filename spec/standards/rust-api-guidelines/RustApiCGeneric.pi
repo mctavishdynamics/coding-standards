@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCGeneric:
+    standard: @{RustApiGuidelines}
+    ruleId: C-GENERIC
+    title: Use generics to minimise assumptions about parameters
+    statement:
+        Accept the most general type that does the job, such as an
+        IntoIterator rather than a slice or a Vec when the function only
+        iterates.
+    rationale:
+        Fewer assumptions make a function usable with more types, with
+        static dispatch and inference as a bonus.
+    exceptions:
+        Weigh this against the larger code size, single concrete type per
+        call and harder-to-read signatures that generics bring.
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub fn total_weight(parcels: &Vec<Parcel>) -> u32 {
+            parcels.iter().map(|p| p.weight).sum()
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub fn total_weight<'a, I>(parcels: I) -> u32
+        where
+            I: IntoIterator<Item = &'a Parcel>,
+        {
+            parcels.into_iter().map(|p| p.weight).sum()
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [generics, api-design]
+    source: https://rust-lang.github.io/api-guidelines/flexibility.html#c-generic

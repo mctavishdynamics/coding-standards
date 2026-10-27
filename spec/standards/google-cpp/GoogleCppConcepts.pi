@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppConcepts:
+    standard: @{GoogleCpp}
+    ruleId: Concepts
+    title: Use concepts sparingly and only where templates were used
+    statement:
+        Use concepts and constraints only where you would have used
+        templates before C++20. Prefer standard concepts to type traits and
+        requires clauses to enable_if, avoid the template-with-concept
+        parameter syntax, and do not reimplement existing concepts. Keep new
+        concepts internal to a library and only define ones the compiler can
+        verify.
+    rationale:
+        Concepts that are trivial, semantic or exposed at API boundaries add
+        complexity without catching real errors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <std::integral T>
+        T Twice(T value);
+
+        template <typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
+        T Half(T value);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <typename T>
+          requires(std::integral<T>)
+        T Twice(T value);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts]
+    source: https://google.github.io/styleguide/cppguide.html#Concepts

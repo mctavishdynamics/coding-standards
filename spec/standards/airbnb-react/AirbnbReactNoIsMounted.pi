@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactNoIsMounted:
+    standard: @{AirbnbReact}
+    ruleId: ismounted-1
+    title: Do not use isMounted
+    statement:
+        Do not call isMounted to check whether a component is still mounted.
+        Enforced by the ESLint rule react/no-is-mounted.
+    rationale:
+        isMounted is an anti-pattern, is not available on ES6 classes and is
+        being deprecated.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        componentDidMount() {
+          fetchStats().then((stats) => {
+            if (this.isMounted()) {
+              this.setState({ stats });
+            }
+          });
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        componentDidMount() {
+          this.request = fetchStats();
+          this.request.then((stats) => this.setState({ stats }));
+        }
+
+        componentWillUnmount() {
+          this.request.cancel();
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [lifecycle, deprecated]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#ismounted

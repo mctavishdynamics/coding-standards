@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp61:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.61
+    title: Use async to spawn concurrent tasks
+    statement:
+        Start concurrent work with std::async or a similar factory that
+        returns a future, rather than wiring up raw threads, promises or
+        packaged tasks yourself. If std::async is not suitable, write your
+        own future-returning factory, for example on a work queue.
+    rationale:
+        Like raw owning pointers, raw threads and promises are easy to
+        misuse. A factory hides thread creation or reuse behind an interface
+        that only hands out futures.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::promise<Image> promise;
+        std::future<Image> image = promise.get_future();
+        std::thread([p = std::move(promise)]() mutable {
+            p.set_value(decode("photo.jpg"));
+        }).detach();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::future<Image> image = std::async(std::launch::async, decode, "photo.jpg");
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, tasks, futures]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-async

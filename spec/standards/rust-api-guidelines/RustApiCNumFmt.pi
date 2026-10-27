@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCNumFmt:
+    standard: @{RustApiGuidelines}
+    ruleId: C-NUM-FMT
+    title: Provide hex, octal and binary formatting for bit-level number types
+    statement:
+        Implement UpperHex, LowerHex, Octal and Binary for any number type
+        you would manipulate with bitwise operators, especially bitflag
+        types.
+    rationale:
+        These traits back the hex, octal and binary format specifiers, which
+        are the natural way to inspect bit patterns.
+    exceptions:
+        Plain quantity types such as a nanosecond count usually do not need
+        them.
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[derive(Clone, Copy, Debug)]
+        pub struct Permissions(u16);
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[derive(Clone, Copy, Debug)]
+        pub struct Permissions(u16);
+
+        impl fmt::Octal for Permissions {
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                fmt::Octal::fmt(&self.0, f)
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [formatting, traits]
+    source: https://rust-lang.github.io/api-guidelines/interoperability.html#c-num-fmt

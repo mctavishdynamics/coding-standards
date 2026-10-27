@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF22:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.22
+    title: Use T* or owner<T*> to designate a single object
+    statement:
+        Use a plain T* only to refer to a single object you do not own, and
+        owner from the GSL for a pointer that owns. Use other types for
+        arrays, strings and positions.
+    rationale:
+        Plain pointers are used for many unrelated purposes in C and older
+        C++, which makes code hard to understand and to check. Giving T* a
+        single meaning enables tool support.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void process(int* p);   // one int? an array? who frees it?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void process(int* value);                // single object, not owned
+        void process_all(std::span<int> values);
+        gsl::owner<Node*> make_node();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, pointers, ownership]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-ptr

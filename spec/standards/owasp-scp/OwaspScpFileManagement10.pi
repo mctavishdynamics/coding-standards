@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpFileManagement10:
+    standard: @{OwaspScp}
+    ruleId: file-management-10
+    title: Never pass user data into a dynamic redirect
+    statement:
+        Do not build redirect targets from user-supplied data. If it must be
+        allowed, accept only validated relative path URLs.
+    rationale:
+        Open redirects let attackers send users to malicious sites under
+        your domain's name.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def after_login(request):
+            return redirect(request.args["next"])
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def after_login(request):
+            target = request.args.get("next", "/")
+            if not target.startswith("/") or target.startswith("//"):
+                target = "/"
+            return redirect(target)
+        \\\
+        ```
+    languages: [any]
+    tags: [files, redirects]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#file-management

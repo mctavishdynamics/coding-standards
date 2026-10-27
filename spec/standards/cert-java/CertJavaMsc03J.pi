@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc03J:
+    standard: @{CertJava}
+    ruleId: MSC03-J
+    title: Never hard code sensitive information
+    statement:
+        Do not put passwords, keys, server addresses or other sensitive
+        values in source code. Load them from protected configuration or a
+        secret store.
+    rationale:
+        Class files are easy to decompile, so embedded secrets are exposed
+        to anyone with the code, and changing them needs a new release.
+        CERT's risk assessment gives likelihood probable, detectable no,
+        repairable no, priority P6 and level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        Connection conn = DriverManager.getConnection(
+                "jdbc:postgresql://db.internal/app", "app", "s3cret!");
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        char[] password = secrets.lookup("db.password");
+        Connection conn = DriverManager.getConnection(
+                config.dbUrl(), config.dbUser(), new String(password));
+        \\\
+        ```
+    languages: [java]
+    tags: [security, secrets, configuration]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/miscellaneous-msc/msc03-j/

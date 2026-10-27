@@ -1,0 +1,58 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonExceptions:
+    standard: @{GooglePython}
+    ruleId: 2.4
+    title: Use exceptions with care
+    statement:
+        Raise built-in exceptions where they fit, such as ValueError for a
+        violated precondition. Do not use assert for argument checks or
+        logic the program depends on. Custom exceptions inherit from an
+        existing exception class and have names ending in Error without
+        repeating the module name. Never catch everything with a bare except
+        or Exception unless you re-raise or are at an isolation point that
+        records the error. Keep try blocks small and use finally for
+        cleanup.
+    rationale:
+        Asserts can be stripped at runtime, so logic that relies on them
+        silently disappears. Broad handlers swallow typos, interrupts and
+        test failures, and a large try body hides errors raised by lines you
+        did not expect to fail.
+    exceptions:
+        In pytest-based tests, assert is the normal way to check
+        expectations. Catching everything is allowed when re-raising or when
+        guarding an isolation point such as the outermost block of a thread.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def set_ratio(ratio):
+            assert 0 <= ratio <= 1
+            try:
+                config = load_config()
+                config.ratio = ratio
+                save_config(config)
+            except:
+                pass
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def set_ratio(ratio):
+            if not 0 <= ratio <= 1:
+                raise ValueError(f'Ratio must be between 0 and 1, got {ratio}.')
+            config = load_config()
+            config.ratio = ratio
+            try:
+                save_config(config)
+            except OSError:
+                logging.exception('Could not save config.')
+                raise
+        \\\
+        ```
+    languages: [python]
+    tags: [error-handling, exceptions]
+    source: https://google.github.io/styleguide/pyguide.html#s2.4-exceptions

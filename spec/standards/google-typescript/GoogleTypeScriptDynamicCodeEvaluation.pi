@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptDynamicCodeEvaluation:
+    standard: @{GoogleTypeScript}
+    ruleId: dynamic-code-evaluation
+    title: Do not evaluate code from strings
+    statement:
+        Do not use eval or the Function constructor with string arguments.
+    rationale:
+        Evaluating strings as code is dangerous and does not work under
+        strict Content Security Policies.
+    exceptions:
+        Code loaders may use these features.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const result = eval(`${a} ${operator} ${b}`);
+        const double = new Function('x', 'return x * 2');
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const result = OPERATIONS[operator](a, b);
+        const double = (x: number) => x * 2;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [security, disallowed-features]
+    source: https://google.github.io/styleguide/tsguide.html#dynamic-code-evaluation

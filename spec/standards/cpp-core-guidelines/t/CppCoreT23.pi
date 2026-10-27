@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT23:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.23
+    title: Differentiate a refined concept from its more general case by adding new use patterns
+    statement:
+        Make a refined concept require at least one operation its base
+        concept does not, so the compiler can tell them apart.
+    rationale:
+        The compiler orders concepts by their required operations. Two
+        concepts with identical requirements are logically the same and
+        cannot be distinguished.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename I>
+        concept Reader = requires(I i) { ++i; *i; };
+
+        template<typename I>
+        concept Multi_pass_reader = requires(I i) { ++i; *i; };  // same set
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename I>
+        concept Reader = requires(I i) { ++i; *i; };
+
+        template<typename I>
+        concept Multi_pass_reader = Reader<I> && requires(I i) { i++; i == i; };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts, overloading]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-refine

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpInvokeDelegatesWithNullConditional:
+    standard: @{GoogleCSharp}
+    ruleId: invoke-delegates-with-null-conditional
+    title: Call delegates with Invoke and the null-conditional operator
+    statement:
+        Call a delegate through Invoke with the null-conditional operator,
+        as in OnChanged?.Invoke().
+    rationale:
+        It marks the call as a delegate invocation, and the null check is
+        concise and safe against threading races.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        if (OnChanged != null) {
+          OnChanged(this);
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        OnChanged?.Invoke(this);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [delegates, null-safety, concurrency]
+    source: https://google.github.io/styleguide/csharpguide.html#calling-delegates

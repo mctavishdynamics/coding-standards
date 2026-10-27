@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptVerticalWhitespace:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.6.1
+    title: Use single blank lines between methods and to group statements
+    statement:
+        Put a single blank line between consecutive methods in a class or
+        object literal, and use blank lines sparingly inside method bodies
+        to group statements. Do not start or end a function body with a
+        blank line. Several consecutive blank lines are allowed but never
+        encouraged.
+    rationale:
+        Consistent spacing shows the structure of a class, and blank lines
+        at a body's edges waste space without adding meaning.
+    exceptions:
+        A blank line between two consecutive property definitions in an
+        object literal is optional.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Timer {
+          start() {
+
+            this.startedAt = Date.now();
+          }
+          stop() {
+            this.stoppedAt = Date.now();
+
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Timer {
+          start() {
+            this.startedAt = Date.now();
+          }
+
+          stop() {
+            this.stoppedAt = Date.now();
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, whitespace]
+    source: https://google.github.io/styleguide/jsguide.html#461-vertical-whitespace

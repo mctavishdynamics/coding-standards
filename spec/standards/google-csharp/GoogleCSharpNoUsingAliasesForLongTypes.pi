@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpNoUsingAliasesForLongTypes:
+    standard: @{GoogleCSharp}
+    ruleId: no-using-aliases-for-long-types
+    title: Do not alias long type names with using
+    statement:
+        Generally do not create using aliases for long type names. A long
+        name often means a tuple or nested generic should become a named
+        class.
+    rationale:
+        Aliases are file scoped, so they are invisible to other files and to
+        external users.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        using ScoreTable = System.Collections.Generic.Dictionary<string, System.Tuple<int, float>>;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class ScoreTable {
+          private readonly Dictionary<string, Score> _scores = new Dictionary<string, Score>();
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [types, imports]
+    source: https://google.github.io/styleguide/csharpguide.html#using

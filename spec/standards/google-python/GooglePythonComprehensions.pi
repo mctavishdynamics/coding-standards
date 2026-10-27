@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonComprehensions:
+    standard: @{GooglePython}
+    ruleId: 2.7
+    title: Keep comprehensions to one for clause and one filter
+    statement:
+        Use comprehensions and generator expressions for simple cases. Do
+        not use more than one for clause or more than one filter expression;
+        write a loop instead. Optimize for readability over brevity.
+    rationale:
+        Simple comprehensions are clear and fast, but nested clauses and
+        filters quickly become hard to follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        pairs = [(a, b) for a in teams for b in teams if a != b if a.league == b.league]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        pairs = []
+        for a in teams:
+            for b in teams:
+                if a != b and a.league == b.league:
+                    pairs.append((a, b))
+        \\\
+        ```
+    languages: [python]
+    tags: [comprehensions, readability]
+    source: https://google.github.io/styleguide/pyguide.html#s2.7-comprehensions

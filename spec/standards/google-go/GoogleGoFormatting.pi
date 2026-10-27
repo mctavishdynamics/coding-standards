@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoFormatting:
+    standard: @{GoogleGo}
+    ruleId: guide/formatting
+    title: Format all Go source with gofmt
+    statement:
+        Every Go source file must match the output of gofmt. Generated code
+        should also be formatted, for example with go/format.
+    rationale:
+        A single mechanical format removes style debates and keeps all code,
+        including generated code people browse, uniform.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func add(a int,b int)int{
+        return a+b}
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func add(a int, b int) int {
+            return a + b
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [guide, formatting, tooling]
+    source: https://google.github.io/styleguide/go/guide#formatting

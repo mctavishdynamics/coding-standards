@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftEnumCaseOrder:
+    standard: @{GoogleSwift}
+    ruleId: enum-cases-logical-order
+    title: Order enum cases logically
+    statement:
+        Order enum cases in a logical way the author could explain. When
+        there is no obvious order, sort them by name.
+    rationale:
+        A meaningful order, such as by raw value, makes the enum easier to
+        read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        enum Priority: Int {
+          case high = 3
+          case low = 1
+          case urgent = 4
+          case normal = 2
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        enum Priority: Int {
+          case low = 1
+          case normal = 2
+          case high = 3
+          case urgent = 4
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [enums, ordering]
+    source: https://google.github.io/swift/#enum-cases

@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppOop57Cpp:
+    standard: @{CertCpp}
+    ruleId: OOP57-CPP
+    title: Prefer special member functions and overloaded operators to C library functions
+    statement:
+        Do not use C library functions such as memset, memcpy, memmove,
+        memcmp or strcmp on objects that are not trivially copyable or
+        standard layout. Use constructors, assignment and comparison
+        operators instead.
+    rationale:
+        Bytewise operations ignore class invariants, virtual table pointers
+        and owned resources, leading to corruption and undefined behavior.
+        CERT rates likelihood probable, detectable yes, repairable no,
+        priority P12, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        struct Record {
+            std::string name;
+            int score;
+        };
+
+        void clear(Record& r) {
+            std::memset(&r, 0, sizeof(r));
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Record {
+            std::string name;
+            int score;
+        };
+
+        void clear(Record& r) {
+            r = Record();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, standard-library, object-representation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/object-oriented-programming-oop/oop57-cpp

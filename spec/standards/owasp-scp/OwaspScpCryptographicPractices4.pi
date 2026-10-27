@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpCryptographicPractices4:
+    standard: @{OwaspScp}
+    ruleId: cryptographic-practices-4
+    title: Generate unguessable random values with an approved generator
+    statement:
+        Create random numbers, file names, GUIDs and strings that must be
+        unguessable with the cryptographic module's approved random number
+        generator.
+    rationale:
+        General-purpose generators are predictable, so values made with them
+        can be guessed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import random, string
+
+        def reset_token():
+            return "".join(random.choices(string.ascii_letters, k=32))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import secrets
+
+        def reset_token():
+            return secrets.token_urlsafe(32)
+        \\\
+        ```
+    languages: [any]
+    tags: [cryptography, randomness]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#cryptographic-practices

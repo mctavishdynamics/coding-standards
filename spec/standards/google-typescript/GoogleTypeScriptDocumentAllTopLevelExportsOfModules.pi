@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptDocumentAllTopLevelExportsOfModules:
+    standard: @{GoogleTypeScript}
+    ruleId: document-all-top-level-exports-of-modules
+    title: Document exported symbols and non-obvious members
+    statement:
+        Use JSDoc to tell users of the code what they need to know about
+        top-level exports. Do not merely restate the name, and also document
+        any property or method, exported or not, whose purpose is not
+        obvious from its name.
+    rationale:
+        Documentation at the point of declaration is what editors show to
+        callers.
+    exceptions:
+        Symbols exported only for tooling, such as NgModule classes, do not
+        need comments.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        export function settle(ledger: Ledger, cutoff: Date) {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /**
+         * Closes every open entry in the ledger dated before the cutoff and posts
+         * the resulting balances.
+         */
+        export function settle(ledger: Ledger, cutoff: Date) {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc, documentation]
+    source: https://google.github.io/styleguide/tsguide.html#document-all-top-level-exports-of-modules

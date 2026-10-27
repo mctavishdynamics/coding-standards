@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptExportVisibility:
+    standard: @{GoogleTypeScript}
+    ruleId: export-visibility
+    title: Export only what other modules use
+    statement:
+        Export a symbol only when code outside the module uses it, and keep
+        the exported API surface of each module as small as possible.
+    rationale:
+        TypeScript cannot restrict who imports an exported symbol, so every
+        export becomes public API that is hard to change later.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        export function normalizeSku(sku: string): string {
+          return sku.trim().toUpperCase();
+        }
+
+        export function findProduct(sku: string): Product|undefined {
+          return catalog.get(normalizeSku(sku));
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function normalizeSku(sku: string): string {
+          return sku.trim().toUpperCase();
+        }
+
+        export function findProduct(sku: string): Product|undefined {
+          return catalog.get(normalizeSku(sku));
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [exports, encapsulation]
+    source: https://google.github.io/styleguide/tsguide.html#export-visibility

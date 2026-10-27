@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaErr00J:
+    standard: @{CertJava}
+    ruleId: ERR00-J
+    title: Do not suppress or ignore checked exceptions
+    statement:
+        Do not catch a checked exception with an empty or trivial handler.
+        Recover from it, rethrow it, or throw an exception that fits the
+        context.
+    rationale:
+        Suppressed exceptions leave the program running with broken
+        invariants and hide the failure from code that could deal with it.
+        CERT rates likelihood probable, detectable yes, repairable no,
+        priority P4, level L3.
+    exceptions:
+        Exceptions while freeing a resource may be suppressed when the
+        failure cannot affect later behavior, code that cannot recover
+        should simply let the exception propagate, and InterruptedException
+        may be suppressed by code that implements a thread's interruption
+        policy.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        try {
+            config = loader.load(path);
+        } catch (IOException e) {
+            // ignore
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        try {
+            config = loader.load(path);
+        } catch (IOException e) {
+            throw new ConfigException("Cannot load " + path, e);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/exceptional-behavior-err/err00-j/

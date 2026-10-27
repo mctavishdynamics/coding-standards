@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp8:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.8
+    title: Do not use volatile for synchronization
+    statement:
+        Use std::atomic or a mutex to coordinate threads, never volatile.
+    rationale:
+        In C++ volatile gives no atomicity, no synchronization between
+        threads and no protection against reordering by the compiler or
+        hardware. It has nothing to do with concurrency.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        volatile bool stop_requested = false;
+
+        void worker()
+        {
+            while (!stop_requested) process_next();   // still a data race
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::atomic<bool> stop_requested{false};
+
+        void worker()
+        {
+            while (!stop_requested) process_next();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, volatile, atomics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-volatile

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpMemoryManagement8:
+    standard: @{OwaspScp}
+    ruleId: memory-management-8
+    title: Avoid known vulnerable functions
+    statement:
+        Do not use functions that are known to be unsafe, such as strcpy,
+        strcat or printf with untrusted format strings.
+    rationale:
+        These functions do no bounds checking or interpret data as format
+        directives, which leads to overflows and format string attacks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        printf(user_message);
+        strcpy(buf, user_message);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        printf("%s", user_message);
+        snprintf(buf, sizeof buf, "%s", user_message);
+        \\\
+        ```
+    languages: [any]
+    tags: [memory, unsafe-functions]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#memory-management

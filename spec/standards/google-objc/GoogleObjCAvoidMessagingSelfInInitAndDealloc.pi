@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCAvoidMessagingSelfInInitAndDealloc:
+    standard: @{GoogleObjC}
+    ruleId: avoid-messaging-the-current-object-within-initializers-and--dealloc
+    title: Avoid calling methods on self in initializers and dealloc
+    statement:
+        In initializers and dealloc, avoid calling instance methods and
+        property accessors on self. Assign and release ivars directly, and
+        be wary of helper methods for shared setup.
+    rationale:
+        A subclass may override the method and run before its own state is
+        initialized, or after state has been torn down in dealloc.
+    exceptions:
+        Subclasses of UIKit, AppKit and similar base classes often need
+        superclass properties and methods during initialization; use
+        judgement there.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        - (instancetype)init {
+          self = [super init];
+          if (self) {
+            self.volume = 0.5;
+            [self configureDefaults];
+          }
+          return self;
+        }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        - (instancetype)init {
+          self = [super init];
+          if (self) {
+            _volume = 0.5;
+          }
+          return self;
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [initialization, inheritance, memory]
+    source: https://google.github.io/styleguide/objcguide.html#avoid-messaging-the-current-object-within-initializers-and--dealloc

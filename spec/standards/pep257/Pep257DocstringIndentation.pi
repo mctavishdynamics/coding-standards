@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257DocstringIndentation:
+    standard: @{Pep257}
+    ruleId: handling-docstring-indentation
+    title: Strip docstring indentation uniformly in tools
+    statement:
+        A tool that processes docstrings should remove a uniform indentation
+        from the second and later lines, equal to the smallest indentation
+        of those non-blank lines. Drop any indentation on the first line,
+        keep relative indentation, and remove leading and trailing blank
+        lines.
+    rationale:
+        Docstrings are indented to match the code around them, and uniform
+        stripping recovers the text while keeping nested layout such as
+        lists and examples.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def clean(doc):
+            return "\n".join(line.strip() for line in doc.splitlines())
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import inspect
+
+
+        def clean(doc):
+            return inspect.cleandoc(doc)
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, tooling]
+    source: https://peps.python.org/pep-0257/#handling-docstring-indentation

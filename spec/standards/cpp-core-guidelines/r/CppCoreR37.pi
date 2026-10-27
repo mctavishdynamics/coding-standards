@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR37:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.37
+    title:
+        Do not pass a pointer or reference obtained from an aliased smart
+        pointer
+    statement:
+        Before passing a raw pointer or reference taken from a smart pointer
+        that other code can reset, make a local copy of the smart pointer so
+        the object stays alive for the call.
+    rationale:
+        If code deeper in the call tree resets or reassigns the aliased
+        smart pointer, the object is destroyed and the pointer passed down
+        dangles. This is the leading cause of lost reference counts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::shared_ptr<Widget> g_current;
+
+        void show() {
+            paint(*g_current);    // paint may reset g_current
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::shared_ptr<Widget> g_current;
+
+        void show() {
+            auto pin = g_current;  // keeps the widget alive
+            paint(*pin);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, lifetime]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-smartptrget

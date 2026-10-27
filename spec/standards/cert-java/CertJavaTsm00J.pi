@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaTsm00J:
+    standard: @{CertJava}
+    ruleId: TSM00-J
+    title: Do not override thread-safe methods with methods that are not thread-safe
+    statement:
+        An override of a synchronized or otherwise thread-safe method must
+        be just as safe for concurrent use. Document the locking strategy of
+        classes meant for inheritance.
+    rationale:
+        Clients rely on the parent's promise of thread safety. An unsafe
+        override breaks that promise silently for any code handed the
+        subclass. CERT's risk assessment gives likelihood probable,
+        detectable yes, repairable no, priority P4 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        class Base {
+            synchronized void update() { /* ... */ }
+        }
+
+        class Derived extends Base {
+            @Override void update() { /* ... */ }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Base {
+            synchronized void update() { /* ... */ }
+        }
+
+        class Derived extends Base {
+            @Override synchronized void update() { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, inheritance]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-safety-miscellaneous-tsm/tsm00-j/

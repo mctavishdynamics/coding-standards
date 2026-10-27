@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCMethod:
+    standard: @{RustApiGuidelines}
+    ruleId: C-METHOD
+    title: Make functions with a clear receiver into methods
+    statement:
+        Write an operation that clearly belongs to one type as a method on
+        that type rather than as a free function taking it as an argument.
+    rationale:
+        Methods need no import, auto-borrow their receiver, show up in the
+        type's documentation and make ownership clear through self.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub fn invoice_total(invoice: &Invoice) -> Money { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl Invoice {
+            pub fn total(&self) -> Money { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [methods, api-design]
+    source: https://rust-lang.github.io/api-guidelines/predictability.html#c-method

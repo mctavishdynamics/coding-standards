@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftLineWrappingWhereClauses:
+    standard: @{GoogleSwift}
+    ruleId: line-wrapping-where-clauses
+    title: Wrap generic where clauses before the where keyword
+    statement:
+        When generic constraints do not fit after the return type, break
+        before where and indent it at the original level. If they still do
+        not fit, put each constraint on its own line after where.
+    rationale:
+        The constraints stay visually separate from the parameters and body.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```swift
+        \\\
+        public func firstMatch<Elements: Collection, Element>(
+          of element: Element,
+          in elements: Elements
+        ) -> Elements.Index?
+        where
+          Elements.Element == Element,
+          Element: Equatable
+        {
+          // ...
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, line-wrapping, generics]
+    source: https://google.github.io/swift/#line-wrapping

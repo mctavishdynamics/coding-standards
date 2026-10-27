@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoStringConcatPiecemeal:
+    standard: @{GoogleGo}
+    ruleId: best-practices/string-concat-piecemeal
+    title: Use strings.Builder to build strings piece by piece
+    statement:
+        Prefer strings.Builder when constructing a string bit by bit, such
+        as in a loop.
+    rationale:
+        Builder is amortised linear time, whereas repeated plus or Sprintf
+        is quadratic.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        s := ""
+        for _, line := range lines {
+            s += line + "\n"
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var b strings.Builder
+        for _, line := range lines {
+            b.WriteString(line)
+            b.WriteByte('\n')
+        }
+        s := b.String()
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, strings, performance]
+    source: https://google.github.io/styleguide/go/best-practices#string-concat-piecemeal

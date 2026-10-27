@@ -1,0 +1,48 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC21:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.21
+    title: Define or delete all of copy, move and destructor if you define one
+    statement:
+        If a class declares any of the copy constructor, copy assignment,
+        move constructor, move assignment or destructor, even as =default or
+        =delete, declare all five.
+    rationale:
+        Declaring one of them changes which of the others the compiler
+        generates. Moves can quietly become copies or a class can become
+        move-only by accident.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Handle {
+        public:
+            ~Handle() { close(fd_); }
+            // copy is still generated and closes fd twice; no move
+        private:
+            int fd_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Handle {
+        public:
+            ~Handle() { if (fd_ >= 0) close(fd_); }
+            Handle(const Handle&) = delete;
+            Handle& operator=(const Handle&) = delete;
+            Handle(Handle&& o) noexcept : fd_(std::exchange(o.fd_, -1)) {}
+            Handle& operator=(Handle&& o) noexcept;
+        private:
+            int fd_ = -1;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, special-members, rule-of-five]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-five

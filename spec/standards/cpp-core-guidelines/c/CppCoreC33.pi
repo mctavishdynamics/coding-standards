@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC33:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.33
+    title: Define a destructor if a class has an owning pointer member
+    statement:
+        If a class owns an object through a raw pointer member, define a
+        destructor that deletes it, or better, replace the raw pointer with
+        a smart pointer.
+    rationale:
+        An owned object must be deleted when its owner is destroyed, and the
+        default destructor does not delete through raw pointers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Parser {
+        public:
+            Parser() : lexer_(new Lexer) {}
+        private:
+            Lexer* lexer_;    // leaked
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Parser {
+        public:
+            Parser() : lexer_(std::make_unique<Lexer>()) {}
+        private:
+            std::unique_ptr<Lexer> lexer_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [destructors, ownership, memory]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-dtor-ptr2

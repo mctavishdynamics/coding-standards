@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsCoercionBooleans:
+    standard: @{AirbnbJavaScript}
+    ruleId: 22.6
+    title: Convert to booleans with Boolean or double negation
+    statement:
+        Convert values to booleans with Boolean(value) or !!value, never
+        with new Boolean. Enforced by the ESLint rule no-new-wrappers.
+    rationale:
+        new Boolean creates an object, and every object is truthy, even one
+        wrapping false.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const hasItems = new Boolean(cart.length);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const hasItems = Boolean(cart.length);
+        const isSet = !!cart.coupon;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [coercion, booleans]
+    source: https://github.com/airbnb/javascript#coercion--booleans

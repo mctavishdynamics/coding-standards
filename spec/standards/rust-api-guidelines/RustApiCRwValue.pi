@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCRwValue:
+    standard: @{RustApiGuidelines}
+    ruleId: C-RW-VALUE
+    title: Take generic readers and writers by value
+    statement:
+        Generic functions take R where R implements Read, or W where W
+        implements Write, by value rather than by mutable reference, and
+        their documentation reminds users that a mutable reference can be
+        passed.
+    rationale:
+        The standard library implements Read and Write for mutable
+        references, so a by-value parameter accepts both owned readers and
+        borrowed ones.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub fn read_header<R: Read>(reader: &mut R) -> io::Result<Header> {
+            /* ... */
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        /// Reads a header. Pass `&mut file` to keep using the file afterwards.
+        pub fn read_header<R: Read>(reader: R) -> io::Result<Header> {
+            /* ... */
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [io, generics]
+    source: https://rust-lang.github.io/api-guidelines/interoperability.html#c-rw-value

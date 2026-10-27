@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC122:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.122
+    title: Use abstract classes as interfaces for complete separation
+    statement:
+        When interface and implementation must be fully separated, as across
+        a library or ABI boundary, put an abstract class on the boundary.
+    rationale:
+        Callers then depend only on the abstract interface and need not
+        recompile or relink when the implementation changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // public header exposes implementation details
+        class Codec {
+        public:
+            Bytes encode(const Frame& f);
+        private:
+            ZlibState state_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // public header
+        class Codec {
+        public:
+            virtual Bytes encode(const Frame& f) = 0;
+            virtual ~Codec() = default;
+        };
+        std::unique_ptr<Codec> make_codec();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, interfaces, abi]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-separation

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptRebindingThis:
+    standard: @{GoogleTypeScript}
+    ruleId: rebinding-this
+    title: Do not use this in function declarations and expressions
+    statement:
+        Function declarations and expressions must not use this unless they
+        exist to rebind it. Prefer arrow functions or explicit parameters
+        over bind, goog.bind or saving this in a variable.
+    rationale:
+        In ordinary functions this depends on how the function is called,
+        which makes the code hard to follow and easy to break.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function highlight() {
+          this.classList.add('active');
+        }
+        menuItem.onclick = highlight;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        menuItem.onclick = () => {
+          menuItem.classList.add('active');
+        };
+        \\\
+        ```
+    languages: [typescript]
+    tags: [functions, this]
+    source: https://google.github.io/styleguide/tsguide.html#rebinding-this

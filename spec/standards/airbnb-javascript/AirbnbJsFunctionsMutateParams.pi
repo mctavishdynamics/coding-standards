@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsFunctionsMutateParams:
+    standard: @{AirbnbJavaScript}
+    ruleId: 7.12
+    title: Never mutate parameters
+    statement:
+        Do not change objects passed in as parameters. Enforced by the
+        ESLint rule no-param-reassign.
+    rationale:
+        Mutating a parameter changes the caller's object, which causes side
+        effects the caller did not expect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function markPaid(invoice) {
+          invoice.status = 'paid';
+          return invoice;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function markPaid(invoice) {
+          return { ...invoice, status: 'paid' };
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, parameters, immutability]
+    source: https://github.com/airbnb/javascript#functions--mutate-params

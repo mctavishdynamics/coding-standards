@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptAbstractClasses:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.4.10
+    title: Annotate abstract classes and methods with @abstract
+    statement:
+        Use abstract classes where they fit and mark abstract classes and
+        methods with @abstract. Do not use goog.abstractMethod.
+    rationale:
+        The annotation lets the compiler check that abstract members are
+        implemented and never called directly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Exporter {}
+        Exporter.prototype.write = goog.abstractMethod;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** @abstract */
+        class Exporter {
+          /** @abstract @param {string} data */
+          write(data) {}
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, jsdoc]
+    source: https://google.github.io/styleguide/jsguide.html#5410-abstract-classes

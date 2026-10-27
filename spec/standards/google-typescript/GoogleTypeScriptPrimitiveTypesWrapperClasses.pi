@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptPrimitiveTypesWrapperClasses:
+    standard: @{GoogleTypeScript}
+    ruleId: primitive-types-wrapper-classes
+    title: Do not instantiate primitive wrapper objects
+    statement:
+        Never create String, Boolean or Number objects with new. Calling
+        them as plain functions to coerce values is allowed.
+    rationale:
+        Wrapper objects behave surprisingly; for example, a Boolean wrapping
+        false is truthy.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const visible = new Boolean(false);
+        const label = new String('Total');
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const visible = Boolean(flag);
+        const label = 'Total';
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, primitives, type-coercion]
+    source: https://google.github.io/styleguide/tsguide.html#primitive-types-wrapper-classes

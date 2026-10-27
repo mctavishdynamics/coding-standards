@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE28:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.28
+    title: Avoid error handling based on global state such as errno
+    statement:
+        Do not report errors by setting a global variable for callers to
+        inspect. Return the error, or throw it.
+    rationale:
+        Global error state is hard to manage and easy to forget to check.
+    exceptions:
+        C-style library functions report errors through errno, so this style
+        cannot be avoided completely.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int last_error = 0;
+
+        Buffer* allocate(std::size_t n)
+        {
+            auto* b = static_cast<Buffer*>(std::malloc(n));
+            if (!b) last_error = ENOMEM;
+            return b;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::expected<Buffer*, std::errc> allocate(std::size_t n)
+        {
+            auto* b = static_cast<Buffer*>(std::malloc(n));
+            if (!b) return std::unexpected(std::errc::not_enough_memory);
+            return b;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, global-state]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-no-throw

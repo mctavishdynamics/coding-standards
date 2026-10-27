@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE26:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.26
+    title: If you cannot throw exceptions, consider failing fast
+    statement:
+        If an error cannot be handled in the function that detects it and
+        you cannot be systematic about error handling, log the reason and
+        terminate with abort, quick_exit or a similar call that triggers a
+        restart.
+    rationale:
+        If you cannot recover well, getting out quickly limits consequential
+        damage. In systems built to survive crashes, this hands the error to
+        the next level.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Frame* frames = static_cast<Frame*>(std::malloc(count * sizeof(Frame)));
+        // used without a check; may dereference null much later
+        frames[0].reset();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Frame* frames = static_cast<Frame*>(std::malloc(count * sizeof(Frame)));
+        if (!frames) {
+            log_fatal("out of memory allocating frames");
+            std::abort();
+        }
+        frames[0].reset();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, no-exceptions, fail-fast]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-no-throw-crash

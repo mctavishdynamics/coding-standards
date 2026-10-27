@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptClassComputedProperties:
+    standard: @{GoogleTypeScript}
+    ruleId: class-computed-properties
+    title: Use computed class properties only for symbols
+    statement:
+        In classes, computed property names are allowed only for symbols;
+        quoted or computed string keys are not. Define a Symbol.iterator
+        method on classes that are logically iterable, and use other symbols
+        sparingly.
+    rationale:
+        Dict-style class members defeat property renaming, and many built-in
+        symbols are not polyfilled for older browsers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Settings {
+          ['theme' + suffix] = 'dark';
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Playlist {
+          private readonly songs: Song[] = [];
+          [Symbol.iterator]() {
+            return this.songs[Symbol.iterator]();
+          }
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, properties, symbols]
+    source: https://google.github.io/styleguide/tsguide.html#class-computed-properties

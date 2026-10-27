@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaTps00J:
+    standard: @{CertJava}
+    ruleId: TPS00-J
+    title: Use thread pools to enable graceful degradation of service during traffic bursts
+    statement:
+        Handle incoming requests with a bounded thread pool rather than
+        creating a new thread for each request.
+    rationale:
+        Unbounded thread creation lets a burst of requests, or an attacker,
+        exhaust memory and CPU so the service stops responding instead of
+        slowing down. CERT's risk assessment gives likelihood probable,
+        detectable no, repairable no, priority P2 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        while (true) {
+            Socket client = server.accept();
+            new Thread(() -> handle(client)).start();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        ExecutorService pool = Executors.newFixedThreadPool(32);
+        while (true) {
+            Socket client = server.accept();
+            pool.execute(() -> handle(client));
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, thread-pools, denial-of-service]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-pools-tps/tps00-j/

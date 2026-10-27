@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptNestedFunctions:
+    standard: @{GoogleTypeScript}
+    ruleId: nested-functions
+    title: Prefer arrow functions for functions nested in methods
+    statement:
+        Functions nested in other functions may be declarations or arrow
+        functions as suits the code. Inside method bodies, prefer arrow
+        functions.
+    rationale:
+        Arrow functions keep access to the outer this, so they behave as
+        readers expect inside methods.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Report {
+          render(rows: Row[]) {
+            function format(row: Row) {
+              return this.prefix + row.name;
+            }
+            return rows.map(format);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Report {
+          render(rows: Row[]) {
+            const format = (row: Row) => this.prefix + row.name;
+            return rows.map((row) => format(row));
+          }
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [functions, this, arrow-functions]
+    source: https://google.github.io/styleguide/tsguide.html#nested-functions

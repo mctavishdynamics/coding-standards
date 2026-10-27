@@ -1,0 +1,48 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT61:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.61
+    title: Do not over-parameterize members (SCARY)
+    statement:
+        A member type or function of a class template should depend only on
+        the template parameters it actually uses. Move members that ignore
+        some parameters out to their own, smaller template.
+    rationale:
+        A member that formally depends on an unused parameter, such as a
+        node type depending on the allocator, is instantiated redundantly
+        for each argument combination and cannot be shared between them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T, typename Alloc = std::allocator<T>>
+        class Tree {
+        public:
+            struct Node { T value; Node* left; Node* right; };  // depends on Alloc
+        private:
+            Node* root;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename T>
+        struct Tree_node { T value; Tree_node* left; Tree_node* right; };
+
+        template<typename T, typename Alloc = std::allocator<T>>
+        class Tree {
+        public:
+            using Node = Tree_node<T>;
+        private:
+            Node* root;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, code-size, design]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-scary

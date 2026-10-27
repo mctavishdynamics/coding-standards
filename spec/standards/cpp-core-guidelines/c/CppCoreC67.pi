@@ -1,0 +1,48 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC67:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.67
+    title: Suppress public copy and move in a polymorphic class
+    statement:
+        In a class with virtual functions, delete the copy and move
+        operations if it has no data, or make them protected otherwise.
+    rationale:
+        Copying a polymorphic object by value slices it, keeping only the
+        base part and corrupting its behavior.
+    exceptions:
+        Exception classes need to be both polymorphic and
+        copy-constructible.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Shape {
+        public:
+            virtual void draw() const = 0;
+            virtual ~Shape() = default;
+        };
+
+        void render(Shape s);   // slices any derived shape
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Shape {
+        public:
+            Shape() = default;
+            Shape(const Shape&) = delete;
+            Shape& operator=(const Shape&) = delete;
+            virtual void draw() const = 0;
+            virtual ~Shape() = default;
+        };
+
+        void render(const Shape& s);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [copy, inheritance, slicing]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-copy-virtual

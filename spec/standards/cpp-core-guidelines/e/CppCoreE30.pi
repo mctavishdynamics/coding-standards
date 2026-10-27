@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE30:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.30
+    title: Do not use exception specifications
+    statement:
+        Do not write dynamic exception specifications that list the
+        exception types a function may throw. Use noexcept when a function
+        must not throw.
+    rationale:
+        Exception specifications make error handling brittle and impose a
+        run-time cost: a new exception deep in a library forces changes
+        through long call chains or crashes the program. They have been
+        removed from the C++ standard.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Order parse_order(const std::string& text) throw(ParseError, std::bad_alloc);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Order parse_order(const std::string& text);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, exceptions, legacy]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-specifications

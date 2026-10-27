@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppNoexcept:
+    standard: @{GoogleCpp}
+    ruleId: noexcept
+    title: Specify noexcept only when useful and correct
+    statement:
+        Use noexcept when it helps performance and accurately means that an
+        exception escaping the function would be fatal. Assume it is
+        worthwhile on move constructors and discuss other cases with project
+        leads. Prefer unconditional noexcept where exceptions are disabled,
+        otherwise use simple conditions.
+    rationale:
+        A wrong noexcept turns an exception into program termination, while
+        complex conditional specifiers add little and hurt interface
+        simplicity.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Complex condition the reader cannot verify.
+        Table(Table&& other) noexcept(
+            noexcept(Hash()(std::declval<Key>())) &&
+            std::is_nothrow_move_constructible_v<Alloc>);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Table(Table&& other) noexcept;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [exceptions, performance]
+    source: https://google.github.io/styleguide/cppguide.html#noexcept

@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT122:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.122
+    title: Use templates (usually template aliases) to compute types at compile time
+    statement:
+        Compute types at compile time with templates, normally written as
+        alias templates.
+    rationale:
+        Template metaprogramming is the only directly supported and
+        reasonably principled way to generate types at compile time, and
+        aliases have largely replaced traits classes for it.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```cpp
+        \\\
+        template<typename T>
+        using Storage = std::conditional_t<(sizeof(T) <= 16), T, std::unique_ptr<T>>;
+
+        Storage<int> small;            // int
+        Storage<Big_record> large;     // std::unique_ptr<Big_record>
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, metaprogramming, aliases]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-tmp

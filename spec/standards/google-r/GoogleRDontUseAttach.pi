@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleR import GoogleR
+
+export coding-rule GoogleRDontUseAttach:
+    standard: @{GoogleR}
+    ruleId: dont-use-attach
+    title: Do not use attach()
+    statement:
+        Never call attach() to put the columns of a data frame or the
+        contents of a package on the search path. Refer to columns
+        explicitly or use functions that take the data as an argument.
+    rationale:
+        attach() opens many ways to make mistakes, such as names that
+        silently mask other objects and changes that never reach the
+        original data.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```r
+        \\\
+        attach(orders)
+        mean_quantity <- mean(quantity)
+        detach(orders)
+        \\\
+        ```
+    compliant:
+        ```r
+        \\\
+        mean_quantity <- mean(orders$quantity)
+        \\\
+        ```
+    languages: [r]
+    tags: [scoping, error-prone]
+    source: https://google.github.io/styleguide/Rguide.html#dont-use-attach

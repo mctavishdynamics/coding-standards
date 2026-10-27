@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptImportPaths:
+    standard: @{GoogleTypeScript}
+    ruleId: import-paths
+    title: Import TypeScript code by path, preferring relative paths
+    statement:
+        Import other TypeScript code by path, either relative or rooted at
+        the base directory. Within the same logical project, prefer relative
+        imports, and keep the number of parent steps small.
+    rationale:
+        Relative paths let a project move without editing its imports, while
+        long chains of parent steps make the module structure hard to
+        follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        // Inside the same project as orders/
+        import {Order} from 'shop/web/orders/order';
+        import {format} from '../../../../shared/format';
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        import {Order} from './orders/order';
+        import {format} from 'shop/shared/format';
+        \\\
+        ```
+    languages: [typescript]
+    tags: [imports, modules]
+    source: https://google.github.io/styleguide/tsguide.html#import-paths

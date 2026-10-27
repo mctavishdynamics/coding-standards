@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsComparisonIf:
+    standard: @{AirbnbJavaScript}
+    ruleId: 15.2
+    title: Know how conditions coerce values to booleans
+    statement:
+        Remember that conditions such as if convert their expression with
+        ToBoolean. Objects, including empty arrays, are true. undefined and
+        null are false. Numbers are false for +0, -0 and NaN. Strings are
+        false only when empty.
+    rationale:
+        Relying on truthiness without knowing these rules leads to bugs,
+        such as treating an empty array as missing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const tags = [];
+        if (!tags) {
+          showEmptyState(); // never runs: an empty array is truthy
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const tags = [];
+        if (tags.length === 0) {
+          showEmptyState();
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [comparison, coercion]
+    source: https://github.com/airbnb/javascript#comparison--if

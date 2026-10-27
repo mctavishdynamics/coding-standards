@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpSessionManagement19:
+    standard: @{OwaspScp}
+    ruleId: session-management-19
+    title: Set the Secure attribute on cookies sent over TLS
+    statement:
+        Mark cookies that are transmitted over a TLS connection with the
+        Secure attribute.
+    rationale:
+        Without it the browser may send the cookie over plain HTTP, where it
+        can be intercepted.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        response.set_cookie("session", session_id)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        response.set_cookie("session", session_id, secure=True, httponly=True,
+                            samesite="Lax")
+        \\\
+        ```
+    languages: [any]
+    tags: [session, cookies, tls]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#session-management

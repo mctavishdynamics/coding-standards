@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsModulesImportExtensions:
+    standard: @{AirbnbJavaScript}
+    ruleId: 10.10
+    title: Do not include JavaScript file extensions in imports
+    statement:
+        Leave the .js extension off import paths. Enforced by the ESLint
+        rule import/extensions.
+    rationale:
+        Extensions hard-code an implementation detail into every consumer
+        and get in the way of refactoring.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        import createStore from './createStore.js';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        import createStore from './createStore';
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, imports]
+    source: https://github.com/airbnb/javascript#modules--import-extensions

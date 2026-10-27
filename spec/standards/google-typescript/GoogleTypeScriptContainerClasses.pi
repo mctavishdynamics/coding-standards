@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptContainerClasses:
+    standard: @{GoogleTypeScript}
+    ruleId: container-classes
+    title: Do not create container classes for namespacing
+    statement:
+        Do not write classes that only hold static methods or properties to
+        group them. Export the individual constants and functions instead.
+    rationale:
+        The module already provides a namespace, so a static-only class adds
+        a second, needless scope.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        export class Tax {
+          static RATE = 0.2;
+          static apply(amount: number) {
+            return amount * (1 + Tax.RATE);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        export const TAX_RATE = 0.2;
+
+        export function applyTax(amount: number) {
+          return amount * (1 + TAX_RATE);
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, modules, exports]
+    source: https://google.github.io/styleguide/tsguide.html#container-classes

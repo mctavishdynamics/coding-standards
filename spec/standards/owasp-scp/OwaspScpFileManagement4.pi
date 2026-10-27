@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpFileManagement4:
+    standard: @{OwaspScp}
+    ruleId: file-management-4
+    title: Check uploaded file type by header, not extension
+    statement:
+        Verify that an uploaded file is the expected type by inspecting its
+        header content. The file extension alone is not enough.
+    rationale:
+        Extensions are chosen by the uploader and can be faked.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def is_png(upload):
+            return upload.filename.lower().endswith(".png")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+
+        def is_png(upload):
+            return upload.stream.read(8) == PNG_SIGNATURE
+        \\\
+        ```
+    languages: [any]
+    tags: [files, uploads, input-validation]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#file-management

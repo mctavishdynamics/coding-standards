@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF11:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.11
+    title: Use an unnamed lambda if you need a simple function object in one place only
+    statement:
+        For a small function object used once, write the lambda directly at
+        the point of use.
+    rationale:
+        It keeps the code concise and puts the logic next to where it is
+        used.
+    exceptions:
+        Naming a lambda can still help clarity even when it is used only
+        once.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct ByLength {
+            bool operator()(const std::string& a, const std::string& b) const {
+                return a.size() < b.size();
+            }
+        };
+        std::sort(words.begin(), words.end(), ByLength());
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::sort(words.begin(), words.end(),
+                  [](const std::string& a, const std::string& b) {
+                      return a.size() < b.size();
+                  });
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, lambdas]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-lambda

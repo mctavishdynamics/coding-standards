@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellWildcardExpansionOfFilenames:
+    standard: @{GoogleShell}
+    ruleId: wildcard-expansion-of-filenames
+    title: Use an explicit path in filename wildcards
+    statement:
+        Expand wildcards with a path prefix, such as ./* rather than a bare
+        *.
+    rationale:
+        A filename that starts with a dash would otherwise be read as an
+        option, so a file named -rf can change what a command does.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        rm -v *
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        rm -v ./*
+        \\\
+        ```
+    languages: [shell]
+    tags: [globbing, security]
+    source: https://google.github.io/styleguide/shellguide.html#wildcard-expansion-of-filenames

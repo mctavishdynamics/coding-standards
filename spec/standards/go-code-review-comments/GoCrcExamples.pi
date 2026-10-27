@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcExamples:
+    standard: @{GoCodeReviewComments}
+    ruleId: examples
+    title: Include usage examples with a new package
+    statement:
+        When adding a package, show its intended use with a runnable Example
+        function or a simple test that runs a complete call sequence.
+    rationale:
+        Examples document the expected call sequence and, because they run
+        as tests, stay correct as the package changes.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```go
+        \\\
+        func ExampleParseDuration() {
+            d, err := ParseDuration("1h30m")
+            if err != nil {
+                log.Fatal(err)
+            }
+            fmt.Println(d.Minutes())
+            // Output: 90
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [documentation, testing]
+    source: https://go.dev/wiki/CodeReviewComments#examples

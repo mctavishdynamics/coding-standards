@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoBlankInAssignment:
+    standard: @{EffectiveGo}
+    ruleId: blank-assign
+    title: Discard unneeded values with the blank identifier
+    statement:
+        When a multiple assignment produces a value you do not need, assign
+        it to the blank identifier rather than to a dummy variable.
+    rationale:
+        The blank identifier makes it explicit that the value is
+        deliberately thrown away.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        info, unused := os.Stat(path)
+        _ = unused
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if _, err := os.Stat(path); err != nil {
+            return err
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [blank-identifier, idioms]
+    source: https://go.dev/doc/effective_go#blank_assign

@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT83:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.83
+    title: Do not declare a member function template virtual
+    statement:
+        Member function templates cannot be virtual. Use double dispatch, a
+        visitor, or another explicit way to choose the function.
+    rationale:
+        C++ does not allow it, because the set of virtual functions would
+        only be known at link time. The rule exists since people keep asking
+        for it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Serializer {
+        public:
+            template<typename T>
+            virtual void write(const T& value);   // error
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Serializer {
+        public:
+            virtual void write(int value) = 0;
+            virtual void write(const std::string& value) = 0;
+            virtual ~Serializer() = default;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, virtual-functions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-virtual

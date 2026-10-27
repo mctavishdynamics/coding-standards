@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellArithmetic:
+    standard: @{GoogleShell}
+    ruleId: arithmetic
+    title: Use (( ... )) or $(( ... )) for arithmetic
+    statement:
+        Do arithmetic with (( ... )) and $(( ... )). Never use let, the $[
+        ... ] syntax or expr, and use (( ... )) rather than double brackets
+        for numeric comparisons. Avoid (( ... )) as a standalone statement
+        where its value may be zero.
+    rationale:
+        Built-in arithmetic is faster than expr and avoids quoting and
+        globbing problems. A standalone expression that evaluates to zero
+        fails, which exits the shell under set -e.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        total=$(expr "${count}" + 1)
+        let "half = total / 2"
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        total="$(( count + 1 ))"
+        half="$(( total / 2 ))"
+        \\\
+        ```
+    languages: [shell]
+    tags: [arithmetic, syntax]
+    source: https://google.github.io/styleguide/shellguide.html#arithmetic

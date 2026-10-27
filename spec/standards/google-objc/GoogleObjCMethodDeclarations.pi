@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCMethodDeclarations:
+    standard: @{GoogleObjC}
+    ruleId: method-declarations
+    title: Order interface declarations by kind
+    statement:
+        In an @interface, declare properties first, then class methods, then
+        initializers, then instance methods. Start the class methods with
+        any convenience constructors.
+    rationale:
+        A fixed order lets readers find a declaration quickly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @interface ABCTrack : NSObject
+        - (void)play;
+        - (instancetype)initWithURL:(NSURL *)URL;
+        @property(nonatomic, readonly) NSTimeInterval duration;
+        + (instancetype)trackWithURL:(NSURL *)URL;
+        @end
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @interface ABCTrack : NSObject
+        @property(nonatomic, readonly) NSTimeInterval duration;
+        + (instancetype)trackWithURL:(NSURL *)URL;
+        - (instancetype)initWithURL:(NSURL *)URL;
+        - (void)play;
+        @end
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [declarations, ordering]
+    source: https://google.github.io/styleguide/objcguide.html#method-declarations

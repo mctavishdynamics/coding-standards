@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8AbsoluteImports:
+    standard: @{Pep8}
+    ruleId: imports-absolute
+    title: Prefer absolute imports
+    statement:
+        Use absolute imports. Explicit relative imports are an acceptable
+        alternative in complex package layouts where absolute imports would
+        be needlessly long.
+    rationale:
+        Absolute imports are more readable and fail with clearer errors when
+        the import system is misconfigured.
+    exceptions:
+        Standard library code should avoid complex layouts and always use
+        absolute imports.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # inside myapp/billing/invoice.py, relying on implicit path setup
+        import tax
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from myapp.billing import tax
+        from . import tax
+        \\\
+        ```
+    languages: [python]
+    tags: [imports]
+    source: https://peps.python.org/pep-0008/#imports

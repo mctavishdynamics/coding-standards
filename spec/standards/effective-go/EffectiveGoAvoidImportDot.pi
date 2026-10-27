@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoAvoidImportDot:
+    standard: @{EffectiveGo}
+    ruleId: package-names-import-dot
+    title: Avoid the import dot notation
+    statement:
+        Do not use the import dot form, which brings another package's names
+        into the file unqualified.
+    rationale:
+        Unqualified names hide where an identifier comes from.
+    exceptions:
+        It can simplify tests that must run outside the package they test.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        import . "strings"
+
+        func shout(s string) string { return ToUpper(s) + "!" }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        import "strings"
+
+        func shout(s string) string { return strings.ToUpper(s) + "!" }
+        \\\
+        ```
+    languages: [go]
+    tags: [imports, readability]
+    source: https://go.dev/doc/effective_go#package-names

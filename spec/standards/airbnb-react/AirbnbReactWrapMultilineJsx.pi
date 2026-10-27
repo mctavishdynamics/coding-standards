@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactWrapMultilineJsx:
+    standard: @{AirbnbReact}
+    ruleId: parentheses-1
+    title: Wrap multi-line JSX in parentheses
+    statement:
+        When a JSX expression spans more than one line, wrap it in
+        parentheses. Enforced by the ESLint rule react/jsx-wrap-multilines.
+    rationale:
+        Parentheses mark where the markup starts and ends and keep the
+        indentation of the tags tidy.
+    exceptions:
+        JSX that fits on a single line needs no parentheses.
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        render() {
+          return <Panel heading="Settings">
+                   <SettingsForm />
+                 </Panel>;
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        render() {
+          return (
+            <Panel heading="Settings">
+              <SettingsForm />
+            </Panel>
+          );
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [formatting, jsx]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#parentheses

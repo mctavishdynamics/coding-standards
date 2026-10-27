@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftExtensions:
+    standard: @{GoogleSwift}
+    ruleId: extensions
+    title: Organize extensions in a logical structure
+    statement:
+        When splitting a type's functionality across extensions, use a
+        logical grouping that you could explain to a reviewer.
+    rationale:
+        A consistent structure keeps related functionality easy to find.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```swift
+        \\\
+        struct Playlist {
+          var tracks: [Track]
+        }
+
+        extension Playlist: Collection {
+          // ...
+        }
+
+        extension Playlist: CustomStringConvertible {
+          // ...
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [organization, extensions]
+    source: https://google.github.io/swift/#extensions

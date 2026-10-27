@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaJavadocSelfExplanatory:
+    standard: @{GoogleJava}
+    ruleId: 7.3.1
+    title: Skip Javadoc only for truly self-explanatory members
+    statement:
+        Javadoc is optional for simple, obvious members and record
+        components, such as a plain getter, when there is nothing worthwhile
+        to say beyond the name. Do not use this to omit information a
+        typical reader would need.
+    rationale:
+        Restating the name adds nothing, but a term the reader may not know
+        still deserves an explanation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public record Artifact(String canonicalName) {}
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        /**
+         * @param canonicalName the name with version and classifier removed, used as the cache key
+         */
+        public record Artifact(String canonicalName) {}
+
+        public int getCount() { ... }
+        \\\
+        ```
+    languages: [java]
+    tags: [javadoc, documentation]
+    source: https://google.github.io/styleguide/javaguide.html#s7.3.1-javadoc-exception-self-explanatory

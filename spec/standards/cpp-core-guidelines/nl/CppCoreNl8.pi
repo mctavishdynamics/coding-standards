@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreNl8:
+    standard: @{CppCoreGuidelines}
+    ruleId: NL.8
+    title: Use a consistent naming style
+    statement:
+        Choose one house naming style, including for acronyms and name
+        lengths, and follow it, while leaving imported libraries in their
+        own style. Avoid identifiers with double underscores or a leading
+        underscore and capital letter.
+    rationale:
+        Consistent naming improves readability. Identifiers containing
+        double underscores or starting with an underscore and a capital
+        letter are reserved for the implementation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int maxConn = 64;
+        int mean_time_between_failures = 12;
+        int MTTR = 3;
+        int _Retry_count = 0;     // reserved identifier
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int max_connections = 64;
+        int mean_time_between_failures = 12;
+        int mean_time_to_repair = 3;
+        int retry_count = 0;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, consistency]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rl-name

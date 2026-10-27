@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcDocComments:
+    standard: @{GoCodeReviewComments}
+    ruleId: doc-comments
+    title: Document every exported name
+    statement:
+        Give every top-level exported name a doc comment, and also
+        non-trivial unexported type and function declarations.
+    rationale:
+        Doc comments are what godoc shows to users of the package, and they
+        explain intent to readers of the code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type RetryPolicy struct {
+            MaxAttempts int
+            Backoff     time.Duration
+        }
+
+        func DefaultRetryPolicy() RetryPolicy {
+            return RetryPolicy{MaxAttempts: 3, Backoff: time.Second}
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // RetryPolicy controls how often and how slowly a failed call is retried.
+        type RetryPolicy struct {
+            MaxAttempts int
+            Backoff     time.Duration
+        }
+
+        // DefaultRetryPolicy returns a policy of three attempts one second apart.
+        func DefaultRetryPolicy() RetryPolicy {
+            return RetryPolicy{MaxAttempts: 3, Backoff: time.Second}
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [comments, documentation]
+    source: https://go.dev/wiki/CodeReviewComments#doc-comments

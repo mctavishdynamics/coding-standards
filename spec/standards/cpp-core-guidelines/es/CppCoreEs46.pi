@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs46:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.46
+    title: Avoid lossy narrowing and truncating arithmetic conversions
+    statement:
+        Do not convert an arithmetic value to a type that cannot hold it.
+        When a narrowing conversion is intended, make it explicit with the
+        GSL functions narrow or narrow_cast.
+    rationale:
+        A narrowing conversion destroys information, often without anyone
+        noticing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        long long bytes = file_size();
+        int kb = bytes / 1024;          // may silently truncate
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        long long bytes = file_size();
+        int kb = gsl::narrow<int>(bytes / 1024);   // throws if it does not fit
+        \\\
+        ```
+    languages: [cpp]
+    tags: [conversions, types]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-narrowing

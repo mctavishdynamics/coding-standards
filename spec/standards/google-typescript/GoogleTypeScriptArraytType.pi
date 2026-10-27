@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptArraytType:
+    standard: @{GoogleTypeScript}
+    ruleId: arrayt-type
+    title: Use T[] for simple element types and Array<T> otherwise
+    statement:
+        For simple element types made of letters, digits and dots, use the
+        T[] or readonly T[] shorthand, including for multi-dimensional
+        arrays. For more complex element types, use Array<T> or
+        ReadonlyArray<T>. Apply this at every nesting level.
+    rationale:
+        The shorthand is shorter for simple types, while the long form
+        avoids hard-to-read brackets and parentheses around complex ones.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        let names: Array<string>;
+        let ids: (string|number)[];
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        let names: string[];
+        let ids: Array<string|number>;
+        let grid: number[][];
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, arrays]
+    source: https://google.github.io/styleguide/tsguide.html#arrayt-type

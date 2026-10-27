@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpDatabaseSecurity6:
+    standard: @{OwaspScp}
+    ruleId: database-security-6
+    title: Keep connection strings out of the code and encrypted
+    statement:
+        Do not hard-code connection strings in the application. Keep them
+        encrypted in a separate configuration file on a trusted system.
+    rationale:
+        Hard-coded connection strings leak through source control and builds
+        and are hard to rotate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        conn = psycopg.connect("postgresql://app:Winter2024@db.internal/shop")
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        conn = psycopg.connect(config.secret("shop_db_url"))
+        \\\
+        ```
+    languages: [any]
+    tags: [database, secrets, configuration]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#database-security

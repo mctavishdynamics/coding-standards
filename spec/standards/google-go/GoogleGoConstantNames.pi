@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoConstantNames:
+    standard: @{GoogleGo}
+    ruleId: decisions/constant-names
+    title: Name constants in MixedCaps by their role
+    statement:
+        Write constant names in MixedCaps, with no all-caps or K prefix
+        forms, and name each constant for what the value means rather than
+        for the value itself. A value with no role beyond its literal does
+        not need a constant.
+    rationale:
+        A role-based name tells the reader why the number matters and stays
+        correct when the value changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        const MAX_CONNS = 64
+        const kTimeout = 5 * time.Second
+        const Twelve = 12
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        const MaxConns = 64
+        const dialTimeout = 5 * time.Second
+        const monthsPerYear = 12
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, naming, constants]
+    source: https://google.github.io/styleguide/go/decisions#constant-names

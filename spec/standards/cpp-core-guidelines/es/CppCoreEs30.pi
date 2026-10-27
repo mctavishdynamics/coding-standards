@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs30:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.30
+    title: Don't use macros for program text manipulation
+    statement:
+        Do not use macros to generate or rewrite source code. Use language
+        features such as templates, constexpr functions and inline
+        functions.
+    rationale:
+        Macros ignore scope and type rules, show the reader something
+        different from what the compiler sees, cause many bugs and
+        complicate tools.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        #define DECLARE_GETTER(type, name) type get_##name() const { return name; }
+
+        class User {
+            std::string email;
+        public:
+            DECLARE_GETTER(std::string, email)
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class User {
+            std::string email;
+        public:
+            const std::string& get_email() const { return email; }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [macros, preprocessor]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-macros

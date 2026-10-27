@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoVarDeclSize:
+    standard: @{GoogleGo}
+    ruleId: best-practices/vardeclsize
+    title: Add size hints only when measurement justifies them
+    statement:
+        Most code should let slices and maps grow on their own. Preallocate
+        with a size hint when the final size is known, or when profiling
+        shows it matters, but do not overallocate.
+    rationale:
+        Preallocation helps performance-sensitive code but adds clutter, and
+        too much wastes memory or harms performance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Small, rarely used list.
+        names := make([]string, 0, 10000)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        ids := make([]string, 0, len(users))
+        for _, u := range users {
+            ids = append(ids, u.ID)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, performance, slices, maps]
+    source: https://google.github.io/styleguide/go/best-practices#vardeclsize

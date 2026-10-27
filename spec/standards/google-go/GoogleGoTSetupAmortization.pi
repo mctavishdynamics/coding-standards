@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTSetupAmortization:
+    standard: @{GoogleGo}
+    ruleId: best-practices/t-setup-amortization
+    title: Amortise expensive setup with sync.Once when it needs no teardown
+    statement:
+        Consider sync.Once for common setup that is expensive, used by only
+        some tests and needs no teardown. Be cautious when the setup depends
+        on a context.
+    rationale:
+        It pays the cost once without burdening unrelated tests, but waiting
+        callers cannot honour context cancellation.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```go
+        \\\
+        var (
+            datasetOnce sync.Once
+            dataset     *Dataset
+            datasetErr  error
+        )
+
+        func mustLoadDataset(t *testing.T) *Dataset {
+            t.Helper()
+            datasetOnce.Do(func() { dataset, datasetErr = loadDataset() })
+            if datasetErr != nil {
+                t.Fatalf("Setup: loading dataset: %v", datasetErr)
+            }
+            return dataset
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, testing, setup]
+    source: https://google.github.io/styleguide/go/best-practices#t-setup-amortization

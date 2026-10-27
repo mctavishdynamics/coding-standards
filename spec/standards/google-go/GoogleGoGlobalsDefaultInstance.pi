@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoGlobalsDefaultInstance:
+    standard: @{GoogleGo}
+    ruleId: best-practices/globals-default-instance
+    title: Make a default instance a thin proxy over instance APIs
+    statement:
+        If you offer a convenience API backed by a package-level default,
+        also offer isolated instances, make the global API a thin proxy to
+        them, use it only from binaries rather than libraries, and document
+        and enforce its invariants with a way to reset it to a known
+        default.
+    rationale:
+        This keeps convenience for simple programs without trapping
+        libraries and tests in shared state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package metrics
+
+        var counters = map[string]int{}
+
+        func Inc(name string) { counters[name]++ }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package metrics
+
+        type Registry struct { /* ... */ }
+
+        func NewRegistry() *Registry { /* ... */ }
+        func (r *Registry) Inc(name string) { /* ... */ }
+
+        // Default is used by Inc. Programs, not libraries, should use it.
+        var Default = NewRegistry()
+
+        func Inc(name string) { Default.Inc(name) }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, global-state, api-design]
+    source: https://google.github.io/styleguide/go/best-practices#globals-default-instance

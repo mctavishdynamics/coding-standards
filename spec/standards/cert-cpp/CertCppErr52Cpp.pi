@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppErr52Cpp:
+    standard: @{CertCpp}
+    ruleId: ERR52-CPP
+    title: Do not use setjmp() or longjmp()
+    statement:
+        Do not use setjmp and longjmp in C++. Use exceptions for non-local
+        error handling.
+    rationale:
+        longjmp skips destructors, so it leaks resources and is undefined
+        behavior whenever objects with non-trivial destructors are jumped
+        over. CERT rates likelihood probable, detectable yes, repairable no,
+        priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        std::jmp_buf env;
+
+        void parse(const std::string& text) {
+            std::vector<int> tokens;
+            if (text.empty()) {
+                std::longjmp(env, 1);  // tokens is never destroyed
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void parse(const std::string& text) {
+            std::vector<int> tokens;
+            if (text.empty()) {
+                throw std::invalid_argument("empty input");
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, exceptions, resource-management]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/exceptions-and-error-handling-err/err52-cpp

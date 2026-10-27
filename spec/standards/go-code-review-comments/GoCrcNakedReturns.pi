@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcNakedReturns:
+    standard: @{GoCodeReviewComments}
+    ruleId: naked-returns
+    title: Use naked returns only in very short functions
+    statement:
+        A return with no arguments returns the named results. Use it only in
+        functions a handful of lines long; in anything larger, return the
+        values explicitly.
+    rationale:
+        In a longer function the reader has to trace back to find what a
+        naked return actually returns.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func parseHeader(line string) (key, value string, err error) {
+            i := strings.IndexByte(line, ':')
+            if i < 0 {
+                err = errMalformed
+                return
+            }
+            key = strings.TrimSpace(line[:i])
+            value = strings.TrimSpace(line[i+1:])
+            if key == "" {
+                err = errEmptyKey
+            }
+            return
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func parseHeader(line string) (key, value string, err error) {
+            i := strings.IndexByte(line, ':')
+            if i < 0 {
+                return "", "", errMalformed
+            }
+            key = strings.TrimSpace(line[:i])
+            if key == "" {
+                return "", "", errEmptyKey
+            }
+            return key, strings.TrimSpace(line[i+1:]), nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [functions, readability]
+    source: https://go.dev/wiki/CodeReviewComments#naked-returns

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppDcl60Cpp:
+    standard: @{CertCpp}
+    ruleId: DCL60-CPP
+    title: Obey the one-definition rule
+    statement:
+        Give every non-inline function and variable exactly one definition
+        in the program, and make every definition of a class, inline
+        function or template identical in all translation units.
+    rationale:
+        Violating the one-definition rule is undefined behavior and usually
+        is not diagnosed, so different parts of the program may disagree on
+        an object's layout. CERT rates likelihood unlikely, detectable yes,
+        repairable no, priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        // a.cpp
+        struct Config { int timeout; };
+
+        // b.cpp
+        struct Config { long timeout; bool verbose; };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // config.h
+        struct Config { int timeout; bool verbose; };
+
+        // a.cpp and b.cpp
+        #include "config.h"
+        \\\
+        ```
+    languages: [cpp]
+    tags: [declarations, linkage, odr]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/declarations-and-initialization-dcl/dcl60-cpp

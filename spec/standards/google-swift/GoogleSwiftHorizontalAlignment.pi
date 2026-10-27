@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftHorizontalAlignment:
+    standard: @{GoogleSwift}
+    ruleId: horizontal-alignment
+    title: Do not align tokens with extra spaces
+    statement:
+        Do not add variable spaces to line tokens up with those on other
+        lines, except for clearly tabular data where alignment helps.
+    rationale:
+        Adding one longer member forces every aligned line to change.
+    exceptions:
+        Obviously tabular data may be aligned when omitting the alignment
+        would hurt readability.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        struct Shipment {
+          var id:          UUID
+          var destination: Address
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        struct Shipment {
+          var id: UUID
+          var destination: Address
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, whitespace, alignment]
+    source: https://google.github.io/swift/#horizontal-alignment

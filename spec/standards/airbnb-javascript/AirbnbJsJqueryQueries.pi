@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsJqueryQueries:
+    standard: @{AirbnbJavaScript}
+    ruleId: 26.3
+    title: Use cascading or child selectors for DOM queries
+    statement:
+        Query the DOM with a cascading selector such as '.sidebar ul' or a
+        parent-to-child selector such as '.sidebar > ul'.
+    rationale:
+        These selector forms performed best in the guide's measurements.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        $('li', '.nav').addClass('item');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        $('.nav li').addClass('item');
+        $('.nav > li').addClass('item');
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jquery, dom, performance]
+    source: https://github.com/airbnb/javascript#jquery--queries

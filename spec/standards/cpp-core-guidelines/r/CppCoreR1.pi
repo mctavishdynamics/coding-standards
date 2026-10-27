@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR1:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.1
+    title: Manage resources automatically with RAII handles
+    statement:
+        Wrap every resource that needs a matching acquire and release call
+        in an object that acquires it in its constructor and releases it in
+        its destructor.
+    rationale:
+        The destructor runs on every exit path, including returns and
+        exceptions, so the release cannot be forgotten and leaks disappear
+        without manual bookkeeping.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void write_log(const char* path, const std::string& line) {
+            FILE* f = std::fopen(path, "a");
+            if (line.empty()) return;          // leaks the file handle
+            std::fputs(line.c_str(), f);
+            std::fclose(f);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void write_log(const char* path, const std::string& line) {
+            std::ofstream out(path, std::ios::app);
+            if (line.empty()) return;          // file closed by the destructor
+            out << line;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [resource-management, raii]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-raii

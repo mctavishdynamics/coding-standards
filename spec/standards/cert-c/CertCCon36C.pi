@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon36C:
+    standard: @{CertC}
+    ruleId: CON36-C
+    title: Wrap functions that can spuriously wake up in a loop
+    statement:
+        Call cnd_wait and cnd_timedwait inside a loop that tests the
+        condition predicate, so the thread waits again if it wakes while the
+        condition is still false.
+    rationale:
+        These functions may return without a matching signal, or after
+        another thread has already consumed the state, so a single check
+        lets the thread proceed too early. CERT rates likelihood unlikely,
+        detectable yes, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        mtx_lock(&q->lock);
+        if (q->count == 0) {
+            cnd_wait(&q->not_empty, &q->lock);
+        }
+        item = dequeue(q);
+        mtx_unlock(&q->lock);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        mtx_lock(&q->lock);
+        while (q->count == 0) {
+            cnd_wait(&q->not_empty, &q->lock);
+        }
+        item = dequeue(q);
+        mtx_unlock(&q->lock);
+        \\\
+        ```
+    languages: [c]
+    tags: [concurrency, condition-variables]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/concurrency-con/con36-c

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCConvTraits:
+    standard: @{RustApiGuidelines}
+    ruleId: C-CONV-TRAITS
+    title: Use From, TryFrom, AsRef and AsMut for conversions
+    statement:
+        Provide conversions through the standard From, TryFrom, AsRef and
+        AsMut traits where they make sense. Never implement Into or TryInto
+        directly; they come for free from From and TryFrom.
+    rationale:
+        Standard traits let generic code accept your types, and the blanket
+        impls mean an Into impl would be redundant or conflict with them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl Into<Meters> for Feet {
+            fn into(self) -> Meters {
+                Meters(self.0 * 0.3048)
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl From<Feet> for Meters {
+            fn from(f: Feet) -> Meters {
+                Meters(f.0 * 0.3048)
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [traits, conversions]
+    source: https://rust-lang.github.io/api-guidelines/interoperability.html#c-conv-traits

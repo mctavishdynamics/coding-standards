@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCSig34C:
+    standard: @{CertC}
+    ruleId: SIG34-C
+    title:
+        Do not call signal() from within interruptible signal handlers
+    statement:
+        Do not have a signal handler call signal to reinstall itself. On
+        POSIX, install handlers with sigaction so they stay installed.
+    rationale:
+        On platforms that reset the handler before calling it, a second
+        signal can arrive before signal runs again and take the default
+        action, which is a race. CERT rates likelihood unlikely, detectable
+        yes, repairable no, priority P2, level L3.
+    exceptions:
+        On implementations whose handlers persist, a handler may safely
+        change the handling of its own signal.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        static void on_alarm(int sig) {
+            signal(sig, on_alarm);
+            tick = 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static void on_alarm(int sig) {
+            (void)sig;
+            tick = 1;
+        }
+
+        int install(void) {
+            struct sigaction sa = { 0 };
+            sa.sa_handler = on_alarm;
+            sigemptyset(&sa.sa_mask);
+            return sigaction(SIGALRM, &sa, NULL);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [signals, race-conditions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/signals-sig/sig34-c

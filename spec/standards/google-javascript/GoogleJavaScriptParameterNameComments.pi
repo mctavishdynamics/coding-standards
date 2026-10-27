@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptParameterNameComments:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.8.2
+    title: Add parameter name comments to unclear arguments
+    statement:
+        When an argument's meaning is not clear from the value and method
+        name, and refactoring is not practical, add a parameter name
+        comment. Prefer placing it before the value with an equals sign;
+        placing it after the value without one is allowed for consistency.
+    rationale:
+        Bare literals such as true or null say nothing about their role; a
+        short name comment does.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        renderChart(data, true, false);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        renderChart(data, /* animate= */ true, /* showLegend= */ false);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [comments, readability, functions]
+    source: https://google.github.io/styleguide/jsguide.html#482-parameter-name-comments

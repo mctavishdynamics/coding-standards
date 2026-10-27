@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlIo50:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.io.50
+    title: Avoid endl
+    statement:
+        End lines with a newline character rather than std::endl, and flush
+        explicitly only when you need to.
+    rationale:
+        endl writes a newline and flushes, and the redundant flushes can
+        slow output significantly. It does not produce a platform-specific
+        line ending.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (const auto& row : rows)
+            out << row << std::endl;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (const auto& row : rows)
+            out << row << '\n';
+        \\\
+        ```
+    languages: [cpp]
+    tags: [io, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rio-endl

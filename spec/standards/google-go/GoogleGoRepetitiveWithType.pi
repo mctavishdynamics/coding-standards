@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoRepetitiveWithType:
+    standard: @{GoogleGo}
+    ruleId: decisions/repetitive-with-type
+    title: Do not repeat the type in a variable name
+    statement:
+        Leave the type out of variable names, since the compiler and usually
+        the reader already know it. When one value appears in two forms in
+        the same scope, distinguish them with words like raw and parsed or
+        with the representation.
+    rationale:
+        Names like nameString or numUsers add length without adding meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var nameString string
+        var primaryAccount *Account
+        limitStr := r.FormValue("limit")
+        limitInt, err := strconv.Atoi(limitStr)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var name string
+        var primary *Account
+        rawLimit := r.FormValue("limit")
+        limit, err := strconv.Atoi(rawLimit)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, naming, variables, repetition]
+    source: https://google.github.io/styleguide/go/decisions#repetitive-with-type

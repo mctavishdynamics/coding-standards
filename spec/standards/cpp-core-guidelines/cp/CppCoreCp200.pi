@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp200:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.200
+    title: Use volatile only to talk to non-C++ memory
+    statement:
+        Reserve volatile for objects shared with hardware or code that does
+        not follow the C++ memory model, such as memory-mapped device
+        registers. Volatile locals and data members are almost always wrong;
+        you probably want std::atomic.
+    rationale:
+        Volatile tells the compiler that a value can change or be observed
+        outside the program, so reads and writes must not be optimized away.
+        It does nothing for synchronization between threads.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void poll()
+        {
+            volatile int attempts = 0;   // a local cannot be shared with hardware
+            while (attempts++ < 10) try_once();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // status register of a memory-mapped UART
+        auto* const uart_status = reinterpret_cast<const volatile std::uint32_t*>(0x4000'1000);
+
+        bool uart_ready() { return (*uart_status & 0x1u) != 0; }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, volatile, hardware]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-volatile2

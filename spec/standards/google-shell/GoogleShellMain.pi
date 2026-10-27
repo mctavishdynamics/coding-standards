@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellMain:
+    standard: @{GoogleShell}
+    ruleId: main
+    title: Put the program in a main function
+    statement:
+        In a script long enough to contain at least one other function, put
+        the main program in a function called main, as the bottom-most
+        function. The last line of the file that is not a comment calls main
+        and passes it "$@" as its arguments.
+    rationale:
+        The start of the program is easy to find, the layout matches the
+        rest of the codebase, and more variables can be local.
+    exceptions:
+        A short script with a linear flow does not need main.
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        parse_args() { ... }
+
+        parse_args "$@"
+        run_build
+        publish
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        parse_args() { ... }
+
+        main() {
+          parse_args "$@"
+          run_build
+          publish
+        }
+
+        main "$@"
+        \\\
+        ```
+    languages: [shell]
+    tags: [structure, functions]
+    source: https://google.github.io/styleguide/shellguide.html#main

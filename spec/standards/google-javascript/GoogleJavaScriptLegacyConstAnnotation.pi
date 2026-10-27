@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptLegacyConstAnnotation:
+    standard: @{GoogleJavaScript}
+    ruleId: 9.4.2.3
+    title: Annotate global constant var declarations with @const
+    statement:
+        On legacy platforms, annotate a global var declaration with @const
+        where const would otherwise be used; this is optional for local
+        variables.
+    rationale:
+        The annotation lets the compiler enforce constancy that the keyword
+        cannot provide.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        var MAX_ITEMS = 50;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** @const */
+        var MAX_ITEMS = 50;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [legacy, constants, jsdoc]
+    source: https://google.github.io/styleguide/jsguide.html#9423-use-const-for-constants-variables

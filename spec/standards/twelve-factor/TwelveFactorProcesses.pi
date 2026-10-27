@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./TwelveFactor import TwelveFactor
+
+export coding-rule TwelveFactorProcesses:
+    standard: @{TwelveFactor}
+    ruleId: VI
+    title: Execute the app as one or more stateless processes
+    statement:
+        Make processes stateless and share-nothing, and keep any data that
+        must persist in a stateful backing service. Use memory or local disk
+        only as a brief single-transaction cache, and never rely on sticky
+        sessions.
+    rationale:
+        With many processes and frequent restarts, there is no guarantee
+        that a later request reaches the same process or finds its local
+        state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        SESSIONS = {}
+
+        def login(user_id, token):
+            SESSIONS[token] = user_id
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def login(user_id, token, redis_client):
+            redis_client.set(f"session:{token}", user_id, ex=3600)
+        \\\
+        ```
+    languages: [any]
+    tags: [architecture, state, scalability]
+    source: https://12factor.net/processes

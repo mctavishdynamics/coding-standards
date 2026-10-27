@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCNewtypeHide:
+    standard: @{RustApiGuidelines}
+    ruleId: C-NEWTYPE-HIDE
+    title: Hide implementation details behind newtypes
+    statement:
+        Wrap complex or internal types, such as chains of iterator adapters,
+        in a newtype that exposes only what you promise. Returning impl
+        Trait is a lighter option for some cases.
+    rationale:
+        Callers then cannot depend on how the value is built, so the
+        representation can change without breaking them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub fn visible_rows(t: &Table) -> Filter<std::slice::Iter<'_, Row>, fn(&&Row) -> bool> {
+            t.rows.iter().filter(|r| !r.hidden)
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub struct VisibleRows<'a>(Filter<std::slice::Iter<'a, Row>, fn(&&Row) -> bool>);
+
+        impl<'a> Iterator for VisibleRows<'a> {
+            type Item = &'a Row;
+            fn next(&mut self) -> Option<&'a Row> { self.0.next() }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [encapsulation, compatibility]
+    source: https://rust-lang.github.io/api-guidelines/future-proofing.html#c-newtype-hide

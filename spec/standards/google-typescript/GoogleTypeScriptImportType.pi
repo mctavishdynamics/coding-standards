@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptImportType:
+    standard: @{GoogleTypeScript}
+    ruleId: import-type
+    title: Use import type for symbols used only as types
+    statement:
+        You may use import type when a symbol is used only as a type. Use a
+        regular import for anything used as a value.
+    rationale:
+        Fast transpilation without full type information needs to know which
+        imports are type-only, and the type-checking build confirms the
+        annotation is right.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        import type {Logger} from './logger';
+
+        const log = new Logger();
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        import type {LogLevel} from './logger';
+        import {Logger} from './logger';
+
+        const log = new Logger();
+        let level: LogLevel = 'info';
+        \\\
+        ```
+    languages: [typescript]
+    tags: [imports, types]
+    source: https://google.github.io/styleguide/tsguide.html#import-type

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptGoogModuleExports:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.3.3
+    title: Export goog.module symbols through the exports object
+    statement:
+        Export symbols through the exports object, either defined on it
+        directly or declared locally and exported together. Export only what
+        other modules need, do not mark module-local symbols private, do not
+        annotate exports as const, and do not assign a single value as a
+        default export.
+    rationale:
+        The compiler already treats exports as constant, and default-style
+        exports do not translate cleanly to ES module semantics.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @const */
+        exports = Parser;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function parse(text) {
+          return tokenize(text);
+        }
+
+        exports = {parse};
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, closure, exports]
+    source: https://google.github.io/styleguide/jsguide.html#333-googmodule-exports

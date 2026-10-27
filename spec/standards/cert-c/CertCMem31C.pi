@@ -1,0 +1,57 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem31C:
+    standard: @{CertC}
+    ruleId: MEM31-C
+    title: Free dynamically allocated memory when no longer needed
+    statement:
+        Free every block from malloc, calloc, realloc or aligned_alloc
+        before the last pointer to it goes out of scope or is overwritten,
+        including on error paths.
+    rationale:
+        Leaked memory accumulates until the program runs out, and an
+        attacker who can trigger the leak can cause a denial of service.
+        CERT rates likelihood probable, detectable no, repairable no,
+        priority P4, level L3.
+    exceptions:
+        Memory held by a pointer whose lifetime lasts until program
+        termination, such as a static pointer, need not be freed.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+        #include <string.h>
+
+        int store(const char *text) {
+            char *copy = malloc(strlen(text) + 1);
+            if (copy == NULL) {
+                return -1;
+            }
+            strcpy(copy, text);
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+        #include <string.h>
+
+        int store(const char *text) {
+            char *copy = malloc(strlen(text) + 1);
+            if (copy == NULL) {
+                return -1;
+            }
+            strcpy(copy, text);
+            free(copy);
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, leaks]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/memory-management-mem/mem31-c

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaVna00J:
+    standard: @{CertJava}
+    ruleId: VNA00-J
+    title: Ensure visibility when accessing shared primitive variables
+    statement:
+        Declare shared primitive variables volatile, or synchronize every
+        read and write, so that threads see the latest value.
+    rationale:
+        Without volatile or synchronization a thread may keep seeing a stale
+        value, for example a loop that never sees its stop flag. CERT rates
+        likelihood probable, detectable yes, repairable no, priority P8,
+        level L2.
+    exceptions:
+        Class objects are created by the virtual machine and are always
+        visible across threads.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        private boolean done;
+        public void shutdown() { done = true; }
+        public void run() { while (!done) { work(); } }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private volatile boolean done;
+        public void shutdown() { done = true; }
+        public void run() { while (!done) { work(); } }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, visibility]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/visibility-and-atomicity-vna/vna00-j/

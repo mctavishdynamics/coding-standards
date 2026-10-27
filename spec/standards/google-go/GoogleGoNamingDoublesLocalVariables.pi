@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoNamingDoublesLocalVariables:
+    standard: @{GoogleGo}
+    ruleId: best-practices/naming-doubles-local-variables
+    title: Distinguish test doubles in local variable names
+    statement:
+        When a test variable holds a double next to production values,
+        choose a name that sets it apart, for example by prefixing spy or
+        fake.
+    rationale:
+        Clear names keep readers from confusing the double with the real
+        dependency.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        cards := &creditcardtest.Spy{}
+        proc := &Processor{CC: cards}
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        spyCC := &creditcardtest.Spy{}
+        proc := &Processor{CC: spyCC}
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, naming, testing, test-doubles]
+    source: https://google.github.io/styleguide/go/best-practices#naming-doubles-local-variables

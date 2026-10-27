@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppCopyableMovableTypes:
+    standard: @{GoogleCpp}
+    ruleId: Copyable_Movable_Types
+    title: Make a class's copy and move support explicit
+    statement:
+        A class's public API must show whether it is copyable, move-only, or
+        neither, usually by declaring or deleting the operations in the
+        public section. Support copy or move only when it is clear and
+        meaningful for the type, and define move operations for copyable
+        types only when they are much faster than copying.
+    rationale:
+        Readers and the compiler can then see how values may be passed.
+        Copying types tied to identity or scope is nonsensical, and copying
+        polymorphic bases risks slicing.
+    exceptions:
+        The declarations can be omitted when they are obvious, such as a
+        struct with only public data or a class whose base is clearly not
+        copyable.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class FileLock {
+         public:
+          explicit FileLock(const std::string& path);
+          ~FileLock();  // Copyability left to the compiler.
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class FileLock {
+         public:
+          explicit FileLock(const std::string& path);
+          FileLock(const FileLock&) = delete;
+          FileLock& operator=(const FileLock&) = delete;
+          ~FileLock();
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, copy, move]
+    source: https://google.github.io/styleguide/cppguide.html#Copyable_Movable_Types

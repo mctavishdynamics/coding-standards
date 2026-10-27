@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoPointerVersusValueReceivers:
+    standard: @{EffectiveGo}
+    ruleId: pointers-vs-values
+    title: Use pointer receivers for methods that modify
+    statement:
+        Give a method a pointer receiver when it must modify the receiver.
+        Value methods can be called on values and pointers, but pointer
+        methods only on pointers or addressable values, so the choice
+        decides which types satisfy an interface.
+    rationale:
+        A value receiver gets a copy, so changes would be lost, and only the
+        pointer type has pointer methods in its method set.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Buffer []byte
+
+        func (b Buffer) Write(p []byte) (int, error) {
+            b = append(b, p...) // lost on return
+            return len(p), nil
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Buffer []byte
+
+        func (b *Buffer) Write(p []byte) (int, error) {
+            *b = append(*b, p...)
+            return len(p), nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [methods, pointers, interfaces]
+    source: https://go.dev/doc/effective_go#pointers_vs_values

@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC136:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.136
+    title: Use multiple inheritance to combine implementation attributes
+    statement:
+        Multiple inheritance can combine several mixins that each supply
+        state and operations to a class.
+    rationale:
+        Some mixins carry state and operations. If those operations are
+        virtual, inheritance is required, and otherwise it can still save
+        boilerplate and forwarding code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Widget {
+        public:
+            void log(const std::string& m) { logger_.log(m); }   // forwarding
+            int id() const { return counter_.id(); }             // forwarding
+        private:
+            Logger logger_;
+            Counter counter_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Widget : public Logging, public Counted {
+            // log() and id() come from the mixins
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, multiple-inheritance, mixins]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-mi-implementation

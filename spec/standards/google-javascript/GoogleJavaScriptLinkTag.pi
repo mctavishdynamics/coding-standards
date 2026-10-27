@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptLinkTag:
+    standard: @{GoogleJavaScript}
+    ruleId: 9.1.2.5
+    title: Use Markdown links for external URLs in JSDoc
+    statement:
+        Use the inline link tag only for cross-references within generated
+        documentation. For external links, always use Markdown link syntax.
+    rationale:
+        Markdown links render reliably across documentation tools, while
+        external link tags are a historical pattern.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * Parses dates as described in
+         * [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
+         */
+        function parseTimestamp(text) {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, documentation]
+    source: https://google.github.io/styleguide/jsguide.html#9125-link

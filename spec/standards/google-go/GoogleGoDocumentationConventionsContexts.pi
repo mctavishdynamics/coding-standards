@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoDocumentationConventionsContexts:
+    standard: @{GoogleGo}
+    ruleId: best-practices/documentation-conventions-contexts
+    title: Document only unusual context behaviour
+    statement:
+        Do not restate that cancelling the context interrupts the function
+        and returns ctx.Err. Document context behaviour when the function
+        returns a different error on cancellation, can be interrupted
+        another way, or has special requirements for the context.
+    rationale:
+        Standard context behaviour is implied; only departures from it need
+        words.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Run runs the worker loop. It returns ctx.Err() if ctx is cancelled.
+        func (w *Worker) Run(ctx context.Context) error
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Run runs the worker loop until ctx is cancelled or Stop is called.
+        // If the context is cancelled, Run returns a nil error.
+        func (w *Worker) Run(ctx context.Context) error
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, documentation, context]
+    source: https://google.github.io/styleguide/go/best-practices#documentation-conventions-contexts

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcImportDot:
+    standard: @{GoCodeReviewComments}
+    ruleId: import-dot
+    title: Do not use dot imports
+    statement:
+        Do not use the import dot form, which merges another package's names
+        into the current file.
+    rationale:
+        With a dot import a reader cannot tell whether a name is declared in
+        the current package or in an imported one.
+    exceptions:
+        An external test package that cannot be part of the package under
+        test because of a circular dependency may dot-import that package.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package report
+
+        import . "example.com/app/money"
+
+        func Total(lines []Line) Amount {
+            return Sum(lines)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package report
+
+        import "example.com/app/money"
+
+        func Total(lines []Line) money.Amount {
+            return money.Sum(lines)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [imports, readability]
+    source: https://go.dev/wiki/CodeReviewComments#import-dot

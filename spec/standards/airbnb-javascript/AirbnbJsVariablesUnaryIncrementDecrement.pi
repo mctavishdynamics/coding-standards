@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsVariablesUnaryIncrementDecrement:
+    standard: @{AirbnbJavaScript}
+    ruleId: 13.6
+    title: Avoid unary increment and decrement
+    statement:
+        Do not use the ++ and -- operators. Write count += 1 or count -= 1
+        instead. Enforced by the ESLint rule no-plusplus.
+    rationale:
+        Unary increments are subject to automatic semicolon insertion, can
+        cause silent errors and make pre- and post-increment mistakes easy.
+        The compound assignment says plainly what changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        let retries = 0;
+        retries++;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        let retries = 0;
+        retries += 1;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [variables, operators]
+    source: https://github.com/airbnb/javascript#variables--unary-increment-decrement

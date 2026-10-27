@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI3:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.3
+    title: Avoid singletons
+    statement:
+        Do not build classes that enforce a single global instance. If
+        shared data must not change, make it const or constexpr.
+    rationale:
+        A singleton is a global object in disguise, with the same hidden
+        dependencies and the added complexity of its own machinery.
+    exceptions:
+        A function that returns a reference to a local static object is
+        acceptable to get initialization on first use. It is not a singleton
+        in the class sense.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Config {
+        public:
+            static Config& instance();
+            std::string value(const std::string& key);
+        private:
+            Config();
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Config {
+        public:
+            explicit Config(const std::string& path);
+            std::string value(const std::string& key) const;
+        };
+
+        void start(const Config& config);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, globals, design]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-singleton

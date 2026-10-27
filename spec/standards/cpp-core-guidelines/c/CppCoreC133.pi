@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC133:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.133
+    title: Avoid protected data
+    statement:
+        Keep data members private, and give derived classes protected
+        functions if they need access.
+    rationale:
+        Protected data is open to every derived class, which makes
+        invariants hard to state and enforce and puts data in bases where it
+        does not belong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Account {
+        protected:
+            double balance_;      // any subclass can break the invariant
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Account {
+        protected:
+            void adjust(double delta);   // keeps the invariant
+        private:
+            double balance_ = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, encapsulation, access-control]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-protected

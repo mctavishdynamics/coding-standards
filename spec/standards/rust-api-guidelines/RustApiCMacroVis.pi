@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCMacroVis:
+    standard: @{RustApiGuidelines}
+    ruleId: C-MACRO-VIS
+    title: Support visibility specifiers in item macros
+    statement:
+        Items produced by a macro follow normal Rust visibility, private by
+        default and public when the caller writes pub.
+    rationale:
+        Callers expect to control the visibility of generated items exactly
+        as they do for items they write by hand.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        macro_rules! counter {
+            ($name:ident) => {
+                pub static $name: AtomicUsize = AtomicUsize::new(0);
+            };
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        macro_rules! counter {
+            ($vis:vis $name:ident) => {
+                $vis static $name: AtomicUsize = AtomicUsize::new(0);
+            };
+        }
+
+        counter!(pub REQUESTS);
+        counter!(ERRORS);
+        \\\
+        ```
+    languages: [rust]
+    tags: [macros, visibility]
+    source: https://rust-lang.github.io/api-guidelines/macros.html#c-macro-vis

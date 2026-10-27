@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCStyleMatchesTheLanguage:
+    standard: @{GoogleObjC}
+    ruleId: style-matches-the-language
+    title: Follow the style of the language being implemented
+    statement:
+        In Objective-C++ files, use Objective-C naming inside
+        @implementation blocks and C++ naming inside C++ class methods.
+        Outside class implementations, be consistent within the file.
+    rationale:
+        Following the style of the method being implemented keeps mixed
+        naming conventions from clashing.
+    exceptions:
+        Projects may use an 80 column limit for consistency with Google C++
+        style.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @implementation ABCBridge
+        - (void)refresh {
+          int item_count = _engine->ItemCount();
+        }
+        @end
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @implementation ABCBridge
+        - (void)refresh {
+          int itemCount = _engine->ItemCount();
+        }
+        @end
+
+        int Engine::ItemCount() {
+          int item_count = static_cast<int>(items_.size());
+          return item_count;
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [naming, objective-cpp]
+    source: https://google.github.io/styleguide/objcguide.html#style-matches-the-language

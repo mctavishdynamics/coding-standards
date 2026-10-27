@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptSwitchIndentation:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.2.5
+    title: Indent switch contents like blocks
+    statement:
+        Indent the contents of a switch by two spaces. After each case
+        label, start a new line and indent two more spaces; the next label
+        returns to the previous level. A blank line after a break is
+        optional.
+    rationale:
+        Treating each case like a block makes the cases and their statements
+        easy to tell apart.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        switch (status) {
+        case 'ok': render(); break;
+        default: showError();
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        switch (status) {
+          case 'ok':
+            render();
+            break;
+          default:
+            showError();
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, indentation, switch]
+    source: https://google.github.io/styleguide/jsguide.html#425-switch-statements

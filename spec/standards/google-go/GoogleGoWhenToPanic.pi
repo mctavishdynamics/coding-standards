@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoWhenToPanic:
+    standard: @{GoogleGo}
+    ruleId: best-practices/when-to-panic
+    title: Panic only for misuse, contained recovery or unreachable code
+    statement:
+        Panic is acceptable for API misuse that tests should catch, as an
+        internal mechanism with a matching recover that never lets the panic
+        cross the package boundary, after a call the compiler cannot see
+        does not return, and in init or Must functions.
+    rationale:
+        In these cases the panic acts as an invariant check or a
+        simplification, not as normal error handling.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Exported parser lets internal panics escape to callers.
+        func Parse(src string) *AST {
+            p := parser{src: src}
+            return p.parseFile()
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type syntaxError struct{ msg string }
+
+        func Parse(src string) (ast *AST, err error) {
+            defer func() {
+                if r := recover(); r != nil {
+                    se, ok := r.(syntaxError)
+                    if !ok {
+                        panic(r)
+                    }
+                    err = errors.New(se.msg)
+                }
+            }()
+            p := parser{src: src}
+            return p.parseFile(), nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, panics, errors]
+    source: https://google.github.io/styleguide/go/best-practices#when-to-panic

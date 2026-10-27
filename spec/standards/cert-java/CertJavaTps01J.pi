@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaTps01J:
+    standard: @{CertJava}
+    ruleId: TPS01-J
+    title: Do not execute interdependent tasks in a bounded thread pool
+    statement:
+        Do not run tasks in a bounded pool that wait for other tasks
+        submitted to the same pool.
+    rationale:
+        When every pool thread is waiting for a subtask still in the queue,
+        no thread is free to run it, and the pool deadlocks from thread
+        starvation. CERT's risk assessment gives likelihood probable,
+        detectable no, repairable no, priority P2 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        ExecutorService pool = Executors.newFixedThreadPool(2);
+
+        Future<Integer> parent = pool.submit(() -> {
+            Future<Integer> child = pool.submit(() -> compute());
+            return child.get();   // waits on the same pool
+        });
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        ExecutorService pool = Executors.newFixedThreadPool(2);
+
+        Future<Integer> parent = pool.submit(() -> {
+            return compute();     // do the work directly
+        });
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, thread-pools, deadlock]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-pools-tps/tps01-j/

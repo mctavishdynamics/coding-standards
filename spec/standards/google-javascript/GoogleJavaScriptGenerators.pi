@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptGenerators:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.5.4
+    title: Attach the generator star to the function keyword
+    statement:
+        Generators may be used as needed. Attach the star to the function
+        keyword and separate it from the name with a space; for delegating
+        yields, attach the star to yield.
+    rationale:
+        A consistent star position makes generators easy to recognise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function *ids() {
+          yield *range(10);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function* ids() {
+          yield* range(10);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, generators, formatting]
+    source: https://google.github.io/styleguide/jsguide.html#554-generators

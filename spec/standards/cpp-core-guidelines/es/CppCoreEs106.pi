@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs106:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.106
+    title: Don't try to avoid negative values by using unsigned
+    statement:
+        Do not choose an unsigned type just to say a value cannot be
+        negative. Use a signed type and check the precondition.
+    rationale:
+        Unsigned types bring modular arithmetic, can hide overflow warnings
+        and invite signed and unsigned mixing, and they do not actually stop
+        negative values, which simply wrap.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void set_volume(unsigned level);
+
+        set_volume(-1);          // becomes 4294967295
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void set_volume(int level) {
+            Expects(0 <= level && level <= 100);
+            // ...
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [arithmetic, types]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-nonnegative

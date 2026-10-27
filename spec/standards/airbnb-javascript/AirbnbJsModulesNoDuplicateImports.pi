@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsModulesNoDuplicateImports:
+    standard: @{AirbnbJavaScript}
+    ruleId: 10.4
+    title: Import from a path in one place
+    statement:
+        Write a single import statement per module path. Enforced by the
+        ESLint rule no-duplicate-imports.
+    rationale:
+        Several imports from the same path are harder to maintain.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        import api from './api';
+        import { retry } from './api';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        import api, { retry } from './api';
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, imports]
+    source: https://github.com/airbnb/javascript#modules--no-duplicate-imports

@@ -1,0 +1,56 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos49C:
+    standard: @{CertC}
+    ruleId: POS49-C
+    title:
+        When data must be accessed by multiple threads, provide a mutex and
+        guarantee no adjacent data is also accessed
+    statement:
+        Protect data shared between POSIX threads with a mutex, and make
+        sure no other thread touches data packed into the same byte or word,
+        such as neighbouring bit-fields, without holding that same mutex.
+    rationale:
+        Compilers may store adjacent variables or bit-fields in one unit, so
+        updating one can overwrite another and race with a thread that holds
+        a different lock. CERT rates likelihood probable, detectable no,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        struct flags {
+            unsigned int dirty : 1;
+            unsigned int locked : 1;
+        } f;
+        pthread_mutex_t dirty_lock, locked_lock;
+
+        void mark_dirty(void) {
+            pthread_mutex_lock(&dirty_lock);
+            f.dirty = 1;
+            pthread_mutex_unlock(&dirty_lock);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct flags {
+            unsigned int dirty : 1;
+            unsigned int locked : 1;
+        } f;
+        pthread_mutex_t flags_lock;
+
+        void mark_dirty(void) {
+            pthread_mutex_lock(&flags_lock);
+            f.dirty = 1;
+            pthread_mutex_unlock(&flags_lock);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, concurrency, data-races, bit-fields]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos49-c

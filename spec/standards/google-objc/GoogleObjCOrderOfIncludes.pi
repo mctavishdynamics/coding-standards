@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCOrderOfIncludes:
+    standard: @{GoogleObjC}
+    ruleId: order-of-includes
+    title: Order includes by group and alphabetically
+    statement:
+        List the related header first, then operating system headers, then
+        language library headers, then groups for other dependencies.
+        Separate groups with one blank line, sort each group alphabetically,
+        and use paths relative to the project source directory.
+    rationale:
+        Putting the related header first proves it has no hidden
+        dependencies, and a fixed order is easy to scan.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        #import <UIKit/UIKit.h>
+        #import "Shared/ABCLogger.h"
+        #import "Profile/ABCProfileViewController.h"
+        #include <string>
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        #import "Profile/ABCProfileViewController.h"
+
+        #import <UIKit/UIKit.h>
+
+        #include <string>
+
+        #import "Shared/ABCLogger.h"
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [headers, ordering]
+    source: https://google.github.io/styleguide/objcguide.html#order-of-includes

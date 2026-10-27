@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8NonAsciiSparingly:
+    standard: @{Pep8}
+    ruleId: source-file-encoding-non-ascii
+    title: Use non-ASCII characters sparingly
+    statement:
+        Use non-ASCII characters sparingly, preferably only for names of
+        places and people. When non-ASCII text is data, avoid noisy
+        combining characters and byte order marks.
+    rationale:
+        Unusual characters can be hard to read, type and compare, and byte
+        order marks are invisible.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        GREETING = "\ufeffH\u0336e\u0336llo"
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        AUTHOR = "François Pinard"
+        \\\
+        ```
+    languages: [python]
+    tags: [encoding, readability]
+    source: https://peps.python.org/pep-0008/#source-file-encoding

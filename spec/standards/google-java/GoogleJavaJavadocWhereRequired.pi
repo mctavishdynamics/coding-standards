@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaJavadocWhereRequired:
+    standard: @{GoogleJava}
+    ruleId: 7.3
+    title: Write Javadoc for every visible class, member and record component
+    statement:
+        At minimum, document every visible class, member and record
+        component. A top-level class is visible when public; a member is
+        visible when public or protected inside a visible class; a record
+        component is visible when its record is.
+    rationale:
+        Visible elements form the API that others depend on, and they need
+        documentation to be used correctly.
+    exceptions:
+        Self-explanatory members and overriding methods may omit it, as
+        7.3.1 and 7.3.2 describe.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        public final class RateLimiter {
+          public boolean tryAcquire(int permits) { ... }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        /** Limits how often callers may perform an action. */
+        public final class RateLimiter {
+          /** Takes the given number of permits if they are available right now. */
+          public boolean tryAcquire(int permits) { ... }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [javadoc, documentation, api]
+    source: https://google.github.io/styleguide/javaguide.html#s7.3-javadoc-where-required

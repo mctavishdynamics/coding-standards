@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC64:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.64
+    title: Make a move leave its source in a valid state
+    statement:
+        A move operation should transfer the value to the target and leave
+        the source in a valid state that can be destroyed and assigned. The
+        empty or default state is usually best.
+    rationale:
+        Code assumes that after y = std::move(x), y holds the old value of x
+        and x is still a usable object.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Buffer::Buffer(Buffer&& o) noexcept : data_(o.data_), size_(o.size_) {
+            // o still points at data_; both will delete it
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Buffer::Buffer(Buffer&& o) noexcept
+            : data_(std::exchange(o.data_, nullptr)),
+              size_(std::exchange(o.size_, 0)) {}
+        \\\
+        ```
+    languages: [cpp]
+    tags: [move, value-semantics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-move-semantic

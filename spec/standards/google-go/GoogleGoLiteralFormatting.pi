@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoLiteralFormatting:
+    standard: @{GoogleGo}
+    ruleId: decisions/literal-formatting
+    title: Build values with composite literals
+    statement:
+        Where possible, build a value with a composite literal rather than
+        assigning its fields one by one.
+    rationale:
+        A literal shows the whole value in one place and is easier to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var cfg Config
+        cfg.Host = "localhost"
+        cfg.Port = 8080
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        cfg := Config{
+            Host: "localhost",
+            Port: 8080,
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, literals]
+    source: https://google.github.io/styleguide/go/decisions#literal-formatting

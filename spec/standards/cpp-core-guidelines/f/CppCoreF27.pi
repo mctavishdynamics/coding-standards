@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF27:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.27
+    title: Use a shared_ptr<T> to share ownership
+    statement:
+        When several owners must keep an object alive and the last one
+        should delete it, use shared_ptr. If there is only ever one owner at
+        a time, use unique_ptr.
+    rationale:
+        shared_ptr is the standard way to express shared ownership. Its
+        reference counting has a real cost, so it should not be used without
+        need.
+    exceptions:
+        An alternative is to let a single scoped object own the shared
+        object and destroy it once all users are finished.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Texture* tex = load("stone.png");
+        a.set_texture(tex);
+        b.set_texture(tex);   // which one deletes it?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto tex = std::make_shared<Texture>("stone.png");
+        a.set_texture(tex);
+        b.set_texture(tex);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, ownership, smart-pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-shared_ptr

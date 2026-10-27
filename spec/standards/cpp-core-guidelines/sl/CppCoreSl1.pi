@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSl1:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.1
+    title: Use libraries wherever possible
+    statement:
+        Use existing libraries instead of writing the same functionality
+        yourself.
+    rationale:
+        It saves time, lets you benefit from other people's improvements,
+        and lets others benefit from yours.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int my_strlen(const char* s)
+        {
+            int n = 0;
+            while (s[n]) ++n;
+            return n;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::size_t n = std::strlen(s);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [libraries, reuse]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rsl-lib

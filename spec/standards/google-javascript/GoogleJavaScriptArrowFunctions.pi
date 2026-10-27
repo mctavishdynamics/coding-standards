@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptArrowFunctions:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.5.3
+    title: Prefer arrow functions for nested functions
+    statement:
+        Prefer arrow functions over the function keyword for nested
+        functions and over bind or self aliases for scoping this. Use a
+        block body by default; use an expression body only when the value is
+        meant to be returned, or with void before a single call.
+    rationale:
+        Arrow functions capture this lexically and let callbacks pass
+        exactly the parameters intended; an expression body that returns an
+        unused value hides intent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const self = this;
+        button.onclick = function() {
+          self.save();
+        };
+        const log = () => console.log('saved');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        button.onclick = () => {
+          this.save();
+        };
+        const log = () => void console.log('saved');
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, this]
+    source: https://google.github.io/styleguide/jsguide.html#553-arrow-functions

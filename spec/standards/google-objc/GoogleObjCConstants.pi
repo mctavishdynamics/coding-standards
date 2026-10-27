@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCConstants:
+    standard: @{GoogleObjC}
+    ruleId: constants
+    title: Name constants in mixed case with a suitable prefix
+    statement:
+        Name constants in mixed case. Give global and file scope constants a
+        prefix, usually the class name, and name enum values so that they
+        extend the typedef name. A lowercase k may prefix static constants
+        declared in an implementation file.
+    rationale:
+        Without namespaces, prefixes avoid collisions, and enum names that
+        extend the type name import cleanly into Swift.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        extern NSString *const kTimeoutKey;
+        typedef NS_ENUM(NSInteger, ABCSyncState) {
+          Idle,
+          Running,
+        };
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        extern NSString *const ABCSyncTimeoutKey;
+        typedef NS_ENUM(NSInteger, ABCSyncState) {
+          ABCSyncStateIdle,
+          ABCSyncStateRunning,
+        };
+        static const NSTimeInterval kRetryDelay = 2.0;
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [naming, constants, enums]
+    source: https://google.github.io/styleguide/objcguide.html#constants

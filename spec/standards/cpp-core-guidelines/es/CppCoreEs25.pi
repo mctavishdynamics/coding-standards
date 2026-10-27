@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs25:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.25
+    title:
+        Declare an object const or constexpr unless you want to modify its
+        value later
+    statement:
+        Make every variable const, or constexpr when its value is known at
+        compile time, unless the code needs to change it.
+    rationale:
+        The compiler then stops accidental changes, and it may get more room
+        to optimize.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        double tax_rate = 0.2;
+        double gross = net * (1 + tax_rate);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr double tax_rate = 0.2;
+        const double gross = net * (1 + tax_rate);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [const, immutability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-const

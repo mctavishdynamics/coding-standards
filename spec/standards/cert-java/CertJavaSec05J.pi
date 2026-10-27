@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec05J:
+    standard: @{CertJava}
+    ruleId: SEC05-J
+    title: Do not use reflection to increase accessibility of classes, methods, or fields
+    statement:
+        Do not let reflection, such as setAccessible(true) or reflective
+        access driven by caller input, reach members that the caller could
+        not reach directly.
+    rationale:
+        Reflection can bypass language access control, letting untrusted
+        code read or change private fields and call private methods. CERT's
+        risk assessment gives likelihood probable, detectable yes,
+        repairable no, priority P12 and level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        public Object getField(Object target, String name) throws Exception {
+            Field f = target.getClass().getDeclaredField(name);
+            f.setAccessible(true);
+            return f.get(target);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public int getCount() {
+            return count;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [security, reflection, access-control]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/platform-security-sec/sec05-j/

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssSeparationOfConcerns:
+    standard: @{GoogleHtmlCss}
+    ruleId: separation-of-concerns
+    title: Separate structure, presentation and behaviour
+    statement:
+        Keep markup, styling and scripting apart. Documents and templates
+        hold only structural HTML, presentation goes in style sheets and
+        behaviour in scripts, and as few style sheets and scripts as
+        possible are linked.
+    rationale:
+        Changing HTML documents and templates is always more expensive than
+        updating style sheets and scripts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```html
+        \\\
+        <h2 style="color: red;" onclick="toggle()">Alerts</h2>
+        <center><font size="2">Updated hourly</font></center>
+        \\\
+        ```
+    compliant:
+        ```html
+        \\\
+        <link rel="stylesheet" href="alerts.css">
+        <script src="alerts.js" defer></script>
+        <h2 class="alerts-heading">Alerts</h2>
+        <p class="alerts-note">Updated hourly
+        \\\
+        ```
+    languages: [html]
+    tags: [architecture, maintainability]
+    source: https://google.github.io/styleguide/htmlcssguide.html#separation-of-concerns

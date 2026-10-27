@@ -1,0 +1,45 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp50:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.50
+    title: Define a mutex together with the data it guards
+    statement:
+        Declare a mutex next to the data it protects, in the same class or
+        struct, and say what it guards. Where available, use a
+        synchronized_value wrapper that ties the data to its mutex.
+    rationale:
+        It should be obvious to a reader what is guarded and how. Keeping
+        them together makes it less likely that the wrong mutex is locked or
+        that no mutex is locked.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::mutex registry_mutex;            // in one file
+        // ...
+        std::map<int, Session> sessions;      // in another file, guarded by which mutex?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class SessionRegistry {
+        public:
+            void add(int id, Session s)
+            {
+                std::lock_guard lock(mutex_);
+                sessions_.emplace(id, std::move(s));
+            }
+        private:
+            std::mutex mutex_;                 // guards sessions_
+            std::map<int, Session> sessions_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, locking, design]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-mutex

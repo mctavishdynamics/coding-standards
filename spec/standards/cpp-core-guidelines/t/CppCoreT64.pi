@@ -1,0 +1,47 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT64:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.64
+    title: Use specialization to provide alternative implementations of class templates
+    statement:
+        When a class template needs a different implementation for
+        particular arguments, provide a specialization that keeps the same
+        interface.
+    rationale:
+        The template defines the general interface, and specialization is
+        the mechanism for supplying alternative implementations of it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+        class Flags {
+            std::vector<T> bits;
+        };
+
+        class Bool_flags {          // separate name, separate interface
+            std::vector<std::uint64_t> words;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename T>
+        class Flags {
+            std::vector<T> bits;
+        };
+
+        template<>
+        class Flags<bool> {         // same interface, packed storage
+            std::vector<std::uint64_t> words;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, specialization]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-specialization

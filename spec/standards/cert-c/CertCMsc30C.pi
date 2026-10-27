@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc30C:
+    standard: @{CertC}
+    ruleId: MSC30-C
+    title:
+        Do not use the rand() function for generating pseudorandom numbers
+    statement:
+        Do not use rand where the quality of random numbers matters. Use a
+        generator that meets the need, such as the operating system's
+        cryptographic source for keys, tokens and nonces.
+    rationale:
+        The standard gives no guarantee about rand's output; many versions
+        have short cycles and predictable values that an attacker can guess.
+        CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        unsigned int session_token(void) {
+            return (unsigned int)rand();
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int session_token(unsigned int *token) {
+            if (getrandom(token, sizeof *token, 0) != sizeof *token) {
+                return -1;
+            }
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [random-numbers, security]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/miscellaneous-msc/msc30-c

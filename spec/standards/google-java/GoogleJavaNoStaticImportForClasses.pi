@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaNoStaticImportForClasses:
+    standard: @{GoogleJava}
+    ruleId: 3.3.4
+    title: Import static nested classes with normal imports
+    statement:
+        Do not use a static import to bring in a static nested class. Import
+        it with an ordinary import.
+    rationale:
+        Static imports are meant for members such as methods and constants;
+        using them for types blurs the two kinds of import.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        import static java.util.Map.Entry;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        import java.util.Map.Entry;
+        \\\
+        ```
+    languages: [java]
+    tags: [imports]
+    source: https://google.github.io/styleguide/javaguide.html#s3.3.4-import-class-not-static

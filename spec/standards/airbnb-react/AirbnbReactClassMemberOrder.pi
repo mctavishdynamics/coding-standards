@@ -1,0 +1,64 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactClassMemberOrder:
+    standard: @{AirbnbReact}
+    ruleId: ordering-1
+    title: Order class component members in the standard sequence
+    statement:
+        In a class extending React.Component, order members as follows.
+        Static methods, the constructor, getChildContext, the lifecycle
+        methods from componentWillMount to componentWillUnmount in lifecycle
+        order, handle-prefixed handlers, on-prefixed handlers, getters used
+        by render, optional render helpers, and finally render.
+    rationale:
+        A fixed order lets readers find lifecycle methods, handlers and
+        rendering code in the same place in every component.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        class Chat extends React.Component {
+          render() {
+            return <div>{this.renderMessages()}</div>;
+          }
+
+          renderMessages() { /* ... */ }
+
+          componentDidMount() { /* ... */ }
+
+          constructor(props) { super(props); }
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        class Chat extends React.Component {
+          static formatTime(date) { /* ... */ }
+
+          constructor(props) { super(props); }
+
+          componentDidMount() { /* ... */ }
+
+          componentWillUnmount() { /* ... */ }
+
+          handleSend() { /* ... */ }
+
+          onChangeDraft() { /* ... */ }
+
+          getUnreadCount() { /* ... */ }
+
+          renderMessages() { /* ... */ }
+
+          render() {
+            return <div>{this.renderMessages()}</div>;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [ordering, classes]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#ordering

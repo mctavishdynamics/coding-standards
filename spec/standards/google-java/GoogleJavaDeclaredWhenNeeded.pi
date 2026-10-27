@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaDeclaredWhenNeeded:
+    standard: @{GoogleJava}
+    ruleId: 4.8.2.2
+    title: Declare local variables close to first use
+    statement:
+        Do not habitually declare locals at the top of a block. Declare each
+        one near the point where it is first used, and usually initialize it
+        in the declaration or right after.
+    rationale:
+        A narrow scope keeps related code together and reduces the chance of
+        using a variable before it holds a meaningful value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        void ship(Order order) {
+          Address address;
+          Label label;
+          validate(order);
+          address = order.shippingAddress();
+          label = printer.print(address);
+          carrier.send(label);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void ship(Order order) {
+          validate(order);
+          Address address = order.shippingAddress();
+          Label label = printer.print(address);
+          carrier.send(label);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [declarations, variables, scope]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.2.2-variables-limited-scope

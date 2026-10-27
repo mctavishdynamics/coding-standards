@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ImpliedLineContinuation:
+    standard: @{Pep8}
+    ruleId: maximum-line-length-wrapping
+    title: Wrap long lines inside brackets instead of with backslashes
+    statement:
+        Break long lines using the implied continuation inside parentheses,
+        brackets and braces, adding parentheses around an expression if
+        needed, rather than ending a line with a backslash. Indent the
+        continued line appropriately.
+    rationale:
+        Bracketed continuation is robust and readable, while a backslash
+        breaks silently if a space follows it.
+    exceptions:
+        Backslashes may still be appropriate, for example for long assert
+        statements or multiple with-statements on Python versions before
+        3.10.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        is_eligible = customer.is_active and \
+            customer.balance > 0
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        is_eligible = (customer.is_active
+                       and customer.balance > 0)
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, line-wrapping]
+    source: https://peps.python.org/pep-0008/#maximum-line-length

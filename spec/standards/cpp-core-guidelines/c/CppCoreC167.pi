@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC167:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.167
+    title: Use an operator for an operation with its conventional meaning
+    statement:
+        When an operation matches the usual meaning of an operator, such as
+        equality, ordering or output, provide it as that operator rather
+        than a named function.
+    rationale:
+        Operators with conventional meaning read naturally, follow
+        convention, and let the type work with generic code that expects
+        them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Version {
+        public:
+            bool equals(const Version& o) const;
+            void print_to(std::ostream& os) const;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Version {
+        public:
+            friend bool operator==(const Version&, const Version&);
+            friend std::ostream& operator<<(std::ostream& os, const Version& v);
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [operators, overloading, conventions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ro-overload

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppFileComments:
+    standard: @{GoogleCpp}
+    ruleId: File_Comments
+    title:
+        Start files with license boilerplate and describe their contents
+    statement:
+        Start each file with the project's license boilerplate. When a file
+        declares several user-facing abstractions, add a comment describing
+        the collection; detailed docs belong with each abstraction. New
+        files should usually not carry a copyright notice or author line.
+    rationale:
+        A file comment tells future authors what belongs in the file, and
+        the license notice states its terms.
+    exceptions:
+        A .cc file whose header already has the file comment does not need
+        its own.
+    severity: null
+    noncompliant: null
+    compliant:
+        ```cpp
+        \\\
+        // Copyright 2026 The Example Authors. Licensed under Apache 2.0.
+        //
+        // Registered handlers for the admin console. Add new console pages
+        // here; general HTTP utilities belong in http_util.h.
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, documentation, licensing]
+    source: https://google.github.io/styleguide/cppguide.html#File_Comments

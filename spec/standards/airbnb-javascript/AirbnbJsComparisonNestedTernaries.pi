@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsComparisonNestedTernaries:
+    standard: @{AirbnbJavaScript}
+    ruleId: 15.6
+    title: Do not nest ternaries
+    statement:
+        Do not nest ternary expressions, and keep a ternary on a single line
+        where possible. Enforced by the ESLint rule no-nested-ternary.
+    rationale:
+        Nested ternaries are hard to read. Splitting the inner one into its
+        own variable makes each choice clear.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const label = score > 90 ? 'high' : score > 50 ? 'mid' : 'low';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const lowerLabel = score > 50 ? 'mid' : 'low';
+        const label = score > 90 ? 'high' : lowerLabel;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [comparison, ternary, readability]
+    source: https://github.com/airbnb/javascript#comparison--nested-ternaries

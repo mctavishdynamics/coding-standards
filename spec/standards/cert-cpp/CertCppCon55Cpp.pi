@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCon55Cpp:
+    standard: @{CertCpp}
+    ruleId: CON55-CPP
+    title: Preserve thread safety and liveness when using condition variables
+    statement:
+        When several threads wait on one condition variable for different
+        conditions, wake them with notify_all, or give each condition its
+        own condition variable so notify_one wakes the right thread.
+    rationale:
+        notify_one may wake a thread whose condition is still false, which
+        goes back to waiting while the thread that could proceed sleeps,
+        losing liveness. CERT rates likelihood unlikely, detectable no,
+        repairable yes, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        void finish_step(int step) {
+            std::lock_guard<std::mutex> lock(m);
+            current_step = step + 1;
+            cv.notify_one();  // may wake a thread waiting for another step
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void finish_step(int step) {
+            std::lock_guard<std::mutex> lock(m);
+            current_step = step + 1;
+            cv.notify_all();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, condition-variables, liveness]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/concurrency-con/con55-cpp

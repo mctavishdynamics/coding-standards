@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCDtorBlock:
+    standard: @{RustApiGuidelines}
+    ruleId: C-DTOR-BLOCK
+    title: Provide alternatives to destructors that may block
+    statement:
+        Avoid blocking operations in Drop, and provide a separate method
+        that prepares for a nonblocking, infallible teardown.
+    rationale:
+        A destructor that blocks makes programs hard to debug, because the
+        wait is hidden at the end of a scope.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl Drop for Uploader {
+            fn drop(&mut self) {
+                // Blocks until every pending upload finishes.
+                self.worker.join().ok();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl Uploader {
+            pub fn finish(self) -> Result<(), UploadError> {
+                self.worker.join().map_err(|_| UploadError::WorkerPanicked)?
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [destructors, concurrency]
+    source: https://rust-lang.github.io/api-guidelines/dependability.html#c-dtor-block

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptRequireAndRequireType:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.6
+    title: Do not require and requireType the same namespace
+    statement:
+        Do not import one namespace with both goog.require and
+        goog.requireType; if the name is used in code and types, use a
+        single goog.require. A module imported only for side effects uses
+        goog.require with no assignment and a comment explaining why.
+    rationale:
+        One import per namespace avoids redundant dependencies, and the
+        comment both documents the side effect and suppresses the compiler's
+        warning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const Tooltip = goog.require('ui.Tooltip');
+        const TooltipType = goog.requireType('ui.Tooltip');
+        goog.requireType('app.analytics.setup');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const Tooltip = goog.require('ui.Tooltip');
+        /** @suppress {extraRequire} Registers analytics handlers. */
+        goog.require('app.analytics.setup');
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, closure, imports]
+    source: https://google.github.io/styleguide/jsguide.html#36-googrequire-and-googrequiretype-statements

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppStr52Cpp:
+    standard: @{CertCpp}
+    ruleId: STR52-CPP
+    title: Use valid references, pointers, and iterators to reference elements of a basic_string
+    statement:
+        Use only references, pointers and iterators into a basic_string that
+        are still valid. Refresh them after any call that may reallocate or
+        modify the string.
+    rationale:
+        Non-const operations on a string can invalidate every reference,
+        pointer and iterator into it, and using one afterwards is undefined
+        behavior. CERT rates likelihood probable, detectable no, repairable
+        no, priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        void tag(std::string& text) {
+            const char* start = text.c_str();
+            text += " [done]";
+            std::puts(start);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void tag(std::string& text) {
+            text += " [done]";
+            std::puts(text.c_str());
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [strings, iterators, lifetime]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/characters-and-strings-str/str52-cpp

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio07J:
+    standard: @{CertJava}
+    ruleId: FIO07-J
+    title: Do not let external processes block on IO buffers
+    statement:
+        When running an external process, supply its input and drain both
+        its output and error streams, for example by merging them with
+        redirectErrorStream(), before waiting for it to finish.
+    rationale:
+        Process pipes have limited buffers. If the child fills one that
+        nobody reads, it blocks forever and so does the parent waiting for
+        it. CERT's risk assessment gives likelihood probable, detectable
+        yes, repairable no, priority P4 and level L3.
+    exceptions:
+        A program may ignore a stream of a process that is guaranteed never
+        to use it.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        Process p = Runtime.getRuntime().exec(new String[] {"tool", "--verbose"});
+        int status = p.waitFor();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        ProcessBuilder pb = new ProcessBuilder("tool", "--verbose");
+        pb.redirectErrorStream(true);
+        Process p = pb.start();
+        try (InputStream out = p.getInputStream()) {
+            out.transferTo(OutputStream.nullOutputStream());
+        }
+        int status = p.waitFor();
+        \\\
+        ```
+    languages: [java]
+    tags: [io, processes, denial-of-service]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio07-j/

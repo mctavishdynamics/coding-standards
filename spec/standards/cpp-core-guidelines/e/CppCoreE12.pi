@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE12:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.12
+    title: Use noexcept when exiting a function by a throw is impossible or unacceptable
+    statement:
+        Declare a function noexcept when it cannot throw, or when you would
+        rather terminate than deal with an exception leaving it, for example
+        on memory exhaustion.
+    rationale:
+        noexcept makes error handling systematic and efficient, and tells
+        both the compiler and human readers that the function will not exit
+        through an exception.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int sign(int x)
+        {
+            return (x > 0) - (x < 0);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int sign(int x) noexcept
+        {
+            return (x > 0) - (x < 0);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, noexcept, exceptions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-noexcept

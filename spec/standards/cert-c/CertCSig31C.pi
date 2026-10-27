@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCSig31C:
+    standard: @{CertC}
+    ruleId: SIG31-C
+    title: Do not access shared objects in signal handlers
+    statement:
+        In a signal handler, read or write only objects of type volatile
+        sig_atomic_t or lock-free atomic objects. Leave all other shared
+        data for the main program to handle.
+    rationale:
+        Touching other shared objects from a handler is undefined behavior
+        and can leave data half-updated when the interrupted code resumes.
+        CERT rates likelihood likely, detectable yes, repairable no,
+        priority P18, level L1.
+    exceptions:
+        When a valid call to signal inside the handler returns SIG_ERR,
+        errno may take an indeterminate value; see ERR32-C.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        static char *last_event;
+
+        static void on_usr1(int sig) {
+            (void)sig;
+            last_event = "reload";
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static volatile sig_atomic_t reload_pending = 0;
+
+        static void on_usr1(int sig) {
+            (void)sig;
+            reload_pending = 1;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [signals, concurrency, data-races]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/signals-sig/sig31-c

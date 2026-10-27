@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptRequireOrdering:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.6
+    title: Sort require lines and never wrap them
+    statement:
+        Sort requires with a single alias first, alphabetically by alias,
+        then destructuring requires sorted by their left-hand names, then
+        standalone requires. Never wrap a require line, even when it passes
+        80 columns.
+    rationale:
+        A predictable order makes duplicates and missing imports easy to
+        spot, and IDEs can check it automatically.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const {clone} = goog.require('goog.object');
+        const asserts = goog.require('goog.asserts');
+        const SomeLongProtoModel =
+            goog.require('proto.service.models.SomeLongProtoModel');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const SomeLongProtoModel = goog.require('proto.service.models.SomeLongProtoModel');
+        const asserts = goog.require('goog.asserts');
+        const {clone} = goog.require('goog.object');
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, closure, formatting]
+    source: https://google.github.io/styleguide/jsguide.html#36-googrequire-and-googrequiretype-statements

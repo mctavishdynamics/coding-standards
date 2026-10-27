@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8NoBooleanComparison:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-boolean-comparison
+    title: Do not compare Booleans to True or False
+    statement:
+        Do not compare a Boolean value to True or False with the equality
+        operator, and even less with is. Test the value directly.
+    rationale:
+        The comparison adds nothing, and the identity form is worse because
+        it fails for truthy values that are not exactly True.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if is_admin == True:
+            show_dashboard()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        if is_admin:
+            show_dashboard()
+        \\\
+        ```
+    languages: [python]
+    tags: [comparisons, readability]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

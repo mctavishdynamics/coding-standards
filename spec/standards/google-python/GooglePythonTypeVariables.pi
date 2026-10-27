@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonTypeVariables:
+    standard: @{GooglePython}
+    ruleId: 3.19.10
+    title: Give type variables descriptive names unless private and unconstrained
+    statement:
+        Use TypeVar and ParamSpec for generics, and AnyStr for parameters
+        that must all be bytes or all be str. A type variable needs a
+        descriptive name unless it is both not externally visible and not
+        constrained.
+    rationale:
+        A short name like _T is clear for a local, unconstrained variable,
+        but a constrained or public one needs a name that conveys its
+        meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        T = TypeVar('T')
+        _N = TypeVar('_N', int, float)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        _T = TypeVar('_T')
+        Number = TypeVar('Number', int, float)
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, generics, naming]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.10-typevars

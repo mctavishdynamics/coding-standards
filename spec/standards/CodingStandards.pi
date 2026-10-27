@@ -1,0 +1,33 @@
+// What this package is, what it covers, and the decisions that shape
+// every rule in it. Rule files follow lib/CodingRule.
+export anchor CodingStandards:
+    purpose:
+        A library of rules taken from well-known coding standards. Each rule
+        is one Piton spec. Other projects tether this package and pick the
+        rules they want into their own instructions and skills.
+    scope:
+        - Language style guides, such as PEP 8, the Google style guides, the Airbnb JavaScript guide, Effective Go and the Rust API Guidelines
+        - Safety and security standards, such as SEI CERT C, C++ and Java, and the OWASP Secure Coding Practices
+        - Language-neutral principles, such as SOLID and the Twelve-Factor App, and the C++ Core Guidelines
+    nonGoals:
+        - Linter rule sets, such as ESLint, Ruff, Pylint or Clippy
+        - Paid standards, such as MISRA
+        - Merging rules that several standards share into one rule
+        - Links between matching rules in different standards
+    decisions:
+        - Every rule from every included standard is extracted, not a curated subset.
+        - One rule is one file, holding one coding-rule anchor.
+        - Rules from different standards stay separate, even when they say the same thing.
+        - Rules are written in our own words, and code examples are written fresh. Each rule links to its source, so the original wording is one click away.
+        - Severity is filled only when the source gives one. The CERT standards give one; most style guides do not.
+        - For the CERT standards, only the rules are extracted, not the recommendations. They come from the SEI site at cmu-sei.github.io, which replaced the old wiki. Deprecated rules are left out.
+        - Where a source has no rule ids, the id is the section number, the section's HTML id or a slug of its heading. OWASP items are numbered from 1 within each section.
+        - Sections that only introduce, describe or link elsewhere are not rules. Placeholder rules whose body is only "???" are left out.
+        - Each standard lists its rules in source order in its own rules property.
+        - Anchor names start with the standard's prefix, such as CertC or Pep8, so names never collide across standards.
+    openQuestions:
+        - Whether the CERT recommendations should be added after the rules.
+        - Whether Clean Code rules belong here. The book has no official public rule list, so it is left out for now.
+        - Whether consumers want a shared tag vocabulary across standards. Tags are free-form, lowercase and kebab-case today.
+        - Whether the OWASP rules should move to the OWASP Developer Guide, which replaced the archived Secure Coding Practices project.
+        - How code examples should show a literal tab. piton format turned leading tabs in escape blocks into spaces, so tab-indentation examples use spaces or are null.

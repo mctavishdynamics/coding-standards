@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppBooleanExpressions:
+    standard: @{GoogleCpp}
+    ruleId: Boolean_Expressions
+    title: Break long boolean expressions consistently
+    statement:
+        When a boolean expression exceeds the line length, break it
+        consistently, with operators all at the ends of lines or all at the
+        starts. Use the punctuation operators, not the word forms such as
+        and or compl.
+    rationale:
+        Consistent breaks show the structure of the condition, and the
+        punctuation operators are what readers expect.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (this_one_thing > this_other_thing and
+            a_third_thing == a_fourth_thing
+            && yet_another and last_one) {
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        if (this_one_thing > this_other_thing &&
+            a_third_thing == a_fourth_thing &&
+            yet_another && last_one) {
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, expressions]
+    source: https://google.github.io/styleguide/cppguide.html#Boolean_Expressions

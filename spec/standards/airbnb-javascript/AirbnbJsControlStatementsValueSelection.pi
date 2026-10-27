@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsControlStatementsValueSelection:
+    standard: @{AirbnbJavaScript}
+    ruleId: 17.2
+    title: Do not use selection operators in place of control statements
+    statement:
+        Use an if statement to run code conditionally rather than relying on
+        && or || short-circuiting.
+    rationale:
+        A statement that exists only for its side effect is clearer as an
+        explicit condition.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        isConnected || reconnect();
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        if (!isConnected) {
+          reconnect();
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [control-flow, readability]
+    source: https://github.com/airbnb/javascript#control-statements--value-selection

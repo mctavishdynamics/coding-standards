@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet05J:
+    standard: @{CertJava}
+    ruleId: MET05-J
+    title: Ensure that constructors do not call overridable methods
+    statement:
+        Call only private, final or static methods from a constructor, or
+        make the class final.
+    rationale:
+        An overriding method runs before the subclass is initialized and can
+        see uninitialized fields or leak the this reference. CERT rates
+        likelihood probable, detectable yes, repairable no, priority P8,
+        level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        public class Widget {
+            public Widget() {
+                configure();
+            }
+            protected void configure() { /* ... */ }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class Widget {
+            public Widget() {
+                configureDefaults();
+            }
+            private void configureDefaults() { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [constructors, inheritance, initialization]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met05-j/

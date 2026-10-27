@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptTypeCoercion:
+    standard: @{GoogleTypeScript}
+    ruleId: type-coercion
+    title: Coerce types explicitly and parse numbers with Number
+    statement:
+        Coerce with String(), Boolean(), template literals or a double
+        negation. Compare enum values explicitly instead of converting them
+        to booleans. Parse numbers with Number() and check for NaN; do not
+        use unary plus, and use parseInt or parseFloat only for non-decimal
+        input that has been validated.
+    rationale:
+        The first enum value is falsy, unary plus is easy to miss, and
+        parseInt silently ignores trailing characters, all of which hide
+        errors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const quantity = +input.value;
+        const width = parseInt(widthText, 10);
+        const enabled = !!supportLevel;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const quantity = Number(input.value);
+        if (isNaN(quantity)) throw new Error(`Bad quantity: ${input.value}`);
+        const enabled = supportLevel !== SupportLevel.NONE;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [type-coercion, numbers, enums]
+    source: https://google.github.io/styleguide/tsguide.html#type-coercion

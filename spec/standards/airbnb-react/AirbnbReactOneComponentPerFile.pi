@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactOneComponentPerFile:
+    standard: @{AirbnbReact}
+    ruleId: basic-rules-1
+    title: Put only one React component in each file
+    statement:
+        Define a single React component per file. Several stateless or pure
+        function components may share a file. Enforced by the ESLint rule
+        react/no-multi-comp.
+    rationale:
+        One component per file keeps files small and makes each component
+        easy to find by its file name.
+    exceptions:
+        Multiple stateless or pure function components are allowed in one
+        file.
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        class OrderList extends React.Component {
+          render() {
+            return <ul>{this.props.orders.map(renderOrder)}</ul>;
+          }
+        }
+
+        class OrderSummary extends React.Component {
+          render() {
+            return <p>{this.props.total}</p>;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        // OrderList.jsx
+        class OrderList extends React.Component {
+          render() {
+            return <ul>{this.props.orders.map(renderOrder)}</ul>;
+          }
+        }
+
+        export default OrderList;
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [structure, files]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#basic-rules

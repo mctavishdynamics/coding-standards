@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactCreateClassMemberOrder:
+    standard: @{AirbnbReact}
+    ruleId: ordering-3
+    title: Order React.createClass members in the standard sequence
+    statement:
+        In React.createClass, order keys as follows. displayName, propTypes,
+        contextTypes, childContextTypes, mixins, statics, defaultProps,
+        getDefaultProps, getInitialState, getChildContext, the lifecycle
+        methods in lifecycle order, event handlers, getters used by render,
+        optional render helpers, and finally render. Enforced by the ESLint
+        rule react/sort-comp.
+    rationale:
+        A fixed order lets readers find declarations, lifecycle methods and
+        rendering code in the same place in every component.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        const Menu = React.createClass({
+          render() { /* ... */ },
+          getInitialState() { /* ... */ },
+          propTypes: { items: PropTypes.arrayOf(PropTypes.string) },
+        });
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        const Menu = React.createClass({
+          propTypes: { items: PropTypes.arrayOf(PropTypes.string) },
+          getInitialState() { /* ... */ },
+          componentDidMount() { /* ... */ },
+          onClickItem() { /* ... */ },
+          renderItem() { /* ... */ },
+          render() { /* ... */ },
+        });
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [ordering]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#ordering

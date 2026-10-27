@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsCoercionStrings:
+    standard: @{AirbnbJavaScript}
+    ruleId: 22.2
+    title: Convert to strings with String
+    statement:
+        Convert values to strings with String(value). Do not use new String,
+        concatenation with an empty string or toString. Enforced by the
+        ESLint rule no-new-wrappers.
+    rationale:
+        new String creates an object rather than a string, concatenation
+        relies on valueOf, and toString is not guaranteed to return a
+        string.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const idText = new String(order.id);
+        const zipText = address.zip + '';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const idText = String(order.id);
+        const zipText = String(address.zip);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [coercion, strings]
+    source: https://github.com/airbnb/javascript#coercion--strings

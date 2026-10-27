@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCon3:
+    standard: @{CppCoreGuidelines}
+    ruleId: Con.3
+    title: By default, pass pointers and references to const
+    statement:
+        Take pointer and reference parameters as pointers or references to
+        const, and use non-const ones only when the function is meant to
+        modify the object.
+    rationale:
+        It stops a called function from unexpectedly changing the value, and
+        it is much easier to reason about calls that do not modify state. A
+        reader must assume a plain reference parameter is modified.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::size_t count_vowels(std::string& text);   // does it modify text?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::size_t count_vowels(const std::string& text);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [const, parameters, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconst-ref

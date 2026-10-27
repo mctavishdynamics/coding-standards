@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoLineLength:
+    standard: @{GoogleGo}
+    ruleId: guide/line-length
+    title: Refactor long lines instead of splitting them
+    statement:
+        Go has no fixed line length. If a line feels too long, prefer
+        refactoring it; if it is already as short as practical, leave it
+        long. Do not split a line just before an indentation change or to
+        break a long string such as a URL.
+    rationale:
+        Arbitrary wrapping can make code harder to read, blur the boundary
+        between a signature and its body, and make long strings hard to
+        search.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        const docsURL = "https://example.com/docs/" +
+            "reference/billing/invoices"
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        const docsURL = "https://example.com/docs/reference/billing/invoices"
+        \\\
+        ```
+    languages: [go]
+    tags: [guide, formatting, line-length]
+    source: https://google.github.io/styleguide/go/guide#line-length

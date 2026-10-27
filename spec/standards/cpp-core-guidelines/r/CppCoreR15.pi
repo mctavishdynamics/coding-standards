@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR15:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.15
+    title: Always overload matched allocation and deallocation pairs
+    statement:
+        If you overload an allocation function such as operator new, also
+        overload the matching deallocation function, and the other way
+        around.
+    rationale:
+        Overloading only one side makes allocations and releases go through
+        mismatched mechanisms, with unpredictable results.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Packet {
+        public:
+            static void* operator new(std::size_t size) { return pool.allocate(size); }
+            // no matching operator delete: the global one frees pool memory
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Packet {
+        public:
+            static void* operator new(std::size_t size) { return pool.allocate(size); }
+            static void operator delete(void* p) noexcept { pool.release(p); }
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, allocation]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-pair

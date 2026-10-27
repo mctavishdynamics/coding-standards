@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptWhitespaceCharacters:
+    standard: @{GoogleTypeScript}
+    ruleId: whitespace-characters
+    title: Use only the ASCII space as whitespace
+    statement:
+        Apart from line terminators, the only whitespace character allowed
+        anywhere in a source file is the ASCII space (0x20). Tabs and other
+        whitespace inside string literals must be written as escapes.
+    rationale:
+        Invisible characters such as tabs or non-breaking spaces look like
+        ordinary spaces but behave differently, which makes code and strings
+        hard to read and compare.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const header = 'Name	Price';  // literal tab character
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const header = 'Name\tPrice';
+        \\\
+        ```
+    languages: [typescript]
+    tags: [formatting, whitespace, strings]
+    source: https://google.github.io/styleguide/tsguide.html#whitespace-characters

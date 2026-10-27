@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsEs6ObjectShorthand:
+    standard: @{AirbnbJavaScript}
+    ruleId: 3.3
+    title: Use object method shorthand
+    statement:
+        Define methods in object literals with the method shorthand instead
+        of a property holding a function expression. Enforced by the ESLint
+        rule object-shorthand.
+    rationale:
+        The shorthand is shorter and reads as a method at a glance.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const counter = {
+          count: 0,
+          increment: function () {
+            this.count += 1;
+          },
+        };
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const counter = {
+          count: 0,
+          increment() {
+            this.count += 1;
+          },
+        };
+        \\\
+        ```
+    languages: [javascript]
+    tags: [objects, es6, functions]
+    source: https://github.com/airbnb/javascript#es6-object-shorthand

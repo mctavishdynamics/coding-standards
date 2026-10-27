@@ -1,0 +1,57 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactPreferClassOrFunction:
+    standard: @{AirbnbReact}
+    ruleId: class-vs-reactcreateclass-vs-stateless-1
+    title: Prefer ES6 classes for stateful components and functions otherwise
+    statement:
+        When a component has internal state or refs, write it as a class
+        extending React.Component instead of using React.createClass. When
+        it has neither, write it as a normal named function, not a class or
+        an arrow function. Enforced by the ESLint rules react/prefer-
+        es6-class and react/prefer-stateless-function.
+    rationale:
+        ES6 classes are the standard way to hold state, and plain functions
+        are simpler for components without it. A named function declaration
+        does not rely on name inference for its display name.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        const Counter = React.createClass({
+          getInitialState() {
+            return { count: 0 };
+          },
+          render() {
+            return <span>{this.state.count}</span>;
+          },
+        });
+
+        const Label = ({ text }) => <em>{text}</em>;
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        class Counter extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = { count: 0 };
+          }
+
+          render() {
+            return <span>{this.state.count}</span>;
+          }
+        }
+
+        function Label({ text }) {
+          return <em>{text}</em>;
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [components, classes, functions]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#class-vs-reactcreateclass-vs-stateless

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoLogging:
+    standard: @{GoogleGo}
+    ruleId: decisions/logging
+    title: Use the non-formatting log call when nothing is formatted
+    statement:
+        Log with the project's log package, and call the plain variant such
+        as log.Info rather than log.Infof when there is no formatting to do.
+        Use log.Fatal to abort with a stack trace and log.Exit to stop
+        without one.
+    rationale:
+        The plain call is equivalent and simpler when there is no format
+        string.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        log.Infof("%v", "cache warmed")
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        log.Info("cache warmed")
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, logging]
+    source: https://google.github.io/styleguide/go/decisions#logging

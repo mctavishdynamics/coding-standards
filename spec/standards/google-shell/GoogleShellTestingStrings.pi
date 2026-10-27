@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellTestingStrings:
+    standard: @{GoogleShell}
+    ruleId: testing-strings
+    title: Test strings with quotes, -z and -n rather than filler characters
+    statement:
+        Compare strings directly in quotes instead of padding them with
+        filler characters, and use -z and -n to test for empty and non-empty
+        strings. Use == rather than = for equality, and use (( ... )) or -lt
+        and -gt for numeric comparisons.
+    rationale:
+        Bash handles empty strings in tests, so filler only obscures intent.
+        Inside double brackets < and > compare lexicographically, so they
+        give wrong answers for numbers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        if [[ "${branch}X" == "X" ]]; then
+          branch="main"
+        fi
+        if [[ "${retries}" > 3 ]]; then
+          give_up
+        fi
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        if [[ -z "${branch}" ]]; then
+          branch="main"
+        fi
+        if (( retries > 3 )); then
+          give_up
+        fi
+        \\\
+        ```
+    languages: [shell]
+    tags: [conditionals, strings]
+    source: https://google.github.io/styleguide/shellguide.html#testing-strings

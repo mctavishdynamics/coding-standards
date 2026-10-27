@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos30C:
+    standard: @{CertC}
+    ruleId: POS30-C
+    title: Use the readlink() function properly
+    statement:
+        Pass readlink a size one smaller than the buffer, check for a return
+        of -1, and add the null terminator yourself at the returned length.
+    rationale:
+        readlink does not terminate the string, so using the buffer as a
+        string reads past the data, and an off-by-one size can write past
+        the buffer. CERT rates likelihood probable, detectable yes,
+        repairable yes, priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        char target[PATH_MAX];
+        readlink("/proc/self/exe", target, sizeof target);
+        printf("%s\n", target);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char target[PATH_MAX];
+        ssize_t len = readlink("/proc/self/exe", target, sizeof target - 1);
+        if (len != -1) {
+            target[len] = '\0';
+            printf("%s\n", target);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, strings, buffer-overflow]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos30-c

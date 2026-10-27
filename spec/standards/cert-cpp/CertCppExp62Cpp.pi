@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppExp62Cpp:
+    standard: @{CertCpp}
+    ruleId: EXP62-CPP
+    title: Do not access the bits of an object representation that are not part of the object's value representation
+    statement:
+        Do not read or write the bits of an object representation that are
+        not part of its value, such as padding bits or a virtual table
+        pointer, for example through memcmp or memset. Compare and modify
+        objects through their members.
+    rationale:
+        Padding bits have unspecified values and hidden data such as vtable
+        pointers is implementation defined, so bytewise access gives wrong
+        results or corrupts the object. CERT rates likelihood probable,
+        detectable yes, repairable no, priority P12, level L1.
+    exceptions:
+        Access is allowed when it is unobservable in well-defined code;
+        reading non-value bits is fine when nothing relies on their values,
+        and only padding bits may be written.
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        struct Account {
+            char kind;
+            int balance;
+        };
+
+        bool same(const Account& a, const Account& b) {
+            return std::memcmp(&a, &b, sizeof(Account)) == 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Account {
+            char kind;
+            int balance;
+        };
+
+        bool same(const Account& a, const Account& b) {
+            return a.kind == b.kind && a.balance == b.balance;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, object-representation, classes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/expressions-exp/exp62-cpp

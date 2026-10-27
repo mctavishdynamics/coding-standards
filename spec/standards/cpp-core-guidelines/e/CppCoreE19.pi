@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE19:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.19
+    title: Use a final_action object for cleanup if no suitable resource handle is available
+    statement:
+        When no resource handle exists for something that needs cleanup,
+        express the cleanup with gsl::finally or a similar final_action
+        object. Treat it as a last resort after proper RAII types.
+    rationale:
+        A final_action is less verbose and harder to get wrong than try and
+        catch or the old goto-exit technique, though it is still ad hoc
+        compared to a real resource type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void stage(std::size_t n)
+        {
+            void* area = std::malloc(n);
+            if (!fill(area, n)) goto done;
+            commit(area, n);
+        done:
+            std::free(area);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void stage(std::size_t n)
+        {
+            void* area = std::malloc(n);
+            auto release = gsl::finally([area] { std::free(area); });
+            if (!fill(area, n)) return;
+            commit(area, n);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, raii, cleanup]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-finally

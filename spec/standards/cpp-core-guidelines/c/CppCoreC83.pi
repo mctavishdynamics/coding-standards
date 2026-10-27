@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC83:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.83
+    title: Consider a noexcept swap for value-like types
+    statement:
+        Give value-like types a swap function that does not throw.
+    rationale:
+        A cheap, non-failing swap helps move objects around, lets copy
+        assignment be built from copy construction, and supports strong
+        error-safety guarantees.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Grid {
+            std::vector<int> cells_;
+            int width_;
+        };
+        // generic std::swap does three moves
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Grid {
+        public:
+            void swap(Grid& o) noexcept {
+                using std::swap;
+                swap(cells_, o.cells_);
+                swap(width_, o.width_);
+            }
+            friend void swap(Grid& a, Grid& b) noexcept { a.swap(b); }
+        private:
+            std::vector<int> cells_;
+            int width_ = 0;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [swap, noexcept, value-semantics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-swap

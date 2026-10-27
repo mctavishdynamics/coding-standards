@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaTps02J:
+    standard: @{CertJava}
+    ruleId: TPS02-J
+    title: Ensure that tasks submitted to a thread pool are interruptible
+    statement:
+        Tasks submitted to a pool that may be shut down or cancelled must
+        respond to interruption, for example by checking the interrupted
+        status or using interruptible calls.
+    rationale:
+        shutdownNow() and Future.cancel() work by interrupting threads. A
+        task that ignores interrupts keeps running and the pool never
+        terminates. CERT's risk assessment gives likelihood probable,
+        detectable no, repairable no, priority P2 and level L3.
+    exceptions:
+        Short tasks that run without blocking are exempt.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        pool.submit(() -> {
+            while (true) {
+                poll(source);
+            }
+        });
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        pool.submit(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                poll(source);
+            }
+        });
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, thread-pools, interruption]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-pools-tps/tps02-j/

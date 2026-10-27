@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoInitialisms:
+    standard: @{GoogleGo}
+    ruleId: decisions/initialisms
+    title: Keep initialisms in a consistent case
+    statement:
+        Write each initialism or acronym in a single case, such as URL or
+        url but never Url, and ID rather than Id. Initialisms that contain a
+        lowercase letter, like gRPC or iOS, keep their prose form unless
+        exportedness forces a change, in which case the whole initialism
+        takes one case.
+    rationale:
+        Consistent casing of familiar terms makes names easy to read and to
+        predict.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type XmlApi struct {
+            userId  string
+            baseUrl string
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type XMLAPI struct {
+            userID  string
+            baseURL string
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, naming]
+    source: https://google.github.io/styleguide/go/decisions#initialisms

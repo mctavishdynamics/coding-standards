@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptFormattingFunctions:
+    standard: @{GoogleTypeScript}
+    ruleId: formatting-functions
+    title: Format function bodies, generators and spreads consistently
+    statement:
+        Do not start or end a function body with a blank line, and use
+        single blank lines inside sparingly. Attach the star to function and
+        yield, as in function* and yield*. Do not put a space after the dots
+        of rest or spread.
+    rationale:
+        Uniform formatting keeps functions compact and makes generator and
+        spread syntax easy to recognise.
+    exceptions:
+        Parentheses around a single arrow function parameter are recommended
+        but not required.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function *pages(... urls: string[]) {
+
+          yield *urls;
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function* pages(...urls: string[]) {
+          yield* urls;
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [formatting, functions]
+    source: https://google.github.io/styleguide/tsguide.html#formatting-functions

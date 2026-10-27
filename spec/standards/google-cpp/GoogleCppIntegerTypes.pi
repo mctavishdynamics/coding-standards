@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppIntegerTypes:
+    standard: @{GoogleCpp}
+    ruleId: Integer_Types
+    title: Use int or exact-width integer types
+    statement:
+        Of the built-in integer types use only int. When you need a specific
+        size, use exact-width types such as int16_t or int64_t, and use a
+        64-bit type for values that could reach 2 to the 31st. Avoid
+        unsigned types except for bit patterns or modular arithmetic, and
+        never use them just to say a value is non-negative.
+    rationale:
+        The size of short, long and long long varies by platform. Unsigned
+        arithmetic wraps silently, so many bugs cannot be diagnosed, and
+        mixing signedness causes further errors.
+    exceptions:
+        Standard aliases such as size_t and ptrdiff_t are fine where
+        appropriate.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        unsigned int age;            // Unsigned only to mean non-negative.
+        long long total_bytes = 0;
+        short port = 8080;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int age;                     // Check non-negativity with an assertion.
+        int64_t total_bytes = 0;
+        uint16_t port = 8080;        // Exact width needed for the wire format.
+        \\\
+        ```
+    languages: [cpp]
+    tags: [types, integers, portability]
+    source: https://google.github.io/styleguide/cppguide.html#Integer_Types

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsNamingLeadingUnderscore:
+    standard: @{AirbnbJavaScript}
+    ruleId: 23.4
+    title: Do not use leading or trailing underscores
+    statement:
+        Do not start or end names with underscores. Enforced by the ESLint
+        rule no-underscore-dangle.
+    rationale:
+        An underscore does not make a property private. It stays part of the
+        public API, and the convention misleads people into treating changes
+        to it as safe. Something meant to be private must not be observably
+        present.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        this._balance = 0;
+        this.balance_ = 0;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        this.balance = 0;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming, encapsulation]
+    source: https://github.com/airbnb/javascript#naming--leading-underscore

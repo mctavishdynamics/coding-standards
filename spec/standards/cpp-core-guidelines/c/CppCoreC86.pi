@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC86:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.86
+    title: Make == symmetric in operand types and noexcept
+    statement:
+        Define == so that both operands are treated alike, usually as a
+        non-member taking two const references, and make it noexcept.
+    rationale:
+        Asymmetric equality surprises users when conversions apply to one
+        side only, and == is basic enough that it should never fail.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Id {
+        public:
+            bool operator==(const Id& o) const { return v_ == o.v_; }
+            Id(int v);
+        private:
+            int v_;
+        };
+        // id == 3 compiles, 3 == id does not
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Id {
+        public:
+            Id(int v);
+            friend bool operator==(const Id& a, const Id& b) noexcept {
+                return a.v_ == b.v_;
+            }
+        private:
+            int v_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [operators, equality, noexcept]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-eq

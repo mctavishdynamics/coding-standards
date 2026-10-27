@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoHandleErrors:
+    standard: @{GoogleGo}
+    ruleId: decisions/handle-errors
+    title: Handle every error deliberately
+    statement:
+        When a call returns an error, handle it, return it, or in
+        exceptional cases call log.Fatal or panic. Do not discard it with an
+        underscore; if ignoring it is truly safe, say why in a comment.
+    rationale:
+        Silently dropped errors hide failures and make bugs hard to trace.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        data, _ := os.ReadFile(path)
+        process(data)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        data, err := os.ReadFile(path)
+        if err != nil {
+            return fmt.Errorf("reading config: %w", err)
+        }
+        process(data)
+
+        var buf bytes.Buffer
+        // Write on a bytes.Buffer never returns an error.
+        _, _ = buf.Write(header)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, errors]
+    source: https://google.github.io/styleguide/go/decisions#handle-errors

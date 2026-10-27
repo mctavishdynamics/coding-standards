@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactNoUnderscorePrefix:
+    standard: @{AirbnbReact}
+    ruleId: methods-3
+    title: Do not prefix internal methods with an underscore
+    statement:
+        Name the internal methods of a React component without a leading
+        underscore.
+    rationale:
+        JavaScript has no privacy for such properties, so an underscore does
+        not make a method private and every property should be treated as
+        public.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        class Uploader extends React.Component {
+          _startUpload() {
+            this.props.upload(this.state.file);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        class Uploader extends React.Component {
+          startUpload() {
+            this.props.upload(this.state.file);
+          }
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [naming, methods]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#methods

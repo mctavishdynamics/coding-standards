@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaThi02J:
+    standard: @{CertJava}
+    ruleId: THI02-J
+    title: Notify all waiting threads rather than a single thread
+    statement:
+        Wake waiting threads with notifyAll() or signalAll() rather than
+        notify() or signal(), unless every waiter waits for the same
+        condition and only one can proceed.
+    rationale:
+        notify() wakes an arbitrary thread, which may not be the one whose
+        condition is now true. The right thread can then wait forever.
+        CERT's risk assessment gives likelihood unlikely, detectable no,
+        repairable yes, priority P2 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        synchronized void finish(int turn) {
+            current = turn + 1;
+            notify();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        synchronized void finish(int turn) {
+            current = turn + 1;
+            notifyAll();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, threads, wait-notify]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-apis-thi/thi02-j/

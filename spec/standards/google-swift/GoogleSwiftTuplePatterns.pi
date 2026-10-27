@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftTuplePatterns:
+    standard: @{GoogleSwift}
+    ruleId: tuple-patterns
+    title: Use only unlabeled tuple patterns on the left
+    statement:
+        Assign through a tuple pattern only when its left side has no
+        labels.
+    rationale:
+        Labels on the left look like type annotations and confuse readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let (min: low, max: high) = bounds
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let (low, high) = bounds
+        \\\
+        ```
+    languages: [swift]
+    tags: [pattern-matching, tuples]
+    source: https://google.github.io/swift/#tuple-patterns

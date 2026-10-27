@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreP4:
+    standard: @{CppCoreGuidelines}
+    ruleId: P.4
+    title: Aim for a program that is statically type safe
+    statement:
+        Write programs that are type safe at compile time as far as
+        possible. Treat unions, casts, array decay, range errors and
+        narrowing conversions as problem areas and prefer the safer
+        alternatives.
+    rationale:
+        Full static type safety is not achievable in C++, but those problem
+        areas are the source of serious failures such as crashes and
+        security holes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        union Value {
+            int i;
+            double d;
+        };
+        Value v;
+        v.d = 3.5;
+        int n = v.i;   // reads the wrong member
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::variant<int, double> v = 3.5;
+        if (auto* d = std::get_if<double>(&v)) {
+            use(*d);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [philosophy, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rp-typesafe

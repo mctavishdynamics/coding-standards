@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCWin30C:
+    standard: @{CertC}
+    ruleId: WIN30-C
+    title: Properly pair allocation and deallocation functions
+    statement:
+        Release Windows memory with the function that matches its allocator,
+        such as LocalFree for LocalAlloc, GlobalFree for GlobalAlloc,
+        HeapFree for HeapAlloc and free for malloc.
+    rationale:
+        Freeing memory with the wrong function can corrupt the heap, crash
+        the program or leak memory. CERT rates likelihood probable,
+        detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        LPWSTR copy = (LPWSTR)LocalAlloc(LMEM_FIXED, len * sizeof(WCHAR));
+        if (copy != NULL) {
+            use(copy);
+            free(copy);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        LPWSTR copy = (LPWSTR)LocalAlloc(LMEM_FIXED, len * sizeof(WCHAR));
+        if (copy != NULL) {
+            use(copy);
+            LocalFree(copy);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, windows]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/microsoft-windows-win/win30-c

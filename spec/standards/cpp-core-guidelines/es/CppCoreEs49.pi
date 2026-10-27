@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs49:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.49
+    title: If you must use a cast, use a named cast
+    statement:
+        Use static_cast, const_cast, reinterpret_cast, dynamic_cast or a GSL
+        cast such as narrow_cast rather than a C-style or functional cast.
+    rationale:
+        Named casts say what kind of conversion is meant, so the compiler
+        can catch some errors and readers and tools can find them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int percent = (int)(ratio * 100);
+        auto* bytes = (unsigned char*)&header;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int percent = static_cast<int>(ratio * 100);
+        auto* bytes = reinterpret_cast<unsigned char*>(&header);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [casts, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-casts-named

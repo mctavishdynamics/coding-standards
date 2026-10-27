@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonBlankLines:
+    standard: @{GooglePython}
+    ruleId: 3.5
+    title: Separate definitions with the standard blank lines
+    statement:
+        Put two blank lines between top-level function and class
+        definitions, one blank line between methods and between a class
+        docstring and the first method, and no blank line right after a def
+        line. Use single blank lines inside functions as you judge fit.
+    rationale:
+        Consistent spacing shows where definitions begin and end.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Cart:
+            """A shopping cart."""
+            def total(self):
+
+                return sum(self.prices)
+        def checkout(cart):
+            return cart.total()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Cart:
+            """A shopping cart."""
+
+            def total(self):
+                return sum(self.prices)
+
+
+        def checkout(cart):
+            return cart.total()
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, blank-lines]
+    source: https://google.github.io/styleguide/pyguide.html#s3.5-blank-lines

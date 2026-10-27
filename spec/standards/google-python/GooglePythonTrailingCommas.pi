@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonTrailingCommas:
+    standard: @{GooglePython}
+    ruleId: 3.4.1
+    title: Use trailing commas only when the closing bracket is on its own line
+    statement:
+        Add a trailing comma after the last item of a sequence only when the
+        closing bracket is not on the same line as that item, and for one-
+        element tuples.
+    rationale:
+        Black and Pyink read a trailing comma as a request to put one item
+        per line, and it keeps diffs small when items are added.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        primes = [
+            2,
+            3,
+            5,]
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        primes = [2, 3, 5]
+        weekend = (
+            'Saturday',
+            'Sunday',
+        )
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, commas]
+    source: https://google.github.io/styleguide/pyguide.html#s3.4.1-trailing-commas

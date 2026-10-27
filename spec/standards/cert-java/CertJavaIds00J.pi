@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds00J:
+    standard: @{CertJava}
+    ruleId: IDS00-J
+    title: Prevent SQL injection
+    statement:
+        Never build SQL text by concatenating untrusted input. Pass
+        untrusted values to the database as bound parameters of a
+        PreparedStatement, or validate them strictly first.
+    rationale:
+        Input spliced into a query can change the query's meaning, letting
+        an attacker bypass authentication, read other rows or modify data.
+        CERT rates likelihood likely, detectable yes, repairable no,
+        priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        String sql = "SELECT id FROM account WHERE email = '" + email + "'";
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            return rs.next();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String sql = "SELECT id FROM account WHERE email = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [injection, sql, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-validation-and-data-sanitization-ids/ids00-j/

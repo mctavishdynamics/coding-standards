@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCon1:
+    standard: @{CppCoreGuidelines}
+    ruleId: Con.1
+    title: By default, make objects immutable
+    statement:
+        Declare objects const unless their value needs to change.
+    rationale:
+        Immutable objects are easier to reason about, and const prevents
+        accidental or hard-to-notice changes of value.
+    exceptions:
+        A local variable returned by value that is cheaper to move than copy
+        should not be const, because const can force a copy. Value
+        parameters are rarely declared const and need not be.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (std::string name : names)
+            std::cout << name << '\n';   // only read, yet a mutable copy
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (const std::string& name : names)
+            std::cout << name << '\n';
+        \\\
+        ```
+    languages: [cpp]
+    tags: [const, immutability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconst-immutable

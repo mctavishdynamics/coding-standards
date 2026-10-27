@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoWith:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.11.1
+    title: Do not use with
+    statement:
+        Never use the with statement.
+    rationale:
+        with makes it unclear which names refer to which objects and is
+        banned in strict mode.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        with (config) {
+          connect(host, port);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const {host, port} = config;
+        connect(host, port);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [disallowed, scope]
+    source: https://google.github.io/styleguide/jsguide.html#5111-with

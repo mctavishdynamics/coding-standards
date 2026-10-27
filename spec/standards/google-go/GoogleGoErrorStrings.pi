@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoErrorStrings:
+    standard: @{GoogleGo}
+    ruleId: decisions/error-strings
+    title: Write error strings in lowercase without trailing punctuation
+    statement:
+        Do not capitalise error strings unless they start with an exported
+        name, proper noun or acronym, and do not end them with punctuation.
+        Full messages shown to people, such as log lines or UI text, are
+        usually capitalised.
+    rationale:
+        Error strings are usually embedded in other messages before anyone
+        sees them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        return fmt.Errorf("Could not open %s.", path)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        return fmt.Errorf("could not open %s", path)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, errors, formatting]
+    source: https://google.github.io/styleguide/go/decisions#error-strings

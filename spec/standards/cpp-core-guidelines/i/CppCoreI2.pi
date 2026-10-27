@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI2:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.2
+    title: Avoid non-const global variables
+    statement:
+        Do not use mutable variables at global or namespace scope. Pass the
+        data explicitly, or make it the state of an object whose member
+        functions operate on it.
+    rationale:
+        Mutable globals hide dependencies, can be changed unpredictably from
+        anywhere and invite data races.
+    exceptions:
+        Global constants are fine. A few mutable globals, such as std::cout,
+        are reasonable exceptions, and a global object is often better than
+        a singleton.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int retry_count = 3;
+
+        void connect() {
+            for (int i = 0; i < retry_count; ++i) { /* ... */ }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void connect(int retry_count) {
+            for (int i = 0; i < retry_count; ++i) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, globals, concurrency]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-global

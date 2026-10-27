@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF10:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.10
+    title: If an operation can be reused, give it a name
+    statement:
+        Give a name to any function, lambda or operator that is used, or
+        could be used, in more than one place.
+    rationale:
+        A name documents the operation, makes the code easier to read and
+        allows reuse.
+    exceptions:
+        Lambdas used once locally, for example as the argument of an
+        algorithm, and lambdas used as initializers need not be named.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto a = std::find_if(v.begin(), v.end(),
+            [](const User& u) { return u.active && u.age >= 18; });
+        auto b = std::count_if(v.begin(), v.end(),
+            [](const User& u) { return u.active && u.age >= 18; });
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto is_active_adult = [](const User& u) { return u.active && u.age >= 18; };
+
+        auto a = std::find_if(v.begin(), v.end(), is_active_adult);
+        auto b = std::count_if(v.begin(), v.end(), is_active_adult);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, naming, reuse]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-name

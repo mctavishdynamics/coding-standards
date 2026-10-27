@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptRequireAliases:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.6
+    title: Refer to dependencies only through constant aliases
+    statement:
+        Assign each goog.require or goog.requireType to one constant alias
+        or destructure it into several. Use these aliases everywhere in code
+        and type annotations; never write a fully qualified namespace
+        outside the require call.
+    rationale:
+        Aliases make every dependency visible at the top of the file and
+        keep long namespaces out of the code.
+    exceptions:
+        Names declared in externs files are referred to by their fully
+        qualified name.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        goog.require('goog.string');
+
+        /** @param {!app.models.User} user */
+        function greet(user) {
+          return goog.string.trim(user.name);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const googString = goog.require('goog.string');
+        const {User} = goog.requireType('app.models');
+
+        /** @param {!User} user */
+        function greet(user) {
+          return googString.trim(user.name);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, closure, imports]
+    source: https://google.github.io/styleguide/jsguide.html#36-googrequire-and-googrequiretype-statements

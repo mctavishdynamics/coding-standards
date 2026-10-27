@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8RichComparisons:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-rich-comparisons
+    title: Implement all six rich comparison methods
+    statement:
+        When defining ordering with rich comparisons, implement all six
+        methods, __eq__, __ne__, __lt__, __le__, __gt__ and __ge__, or use
+        functools.total_ordering to generate the missing ones.
+    rationale:
+        Other code may use any comparison, and Python may swap operands, so
+        a partial set leads to confusing behaviour.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Version:
+            def __init__(self, parts):
+                self.parts = parts
+
+            def __lt__(self, other):
+                return self.parts < other.parts
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from functools import total_ordering
+
+
+        @total_ordering
+        class Version:
+            def __init__(self, parts):
+                self.parts = parts
+
+            def __eq__(self, other):
+                return self.parts == other.parts
+
+            def __lt__(self, other):
+                return self.parts < other.parts
+        \\\
+        ```
+    languages: [python]
+    tags: [classes, comparisons]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

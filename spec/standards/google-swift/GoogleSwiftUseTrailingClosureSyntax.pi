@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftUseTrailingClosureSyntax:
+    standard: @{GoogleSwift}
+    ruleId: trailing-closures-single-final-closure
+    title: Call a single final closure with trailing closure syntax
+    statement:
+        When a function's only closure argument is its last, always pass it
+        with trailing closure syntax.
+    rationale:
+        Trailing closures are the idiomatic form and read like a block.
+    exceptions:
+        Use a labeled closure to disambiguate overloads, and inside a
+        control flow condition where a trailing closure would be parsed as
+        the statement body.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        DispatchQueue.main.async(execute: {
+          refresh()
+        })
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        DispatchQueue.main.async {
+          refresh()
+        }
+        if let match = items.first(where: { $0.isSelected }) {
+          open(match)
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [closures, syntax]
+    source: https://google.github.io/swift/#trailing-closures

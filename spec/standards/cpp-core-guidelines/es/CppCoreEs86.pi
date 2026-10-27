@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs86:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.86
+    title:
+        Avoid modifying loop control variables inside the body of raw
+        for-loops
+    statement:
+        Do not change a for loop's counter inside the loop body. If the step
+        varies, use a while loop or restructure the logic.
+    rationale:
+        The loop header should be enough to understand the iteration, and
+        changing the counter in both the header and the body causes
+        surprises and bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (int i = 0; i < n; ++i) {
+            if (is_escape(text[i])) ++i;    // skips a character
+            emit(text[i]);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int i = 0;
+        while (i < n) {
+            if (is_escape(text[i])) ++i;
+            if (i < n) emit(text[i]);
+            ++i;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [loops, control-flow]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-loop-counter

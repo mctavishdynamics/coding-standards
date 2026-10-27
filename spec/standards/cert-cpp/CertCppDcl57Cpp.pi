@@ -1,0 +1,55 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppDcl57Cpp:
+    standard: @{CertCpp}
+    ruleId: DCL57-CPP
+    title: Do not let exceptions escape from destructors or deallocation functions
+    statement:
+        Make destructors, operator delete and operator delete with array
+        form non-throwing. Catch and handle any exception inside them
+        instead of letting it propagate.
+    rationale:
+        These functions are implicitly noexcept, so an escaping exception
+        calls std::terminate, and throwing from a deallocation function is
+        undefined behavior. CERT rates likelihood likely, detectable yes,
+        repairable yes, priority P9, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        class Logger {
+        public:
+            ~Logger() {
+                file_.flush();
+                if (!file_) {
+                    throw std::runtime_error("flush failed");
+                }
+            }
+        private:
+            std::ofstream file_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Logger {
+        public:
+            ~Logger() {
+                try {
+                    file_.flush();
+                } catch (...) {
+                    // Record the failure; never rethrow from a destructor
+                }
+            }
+        private:
+            std::ofstream file_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [exceptions, destructors, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/declarations-and-initialization-dcl/dcl57-cpp

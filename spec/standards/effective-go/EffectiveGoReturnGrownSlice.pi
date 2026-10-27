@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoReturnGrownSlice:
+    standard: @{EffectiveGo}
+    ruleId: slices-return-after-growth
+    title: Return the slice from functions that may grow it
+    statement:
+        A function that may append to or reallocate a slice must return the
+        resulting slice, and the caller must use it.
+    rationale:
+        The slice header is passed by value, so a reallocation inside the
+        function is invisible to the caller otherwise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func addTag(tags []string, t string) {
+            tags = append(tags, t)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func addTag(tags []string, t string) []string {
+            return append(tags, t)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [slices, functions]
+    source: https://go.dev/doc/effective_go#slices

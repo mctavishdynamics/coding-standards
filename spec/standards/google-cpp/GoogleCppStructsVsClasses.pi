@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppStructsVsClasses:
+    standard: @{GoogleCpp}
+    ruleId: Structs_vs._Classes
+    title: Use struct only for passive data carriers
+    statement:
+        Use a struct only for passive objects that carry data, with all
+        fields public and no invariants between fields. Everything else is a
+        class, and when in doubt make it a class.
+    rationale:
+        The two keywords behave almost the same, so the choice signals
+        intent. Users of a struct may write any field directly, which would
+        break any invariant the type tried to keep.
+    exceptions:
+        Stateless types such as traits, template metafunctions and some
+        functors may be structs for consistency with the standard library.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Account {
+          void Deposit(int64_t cents);  // Keeps balance_ and history_ in sync.
+         private:
+          int64_t balance_;
+          std::vector<int64_t> history_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Point {
+          double x = 0.0;
+          double y = 0.0;
+        };
+
+        class Account {
+         public:
+          void Deposit(int64_t cents);
+         private:
+          int64_t balance_ = 0;
+          std::vector<int64_t> history_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, structs]
+    source: https://google.github.io/styleguide/cppguide.html#Structs_vs._Classes

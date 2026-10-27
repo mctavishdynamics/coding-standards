@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoUtilPackages:
+    standard: @{GoogleGo}
+    ruleId: best-practices/util-packages
+    title: Name packages for what they provide, not util
+    statement:
+        Name a package for what it provides, judging by how call sites read.
+        Avoid bare names like util, helper or common, though they may be
+        part of a longer name.
+    rationale:
+        Vague names make call sites unreadable and cause needless import
+        conflicts.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        b := util.Backoff(attempt)
+        h := helper.Hash(data)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        b := retry.Backoff(attempt)
+        h := checksum.Hash(data)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, naming, packages]
+    source: https://google.github.io/styleguide/go/best-practices#util-packages

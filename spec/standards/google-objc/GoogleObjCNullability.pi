@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCNullability:
+    standard: @{GoogleObjC}
+    ruleId: nullability
+    title: Annotate nullability with the preferred keywords
+    statement:
+        Describe interfaces with nullability regions or explicit
+        annotations. Prefer _Nullable and _Nonnull to the double-underscore
+        forms, and use nullable and nonnull on methods and properties. Never
+        rely on a nonnull annotation to prove a pointer is not null, and do
+        not violate declared nullability.
+    rationale:
+        Annotations document intent and help Swift interop, but the compiler
+        only checks some cases.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        NSString *__nullable ABCDisplayName(ABCUser *__nonnull user);
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        NSString *_Nullable ABCDisplayName(ABCUser *_Nonnull user);
+        @property(nonatomic, copy, nullable) NSString *nickname;
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [null-safety, api-design, types]
+    source: https://google.github.io/styleguide/objcguide.html#nullability

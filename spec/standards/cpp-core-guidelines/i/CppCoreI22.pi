@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI22:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.22
+    title: Avoid complex initialization of global objects
+    statement:
+        Do not initialize a global object using values or functions that
+        depend on other globals, especially across translation units.
+    rationale:
+        The order of dynamic initialization across translation units is
+        unspecified, so one global may be used before it is initialized.
+        This is even harder to manage in concurrent code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // a.cpp
+        extern const std::string base_dir;
+        const std::string log_dir = base_dir + "/logs";   // base_dir may be empty
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // a.cpp
+        const std::string& log_dir() {
+            static const std::string dir = base_dir() + "/logs";
+            return dir;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, globals, initialization]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-global-init

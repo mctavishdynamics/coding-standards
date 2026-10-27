@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT150:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.150
+    title: Check that a class matches a concept using static_assert
+    statement:
+        When a class is meant to satisfy a concept, assert that with
+        static_assert next to its definition.
+    rationale:
+        Verifying it early catches a missing operation where the class is
+        written, instead of in a user's distant template error.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Token {
+        public:
+            Token(const Token&) = default;
+            Token& operator=(const Token&) = default;
+            // forgot the move operations; users find out later
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Token {
+        public:
+            Token(const Token&) = default;
+            Token& operator=(const Token&) = default;
+        };
+
+        static_assert(std::copyable<Token>);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts, testing]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-check-class

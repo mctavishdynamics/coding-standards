@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsEs6DefaultParameters:
+    standard: @{AirbnbJavaScript}
+    ruleId: 7.7
+    title: Use default parameter syntax
+    statement:
+        Give parameters default values with default parameter syntax instead
+        of reassigning them inside the function.
+    rationale:
+        Patterns like value = value || fallback replace legitimate falsy
+        arguments and mutate the parameter.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function paginate(items, pageSize) {
+          pageSize = pageSize || 20;
+          return items.slice(0, pageSize);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function paginate(items, pageSize = 20) {
+          return items.slice(0, pageSize);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, es6, parameters]
+    source: https://github.com/airbnb/javascript#es6-default-parameters

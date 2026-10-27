@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppStreams:
+    standard: @{GoogleCpp}
+    ruleId: Streams
+    title: Use streams only for simple developer-facing I/O
+    statement:
+        Use streams only when they are the best tool, typically for ad-hoc,
+        local, human-readable output for developers. Avoid them for
+        user-facing or untrusted I/O, avoid their stateful parts and
+        manipulators, and overload the stream operator only for value types,
+        printing the user-visible value.
+    rationale:
+        Logging and string libraries usually do the job better, and stream
+        state and formatting flags are easy to misuse. Internals belong in a
+        named debug function, not in the stream output.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::cout << std::hex << std::setw(8) << id;
+        std::ostream& operator<<(std::ostream& os, const Cache& c);  // Dumps internals.
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        LOG(INFO) << "Loaded " << count << " entries";
+        std::string line = absl::StrFormat("%08x", id);
+        std::string Cache::DebugString() const;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [io, streams]
+    source: https://google.github.io/styleguide/cppguide.html#Streams

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaErr04J:
+    standard: @{CertJava}
+    ruleId: ERR04-J
+    title: Do not complete abruptly from a finally block
+    statement:
+        Do not use return, break, continue or throw to leave a finally
+        block.
+    rationale:
+        A finally block that completes abruptly discards any exception or
+        return value from the try and catch blocks. CERT rates likelihood
+        probable, detectable yes, repairable yes, priority P6, level L2.
+    exceptions:
+        Control flow statements whose target stays inside the finally block,
+        such as a break out of a loop within it, are allowed.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        try {
+            return compute();
+        } finally {
+            return -1;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        try {
+            return compute();
+        } finally {
+            cleanUp();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, finally]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/exceptional-behavior-err/err04-j/

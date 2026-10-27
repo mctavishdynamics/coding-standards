@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaColumnLimit:
+    standard: @{GoogleJava}
+    ruleId: 4.4
+    title: Limit lines to 100 characters
+    statement:
+        Keep Java lines to at most 100 characters, counting each Unicode
+        code point as one character, and wrap any longer line as described
+        in 4.5. You may wrap earlier when wide characters make a line look
+        longer.
+    rationale:
+        A fixed limit keeps code readable side by side and in review tools
+        without horizontal scrolling.
+    exceptions:
+        Lines that cannot obey the limit, such as a long URL in Javadoc;
+        package and import statements; text block contents; shell command
+        lines in comments meant for copying; and very long identifiers,
+        which are then wrapped as google-java-format does.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        PaymentResult result = paymentGateway.authorize(customer.defaultCard(), order.totalAmount(), order.currency());
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        PaymentResult result =
+            paymentGateway.authorize(customer.defaultCard(), order.totalAmount(), order.currency());
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, line-length]
+    source: https://google.github.io/styleguide/javaguide.html#s4.4-column-limit

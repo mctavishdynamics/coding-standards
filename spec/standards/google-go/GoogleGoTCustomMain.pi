@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTCustomMain:
+    standard: @{GoogleGo}
+    ruleId: best-practices/t-custom-main
+    title: Use a custom TestMain only for shared setup with teardown
+    statement:
+        Write a TestMain only when every test in the package needs expensive
+        common setup that also needs teardown, and only after a helper or
+        amortised setup proves insufficient. Make tests reset any global
+        state they change.
+    rationale:
+        TestMain requires care to use correctly, and tests should stay
+        hermetic.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```go
+        \\\
+        var db *sql.DB
+
+        func TestMain(m *testing.M) {
+            var cleanup func()
+            db, cleanup = mustStartDatabase()
+            code := m.Run()
+            cleanup()
+            os.Exit(code)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, testing, setup]
+    source: https://google.github.io/styleguide/go/best-practices#t-custom-main

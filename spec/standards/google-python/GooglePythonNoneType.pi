@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonNoneType:
+    standard: @{GooglePython}
+    ruleId: 3.19.5
+    title: Declare None explicitly in types
+    statement:
+        If a value can be None, say so in its type, preferably with X | None
+        in new code, or with Optional or Union. Do not rely on a None
+        default to make a type implicitly optional.
+    rationale:
+        None is a distinct type, and type checkers no longer treat a None
+        default as making the annotation optional.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def greet(name: str = None) -> str:
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def greet(name: str | None = None) -> str:
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, none]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.5-nonetype

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsArrowsImplicitReturn:
+    standard: @{AirbnbJavaScript}
+    ruleId: 8.2
+    title: Use implicit returns for single-expression arrow bodies
+    statement:
+        If an arrow function body is a single expression without side
+        effects, drop the braces and return it implicitly. Otherwise keep
+        the braces and write a return statement. Enforced by the ESLint
+        rules arrow-parens and arrow-body-style.
+    rationale:
+        The short form reads well, especially when several functions are
+        chained.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const double = (value) => {
+          return value * 2;
+        };
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const double = (value) => value * 2;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, arrow-functions]
+    source: https://github.com/airbnb/javascript#arrows--implicit-return

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoNestedNamespaces:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.4.12
+    title: Do not nest types on other module-local names
+    statement:
+        Do not define a class, typedef, enum or interface as a property of
+        another module-local name. Make it a top-level export with a clear
+        name, avoiding redundancy with the module name.
+    rationale:
+        Top-level exports are easier to import and rename, and importers can
+        add prefixes but cannot remove them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Parser {}
+        Parser.Options = class {};
+        exports = {Parser};
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Parser {}
+        class ParserOptions {}
+        exports = {Parser, ParserOptions};
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, classes, naming]
+    source: https://google.github.io/styleguide/jsguide.html#5412-do-not-define-nested-namespaces

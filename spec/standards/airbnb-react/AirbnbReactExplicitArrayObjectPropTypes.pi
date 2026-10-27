@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactExplicitArrayObjectPropTypes:
+    standard: @{AirbnbReact}
+    ruleId: basic-rules-4
+    title: Describe the contents of array and object prop types
+    statement:
+        Do not declare a prop as a bare array or object type. Say what it
+        holds with arrayOf, objectOf or shape. Enforced by the ESLint rule
+        react/forbid-prop-types.
+    rationale:
+        A bare array or object type documents nothing and lets any value
+        through, so mistakes in the contents go unnoticed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        Cart.propTypes = {
+          items: PropTypes.array,
+          owner: PropTypes.object,
+        };
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        Cart.propTypes = {
+          items: PropTypes.arrayOf(PropTypes.shape({
+            sku: PropTypes.string.isRequired,
+            quantity: PropTypes.number.isRequired,
+          })),
+          owner: PropTypes.shape({ name: PropTypes.string }),
+        };
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [prop-types, types]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#basic-rules

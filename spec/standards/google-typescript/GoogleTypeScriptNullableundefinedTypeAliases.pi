@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptNullableundefinedTypeAliases:
+    standard: @{GoogleTypeScript}
+    ruleId: nullableundefined-type-aliases
+    title: Do not put null or undefined in type aliases
+    statement:
+        A type alias must not include null or undefined in its union. Add
+        them where the alias is used, and deal with absent values close to
+        where they arise.
+    rationale:
+        Nullable aliases spread null through many layers, hide where it came
+        from, and make it unclear which fields may be absent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        type SearchResult = Product[]|undefined;
+
+        function search(query: string): SearchResult {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        type SearchResult = Product[];
+
+        function search(query: string): SearchResult|undefined {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, null-safety, type-aliases]
+    source: https://google.github.io/styleguide/tsguide.html#nullableundefined-type-aliases

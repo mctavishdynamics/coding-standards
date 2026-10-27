@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaJavadocBlockTags:
+    standard: @{GoogleJava}
+    ruleId: 7.1.3
+    title: Order Javadoc block tags and never leave them empty
+    statement:
+        Write the standard block tags in the order param, return, throws,
+        deprecated, and always give them a description. Indent a block tag's
+        continuation lines four or more spaces from the at sign in
+        traditional Javadoc, and exactly two spaces in Markdown Javadoc.
+    rationale:
+        A fixed order and complete descriptions make the documentation
+        predictable, and the Markdown indent avoids accidental code blocks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        /**
+         * Divides two amounts.
+         *
+         * @throws ArithmeticException
+         * @return the quotient
+         * @param divisor the amount to divide by, which must not
+         * be zero
+         */
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        /**
+         * Divides two amounts.
+         *
+         * @param divisor the amount to divide by, which must not
+         *     be zero
+         * @return the quotient
+         * @throws ArithmeticException if the divisor is zero
+         */
+        \\\
+        ```
+    languages: [java]
+    tags: [javadoc, documentation]
+    source: https://google.github.io/styleguide/javaguide.html#s7.1.3-javadoc-block-tags

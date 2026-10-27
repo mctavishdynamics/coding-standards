@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs1:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.1
+    title: Prefer the standard library to other libraries and handcrafted code
+    statement:
+        Use a standard library facility when one does the job, before
+        reaching for another library or writing the code yourself.
+    rationale:
+        Library code is shorter, more abstract and already tested, and the
+        standard library is the most widely known and available C++ library.
+    exceptions:
+        Parts of the standard library, notably the containers, depend on
+        dynamic allocation and may not suit hard-real-time or embedded code.
+        There, use similar facilities such as a standard-style container on
+        a pool allocator.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int total = 0;
+        for (std::size_t i = 0; i < prices.size(); ++i)
+            total += prices[i];
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int total = std::accumulate(prices.begin(), prices.end(), 0);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [libraries, simplicity]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-lib

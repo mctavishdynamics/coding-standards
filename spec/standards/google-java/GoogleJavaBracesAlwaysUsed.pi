@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaBracesAlwaysUsed:
+    standard: @{GoogleJava}
+    ruleId: 4.1.1
+    title: Use braces for every if, else, for, do and while body
+    statement:
+        Write braces around the body of if, else, for, do and while
+        statements, even when the body is empty or a single statement.
+    rationale:
+        Braces prevent the classic bug where a line added under an unbraced
+        statement looks controlled by it but is not.
+    exceptions:
+        Other optional braces, such as those around a lambda body, stay
+        optional.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        if (order.isEmpty())
+          return;
+        for (Item item : order.items())
+          total += item.price();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (order.isEmpty()) {
+          return;
+        }
+        for (Item item : order.items()) {
+          total += item.price();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, braces]
+    source: https://google.github.io/styleguide/javaguide.html#s4.1.1-braces-always-used

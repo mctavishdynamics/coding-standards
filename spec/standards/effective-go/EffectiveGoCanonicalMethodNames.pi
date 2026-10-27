@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoCanonicalMethodNames:
+    standard: @{EffectiveGo}
+    ruleId: interface-names-canonical-methods
+    title: Respect the canonical method names and signatures
+    statement:
+        Do not name a method Read, Write, Close, Flush, String or another
+        well-known name unless it has the usual signature and meaning. When
+        your method does the same job as a well-known one, give it that name
+        and signature, such as String rather than ToString.
+    rationale:
+        These names carry fixed expectations and let types satisfy standard
+        interfaces; reusing them with other meanings confuses readers and
+        tools.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (c Color) ToString() string { return c.name }
+
+        func (l *Log) Close(reason string) { l.closed = reason }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (c Color) String() string { return c.name }
+
+        func (l *Log) Close() error { return l.file.Close() }
+        \\\
+        ```
+    languages: [go]
+    tags: [naming, interfaces, methods]
+    source: https://go.dev/doc/effective_go#interface-names

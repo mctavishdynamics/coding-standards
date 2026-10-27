@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftNamingInitializers:
+    standard: @{GoogleSwift}
+    ruleId: initializers
+    title: Name initializer arguments after their stored properties
+    statement:
+        Give initializer arguments that map directly to stored properties
+        the same names as the properties, and assign with an explicit self.
+    rationale:
+        Matching names make the mapping obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        struct Coordinate {
+          let latitude: Double
+          let longitude: Double
+
+          init(lat: Double, long: Double) {
+            latitude = lat
+            longitude = long
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        struct Coordinate {
+          let latitude: Double
+          let longitude: Double
+
+          init(latitude: Double, longitude: Double) {
+            self.latitude = latitude
+            self.longitude = longitude
+          }
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [naming, initialization]
+    source: https://google.github.io/swift/#initializers

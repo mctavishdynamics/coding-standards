@@ -1,0 +1,55 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaOverloadsNeverSplit:
+    standard: @{GoogleJava}
+    ruleId: 3.4.2.1
+    title: Keep overloads together
+    statement:
+        Place methods that share a name in one contiguous group with no
+        other members between them, and do the same for constructors. This
+        holds even when their modifiers, such as static or private, differ.
+    rationale:
+        Readers comparing overloads expect to see all variants side by side.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        final class Totals {
+          int sum(int a, int b) {
+            return a + b;
+          }
+
+          int count() {
+            return 0;
+          }
+
+          int sum(int a, int b, int c) {
+            return a + b + c;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        final class Totals {
+          int sum(int a, int b) {
+            return a + b;
+          }
+
+          int sum(int a, int b, int c) {
+            return a + b + c;
+          }
+
+          int count() {
+            return 0;
+          }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [classes, ordering, overloading]
+    source: https://google.github.io/styleguide/javaguide.html#s3.4.2.1-overloads-never-split

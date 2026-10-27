@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpOutForExtraReturns:
+    standard: @{GoogleCSharp}
+    ruleId: out-for-extra-returns
+    title: Use out for extra return values
+    statement:
+        Use out parameters for additional results that are not also inputs.
+    rationale:
+        out states clearly that the method only writes the value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public bool TryParse(string text, ref int value) { ... }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public bool TryParse(string text, out int value) { ... }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [parameters, methods]
+    source: https://google.github.io/styleguide/csharpguide.html#ref-and-out

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonBlockAndInlineComments:
+    standard: @{GooglePython}
+    ruleId: 3.8.5
+    title: Comment tricky code and never describe the code
+    statement:
+        Comment the tricky parts of the code: a few lines before complicated
+        operations and an end-of-line comment for non-obvious ones. Start
+        inline comments at least two spaces after the code, with a space
+        after the hash. Explain intent rather than restating what the code
+        does.
+    rationale:
+        Readers know Python but not your intent; a comment that only
+        restates the code adds nothing and goes stale.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # Loop over the users and add one to count.
+        for user in users:
+            count += 1
+        mask = n & (n - 1)# n with lowest bit cleared
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        # Count only users created before the migration; later ones are already billed.
+        for user in legacy_users:
+            count += 1
+        mask = n & (n - 1)  # Clears the lowest set bit.
+        \\\
+        ```
+    languages: [python]
+    tags: [comments, readability]
+    source: https://google.github.io/styleguide/pyguide.html#s3.8.5-block-and-inline-comments

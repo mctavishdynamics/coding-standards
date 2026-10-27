@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptConstructors:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.4.1
+    title: Call super before touching this in subclass constructors
+    statement:
+        Constructors are optional. A subclass constructor must call super
+        before setting fields or otherwise using this. Interfaces should
+        declare their non-method properties in the constructor.
+    rationale:
+        In ES classes this does not exist until the superclass constructor
+        returns, so using it first throws.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Admin extends User {
+          constructor(name) {
+            this.isAdmin = true;
+            super(name);
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Admin extends User {
+          constructor(name) {
+            super(name);
+            this.isAdmin = true;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, constructors]
+    source: https://google.github.io/styleguide/jsguide.html#541-constructors

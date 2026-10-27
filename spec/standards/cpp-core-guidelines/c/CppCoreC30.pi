@@ -1,0 +1,48 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC30:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.30
+    title: Define a destructor only if destruction needs an explicit action
+    statement:
+        Write a destructor only when the class must run code at the end of
+        its lifetime that its members' destructors do not already run.
+        Otherwise rely on the default.
+    rationale:
+        The generated destructor is correct whenever members clean up after
+        themselves, and an unnecessary user destructor also suppresses the
+        implicit move operations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Report {
+        public:
+            ~Report() { lines_.clear(); }   // the vector does this anyway
+        private:
+            std::vector<std::string> lines_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Report {
+        private:
+            std::vector<std::string> lines_;
+        };
+
+        class TempDir {
+        public:
+            ~TempDir() { std::filesystem::remove_all(path_); }
+        private:
+            std::filesystem::path path_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [destructors, special-members]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-dtor

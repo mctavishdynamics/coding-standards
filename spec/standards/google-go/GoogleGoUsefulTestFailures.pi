@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoUsefulTestFailures:
+    standard: @{GoogleGo}
+    ruleId: decisions/useful-test-failures
+    title: Make test failures diagnosable without reading the test
+    statement:
+        Write failure messages that say what failed, with which inputs, what
+        the actual result was and what was expected.
+    rationale:
+        A maintainer should be able to understand a failure from the output
+        alone.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if got != want {
+            t.Error("wrong result")
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if got != want {
+            t.Errorf("Slugify(%q) = %q, want %q", in, got, want)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, test-failures]
+    source: https://google.github.io/styleguide/go/decisions#useful-test-failures

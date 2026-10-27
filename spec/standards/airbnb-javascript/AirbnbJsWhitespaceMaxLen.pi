@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsWhitespaceMaxLen:
+    standard: @{AirbnbJavaScript}
+    ruleId: 19.13
+    title: Keep lines to 100 characters
+    statement:
+        Keep lines of code to at most 100 characters, counting whitespace.
+        Enforced by the ESLint rule max-len.
+    rationale:
+        Short lines are easier to read and maintain.
+    exceptions:
+        Long strings are exempt and should not be broken up, as rule 6.2
+        says.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const result = await client.request({ method: 'POST', url: '/orders', data: payload, timeout: 5000 });
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const result = await client.request({
+          method: 'POST',
+          url: '/orders',
+          data: payload,
+          timeout: 5000,
+        });
+        \\\
+        ```
+    languages: [javascript]
+    tags: [whitespace, line-length]
+    source: https://github.com/airbnb/javascript#whitespace--max-len

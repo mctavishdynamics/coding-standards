@@ -1,0 +1,28 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellImplementationComments:
+    standard: @{GoogleShell}
+    ruleId: implementation-comments
+    title: Comment tricky, non-obvious or important code
+    statement:
+        Add a short comment where the code is complex, unusual or important.
+        Do not comment everything.
+    rationale:
+        Comments are most useful where a reader would otherwise stop and
+        puzzle over the code, and noise elsewhere hides them.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```bash
+        \\\
+        # Sort numerically on the second field so "10" comes after "9";
+        # the input is tab-separated and may contain spaces in names.
+        sort -t $'\t' -k2,2n "${report}"
+        \\\
+        ```
+    languages: [shell]
+    tags: [comments]
+    source: https://google.github.io/styleguide/shellguide.html#implementation-comments

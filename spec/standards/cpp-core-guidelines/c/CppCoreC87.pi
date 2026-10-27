@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC87:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.87
+    title: Beware of == on base classes
+    statement:
+        Be careful about defining == on a base class of a hierarchy,
+        especially as a virtual function.
+    rationale:
+        A useful, foolproof == for a hierarchy is very hard to write.
+        Comparing through the base can ignore derived data or compare
+        objects of different types as equal.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Animal {
+        public:
+            virtual bool operator==(const Animal& o) const { return name_ == o.name_; }
+        protected:
+            std::string name_;
+        };
+        class Dog : public Animal { std::string breed_; };   // breed ignored
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Dog {
+        public:
+            friend bool operator==(const Dog&, const Dog&) = default;
+        private:
+            std::string name_;
+            std::string breed_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [operators, equality, inheritance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-eq-base

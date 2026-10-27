@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoVariableNames:
+    standard: @{GoogleGo}
+    ruleId: decisions/variable-names
+    title: Scale variable name length with scope
+    statement:
+        Make a name longer as its scope grows and shorter as its use grows.
+        Name a variable for what it holds in the current context, not where
+        it came from, do not drop letters to save typing, and leave out type
+        words and words already clear from context.
+    rationale:
+        Short names keep small scopes concise, while large scopes need
+        enough words to remind the reader what a value is.
+    exceptions:
+        A type-like qualifier is fine when two forms of a value are in
+        scope, such as ageString and age.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (s *Shop) CustomerCount() int {
+            customerCountInt := 0
+            for _, c := range s.custSlice {
+                if c.Active {
+                    customerCountInt++
+                }
+            }
+            return customerCountInt
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (s *Shop) CustomerCount() int {
+            count := 0
+            for _, c := range s.customers {
+                if c.Active {
+                    count++
+                }
+            }
+            return count
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, naming, variables]
+    source: https://google.github.io/styleguide/go/decisions#variable-names

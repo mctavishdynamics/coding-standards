@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoDontPanic:
+    standard: @{GoogleGo}
+    ruleId: decisions/dont-panic
+    title: Do not panic for normal error handling
+    statement:
+        Use error and multiple return values rather than panic for ordinary
+        failures. In main and initialisation code, consider log.Exit for
+        errors that should stop the program, such as invalid configuration.
+        For impossible conditions a function may return an error or call
+        log.Fatal.
+    rationale:
+        Panics bypass normal error handling, and a stack trace rarely helps
+        with a configuration mistake.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func ParseAmount(s string) Amount {
+            n, err := strconv.ParseInt(s, 10, 64)
+            if err != nil {
+                panic(err)
+            }
+            return Amount(n)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func ParseAmount(s string) (Amount, error) {
+            n, err := strconv.ParseInt(s, 10, 64)
+            if err != nil {
+                return 0, fmt.Errorf("parsing amount %q: %w", s, err)
+            }
+            return Amount(n), nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, errors, panics]
+    source: https://google.github.io/styleguide/go/decisions#dont-panic

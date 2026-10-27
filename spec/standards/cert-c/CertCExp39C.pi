@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp39C:
+    standard: @{CertC}
+    ruleId: EXP39-C
+    title:
+        Do not access a variable through a pointer of an incompatible type
+    statement:
+        Read or write an object only through an lvalue of a compatible type,
+        a character type, or an allowed signed or unsigned variant. Use
+        memcpy to reinterpret its bytes as another type.
+    rationale:
+        Breaking the aliasing rules is undefined behavior. Optimizers assume
+        incompatible pointers do not alias and may reorder or remove the
+        accesses. CERT rates likelihood unlikely, detectable no, repairable
+        no, priority P2, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        #include <stdint.h>
+
+        uint32_t float_bits(float f) {
+            return *(uint32_t *)&f;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdint.h>
+        #include <string.h>
+
+        uint32_t float_bits(float f) {
+            uint32_t bits;
+            memcpy(&bits, &f, sizeof bits);
+            return bits;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [pointers, aliasing, types]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/expressions-exp/exp39-c

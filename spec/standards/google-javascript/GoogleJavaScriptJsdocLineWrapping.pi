@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptJsdocLineWrapping:
+    standard: @{GoogleJavaScript}
+    ruleId: 7.4
+    title: Indent wrapped JSDoc block tags four spaces
+    statement:
+        Indent the continuation lines of a wrapped block tag by four spaces.
+        Aligning wrapped text with the previous description is allowed but
+        discouraged. Do not indent wrapped desc or fileoverview text.
+    rationale:
+        A fixed indent shows a line continues the tag above without needing
+        realignment when the tag changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /**
+         * @param {string} path The file path, which must be absolute and must
+         * point to an existing directory.
+         */
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * @param {string} path The file path, which must be absolute and must
+         *     point to an existing directory.
+         */
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, formatting, line-wrapping]
+    source: https://google.github.io/styleguide/jsguide.html#74-line-wrapping

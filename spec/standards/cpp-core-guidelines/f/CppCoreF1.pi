@@ -1,0 +1,49 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF1:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.1
+    title: Package meaningful operations as carefully named functions
+    statement:
+        When a piece of code performs a well-defined action, move it into
+        its own function with a descriptive name. A non-trivial lambda that
+        could be reused should also get a name.
+    rationale:
+        Factoring out common code makes it easier to read, more likely to be
+        reused and less prone to the errors of long complex code.
+    exceptions:
+        Loop bodies, including lambdas used as loop bodies, and one-off
+        callback lambdas rarely need names, though large loop bodies are a
+        problem of their own.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void report(const std::vector<Order>& orders) {
+            double total = 0;
+            for (const auto& o : orders)
+                if (o.paid) total += o.amount * (1 + o.tax_rate);
+            std::cout << total << '\n';
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        double paid_total(const std::vector<Order>& orders) {
+            double total = 0;
+            for (const auto& o : orders)
+                if (o.paid) total += o.amount * (1 + o.tax_rate);
+            return total;
+        }
+
+        void report(const std::vector<Order>& orders) {
+            std::cout << paid_total(orders) << '\n';
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, naming, modularity]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-package

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoInitFunction:
+    standard: @{EffectiveGo}
+    ruleId: init
+    title: Use init only for setup declarations cannot express
+    statement:
+        Use an init function for initialization that cannot be written as a
+        declaration, and to verify or repair program state before execution
+        begins.
+    rationale:
+        init runs after all package variables and imported packages are
+        initialized, so it is the right place for checks that need that
+        state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var defaultPort int
+
+        func init() {
+            defaultPort = 8080
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var defaultPort = 8080
+
+        func init() {
+            if os.Getenv("HOME") == "" {
+                log.Fatal("HOME is not set")
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [initialization]
+    source: https://go.dev/doc/effective_go#init

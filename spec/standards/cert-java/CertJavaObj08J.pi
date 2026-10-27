@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj08J:
+    standard: @{CertJava}
+    ruleId: OBJ08-J
+    title: Do not expose private members of an outer class from within a nested class
+    statement:
+        Do not let a public or accessible nested class return or modify the
+        outer class's private fields. Make such nested classes private, or
+        keep them from exposing outer state.
+    rationale:
+        A nested class can reach the outer class's private members, and when
+        it is accessible from outside it becomes a path for other code to
+        reach them too. CERT rates likelihood probable, detectable no,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        public class Wallet {
+            private long balance;
+            public class View {
+                public long balance() { return balance; }
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class Wallet {
+            private long balance;
+            private class View {
+                long balance() { return balance; }
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [encapsulation, nested-classes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/object-orientation-obj/obj08-j/

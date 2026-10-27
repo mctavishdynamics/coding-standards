@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoExamples:
+    standard: @{GoogleGo}
+    ruleId: decisions/examples
+    title: Provide runnable examples in test files
+    statement:
+        Document a package's intended use with runnable Example functions,
+        placed in a _test.go file rather than in production source. If a
+        runnable example is not feasible, put formatted example code in
+        comments.
+    rationale:
+        Runnable examples show up in Godoc and are compiled and run with the
+        tests, so they stay correct.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // In slug.go:
+        // Usage: slug.Make("Hello World") returns hello-world
+        func Make(s string) string
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // In slug_test.go:
+        func ExampleMake() {
+            fmt.Println(slug.Make("Hello World"))
+            // Output: hello-world
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, documentation, testing]
+    source: https://google.github.io/styleguide/go/decisions#examples

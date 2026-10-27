@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonPackages:
+    standard: @{GooglePython}
+    ruleId: 2.3
+    title: Import each module by its full package path
+    statement:
+        Import every module using its full package name. Do not assume the
+        directory of the main program is on sys.path, and treat a bare
+        import name as a top-level or third-party package, not a sibling
+        file.
+    rationale:
+        Full paths avoid conflicts between module names and make it clear
+        which module is meant. What a bare import resolves to depends on
+        sys.path, which varies between environments.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        # In billing/invoices/render.py, next to billing/invoices/totals.py
+        import totals
+
+        amount = totals.compute(order)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from billing.invoices import totals
+
+        amount = totals.compute(order)
+        \\\
+        ```
+    languages: [python]
+    tags: [imports, packages]
+    source: https://google.github.io/styleguide/pyguide.html#s2.3-packages

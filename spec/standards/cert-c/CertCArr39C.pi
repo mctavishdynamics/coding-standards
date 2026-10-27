@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCArr39C:
+    standard: @{CertC}
+    ruleId: ARR39-C
+    title: Do not add or subtract a scaled integer to a pointer
+    statement:
+        Add element counts, not byte counts, to typed pointers. Do not add
+        the result of sizeof or offsetof to a pointer to a type other than a
+        character type.
+    rationale:
+        Pointer arithmetic is already scaled by the element size, so a
+        scaled offset moves the pointer far beyond the intended element.
+        CERT rates likelihood probable, detectable no, repairable no,
+        priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        enum { COUNT = 8 };
+
+        void zero(int *buf) {
+            for (int *p = buf; p < buf + COUNT * sizeof(int); p++) {
+                *p = 0;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        enum { COUNT = 8 };
+
+        void zero(int *buf) {
+            for (int *p = buf; p < buf + COUNT; p++) {
+                *p = 0;
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [pointers, arrays, bounds]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/arrays-arr/arr39-c

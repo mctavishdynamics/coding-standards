@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactNoMixins:
+    standard: @{AirbnbReact}
+    ruleId: mixins-1
+    title: Do not use mixins
+    statement:
+        Do not share behaviour between components with mixins. Use
+        components, higher-order components or utility modules instead.
+    rationale:
+        Mixins add hidden dependencies, cause name clashes and make
+        complexity grow quickly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        const Profile = React.createClass({
+          mixins: [SubscriptionMixin],
+          render() {
+            return <div>{this.state.user.name}</div>;
+          },
+        });
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        function Profile({ user }) {
+          return <div>{user.name}</div>;
+        }
+
+        export default withSubscription(Profile);
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [composition, components]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#mixins

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonConditionalImports:
+    standard: @{GooglePython}
+    ruleId: 3.19.13
+    title: Use TYPE_CHECKING imports only in exceptional cases
+    statement:
+        Avoid conditional imports; prefer refactoring so imports can be at
+        the top level. When an import is needed only for type checking, put
+        it in an if TYPE_CHECKING block right after the normal imports,
+        define only typing entities there, keep the list sorted with no
+        blank lines, and refer to those types as strings.
+    rationale:
+        Names imported this way do not exist at runtime, so using them
+        outside annotations fails.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import typing
+        if typing.TYPE_CHECKING:
+
+            from reports import renderer
+            DEFAULT_RENDERER = renderer.Renderer()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import typing
+        if typing.TYPE_CHECKING:
+            from reports import renderer
+
+
+        def publish(view: 'renderer.Renderer') -> None:
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, imports]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.13-conditional-imports

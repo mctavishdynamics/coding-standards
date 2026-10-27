@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI7:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.7
+    title: State postconditions
+    statement:
+        Document what a function guarantees on return, especially effects
+        not visible in the returned value, preferably in code.
+    rationale:
+        Stated postconditions expose misunderstandings about the result and
+        can catch faulty implementations.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // fills buffer
+        void read_header(std::vector<char>& buffer);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void read_header(std::vector<char>& buffer) {
+            // ...
+            Ensures(buffer.size() == header_size);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, contracts, postconditions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-post

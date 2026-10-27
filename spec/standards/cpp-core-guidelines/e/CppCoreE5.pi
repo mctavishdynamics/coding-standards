@@ -1,0 +1,48 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE5:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.5
+    title: Let a constructor establish an invariant and throw if it cannot
+    statement:
+        Make each constructor fully establish its class invariant, and throw
+        an exception when that is impossible instead of leaving a half-built
+        object.
+    rationale:
+        An object whose invariant does not hold invites trouble, because
+        member functions rely on the invariant and not all of them can be
+        called safely.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Percentage {
+        public:
+            explicit Percentage(int value) : value_(value) {}   // accepts 250
+            bool valid() const { return value_ >= 0 && value_ <= 100; }
+        private:
+            int value_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Percentage {
+        public:
+            explicit Percentage(int value) : value_(value)
+            {
+                if (value < 0 || value > 100)
+                    throw std::out_of_range("percentage must be between 0 and 100");
+            }
+        private:
+            int value_;   // always between 0 and 100
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, constructors, invariants]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-invariant

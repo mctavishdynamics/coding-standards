@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp32:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.32
+    title: Use shared_ptr to share ownership between unrelated threads
+    statement:
+        When threads with unrelated lifetimes share a free-store object that
+        must be deleted, hold it through std::shared_ptr or an equivalent.
+    rationale:
+        If no thread is known to outlive the others, shared ownership is the
+        only safe way to make sure the object is deleted exactly once and
+        only after its last user.
+    exceptions:
+        Statics that no thread owns, free-store objects that are never
+        deleted, and objects owned by a thread that outlives every other
+        user can be shared without shared_ptr.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto* config = new Config(load_config());
+        std::thread(watch_changes, config).detach();
+        std::thread(serve_requests, config).detach();
+        // who deletes config, and when?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto config = std::make_shared<const Config>(load_config());
+        std::thread(watch_changes, config).detach();
+        std::thread(serve_requests, config).detach();
+        // deleted when the last thread drops its copy
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, ownership, smart-pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-shared

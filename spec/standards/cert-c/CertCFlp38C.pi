@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFlp38C:
+    standard: @{CertC}
+    ruleId: FLP38-C
+    title:
+        Avoid undefined behavior while using type-generic macro functions
+    statement:
+        Pass type-generic math macros only argument types they are defined
+        for. Do not mix decimal and binary floating types in one call, and
+        give parameters that require a particular type, such as the second
+        argument of nexttoward, that type.
+    rationale:
+        Misusing the type-generic macros from tgmath.h, math.h and complex.h
+        is undefined behavior. Some compilers reject the call while others
+        quietly compute something. CERT rates likelihood unlikely,
+        detectable yes, repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include <tgmath.h>
+
+        double larger(double a, _Decimal64 b) {
+            return fmax(a, b);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <tgmath.h>
+
+        double larger(double a, _Decimal64 b) {
+            return fmax(a, (double)b);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [floating-point, math, macros]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/floating-point-flp/flp38-c

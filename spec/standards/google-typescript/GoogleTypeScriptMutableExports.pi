@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptMutableExports:
+    standard: @{GoogleTypeScript}
+    ruleId: mutable-exports
+    title: Do not export mutable bindings
+    statement:
+        Do not use export let. If other modules need a value that changes,
+        export a getter function, and make sure every export is final once
+        the module body has run.
+    rationale:
+        Mutable exports are hard to reason about, and re-exports across
+        modules may not observe later changes, which leads to confusing
+        bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        export let activeTheme = 'light';
+
+        export function toggleTheme() {
+          activeTheme = activeTheme === 'light' ? 'dark' : 'light';
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        let activeTheme = 'light';
+
+        export function toggleTheme() {
+          activeTheme = activeTheme === 'light' ? 'dark' : 'light';
+        }
+
+        export function getActiveTheme(): string {
+          return activeTheme;
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [exports, mutability]
+    source: https://google.github.io/styleguide/tsguide.html#mutable-exports

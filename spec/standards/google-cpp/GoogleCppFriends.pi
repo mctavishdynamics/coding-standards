@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppFriends:
+    standard: @{GoogleCpp}
+    ruleId: Friends
+    title: Use friends sparingly and define them in the same file
+    statement:
+        Friend classes and functions are allowed within reason. Define a
+        friend in the same file as the class, so readers can find every use
+        of the private members, and keep most interaction through public
+        members.
+    rationale:
+        A friend can extend a class's encapsulation to one trusted partner,
+        such as a builder, which is better than making a member public for
+        everyone.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```cpp
+        \\\
+        // order.h
+        class Order {
+         private:
+          friend class OrderBuilder;  // Defined below in this file.
+          std::vector<Item> items_;
+        };
+
+        class OrderBuilder {
+         public:
+          Order Build();
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, encapsulation]
+    source: https://google.github.io/styleguide/cppguide.html#Friends

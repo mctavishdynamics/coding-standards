@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppNamespaces:
+    standard: @{GoogleCpp}
+    ruleId: Namespaces
+    title: Place code in a uniquely named namespace
+    statement:
+        With few exceptions, put code in a namespace named after the project
+        and possibly its path. Do not use using-directives, inline
+        namespaces, or declarations inside namespace std, and do not put
+        namespace aliases at namespace scope in headers outside internal
+        namespaces. Close multi-line namespaces with a comment naming them.
+    rationale:
+        Namespaces prevent name collisions in a large codebase while keeping
+        names short. Using-directives and header aliases leak names into
+        every includer and make it hard to tell what a name refers to.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // parser.h
+        using namespace std;
+        namespace fmt = ::myproject::formatting;
+
+        class Parser {
+          string Parse(const string& input);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // parser.h
+        namespace myproject {
+
+        class Parser {
+          std::string Parse(const std::string& input);
+        };
+
+        }  // namespace myproject
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces, scoping]
+    source: https://google.github.io/styleguide/cppguide.html#Namespaces

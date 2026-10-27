@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoErrorOrigin:
+    standard: @{EffectiveGo}
+    ruleId: errors-origin-prefix
+    title: Prefix error strings with their origin
+    statement:
+        When feasible, make an error string identify where it came from, for
+        example with a prefix naming the package or operation, as in image
+        followed by unknown format.
+    rationale:
+        A prefix tells the reader which component failed even when the
+        message is printed far away.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var ErrBadHeader = errors.New("bad header")
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        var ErrBadHeader = errors.New("archive: bad header")
+        \\\
+        ```
+    languages: [go]
+    tags: [error-handling, error-messages]
+    source: https://go.dev/doc/effective_go#errors

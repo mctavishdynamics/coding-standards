@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftInvisibleCharactersAndModifiers:
+    standard: @{GoogleSwift}
+    ruleId: invisible-characters-and-modifiers
+    title: Escape invisible characters and isolated modifiers
+    statement:
+        Always write invisible characters, such as a zero width space, as
+        Unicode escapes. Leave combining characters and modifiers unescaped
+        when they modify a neighbouring character, and escape them when they
+        stand alone.
+    rationale:
+        Unescaped invisible characters cannot be seen, and a lone modifier
+        may combine with the quotation mark and become unreadable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let separator = "​"  // A literal zero width space hides here.
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let separator = "\u{200B}"
+        let cafe = "Café"
+        \\\
+        ```
+    languages: [swift]
+    tags: [strings, unicode]
+    source: https://google.github.io/swift/#invisible-characters-and-modifiers

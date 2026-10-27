@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoRepetitiveInContext:
+    standard: @{GoogleGo}
+    ruleId: decisions/repetitive-in-context
+    title: Do not repeat context in local names
+    statement:
+        Drop information from a name that the package, type, method,
+        function, import path or file name already supplies. Judge
+        repetition from the point of view of the code that uses the symbol.
+    rationale:
+        Context already qualifies every name inside it, so restating it adds
+        noise without benefit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (db *DB) UserCount() (userCount int, err error) {
+            var userCountInt64 int64
+            if dbLoadError := db.LoadFromDatabase("count(distinct users)", &userCountInt64); dbLoadError != nil {
+                return 0, fmt.Errorf("failed to load user count: %s", dbLoadError)
+            }
+            return int(userCountInt64), nil
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (db *DB) UserCount() (int, error) {
+            var count int64
+            if err := db.Load("count(distinct users)", &count); err != nil {
+                return 0, fmt.Errorf("failed to load user count: %s", err)
+            }
+            return int(count), nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, naming, repetition]
+    source: https://google.github.io/styleguide/go/decisions#repetitive-in-context

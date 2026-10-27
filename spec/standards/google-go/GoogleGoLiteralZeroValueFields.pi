@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoLiteralZeroValueFields:
+    standard: @{GoogleGo}
+    ruleId: decisions/literal-zero-value-fields
+    title: Omit zero-value fields from struct literals
+    statement:
+        Leave zero-valued fields out of struct literals when clarity is not
+        lost. In table-driven tests, omit fields unrelated to a case, but
+        name them when the zero value matters to the case.
+    rationale:
+        Omitting zero fields draws attention to the options that are
+        actually set.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        opts := DialOptions{
+            Timeout:   10 * time.Second,
+            Retries:   0,
+            Proxy:     "",
+            KeepAlive: false,
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        opts := DialOptions{
+            Timeout: 10 * time.Second,
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, literals, structs]
+    source: https://google.github.io/styleguide/go/decisions#literal-zero-value-fields

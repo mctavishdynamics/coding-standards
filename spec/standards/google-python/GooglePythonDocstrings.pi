@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonDocstrings:
+    standard: @{GooglePython}
+    ruleId: 3.8.1
+    title: Format docstrings with triple double quotes and a summary line
+    statement:
+        Write docstrings with three double quotes. Start with a one-line
+        summary of at most 80 characters that ends with a period, question
+        mark or exclamation point. If there is more, follow with a blank
+        line and the rest, starting at the same indentation as the opening
+        quotes.
+    rationale:
+        A consistent shape lets tools such as pydoc display docstrings
+        properly and lets readers grasp the purpose from the first line.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def area(radius):
+            '''computes the area of a circle given the radius and returns it as a float'''
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def area(radius):
+            """Computes the area of a circle.
+
+            The radius must be non-negative.
+            """
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings]
+    source: https://google.github.io/styleguide/pyguide.html#s3.8.1-comments-in-doc-strings

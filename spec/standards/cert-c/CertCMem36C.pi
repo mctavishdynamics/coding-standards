@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem36C:
+    standard: @{CertC}
+    ruleId: MEM36-C
+    title: Do not modify the alignment of objects by calling realloc()
+    statement:
+        Do not resize memory from aligned_alloc, or any block with stricter
+        than fundamental alignment, with realloc. Allocate a new aligned
+        block, copy the data and free the old one.
+    rationale:
+        realloc only guarantees fundamental alignment, so the resized block
+        may lose the alignment the code relies on. CERT rates likelihood
+        probable, detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+
+        void *grow(void *buf, size_t new_size) {
+            return realloc(buf, new_size);
+        }
+
+        void *make(void) {
+            return aligned_alloc(4096, 4096);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+        #include <string.h>
+
+        void *grow(void *buf, size_t old_size, size_t new_size) {
+            void *fresh = aligned_alloc(4096, new_size);
+            if (fresh != NULL) {
+                memcpy(fresh, buf, old_size < new_size ? old_size : new_size);
+                free(buf);
+            }
+            return fresh;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, alignment, allocation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/memory-management-mem/mem36-c

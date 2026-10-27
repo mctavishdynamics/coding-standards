@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs34:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.34
+    title: Don't define a C-style variadic function
+    statement:
+        Do not write functions that take an ellipsis parameter. Use variadic
+        templates, initializer lists or overloading instead.
+    rationale:
+        C-style variadic functions are not type safe and need messy casts
+        and va_arg macros to work.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int sum(int count, ...) {
+            va_list args;
+            va_start(args, count);
+            int total = 0;
+            for (int i = 0; i < count; ++i) total += va_arg(args, int);
+            va_end(args);
+            return total;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<class... Ts>
+        int sum(Ts... values) {
+            return (0 + ... + values);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-ellipses

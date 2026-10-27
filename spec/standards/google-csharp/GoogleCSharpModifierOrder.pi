@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpModifierOrder:
+    standard: @{GoogleCSharp}
+    ruleId: modifier-order
+    title: Write modifiers in the standard order
+    statement:
+        Order modifiers as public, protected, internal, private, new,
+        abstract, virtual, override, sealed, static, readonly, extern,
+        unsafe, volatile, async.
+    rationale:
+        A fixed order makes declarations easy to scan and compare.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        static public readonly int Limit = 10;
+        override protected async Task RunAsync() { }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public static readonly int Limit = 10;
+        protected override async Task RunAsync() { }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [organization, modifiers]
+    source: https://google.github.io/styleguide/csharpguide.html#organization

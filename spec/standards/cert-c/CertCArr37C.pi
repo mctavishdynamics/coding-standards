@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCArr37C:
+    standard: @{CertC}
+    ruleId: ARR37-C
+    title:
+        Do not add or subtract an integer to a pointer to a non-array object
+    statement:
+        Use pointer arithmetic only on pointers to array elements. To step
+        through the members of a structure, name the members or put them in
+        an array.
+    rationale:
+        Arithmetic on a pointer to a non-array object can yield a pointer
+        outside the object, which is undefined behavior. CERT rates
+        likelihood probable, detectable yes, repairable no, priority P8,
+        level L2.
+    exceptions:
+        A non-array object counts as an array of one element, so adding one
+        to its pointer to reach just past it is allowed.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        struct rgb { int r; int g; int b; };
+
+        int total(const struct rgb *c) {
+            const int *p = &c->r;
+            return p[0] + p[1] + p[2];
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct rgb { int r; int g; int b; };
+
+        int total(const struct rgb *c) {
+            return c->r + c->g + c->b;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [pointers, arrays]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/arrays-arr/arr37-c

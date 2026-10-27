@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoCompareFullStructures:
+    standard: @{GoogleGo}
+    ruleId: decisions/compare-full-structures
+    title: Compare whole structures instead of field by field
+    statement:
+        Build the expected struct, slice or map and compare it to the result
+        with a deep comparison, rather than checking each field by hand.
+        Compare multiple return values individually without wrapping them in
+        a struct.
+    rationale:
+        Whole-value comparison is shorter and does not silently skip fields.
+    exceptions:
+        Skip this when the data has irrelevant fields that would obscure the
+        test's intent; cmpopts options can also ignore or relax specific
+        fields.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        got := ParseUser(line)
+        if got.Name != "ada" {
+            t.Errorf("Name = %q", got.Name)
+        }
+        if got.Age != 36 {
+            t.Errorf("Age = %d", got.Age)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        got := ParseUser(line)
+        want := User{Name: "ada", Age: 36}
+        if diff := cmp.Diff(want, got); diff != "" {
+            t.Errorf("ParseUser(%q) mismatch (-want +got):\n%s", line, diff)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, comparison]
+    source: https://google.github.io/styleguide/go/decisions#compare-full-structures

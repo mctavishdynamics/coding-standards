@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptLegacyVarNearFirstUse:
+    standard: @{GoogleJavaScript}
+    ruleId: 9.4.2.2
+    title: Declare var variables close to first use but outside inner blocks
+    statement:
+        Declare var variables as close as possible to their first use, but
+        never inside a block when the variable is used outside that block.
+    rationale:
+        var is function scoped, so declaring it in a block it escapes
+        misleads readers about its scope.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function countActive(users) {
+          for (var i = 0; i < users.length; i++) {
+            var active = (active || 0) + (users[i].active ? 1 : 0);
+          }
+          return active;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function countActive(users) {
+          var active = 0;
+          for (var i = 0; i < users.length; i++) {
+            active += users[i].active ? 1 : 0;
+          }
+          return active;
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [legacy, variables, scope]
+    source: https://google.github.io/styleguide/jsguide.html#9422-declare-variables-as-close-as-possible-to-first-use

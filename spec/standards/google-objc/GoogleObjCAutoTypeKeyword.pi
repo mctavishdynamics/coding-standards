@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCAutoTypeKeyword:
+    standard: @{GoogleObjC}
+    ruleId: the-__auto_type-keyword-and-type-deduction
+    title: Use __auto_type only for block and function pointer locals
+    statement:
+        Use __auto_type only for local variables of block or function
+        pointer type, and not when a typedef for that type already exists.
+    rationale:
+        Spelled-out types document object variables, while block and
+        function pointer types are verbose without adding much.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        __auto_type cell = [tableView dequeueReusableCellWithIdentifier:@"Row"];
+        typedef void (^ABCCompletion)(BOOL success);
+        __auto_type completion = ^(BOOL success) { [self finish]; };
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        __auto_type handler = ^(NSError *error) { [self report:error]; };
+        typedef void (^ABCCompletion)(BOOL success);
+        ABCCompletion completion = ^(BOOL success) { [self finish]; };
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [types, language-features]
+    source: https://google.github.io/styleguide/objcguide.html#the-__auto_type-keyword-and-type-deduction

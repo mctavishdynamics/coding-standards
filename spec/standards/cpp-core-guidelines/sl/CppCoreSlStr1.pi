@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlStr1:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.str.1
+    title: Use std::string to own character sequences
+    statement:
+        When code owns a sequence of characters, hold it in a std::string
+        rather than managing a char buffer by hand.
+    rationale:
+        A std::string handles allocation, ownership, copying and growth and
+        provides useful operations. Hand-written C string code invites
+        leaks, overflows and security bugs, and string is rarely slower in
+        practice.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        char* join_path(const char* dir, const char* file)
+        {
+            char* p = (char*) malloc(strlen(dir) + strlen(file) + 2);
+            sprintf(p, "%s/%s", dir, file);
+            return p;               // caller must remember free()
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string join_path(std::string_view dir, std::string_view file)
+        {
+            std::string p{dir};
+            p += '/';
+            p += file;
+            return p;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [strings, ownership, memory]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rstr-string

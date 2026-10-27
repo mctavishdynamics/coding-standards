@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI5:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.5
+    title: State preconditions (if any)
+    statement:
+        Document what a function requires of its arguments, preferably in
+        code, for example with Expects, and otherwise in a comment.
+    rationale:
+        Arguments often have constraints that the callee relies on, and
+        callers need to know them.
+    exceptions:
+        The class invariant is an implied precondition of most member
+        functions and does not need repeating for each one.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        double sqrt_of(double x);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        double sqrt_of(double x) {
+            Expects(x >= 0);
+            return std::sqrt(x);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, contracts, preconditions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-pre

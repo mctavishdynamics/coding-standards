@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoLiteralCuddledBraces:
+    standard: @{GoogleGo}
+    ruleId: decisions/literal-cuddled-braces
+    title: Cuddle braces only for nested literals with matching indentation
+    statement:
+        Drop the whitespace between braces in slice and array literals only
+        when the indentation still matches and the inner values are
+        themselves literals or proto builders, not variables or other
+        expressions.
+    rationale:
+        Cuddling other expressions misaligns braces and makes the structure
+        hard to follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        points := []*Point{origin, &Point{
+            X: 1,
+        }}
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        points := []*Point{{
+            X: 0,
+        }, {
+            X: 1,
+        }}
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, literals, formatting]
+    source: https://google.github.io/styleguide/go/decisions#literal-cuddled-braces

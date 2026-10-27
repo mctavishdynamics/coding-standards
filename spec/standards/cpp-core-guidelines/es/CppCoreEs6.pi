@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs6:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.6
+    title:
+        Declare names in for-statement initializers and conditions to limit
+        scope
+    statement:
+        Introduce loop variables in the for initializer and declare
+        variables inside if, switch and while conditions or initializers
+        when they are only needed there.
+    rationale:
+        It limits the variable to the statement, stops it being reused for
+        something else afterwards and releases its resources early.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto it = cache.find(key);
+        if (it != cache.end())
+            return it->second;
+        // it is still visible and easily misused here
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        if (auto it = cache.find(key); it != cache.end())
+            return it->second;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [scope, control-flow]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-cond

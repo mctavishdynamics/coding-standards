@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC163:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.163
+    title: Overload only operations that are roughly equivalent
+    statement:
+        Give the same name only to functions that do logically the same
+        thing. Use different names for different operations.
+    rationale:
+        One name for unrelated operations confuses readers and causes errors
+        in generic code that assumes the same meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void open(const std::string& path);   // opens a file
+        void open(int port);                  // starts a server
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void open_file(const std::string& path);
+        void listen(int port);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [overloading, naming]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ro-equivalent-2

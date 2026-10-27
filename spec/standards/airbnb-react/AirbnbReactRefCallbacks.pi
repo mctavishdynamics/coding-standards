@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactRefCallbacks:
+    standard: @{AirbnbReact}
+    ruleId: refs-1
+    title: Always use ref callbacks
+    statement:
+        Attach refs with a callback function rather than a string. Enforced
+        by the ESLint rule react/no-string-refs.
+    rationale:
+        String refs are a legacy API with known problems, while callbacks
+        give direct control over where the reference is stored.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        <input ref="emailInput" />
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        <input ref={(node) => { this.emailInput = node; }} />
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [refs]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#refs

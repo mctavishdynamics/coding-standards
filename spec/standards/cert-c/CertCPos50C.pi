@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos50C:
+    standard: @{CertC}
+    ruleId: POS50-C
+    title:
+        Declare objects shared between POSIX threads with appropriate
+        storage durations
+    statement:
+        Do not give a POSIX thread a pointer to an automatic or thread-local
+        object of another thread unless the owner outlives the access. Use
+        static or allocated storage, or join before the owner returns.
+    rationale:
+        The other thread may run after the owner's stack frame is gone,
+        reading invalid memory. CERT rates likelihood probable, detectable
+        no, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        void spawn(void) {
+            char name[32] = "indexer";
+            pthread_t t;
+            pthread_create(&t, run_named, name);
+            pthread_detach(t);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void spawn(void) {
+            char *name = strdup("indexer");
+            pthread_t t;
+            if (name != NULL && pthread_create(&t, run_named, name) == 0) {
+                pthread_detach(t);
+            } else {
+                free(name);
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, concurrency, lifetime]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos50-c

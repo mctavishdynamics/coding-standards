@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoStringRecursion:
+    standard: @{EffectiveGo}
+    ruleId: printing-string-recursion
+    title: Do not recurse into String from Sprintf
+    statement:
+        Inside a String method, do not pass the receiver to Sprintf with a
+        string verb. Convert it to the underlying basic type first, or use a
+        non-string verb.
+    rationale:
+        Formatting the receiver as a string calls String again, which
+        recurses forever.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Name string
+
+        func (n Name) String() string {
+            return fmt.Sprintf("name=%s", n)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Name string
+
+        func (n Name) String() string {
+            return fmt.Sprintf("name=%s", string(n))
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [printing, methods, recursion]
+    source: https://go.dev/doc/effective_go#printing

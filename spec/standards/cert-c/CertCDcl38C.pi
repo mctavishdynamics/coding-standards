@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl38C:
+    standard: @{CertC}
+    ruleId: DCL38-C
+    title:
+        Use the correct syntax when declaring a flexible array member
+    statement:
+        Declare a flexible array member as the last member of a structure
+        with empty brackets, and only in a structure with at least one other
+        named member. Do not use the old one-element array trick.
+    rationale:
+        The empty-bracket form is the only one the standard guarantees.
+        Accessing past the end of a one-element array is undefined behavior
+        even if the memory was allocated. CERT rates likelihood unlikely,
+        detectable yes, repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        struct packet {
+            size_t len;
+            unsigned char payload[1];
+        };
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct packet {
+            size_t len;
+            unsigned char payload[];
+        };
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, structures, arrays]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/declarations-and-initialization-dcl/dcl38-c

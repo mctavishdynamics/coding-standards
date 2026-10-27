@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftOverloadingExistingOperators:
+    standard: @{GoogleSwift}
+    ruleId: overloading-existing-operators
+    title: Overload operators only with their usual meaning
+    statement:
+        Overload an existing operator only when the use matches its meaning
+        in the standard library, such as Equatable equality or arithmetic on
+        a matrix type. Any other meaning must meet the bar for defining new
+        operators.
+    rationale:
+        Repurposed operators surprise readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        static func + (lhs: Regex, rhs: String) -> Regex {
+          // Appends a pattern fragment.
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        static func + (lhs: Vector, rhs: Vector) -> Vector {
+          return Vector(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [operators, overloading]
+    source: https://google.github.io/swift/#overloading-existing-operators

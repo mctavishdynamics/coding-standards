@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCorePer4:
+    standard: @{CppCoreGuidelines}
+    ruleId: Per.4
+    title: Do not assume complicated code is faster than simple code
+    statement:
+        Prefer the straightforward way of expressing a computation and do
+        not replace it with a clever, intricate version on the assumption
+        that it runs faster.
+    rationale:
+        Simple code is often very fast, because optimizers handle plain
+        loops and clear intent extremely well. Hand-tuned tricks are
+        frequently slower and can be undefined behavior.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Tries to be clever: processes four bytes at a time through a cast.
+        void invert(std::vector<std::uint8_t>& bytes)
+        {
+            for (std::size_t i = 0; i + 4 <= bytes.size(); i += 4) {
+                auto& word = *reinterpret_cast<std::uint32_t*>(&bytes[i]);
+                word = ~word;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void invert(std::vector<std::uint8_t>& bytes)
+        {
+            for (auto& b : bytes)
+                b = static_cast<std::uint8_t>(~b);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [performance, simplicity]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rper-simple

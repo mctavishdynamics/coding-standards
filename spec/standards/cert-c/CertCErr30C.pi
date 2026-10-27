@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCErr30C:
+    standard: @{CertC}
+    ruleId: ERR30-C
+    title: Take care when reading errno
+    statement:
+        Set errno to zero before calling a library function that reports
+        errors only through errno, and read errno only after a function that
+        sets it has indicated an error. Do not use errno to detect an error
+        from functions that report failure through their return value.
+    rationale:
+        Library functions never clear errno and may set it even on success,
+        so a stale or incidental value leads to wrong error handling. CERT
+        rates likelihood probable, detectable yes, repairable yes, priority
+        P12, level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        unsigned long parse_size(const char *s) {
+            char *end;
+            unsigned long n = strtoul(s, &end, 10);
+            if (errno == ERANGE) {
+                return 0;
+            }
+            return n;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        unsigned long parse_size(const char *s) {
+            char *end;
+            errno = 0;
+            unsigned long n = strtoul(s, &end, 10);
+            if (n == ULONG_MAX && errno == ERANGE) {
+                return 0;
+            }
+            return n;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, errno]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/error-handling-err/err30-c

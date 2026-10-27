@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptBlockCommentStyle:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.8.1
+    title: Indent block comments with the code and align their asterisks
+    statement:
+        Indent block comments at the same level as the surrounding code,
+        using slash-star or double-slash style. Start each later line of a
+        multi-line slash-star comment with an asterisk aligned with the one
+        above. Do not draw boxes around comments, and do not use JSDoc for
+        implementation comments.
+    rationale:
+        Aligned asterisks mark every line as a comment without extra
+        context, and JSDoc syntax is reserved for documentation tools.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /************************
+         * Retry with backoff.   *
+         ************************/
+        /** Skip empty batches. */
+        if (batch.length === 0) return;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /*
+         * Retry with exponential backoff.
+         * Give up after five attempts.
+         */
+        // Skip empty batches.
+        if (batch.length === 0) return;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [comments, formatting]
+    source: https://google.github.io/styleguide/jsguide.html#481-block-comment-style

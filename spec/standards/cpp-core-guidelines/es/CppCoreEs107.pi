@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs107:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.107
+    title: Don't use unsigned for subscripts and prefer gsl::index
+    statement:
+        Use a signed index type such as gsl::index for subscripts and loop
+        counters over containers.
+    rationale:
+        It avoids signed and unsigned confusion, enables better optimization
+        and error detection, and avoids pitfalls with auto and int.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (unsigned i = 0; i < v.size(); ++i)
+            v[i] = 0;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (gsl::index i = 0; i < std::ssize(v); ++i)
+            v[i] = 0;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [arithmetic, types, loops]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-subscripts

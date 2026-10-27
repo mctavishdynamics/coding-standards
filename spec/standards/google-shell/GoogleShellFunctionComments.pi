@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellFunctionComments:
+    standard: @{GoogleShell}
+    ruleId: function-comments
+    title: Give non-trivial and library functions a header comment
+    statement:
+        Write a header comment for every function that is not both short and
+        obvious, and for every library function regardless of size. Describe
+        the function, the globals it uses or changes, its arguments, its
+        output to STDOUT or STDERR, and any return values other than the
+        last command's status.
+    rationale:
+        Someone should be able to learn how to use a program or a library
+        function from its comments and help text, without reading the code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        function archive_logs() {
+          tar -czf "${ARCHIVE_DIR}/$1.tgz" "${LOG_DIR}"
+        }
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        #######################################
+        # Archive the log directory under a given name.
+        # Globals:
+        #   ARCHIVE_DIR
+        #   LOG_DIR
+        # Arguments:
+        #   Archive base name.
+        # Returns:
+        #   0 on success, non-zero if tar fails.
+        #######################################
+        function archive_logs() {
+          tar -czf "${ARCHIVE_DIR}/$1.tgz" "${LOG_DIR}"
+        }
+        \\\
+        ```
+    languages: [shell]
+    tags: [comments, documentation, functions]
+    source: https://google.github.io/styleguide/shellguide.html#function-comments

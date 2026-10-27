@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds03J:
+    standard: @{CertJava}
+    ruleId: IDS03-J
+    title: Do not log unsanitized user input
+    statement:
+        Sanitize or validate untrusted data before writing it to a log, for
+        example by rejecting or escaping line breaks and markup.
+    rationale:
+        Unsanitized input lets an attacker forge log entries with injected
+        line breaks, mislead auditors, or plant script that runs when the
+        log is viewed in a browser. CERT rates likelihood probable,
+        detectable no, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        logger.info("Failed login for user " + username);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (!username.matches("[A-Za-z0-9_]{1,32}")) {
+            logger.info("Failed login for invalid user name");
+        } else {
+            logger.info("Failed login for user " + username);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [logging, injection, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-validation-and-data-sanitization-ids/ids03-j/

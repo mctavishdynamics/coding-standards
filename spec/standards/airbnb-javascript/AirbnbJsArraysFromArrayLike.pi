@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsArraysFromArrayLike:
+    standard: @{AirbnbJavaScript}
+    ruleId: 4.5
+    title: Convert array-like objects with Array.from
+    statement:
+        Use Array.from to turn an array-like object, one with numeric keys
+        and a length but no iterator, into an array.
+    rationale:
+        Array.from works on array-like objects where spread fails, and it
+        reads better than borrowing Array.prototype.slice.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const pairs = { 0: 'x', 1: 'y', length: 2 };
+        const list = Array.prototype.slice.call(pairs);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const pairs = { 0: 'x', 1: 'y', length: 2 };
+        const list = Array.from(pairs);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [arrays, es6]
+    source: https://github.com/airbnb/javascript#arrays--from-array-like

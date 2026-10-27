@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC127:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.127
+    title: Give a class with a virtual function a virtual or protected destructor
+    statement:
+        If a class has any virtual function, make its destructor public and
+        virtual, or protected and non-virtual if deletion through a base
+        pointer is not supported.
+    rationale:
+        Such classes are usually used through base pointers and deleted
+        through them, which is undefined behavior without a virtual
+        destructor.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Task {
+        public:
+            virtual void run() = 0;
+        };
+
+        std::unique_ptr<Task> t = std::make_unique<Download>();  // UB on destruction
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Task {
+        public:
+            virtual void run() = 0;
+            virtual ~Task() = default;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, destructors, virtual-functions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-dtor

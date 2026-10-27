@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppMem52Cpp:
+    standard: @{CertCpp}
+    ruleId: MEM52-CPP
+    title: Detect and handle memory allocation errors
+    statement:
+        Detect and handle allocation failure. Check the result of nothrow
+        new and C allocation functions for null, and be ready
+        for std::bad_alloc from throwing allocations.
+    rationale:
+        Using a null result as if allocation succeeded dereferences a null
+        pointer, and an unhandled bad_alloc terminates the program. CERT
+        rates likelihood likely, detectable yes, repairable yes, priority
+        P27, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        char* make_buffer(std::size_t size) {
+            char* buf = new (std::nothrow) char[size];
+            buf[0] = '\0';
+            return buf;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        char* make_buffer(std::size_t size) {
+            char* buf = new (std::nothrow) char[size];
+            if (buf == nullptr) {
+                return nullptr;
+            }
+            buf[0] = '\0';
+            return buf;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, allocation, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/memory-management-mem/mem52-cpp

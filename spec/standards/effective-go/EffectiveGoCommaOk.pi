@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoCommaOk:
+    standard: @{EffectiveGo}
+    ruleId: maps
+    title: Use comma ok to tell a missing key from a zero value
+    statement:
+        When a map lookup must distinguish an absent key from a stored zero
+        value, use the two value form and check ok. Use the blank identifier
+        for the value when only presence matters.
+    rationale:
+        A lookup of a missing key returns the zero value, which is
+        indistinguishable from a real entry without the second result.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        offset := timeZone[name]
+        if offset == 0 {
+            return fmt.Errorf("unknown time zone %q", name) // rejects UTC
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        offset, ok := timeZone[name]
+        if !ok {
+            return fmt.Errorf("unknown time zone %q", name)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [maps, idioms]
+    source: https://go.dev/doc/effective_go#maps

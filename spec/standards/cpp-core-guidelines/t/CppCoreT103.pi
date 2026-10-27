@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT103:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.103
+    title: Don't use variadic templates for homogeneous argument lists
+    statement:
+        When all arguments have the same type, take an initializer_list,
+        span or container instead of a variadic template.
+    rationale:
+        There are more precise ways to express a sequence of one type, and
+        they are simpler to write and read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename... Ints>
+        int sum_all(Ints... values)
+        {
+            return (values + ... + 0);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int sum_all(std::initializer_list<int> values)
+        {
+            return std::accumulate(values.begin(), values.end(), 0);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, variadic, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-variadic-not

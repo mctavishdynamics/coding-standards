@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum12J:
+    standard: @{CertJava}
+    ruleId: NUM12-J
+    title: Ensure conversions of numeric types to narrower types do not lose or misinterpret data
+    statement:
+        Range-check a value before a narrowing primitive conversion, such as
+        long to int or double to int, or use a method like Math.toIntExact.
+    rationale:
+        A value outside the target type's range is silently truncated or
+        changed in sign, which corrupts data and checks. CERT rates
+        likelihood unlikely, detectable yes, repairable yes, priority P3,
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        int size = (int) fileLength;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        int size = Math.toIntExact(fileLength);
+        \\\
+        ```
+    languages: [java]
+    tags: [conversion, integers, types]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/numeric-types-and-operations-num/num12-j/

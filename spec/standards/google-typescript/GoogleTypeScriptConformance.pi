@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptConformance:
+    standard: @{GoogleTypeScript}
+    ruleId: conformance
+    title: Follow applicable conformance rules
+    statement:
+        Code must comply with every global or framework-local conformance
+        rule that applies, such as those enforced by tsetse and tsec.
+    rationale:
+        Conformance checks enforce critical restrictions and security
+        patterns, such as banning eval or innerHTML assignment.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        element.innerHTML = userComment;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        element.textContent = userComment;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [tooling, security, conformance]
+    source: https://google.github.io/styleguide/tsguide.html#conformance

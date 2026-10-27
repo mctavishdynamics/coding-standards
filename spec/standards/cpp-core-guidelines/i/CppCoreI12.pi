@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI12:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.12
+    title: Declare a pointer that must not be null as not_null
+    statement:
+        When a pointer parameter or result must never be null, give it the
+        GSL type not_null.
+    rationale:
+        It prevents null dereference errors and removes redundant null
+        checks, because the guarantee is part of the type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::size_t word_count(const char* text);   // may text be null?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::size_t word_count(gsl::not_null<const char*> text);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, pointers, null-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-nullptr

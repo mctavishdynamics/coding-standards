@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptImports:
+    standard: @{GoogleTypeScript}
+    ruleId: imports
+    title: Use module and named imports, and default imports only when required
+    statement:
+        Import TypeScript code with namespace (module) imports or named
+        imports. Use a default import only for external code that requires
+        it, and a bare side-effect import only to load a library for its
+        side effects.
+    rationale:
+        Limiting the import forms keeps dependencies uniform across files
+        and makes the purpose of each import obvious.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        import Tooltip from './tooltip';
+        import './date_utils';
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        import {Tooltip} from './tooltip';
+        import * as dateUtils from './date_utils';
+        import '@material/web/button/filled-button';
+        \\\
+        ```
+    languages: [typescript]
+    tags: [imports, modules]
+    source: https://google.github.io/styleguide/tsguide.html#imports

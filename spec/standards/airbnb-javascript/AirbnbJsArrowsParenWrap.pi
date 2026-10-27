@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsArrowsParenWrap:
+    standard: @{AirbnbJavaScript}
+    ruleId: 8.3
+    title: Wrap multiline arrow expressions in parentheses
+    statement:
+        When an implicitly returned expression spans several lines, wrap it
+        in parentheses.
+    rationale:
+        The parentheses show clearly where the function body starts and
+        ends.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        items.map((item) => Object.assign({}, item, {
+          total: item.price * item.quantity,
+        }));
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        items.map((item) => (
+          Object.assign({}, item, {
+            total: item.price * item.quantity,
+          })
+        ));
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, arrow-functions, formatting]
+    source: https://github.com/airbnb/javascript#arrows--paren-wrap

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppForwardDeclarations:
+    standard: @{GoogleCpp}
+    ruleId: Forward_Declarations
+    title: Include headers instead of forward declaring
+    statement:
+        Avoid forward declarations where you can and include the header you
+        need. Never forward declare entities your project does not own. For
+        your own entities, make headers cheap to include, and use a forward
+        declaration only when your judgment says it is the best fix for a
+        build slowdown.
+    rationale:
+        Forward declarations hide dependencies, can silently change the
+        meaning of code, can break when the library changes, and are
+        undefined behavior for names in namespace std.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Forward declaring a type from another library.
+        namespace std {
+        template <typename T> class optional;
+        }
+        namespace otherlib { class Client; }
+
+        void Connect(otherlib::Client* client);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #include <optional>
+
+        #include "otherlib/client.h"
+
+        void Connect(otherlib::Client* client);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, dependencies]
+    source: https://google.github.io/styleguide/cppguide.html#Forward_Declarations

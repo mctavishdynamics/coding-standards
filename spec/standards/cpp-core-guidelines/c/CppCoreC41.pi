@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC41:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.41
+    title: Make a constructor create a fully initialized object
+    statement:
+        When a constructor returns, the object should be fully usable. Do
+        not require callers to call an init function before using it.
+    rationale:
+        A constructor establishes the invariant, and users should be able to
+        assume that a constructed object works.
+    exceptions:
+        If a valid object cannot conveniently be built by a constructor, use
+        a factory function.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Socket {
+        public:
+            Socket() = default;
+            bool open(const std::string& host);   // must be called before use
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Socket {
+        public:
+            explicit Socket(const std::string& host);  // connects or throws
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, initialization]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-complete

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsStandardLibraryIsfinite:
+    standard: @{AirbnbJavaScript}
+    ruleId: 29.2
+    title: Use Number.isFinite instead of global isFinite
+    statement:
+        Check for finite numbers with Number.isFinite, not the global
+        isFinite. Enforced by the ESLint rule no-restricted-globals.
+    rationale:
+        The global function coerces its argument first, so it returns true
+        for strings that coerce to a finite number. If you want that
+        behaviour, coerce explicitly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        isFinite('42'); // true
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        Number.isFinite('42'); // false
+        Number.isFinite(Number('42')); // true
+        \\\
+        ```
+    languages: [javascript]
+    tags: [standard-library, numbers]
+    source: https://github.com/airbnb/javascript#standard-library--isfinite

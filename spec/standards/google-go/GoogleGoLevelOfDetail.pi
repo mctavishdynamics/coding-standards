@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoLevelOfDetail:
+    standard: @{GoogleGo}
+    ruleId: decisions/level-of-detail
+    title: Match failure detail to the test
+    statement:
+        Use the conventional got and want message for most tests. Describe
+        interactions and relevant state in complex tests, summarise large
+        boilerplate structs without obscuring them, and keep setup failure
+        messages brief. Use %q for strings, %+v for small structs and diffs
+        for large values.
+    rationale:
+        The right amount of detail lets a maintainer act on the failure
+        without wading through noise.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if err := db.Insert(ctx, fixtures); err != nil {
+            t.Fatalf("Insert(%+v) = %v, want nil; table=%v; conn=%+v", fixtures, err, table, db)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if err := db.Insert(ctx, fixtures); err != nil {
+            t.Fatalf("Setup: failed to insert fixtures: %v", err)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, test-failures]
+    source: https://google.github.io/styleguide/go/decisions#level-of-detail

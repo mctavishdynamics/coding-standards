@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaThi03J:
+    standard: @{CertJava}
+    ruleId: THI03-J
+    title: Always invoke wait() and await() methods inside a loop
+    statement:
+        Call wait() or await() inside a while loop that tests the condition
+        predicate, and check it again after every wake-up.
+    rationale:
+        Threads can wake spuriously, be notified for another condition, or
+        find that another thread changed the state first. Proceeding without
+        rechecking acts on a false condition. CERT's risk assessment gives
+        likelihood unlikely, detectable yes, repairable no, priority P2 and
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        synchronized Item take() throws InterruptedException {
+            if (queue.isEmpty()) {
+                wait();
+            }
+            return queue.remove();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        synchronized Item take() throws InterruptedException {
+            while (queue.isEmpty()) {
+                wait();
+            }
+            return queue.remove();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, threads, wait-notify]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-apis-thi/thi03-j/

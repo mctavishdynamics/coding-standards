@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC51:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.51
+    title: Use delegating constructors for actions common to all constructors
+    statement:
+        When several constructors share setup work, have them delegate to
+        one constructor that does it.
+    rationale:
+        This avoids repeated code and accidental differences between
+        constructors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Date {
+        public:
+            Date(int y, int m, int d) : y_(y), m_(m), d_(d) { validate(); }
+            Date(int y, int m) : y_(y), m_(m), d_(1) { validate(); }
+        private:
+            int y_, m_, d_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Date {
+        public:
+            Date(int y, int m, int d) : y_(y), m_(m), d_(d) { validate(); }
+            Date(int y, int m) : Date(y, m, 1) {}
+        private:
+            int y_, m_, d_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, duplication]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-delegating

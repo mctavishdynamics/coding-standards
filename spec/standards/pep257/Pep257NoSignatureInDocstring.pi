@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257NoSignatureInDocstring:
+    standard: @{Pep257}
+    ruleId: one-line-docstrings-no-signature
+    title: Do not repeat the signature in a one-line docstring
+    statement:
+        Do not make a one-line docstring a signature that restates the
+        parameters. Say what the function does, and mention the nature of
+        the return value, which introspection cannot show.
+    rationale:
+        Parameters are available through introspection, so repeating them
+        adds nothing, while the meaning of the result is useful.
+    exceptions:
+        A signature-style docstring is acceptable for C functions such as
+        built-ins, where introspection is not possible.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def merge(left, right):
+            """merge(left, right) -> list"""
+            return sorted(left + right)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def merge(left, right):
+            """Merge two sequences and return a new sorted list."""
+            return sorted(left + right)
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings]
+    source: https://peps.python.org/pep-0257/#one-line-docstrings

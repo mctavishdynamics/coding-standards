@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt31C:
+    standard: @{CertC}
+    ruleId: INT31-C
+    title:
+        Ensure that integer conversions do not result in lost or
+        misinterpreted data
+    statement:
+        Before converting an integer to a narrower type or between signed
+        and unsigned types, check that the value fits the destination type.
+        This matters most for values used as sizes, indexes and lengths.
+    rationale:
+        An out-of-range conversion truncates the value or flips its sign,
+        and the changed value can bypass checks or size a buffer wrongly.
+        CERT rates likelihood probable, detectable no, repairable yes,
+        priority P12, level L1.
+    exceptions:
+        A check can be omitted when the platform's type ranges make loss
+        impossible, if that assumption is documented, for example with a
+        static assertion. Converting a value in the character range to a
+        character type is allowed when it holds a character. A negative
+        constant such as minus one may be converted to an unsigned type of
+        equal or larger width.
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        #include <stddef.h>
+
+        unsigned char to_byte(int value) {
+            return (unsigned char)value;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <limits.h>
+
+        int to_byte(int value, unsigned char *out) {
+            if (value < 0 || value > UCHAR_MAX) {
+                return -1;
+            }
+            *out = (unsigned char)value;
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [integers, conversions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/integers-int/int31-c

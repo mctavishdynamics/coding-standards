@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs63:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.63
+    title: Don't slice
+    statement:
+        Do not copy a derived object into a base class object by assignment
+        or initialization. Use a pointer, a reference or an explicit
+        conversion function.
+    rationale:
+        Slicing copies only the base part of an object that was meant to be
+        treated as a whole, which usually causes errors and surprises
+        readers even when deliberate.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void show(Shape s);          // takes a copy of the base part
+
+        Circle c{1.0};
+        show(c);                     // Circle-specific state is lost
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void show(const Shape& s);
+
+        Circle c{1.0};
+        show(c);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, inheritance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-slice

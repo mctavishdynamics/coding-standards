@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCorePer10:
+    standard: @{CppCoreGuidelines}
+    ruleId: Per.10
+    title: Rely on the static type system
+    statement:
+        Keep data strongly typed. Avoid untyped pointers, type violations
+        and treating objects as raw bytes when a typed interface will do.
+    rationale:
+        Weak types and byte-level manipulation make the optimizer's job much
+        harder, while simple typed code usually optimizes better than
+        hand-crafted code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void scale(void* data, std::size_t count, double factor)
+        {
+            auto* p = static_cast<double*>(data);
+            for (std::size_t i = 0; i < count; ++i) p[i] *= factor;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void scale(std::span<double> data, double factor)
+        {
+            for (double& x : data) x *= factor;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [performance, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rper-type

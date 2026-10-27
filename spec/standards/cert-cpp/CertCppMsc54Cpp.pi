@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppMsc54Cpp:
+    standard: @{CertCpp}
+    ruleId: MSC54-CPP
+    title: A signal handler must be a plain old function
+    statement:
+        Install as a signal handler only a plain old function: one with C
+        linkage that uses only features common to C and C++ and calls only
+        such functions, so no exceptions, classes or standard C++ library.
+    rationale:
+        Using C++ features inside a signal handler is undefined or
+        implementation-defined behavior, and the handler may run at any
+        point. CERT rates likelihood probable, detectable no, repairable no,
+        priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        void on_interrupt(int) {
+            throw std::runtime_error("interrupted");
+        }
+
+        void install() { std::signal(SIGINT, on_interrupt); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        volatile std::sig_atomic_t interrupted = 0;
+
+        extern "C" void on_interrupt(int) {
+            interrupted = 1;
+        }
+
+        void install() { std::signal(SIGINT, on_interrupt); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [signals, functions, interoperability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/miscellaneous-msc/msc54-cpp

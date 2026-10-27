@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos37C:
+    standard: @{CertC}
+    ruleId: POS37-C
+    title: Ensure that privilege relinquishment is successful
+    statement:
+        Check the result of every call that drops privileges, and confirm
+        the drop is permanent, for example by checking that setuid back to
+        the old id now fails.
+    rationale:
+        setuid behaves differently across platforms and can fail or only
+        change the effective id, leaving a process that can regain root.
+        CERT rates likelihood probable, detectable yes, repairable yes,
+        priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        void drop_root(void) {
+            setuid(getuid());
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void drop_root(void) {
+            uid_t uid = getuid();
+            if (setuid(uid) == -1) {
+                abort();
+            }
+            if (uid != 0 && setuid(0) != -1) {
+                abort();
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, privileges, security, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos37-c

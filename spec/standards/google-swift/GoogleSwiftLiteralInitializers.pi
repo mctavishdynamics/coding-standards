@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftLiteralInitializers:
+    standard: @{GoogleSwift}
+    ruleId: initializers-1-literal-protocols
+    title: Do not call literal protocol initializers directly
+    statement:
+        Never call the initializers of the ExpressibleBy literal protocols
+        directly; write the literal with a type annotation or as coercion.
+    rationale:
+        These initializers exist for the compiler, and literal syntax is
+        clearer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let limit = Megabytes(integerLiteral: 512)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let limit: Megabytes = 512
+        let other = 256 as Megabytes
+        \\\
+        ```
+    languages: [swift]
+    tags: [initialization, literals]
+    source: https://google.github.io/swift/#initializers-1

@@ -1,0 +1,32 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC170:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.170
+    title: Use a generic lambda instead of trying to overload a lambda
+    statement:
+        When one lambda should accept several argument types, write a
+        generic lambda with auto parameters.
+    rationale:
+        Lambdas are variables, so two lambdas with the same name cannot be
+        overloaded.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto describe = [](int v)    { return std::to_string(v); };
+        auto describe = [](double v) { return std::to_string(v); };   // error
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto describe = [](auto v) { return std::to_string(v); };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [lambdas, overloading, generic-programming]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ro-lambda

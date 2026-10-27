@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT13:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.13
+    title: Prefer the shorthand notation for simple, single-type argument concepts
+    statement:
+        When a single type parameter needs a single concept, write it in the
+        template parameter list or as a constrained auto parameter instead
+        of a separate requires clause.
+    rationale:
+        The short forms read the way the idea is spoken and express it
+        directly. Many such templates no longer need the template keyword at
+        all.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+            requires std::sortable<T>
+        void arrange(T& seq);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void arrange(std::sortable auto& seq);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-shorthand

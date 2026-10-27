@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf12:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.12
+    title: Prefer the quoted form of #include for files relative to the including file and the angle bracket form everywhere else
+    statement:
+        Use quotes for headers found relative to the including file in the
+        same project, and angle brackets for the standard library, other
+        libraries and headers found through an include path.
+    rationale:
+        The two forms use different search rules, so choosing deliberately
+        shows where a header comes from and avoids silently picking up a
+        different file when a local file of the same name appears.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // src/server.cpp
+        #include "vector"
+        #include <server.h>
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // src/server.cpp
+        #include <vector>
+        #include <json_lib/parser.h>
+        #include "server.h"
+        \\\
+        ```
+    languages: [cpp]
+    tags: [includes, headers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-incform

@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8SubclassPrivateAttributes:
+    standard: @{Pep8}
+    ruleId: designing-for-inheritance-name-mangling
+    title: Use double leading underscores for attributes subclasses must not use
+    statement:
+        In a class meant for subclassing, consider naming attributes that
+        subclasses should not use with two leading underscores and no
+        trailing underscores, so name mangling applies.
+    rationale:
+        Mangling puts the class name into the attribute name, which avoids
+        accidental clashes with subclass attributes.
+    exceptions:
+        Mangling uses only the simple class name, so a subclass with the
+        same class name can still clash. It also makes debugging and
+        __getattr__ less convenient, so weigh it against use by advanced
+        callers.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Base:
+            def __init__(self):
+                self.cache = {}
+
+
+        class Child(Base):
+            def __init__(self):
+                super().__init__()
+                self.cache = []
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Base:
+            def __init__(self):
+                self.__cache = {}
+
+
+        class Child(Base):
+            def __init__(self):
+                super().__init__()
+                self.cache = []
+        \\\
+        ```
+    languages: [python]
+    tags: [classes, inheritance, naming]
+    source: https://peps.python.org/pep-0008/#designing-for-inheritance

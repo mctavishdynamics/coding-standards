@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCDoNotUseNew:
+    standard: @{GoogleObjC}
+    ruleId: do-not-use-new
+    title: Do not use +new
+    statement:
+        Do not call or override the NSObject class method new. Create
+        objects with alloc and an init method.
+    rationale:
+        new is rarely used and differs from normal initializer usage.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        NSMutableArray *queue = [NSMutableArray new];
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        NSMutableArray *queue = [[NSMutableArray alloc] init];
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [initialization]
+    source: https://google.github.io/styleguide/objcguide.html#do-not-use-new

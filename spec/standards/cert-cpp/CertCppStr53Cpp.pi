@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppStr53Cpp:
+    standard: @{CertCpp}
+    ruleId: STR53-CPP
+    title: Range check element access
+    statement:
+        Check that a position is within the string before using operator
+        brackets, front or back, or use the checked at member.
+    rationale:
+        The unchecked accessors do not detect out-of-range positions, and
+        modifying an out-of-range character is undefined behavior. CERT
+        rates likelihood unlikely, detectable no, repairable no, priority
+        P3, level L3.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        void capitalise(std::string& word) {
+            word.front() = std::toupper(word.front());
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void capitalise(std::string& word) {
+            if (!word.empty()) {
+                word.front() = std::toupper(static_cast<unsigned char>(word.front()));
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [strings, bounds-checking]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/characters-and-strings-str/str53-cpp

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppPreincrement:
+    standard: @{GoogleCpp}
+    ruleId: Preincrement_and_Predecrement
+    title: Use prefix increment and decrement
+    statement:
+        Use the prefix form, such as ++i, of the increment and decrement
+        operators unless you need the result of the postfix expression.
+    rationale:
+        The prefix form never needs a copy of the old value, which can
+        matter for iterators and other non-scalar types, and using it
+        consistently removes the question.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (auto it = items.begin(); it != items.end(); it++) {
+          Process(*it);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (auto it = items.begin(); it != items.end(); ++it) {
+          Process(*it);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [operators, performance]
+    source: https://google.github.io/styleguide/cppguide.html#Preincrement_and_Predecrement

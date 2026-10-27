@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsFunctionsSpreadVsApply:
+    standard: @{AirbnbJavaScript}
+    ruleId: 7.14
+    title: Call variadic functions with spread
+    statement:
+        Pass an array of arguments to a variadic function with the spread
+        syntax instead of apply. Enforced by the ESLint rule prefer-spread.
+    rationale:
+        Spread is cleaner, needs no this argument and works with new, which
+        apply cannot easily do.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const highest = Math.max.apply(null, scores);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const highest = Math.max(...scores);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, es6]
+    source: https://github.com/airbnb/javascript#functions--spread-vs-apply

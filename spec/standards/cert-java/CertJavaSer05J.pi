@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSer05J:
+    standard: @{CertJava}
+    ruleId: SER05-J
+    title: Do not serialize instances of inner classes
+    statement:
+        Do not make inner, local or anonymous classes serializable. Use a
+        static nested class instead.
+    rationale:
+        Inner classes carry hidden references to the enclosing instance and
+        compiler-specific synthetic fields and names, so their serialized
+        form leaks the outer object and is not portable. CERT's risk
+        assessment gives likelihood likely, detectable yes, repairable no,
+        priority P12 and level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        public class Order {
+            class Line implements Serializable {
+                String item;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        public class Order {
+            static class Line implements Serializable {
+                String item;
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, nested-classes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/serialization-ser/ser05-j/

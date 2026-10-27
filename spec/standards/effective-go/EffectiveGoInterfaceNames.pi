@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoInterfaceNames:
+    standard: @{EffectiveGo}
+    ruleId: interface-names
+    title: Name one-method interfaces with an -er suffix
+    statement:
+        Name an interface with one method after that method plus an -er
+        suffix or a similar agent noun, such as Reader, Writer or Formatter.
+    rationale:
+        The convention is widely used and tells the reader at once what the
+        interface does.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type CanFlush interface {
+            Flush() error
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Flusher interface {
+            Flush() error
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [naming, interfaces]
+    source: https://go.dev/doc/effective_go#interface-names

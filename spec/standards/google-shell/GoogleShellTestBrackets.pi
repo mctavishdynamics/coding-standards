@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellTestBrackets:
+    standard: @{GoogleShell}
+    ruleId: test----and---
+    title: Prefer double-bracket tests over single brackets and test
+    statement:
+        Use the double-bracket test construct rather than the single-bracket
+        form, the test command or /usr/bin/[ .
+    rationale:
+        No pathname expansion or word splitting happens inside double
+        brackets, which removes a class of errors, and they support pattern
+        and regular expression matching.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        if [ $answer == y* ]; then
+          proceed
+        fi
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        if [[ "${answer}" == y* ]]; then
+          proceed
+        fi
+        \\\
+        ```
+    languages: [shell]
+    tags: [conditionals, syntax]
+    source: https://google.github.io/styleguide/shellguide.html#test----and---

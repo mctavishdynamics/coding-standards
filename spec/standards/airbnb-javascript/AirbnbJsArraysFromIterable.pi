@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsArraysFromIterable:
+    standard: @{AirbnbJavaScript}
+    ruleId: 4.4
+    title: Convert iterables to arrays with spread
+    statement:
+        Turn an iterable, such as a NodeList or a Set, into an array with
+        the spread syntax rather than Array.from.
+    rationale:
+        Spreading is the shortest and most direct way to collect an iterable
+        into an array.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const buttons = Array.from(document.querySelectorAll('button'));
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const buttons = [...document.querySelectorAll('button')];
+        \\\
+        ```
+    languages: [javascript]
+    tags: [arrays, es6, iterables]
+    source: https://github.com/airbnb/javascript#arrays--from-iterable

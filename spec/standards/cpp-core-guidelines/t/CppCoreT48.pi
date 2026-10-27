@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT48:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.48
+    title: If your compiler does not support concepts, fake them with enable_if
+    statement:
+        Without language support for concepts, use enable_if to constrain
+        templates and select overloads, and switch to real concepts once
+        available.
+    rationale:
+        enable_if is the closest substitute for concepts in older C++,
+        letting a template exist only for suitable argument types. Watch out
+        for the complementary constraints this style tends to produce.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+        T gcd(T a, T b);       // accepts double, std::string, ...
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename T>
+        std::enable_if_t<std::is_integral_v<T>, T>
+        gcd(T a, T b);         // integral types only
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts, compatibility]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-concept-def

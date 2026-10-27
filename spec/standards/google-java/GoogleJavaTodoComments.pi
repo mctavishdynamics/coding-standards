@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaTodoComments:
+    standard: @{GoogleJava}
+    ruleId: 4.8.6.2
+    title: Format TODO comments with a context link and explanation
+    statement:
+        Use TODO comments for temporary or imperfect code. Start with TODO
+        in capitals and a colon, then a link to the context, ideally a bug,
+        then a hyphen and an explanation. Do not use a person or team as the
+        context, and give a specific date or event for future work.
+    rationale:
+        A consistent format can be searched, and a bug link gives a place to
+        track the follow-up long after the author has moved on.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        // TODO(alice) fix this later
+        int timeoutMillis = 5000;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        // TODO: issues.example.com/4821 - Read the timeout from config once the 2027 migration ends.
+        int timeoutMillis = 5000;
+        \\\
+        ```
+    languages: [java]
+    tags: [comments, todo]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.6.2-todo-comments

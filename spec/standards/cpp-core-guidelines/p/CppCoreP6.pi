@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreP6:
+    standard: @{CppCoreGuidelines}
+    ruleId: P.6
+    title: Make what cannot be checked at compile time checkable at run time
+    statement:
+        Design code so that errors the compiler cannot catch can still be
+        detected while the program runs, for example by keeping sizes
+        together with the data they describe.
+    rationale:
+        Hard-to-detect errors lead to crashes and wrong results. Not every
+        check is affordable, but a program should at least be checkable in
+        principle.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // the callee cannot know how many elements p points to
+        void scale(double* p);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // the size travels with the data and can be checked
+        void scale(std::span<double> values);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [philosophy, run-time, error-checking]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rp-run-time

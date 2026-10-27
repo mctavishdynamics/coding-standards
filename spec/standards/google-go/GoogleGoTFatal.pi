@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTFatal:
+    standard: @{GoogleGo}
+    ruleId: best-practices/t-fatal
+    title: Choose between t.Error and t.Fatal
+    statement:
+        Use t.Fatal when setup the rest of the test depends on fails. For a
+        failure affecting one table entry, use t.Error and continue outside
+        subtests, or t.Fatal inside a t.Run subtest.
+    rationale:
+        Tests should normally keep going, but must stop when continuing
+        would be meaningless.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        for _, tc := range tests {
+            got, err := Parse(tc.in)
+            if err != nil {
+                t.Fatalf("Parse(%q) failed: %v", tc.in, err) // stops all rows
+            }
+            // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        for _, tc := range tests {
+            got, err := Parse(tc.in)
+            if err != nil {
+                t.Errorf("Parse(%q) failed: %v", tc.in, err)
+                continue
+            }
+            // ...
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, testing, test-failures]
+    source: https://google.github.io/styleguide/go/best-practices#t-fatal

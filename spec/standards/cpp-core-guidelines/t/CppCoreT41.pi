@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT41:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.41
+    title: Require only essential properties in a template's concepts
+    statement:
+        Constrain a template only on properties that are fundamental to what
+        it does. Incidental needs such as debug printing should not appear
+        in its concepts.
+    rationale:
+        Listing every operation the implementation uses makes the interface
+        unstable, forcing changes and recompilation whenever logging or test
+        support changes. The cost is a later error if a non-essential
+        operation is missing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<std::sortable S>
+            requires Printable<S>          // only needed for tracing
+        void sort_seq(S& s);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<std::sortable S>
+        void sort_seq(S& s);               // tracing is an implementation detail
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-essential

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpErrorHandlingAndLogging10:
+    standard: @{OwaspScp}
+    ruleId: error-handling-and-logging-10
+    title: Prevent untrusted data in logs from executing
+    statement:
+        Make sure log entries containing untrusted data cannot run as code
+        in the tools used to view the logs, for example by encoding or
+        stripping control characters.
+    rationale:
+        Attackers inject newlines, markup or script into logs to forge
+        entries or attack whoever reads them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        log.info("login failed for " + username)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        safe = username.replace("\r", "\\r").replace("\n", "\\n")
+        log.info("login failed for %s", safe)
+        \\\
+        ```
+    languages: [any]
+    tags: [logging, injection]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#error-handling-and-logging

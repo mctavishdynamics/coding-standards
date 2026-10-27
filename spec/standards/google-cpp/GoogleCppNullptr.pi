@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppNullptr:
+    standard: @{GoogleCpp}
+    ruleId: 0_and_nullptr/NULL
+    title: Use nullptr for pointers and the null character for chars
+    statement:
+        Use nullptr for null pointers and the null character literal for
+        chars, not the integer literal 0 or NULL.
+    rationale:
+        nullptr is type-safe, and using the literal of the right type makes
+        the code easier to read.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Node* head = NULL;
+        char terminator = 0;
+        if (ptr == 0) return;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Node* head = nullptr;
+        char terminator = '\0';
+        if (ptr == nullptr) return;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [pointers, type-safety]
+    source: https://google.github.io/styleguide/cppguide.html#0_and_nullptr/NULL

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptStaticThis:
+    standard: @{GoogleTypeScript}
+    ruleId: static-this
+    title: Do not use this in a static context
+    statement:
+        Do not refer to this inside static methods or other static code.
+        Name the class explicitly.
+    rationale:
+        Static fields reached through this are inherited and can be
+        overridden by subclasses, which surprises readers and encourages
+        hard-to-test static state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Config {
+          static defaults = {retries: 3};
+          static retries() {
+            return this.defaults.retries;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Config {
+          static defaults = {retries: 3};
+          static retries() {
+            return Config.defaults.retries;
+          }
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, static, this]
+    source: https://google.github.io/styleguide/tsguide.html#static-this

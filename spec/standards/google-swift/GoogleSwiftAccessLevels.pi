@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftAccessLevels:
+    standard: @{GoogleSwift}
+    ruleId: access-levels
+    title: Do not put an access level on an extension
+    statement:
+        Explicit access levels may be omitted. Do not specify an access
+        level on an extension itself; mark each member that differs from the
+        default.
+    rationale:
+        Member-level modifiers show each declaration's visibility where it
+        is declared.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        public extension Money {
+          var formatted: String { /* ... */ }
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        extension Money {
+          public var formatted: String { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [access-control, extensions]
+    source: https://google.github.io/swift/#access-levels

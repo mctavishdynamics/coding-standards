@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCpl3:
+    standard: @{CppCoreGuidelines}
+    ruleId: CPL.3
+    title: If you must use C for interfaces, use C++ in the calling code using such interfaces
+    statement:
+        When a library or system interface is in C, declare it in the common
+        subset, wrap it in a C++ interface that follows these guidelines,
+        and use the wrapper from C++ code.
+    rationale:
+        C++ is more expressive and gives better abstraction, memory safety
+        and resource safety than calling the raw C interface everywhere.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void load(const char* path)
+        {
+            FILE* f = fopen(path, "r");
+            parse(f);               // leaks f if parse throws
+            fclose(f);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct File_closer { void operator()(FILE* f) const { fclose(f); } };
+        using File = std::unique_ptr<FILE, File_closer>;
+
+        void load(const char* path)
+        {
+            File f{fopen(path, "r")};
+            parse(f.get());
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [c-compatibility, interfaces, resource-management]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rcpl-interface

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoCommentLineLength:
+    standard: @{GoogleGo}
+    ruleId: decisions/comment-line-length
+    title: Wrap long comments at a consistent width
+    statement:
+        Wrap long comment lines so the source reads well in tools that do
+        not wrap, using a consistent width within a file; 80 or 100 columns
+        are common choices but not required.
+    rationale:
+        Very long single comment lines are hard to read in editors and code
+        review tools.
+    exceptions:
+        Do not break long literal text, such as a URL, when breaking it
+        would do harm.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Retry reruns fn with exponential backoff until it succeeds, the context is cancelled, or the maximum number of attempts configured on the policy is reached.
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Retry reruns fn with exponential backoff until it succeeds, the
+        // context is cancelled, or the maximum number of attempts configured on
+        // the policy is reached.
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, comments, formatting]
+    source: https://google.github.io/styleguide/go/decisions#comment-line-length

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCNullptrVsNull:
+    standard: @{GoogleObjC}
+    ruleId: nullptr-vs-null
+    title: Prefer nullptr over NULL
+    statement:
+        Use nullptr as the null pointer constant for pointer types other
+        than Objective-C object and class pointers. Use NULL instead when
+        C23 is not available.
+    rationale:
+        nullptr has a dedicated type, so it cannot be confused with an
+        integer zero.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        char *buffer = NULL;
+        void (*callback)(int) = NULL;
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        char *buffer = nullptr;
+        void (*callback)(int) = nullptr;
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [pointers, null-safety]
+    source: https://google.github.io/styleguide/objcguide.html#nullptr-vs-null

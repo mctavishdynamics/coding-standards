@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCBitflag:
+    standard: @{RustApiGuidelines}
+    ruleId: C-BITFLAG
+    title: Represent sets of flags with bitflags, not enums
+    statement:
+        When an input is a set of independent on-off flags, model it with
+        the bitflags crate. Use an enum only when exactly one choice is
+        allowed.
+    rationale:
+        An enum can hold only one variant at a time, whereas bitflags gives
+        a type-safe set that combines with the bitwise operators.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub enum OpenFlag {
+            Read = 1,
+            Write = 2,
+            Create = 4,
+        }
+
+        pub fn open(path: &Path, flags: u32) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        bitflags! {
+            pub struct OpenFlags: u32 {
+                const READ = 0b001;
+                const WRITE = 0b010;
+                const CREATE = 0b100;
+            }
+        }
+
+        pub fn open(path: &Path, flags: OpenFlags) { /* ... */ }
+        \\\
+        ```
+    languages: [rust]
+    tags: [types, type-safety, flags]
+    source: https://rust-lang.github.io/api-guidelines/type-safety.html#c-bitflag

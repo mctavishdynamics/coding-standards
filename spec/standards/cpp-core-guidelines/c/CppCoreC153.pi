@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC153:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.153
+    title: Prefer virtual functions to casting
+    statement:
+        Rather than testing an object's type with casts and acting on the
+        result, call a virtual function that each class implements.
+    rationale:
+        A virtual call is safe and always reaches the most derived override,
+        while a cast can stop at an intermediate class and gives wrong
+        results as the hierarchy changes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        double area(const Shape& s) {
+            if (auto* c = dynamic_cast<const Circle*>(&s)) return c->r * c->r * 3.14159;
+            if (auto* q = dynamic_cast<const Square*>(&s)) return q->side * q->side;
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Shape {
+        public:
+            virtual double area() const = 0;
+            virtual ~Shape() = default;
+        };
+
+        double total = shape.area();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, virtual-functions, casts]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-use-virtual

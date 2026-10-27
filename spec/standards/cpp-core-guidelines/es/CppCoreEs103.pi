@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs103:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.103
+    title: Don't overflow
+    statement:
+        Make sure arithmetic results fit in their type, checking bounds
+        before an operation when needed.
+    rationale:
+        Overflow makes numeric results meaningless, and signed overflow or
+        going past a maximum can cause undefined behavior and memory
+        corruption.
+    exceptions:
+        Use unsigned types when you really want modular arithmetic. Critical
+        applications that can afford the overhead may use range-checked
+        numeric types.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int total_ms(int seconds) {
+            return seconds * 1000;          // overflows past about 24 days
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::int64_t total_ms(std::int64_t seconds) {
+            return seconds * 1000;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [arithmetic, undefined-behavior]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-overflow

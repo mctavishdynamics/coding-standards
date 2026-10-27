@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF52:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.52
+    title: Prefer capturing by reference in lambdas that will be used locally
+    statement:
+        Capture by reference in lambdas that are used only during the
+        current scope, including those passed to algorithms and to local
+        parallel algorithms that join before returning.
+    rationale:
+        Capturing by reference avoids copies and lets the lambda update
+        local state, and it is safe while the lambda cannot outlive the
+        scope.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::vector<std::string> names = load();
+        std::for_each(ids.begin(), ids.end(),
+                      [names](int id) { log(names[id]); });   // copies the vector
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<std::string> names = load();
+        std::for_each(ids.begin(), ids.end(),
+                      [&names](int id) { log(names[id]); });
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, lambdas, captures]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-reference-capture

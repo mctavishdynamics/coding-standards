@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCEnv30C:
+    standard: @{CertC}
+    ruleId: ENV30-C
+    title:
+        Do not modify the object referenced by the return value of certain
+        functions
+    statement:
+        Treat the strings and structures returned by getenv, setlocale,
+        localeconv, asctime and strerror as const. Copy the result first if
+        you need to change it.
+    rationale:
+        Modifying these objects is undefined behavior and may corrupt the
+        environment or library state used by later calls. CERT rates
+        likelihood probable, detectable no, repairable no, priority P2,
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        void uppercase_home(void) {
+            char *home = getenv("HOME");
+            if (home != NULL) {
+                for (char *p = home; *p != '\0'; p++) {
+                    *p = (char)toupper((unsigned char)*p);
+                }
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char *uppercase_home(void) {
+            const char *home = getenv("HOME");
+            char *copy = home ? strdup(home) : NULL;
+            if (copy != NULL) {
+                for (char *p = copy; *p != '\0'; p++) {
+                    *p = (char)toupper((unsigned char)*p);
+                }
+            }
+            return copy;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [environment, memory]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/environment-env/env30-c

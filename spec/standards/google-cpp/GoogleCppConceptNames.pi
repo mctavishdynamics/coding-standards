@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppConceptNames:
+    standard: @{GoogleCpp}
+    ruleId: Concept_Names
+    title: Name concepts like types
+    statement:
+        Name concepts with the same PascalCase convention as type names.
+    rationale:
+        Concepts sit where types appear in template code, so the same naming
+        keeps them recognizable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <typename T>
+        concept hashable_key = requires(T t) { std::hash<T>()(t); };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <typename T>
+        concept HashableKey = requires(T t) { std::hash<T>()(t); };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, concepts]
+    source: https://google.github.io/styleguide/cppguide.html#Concept_Names

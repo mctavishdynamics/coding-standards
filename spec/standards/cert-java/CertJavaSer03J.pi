@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSer03J:
+    standard: @{CertJava}
+    ruleId: SER03-J
+    title: Do not serialize unencrypted sensitive data
+    statement:
+        Keep sensitive fields such as keys, passwords and personal data out
+        of the serialized form. Mark them transient, use
+        serialPersistentFields, or encrypt them first.
+    rationale:
+        Serialized bytes ignore access modifiers. Anyone who can read the
+        stream can recover private sensitive data. CERT's risk assessment
+        gives likelihood likely, detectable no, repairable no, priority P6
+        and level L2.
+    exceptions:
+        Sensitive data that has been properly encrypted may be serialized.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        class Credentials implements Serializable {
+            private String user;
+            private char[] password;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Credentials implements Serializable {
+            private String user;
+            private transient char[] password;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, sensitive-data]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/serialization-ser/ser03-j/

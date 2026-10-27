@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC102:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.102
+    title: Give a container move operations
+    statement:
+        Provide a move constructor and move assignment for container types.
+    rationale:
+        Containers are often large, and without cheap moves people pass them
+        around by pointer and run into resource management problems.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Table {
+        public:
+            Table(const Table&);
+            Table& operator=(const Table&);
+            ~Table();
+            // no moves, so returning a Table copies it
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Table {
+        public:
+            Table(const Table&);
+            Table& operator=(const Table&);
+            Table(Table&&) noexcept;
+            Table& operator=(Table&&) noexcept;
+            ~Table();
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, move, performance]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rcon-move

@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCSendSync:
+    standard: @{RustApiGuidelines}
+    ruleId: C-SEND-SYNC
+    title: Make types Send and Sync where possible
+    statement:
+        Let types be Send and Sync whenever their thread safety allows it.
+        In types that hold raw pointers, check that the auto traits reflect
+        the real thread safety, and add tests that assert them.
+    rationale:
+        Types that are not Send or Sync cannot be used across threads, and a
+        raw pointer field silently removes both traits.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub struct Pool {
+            head: *mut Node,
+        }
+        // No impls and no test, so Pool is quietly neither Send nor Sync.
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub struct Pool {
+            head: *mut Node,
+        }
+
+        // SAFETY: access to `head` is guarded by the pool's internal lock.
+        unsafe impl Send for Pool {}
+
+        #[test]
+        fn pool_is_send() {
+            fn assert_send<T: Send>() {}
+            assert_send::<Pool>();
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [concurrency, traits]
+    source: https://rust-lang.github.io/api-guidelines/interoperability.html#c-send-sync

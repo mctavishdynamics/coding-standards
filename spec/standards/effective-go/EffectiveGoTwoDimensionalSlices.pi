@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoTwoDimensionalSlices:
+    standard: @{EffectiveGo}
+    ruleId: two-dimensional-slices
+    title: Choose the allocation strategy for 2D slices
+    statement:
+        Allocate each inner slice separately when rows may grow or shrink.
+        When they will not, consider one allocation sliced into rows.
+    rationale:
+        Rows cut from a shared array would overwrite each other if they
+        grew, while a single allocation is more efficient for fixed rows.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```go
+        \\\
+        pixels := make([]uint8, width*height)
+        rows := make([][]uint8, height)
+        for y := range rows {
+            rows[y], pixels = pixels[:width], pixels[width:]
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [slices, allocation, performance]
+    source: https://go.dev/doc/effective_go#two_dimensional_slices

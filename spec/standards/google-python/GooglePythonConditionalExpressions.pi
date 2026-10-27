@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonConditionalExpressions:
+    standard: @{GooglePython}
+    ruleId: 2.11
+    title: Use conditional expressions only for simple cases
+    statement:
+        Conditional expressions are fine for simple cases. Each part, the
+        true value, the condition and the else value, must fit on one line.
+        Use a full if statement when it gets more complicated.
+    rationale:
+        Short conditional expressions are compact, but long or broken ones
+        are harder to read than an if statement.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        label = ('premium' if account.subscription.plan.tier_level(
+                     account.region) > 2 else
+                 'basic')
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        tier = account.subscription.plan.tier_level(account.region)
+        label = 'premium' if tier > 2 else 'basic'
+        \\\
+        ```
+    languages: [python]
+    tags: [expressions, readability]
+    source: https://google.github.io/styleguide/pyguide.html#s2.11-conditional-expressions

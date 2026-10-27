@@ -1,0 +1,48 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC2:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.2
+    title: Use class for types with an invariant and struct otherwise
+    statement:
+        Write class when the members must stay in a consistent relationship
+        that the type enforces. Write struct when each data member can take
+        any value independently of the others.
+    rationale:
+        The keyword tells the reader whether an invariant exists and must be
+        maintained, which is a cheap and useful convention.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Date {
+            Date(int y, int m, int d);   // validates the date
+            int day() const;
+        private:
+            int y_, m_, d_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Pair {        // any values are fine
+            std::string key;
+            int count;
+        };
+
+        class Date {         // day must fit the month
+        public:
+            Date(int y, int m, int d);
+            int day() const;
+        private:
+            int y_, m_, d_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, invariants, conventions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-struct

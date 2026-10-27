@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaTypeUseAnnotations:
+    standard: @{GoogleJava}
+    ruleId: 4.8.5.1
+    title: Place type-use annotations immediately before the type
+    statement:
+        Write a type-use annotation, one meta-annotated with a TYPE_USE
+        target, directly before the type it annotates.
+    rationale:
+        Placed next to the type, the annotation reads as part of the type,
+        which is what it is.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        @Nullable
+        private final String nickname;
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private final @Nullable String nickname;
+
+        public @Nullable Account findAccount(String id);
+        \\\
+        ```
+    languages: [java]
+    tags: [annotations]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.5.1-type-use-annotation-style

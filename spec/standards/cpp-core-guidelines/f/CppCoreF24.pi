@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF24:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.24
+    title: Use a span<T> or a span_p<T> to designate a half-open sequence
+    statement:
+        Represent a range of elements with span, or span_p for a sequence
+        ended by a predicate, rather than a pointer and a count.
+    rationale:
+        Implicit ranges are a common source of errors because it is
+        generally impossible to know whether a pointer really has the given
+        number of elements behind it. A span is non-owning and as cheap to
+        pass as two pointers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void zero(int* p, int n) {
+            for (int i = 0; i < n; ++i) p[i] = 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void zero(std::span<int> values) {
+            for (int& v : values) v = 0;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, bounds, span]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-range

@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppDcl58Cpp:
+    standard: @{CertCpp}
+    ruleId: DCL58-CPP
+    title: Do not modify the standard namespaces
+    statement:
+        Do not add declarations or definitions to namespace std or posix, or
+        to namespaces nested in them. Specialize a standard template only
+        for a user-defined type and only where the standard allows it.
+    rationale:
+        Adding to the standard namespaces is undefined behavior and can
+        conflict with the library's own declarations. CERT rates likelihood
+        unlikely, detectable yes, repairable no, priority P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        namespace std {
+        int clamp_to_byte(int value) {
+            return value < 0 ? 0 : (value > 255 ? 255 : value);
+        }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Point { int x; int y; };
+
+        namespace std {
+        template <>
+        struct hash<Point> {
+            size_t operator()(const Point& p) const noexcept {
+                return hash<int>()(p.x) ^ (hash<int>()(p.y) << 1);
+            }
+        };
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [namespaces, declarations, standard-library]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/declarations-and-initialization-dcl/dcl58-cpp

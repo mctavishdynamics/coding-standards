@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptSpecialEscapeSequences:
+    standard: @{GoogleTypeScript}
+    ruleId: special-escape-sequences
+    title: Use named escape sequences instead of numeric escapes
+    statement:
+        When a character has a special escape sequence such as \n, \t or \',
+        write that sequence rather than a hex or Unicode escape for it.
+        Never use legacy octal escapes.
+    rationale:
+        Named escapes are recognised at a glance, while numeric codes force
+        the reader to look them up. Octal escapes are obsolete and easy to
+        misread.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const lines = 'first\x0asecond';
+        const tabbed = 'a\u0009b';
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const lines = 'first\nsecond';
+        const tabbed = 'a\tb';
+        \\\
+        ```
+    languages: [typescript]
+    tags: [strings, escapes]
+    source: https://google.github.io/styleguide/tsguide.html#special-escape-sequences

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptFunctionExpressions:
+    standard: @{GoogleTypeScript}
+    ruleId: function-expressions
+    title: Use arrow functions instead of function expressions
+    statement:
+        Do not write function expressions; use arrow functions.
+    rationale:
+        Arrow functions are shorter and keep the surrounding this, avoiding
+        a common source of bugs.
+    exceptions:
+        A function expression is allowed when code must dynamically rebind
+        this, which is discouraged, and for generator functions, which have
+        no arrow form.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        button.onClick(function() {
+          submit();
+        });
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        button.onClick(() => {
+          submit();
+        });
+        \\\
+        ```
+    languages: [typescript]
+    tags: [functions, arrow-functions]
+    source: https://google.github.io/styleguide/tsguide.html#function-expressions

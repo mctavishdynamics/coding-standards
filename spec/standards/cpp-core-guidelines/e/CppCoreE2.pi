@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE2:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.2
+    title: Throw an exception to signal that a function cannot perform its task
+    statement:
+        When a function cannot do what it is meant to do, such as meet a
+        precondition, build a valid object, stay in range or acquire a
+        resource, throw an exception. Do not use throw as an alternative way
+        of returning ordinary values.
+    rationale:
+        Exceptions make error handling systematic, robust and
+        non-repetitive. They also work where no return value is available,
+        such as constructors, and RAII cleans up on the way out.
+    exceptions:
+        Hard real-time systems that must bound response times may use
+        exceptions only if tools can predict the maximum time to recover
+        from a throw.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        bool open_log(LogFile& log, const std::string& path)   // easy to ignore
+        {
+            log.handle = std::fopen(path.c_str(), "a");
+            return log.handle != nullptr;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        LogFile::LogFile(const std::string& path)
+            : handle_(std::fopen(path.c_str(), "a"))
+        {
+            if (!handle_)
+                throw std::runtime_error("cannot open log file " + path);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, exceptions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-throw

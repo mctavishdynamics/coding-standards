@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoCommentSentences:
+    standard: @{GoogleGo}
+    ruleId: decisions/comment-sentences
+    title: Capitalise and punctuate full-sentence comments
+    statement:
+        Write comments that are complete sentences, including all doc
+        comments, with standard capitalisation and punctuation. Short
+        end-of-line fragments, such as on struct fields, need neither.
+    rationale:
+        Consistent prose conventions make documentation read cleanly in
+        Godoc.
+    exceptions:
+        A sentence may begin with an uncapitalised identifier when it is
+        otherwise clear.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // the server listens on this port
+        type Server struct {
+            Port int // Port to listen on.
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // A Server accepts connections on a single TCP port.
+        type Server struct {
+            Port int // listening port
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, comments, documentation]
+    source: https://google.github.io/styleguide/go/decisions#comment-sentences

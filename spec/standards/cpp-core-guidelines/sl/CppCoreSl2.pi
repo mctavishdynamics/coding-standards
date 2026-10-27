@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSl2:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.2
+    title: Prefer the standard library to other libraries
+    statement:
+        When the standard library offers what you need, use it rather than
+        another library.
+    rationale:
+        More people know the standard library, and it is more likely to be
+        stable, maintained and available everywhere than your own code or
+        most other libraries.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        my_lib::Dynamic_array<int> ids;
+        my_lib::sort(ids);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<int> ids;
+        std::ranges::sort(ids);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [libraries, standard-library]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rsl-sl

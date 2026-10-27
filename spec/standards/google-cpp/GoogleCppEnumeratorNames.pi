@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppEnumeratorNames:
+    standard: @{GoogleCpp}
+    ruleId: Enumerator_Names
+    title: Name enumerators like constants
+    statement:
+        Name enumerators of scoped and unscoped enums like constants, as in
+        kEnumName, not like macros.
+    rationale:
+        Macro-style enumerator names collided with real macros, which is why
+        the style changed to constant-style names.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        enum class Status {
+          OK,
+          OUT_OF_MEMORY,
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum class Status {
+          kOk,
+          kOutOfMemory,
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, enums]
+    source: https://google.github.io/styleguide/cppguide.html#Enumerator_Names

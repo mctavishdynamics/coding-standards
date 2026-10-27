@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppDesignatedInitializers:
+    standard: @{GoogleCpp}
+    ruleId: Designated_initializers
+    title: Use designated initializers only in C++20 form
+    statement:
+        Use designated initializers only as the C++20 standard allows, with
+        the initializers in the same order as the fields in the struct.
+    rationale:
+        Other forms, such as out-of-order designators accepted as compiler
+        extensions, are not portable C++.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Options { int timeout_ms; bool verbose; };
+
+        Options opts = {.verbose = true, .timeout_ms = 500};
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Options { int timeout_ms; bool verbose; };
+
+        Options opts = {.timeout_ms = 500, .verbose = true};
+        \\\
+        ```
+    languages: [cpp]
+    tags: [initialization, structs]
+    source: https://google.github.io/styleguide/cppguide.html#Designated_initializers

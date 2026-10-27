@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaJni01J:
+    standard: @{CertJava}
+    ruleId: JNI01-J
+    title: Safely invoke standard APIs that perform tasks using the immediate caller's class loader instance (loadLibrary)
+    statement:
+        Do not call System.loadLibrary() or similar caller-sensitive methods
+        on behalf of untrusted code, for example with a library name the
+        untrusted code supplies.
+    rationale:
+        These methods use the immediate caller's class loader, so trusted
+        code calling them for untrusted code lets it load native libraries
+        it could not load itself, and native code bypasses Java's security
+        checks. CERT's risk assessment gives likelihood likely, detectable
+        no, repairable no, priority P9 and level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        public static void load(String libraryName) {
+            System.loadLibrary(libraryName);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private static void loadCodec() {
+            System.loadLibrary("codec");
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [jni, native-code, class-loading]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/java-native-interface-jni/jni01-j/

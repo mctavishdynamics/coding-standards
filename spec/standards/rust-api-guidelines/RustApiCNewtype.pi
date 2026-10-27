@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCNewtype:
+    standard: @{RustApiGuidelines}
+    ruleId: C-NEWTYPE
+    title: Use newtypes to make static distinctions
+    statement:
+        Wrap a primitive in a newtype when the same underlying type can mean
+        different things, such as distances in miles and in kilometres.
+    rationale:
+        The compiler then rejects mixing the interpretations, preventing a
+        class of costly unit and identity bugs at no runtime cost.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub fn transfer(from: u64, to: u64, cents: u64) { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub struct AccountId(u64);
+        pub struct Cents(u64);
+
+        pub fn transfer(from: AccountId, to: AccountId, amount: Cents) { /* ... */ }
+        \\\
+        ```
+    languages: [rust]
+    tags: [types, type-safety]
+    source: https://rust-lang.github.io/api-guidelines/type-safety.html#c-newtype

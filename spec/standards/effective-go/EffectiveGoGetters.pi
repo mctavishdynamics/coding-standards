@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoGetters:
+    standard: @{EffectiveGo}
+    ruleId: getters
+    title: Do not put Get in getter names
+    statement:
+        Name a getter for the unexported field owner as Owner, not GetOwner.
+        A setter, if one is needed, is called SetOwner.
+    rationale:
+        The upper-case exported name already distinguishes the method from
+        the field, and the shorter names read well at call sites.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (d *Document) GetTitle() string { return d.title }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (d *Document) Title() string { return d.title }
+
+        func (d *Document) SetTitle(t string) { d.title = t }
+        \\\
+        ```
+    languages: [go]
+    tags: [naming, methods]
+    source: https://go.dev/doc/effective_go#Getters

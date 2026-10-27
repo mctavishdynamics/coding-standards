@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoImportRenaming:
+    standard: @{GoogleGo}
+    ruleId: decisions/import-renaming
+    title: Rename imports only when needed
+    statement:
+        Do not rename imports by default. Rename to avoid a collision,
+        preferring to rename the most local import; rename generated proto
+        packages to drop underscores and add a pb suffix; and rename an
+        uninformative name sparingly. Local names follow package naming
+        rules and stay the same across files.
+    rationale:
+        Good package names need no renaming, and consistent local names keep
+        code easy to read and search.
+    exceptions:
+        To free a common variable name such as url, rename the package with
+        a pkg suffix, as in urlpkg.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        import (
+            Foo_Proto "example.com/foo/foo_go_proto"
+            str "strings"
+        )
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        import (
+            "strings"
+
+            foopb "example.com/foo/foo_go_proto"
+        )
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, imports, naming]
+    source: https://google.github.io/styleguide/go/decisions#import-renaming

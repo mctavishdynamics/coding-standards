@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsHoistingAbout:
+    standard: @{AirbnbJavaScript}
+    ruleId: 14.1
+    title: Account for how var, let and const are hoisted
+    statement:
+        Remember that var declarations are hoisted to the top of their
+        function without their assignment, while const and let sit in a
+        temporal dead zone until declared. Because of that, typeof is no
+        longer a safe check on an undeclared name.
+    rationale:
+        Knowing the hoisting rules explains why a variable is undefined or
+        throws before its declaration line.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function report() {
+          console.log(typeof total); // throws: total is in the TDZ
+          const total = 10;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function report() {
+          const total = 10;
+          console.log(typeof total);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [hoisting, variables, scope]
+    source: https://github.com/airbnb/javascript#hoisting--about

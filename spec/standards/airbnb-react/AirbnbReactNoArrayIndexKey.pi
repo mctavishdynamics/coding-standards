@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactNoArrayIndexKey:
+    standard: @{AirbnbReact}
+    ruleId: props-7
+    title: Do not use an array index as a key
+    statement:
+        Give list items a stable ID as their key prop rather than their
+        position in the array. Enforced by the ESLint rule react/no-array-
+        index-key.
+    rationale:
+        Index keys can hurt performance and mix up component state when
+        items are added, removed or reordered.
+    exceptions:
+        The guide only discourages index keys when the order of items may
+        change.
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        {comments.map((comment, i) => (
+          <Comment {...comment} key={i} />
+        ))}
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        {comments.map((comment) => (
+          <Comment {...comment} key={comment.id} />
+        ))}
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [keys, lists, performance]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#props

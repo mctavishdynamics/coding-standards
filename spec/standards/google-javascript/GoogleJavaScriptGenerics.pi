@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptGenerics:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.5.6
+    title: Declare generic functions with @template
+    statement:
+        When a function or method is generic, declare its type parameters
+        with @template in the JSDoc above it.
+    rationale:
+        Template types let the compiler relate parameter and return types
+        instead of losing them to unknown.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /**
+         * @param {!Array<?>} items
+         * @return {?}
+         */
+        function first(items) {
+          return items[0];
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * @param {!Array<T>} items
+         * @return {T}
+         * @template T
+         */
+        function first(items) {
+          return items[0];
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, generics, jsdoc]
+    source: https://google.github.io/styleguide/jsguide.html#556-generics

@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs21:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.21
+    title: Don't introduce a variable before you need to use it
+    statement:
+        Declare a variable or constant just before its first use, not at the
+        top of the function.
+    rationale:
+        It keeps code readable and limits the region in which the variable
+        can be used.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void handle(const Request& req) {
+            std::string reply;
+            validate(req);
+            audit(req);
+            reply = build_reply(req);
+            send(reply);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void handle(const Request& req) {
+            validate(req);
+            audit(req);
+            const std::string reply = build_reply(req);
+            send(reply);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [declarations, scope]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-introduce

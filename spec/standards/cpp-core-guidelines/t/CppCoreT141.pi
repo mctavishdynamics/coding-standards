@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT141:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.141
+    title: Use an unnamed lambda if you need a simple function object in one place only
+    statement:
+        For a short operation needed at a single call site, write an unnamed
+        lambda right there. This restates rule F.11.
+    rationale:
+        Keeping a simple one-off operation at its use makes the code easier
+        to read and avoids polluting the namespace with a name used once.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct By_length {
+            bool operator()(const std::string& a, const std::string& b) const
+            { return a.size() < b.size(); }
+        };
+        std::sort(words.begin(), words.end(), By_length{});
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::sort(words.begin(), words.end(),
+                  [](const std::string& a, const std::string& b) { return a.size() < b.size(); });
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, lambdas, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-lambda

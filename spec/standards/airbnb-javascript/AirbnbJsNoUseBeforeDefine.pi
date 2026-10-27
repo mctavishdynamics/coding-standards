@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsNoUseBeforeDefine:
+    standard: @{AirbnbJavaScript}
+    ruleId: 14.5
+    title: Define variables, classes and functions before using them
+    statement:
+        Declare every variable, class and function before the code that uses
+        it. Enforced by the ESLint rule no-use-before-define.
+    rationale:
+        A reader should meet the source of a name, whether an import or a
+        definition, before meeting a use of it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const order = new Order(42);
+        class Order {
+          constructor(id) {
+            this.id = id;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Order {
+          constructor(id) {
+            this.id = id;
+          }
+        }
+        const order = new Order(42);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [hoisting, readability]
+    source: https://github.com/airbnb/javascript#no-use-before-define

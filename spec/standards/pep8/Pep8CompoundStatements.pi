@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8CompoundStatements:
+    standard: @{Pep8}
+    ruleId: other-recommendations-compound-statements
+    title: Avoid several statements on one line
+    statement:
+        Do not put multiple statements on the same line, whether separated
+        by semicolons or attached after a colon.
+    rationale:
+        One statement per line is easier to read, step through and change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if not items: return 0
+        count = len(items); total = sum(items)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        if not items:
+            return 0
+        count = len(items)
+        total = sum(items)
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, statements]
+    source: https://peps.python.org/pep-0008/#other-recommendations

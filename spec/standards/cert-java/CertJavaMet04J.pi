@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet04J:
+    standard: @{CertJava}
+    ruleId: MET04-J
+    title: Do not increase the accessibility of overridden or hidden methods
+    statement:
+        Keep the access modifier of an overriding or hiding method the same
+        as the original. Declare methods final where possible so they cannot
+        be overridden with wider access.
+    rationale:
+        A subclass that widens access, for example from protected to public,
+        exposes an operation the superclass meant to restrict. CERT rates
+        likelihood probable, detectable yes, repairable no, priority P8,
+        level L2.
+    exceptions:
+        Classes that implement Cloneable should make clone public.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        class Base {
+            protected void resetPassword(User u) { /* ... */ }
+        }
+        class Derived extends Base {
+            @Override public void resetPassword(User u) { super.resetPassword(u); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Base {
+            protected final void resetPassword(User u) { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [access-control, inheritance]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met04-j/

@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptOverridingToString:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.4.8
+    title: Make toString always succeed without side effects
+    statement:
+        You may override toString, but it must always succeed and never have
+        visible side effects. Be careful about calling other methods from
+        it.
+    rationale:
+        toString is called implicitly in logging and string building, so
+        failures or recursion there are hard to trace.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Order {
+          toString() {
+            this.printed = true;
+            return `Order ${this.describe()}`;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Order {
+          toString() {
+            return `Order ${this.id}`;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, side-effects]
+    source: https://google.github.io/styleguide/jsguide.html#548-overriding-tostring

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcPackageNames:
+    standard: @{GoCodeReviewComments}
+    ruleId: package-names
+    title: Do not repeat the package name in identifiers
+    statement:
+        Callers always qualify your names with the package name, so leave it
+        out of the identifiers themselves. Avoid meaningless package names
+        such as util, common, misc, api, types and interfaces.
+    rationale:
+        Repetition makes qualified names stutter, and vague package names
+        say nothing about what the package provides.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package util
+
+        type UtilQueue struct{}
+
+        package invoice
+
+        func NewInvoiceParser() *InvoiceParser
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package queue
+
+        type Queue struct{}
+
+        package invoice
+
+        func NewParser() *Parser
+        \\\
+        ```
+    languages: [go]
+    tags: [naming, packages]
+    source: https://go.dev/wiki/CodeReviewComments#package-names

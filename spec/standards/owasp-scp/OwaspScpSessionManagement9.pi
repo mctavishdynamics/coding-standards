@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpSessionManagement9:
+    standard: @{OwaspScp}
+    ruleId: session-management-9
+    title: Replace any pre-login session after login
+    statement:
+        If a session existed before login, close it and start a new one once
+        the user logs in.
+    rationale:
+        Keeping the old session lets an attacker who planted or saw that
+        identifier ride on the authenticated session, which is session
+        fixation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def on_login(request, user):
+            request.session["user_id"] = user.id
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def on_login(request, user):
+            request.session.clear()
+            request.session.regenerate_id()
+            request.session["user_id"] = user.id
+        \\\
+        ```
+    languages: [any]
+    tags: [session, session-fixation]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#session-management

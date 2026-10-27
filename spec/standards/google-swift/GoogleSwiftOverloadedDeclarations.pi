@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftOverloadedDeclarations:
+    standard: @{GoogleSwift}
+    ruleId: overloaded-declarations
+    title: Keep overloads next to each other
+    statement:
+        Place initializers, subscripts or functions that share a base name
+        consecutively, with no other code between them, when they are in the
+        same type or extension.
+    rationale:
+        Readers can compare all the variants at once.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        struct Logger {
+          func log(_ message: String) {}
+          var level = Level.info
+          func log(_ error: Error) {}
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        struct Logger {
+          var level = Level.info
+
+          func log(_ message: String) {}
+          func log(_ error: Error) {}
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [organization, ordering]
+    source: https://google.github.io/swift/#overloaded-declarations

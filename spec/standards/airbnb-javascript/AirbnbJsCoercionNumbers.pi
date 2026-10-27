@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsCoercionNumbers:
+    standard: @{AirbnbJavaScript}
+    ruleId: 22.3
+    title: Convert with Number and parse with parseInt and a radix
+    statement:
+        Use Number for type conversion and always pass a radix to parseInt
+        when parsing a string. Enforced by the ESLint rules radix and
+        no-new-wrappers.
+    rationale:
+        Without a radix, parseInt guesses the base from the string, which
+        differs between engines and inputs such as a 0x prefix.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const quantity = new Number(input.value);
+        const page = parseInt(query.page);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const quantity = Number(input.value);
+        const page = parseInt(query.page, 10);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [coercion, numbers]
+    source: https://github.com/airbnb/javascript#coercion--numbers

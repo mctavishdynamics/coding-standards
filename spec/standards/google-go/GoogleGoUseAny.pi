@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoUseAny:
+    standard: @{GoogleGo}
+    ruleId: decisions/use-any
+    title: Write any instead of the empty interface
+    statement:
+        In new code, use the predeclared any type rather than writing the
+        empty interface type literal.
+    rationale:
+        any is an alias for the empty interface and is shorter and clearer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func Log(fields map[string]interface{})
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func Log(fields map[string]any)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, types]
+    source: https://google.github.io/styleguide/go/decisions#use-any

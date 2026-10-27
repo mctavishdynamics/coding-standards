@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC82:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.82
+    title: Do not call virtual functions in constructors and destructors
+    statement:
+        Avoid calling virtual functions, directly or indirectly, from a
+        constructor or destructor.
+    rationale:
+        During construction and destruction the call goes to the version of
+        the class being built, not the derived override, and calling a pure
+        virtual function this way is undefined behavior.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Base {
+        public:
+            Base() { init(); }          // never reaches Derived::init
+            virtual void init();
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Base {
+        public:
+            Base() { init_base(); }     // non-virtual helper
+        private:
+            void init_base();
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constructors, destructors, virtual-functions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-ctor-virtual

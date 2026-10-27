@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC166:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.166
+    title: Overload unary & only for smart pointer and reference systems
+    statement:
+        Do not overload the address-of operator except as part of a coherent
+        design of smart pointers and references.
+    rationale:
+        Much of C++ relies on & meaning take the address, so changing it
+        breaks code that assumes the usual meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Widget {
+        public:
+            int operator&() const { return id_; }   // & no longer gives an address
+        private:
+            int id_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Widget {
+        public:
+            int id() const { return id_; }
+        private:
+            int id_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [operators, overloading]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ro-address-of

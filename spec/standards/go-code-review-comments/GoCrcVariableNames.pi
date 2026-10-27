@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcVariableNames:
+    standard: @{GoCodeReviewComments}
+    ruleId: variable-names
+    title: Keep variable names short, longer as scope grows
+    statement:
+        Prefer short names, especially for local variables with a small
+        scope. The further from its declaration a name is used, the more
+        descriptive it must be; loop indices and readers can be a single
+        letter, while unusual things and globals need fuller names.
+    rationale:
+        Short names keep tight code readable, while distant uses need names
+        that carry their own meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        for sliceIndex := 0; sliceIndex < len(lines); sliceIndex++ {
+            lineCount++
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        for i := 0; i < len(lines); i++ {
+            n++
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [naming]
+    source: https://go.dev/wiki/CodeReviewComments#variable-names

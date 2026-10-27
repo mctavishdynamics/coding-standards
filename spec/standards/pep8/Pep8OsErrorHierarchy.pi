@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8OsErrorHierarchy:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-os-errors
+    title: Catch specific OSError subclasses instead of checking errno
+    statement:
+        When catching operating system errors, use the specific exception
+        classes added in Python 3.3 rather than inspecting errno values.
+    rationale:
+        Named exception classes are clearer and less error-prone than
+        comparing error codes.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import errno
+
+        try:
+            os.remove(lock_path)
+        except OSError as exc:
+            if exc.errno != errno.ENOENT:
+                raise
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        try:
+            os.remove(lock_path)
+        except FileNotFoundError:
+            pass
+        \\\
+        ```
+    languages: [python]
+    tags: [exceptions, error-handling, os]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

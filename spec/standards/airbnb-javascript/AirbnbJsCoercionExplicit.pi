@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsCoercionExplicit:
+    standard: @{AirbnbJavaScript}
+    ruleId: 22.1
+    title: Coerce types at the start of the statement
+    statement:
+        Do any type coercion explicitly, at the beginning of the statement
+        that needs it.
+    rationale:
+        Coercion that happens up front is visible, while coercion buried in
+        an expression is easy to miss.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const label = 'Total: ' + count;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const countText = String(count);
+        const label = `Total: ${countText}`;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [coercion, types]
+    source: https://github.com/airbnb/javascript#coercion--explicit

@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptDeprecation:
+    standard: @{GoogleJavaScript}
+    ruleId: 8.3
+    title: Mark deprecated code with @deprecated and migration directions
+    statement:
+        Mark deprecated methods, classes and interfaces with @deprecated,
+        and include simple, clear directions for fixing call sites.
+    rationale:
+        Callers need to know both that an API is going away and what to use
+        instead.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @deprecated */
+        function fetchUser(id) {}
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** @deprecated Use loadUser(id) from user_service.js instead. */
+        function fetchUser(id) {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, deprecation]
+    source: https://google.github.io/styleguide/jsguide.html#83-deprecation

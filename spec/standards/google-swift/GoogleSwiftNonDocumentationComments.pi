@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftNonDocumentationComments:
+    standard: @{GoogleSwift}
+    ruleId: non-documentation-comments
+    title: Use double-slash comments, not block comments
+    statement:
+        Write non-documentation comments with the double-slash form, never
+        with C-style block comments.
+    rationale:
+        One comment style keeps code consistent.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        /* Retry once before giving up. */
+        try await fetch()
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        // Retry once before giving up.
+        try await fetch()
+        \\\
+        ```
+    languages: [swift]
+    tags: [comments]
+    source: https://google.github.io/swift/#non-documentation-comments

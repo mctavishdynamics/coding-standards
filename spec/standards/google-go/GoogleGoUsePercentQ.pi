@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoUsePercentQ:
+    standard: @{GoogleGo}
+    ruleId: decisions/use-percent-q
+    title: Use the %q verb to print strings for humans
+    statement:
+        Prefer the %q format verb over manually quoting with %s, especially
+        in human-facing output where the value might be empty or contain
+        control characters.
+    rationale:
+        A quoted empty string stands out, whereas an unquoted one is easy to
+        miss.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        log.Printf("unknown region '%s'", region)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        log.Printf("unknown region %q", region)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, formatting, strings]
+    source: https://google.github.io/styleguide/go/decisions#use-percent-q

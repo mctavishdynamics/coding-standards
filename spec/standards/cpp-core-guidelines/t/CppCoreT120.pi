@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT120:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.120
+    title: Use template metaprogramming only when you really need to
+    statement:
+        Reach for template metaprogramming only when it clearly beats the
+        alternatives. Prefer concepts for constraints and constexpr
+        functions for computing values.
+    rationale:
+        Metaprograms are hard to get right, slow to compile and hard to
+        maintain, though occasionally they give the best performance or
+        expression. Hiding them behind macros is a sign of going too far.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<unsigned N>
+        struct Factorial { static constexpr unsigned value = N * Factorial<N - 1>::value; };
+        template<>
+        struct Factorial<0> { static constexpr unsigned value = 1; };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr unsigned factorial(unsigned n)
+        {
+            return n == 0 ? 1 : n * factorial(n - 1);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, metaprogramming, maintainability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-metameta

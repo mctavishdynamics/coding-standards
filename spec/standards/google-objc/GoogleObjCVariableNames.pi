@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCVariableNames:
+    standard: @{GoogleObjC}
+    ruleId: variable-names
+    title: Use mixed case variable names with scope markers
+    statement:
+        Start variable names in lowercase and use mixed case. Prefix
+        instance variables with an underscore and file scope or global
+        variables with g.
+    rationale:
+        The prefix tells the reader where a variable lives.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        static int launch_count;
+        @implementation ABCPlayer {
+          int score;
+        }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        static int gLaunchCount;
+        @implementation ABCPlayer {
+          int _score;
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [naming, variables]
+    source: https://google.github.io/styleguide/objcguide.html#variable-names

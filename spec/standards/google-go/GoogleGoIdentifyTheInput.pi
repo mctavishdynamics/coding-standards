@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoIdentifyTheInput:
+    standard: @{GoogleGo}
+    ruleId: decisions/identify-the-input
+    title: Include the inputs in failure messages
+    statement:
+        Print the function's inputs in failure messages when they are short.
+        When they are large or opaque, give each case a descriptive name and
+        print that instead.
+    rationale:
+        Knowing which input failed is needed to reproduce and fix the
+        problem.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        t.Errorf("Normalize() = %q, want %q", got, tc.want)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        t.Errorf("Normalize(%q) = %q, want %q", tc.in, got, tc.want)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, test-failures]
+    source: https://google.github.io/styleguide/go/decisions#identify-the-input

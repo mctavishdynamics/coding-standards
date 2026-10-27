@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCStructBounds:
+    standard: @{RustApiGuidelines}
+    ruleId: C-STRUCT-BOUNDS
+    title: Do not repeat derived trait bounds on data structures
+    statement:
+        Leave derivable traits such as Clone, Debug, PartialEq, Default and
+        Serialize out of the bounds on a generic struct's parameters; derive
+        generates the conditional impls on its own.
+    rationale:
+        Adding a bound to a struct is a breaking change, so bounds that
+        duplicate derives turn harmless new derives into breaking ones.
+    exceptions:
+        Bounds are needed when the struct refers to an associated type of
+        the trait, when the bound is ?Sized, or when a Drop impl requires
+        the bound.
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        #[derive(Clone, Debug)]
+        pub struct Batch<T: Clone + Debug> {
+            items: Vec<T>,
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        #[derive(Clone, Debug)]
+        pub struct Batch<T> {
+            items: Vec<T>,
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [generics, traits, compatibility]
+    source: https://rust-lang.github.io/api-guidelines/future-proofing.html#c-struct-bounds

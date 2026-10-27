@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsVariablesNoUnusedVars:
+    standard: @{AirbnbJavaScript}
+    ruleId: 13.8
+    title: Do not leave unused variables
+    statement:
+        Remove variables that are declared but never used. Enforced by the
+        ESLint rule no-unused-vars.
+    rationale:
+        Unused variables are usually left over from incomplete refactoring.
+        They take up space and mislead readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function total(items) {
+          const tax = 0.2;
+          return items.reduce((sum, item) => sum + item.price, 0);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function total(items) {
+          return items.reduce((sum, item) => sum + item.price, 0);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [variables, dead-code]
+    source: https://github.com/airbnb/javascript#variables--no-unused-vars

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaExp07J:
+    standard: @{CertJava}
+    ruleId: EXP07-J
+    title: Prevent loss of useful data due to weak references
+    statement:
+        Do not hold data you still need only through a weak or soft
+        reference. Keep a strong reference while the data is in use, and
+        handle the case where a reference has been cleared.
+    rationale:
+        The garbage collector may clear weakly reachable objects at any
+        time, so data held only that way can vanish. CERT marks this rule as
+        a stub. CERT rates likelihood probable, detectable no, repairable
+        no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        WeakReference<byte[]> ref = new WeakReference<>(loadReport());
+        send(ref.get());
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        byte[] report = loadReport();
+        send(report);
+        \\\
+        ```
+    languages: [java]
+    tags: [memory, references]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/expressions-exp/exp07-j/

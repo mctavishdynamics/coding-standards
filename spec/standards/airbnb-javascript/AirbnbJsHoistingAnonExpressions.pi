@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsHoistingAnonExpressions:
+    standard: @{AirbnbJavaScript}
+    ruleId: 14.2
+    title: Account for hoisting of anonymous function expressions
+    statement:
+        Remember that an anonymous function expression assigned to a var
+        hoists the variable name only, so calling it before the assignment
+        throws a TypeError.
+    rationale:
+        The variable exists but holds undefined until the assignment runs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        start(); // TypeError: start is not a function
+        var start = function () {
+          console.log('starting');
+        };
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const start = function () {
+          console.log('starting');
+        };
+        start();
+        \\\
+        ```
+    languages: [javascript]
+    tags: [hoisting, functions]
+    source: https://github.com/airbnb/javascript#hoisting--anon-expressions

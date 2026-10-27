@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellFunctionLocation:
+    standard: @{GoogleShell}
+    ruleId: function-location
+    title: Put all functions together below the constants
+    statement:
+        Place all functions together near the top of the file, just below
+        the constants. Only includes, set statements and constants may come
+        before them, and no executable code goes between functions.
+    rationale:
+        Code hidden between functions is hard to follow and causes surprises
+        when debugging.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        log() { echo "$*" >&2; }
+        mkdir -p "${WORK_DIR}"
+        cleanup() { rm -rf "${WORK_DIR}"; }
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        readonly WORK_DIR='/tmp/build'
+
+        log() { echo "$*" >&2; }
+        cleanup() { rm -rf "${WORK_DIR}"; }
+
+        mkdir -p "${WORK_DIR}"
+        \\\
+        ```
+    languages: [shell]
+    tags: [structure, functions]
+    source: https://google.github.io/styleguide/shellguide.html#function-location

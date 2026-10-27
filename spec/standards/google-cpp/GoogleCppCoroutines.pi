@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppCoroutines:
+    standard: @{GoogleCpp}
+    ruleId: coroutines
+    title: Use coroutines only through approved libraries
+    statement:
+        Use C++20 coroutines only through libraries your project leads have
+        approved for project-wide use. Do not write your own promise or
+        awaitable types.
+    rationale:
+        Coroutine machinery is complex and easy to get wrong, so it should
+        come from a vetted shared library.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct MyTask {
+          struct promise_type {
+            MyTask get_return_object();
+            std::suspend_never initial_suspend();
+            // ...
+          };
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Uses the project's approved coroutine library.
+        approved::Task<Response> Fetch(Request request) {
+          co_return co_await client.Call(std::move(request));
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [coroutines, concurrency]
+    source: https://google.github.io/styleguide/cppguide.html#coroutines

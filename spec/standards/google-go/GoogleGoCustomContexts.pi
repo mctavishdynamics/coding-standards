@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoCustomContexts:
+    standard: @{GoogleGo}
+    ruleId: decisions/custom-contexts
+    title: Do not create custom context types
+    statement:
+        Use only context.Context in function signatures, never a custom
+        context type or another interface. Pass application data as a
+        parameter, on the receiver, in a global, or as a context value if it
+        truly belongs there.
+    rationale:
+        Custom contexts force conversions between every pair of packages and
+        block automated refactoring. The rule has no exceptions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type RequestContext interface {
+            context.Context
+            User() *User
+        }
+
+        func Handle(ctx RequestContext) error
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func Handle(ctx context.Context, user *User) error
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, context]
+    source: https://google.github.io/styleguide/go/decisions#custom-contexts

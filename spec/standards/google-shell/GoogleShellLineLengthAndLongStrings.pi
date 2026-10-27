@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellLineLengthAndLongStrings:
+    standard: @{GoogleShell}
+    ruleId: line-length-and-long-strings
+    title: Keep lines to 80 characters
+    statement:
+        Limit lines to 80 characters. Write longer literal strings with a
+        here-document or an embedded newline where possible.
+    rationale:
+        Short lines are easier to read and review.
+    exceptions:
+        Words that cannot be sensibly split, such as long paths and URLs,
+        may exceed the limit. Put them on a line of their own or in a
+        variable where possible, and still wrap the rest of the line
+        normally.
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        usage="Usage: sync_assets.sh [--dry-run] [--verbose] SOURCE_BUCKET DESTINATION_BUCKET"
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        cat <<END
+        Usage: sync_assets.sh [--dry-run] [--verbose]
+            SOURCE_BUCKET DESTINATION_BUCKET
+        END
+        \\\
+        ```
+    languages: [shell]
+    tags: [formatting, line-length]
+    source: https://google.github.io/styleguide/shellguide.html#line-length-and-long-strings

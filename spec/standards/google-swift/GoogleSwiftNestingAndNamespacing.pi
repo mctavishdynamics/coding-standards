@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftNestingAndNamespacing:
+    standard: @{GoogleSwift}
+    ruleId: nesting-and-namespacing
+    title: Nest types to express scoped relationships
+    statement:
+        Nest enums, structs and classes inside the type they belong to, such
+        as an error or flag type for one specific type, rather than relying
+        on naming conventions.
+    rationale:
+        Nesting states the relationship and keeps the outer namespace clean.
+    exceptions:
+        Protocols cannot be nested this way, so a class and its delegate
+        protocol stay at the top level.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        struct Tokenizer {
+          func tokenize(_ source: String) throws -> [Token] { /* ... */ }
+        }
+
+        enum TokenizerError: Error {
+          case unterminatedString
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        struct Tokenizer {
+          enum Error: Swift.Error {
+            case unterminatedString
+          }
+
+          func tokenize(_ source: String) throws -> [Token] { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [organization, types, namespacing]
+    source: https://google.github.io/swift/#nesting-and-namespacing

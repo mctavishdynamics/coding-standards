@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoLiteralRepeatedTypeNames:
+    standard: @{GoogleGo}
+    ruleId: decisions/literal-repeated-type-names
+    title: Omit repeated type names in slice and map literals
+    statement:
+        Leave out repeated element type names in slice and map literals. It
+        is reasonable to keep them for an unusual complex type when the
+        repeats are far apart and remind the reader of the context.
+    rationale:
+        Repeated type names add clutter that hides the values; gofmt -s can
+        remove them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        routes := []Route{
+            Route{Path: "/", Handler: home},
+            Route{Path: "/about", Handler: about},
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        routes := []Route{
+            {Path: "/", Handler: home},
+            {Path: "/about", Handler: about},
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, literals]
+    source: https://google.github.io/styleguide/go/decisions#literal-repeated-type-names

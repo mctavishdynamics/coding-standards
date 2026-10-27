@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCpl1:
+    standard: @{CppCoreGuidelines}
+    ruleId: CPL.1
+    title: Prefer C++ to C
+    statement:
+        Write new code in C++ rather than C.
+    rationale:
+        C++ has stronger type checking, more notational support and better
+        support for high-level programming, and it often produces faster
+        code. C's implicit void pointer conversions, for example, are subtle
+        and unchecked.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        double d = 0;
+        void* p = &d;
+        long long* q = p;      // accepted by C, silently reinterprets
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        double d = 0;
+        void* p = &d;
+        double* q = static_cast<double*>(p);   // explicit, type-correct
+        \\\
+        ```
+    languages: [cpp]
+    tags: [c-compatibility, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rcpl-c

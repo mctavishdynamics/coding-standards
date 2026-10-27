@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptParameterAndReturnTypes:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.5.5
+    title: Document parameter and return types with JSDoc
+    statement:
+        Usually document function parameter and return types with JSDoc
+        annotations.
+    rationale:
+        Type annotations let the compiler check calls and tell readers what
+        a function expects and produces.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function discount(price, rate) {
+          return price * (1 - rate);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * @param {number} price
+         * @param {number} rate
+         * @return {number}
+         */
+        function discount(price, rate) {
+          return price * (1 - rate);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, jsdoc, types]
+    source: https://google.github.io/styleguide/jsguide.html#555-parameter-and-return-types

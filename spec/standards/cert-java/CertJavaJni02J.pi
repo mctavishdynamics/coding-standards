@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaJni02J:
+    standard: @{CertJava}
+    ruleId: JNI02-J
+    title: Do not assume object references are constant or unique
+    statement:
+        In native code, compare Java object references with IsSameObject()
+        rather than with == or !=.
+    rationale:
+        Different local or global references to the same object can have
+        different values, so pointer comparison gives wrong answers. CERT's
+        risk assessment gives likelihood probable, detectable no, repairable
+        no, priority P2 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        if (cached == obj) {
+            return JNI_TRUE;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        if ((*env)->IsSameObject(env, cached, obj)) {
+            return JNI_TRUE;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [jni, native-code]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/java-native-interface-jni/jni02-j/

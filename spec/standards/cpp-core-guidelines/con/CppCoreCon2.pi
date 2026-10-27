@@ -1,0 +1,44 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCon2:
+    standard: @{CppCoreGuidelines}
+    ruleId: Con.2
+    title: By default, make member functions const
+    statement:
+        Mark a member function const unless it changes the object's
+        observable state. Internal caches may still be updated through
+        mutable members.
+    rationale:
+        It states the design intent precisely, improves readability, lets
+        the compiler catch more errors and sometimes allows more
+        optimization. A non-const getter also cannot be called on a const
+        object.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Temperature {
+        public:
+            double celsius() { return celsius_; }
+        private:
+            double celsius_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Temperature {
+        public:
+            double celsius() const { return celsius_; }
+        private:
+            double celsius_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [const, member-functions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconst-fct

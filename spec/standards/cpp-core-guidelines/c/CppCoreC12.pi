@@ -1,0 +1,45 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC12:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.12
+    title: Avoid const or reference data members in copyable or movable types
+    statement:
+        Do not declare data members const or as references in a type that is
+        meant to be copied or moved. Use a pointer, possibly not_null, when
+        the member must refer to something.
+    rationale:
+        Such members silently delete the assignment operators, leaving a
+        type that can be constructed by copy but not assigned, which is
+        confusing to use.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Logger {
+        public:
+            Logger(std::ostream& out) : out_(out) {}
+        private:
+            std::ostream& out_;     // Logger can no longer be assigned
+            const int level_ = 1;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Logger {
+        public:
+            explicit Logger(std::ostream& out) : out_(&out) {}
+        private:
+            std::ostream* out_;
+            int level_ = 1;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, copy, move]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-constref

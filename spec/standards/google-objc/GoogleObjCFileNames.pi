@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCFileNames:
+    standard: @{GoogleObjC}
+    ruleId: file-names
+    title: Name files after the class they implement
+    statement:
+        A file name reflects the class it implements, including case. Use .h
+        for headers, .m for Objective-C, .mm for Objective-C++, .cc for C++
+        and .c for C. Shared files get a unique name with a project or class
+        prefix, and category files include the name of the class being
+        extended.
+    rationale:
+        Predictable names make files easy to find and avoid collisions
+        between projects.
+    exceptions:
+        Follow the existing convention of the project you are working in.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        // Contains @implementation GTMRequestQueue
+        requestqueue.m
+        // Category on NSDate
+        DateHelpers.h
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        // Contains @implementation GTMRequestQueue
+        GTMRequestQueue.m
+        // Category on NSDate
+        NSDate+GTMFormatting.h
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [naming, files]
+    source: https://google.github.io/styleguide/objcguide.html#file-names

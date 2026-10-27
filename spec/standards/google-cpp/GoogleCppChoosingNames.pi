@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppChoosingNames:
+    standard: @{GoogleCpp}
+    ruleId: General_Naming_Rules
+    title: Choose names that are clear to a new reader
+    statement:
+        Give names that make purpose clear to someone from another team,
+        with descriptiveness proportional to the name's scope. Avoid
+        abbreviations outsiders would not know and never drop letters inside
+        a word. Capitalize an abbreviation as one word, as in StartRpc.
+    rationale:
+        Immediate understanding by a new reader matters far more than saving
+        horizontal space.
+    exceptions:
+        Universally known abbreviations such as i for a loop index and T for
+        a template parameter are fine, as are widely reused vocabulary names
+        documented elsewhere.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int nerr;                  // Unclear abbreviation.
+        int cstmr_id;              // Letters deleted inside the word.
+        void StartRPC();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int num_errors;
+        int customer_id;
+        void StartRpc();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, readability]
+    source: https://google.github.io/styleguide/cppguide.html#General_Naming_Rules

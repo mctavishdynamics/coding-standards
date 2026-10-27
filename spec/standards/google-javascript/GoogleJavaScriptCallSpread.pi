@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptCallSpread:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.5.7
+    title: Prefer spread to Function.prototype.apply
+    statement:
+        When unpacking an array or iterable into the arguments of a variadic
+        function, use the spread operator instead of apply. Write no space
+        after the dots.
+    rationale:
+        Spread is clearer than apply and does not need a dummy this value.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const highest = Math.max.apply(null, scores);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const highest = Math.max(...scores);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, spread]
+    source: https://google.github.io/styleguide/jsguide.html#557-spread-operator

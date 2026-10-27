@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSer11J:
+    standard: @{CertJava}
+    ruleId: SER11-J
+    title: Prevent overwriting of externalizable objects
+    statement:
+        Make readExternal refuse to run on an object that is already
+        initialized, for example by tracking an initialized flag under a
+        lock.
+    rationale:
+        readExternal is public, so any code can call it again and overwrite
+        the object's internal state at any time. CERT's risk assessment
+        gives likelihood probable, detectable no, repairable no, priority P2
+        and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        public void readExternal(ObjectInput in) throws IOException {
+            name = in.readUTF();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private boolean initialized;
+
+        public synchronized void readExternal(ObjectInput in) throws IOException {
+            if (initialized) throw new IllegalStateException("Already initialized");
+            name = in.readUTF();
+            initialized = true;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [serialization, untrusted-code]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/serialization-ser/ser11-j/

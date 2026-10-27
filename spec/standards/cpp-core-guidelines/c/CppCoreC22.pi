@@ -1,0 +1,45 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC22:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.22
+    title: Make default operations consistent
+    statement:
+        Make copy and move construction agree with copy and move assignment,
+        and make all of them agree with how the constructors and destructor
+        manage resources.
+    rationale:
+        The default operations form a set whose meanings depend on each
+        other, and users are surprised when two of them do logically
+        different things.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Image {
+        public:
+            Image(const Image& o) : px_(o.px_.clone()) {}   // deep copy
+            Image& operator=(const Image& o) { px_ = o.px_; return *this; } // shallow
+        private:
+            Pixels px_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Image {
+        public:
+            Image(const Image& o) : px_(o.px_.clone()) {}
+            Image& operator=(const Image& o) { px_ = o.px_.clone(); return *this; }
+        private:
+            Pixels px_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, special-members, consistency]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-matched

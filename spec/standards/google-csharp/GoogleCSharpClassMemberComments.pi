@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpClassMemberComments:
+    standard: @{GoogleCSharp}
+    ruleId: class-member-comments
+    title: Document invariants of class data members
+    statement:
+        Make the purpose of every data member clear, and comment any
+        invariants, special values, relationships or lifetime rules that the
+        type and name do not express.
+    rationale:
+        Hidden invariants are easily broken by the next person who edits the
+        class.
+    exceptions:
+        No comment is needed when the type and name say enough.
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        private int _cursor;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        // Index of the next unread item, or -1 when the queue is closed.
+        private int _cursor;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [comments, fields]
+    source: https://google.github.io/styleguide/csharpguide.html#class-members

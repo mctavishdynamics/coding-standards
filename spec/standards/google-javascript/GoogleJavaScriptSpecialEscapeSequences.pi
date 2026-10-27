@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptSpecialEscapeSequences:
+    standard: @{GoogleJavaScript}
+    ruleId: 2.3.2
+    title: Prefer special escape sequences to numeric escapes
+    statement:
+        When a character has a dedicated escape sequence, such as
+        backslash-n, backslash-t or an escaped quote, write that sequence
+        rather than its hex or Unicode escape. Never use legacy octal
+        escapes.
+    rationale:
+        Named escapes are short and familiar, while numeric escapes make the
+        reader look up the code point. Octal escapes are a legacy feature
+        banned in strict mode.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const row = 'name\x09price\u000a';
+        const bell = '\007';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const row = 'name\tprice\n';
+        \\\
+        ```
+    languages: [javascript]
+    tags: [literals, strings]
+    source: https://google.github.io/styleguide/jsguide.html#232-special-escape-sequences

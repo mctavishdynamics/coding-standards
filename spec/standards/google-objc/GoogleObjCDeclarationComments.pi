@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCDeclarationComments:
+    standard: @{GoogleObjC}
+    ruleId: declaration-comments
+    title: Document every non-trivial interface
+    statement:
+        Comment every non-trivial class, property, ivar, function, category,
+        protocol and enum, public or private. Each method comment explains
+        its purpose, arguments, return value, threading assumptions and side
+        effects in descriptive form, such as Returns the count. Document
+        sentinel values and thread-safety rules, and keep implementation
+        notes with the implementation.
+    rationale:
+        Readers of a header need to know how to use an interface without
+        reading its implementation.
+    exceptions:
+        Test case classes and test methods may skip declaration comments
+        when the name says everything. Helper methods in tests still need
+        comments.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @interface ABCDownloader : NSObject
+        - (void)startWithURL:(NSURL *)URL;
+        @end
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        /** Downloads files in the background. Not thread-safe; use on the main queue. */
+        @interface ABCDownloader : NSObject
+
+        /**
+         * Starts downloading the file at @c URL, cancelling any download in progress.
+         *
+         * @param URL The remote file to fetch.
+         */
+        - (void)startWithURL:(NSURL *)URL;
+
+        @end
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [comments, documentation]
+    source: https://google.github.io/styleguide/objcguide.html#declaration-comments

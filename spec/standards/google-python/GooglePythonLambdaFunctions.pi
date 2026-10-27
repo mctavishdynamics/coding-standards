@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonLambdaFunctions:
+    standard: @{GooglePython}
+    ruleId: 2.10
+    title: Keep lambdas short and prefer the operator module
+    statement:
+        Lambdas are allowed for short one-liners. If the body spans several
+        lines or grows beyond roughly 60 to 80 characters, define a nested
+        function instead. For common operations such as multiplication, use
+        the operator module rather than a lambda.
+    rationale:
+        Long lambdas are hard to read and debug, and their anonymous name
+        makes stack traces less useful.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        product = functools.reduce(lambda x, y: x * y, factors)
+        sorted_users = sorted(users, key=lambda u: (u.last_name.lower(), u.first_name.lower(), u.signup_date))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        product = functools.reduce(operator.mul, factors)
+
+
+        def _user_sort_key(user):
+            return (user.last_name.lower(), user.first_name.lower(), user.signup_date)
+
+
+        sorted_users = sorted(users, key=_user_sort_key)
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, lambdas]
+    source: https://google.github.io/styleguide/pyguide.html#s2.10-lambda-functions

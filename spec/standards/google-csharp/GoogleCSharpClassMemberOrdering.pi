@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpClassMemberOrdering:
+    standard: @{GoogleCSharp}
+    ruleId: class-member-ordering
+    title: Order class members by kind and then by access
+    statement:
+        Group members in this order: nested types, delegates and events;
+        static, const and readonly fields; fields and properties;
+        constructors and finalizers; methods. Within each group, list
+        public, internal, protected internal, protected, then private.
+    rationale:
+        A fixed layout lets readers find members quickly and puts the public
+        surface first.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public class Cart {
+          private void Recalculate() { }
+          public Cart() { }
+          private readonly List<Item> _items = new List<Item>();
+          public decimal Total { get; private set; }
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public class Cart {
+          private readonly List<Item> _items = new List<Item>();
+          public decimal Total { get; private set; }
+          public Cart() { }
+          private void Recalculate() { }
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [organization, classes, ordering]
+    source: https://google.github.io/styleguide/csharpguide.html#organization

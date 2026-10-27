@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTableTestsIdentifyingTheRow:
+    standard: @{GoogleGo}
+    ruleId: decisions/table-tests-identifying-the-row
+    title: Identify table rows by name, not index
+    statement:
+        Do not use a row's index in place of a name or its inputs. Give rows
+        a description or subtest name and still print the inputs in failure
+        messages.
+    rationale:
+        Nobody wants to count table entries to find the failing case.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        for i, tc := range tests {
+            if got := Trim(tc.in); got != tc.want {
+                t.Errorf("case %d failed", i)
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        for _, tc := range tests {
+            t.Run(tc.name, func(t *testing.T) {
+                if got := Trim(tc.in); got != tc.want {
+                    t.Errorf("Trim(%q) = %q, want %q", tc.in, got, tc.want)
+                }
+            })
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, table-driven-tests]
+    source: https://google.github.io/styleguide/go/decisions#table-tests-identifying-the-row

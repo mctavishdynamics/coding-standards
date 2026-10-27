@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonTrueFalseEvaluations:
+    standard: @{GooglePython}
+    ruleId: 2.14
+    title: Use implicit false where possible
+    statement:
+        Test sequences and containers with if seq or if not seq rather than
+        comparing their length. Always use is None or is not None to check
+        for None, never compare a boolean to False with ==, and compare
+        integers known to be integers against 0 explicitly. Use the size
+        attribute to test a NumPy array for emptiness.
+    rationale:
+        Implicit false is shorter and reads naturally, but None, zero and
+        empty values are all false, so checks for None and integer values
+        must be explicit to avoid treating them alike.
+    exceptions:
+        An integer that is not the result of len may be compared with 0. To
+        tell False apart from None, chain the checks.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if len(orders) == 0:
+            notify_empty()
+        if done == False:
+            retry()
+        def connect(timeout=None):
+            timeout = timeout or 30
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        if not orders:
+            notify_empty()
+        if not done:
+            retry()
+        def connect(timeout=None):
+            if timeout is None:
+                timeout = 30
+        \\\
+        ```
+    languages: [python]
+    tags: [conditionals, idioms]
+    source: https://google.github.io/styleguide/pyguide.html#s2.14-truefalse-evaluations

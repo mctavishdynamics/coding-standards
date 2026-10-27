@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptJsdocGeneralForm:
+    standard: @{GoogleJavaScript}
+    ruleId: 7.1
+    title: Write well-formed JSDoc in block or single-line form
+    statement:
+        Write JSDoc either as a multi-line block with the opening and
+        closing markers on their own lines, or on a single line. If a
+        single-line comment would overflow, switch to the multi-line style.
+        JSDoc must be well-formed.
+    rationale:
+        Many tools parse JSDoc for validation and optimization, so malformed
+        comments break them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** Loads the user profile from the remote service and caches it locally
+            for later. @param {string} id */
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * Loads the user profile from the remote service and caches it locally.
+         * @param {string} id
+         */
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, formatting]
+    source: https://google.github.io/styleguide/jsguide.html#71-general-form

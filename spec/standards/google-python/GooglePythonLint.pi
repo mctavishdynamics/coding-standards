@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonLint:
+    standard: @{GooglePython}
+    ruleId: 2.1
+    title: Run pylint and suppress warnings explicitly
+    statement:
+        Run pylint over your code. When a warning does not apply, silence it
+        with a line-level pylint disable comment that names the symbolic
+        message, and add an explanation when the name alone does not make
+        the reason clear. Silence unused-argument warnings by deleting the
+        arguments at the top of the function with a short comment.
+    rationale:
+        A linter catches bugs and style problems that are easy to miss in
+        dynamic code. Named, line-level suppressions are easy to search for
+        and revisit, and they keep real warnings visible.
+    exceptions:
+        Naming an unused argument with an underscore or an unused_ prefix is
+        still allowed but no longer encouraged, because it breaks callers
+        that pass arguments by keyword.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def handle_event(event, context):  # pylint: disable-msg=W0613
+            return event.payload
+
+
+        def render(template, theme=None):
+            _ = theme
+            return template.render()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def handle_event(event, context):  # Callback signature, pylint: disable=unused-argument
+            return event.payload
+
+
+        def render(template, theme=None):
+            del theme  # Unused.
+            return template.render()
+        \\\
+        ```
+    languages: [python]
+    tags: [tooling, linting]
+    source: https://google.github.io/styleguide/pyguide.html#s2.1-lint

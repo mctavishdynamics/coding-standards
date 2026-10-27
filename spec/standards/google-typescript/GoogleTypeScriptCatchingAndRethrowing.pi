@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptCatchingAndRethrowing:
+    standard: @{GoogleTypeScript}
+    ruleId: catching-and-rethrowing
+    title: Assume caught values are Errors
+    statement:
+        In a catch block, assume the caught value is an Error. Handle other
+        types only when the called API is known to throw them, and add a
+        comment naming that source.
+    rationale:
+        Guarding against non-Error throws everywhere is overly defensive
+        boilerplate for a problem most code never has.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        try {
+          save();
+        } catch (e: unknown) {
+          const message = typeof e === 'string' ? e : String(e);
+          showToast(message);
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        try {
+          save();
+        } catch (e: unknown) {
+          assertIsError(e);
+          showToast(e.message);
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [error-handling, exceptions]
+    source: https://google.github.io/styleguide/tsguide.html#catching-and-rethrowing

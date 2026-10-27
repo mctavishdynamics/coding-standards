@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC152:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.152
+    title: Never assign a pointer to an array of derived objects to a base pointer
+    statement:
+        Do not convert a pointer to the first element of an array of derived
+        class objects into a pointer to the base class.
+    rationale:
+        Indexing through the base pointer uses the size of the base class,
+        so it lands in the middle of objects and corrupts memory.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Circle circles[8];
+        Shape* shapes = circles;
+        shapes[1].draw();          // wrong address
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::array<Circle, 8> circles;
+        for (Circle& c : circles)
+            c.draw();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, arrays, memory]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-array

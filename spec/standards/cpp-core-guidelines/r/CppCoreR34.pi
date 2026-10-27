@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR34:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.34
+    title: Take a shared_ptr parameter to express shared ownership
+    statement:
+        When a function will keep a share of ownership, take a shared_ptr by
+        value.
+    rationale:
+        This makes it explicit that the function shares ownership of the
+        object with the caller.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Cache {
+        public:
+            void store(Image* img) { items_.push_back(std::shared_ptr<Image>(img)); }
+        private:
+            std::vector<std::shared_ptr<Image>> items_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Cache {
+        public:
+            void store(std::shared_ptr<Image> img) { items_.push_back(std::move(img)); }
+        private:
+            std::vector<std::shared_ptr<Image>> items_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, ownership, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-sharedptrparam-owner

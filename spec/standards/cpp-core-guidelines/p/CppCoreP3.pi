@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreP3:
+    standard: @{CppCoreGuidelines}
+    ruleId: P.3
+    title: Express intent
+    statement:
+        Make the purpose of code visible through names, comments and
+        constructs that say what should be done, not only how it is done.
+    rationale:
+        Without a stated intent there is no way to judge whether the code
+        does what it was meant to do.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int i = 0;
+        while (i < v.size()) {
+            process(v[i]);
+            ++i;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (const auto& item : v) {
+            process(item);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [philosophy, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rp-what

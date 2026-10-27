@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs26:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.26
+    title: Don't use a variable for two unrelated purposes
+    statement:
+        Give each separate purpose its own variable instead of reusing one
+        variable for unrelated values.
+    rationale:
+        Reused variables make code harder to read and invite bugs where a
+        stale value from the first purpose leaks into the second.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int n = count_users();
+        print_users(n);
+        n = count_orders();      // now means something else
+        print_orders(n);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        const int user_count = count_users();
+        print_users(user_count);
+        const int order_count = count_orders();
+        print_orders(order_count);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [variables, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-recycle

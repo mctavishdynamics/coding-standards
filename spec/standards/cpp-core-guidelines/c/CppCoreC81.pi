@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC81:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.81
+    title: Use =delete to disable default behavior
+    statement:
+        When a generated operation must not exist and nothing replaces it,
+        declare it =delete.
+    rationale:
+        Some types, such as unique owners of a resource, must not get
+        default operations like copy, and =delete states that clearly and
+        makes misuse a compile error.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Mutex {
+        private:
+            Mutex(const Mutex&);              // old trick, undefined
+            Mutex& operator=(const Mutex&);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Mutex {
+        public:
+            Mutex(const Mutex&) = delete;
+            Mutex& operator=(const Mutex&) = delete;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [special-members, deleted-functions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-delete

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftFunctionDeclarations:
+    standard: @{GoogleSwift}
+    ruleId: function-declarations
+    title: Wrap function declarations one parameter per line
+    statement:
+        When a function declaration is wrapped, put each parameter on its
+        own line indented two spaces, with the closing parenthesis and
+        return type on the following line. In protocols, a declaration
+        ending in a parenthesis may close it on the last parameter line.
+        Prefer typealiases to simplify complex signatures.
+    rationale:
+        Every declaration then has the same predictable shape.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func upload(file: URL, to bucket: String, metadata: [String: String], retries: Int) -> UploadTask {
+          // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        func upload(
+          file: URL,
+          to bucket: String,
+          metadata: [String: String],
+          retries: Int
+        ) -> UploadTask {
+          // ...
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, line-wrapping, functions]
+    source: https://google.github.io/swift/#function-declarations

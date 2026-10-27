@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon37C:
+    standard: @{CertC}
+    ruleId: CON37-C
+    title: Do not call signal() in a multithreaded program
+    statement:
+        Do not call signal in a program that creates threads. Use another
+        mechanism, such as an atomic flag or a condition variable, to notify
+        threads.
+    rationale:
+        The C standard leaves signal in a multithreaded program undefined.
+        CERT rates likelihood probable, detectable yes, repairable no,
+        priority P4, level L3.
+    exceptions:
+        Implementations such as POSIX that define the behavior of signal
+        handlers in multithreaded programs are exempt.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int main(void) {
+            signal(SIGUSR1, on_usr1);
+            thrd_t t;
+            thrd_create(&t, worker, NULL);
+            thrd_join(t, NULL);
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static atomic_bool stop = false;
+
+        int main(void) {
+            thrd_t t;
+            thrd_create(&t, worker, NULL);
+            atomic_store(&stop, true);
+            thrd_join(t, NULL);
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [concurrency, signals]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/concurrency-con/con37-c

@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos35C:
+    standard: @{CertC}
+    ruleId: POS35-C
+    title:
+        Avoid race conditions while checking for the existence of a symbolic
+        link
+    statement:
+        Do not check a path with lstat and then open it by name. Open the
+        file first, refusing links with O_NOFOLLOW where available, and then
+        check the open descriptor with fstat.
+    rationale:
+        An attacker can swap the file for a symbolic link between the check
+        and the open, redirecting the program to another file. CERT rates
+        likelihood likely, detectable no, repairable no, priority P9, level
+        L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        struct stat st;
+        if (lstat(path, &st) == 0 && !S_ISLNK(st.st_mode)) {
+            fd = open(path, O_RDWR);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct stat st;
+        fd = open(path, O_RDWR | O_NOFOLLOW);
+        if (fd != -1 && (fstat(fd, &st) == -1 || !S_ISREG(st.st_mode))) {
+            close(fd);
+            fd = -1;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, files, race-conditions, security]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos35-c

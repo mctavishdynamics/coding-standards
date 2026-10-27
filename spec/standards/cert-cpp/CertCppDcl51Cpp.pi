@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppDcl51Cpp:
+    standard: @{CertCpp}
+    ruleId: DCL51-CPP
+    title: Do not declare or define a reserved identifier
+    statement:
+        Do not declare, define, #define or #undef names that the
+        implementation reserves. These include names with a double
+        underscore, names starting with an underscore and an uppercase
+        letter, global names starting with an underscore, keywords and
+        standard library names.
+    rationale:
+        Reserved names may already be used by the compiler or the standard
+        library, so reusing them can silently change library behavior or
+        break builds on another implementation. CERT rates likelihood
+        unlikely, detectable yes, repairable no, priority P2, level L3.
+    exceptions:
+        A macro may share a reserved name when its behavior is semantically
+        identical, for compatibility with other compilers. Compiler and
+        standard library vendors may use names reserved for their
+        implementation.
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        #ifndef _CONFIG_PARSER_H_
+        #define _CONFIG_PARSER_H_
+
+        int __parse_count;
+        void _Reset();
+
+        #endif
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #ifndef CONFIG_PARSER_H
+        #define CONFIG_PARSER_H
+
+        namespace config {
+        int parse_count;
+        void reset();
+        }
+
+        #endif
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, declarations, preprocessor]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/declarations-and-initialization-dcl/dcl51-cpp

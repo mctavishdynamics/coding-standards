@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppRvalueReferences:
+    standard: @{GoogleCpp}
+    ruleId: Rvalue_references
+    title: Use rvalue references only in the listed special cases
+    statement:
+        Use rvalue references only to define move constructors and move
+        assignment, for ref-qualified methods that consume this object, for
+        forwarding references with std::forward, or for overload pairs
+        taking Foo&& and const Foo&. To consume an ordinary parameter, pass
+        it by value.
+    rationale:
+        Rvalue references are hard to reason about. Passing by value is
+        usually simpler, and extra overloads are worth it only with evidence
+        of a performance gain.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void SetName(std::string&& name) { name_ = std::move(name); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void SetName(std::string name) { name_ = std::move(name); }
+
+        template <typename... Args>
+        void Emplace(Args&&... args) { items_.emplace_back(std::forward<Args>(args)...); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [move, references, parameters]
+    source: https://google.github.io/styleguide/cppguide.html#Rvalue_references

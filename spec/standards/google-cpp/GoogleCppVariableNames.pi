@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppVariableNames:
+    standard: @{GoogleCpp}
+    ruleId: Variable_Names
+    title:
+        Name variables in snake_case with a trailing underscore for class
+        members
+    statement:
+        Name variables, function parameters and data members in snake_case.
+        Data members of classes, static or not, also end in an underscore;
+        data members of structs do not.
+    rationale:
+        The style of a name tells readers what kind of entity it is, and the
+        underscore marks class members at every use.
+    exceptions:
+        Static constant class members follow the constant naming rules.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        std::string tableName;
+        class TableInfo {
+          std::string m_name;
+        };
+        struct Point {
+          int x_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string table_name;
+        class TableInfo {
+          std::string name_;
+        };
+        struct Point {
+          int x;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, variables]
+    source: https://google.github.io/styleguide/cppguide.html#Variable_Names

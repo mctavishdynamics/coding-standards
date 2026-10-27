@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreP2:
+    standard: @{CppCoreGuidelines}
+    ruleId: P.2
+    title: Write in ISO Standard C++
+    statement:
+        Write code that conforms to the ISO C++ standard. Avoid compiler
+        extensions, undefined behavior and reliance on
+        implementation-defined details.
+    rationale:
+        Extensions often lack precise semantics and differ between
+        compilers, so code that depends on them loses portability and
+        predictability.
+    exceptions:
+        Some environments need extensions, for example to reach system
+        resources. Keep their use local, govern it with project guidelines
+        and, where possible, hide it behind an interface that can be
+        compiled away.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void fill(int n) {
+            int buffer[n];   // variable-length array: a GCC extension
+            // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void fill(int n) {
+            std::vector<int> buffer(n);
+            // ...
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [philosophy, portability, standards]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rp-cplusplus

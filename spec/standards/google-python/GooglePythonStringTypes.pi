@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonStringTypes:
+    standard: @{GooglePython}
+    ruleId: 3.19.11
+    title: Annotate text as str and binary data as bytes
+    statement:
+        Do not use typing.Text in new code. Use str for text and bytes for
+        binary data, and use AnyStr when all string types of a function must
+        match.
+    rationale:
+        typing.Text exists only for Python 2 and 3 compatibility.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        from typing import Text
+
+
+        def normalize(value: Text) -> Text:
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def normalize(value: str) -> str:
+            ...
+
+
+        def checksum(data: bytes) -> bytes:
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [typing, strings]
+    source: https://google.github.io/styleguide/pyguide.html#s3.19.11-string-types

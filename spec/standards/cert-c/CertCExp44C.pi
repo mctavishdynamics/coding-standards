@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp44C:
+    standard: @{CertC}
+    ruleId: EXP44-C
+    title:
+        Do not rely on side effects in operands to sizeof, _Alignof, or
+        _Generic
+    statement:
+        Do not put increments, assignments or function calls whose effect
+        you need inside the operand of sizeof, _Alignof or the controlling
+        expression of _Generic.
+    rationale:
+        These operators usually do not evaluate their operands, so the side
+        effect silently never happens. For variable length arrays whether it
+        happens is unspecified. CERT rates likelihood unlikely, detectable
+        yes, repairable yes, priority P3, level L3.
+    exceptions:
+        An idiomatic read of a volatile-qualified object may appear as the
+        operand of these operators.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include <stddef.h>
+
+        size_t next_size(int *i) {
+            return sizeof(*i++);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stddef.h>
+
+        size_t next_size(int *i) {
+            size_t n = sizeof(*i);
+            i++;
+            return n;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [expressions, side-effects, sizeof]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/expressions-exp/exp44-c

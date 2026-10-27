@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppRtti:
+    standard: @{GoogleCpp}
+    ruleId: Run-Time_Type_Information__RTTI_
+    title: Avoid run-time type information
+    statement:
+        Avoid typeid and dynamic_cast outside tests. Prefer virtual methods
+        or a double-dispatch design such as Visitor over branching on an
+        object's type, and do not hand-build RTTI substitutes such as type
+        tags.
+    rationale:
+        Decision trees based on type break when new subclasses are added and
+        are hard to update when subclass properties change.
+    exceptions:
+        RTTI may be used freely in unit tests, and dynamic_cast is fine when
+        program logic guarantees the object's derived type.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Render(const Shape& s) {
+          if (typeid(s) == typeid(Circle)) {
+            DrawCircle(static_cast<const Circle&>(s));
+          } else if (typeid(s) == typeid(Square)) {
+            DrawSquare(static_cast<const Square&>(s));
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Shape {
+         public:
+          virtual ~Shape() = default;
+          virtual void Draw(Canvas& canvas) const = 0;
+        };
+
+        void Render(const Shape& s, Canvas& canvas) { s.Draw(canvas); }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [rtti, polymorphism, classes]
+    source: https://google.github.io/styleguide/cppguide.html#Run-Time_Type_Information__RTTI_

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio04J:
+    standard: @{CertJava}
+    ruleId: FIO04-J
+    title: Release resources when they are no longer needed
+    statement:
+        Close files, streams, sockets, database connections and similar
+        resources explicitly when you are done, preferably with
+        try-with-resources. Do not rely on finalizers or the garbage
+        collector.
+    rationale:
+        The garbage collector frees only memory, and finalizers may never
+        run. Unreleased resources run out and an attacker can force that to
+        deny service. CERT's risk assessment gives likelihood probable,
+        detectable yes, repairable no, priority P4 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        Connection conn = dataSource.getConnection();
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        return read(rs);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        try (Connection conn = dataSource.getConnection();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
+            return read(rs);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [resource-management, file-io]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio04-j/

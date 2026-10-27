@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC37:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.37
+    title: Make destructors noexcept
+    statement:
+        Declare destructors noexcept, or leave them implicitly noexcept by
+        not giving them a throwing specification.
+    rationale:
+        A destructor must not fail, and if one tries to throw anyway the
+        program should terminate rather than continue in a broken state.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Cache {
+        public:
+            ~Cache() noexcept(false);
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Cache {
+        public:
+            ~Cache() noexcept;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [destructors, exceptions, noexcept]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-dtor-noexcept

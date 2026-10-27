@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCHidden:
+    standard: @{RustApiGuidelines}
+    ruleId: C-HIDDEN
+    title: Hide unhelpful implementation details from rustdoc
+    statement:
+        Show users everything they need and nothing more. Hide impls that
+        can never matter to them with doc(hidden), and use pub(crate) to
+        keep internal items out of the public API.
+    rationale:
+        Irrelevant entries clutter the documentation and suggest uses that
+        are not actually possible.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        pub struct ApiError { /* ... */ }
+        struct WireError { /* ... */ }
+
+        impl From<WireError> for ApiError {
+            fn from(e: WireError) -> ApiError { /* ... */ }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        pub struct ApiError { /* ... */ }
+        struct WireError { /* ... */ }
+
+        #[doc(hidden)]
+        impl From<WireError> for ApiError {
+            fn from(e: WireError) -> ApiError { /* ... */ }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [documentation, visibility]
+    source: https://rust-lang.github.io/api-guidelines/documentation.html#c-hidden

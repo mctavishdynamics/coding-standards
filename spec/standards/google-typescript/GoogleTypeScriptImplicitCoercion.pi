@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptImplicitCoercion:
+    standard: @{GoogleTypeScript}
+    ruleId: implicit-coercion
+    title: Do not add explicit boolean coercion to conditions
+    statement:
+        Do not use Boolean() or a double negation in if, for and while
+        conditions, which already coerce. Never let enum values be
+        implicitly coerced to booleans; compare them explicitly.
+    rationale:
+        Explicit coercion in a condition is redundant, and treating an enum
+        as a boolean depends on which value happens to be zero.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        if (!!user) {
+          greet(user);
+        }
+        if (status) {
+          report(status);
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        if (user) {
+          greet(user);
+        }
+        if (status !== Status.UNKNOWN) {
+          report(status);
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [type-coercion, conditions, enums]
+    source: https://google.github.io/styleguide/tsguide.html#implicit-coercion

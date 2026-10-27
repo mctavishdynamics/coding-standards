@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaLck02J:
+    standard: @{CertJava}
+    ruleId: LCK02-J
+    title: Do not synchronize on the class object returned by getClass()
+    statement:
+        Do not lock on getClass() to protect class-wide state. Name the
+        class explicitly with a class literal such as Base.class, or use a
+        dedicated static lock.
+    rationale:
+        In a subclass, getClass() returns the subclass's Class object, so
+        the parent and subclass end up using different locks and the shared
+        state is not protected. CERT's risk assessment gives likelihood
+        probable, detectable yes, repairable no, priority P8 and level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        class Counter {
+            private static int total;
+
+            void increment() {
+                synchronized (getClass()) {
+                    total++;
+                }
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Counter {
+            private static int total;
+
+            void increment() {
+                synchronized (Counter.class) {
+                    total++;
+                }
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, locking, inheritance]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/locking-lck/lck02-j/

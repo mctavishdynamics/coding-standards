@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoDynamicCodeEvaluation:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.11.2
+    title: Do not use eval or the Function constructor
+    statement:
+        Do not use eval or the Function constructor with string arguments.
+    rationale:
+        Evaluating strings as code is dangerous and does not work under
+        Content Security Policy.
+    exceptions:
+        Code loaders may use them.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const value = eval('settings.' + key);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const value = settings[key];
+        \\\
+        ```
+    languages: [javascript]
+    tags: [disallowed, security]
+    source: https://google.github.io/styleguide/jsguide.html#5112-dynamic-code-evaluation

@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppFunctionCalls:
+    standard: @{GoogleCpp}
+    ruleId: Function_Calls
+    title:
+        Format function calls on one line or with aligned or indented
+        arguments
+    statement:
+        Write a call on one line, wrap the arguments aligned with the first
+        one, or start them on a new line with a four-space indent. Use the
+        fewest lines, putting several arguments per line, and put no spaces
+        inside the parentheses.
+    rationale:
+        Compact calls favor the reader. Confusing arguments are better
+        handled with a named variable or comment than one argument per line.
+    exceptions:
+        An argument may get its own line when that clearly helps, and
+        arguments may follow a meaningful structure such as a matrix.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        bool result = DoSomething(
+            argument1,
+            argument2,
+            argument3 );
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        bool result = DoSomething(averyveryveryverylongargument1, argument2,
+                                  argument3);
+        if (...) {
+          DoSomethingThatRequiresALongFunctionName(
+              very_long_argument1, argument2, argument3, argument4);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, functions]
+    source: https://google.github.io/styleguide/cppguide.html#Function_Calls

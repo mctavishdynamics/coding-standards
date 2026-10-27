@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT1:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.1
+    title: Use templates to raise the level of abstraction of code
+    statement:
+        Write templates against meaningful concepts such as an arithmetic
+        type or a range, not against the single operator one implementation
+        happens to use.
+    rationale:
+        Abstract templates are general, reusable and efficient, and they
+        push user types toward complete, consistent definitions.
+        Requirements that only list one low-level operator overconstrain
+        implementers and miss chances to generalize.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+            requires Incrementable<T>   // only += is allowed
+        T total(const std::vector<T>& v, T init)
+        {
+            for (const auto& x : v) init += x;
+            return init;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename T>
+            requires Arithmetic<T>      // a complete numeric type
+        T total(const std::vector<T>& v, T init)
+        {
+            for (const auto& x : v) init += x;
+            return init;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, generic-programming, concepts]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-raise

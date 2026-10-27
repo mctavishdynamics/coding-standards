@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet07J:
+    standard: @{CertJava}
+    ruleId: MET07-J
+    title: Do not declare a static method that hides a superclass or superinterface method
+    statement:
+        Do not declare a static method with the same signature as an
+        accessible static method of a superclass or superinterface. Give it
+        a different name.
+    rationale:
+        Hidden methods are chosen by the compile-time type, not the object,
+        so calls that look like overriding run the wrong method. CERT rates
+        likelihood unlikely, detectable yes, repairable no, priority P2,
+        level L3.
+    exceptions:
+        Using an API that already has hidden methods is acceptable when
+        every call names its class explicitly.
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        class Access {
+            static void describe() { System.out.println("admin"); }
+        }
+        class UserAccess extends Access {
+            static void describe() { System.out.println("user"); }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Access {
+            static void describeAdmin() { System.out.println("admin"); }
+        }
+        class UserAccess extends Access {
+            static void describeUser() { System.out.println("user"); }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [static, inheritance]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met07-j/

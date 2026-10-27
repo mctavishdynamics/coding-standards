@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptArraySpreadSyntax:
+    standard: @{GoogleTypeScript}
+    ruleId: array-spread-syntax
+    title: Spread only iterables into arrays
+    statement:
+        Spread syntax is fine for copying or joining iterables. When
+        building an array, spread only iterables; never spread primitives,
+        null or undefined.
+    rationale:
+        Spreading a value that may be false or undefined fails at runtime,
+        and spreading an array into an object produces index keys without a
+        length.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const extras = includeExtras && [7, 8];
+        const all = [1, 2, ...extras];
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const extras = includeExtras ? [7, 8] : [];
+        const all = [1, 2, ...extras];
+        \\\
+        ```
+    languages: [typescript]
+    tags: [arrays, spread]
+    source: https://google.github.io/styleguide/tsguide.html#array-spread-syntax

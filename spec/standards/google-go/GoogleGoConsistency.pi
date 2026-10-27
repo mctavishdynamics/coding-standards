@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoConsistency:
+    standard: @{GoogleGo}
+    ruleId: guide/consistency
+    title: Break ties in favour of consistency
+    statement:
+        Write code that looks and behaves like similar code in the codebase,
+        the package and the file. Consistency does not override the other
+        principles, but use it to decide between otherwise equal choices.
+    rationale:
+        Solving the same problem several ways, or naming one concept several
+        ways, in one package is jarring to readers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (s *Store) Get(userID string) (*User, error)   { /* ... */ }
+        func (s *Store) Delete(uid string) error            { /* ... */ }
+        func (s *Store) Rename(idOfUser, name string) error { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (s *Store) Get(userID string) (*User, error)  { /* ... */ }
+        func (s *Store) Delete(userID string) error        { /* ... */ }
+        func (s *Store) Rename(userID, name string) error  { /* ... */ }
+        \\\
+        ```
+    languages: [go]
+    tags: [guide, consistency]
+    source: https://google.github.io/styleguide/go/guide#consistency

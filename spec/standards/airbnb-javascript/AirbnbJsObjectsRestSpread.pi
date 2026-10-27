@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsObjectsRestSpread:
+    standard: @{AirbnbJavaScript}
+    ruleId: 3.8
+    title: Prefer object spread over Object.assign for shallow copies
+    statement:
+        Shallow-copy objects with the spread syntax instead of
+        Object.assign, and use object rest to build a copy with some
+        properties left out. Enforced by the ESLint rule
+        prefer-object-spread.
+    rationale:
+        Object.assign with an existing object as its target mutates that
+        object, and the spread form is shorter and never mutates.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const updated = Object.assign(original, { status: 'done' });
+        const safe = Object.assign({}, user);
+        delete safe.password;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const updated = { ...original, status: 'done' };
+        const { password, ...safe } = user;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [objects, es6, immutability]
+    source: https://github.com/airbnb/javascript#objects--rest-spread

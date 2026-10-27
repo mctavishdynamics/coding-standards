@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp2:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.2
+    title: Avoid data races
+    statement:
+        Never let two threads access the same object at the same time
+        without synchronization when at least one of them writes to it.
+    rationale:
+        A data race is undefined behavior: nothing is guaranteed and the
+        resulting bugs are subtle. A compiler may, for example, turn a
+        range-checked switch into a jump table that jumps anywhere if the
+        value changes underneath it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int next_ticket()
+        {
+            static int ticket = 0;
+            return ++ticket;   // two threads can read and write it at once
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int next_ticket()
+        {
+            static std::atomic<int> ticket{0};
+            return ++ticket;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, data-races, undefined-behavior]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-races

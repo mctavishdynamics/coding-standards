@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoFuncFormatting:
+    standard: @{GoogleGo}
+    ruleId: decisions/func-formatting
+    title: Keep function signatures on one line
+    statement:
+        Keep a function or method signature on a single line. Do not split
+        calls just for line length; factor out locals instead, avoid inline
+        comments on arguments, and keep long string literals whole, breaking
+        after the format string along semantic groups when needed.
+    rationale:
+        A wrapped signature makes its continuation look like the function
+        body.
+    exceptions:
+        Line breaks are fine in a call when the API cannot change or the
+        call is unusual and breaking it aids understanding.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (s *Scheduler) Schedule(ctx context.Context, job *Job,
+            at time.Time, opts ...Option) error {
+            return s.enqueue(ctx, job, at)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (s *Scheduler) Schedule(ctx context.Context, job *Job, at time.Time, opts ...Option) error {
+            return s.enqueue(ctx, job, at)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, formatting, functions]
+    source: https://google.github.io/styleguide/go/decisions#func-formatting

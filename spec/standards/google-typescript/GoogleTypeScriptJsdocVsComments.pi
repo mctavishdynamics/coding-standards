@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptJsdocVsComments:
+    standard: @{GoogleTypeScript}
+    ruleId: jsdoc-vs-comments
+    title: Use JSDoc for documentation and line comments for implementation
+    statement:
+        Write JSDoc comments for documentation meant for users of the code.
+        Write // line comments for notes about the implementation itself.
+    rationale:
+        Tools such as editors and documentation generators read JSDoc, while
+        ordinary comments are only for people reading the code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        // Returns the price including tax.
+        export function grossPrice(net: number): number {
+          /** Rate is fixed until the 2027 reform. */
+          return net * 1.2;
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /** Returns the price including tax. */
+        export function grossPrice(net: number): number {
+          // Rate is fixed until the 2027 reform.
+          return net * 1.2;
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc]
+    source: https://google.github.io/styleguide/tsguide.html#jsdoc-vs-comments

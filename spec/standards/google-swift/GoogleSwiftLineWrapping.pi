@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftLineWrapping:
+    standard: @{GoogleSwift}
+    ruleId: line-wrapping
+    title: Wrap lines by breakable units with fixed indents
+    statement:
+        Keep a construct on one line if it fits. Lay comma-delimited lists
+        out either fully horizontally or fully vertically. Indent
+        continuation lines that start with an unbreakable token at the
+        original level, and list elements by exactly two spaces. Put the
+        opening brace on its own line when the last continuation line is
+        indented by two.
+    rationale:
+        Fixed indentation makes each part of a declaration easy to find and
+        avoids the zig-zag of aligning to parentheses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        public func merge<Key: Hashable>(_ first: [Key: Int],
+                                         with second: [Key: Int]) -> [Key: Int] {
+          // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        public func merge<Key: Hashable>(
+          _ first: [Key: Int],
+          with second: [Key: Int]
+        ) -> [Key: Int] {
+          // ...
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, line-wrapping]
+    source: https://google.github.io/swift/#line-wrapping

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCMutablesCopiesAndOwnership:
+    standard: @{GoogleObjC}
+    ruleId: mutables-copies-and-ownership
+    title: Return mutable objects without copying when ownership transfers
+    statement:
+        A mutable subclass may stand in for its immutable type when the
+        immutable contract is honoured. Return a freshly built mutable
+        object directly when ownership passes to the caller, and do not copy
+        a mutable argument just to match a parameter type when it will not
+        change during the call.
+    rationale:
+        Callers treat values as their declared type, so the extra copy only
+        costs time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        - (NSArray<NSString *> *)names {
+          NSMutableArray<NSString *> *names = [NSMutableArray array];
+          for (ABCUser *user in _users) [names addObject:user.name];
+          return [names copy];
+        }
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        - (NSArray<NSString *> *)names {
+          NSMutableArray<NSString *> *names = [NSMutableArray array];
+          for (ABCUser *user in _users) [names addObject:user.name];
+          return names;
+        }
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [memory, mutability, performance]
+    source: https://google.github.io/styleguide/objcguide.html#mutables-copies-and-ownership

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaJni04J:
+    standard: @{CertJava}
+    ruleId: JNI04-J
+    title: Do not assume that Java strings are null-terminated
+    statement:
+        Use the string's length when handling Java strings in native code.
+        Use the Modified UTF-8 functions only for data in Modified UTF-8.
+    rationale:
+        Java strings are UTF-16, are not null-terminated and may contain
+        embedded null characters, so C string functions read the wrong
+        length. CERT's risk assessment gives likelihood probable, detectable
+        no, repairable no, priority P2 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        const jchar *chars = (*env)->GetStringChars(env, str, NULL);
+        size_t n = wcslen((const wchar_t *) chars);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        const jchar *chars = (*env)->GetStringChars(env, str, NULL);
+        jsize n = (*env)->GetStringLength(env, str);
+        \\\
+        ```
+    languages: [java]
+    tags: [jni, native-code, strings]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/java-native-interface-jni/jni04-j/

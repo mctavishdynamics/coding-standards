@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoForwardVariadicArguments:
+    standard: @{EffectiveGo}
+    ruleId: printing-variadic-arguments
+    title: Forward variadic arguments with an ellipsis
+    statement:
+        When passing a variadic parameter on to another variadic function,
+        write the ellipsis after it so it is expanded into a list of
+        arguments.
+    rationale:
+        Without the ellipsis the slice is passed as a single argument, which
+        produces the wrong output.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func warnf(format string, args ...any) {
+            log.Printf("warning: "+format, args)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func warnf(format string, args ...any) {
+            log.Printf("warning: "+format, args...)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [functions, variadic, printing]
+    source: https://go.dev/doc/effective_go#printing

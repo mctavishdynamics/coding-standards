@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCorePer19:
+    standard: @{CppCoreGuidelines}
+    ruleId: Per.19
+    title: Access memory predictably
+    statement:
+        Walk data in the order it is laid out in memory, preferably linearly
+        over adjacent elements. For row-major arrays, loop over rows in the
+        outer loop and columns in the inner loop.
+    rationale:
+        Performance depends heavily on the cache, and caches favor simple
+        linear access to neighbouring data.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        double grid[rows][cols];
+        for (int c = 0; c < cols; ++c)
+            for (int r = 0; r < rows; ++r)
+                total += grid[r][c];   // jumps a whole row each step
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        double grid[rows][cols];
+        for (int r = 0; r < rows; ++r)
+            for (int c = 0; c < cols; ++c)
+                total += grid[r][c];   // walks memory in order
+        \\\
+        ```
+    languages: [cpp]
+    tags: [performance, memory, cache]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rper-access

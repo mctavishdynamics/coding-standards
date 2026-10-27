@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoOptionStructure:
+    standard: @{GoogleGo}
+    ruleId: best-practices/option-structure
+    title: Collect many arguments into an option struct
+    statement:
+        Pass many arguments as a struct, as the last parameter, exported
+        only if the function is. Prefer this when all callers set some
+        options, many set several, or options are shared across functions.
+        Never put a context in an option struct.
+    rationale:
+        Field names document each argument, defaults can be omitted, and the
+        struct can grow without breaking callers.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func Compress(dst io.Writer, src io.Reader, level int, dict []byte, concurrency int) error
+
+        err := Compress(w, r, 9, nil, 4)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type CompressOptions struct {
+            Level       int
+            Dict        []byte
+            Concurrency int
+        }
+
+        func Compress(dst io.Writer, src io.Reader, opts CompressOptions) error
+
+        err := Compress(w, r, CompressOptions{Level: 9, Concurrency: 4})
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, functions, api-design]
+    source: https://google.github.io/styleguide/go/best-practices#option-structure

@@ -1,0 +1,65 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMem33C:
+    standard: @{CertC}
+    ruleId: MEM33-C
+    title:
+        Allocate and copy structures containing a flexible array member
+        dynamically
+    statement:
+        Allocate structures with a flexible array member on the heap with
+        room for the array, pass them by pointer, and copy them with memcpy
+        using the full size. Do not declare them as automatic objects or
+        copy them by assignment.
+    rationale:
+        The structure's declared size excludes the flexible array, so stack
+        objects have no room for it and assignment copies only the fixed
+        part. CERT rates likelihood unlikely, detectable yes, repairable no,
+        priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        struct samples {
+            size_t count;
+            int data[];
+        };
+
+        void fill(size_t count) {
+            struct samples s;
+            s.count = count;
+            for (size_t i = 0; i < count; i++) {
+                s.data[i] = 0;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+
+        struct samples {
+            size_t count;
+            int data[];
+        };
+
+        struct samples *fill(size_t count) {
+            struct samples *s = malloc(sizeof *s + count * sizeof s->data[0]);
+            if (s == NULL) {
+                return NULL;
+            }
+            s->count = count;
+            for (size_t i = 0; i < count; i++) {
+                s->data[i] = 0;
+            }
+            return s;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [memory, structures, arrays]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/memory-management-mem/mem33-c

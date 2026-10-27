@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftAttributes:
+    standard: @{GoogleSwift}
+    ruleId: attributes
+    title: Put parameterized attributes on their own lines
+    statement:
+        Write each attribute with arguments on its own line before the
+        declaration, at the same indentation, in sorted order. Attributes
+        without arguments are sorted and may share the declaration line only
+        if that does not force the line to wrap.
+    rationale:
+        Separate lines keep declarations readable and attributes easy to
+        scan.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        @available(iOS 15, *) @MainActor public func presentSheet() {
+          // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        @available(iOS 15, *)
+        @MainActor public func presentSheet() {
+          // ...
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, attributes]
+    source: https://google.github.io/swift/#attributes

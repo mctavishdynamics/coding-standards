@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec07J:
+    standard: @{CertJava}
+    ruleId: SEC07-J
+    title: Call the superclass's getPermissions() method when writing a custom class loader
+    statement:
+        A custom class loader that overrides getPermissions() must start
+        from the permissions returned by super.getPermissions() before
+        adding any of its own.
+    rationale:
+        Ignoring the superclass result skips the system security policy, so
+        loaded classes can receive more privileges than the policy allows.
+        CERT's risk assessment gives likelihood probable, detectable yes,
+        repairable no, priority P12 and level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        protected PermissionCollection getPermissions(CodeSource cs) {
+            PermissionCollection pc = new Permissions();
+            pc.add(new RuntimePermission("exitVM"));
+            return pc;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        protected PermissionCollection getPermissions(CodeSource cs) {
+            PermissionCollection pc = super.getPermissions(cs);
+            pc.add(new RuntimePermission("exitVM"));
+            return pc;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [security, class-loading, permissions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/platform-security-sec/sec07-j/

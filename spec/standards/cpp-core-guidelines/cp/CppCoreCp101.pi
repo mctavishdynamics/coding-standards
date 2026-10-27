@@ -1,0 +1,23 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp101:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.101
+    title: Distrust your hardware and compiler combination
+    statement:
+        Assume lock-free code may break on a different processor, operating
+        system, compiler or library, and re-test it, often extensively,
+        whenever any of them changes. Check for performance regressions too.
+    rationale:
+        The low-level hardware interfaces used by lock-free code are hard to
+        implement well and are where the subtlest portability problems
+        occur, and reordering makes reasoning at this level very hard.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant: null
+    languages: [cpp]
+    tags: [concurrency, lock-free, portability, testing]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-distrust

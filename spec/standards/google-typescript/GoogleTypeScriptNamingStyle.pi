@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptNamingStyle:
+    standard: @{GoogleTypeScript}
+    ruleId: naming-style
+    title: Do not encode type information in names
+    statement:
+        Do not decorate names with information the type already gives. Do
+        not use leading or trailing underscores for private members, the
+        opt_ prefix for optional parameters, or interface markers like an I
+        prefix unless idiomatic in the environment.
+    rationale:
+        Types already carry this information, so the decoration only adds
+        noise and can drift out of date.
+    exceptions:
+        Suffixing Observables with a dollar sign is left to each team, but
+        must be consistent within a project.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        interface IUserStore {}
+
+        class Profile {
+          private _cache = new Map();
+          load(opt_force?: boolean) {}
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        interface UserStore {}
+
+        class Profile {
+          private cache = new Map();
+          load(force?: boolean) {}
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [naming]
+    source: https://google.github.io/styleguide/tsguide.html#naming-style

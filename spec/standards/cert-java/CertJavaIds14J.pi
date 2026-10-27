@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds14J:
+    standard: @{CertJava}
+    ruleId: IDS14-J
+    title: Do not trust the contents of hidden form fields
+    statement:
+        Treat values from hidden form fields as untrusted input and validate
+        and sanitize them like any visible field.
+    rationale:
+        Users can edit hidden fields or send any parameter in the request
+        directly, so their contents are under attacker control. CERT rates
+        likelihood probable, detectable no, repairable no, priority P6,
+        level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        String price = request.getParameter("price");
+        order.charge(new BigDecimal(price));
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String sku = request.getParameter("sku");
+        Product product = catalog.find(sku);
+        order.charge(product.price());
+        \\\
+        ```
+    languages: [java]
+    tags: [web, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-validation-and-data-sanitization-ids/ids14-j/

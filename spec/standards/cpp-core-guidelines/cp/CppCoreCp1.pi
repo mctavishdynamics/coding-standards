@@ -1,0 +1,59 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp1:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.1
+    title: Assume your code will run as part of a multi-threaded program
+    statement:
+        Write code, especially library code, so that it stays correct when
+        called from several threads. Avoid hidden shared state such as
+        function-local statics; keep state in objects the caller owns, or
+        make it thread_local or properly synchronized.
+    rationale:
+        It is hard to be sure that concurrency is not used now or will not
+        be later. Code gets reused, and a single-threaded library may end up
+        called from a threaded program.
+    exceptions:
+        Code that will never run in a multi-threaded environment. Label such
+        code clearly and ideally enforce the restriction at compile or run
+        time, since such assumptions often prove wrong years later.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        const Route& shortest_route(int from, int to)
+        {
+            static std::pair<int, int> last_query{-1, -1};   // shared by all threads
+            static Route last_route;
+            if (last_query != std::pair{from, to}) {
+                last_query = {from, to};
+                last_route = compute_route(from, to);
+            }
+            return last_route;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class RouteCache {
+        public:
+            const Route& shortest_route(int from, int to)
+            {
+                if (last_query_ != std::pair{from, to}) {
+                    last_query_ = {from, to};
+                    last_route_ = compute_route(from, to);
+                }
+                return last_route_;
+            }
+        private:
+            std::pair<int, int> last_query_{-1, -1};
+            Route last_route_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, thread-safety, shared-state]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-multi

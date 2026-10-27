@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptFields:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.4.2
+    title: Define all fields in the constructor
+    statement:
+        Define every non-method property of a concrete class in its
+        constructor, annotate never-reassigned fields with @const and non-
+        public fields with a visibility annotation. Do not define fields in
+        a nested scope of the constructor or on the prototype.
+    rationale:
+        Objects whose shape is fixed by the constructor are easier to
+        understand and to optimize; adding properties later hinders the
+        engine.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Session {
+          constructor(token) {
+            if (token) {
+              this.token = token;
+            }
+          }
+        }
+        Session.prototype.expiresAt = 0;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Session {
+          constructor(token) {
+            /** @private @const {?string} */
+            this.token_ = token || null;
+
+            /** @type {number} */
+            this.expiresAt = 0;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, fields, jsdoc]
+    source: https://google.github.io/styleguide/jsguide.html#542-fields

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoOmitUnneededElse:
+    standard: @{EffectiveGo}
+    ruleId: if-omit-else
+    title: Omit else when the if body does not fall through
+    statement:
+        When an if body ends in break, continue, goto or return, leave out
+        the else. Guard against error conditions one after another so the
+        successful path runs down the page.
+    rationale:
+        Error cases usually return, so the else adds nesting without
+        meaning, and a straight success path is easier to follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        f, err := os.Open(name)
+        if err != nil {
+            return err
+        } else {
+            defer f.Close()
+            return parse(f)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        f, err := os.Open(name)
+        if err != nil {
+            return err
+        }
+        defer f.Close()
+        return parse(f)
+        \\\
+        ```
+    languages: [go]
+    tags: [control-flow, error-handling, readability]
+    source: https://go.dev/doc/effective_go#if

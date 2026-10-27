@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio02J:
+    standard: @{CertJava}
+    ruleId: FIO02-J
+    title: Detect and handle file-related errors
+    statement:
+        Check the return values of file methods such as File.delete(),
+        mkdir() and renameTo(), or use the java.nio.file methods that throw
+        on failure.
+    rationale:
+        Many java.io.File methods report failure only through a boolean
+        result. Ignoring it hides the failure and the program goes on with
+        wrong assumptions. CERT's risk assessment gives likelihood probable,
+        detectable yes, repairable yes, priority P12 and level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        File temp = new File(path);
+        temp.delete();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Path temp = Paths.get(path);
+        try {
+            Files.delete(temp);
+        } catch (IOException e) {
+            log.warn("Could not delete " + temp, e);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [file-io, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio02-j/

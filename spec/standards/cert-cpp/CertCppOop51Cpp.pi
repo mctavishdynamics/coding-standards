@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppOop51Cpp:
+    standard: @{CertCpp}
+    ruleId: OOP51-CPP
+    title: Do not slice derived objects
+    statement:
+        Do not copy or assign a derived object into an object of its base
+        class type. Pass and store polymorphic objects through references,
+        pointers or smart pointers.
+    rationale:
+        Copying into the base type slices off the derived members and
+        behavior, so virtual calls no longer reach the derived class. CERT
+        rates likelihood probable, detectable no, repairable no, priority
+        P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        struct Employee { virtual std::string title() const; };
+        struct Manager : Employee { std::string title() const override; };
+
+        void print(Employee e) {
+            std::cout << e.title() << '\n';
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Employee { virtual std::string title() const; };
+        struct Manager : Employee { std::string title() const override; };
+
+        void print(const Employee& e) {
+            std::cout << e.title() << '\n';
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, inheritance, slicing]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/object-oriented-programming-oop/oop51-cpp

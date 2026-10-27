@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR32:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.32
+    title:
+        Take a unique_ptr parameter to express that a function assumes
+        ownership
+    statement:
+        When a function takes over ownership of an object, declare the
+        parameter as unique_ptr of that type, passed by value.
+    rationale:
+        The signature documents the transfer and the type system enforces
+        it, because the caller has to move the pointer in.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Scene::add(Mesh* mesh);   // does the scene now own it?
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Scene::add(std::unique_ptr<Mesh> mesh);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, ownership, interfaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-uniqueptrparam

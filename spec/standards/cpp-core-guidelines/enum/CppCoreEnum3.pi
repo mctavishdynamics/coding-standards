@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEnum3:
+    standard: @{CppCoreGuidelines}
+    ruleId: Enum.3
+    title: Prefer class enums over plain enums
+    statement:
+        Declare enumerations as enum class unless there is a specific reason
+        to use a plain enum.
+    rationale:
+        Plain enums convert to int too readily and leak their enumerator
+        names into the surrounding scope, which causes surprises.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        enum Fruit { apple, pear };
+        enum Color { red, green };
+
+        bool same = (apple == red);   // compiles
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum class Fruit { apple, pear };
+        enum class Color { red, green };
+
+        // Fruit::apple == Color::red does not compile
+        \\\
+        ```
+    languages: [cpp]
+    tags: [enumerations, type-safety, scope]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#renum-class

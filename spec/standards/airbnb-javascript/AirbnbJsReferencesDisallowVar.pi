@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsReferencesDisallowVar:
+    standard: @{AirbnbJavaScript}
+    ruleId: 2.2
+    title: Use let instead of var for reassigned references
+    statement:
+        When a reference really has to be reassigned, declare it with let
+        rather than var. Enforced by the ESLint rule no-var.
+    rationale:
+        let is scoped to its block, while var is scoped to the whole
+        function, which leaks the variable beyond where it is meant to live.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        var attempts = 0;
+        if (failed) {
+          attempts += 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        let attempts = 0;
+        if (failed) {
+          attempts += 1;
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [variables, let]
+    source: https://github.com/airbnb/javascript#references--disallow-var

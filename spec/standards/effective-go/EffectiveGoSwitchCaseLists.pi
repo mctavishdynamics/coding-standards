@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoSwitchCaseLists:
+    standard: @{EffectiveGo}
+    ruleId: switch-case-lists
+    title: List several values in one case instead of falling through
+    statement:
+        When several values share an action, list them separated by commas
+        in one case. Go's switch does not fall through automatically.
+    rationale:
+        A comma-separated case states the shared behaviour directly, without
+        empty cases or explicit fallthrough.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        switch ext {
+        case ".jpg":
+            fallthrough
+        case ".jpeg":
+            fallthrough
+        case ".png":
+            return true
+        }
+        return false
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        switch ext {
+        case ".jpg", ".jpeg", ".png":
+            return true
+        }
+        return false
+        \\\
+        ```
+    languages: [go]
+    tags: [control-flow, switch]
+    source: https://go.dev/doc/effective_go#switch

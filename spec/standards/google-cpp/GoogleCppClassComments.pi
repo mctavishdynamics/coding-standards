@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppClassComments:
+    standard: @{GoogleCpp}
+    ruleId: Class_Comments
+    title:
+        Comment what each non-obvious class is for and how to use it
+    statement:
+        Give every non-obvious class or struct a comment saying what it is
+        for and how to use it, including synchronization assumptions and
+        thread-safety rules. Keep usage comments with the interface and
+        implementation comments with the method definitions.
+    rationale:
+        Readers need to know when and how to use a class correctly without
+        reading its implementation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class RateLimiter {
+         public:
+          bool TryAcquire();
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // Allows at most `max_per_second` operations per second. Thread-safe.
+        //
+        // Example:
+        //   RateLimiter limiter(100);
+        //   if (limiter.TryAcquire()) SendRequest();
+        class RateLimiter {
+         public:
+          explicit RateLimiter(int max_per_second);
+          bool TryAcquire();
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, documentation, classes]
+    source: https://google.github.io/styleguide/cppguide.html#Class_Comments

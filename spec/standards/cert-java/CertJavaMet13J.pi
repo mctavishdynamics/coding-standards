@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet13J:
+    standard: @{CertJava}
+    ruleId: MET13-J
+    title: Do not assume that reassigning method arguments modifies the calling environment
+    statement:
+        Remember that Java passes arguments by value. Assigning a new object
+        or value to a parameter does not change the caller's variable, so
+        return the new value instead.
+    rationale:
+        Code that reassigns a parameter expecting the caller to see it
+        silently loses the update. CERT marks this rule as a stub. CERT
+        rates likelihood likely, detectable no, repairable no, priority P6,
+        level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        void normalize(String text) {
+            text = text.trim();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String normalize(String text) {
+            return text.trim();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [methods, parameters]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met13-j/

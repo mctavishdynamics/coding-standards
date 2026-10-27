@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTableDrivenTests:
+    standard: @{GoogleGo}
+    ruleId: decisions/table-driven-tests
+    title: Use table-driven tests for cases sharing logic
+    statement:
+        Use a table of cases when many cases use the same checking logic.
+        When cases need different logic, write separate test functions, for
+        example one table for valid outputs and another for errors.
+    rationale:
+        Tables remove repetition, but conditional logic inside the loop
+        makes them hard to understand and maintain.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        for _, tc := range tests {
+            got, err := Parse(tc.in)
+            if tc.wantErr {
+                if err == nil { t.Errorf("Parse(%q) succeeded", tc.in) }
+                continue
+            }
+            if tc.checkLen && len(got) != tc.n { /* ... */ }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        tests := []struct {
+            in   string
+            want int
+        }{
+            {in: "1", want: 1},
+            {in: "42", want: 42},
+        }
+        for _, tc := range tests {
+            if got := MustParse(tc.in); got != tc.want {
+                t.Errorf("MustParse(%q) = %d, want %d", tc.in, got, tc.want)
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, table-driven-tests]
+    source: https://google.github.io/styleguide/go/decisions#table-driven-tests

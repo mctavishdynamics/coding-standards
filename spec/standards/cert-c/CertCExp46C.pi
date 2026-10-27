@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp46C:
+    standard: @{CertC}
+    ruleId: EXP46-C
+    title: Do not use a bitwise operator with a Boolean-like operand
+    statement:
+        Use the logical operators, not the bitwise and, or and xor
+        operators, when an operand is a _Bool or the result of a relational
+        or equality comparison. If a bitwise operator is intended, make that
+        clear with parentheses.
+    rationale:
+        A bitwise operator there is usually a typo for a logical one. It
+        also evaluates both sides, which can call functions or dereference
+        pointers the code meant to skip. CERT rates likelihood likely,
+        detectable yes, repairable no, priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int valid(const int *p) {
+            return (p != 0) & (*p > 0);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int valid(const int *p) {
+            return (p != 0) && (*p > 0);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [expressions, operators]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/expressions-exp/exp46-c

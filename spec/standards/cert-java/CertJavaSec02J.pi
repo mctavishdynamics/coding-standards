@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaSec02J:
+    standard: @{CertJava}
+    ruleId: SEC02-J
+    title: Do not base security checks on untrusted sources
+    statement:
+        Before a security check, make a defensive deep copy of any untrusted
+        object it uses, and check and use only the copy. Do not trust
+        clone() from an untrusted class.
+    rationale:
+        An attacker's subclass can return one value during the check and
+        another during the use, bypassing the check. CERT's risk assessment
+        gives likelihood probable, detectable no, repairable no, priority P6
+        and level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```java
+        \\\
+        void openFile(File f) throws IOException {
+            checkAllowed(f.getPath());
+            new FileInputStream(f.getPath());
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void openFile(File f) throws IOException {
+            File copy = new File(f.getPath());
+            checkAllowed(copy.getPath());
+            new FileInputStream(copy);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [security, defensive-copy, toctou]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/platform-security-sec/sec02-j/

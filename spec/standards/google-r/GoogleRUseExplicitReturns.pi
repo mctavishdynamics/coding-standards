@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleR import GoogleR
+
+export coding-rule GoogleRUseExplicitReturns:
+    standard: @{GoogleR}
+    ruleId: use-explicit-returns
+    title: Use explicit returns
+    statement:
+        End a function with a call to return() for the value it gives back.
+        Do not rely on R returning the value of the last expression.
+    rationale:
+        An explicit return() states the intent to return that object, so the
+        reader does not have to infer it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```r
+        \\\
+        Celsius <- function(fahrenheit) {
+          (fahrenheit - 32) * 5 / 9
+        }
+        \\\
+        ```
+    compliant:
+        ```r
+        \\\
+        Celsius <- function(fahrenheit) {
+          return((fahrenheit - 32) * 5 / 9)
+        }
+        \\\
+        ```
+    languages: [r]
+    tags: [functions, readability]
+    source: https://google.github.io/styleguide/Rguide.html#use-explicit-returns

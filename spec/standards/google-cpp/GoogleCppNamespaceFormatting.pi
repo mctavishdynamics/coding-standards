@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppNamespaceFormatting:
+    standard: @{GoogleCpp}
+    ruleId: Namespace_Formatting
+    title: Do not indent namespace contents
+    statement:
+        Namespaces add no level of indentation. Write their contents at the
+        same indentation as the namespace line.
+    rationale:
+        Whole files sit in namespaces, so indenting them would waste a level
+        on every line.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        namespace myproject {
+
+          void Foo() {
+            Bar();
+          }
+
+        }  // namespace myproject
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace myproject {
+
+        void Foo() {
+          Bar();
+        }
+
+        }  // namespace myproject
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, namespaces, indentation]
+    source: https://google.github.io/styleguide/cppguide.html#Namespace_Formatting

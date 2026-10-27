@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI26:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.26
+    title: If you want a cross-compiler ABI, use a C-style subset
+    statement:
+        When code built by different compilers must link together, restrict
+        the interface to a C-style subset, using extern C functions and
+        plain types.
+    rationale:
+        Compilers lay out classes, handle exceptions and mangle names
+        differently, so full C++ interfaces are not binary compatible
+        between them.
+    exceptions:
+        Common ABIs exist on some platforms and relax these restrictions.
+        With a single compiler you can use full C++ in interfaces, though an
+        upgrade may require recompiling.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // plugin.h, built by another compiler
+        std::vector<std::string> plugin_names();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // plugin.h
+        extern "C" {
+            int plugin_count(void);
+            const char* plugin_name(int index);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, abi, portability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-abi

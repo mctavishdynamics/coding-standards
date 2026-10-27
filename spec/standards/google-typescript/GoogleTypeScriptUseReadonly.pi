@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptUseReadonly:
+    standard: @{GoogleTypeScript}
+    ruleId: use-readonly
+    title: Mark properties that are never reassigned as readonly
+    statement:
+        Add readonly to any property that is not reassigned outside the
+        constructor. The value does not need to be deeply immutable.
+    rationale:
+        readonly documents intent and lets the compiler reject accidental
+        reassignment.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Session {
+          private startedAt = Date.now();
+          private userId: string;
+          constructor(userId: string) {
+            this.userId = userId;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Session {
+          private readonly startedAt = Date.now();
+          constructor(private readonly userId: string) {}
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, immutability]
+    source: https://google.github.io/styleguide/tsguide.html#use-readonly

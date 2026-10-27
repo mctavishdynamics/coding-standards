@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF26:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.26
+    title: Use a unique_ptr<T> to transfer ownership where a pointer is needed
+    statement:
+        When ownership of an object must be handed over through a pointer,
+        for example for an object used through a base class, use unique_ptr.
+    rationale:
+        unique_ptr is the cheapest safe way to pass an owning pointer, and
+        it makes the transfer explicit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Shape* make_shape(Kind kind);   // caller must remember to delete
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::unique_ptr<Shape> make_shape(Kind kind);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, ownership, smart-pointers]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-unique_ptr

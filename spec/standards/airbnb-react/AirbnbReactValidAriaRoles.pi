@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactValidAriaRoles:
+    standard: @{AirbnbReact}
+    ruleId: props-5
+    title: Use only valid, non-abstract ARIA roles
+    statement:
+        Set the role prop only to a role defined by WAI-ARIA, and never to
+        an abstract role. Enforced by the ESLint rule jsx-a11y/aria-role.
+    rationale:
+        Assistive technology ignores or misreads roles it does not
+        recognise, and abstract roles are not meant for use in content.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        <div role="carousel" />
+        <div role="widget" />
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        <div role="tablist" />
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [accessibility, aria]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#props

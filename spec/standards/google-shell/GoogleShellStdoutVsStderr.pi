@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellStdoutVsStderr:
+    standard: @{GoogleShell}
+    ruleId: stdout-vs-stderr
+    title: Send error messages to STDERR
+    statement:
+        Write all error messages to standard error. A small function that
+        prints errors with a timestamp and other status information is
+        recommended.
+    rationale:
+        Keeping errors on STDERR separates real problems from normal output.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        if ! cp "${src}" "${dest}"; then
+          echo "Copy failed"
+          exit 1
+        fi
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        err() {
+          echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $*" >&2
+        }
+
+        if ! cp "${src}" "${dest}"; then
+          err "Copy of ${src} failed"
+          exit 1
+        fi
+        \\\
+        ```
+    languages: [shell]
+    tags: [error-handling, output]
+    source: https://google.github.io/styleguide/shellguide.html#stdout-vs-stderr

@@ -1,0 +1,34 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs55:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.55
+    title: Avoid the need for range checking
+    statement:
+        Prefer constructs that cannot go out of range, such as range-for
+        loops and standard algorithms, over indexed access that must be
+        checked.
+    rationale:
+        Constructs that cannot overflow do not overflow, and they usually
+        run faster.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (std::size_t i = 0; i <= names.size(); ++i)   // off by one
+            print(names[i]);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        for (const auto& name : names)
+            print(name);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [bounds, loops]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-range-checking

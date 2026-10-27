@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpUseConstWhenPossible:
+    standard: @{GoogleCSharp}
+    ruleId: use-const-when-possible
+    title: Make variables and fields const when possible
+    statement:
+        Declare every variable and field that can be const as const.
+    rationale:
+        const documents that the value never changes and lets the compiler
+        enforce it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        private static int _pageSize = 50;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        private const int _pageSize = 50;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [constants, immutability]
+    source: https://google.github.io/styleguide/csharpguide.html#constants

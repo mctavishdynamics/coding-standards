@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcPackageComments:
+    standard: @{GoCodeReviewComments}
+    ruleId: package-comments
+    title: Place package comments directly above the package clause
+    statement:
+        Put the package comment immediately before the package clause with
+        no blank line. Start it with a capitalized word, normally the
+        package name; for a main package, start with the binary's name or a
+        phrase such as Command or Binary followed by the name.
+    rationale:
+        Godoc only treats an adjacent comment as package documentation, and
+        package comments are public text that should read as proper
+        sentences.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // implements retry policies for outgoing calls.
+
+        package retry
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Package retry implements retry policies for outgoing calls.
+        package retry
+        \\\
+        ```
+    languages: [go]
+    tags: [comments, documentation, packages]
+    source: https://go.dev/wiki/CodeReviewComments#package-comments

@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreNl9:
+    standard: @{CppCoreGuidelines}
+    ruleId: NL.9
+    title: Use ALL_CAPS for macro names only
+    statement:
+        Write names in all capitals only for macros. Constants, enumerators
+        and variables use ordinary names.
+    rationale:
+        It keeps macros, which ignore scope and type rules, from being
+        confused with names that obey them, such as symbolic constants.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        const int BUFFER_SIZE = 4096;
+        enum class Level { LOW, HIGH };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        #define APP_ASSERT(x) ((x) ? void() : report_failure(#x))
+
+        const int buffer_size = 4096;
+        enum class Level { low, high };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, macros]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rl-all-caps

@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs77:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.77
+    title: Minimize the use of break and continue in loops
+    statement:
+        Prefer loop conditions, helper functions and early returns over
+        break and continue in non-trivial loop bodies.
+    rationale:
+        In a long loop body a break or continue is easy to miss, and a break
+        in a loop means something very different from a break in a switch.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        for (auto& job : jobs) {
+            if (job.done()) continue;
+            if (job.failed()) {
+                report(job);
+                break;
+            }
+            job.run();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        const auto failed = std::find_if(jobs.begin(), jobs.end(),
+                                         [](const Job& j) { return j.failed(); });
+        for (auto it = jobs.begin(); it != failed; ++it)
+            if (!it->done()) it->run();
+        if (failed != jobs.end()) report(*failed);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [loops, control-flow]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-continue

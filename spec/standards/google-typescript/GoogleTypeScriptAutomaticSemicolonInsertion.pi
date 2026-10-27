@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptAutomaticSemicolonInsertion:
+    standard: @{GoogleTypeScript}
+    ruleId: automatic-semicolon-insertion
+    title: End every statement with a semicolon
+    statement:
+        Do not rely on automatic semicolon insertion; terminate every
+        statement explicitly.
+    rationale:
+        Explicit semicolons prevent bugs from incorrect insertion and keep
+        code working with tools that handle ASI poorly.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const total = price * quantity
+        const label = `Total: ${total}`
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const total = price * quantity;
+        const label = `Total: ${total}`;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [formatting, semicolons]
+    source: https://google.github.io/styleguide/tsguide.html#automatic-semicolon-insertion

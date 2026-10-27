@@ -1,0 +1,32 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs45:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.45
+    title: Avoid magic constants and use symbolic constants
+    statement:
+        Replace unexplained literal numbers in expressions with named
+        constants, or express the intent with a range or algorithm.
+    rationale:
+        Unnamed constants are easy to overlook, hard to understand and must
+        be changed in many places at once.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if (elapsed > 86400) expire_session();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr int seconds_per_day = 24 * 60 * 60;
+        if (elapsed > seconds_per_day) expire_session();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [constants, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-magic

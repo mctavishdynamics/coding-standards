@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoLiteralFieldNames:
+    standard: @{GoogleGo}
+    ruleId: decisions/literal-field-names
+    title: Name fields in literals of types from other packages
+    statement:
+        Always specify field names in struct literals of types defined in
+        other packages. For package-local types field names are optional,
+        but use them when they help, as for structs with many fields.
+    rationale:
+        Field order and the full set of fields are not part of a type's API,
+        so positional literals couple code to details that may change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        srv := http.Server{":8080", mux, nil, 5 * time.Second}
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        srv := http.Server{
+            Addr:        ":8080",
+            Handler:     mux,
+            ReadTimeout: 5 * time.Second,
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, literals, structs]
+    source: https://google.github.io/styleguide/go/decisions#literal-field-names

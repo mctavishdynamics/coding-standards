@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio15J:
+    standard: @{CertJava}
+    ruleId: FIO15-J
+    title: Do not reset a servlet's output stream after committing it
+    statement:
+        Once a servlet response has been committed, do not reset it, flush
+        illegally, or switch between getWriter() and getOutputStream().
+        Decide on errors before writing any of the response.
+    rationale:
+        After commit these calls throw IllegalStateException or are silently
+        ignored, and partial output with sensitive details may already have
+        reached the client. CERT's risk assessment gives likelihood
+        probable, detectable yes, repairable no, priority P4 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        ServletOutputStream out = response.getOutputStream();
+        try {
+            out.println(render());
+            out.flush();
+        } catch (Exception e) {
+            response.reset();
+            response.sendError(500);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String page;
+        try {
+            page = render();
+        } catch (Exception e) {
+            response.sendError(500);
+            return;
+        }
+        response.getOutputStream().println(page);
+        \\\
+        ```
+    languages: [java]
+    tags: [servlets, web, error-handling]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio15-j/

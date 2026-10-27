@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcUsefulTestFailures:
+    standard: @{GoCodeReviewComments}
+    ruleId: useful-test-failures
+    title: Make test failures say what went wrong
+    statement:
+        A failing test should report what was wrong, with which inputs, what
+        it got and what it wanted, in the order got then want. Make test
+        helpers produce messages that useful too.
+    rationale:
+        The person debugging a failing test is often not the author and
+        needs the message to explain the failure without reading the test.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if got != tt.want {
+            t.Error("wrong result")
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        if got != tt.want {
+            t.Errorf("Slugify(%q) = %q; want %q", tt.in, got, tt.want)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [testing, error-messages]
+    source: https://go.dev/wiki/CodeReviewComments#useful-test-failures

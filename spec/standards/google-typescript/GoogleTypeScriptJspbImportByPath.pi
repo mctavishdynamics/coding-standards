@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptJspbImportByPath:
+    standard: @{GoogleTypeScript}
+    ruleId: jspb-import-by-path
+    title: Use named imports for Apps JSPB protos
+    statement:
+        Import Apps JSPB proto messages with named imports, even when the
+        import line gets long.
+    rationale:
+        Proto files often hold many messages that are not needed together;
+        named imports let the build system track finer-grained dependencies
+        and drop unused code.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        import * as invoiceProto from './invoice.proto';
+
+        function bill(invoice: invoiceProto.Invoice) {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        import {Invoice, LineItem} from './invoice.proto';
+
+        function bill(invoice: Invoice, items: LineItem[]) {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [imports, protobuf, build]
+    source: https://google.github.io/styleguide/tsguide.html#jspb-import-by-path

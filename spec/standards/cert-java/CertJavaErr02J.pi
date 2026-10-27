@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaErr02J:
+    standard: @{CertJava}
+    ruleId: ERR02-J
+    title: Prevent exceptions while logging data
+    statement:
+        Make sure logging keeps working when an exception occurs, for
+        example by using a logging framework rather than writing directly to
+        a stream that may fail.
+    rationale:
+        An exception thrown during logging can stop critical events, such as
+        security exceptions, from being recorded, which helps an attacker
+        hide. CERT rates likelihood likely, detectable yes, repairable no,
+        priority P12, level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        } catch (SecurityException e) {
+            System.err.println(e);
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        } catch (SecurityException e) {
+            logger.log(Level.SEVERE, "Security check failed", e);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [logging, exceptions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/exceptional-behavior-err/err02-j/

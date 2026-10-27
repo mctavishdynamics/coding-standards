@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpInputValidation12:
+    standard: @{OwaspScp}
+    ruleId: input-validation-12
+    title: Validate data types against an allow list
+    statement:
+        Check input against an allow list of expected types and values
+        rather than a deny list of known bad ones.
+    rationale:
+        A deny list is never complete, while an allow list rejects anything
+        that was not explicitly expected.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        BLOCKED = ["<script", "drop table"]
+        def check_sort(value):
+            if any(b in value.lower() for b in BLOCKED):
+                raise ValueError("bad sort column")
+            return value
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        SORT_COLUMNS = {"name", "created_at", "price"}
+        def check_sort(value):
+            if value not in SORT_COLUMNS:
+                raise ValueError("bad sort column")
+            return value
+        \\\
+        ```
+    languages: [any]
+    tags: [input-validation, allow-list]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#input-validation

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcCryptoRand:
+    standard: @{GoCodeReviewComments}
+    ruleId: crypto-rand
+    title: Generate keys with crypto/rand, not math/rand
+    statement:
+        Never use math/rand or math/rand/v2 to generate keys, even throwaway
+        ones. Use crypto/rand.Reader, and for text use crypto/rand.Text or
+        encode random bytes with encoding/hex or encoding/base64.
+    rationale:
+        A math/rand generator seeded from the clock has only a few bits of
+        entropy, so its output is predictable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        import "math/rand"
+
+        func newSessionToken() string {
+            return strconv.FormatInt(rand.Int63(), 36)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        import "crypto/rand"
+
+        func newSessionToken() string {
+            return rand.Text()
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [security, randomness]
+    source: https://go.dev/wiki/CodeReviewComments#crypto-rand

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet11J:
+    standard: @{CertJava}
+    ruleId: MET11-J
+    title: Ensure that keys used in comparison operations are immutable
+    statement:
+        Use immutable objects as keys in maps and sets. If a key class has
+        mutable fields, base equals, hashCode and compareTo only on its
+        immutable state.
+    rationale:
+        Changing a key after insertion breaks the collection's ordering or
+        hashing, so lookups fail and entries become unreachable. CERT rates
+        likelihood probable, detectable yes, repairable no, priority P4,
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        Map<List<String>, Integer> counts = new HashMap<>();
+        List<String> key = new ArrayList<>(List.of("a"));
+        counts.put(key, 1);
+        key.add("b");  // entry now unreachable
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Map<List<String>, Integer> counts = new HashMap<>();
+        List<String> key = List.of("a");
+        counts.put(key, 1);
+        \\\
+        ```
+    languages: [java]
+    tags: [collections, immutability, hashing]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met11-j/

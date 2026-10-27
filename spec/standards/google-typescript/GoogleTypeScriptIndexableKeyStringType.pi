@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptIndexableKeyStringType:
+    standard: @{GoogleTypeScript}
+    ruleId: indexable-key-string-type
+    title: Label index signature keys meaningfully, or use Map and Set
+    statement:
+        When typing an object used as an associative array, give the index
+        signature key a meaningful label. Consider ES6 Map and Set instead.
+    rationale:
+        The label documents what the keys are, and Map and Set state intent
+        more clearly, avoid object quirks and accept keys that are not
+        strings.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const stock: {[key: string]: number} = {};
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const stock: {[sku: string]: number} = {};
+        const stockBySku = new Map<string, number>();
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, data-structures]
+    source: https://google.github.io/styleguide/tsguide.html#indexable-key-string-type

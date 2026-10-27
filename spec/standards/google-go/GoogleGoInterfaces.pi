@@ -1,0 +1,57 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoInterfaces:
+    standard: @{GoogleGo}
+    ruleId: decisions/interfaces
+    title: Define small interfaces only when needed
+    statement:
+        Do not create an interface until there is a real need, and do not
+        wrap RPC clients or export test doubles just for testing. Keep
+        interfaces small and documented, let the consumer define them, keep
+        internal ones unexported, and accept interfaces but return concrete
+        types.
+    rationale:
+        Premature interfaces hide the concrete type, and returning concrete
+        types gives callers every method while still letting them pass the
+        value to interface parameters.
+    exceptions:
+        A producer may export an interface that is itself the product, and
+        returning an interface such as error is acceptable for encapsulation
+        or patterns like factories and strategies.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package storage
+
+        type Store interface {
+            Get(key string) ([]byte, error)
+            Put(key string, v []byte) error
+            Delete(key string) error
+            List(prefix string) ([]string, error)
+        }
+
+        func NewStore() Store { return &diskStore{} }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package storage
+
+        func NewDiskStore() *DiskStore { return &DiskStore{} }
+
+        package report
+
+        type getter interface {
+            Get(key string) ([]byte, error)
+        }
+
+        func Build(src getter) (*Report, error)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, interfaces, api-design]
+    source: https://google.github.io/styleguide/go/decisions#interfaces

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptTypeInference:
+    standard: @{GoogleTypeScript}
+    ruleId: type-inference
+    title: Omit annotations for trivially inferred types
+    statement:
+        Code may rely on type inference. Leave out annotations on variables
+        and parameters initialised with a string, number, boolean or RegExp
+        literal or a new expression. Add annotations where inference would
+        give unknown or where a complex expression benefits from a stated
+        type.
+    rationale:
+        Redundant annotations add noise, while a well-placed annotation
+        documents types that are hard to see.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const retries: number = 3;
+        const seen: Set<string> = new Set();
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const retries = 3;
+        const seen = new Set<string>();
+        const rows: ReportRow[] = await api.fetchReport().toRows();
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, type-inference]
+    source: https://google.github.io/styleguide/tsguide.html#type-inference

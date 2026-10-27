@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoNamedResultParameters:
+    standard: @{GoogleGo}
+    ruleId: decisions/named-result-parameters
+    title: Name result parameters only when it helps the caller
+    statement:
+        Name results when a function returns several values of the same type
+        or when a name tells the caller what to do with a value. Do not name
+        them when the names repeat the types, to avoid declaring a variable,
+        or just to enable naked returns, which belong only in small
+        functions.
+    rationale:
+        Named results appear in Godoc as part of the API, and naked returns
+        in long functions hide what is returned.
+    exceptions:
+        Naming a result is always fine when a deferred closure must change
+        its value.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (s *Store) Account(id string) (account *Account, err error)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (s *Store) Account(id string) (*Account, error)
+
+        func Bounds(points []Point) (min, max Point)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, functions, documentation]
+    source: https://google.github.io/styleguide/go/decisions#named-result-parameters

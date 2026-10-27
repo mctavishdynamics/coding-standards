@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaCaughtExceptionsNotIgnored:
+    standard: @{GoogleJava}
+    ruleId: 6.2
+    title: Do not ignore caught exceptions
+    statement:
+        Respond to a caught exception, typically by logging it or, if it
+        should be impossible, rethrowing it as an AssertionError. When doing
+        nothing is truly right, explain why in a comment in the catch block.
+    rationale:
+        Silently swallowed exceptions hide failures and make bugs very hard
+        to trace.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        try {
+          config.load(path);
+        } catch (IOException e) {
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        try {
+          config.load(path);
+        } catch (IOException e) {
+          logger.warn("Using defaults; could not read " + path, e);
+        }
+
+        try {
+          return Integer.parseInt(token);
+        } catch (NumberFormatException _) {
+          // Not a number; fall back to treating it as a name.
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [error-handling, exceptions]
+    source: https://google.github.io/styleguide/javaguide.html#s6.2-caught-exceptions

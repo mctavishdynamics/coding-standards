@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF19:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.19
+    title: For forward parameters, pass by TP&& and only std::forward the parameter
+    statement:
+        When a function only passes an argument on to other code, take it as
+        a forwarding reference of a template parameter and pass it on with a
+        call to std::forward, and do nothing else with it.
+    rationale:
+        A forwarding reference preserves the argument's constness and value
+        category so the final callee sees exactly what the caller passed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<class T, class Arg>
+        std::unique_ptr<T> make(Arg arg) {           // copies and loses rvalue-ness
+            return std::unique_ptr<T>(new T(arg));
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<class T, class Arg>
+        std::unique_ptr<T> make(Arg&& arg) {
+            return std::unique_ptr<T>(new T(std::forward<Arg>(arg)));
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, parameters, templates, move-semantics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-forward

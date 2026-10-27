@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellFunctionNames:
+    standard: @{GoogleShell}
+    ruleId: function-names
+    title: Name functions in lower case with underscores
+    statement:
+        Write function names in lower case with underscores between words,
+        followed by parentheses, with no space before them and the opening
+        brace on the same line. Libraries may namespace functions with a
+        package prefix and ::. The function keyword is optional but must be
+        used consistently in a project.
+    rationale:
+        This matches the naming used elsewhere at Google and keeps functions
+        easy to spot.
+    exceptions:
+        Avoid :: namespacing where colons cause trouble, such as interactive
+        shell completion.
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        RestartService ()
+        {
+          systemctl restart "$1"
+        }
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        restart_service() {
+          systemctl restart "$1"
+        }
+
+        deploy::restart_service() {
+          systemctl restart "$1"
+        }
+        \\\
+        ```
+    languages: [shell]
+    tags: [naming, functions]
+    source: https://google.github.io/styleguide/shellguide.html#function-names

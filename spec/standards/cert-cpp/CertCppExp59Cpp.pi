@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppExp59Cpp:
+    standard: @{CertCpp}
+    ruleId: EXP59-CPP
+    title: Use offsetof() on valid types and members
+    statement:
+        Use offsetof only with a standard-layout class and a data member
+        that is not static and not a bit-field.
+    rationale:
+        offsetof on other types or on a static member or bit-field is
+        undefined or conditionally supported, and may not compile or may
+        give a meaningless offset. CERT rates likelihood unlikely,
+        detectable yes, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        struct Node {
+            virtual ~Node() = default;
+            int id;
+        };
+
+        size_t id_offset = offsetof(Node, id);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct NodeData {
+            int id;
+            int parent;
+        };
+
+        size_t id_offset = offsetof(NodeData, id);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [expressions, classes, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/expressions-exp/exp59-cpp

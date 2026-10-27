@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC183:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.183
+    title: Do not use a union for type punning
+    statement:
+        Do not write one member of a union and read another to reinterpret
+        the bits. Use std::bit_cast or memcpy for that.
+    rationale:
+        Reading a member other than the one last written is undefined
+        behavior, and the punning is harder to spot than a named cast.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        union Bits {
+            float f;
+            std::uint32_t u;
+        };
+
+        Bits b;
+        b.f = 1.0f;
+        std::uint32_t raw = b.u;     // undefined behavior
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        float f = 1.0f;
+        auto raw = std::bit_cast<std::uint32_t>(f);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [unions, undefined-behavior, casts]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ru-pun

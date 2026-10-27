@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8KeywordArgumentEquals:
+    standard: @{Pep8}
+    ruleId: other-recommendations-keyword-equals
+    title: No spaces around the equals sign of keyword arguments
+    statement:
+        Do not put spaces around the equals sign of a keyword argument or of
+        a default value for an unannotated parameter.
+    rationale:
+        The tight form sets keyword arguments apart from assignments.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def connect(host, port = 5432):
+            return Connection(host = host, port = port)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def connect(host, port=5432):
+            return Connection(host=host, port=port)
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, whitespace, functions]
+    source: https://peps.python.org/pep-0008/#other-recommendations

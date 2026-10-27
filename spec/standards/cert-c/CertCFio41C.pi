@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio41C:
+    standard: @{CertC}
+    ruleId: FIO41-C
+    title:
+        Do not call getc(), putc(), getwc(), or putwc() with a stream
+        argument that has side effects
+    statement:
+        Pass getc, putc, getwc and putwc a stream expression with no side
+        effects, such as a plain variable. Do the function call or
+        assignment that produces the stream in a separate statement.
+    rationale:
+        These may be implemented as macros that evaluate the stream argument
+        more than once, repeating the side effect, for example opening a
+        file twice. CERT rates likelihood unlikely, detectable yes,
+        repairable yes, priority P3, level L3.
+    exceptions:
+        The character argument of putc and putwc is evaluated exactly once,
+        so it may have side effects.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int first_byte(const char *path) {
+            FILE *f;
+            int c = getc(f = fopen(path, "rb"));
+            if (f != NULL) {
+                fclose(f);
+            }
+            return c;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int first_byte(const char *path) {
+            FILE *f = fopen(path, "rb");
+            if (f == NULL) {
+                return EOF;
+            }
+            int c = getc(f);
+            fclose(f);
+            return c;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [io, macros, side-effects]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/input-output-fio/fio41-c

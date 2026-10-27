@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPre32C:
+    standard: @{CertC}
+    ruleId: PRE32-C
+    title:
+        Do not use preprocessor directives in invocations of function-like
+        macros
+    statement:
+        Keep directives such as #ifdef, #define and #include out of the
+        argument list of a function-like macro. This also applies to
+        standard library calls, because any library function may be
+        implemented as a macro.
+    rationale:
+        Directives inside macro arguments are undefined behavior, and
+        compilers disagree on how to handle them. CERT rates likelihood
+        unlikely, detectable yes, repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include <string.h>
+
+        void copy_header(char *dst, const char *src) {
+            memcpy(dst, src,
+        #ifdef LONG_HEADER
+                   64
+        #else
+                   32
+        #endif
+            );
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <string.h>
+
+        void copy_header(char *dst, const char *src) {
+        #ifdef LONG_HEADER
+            memcpy(dst, src, 64);
+        #else
+            memcpy(dst, src, 32);
+        #endif
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [preprocessor, macros]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/preprocessor-pre/pre32-c

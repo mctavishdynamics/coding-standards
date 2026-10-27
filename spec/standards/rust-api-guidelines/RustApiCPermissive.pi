@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCPermissive:
+    standard: @{RustApiGuidelines}
+    ruleId: C-PERMISSIVE
+    title: License the crate and its dependencies permissively
+    statement:
+        For the best compatibility with the Rust ecosystem, dual-license the
+        crate as MIT OR Apache-2.0, or use a single permissive license such
+        as MIT or BSD, and depend only on permissively licensed crates.
+        Avoid Apache-2.0 alone.
+    rationale:
+        Dependency licences constrain how the crate can be distributed, and
+        Apache-only code cannot be used everywhere the Rust stack can.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```toml
+        \\\
+        [package]
+        name = "geo-index"
+        version = "1.2.0"
+        license = "Apache-2.0"
+        \\\
+        ```
+    compliant:
+        ```toml
+        \\\
+        [package]
+        name = "geo-index"
+        version = "1.2.0"
+        license = "MIT OR Apache-2.0"
+        \\\
+        ```
+    languages: [rust]
+    tags: [licensing, dependencies]
+    source: https://rust-lang.github.io/api-guidelines/necessities.html#c-permissive

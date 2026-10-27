@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppOperatorOverloading:
+    standard: @{GoogleCpp}
+    ruleId: Operator_Overloading
+    title:
+        Overload operators judiciously and avoid user-defined literals
+    statement:
+        Overload an operator only when its meaning is obvious and matches
+        the built-in operator, and only on your own types in the same
+        namespace. Prefer non-member binary operators. Do not overload
+        logical and, logical or, comma or unary address-of, and do not
+        define or use user-defined literals.
+    rationale:
+        Surprising operators confuse readers and hide costly operations.
+        Some overloads cannot keep the built-in evaluation order, and
+        operators defined far from their type risk conflicting definitions.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Pipe used as a shell-style operator, and a custom literal.
+        Pipeline operator|(Pipeline p, Stage s);
+        Duration operator""_ms(unsigned long long n);
+
+        auto timeout = 500_ms;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Money {
+         public:
+          friend bool operator==(const Money& a, const Money& b);
+          friend Money operator+(const Money& a, const Money& b);
+        };
+
+        Duration timeout = absl::Milliseconds(500);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [operators, classes]
+    source: https://google.github.io/styleguide/cppguide.html#Operator_Overloading

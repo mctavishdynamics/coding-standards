@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoSwitchForIfChains:
+    standard: @{EffectiveGo}
+    ruleId: switch
+    title: Write if-else-if chains as a switch
+    statement:
+        Replace a chain of if-else-if tests with a switch, using an
+        expressionless switch that tests a series of boolean conditions when
+        needed.
+    rationale:
+        Go's switch evaluates non-constant cases top to bottom, so it
+        expresses the same logic more compactly and idiomatically.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        if code < 200 {
+            return "info"
+        } else if code < 300 {
+            return "ok"
+        } else if code < 400 {
+            return "redirect"
+        } else {
+            return "error"
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        switch {
+        case code < 200:
+            return "info"
+        case code < 300:
+            return "ok"
+        case code < 400:
+            return "redirect"
+        default:
+            return "error"
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [control-flow, switch]
+    source: https://go.dev/doc/effective_go#switch

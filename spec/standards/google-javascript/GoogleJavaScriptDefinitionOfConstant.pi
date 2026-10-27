@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptDefinitionOfConstant:
+    standard: @{GoogleJavaScript}
+    ruleId: 6.2.5.1
+    title: Use constant case only for deeply immutable values
+    statement:
+        A constant is a @const static property or module-level const whose
+        value is deeply immutable. Before using CONSTANT_CASE, check that
+        none of the value's observable state can change; merely intending
+        not to mutate it is not enough.
+    rationale:
+        Constant case promises readers the value is fixed, so applying it to
+        mutable objects misleads them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const ACTIVE_SESSIONS = new Map();
+        const LOGGER = log.getLogger('app');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const activeSessions = new Map();
+        const logger = log.getLogger('app');
+        const SECONDS_PER_DAY = 86400;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming, constants, mutability]
+    source: https://google.github.io/styleguide/jsguide.html#6251-definition-of-constant

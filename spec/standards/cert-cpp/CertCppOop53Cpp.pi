@@ -1,0 +1,51 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppOop53Cpp:
+    standard: @{CertCpp}
+    ruleId: OOP53-CPP
+    title: Write constructor member initializers in the canonical order
+    statement:
+        Write the member initializer list in the order members are actually
+        initialized, which is virtual bases, direct bases in declaration
+        order, then data members in declaration order. Do not make an
+        initializer depend on a member initialized later.
+    rationale:
+        Initialization order is fixed by the class definition, not the list,
+        so an initializer that reads a later member reads an uninitialized
+        value. CERT rates likelihood unlikely, detectable yes, repairable
+        yes, priority P6, level L2.
+    exceptions:
+        Constructors that use no member initializers do not violate this
+        rule.
+    severity: medium
+    noncompliant:
+        ```cpp
+        \\\
+        class Range {
+        public:
+            Range(int lo, int hi) : hi_(hi), size_(hi_ - lo), lo_(lo) {}
+        private:
+            int size_;
+            int lo_;
+            int hi_;
+        };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        class Range {
+        public:
+            Range(int lo, int hi) : size_(hi - lo), lo_(lo), hi_(hi) {}
+        private:
+            int size_;
+            int lo_;
+            int hi_;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, constructors, initialization]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/object-oriented-programming-oop/oop53-cpp

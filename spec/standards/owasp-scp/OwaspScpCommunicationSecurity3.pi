@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpCommunicationSecurity3:
+    standard: @{OwaspScp}
+    ruleId: communication-security-3
+    title: Never fall back to insecure connections after TLS fails
+    statement:
+        When a TLS connection fails, do not fall back to an unencrypted or
+        weaker connection.
+    rationale:
+        Attackers can force failures on purpose to downgrade the connection.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def fetch(path):
+            try:
+                return requests.get("https://api.example.com" + path)
+            except requests.exceptions.SSLError:
+                return requests.get("http://api.example.com" + path)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def fetch(path):
+            return requests.get("https://api.example.com" + path, timeout=10)
+        \\\
+        ```
+    languages: [any]
+    tags: [communication, tls, fail-secure]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#communication-security

@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreP11:
+    standard: @{CppCoreGuidelines}
+    ruleId: P.11
+    title: Encapsulate messy constructs rather than spreading them through the code
+    statement:
+        Hide low-level, tricky code behind a well-designed interface such as
+        a class or function, so the rest of the program uses the clean
+        interface.
+    rationale:
+        Messy code hides bugs, is harder to write and tends to breed more of
+        the same. A good interface is easier and safer to use.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // every caller manages the raw buffer itself
+        int* data = new int[n];
+        int count = 0;
+        if (count == n) { /* grow by hand */ }
+        data[count++] = x;
+        delete[] data;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<int> data;
+        data.push_back(x);   // growth and cleanup are encapsulated
+        \\\
+        ```
+    languages: [cpp]
+    tags: [philosophy, encapsulation, abstraction]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rp-library

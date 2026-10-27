@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCon56Cpp:
+    standard: @{CertCpp}
+    ruleId: CON56-CPP
+    title: Do not speculatively lock a non-recursive mutex that is already owned by the calling thread
+    statement:
+        Do not call try_lock or another speculative locking function on a
+        non-recursive mutex that the calling thread already owns.
+    rationale:
+        Speculatively locking a non-recursive mutex you already hold is
+        undefined behavior and may deadlock. CERT rates likelihood unlikely,
+        detectable no, repairable no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        std::mutex m;
+
+        void refresh() {
+            std::lock_guard<std::mutex> g(m);
+            if (m.try_lock()) {  // already owned by this thread
+                m.unlock();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::mutex m;
+
+        void refresh_locked() { /* caller holds m */ }
+
+        void refresh() {
+            std::lock_guard<std::mutex> g(m);
+            refresh_locked();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, mutexes]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/concurrency-con/con56-cpp

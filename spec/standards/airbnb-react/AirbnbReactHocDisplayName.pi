@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactHocDisplayName:
+    standard: @{AirbnbReact}
+    ruleId: naming-5
+    title: Give higher-order components a composite display name
+    statement:
+        Set the displayName of a component made by a higher-order component
+        to the HOC name wrapping the inner component name, so withTheme
+        applied to Button gives withTheme(Button).
+    rationale:
+        Developer tools and error messages show the displayName, and a
+        composite name makes clear which component was wrapped by what.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        export default function withTheme(Inner) {
+          return function WithTheme(props) {
+            return <Inner {...props} theme={currentTheme()} />;
+          };
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        export default function withTheme(Inner) {
+          function WithTheme(props) {
+            return <Inner {...props} theme={currentTheme()} />;
+          }
+
+          const innerName = Inner.displayName || Inner.name || 'Component';
+          WithTheme.displayName = `withTheme(${innerName})`;
+          return WithTheme;
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [naming, higher-order-components]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#naming

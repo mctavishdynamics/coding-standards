@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsConstructorsChaining:
+    standard: @{AirbnbJavaScript}
+    ruleId: 9.3
+    title: Return this from methods to allow chaining
+    statement:
+        Methods that change an object may return this so that calls can be
+        chained.
+    rationale:
+        Chaining lets several related operations read as one expression.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Query {
+          where(field, value) {
+            this.filters.push([field, value]);
+            return true;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Query {
+          where(field, value) {
+            this.filters.push([field, value]);
+            return this;
+          }
+        }
+        query.where('city', 'Oslo').where('active', true);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, api-design]
+    source: https://github.com/airbnb/javascript#constructors--chaining

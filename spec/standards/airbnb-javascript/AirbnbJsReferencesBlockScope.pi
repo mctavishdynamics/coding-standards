@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsReferencesBlockScope:
+    standard: @{AirbnbJavaScript}
+    ruleId: 2.3
+    title: Rely on let and const being block scoped
+    statement:
+        Keep in mind that let and const exist only inside the block that
+        declares them, while var belongs to the enclosing function.
+    rationale:
+        Code that reads a block-scoped variable outside its block throws a
+        ReferenceError, while a var silently leaks out of the block.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        if (ready) {
+          var status = 'ok';
+        }
+        console.log(status); // leaks out of the block
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        let status = 'pending';
+        if (ready) {
+          status = 'ok';
+        }
+        console.log(status);
+        \\\
+        ```
+    languages: [javascript]
+    tags: [variables, scope]
+    source: https://github.com/airbnb/javascript#references--block-scope

@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC7:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.7
+    title: Do not define a type and a variable in one statement
+    statement:
+        Define a class or enum in its own declaration, then declare
+        variables of that type separately.
+    rationale:
+        Combining a type definition with a variable definition is confusing
+        and buys nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Config {
+            int retries;
+            int timeout_ms;
+        } default_config;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Config {
+            int retries;
+            int timeout_ms;
+        };
+
+        Config default_config;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [classes, declarations, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-standalone

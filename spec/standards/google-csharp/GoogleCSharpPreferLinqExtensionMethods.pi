@@ -1,0 +1,30 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpPreferLinqExtensionMethods:
+    standard: @{GoogleCSharp}
+    ruleId: prefer-linq-extension-methods
+    title: Prefer LINQ methods over query keywords
+    statement:
+        Use LINQ extension methods such as Where and Select rather than the
+        SQL-style query keywords.
+    rationale:
+        Method syntax is the more common and consistent form.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        var adults = from p in people where p.Age >= 18 select p.Name;
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        var adults = people.Where(p => p.Age >= 18).Select(p => p.Name);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [linq, syntax]
+    source: https://google.github.io/styleguide/csharpguide.html#linq

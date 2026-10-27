@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoGenerality:
+    standard: @{EffectiveGo}
+    ruleId: generality
+    title: Return an interface when a type only implements it
+    statement:
+        If a type exists only to implement an interface and has no other
+        exported methods, do not export the type; have the constructor
+        return the interface.
+    rationale:
+        It shows the value has no behaviour beyond the interface, avoids
+        repeating method documentation, and lets callers switch
+        implementations by changing only the constructor call.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type FNVHasher struct{ sum uint32 }
+
+        func (h *FNVHasher) Write(p []byte) (int, error) { return h.write(p) }
+        func (h *FNVHasher) Sum32() uint32               { return h.sum }
+
+        func NewFNV() *FNVHasher { return &FNVHasher{sum: offset} }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type fnvHasher struct{ sum uint32 }
+
+        func (h *fnvHasher) Write(p []byte) (int, error) { return h.write(p) }
+        func (h *fnvHasher) Sum32() uint32               { return h.sum }
+
+        func NewFNV() Hash32 { return &fnvHasher{sum: offset} }
+        \\\
+        ```
+    languages: [go]
+    tags: [interfaces, api-design, encapsulation]
+    source: https://go.dev/doc/effective_go#generality

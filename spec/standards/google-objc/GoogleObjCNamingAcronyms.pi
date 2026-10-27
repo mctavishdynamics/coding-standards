@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCNamingAcronyms:
+    standard: @{GoogleObjC}
+    ruleId: naming-acronyms
+    title: Write acronyms in names in all capitals
+    statement:
+        Write acronyms and initialisms such as URL, ID or PDF in all
+        capitals inside any class, category, method, function or variable
+        name, including at the start of the name. C function and typedef
+        names are capitalized and use camel case to suit the surrounding
+        code.
+    rationale:
+        This matches Apple's own convention for names that contain acronyms.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        NSURL *imageUrl;
+        NSString *userId;
+        - (void)loadPdfFromUrl:(NSURL *)url;
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        NSURL *imageURL;
+        NSString *userID;
+        - (void)loadPDFFromURL:(NSURL *)URL;
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [naming, acronyms]
+    source: https://google.github.io/styleguide/objcguide.html#naming

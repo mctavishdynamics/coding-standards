@@ -1,0 +1,32 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs9:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.9
+    title: Avoid ALL_CAPS names
+    statement:
+        Do not use ALL_CAPS for names other than macros.
+    rationale:
+        ALL_CAPS is the conventional style for macros, so such names risk
+        accidental macro substitution.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        enum class Color { RED, GREEN, BLUE };   // RED may be a macro somewhere
+        const int MAX_USERS = 100;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum class Color { red, green, blue };
+        const int max_users = 100;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, macros]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-not-caps

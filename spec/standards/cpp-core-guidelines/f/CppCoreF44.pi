@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF44:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.44
+    title: Return a T& when copy is undesirable and returning no object is not needed
+    statement:
+        Return a reference when the caller should access an existing object
+        without copying it and there is always an object to return. The
+        reference must not imply ownership.
+    rationale:
+        A reference always refers to an object, so the caller does not need
+        a nullptr check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Item* Inventory::at(std::size_t i) {   // never null, yet callers check
+            return &items_[i];
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Item& Inventory::at(std::size_t i) {
+            return items_[i];
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, return-values, references]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-return-ref

@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaOverrideAlwaysUsed:
+    standard: @{GoogleJava}
+    ruleId: 6.1
+    title: Always use the Override annotation where legal
+    statement:
+        Mark a method with Override whenever it is legal, including
+        overrides of superclass methods, implementations of interface
+        methods, interface methods that restate a superinterface method, and
+        explicit record accessors.
+    rationale:
+        The compiler then catches signature mistakes, and readers can see
+        which methods come from a supertype.
+    exceptions:
+        Override may be omitted when the parent method is deprecated.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        final class Point {
+          public boolean equals(Point other) {
+            return x == other.x;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        final class Point {
+          @Override
+          public boolean equals(Object other) {
+            return other instanceof Point p && x == p.x;
+          }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [annotations, inheritance]
+    source: https://google.github.io/styleguide/javaguide.html#s6.1-override-annotation

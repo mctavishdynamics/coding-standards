@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp42C:
+    standard: @{CertC}
+    ruleId: EXP42-C
+    title: Do not compare padding data
+    statement:
+        Compare structures member by member rather than with memcmp over the
+        whole object.
+    rationale:
+        Padding bytes have unspecified values even after the members are
+        set, so two equal structures can compare as different. CERT rates
+        likelihood probable, detectable yes, repairable yes, priority P12,
+        level L1.
+    exceptions:
+        A structure packed or laid out so that it has no padding may be
+        compared with memcmp, provided its members have no padding bits and
+        their object and value representations agree.
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        #include <string.h>
+
+        struct point { char tag; int x; int y; };
+
+        int same(const struct point *a, const struct point *b) {
+            return memcmp(a, b, sizeof *a) == 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct point { char tag; int x; int y; };
+
+        int same(const struct point *a, const struct point *b) {
+            return a->tag == b->tag && a->x == b->x && a->y == b->y;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [structures, padding, comparison]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/expressions-exp/exp42-c

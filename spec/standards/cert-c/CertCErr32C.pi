@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCErr32C:
+    standard: @{CertC}
+    ruleId: ERR32-C
+    title: Do not rely on indeterminate values of errno
+    statement:
+        If a call to signal inside an asynchronous signal handler returns
+        SIG_ERR, do not read errno afterwards, for example through perror.
+        End the program or handle the failure without consulting errno.
+    rationale:
+        In that situation errno is indeterminate, and reading it is
+        undefined behavior. CERT rates likelihood unlikely, detectable yes,
+        repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        static void on_int(int sig) {
+            if (signal(sig, on_int) == SIG_ERR) {
+                perror("signal");
+                abort();
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static void on_int(int sig) {
+            if (signal(sig, on_int) == SIG_ERR) {
+                abort();
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [error-handling, errno, signals]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/error-handling-err/err32-c

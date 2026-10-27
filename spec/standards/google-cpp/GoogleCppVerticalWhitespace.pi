@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppVerticalWhitespace:
+    standard: @{GoogleCpp}
+    ruleId: Vertical_Whitespace
+    title: Use blank lines sparingly
+    statement:
+        Use blank lines only where they help show structure, separating
+        closely related chunks like paragraphs. Do not add them where
+        indentation already separates code, such as at the start or end of a
+        block.
+    rationale:
+        Unnecessary blank lines make the overall structure of the code
+        harder to see.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Process() {
+
+          Load();
+
+
+          Save();
+
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Process() {
+          Load();
+          Validate();
+
+          Save();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, whitespace]
+    source: https://google.github.io/styleguide/cppguide.html#Vertical_Whitespace

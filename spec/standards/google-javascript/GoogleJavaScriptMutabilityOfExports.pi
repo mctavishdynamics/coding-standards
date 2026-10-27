@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptMutabilityOfExports:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.4.2.2
+    title: Do not mutate exported variables after initialization
+    statement:
+        Exported variables must not change after the module has finished
+        initializing. If state must change, export a constant object with
+        mutable fields or export accessor functions.
+    rationale:
+        Live-binding changes to exports are surprising to importers and hard
+        for tools to reason about.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        export let requestCount = 0;
+
+        export function recordRequest() {
+          requestCount++;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        let requestCount = 0;
+
+        export function recordRequest() {
+          requestCount++;
+        }
+
+        export function getRequestCount() {
+          return requestCount;
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, exports, mutability]
+    source: https://google.github.io/styleguide/jsguide.html#3422-mutability-of-exports

@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC148:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.148
+    title: Use dynamic_cast to a pointer when failure is a valid outcome
+    statement:
+        If the object may or may not be of the target class and both cases
+        are normal, cast to a pointer type and test the result.
+    rationale:
+        A pointer cast returns null on failure, which lets the code choose
+        between alternative paths at run time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        try {
+            auto& img = dynamic_cast<Image&>(item);
+            show_preview(img);
+        } catch (const std::bad_cast&) {
+            show_icon(item);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        if (auto* img = dynamic_cast<Image*>(&item))
+            show_preview(*img);
+        else
+            show_icon(item);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, casts]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-ptr-cast

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftParentheses:
+    standard: @{GoogleSwift}
+    ruleId: parentheses
+    title: Do not parenthesize conditions after control keywords
+    statement:
+        Do not put parentheses around the top-level expression after if,
+        guard, while or switch. Omit optional grouping parentheses only when
+        author and reviewer agree the code cannot be misread without them.
+    rationale:
+        Swift does not need them, but readers should not have to memorise
+        the precedence table either.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        while (queue.isEmpty == false) {
+          process(queue.removeFirst())
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        while !queue.isEmpty {
+          process(queue.removeFirst())
+        }
+        let isEligible = (age >= 18) && (hasConsent || isSupervised)
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, control-flow]
+    source: https://google.github.io/swift/#parentheses

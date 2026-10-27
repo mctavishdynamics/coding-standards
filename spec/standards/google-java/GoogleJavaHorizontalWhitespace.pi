@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaHorizontalWhitespace:
+    standard: @{GoogleJava}
+    ruleId: 4.6.2
+    title: Use single spaces only where the guide places them
+    statement:
+        Outside literals and comments, put a single space between a keyword
+        and a following open parenthesis or preceding closing brace; before
+        an open brace; on both sides of binary and ternary operators, a
+        type-bound ampersand, a multi-catch pipe, a foreach colon and a
+        lambda or switch-rule arrow; after commas, colons, semicolons and
+        the closing parenthesis of a cast; around the double slash of a
+        comment; and between a declaration's type and name.
+    rationale:
+        Consistent spacing makes tokens easy to separate visually and keeps
+        formatting identical across authors.
+    exceptions:
+        No space goes around the method-reference colons or the dot
+        separator, or before the brace in an annotation argument such as an
+        array value. Spaces just inside array initializer braces are
+        optional. The rule only covers interior space, not leading or
+        trailing space.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        for(int i=0;i<count;i++){
+          total+=(int)prices[i];
+        }
+        names.forEach(name->print(name));
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        for (int i = 0; i < count; i++) {
+          total += (int) prices[i];
+        }
+        names.forEach(name -> print(name));
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, whitespace]
+    source: https://google.github.io/styleguide/javaguide.html#s4.6.2-horizontal-whitespace

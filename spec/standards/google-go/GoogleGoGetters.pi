@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoGetters:
+    standard: @{GoogleGo}
+    ruleId: decisions/getters
+    title: Do not prefix accessor names with Get
+    statement:
+        Start function and method names with the noun, as in Counts rather
+        than GetCounts. For an expensive computation or a remote call, use a
+        verb such as Compute or Fetch to signal that it may take time or
+        fail.
+    rationale:
+        The Get prefix adds no information, while a distinct verb warns the
+        caller about cost and failure.
+    exceptions:
+        Use get when the underlying concept is a get, such as an HTTP GET.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func (a *Account) GetOwner() string
+        func (c *Client) GetQuota(ctx context.Context) (int, error)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func (a *Account) Owner() string
+        func (c *Client) FetchQuota(ctx context.Context) (int, error)
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, naming, methods]
+    source: https://google.github.io/styleguide/go/decisions#getters

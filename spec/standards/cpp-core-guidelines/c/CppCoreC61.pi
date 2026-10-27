@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC61:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.61
+    title: Make a copy operation copy
+    statement:
+        After a copy, the two objects must compare equal. They may be
+        independent, as with value types, or share one object, as with
+        pointers, but the copy must not do anything else.
+    rationale:
+        Everyone assumes copy means copy, and code built on that assumption
+        breaks when it does not.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Matrix& Matrix::operator=(const Matrix& o) {
+            rows_ = o.rows_;
+            cols_ = o.cols_;
+            // forgot to copy elements
+            return *this;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Matrix& Matrix::operator=(const Matrix& o) {
+            rows_ = o.rows_;
+            cols_ = o.cols_;
+            elems_ = o.elems_;
+            return *this;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [copy, value-semantics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rc-copy-semantic

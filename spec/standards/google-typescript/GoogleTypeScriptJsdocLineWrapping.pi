@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptJsdocLineWrapping:
+    standard: @{GoogleTypeScript}
+    ruleId: jsdoc-line-wrapping
+    title: Indent wrapped JSDoc block tags by four spaces
+    statement:
+        Indent the continuation lines of a wrapped block tag by four spaces.
+        Avoid aligning wrapped text with the description above, and do not
+        indent wrapped @desc or @fileoverview text.
+    rationale:
+        A fixed indent is easy to maintain, while alignment breaks whenever
+        names change.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        /**
+         * @param timeout How long to wait before the request is abandoned and
+         *                an error is reported.
+         */
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /**
+         * @param timeout How long to wait before the request is abandoned and
+         *     an error is reported.
+         */
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc, formatting]
+    source: https://google.github.io/styleguide/tsguide.html#jsdoc-line-wrapping

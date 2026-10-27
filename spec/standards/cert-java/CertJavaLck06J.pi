@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaLck06J:
+    standard: @{CertJava}
+    ruleId: LCK06-J
+    title: Do not use an instance lock to protect shared static data
+    statement:
+        Guard static shared data with a static lock object. A per-instance
+        lock or a synchronized instance method does not protect it.
+    rationale:
+        Each instance has its own lock, so two threads working through two
+        instances can update the static data at the same time. CERT's risk
+        assessment gives likelihood probable, detectable yes, repairable no,
+        priority P8 and level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        class Visits {
+            private static int count;
+
+            synchronized void record() {
+                count++;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Visits {
+            private static final Object lock = new Object();
+            private static int count;
+
+            void record() {
+                synchronized (lock) {
+                    count++;
+                }
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, locking, static-fields]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/locking-lck/lck06-j/

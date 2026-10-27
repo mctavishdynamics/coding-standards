@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppExp54Cpp:
+    standard: @{CertCpp}
+    ruleId: EXP54-CPP
+    title: Do not access an object outside of its lifetime
+    statement:
+        Use an object only while it is alive: after its storage is obtained
+        and its construction finishes, and before its destructor runs or its
+        storage is released. Do not keep pointers or references to
+        temporaries past the full expression.
+    rationale:
+        Accessing an object outside its lifetime is undefined behavior and a
+        common source of dangling references and use-after-free bugs. CERT
+        rates likelihood probable, detectable no, repairable no, priority
+        P6, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        const char* greeting() {
+            std::string text = "hello";
+            return text.c_str();  // text is destroyed on return
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string greeting() {
+            std::string text = "hello";
+            return text;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [lifetime, memory, references]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/expressions-exp/exp54-cpp

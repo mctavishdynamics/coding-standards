@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT20:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.20
+    title: Avoid concepts without meaningful semantics
+    statement:
+        Define concepts for semantic notions like a number or a range, not
+        for a single operation such as having a plus operator. Use
+        single-operation constraints only as building blocks inside other
+        concepts.
+    rationale:
+        A one-operator constraint matches types by accident; an Addable
+        concept accepts both integers and strings, so an algorithm meant for
+        numbers silently concatenates text.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+        concept Addable = requires(T a, T b) { a + b; };
+
+        template<Addable T>
+        T mean2(const T& a, const T& b) { return (a + b) / 2; }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // +, -, * and / follow the usual arithmetic rules
+        template<typename T>
+        concept Number = requires(T a, T b) { a + b; a - b; a * b; a / b; };
+
+        template<Number T>
+        T mean2(const T& a, const T& b) { return (a + b) / 2; }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts, semantics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-low

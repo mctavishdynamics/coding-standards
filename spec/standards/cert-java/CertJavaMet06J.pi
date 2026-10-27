@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMet06J:
+    standard: @{CertJava}
+    ruleId: MET06-J
+    title: Do not invoke overridable methods in clone()
+    statement:
+        Call only final or private methods from a clone method.
+    rationale:
+        A subclass override can change cloning behavior or observe the clone
+        half-built, leaving the clone or the original inconsistent. CERT
+        rates likelihood probable, detectable yes, repairable no, priority
+        P8, level L2.
+    exceptions:
+        Calling a superclass method through super, including super.clone, is
+        allowed because it is not dispatched to the subclass.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        @Override public Document clone() throws CloneNotSupportedException {
+            Document copy = (Document) super.clone();
+            copy.copyPages();  // overridable
+            return copy;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Override public Document clone() throws CloneNotSupportedException {
+            Document copy = (Document) super.clone();
+            copy.pages = new ArrayList<>(pages);
+            return copy;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [cloning, inheritance]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/methods-met/met06-j/

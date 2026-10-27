@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppTemplateMetaprogramming:
+    standard: @{GoogleCpp}
+    ruleId: Template_metaprogramming
+    title: Avoid complicated template metaprogramming
+    statement:
+        Think twice before using template metaprogramming or other complex
+        template techniques, and keep it to a few low-level components. When
+        you use it, hide it as an implementation detail, comment and
+        document it well, and make the compiler errors understandable to
+        users.
+    rationale:
+        Such code is hard for most of the team to maintain, and its error
+        messages and control flow are hard to follow.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template <typename T, typename = void>
+        struct HasSize : std::false_type {};
+        template <typename T>
+        struct HasSize<T, std::void_t<decltype(std::declval<T>().size())>>
+            : std::true_type {};
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <typename T>
+        size_t CountOf(const T& container) {
+          return container.size();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, complexity]
+    source: https://google.github.io/styleguide/cppguide.html#Template_metaprogramming

@@ -1,0 +1,43 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp20:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.20
+    title: Use RAII and never plain lock and unlock calls
+    statement:
+        Acquire a mutex through a lock object such
+        as std::lock_guard, std::unique_lock or std::scoped_lock instead of
+        calling lock() and unlock() by hand.
+    rationale:
+        A manual unlock is easily skipped by an early return, an exception
+        or a later edit, leaving the mutex locked forever.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void Inventory::add(Item item)
+        {
+            mutex_.lock();
+            if (!item.valid()) return;   // mutex never released
+            items_.push_back(std::move(item));
+            mutex_.unlock();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void Inventory::add(Item item)
+        {
+            std::lock_guard lock(mutex_);
+            if (!item.valid()) return;
+            items_.push_back(std::move(item));
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, raii, locking]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-raii

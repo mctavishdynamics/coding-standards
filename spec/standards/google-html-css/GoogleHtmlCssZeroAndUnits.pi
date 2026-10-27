@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleHtmlCss import GoogleHtmlCss
+
+export coding-rule GoogleHtmlCssZeroAndUnits:
+    standard: @{GoogleHtmlCss}
+    ruleId: 0-and-units
+    title: Omit units after 0 values unless required
+    statement:
+        Write zero lengths without a unit, except where the unit is
+        required, such as the basis component of flex.
+    rationale:
+        A unit on zero adds nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```css
+        \\\
+        margin: 0px;
+        border-width: 0em;
+        \\\
+        ```
+    compliant:
+        ```css
+        \\\
+        margin: 0;
+        border-width: 0;
+        flex: 1 1 0px; /* the flex-basis unit is required */
+        \\\
+        ```
+    languages: [css]
+    tags: [values, units]
+    source: https://google.github.io/styleguide/htmlcssguide.html#0-and-units

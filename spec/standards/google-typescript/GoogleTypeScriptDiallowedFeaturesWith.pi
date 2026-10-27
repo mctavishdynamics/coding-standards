@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptDiallowedFeaturesWith:
+    standard: @{GoogleTypeScript}
+    ruleId: diallowed-features-with
+    title: Do not use with
+    statement:
+        Never use the with statement.
+    rationale:
+        with makes it unclear which names refer to which objects, and it has
+        been banned in strict mode since ES5.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        with (order) {
+          console.log(id, total);
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        console.log(order.id, order.total);
+        \\\
+        ```
+    languages: [typescript]
+    tags: [disallowed-features, scoping]
+    source: https://google.github.io/styleguide/tsguide.html#diallowed-features-with

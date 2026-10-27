@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257DocstringsForPublicObjects:
+    standard: @{Pep257}
+    ruleId: what-is-a-docstring
+    title: Give every module and public object a docstring
+    statement:
+        Write a docstring for every module, for each function and class a
+        module exports, and for public methods including __init__. Document
+        a package in the docstring of its __init__.py.
+    rationale:
+        A docstring is the first string in a definition and becomes its
+        __doc__ attribute, so help(), IDEs and documentation tools can show
+        it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import csv
+
+
+        def load_rows(path):
+            with open(path, newline="") as handle:
+                return list(csv.DictReader(handle))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        """Read and write the inventory CSV files."""
+        import csv
+
+
+        def load_rows(path):
+            """Return the rows of the CSV file at path as dictionaries."""
+            with open(path, newline="") as handle:
+                return list(csv.DictReader(handle))
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings]
+    source: https://peps.python.org/pep-0257/#what-is-a-docstring

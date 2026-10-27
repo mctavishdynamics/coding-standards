@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppNonAsciiCharacters:
+    standard: @{GoogleCpp}
+    ruleId: Non-ASCII_Characters
+    title: Keep non-ASCII characters rare and encode them in UTF-8
+    statement:
+        Use non-ASCII characters rarely and always in UTF-8. Hex escapes are
+        fine and encouraged where they help readability. Avoid the u8
+        prefix, and do not use char16_t, char32_t or wchar_t.
+    rationale:
+        User-facing text should not be hard-coded in source anyway, and
+        UTF-8 is understood by most tools. The u8 prefix changes meaning
+        between standard versions.
+    exceptions:
+        wchar_t is acceptable in code that calls the Windows API.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        const char16_t* kGreeting = u"Grüße";
+        const wchar_t* kTitle = L"Résumé";
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        const char kGreeting[] = "Grüße";       // UTF-8 encoded source.
+        constexpr char kBom[] = "\xEF\xBB\xBF"; // Visible escape.
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, encoding, strings]
+    source: https://google.github.io/styleguide/cppguide.html#Non-ASCII_Characters

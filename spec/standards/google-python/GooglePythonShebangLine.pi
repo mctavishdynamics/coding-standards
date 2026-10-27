@@ -1,0 +1,27 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonShebangLine:
+    standard: @{GooglePython}
+    ruleId: 3.7
+    title: Put a shebang line only on executable main files
+    statement:
+        Most .py files need no shebang. Start the main file of a program
+        with #!/usr/bin/env python3 or #!/usr/bin/python3.
+    rationale:
+        The kernel uses the line to find the interpreter, but Python ignores
+        it on import, so it is only needed on files run directly.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```python
+        \\\
+        #!/usr/bin/env python3
+        """Command-line entry point for the report tool."""
+        \\\
+        ```
+    languages: [python]
+    tags: [files, executables]
+    source: https://google.github.io/styleguide/pyguide.html#s3.7-shebang-line

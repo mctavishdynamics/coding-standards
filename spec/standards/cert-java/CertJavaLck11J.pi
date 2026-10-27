@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaLck11J:
+    standard: @{CertJava}
+    ruleId: LCK11-J
+    title: Avoid client-side locking when using classes that do not commit to their locking strategy
+    statement:
+        Do not add compound operations to a thread-safe class by locking on
+        the object from the outside unless that class documents which lock
+        it uses. Prefer composition with your own private lock.
+    rationale:
+        If the class uses a different lock, or changes its lock later, the
+        client's locking no longer excludes the class's own operations and
+        the compound action is not atomic. CERT's risk assessment gives
+        likelihood probable, detectable no, repairable no, priority P2 and
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        // The pool does not document which lock it uses.
+        void addIfAbsent(ConnectionPool pool, Connection c) {
+            synchronized (pool) {
+                if (!pool.contains(c)) pool.add(c);
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        final class SafePool {
+            private final Object lock = new Object();
+            private final ConnectionPool pool = new ConnectionPool();
+
+            void addIfAbsent(Connection c) {
+                synchronized (lock) {
+                    if (!pool.contains(c)) pool.add(c);
+                }
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, locking, api-design]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/locking-lck/lck11-j/

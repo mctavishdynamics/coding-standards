@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio38C:
+    standard: @{CertC}
+    ruleId: FIO38-C
+    title: Do not copy a FILE object
+    statement:
+        Refer to a stream only through the FILE pointer the library gave
+        you. Do not copy the FILE object itself and use the copy.
+    rationale:
+        The address of a FILE object may matter to the implementation, so a
+        copy is not guaranteed to work as a stream and using it can crash
+        the program. CERT rates likelihood probable, detectable yes,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        void report(const char *msg) {
+            FILE err_copy = *stderr;
+            fputs(msg, &err_copy);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void report(const char *msg) {
+            FILE *err = stderr;
+            fputs(msg, err);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [io, files]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/input-output-fio/fio38-c

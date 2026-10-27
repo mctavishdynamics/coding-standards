@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptBracesForControlStructures:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.1.1
+    title: Use braces for all control structures
+    statement:
+        Use braces around the body of every if, else, for, do, while and
+        other control structure, even for a single statement. The first
+        statement of a non-empty block starts on its own line.
+    rationale:
+        Braces prevent bugs where a statement added later silently falls
+        outside the intended body.
+    exceptions:
+        A simple if with no else that fits entirely on one line may omit
+        braces when that reads better.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        if (queue.isEmpty())
+          return null;
+
+        for (const job of jobs) run(job);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        if (queue.isEmpty()) {
+          return null;
+        }
+
+        for (const job of jobs) {
+          run(job);
+        }
+
+        if (!job) return;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, braces, control-flow]
+    source: https://google.github.io/styleguide/jsguide.html#411-braces-are-used-for-all-control-structures

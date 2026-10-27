@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8NoInventedDunderNames:
+    standard: @{Pep8}
+    ruleId: descriptive-naming-styles-dunders
+    title: Do not invent double-underscore names
+    statement:
+        Names with double leading and trailing underscores are reserved for
+        Python's special objects and attributes. Use them only as documented
+        and never make up new ones.
+    rationale:
+        Future Python versions may give such names a meaning, and readers
+        assume they are special.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class Order:
+            def __total__(self):
+                return sum(line.price for line in self.lines)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class Order:
+            def total(self):
+                return sum(line.price for line in self.lines)
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, dunder]
+    source: https://peps.python.org/pep-0008/#descriptive-naming-styles

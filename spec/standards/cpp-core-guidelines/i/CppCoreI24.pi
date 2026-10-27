@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI24:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.24
+    title: Avoid adjacent parameters that can be invoked by the same arguments in either order with different meaning
+    statement:
+        Do not place parameters of the same or convertible types next to
+        each other when swapping them would change the meaning. Use distinct
+        types, a range object or a struct with named fields.
+    rationale:
+        Adjacent arguments of the same type are easily swapped by mistake,
+        and the compiler cannot catch it.
+    exceptions:
+        If the order of the parameters does not matter, as in a max of two
+        values, there is no problem.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void copy_file(const std::string& from, const std::string& to);
+
+        copy_file(backup, original);   // swapped by accident
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Source { std::string path; };
+        struct Target { std::string path; };
+
+        void copy_file(const Source& from, const Target& to);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, parameters, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-unrelated

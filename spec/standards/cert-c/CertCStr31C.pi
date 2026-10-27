@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCStr31C:
+    standard: @{CertC}
+    ruleId: STR31-C
+    title:
+        Guarantee that storage for strings has sufficient space for
+        character data and the null terminator
+    statement:
+        Size every string buffer for the longest data it can receive plus
+        the terminating null, and use copy and read functions that respect
+        that size.
+    rationale:
+        Writing past the end of a string buffer is a buffer overflow, one of
+        the most exploited faults in C programs. CERT rates likelihood
+        likely, detectable no, repairable no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+        #include <string.h>
+
+        char *copy(const char *src) {
+            char *dst = malloc(strlen(src));
+            if (dst) {
+                strcpy(dst, src);
+            }
+            return dst;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdlib.h>
+        #include <string.h>
+
+        char *copy(const char *src) {
+            size_t size = strlen(src) + 1;
+            char *dst = malloc(size);
+            if (dst) {
+                memcpy(dst, src, size);
+            }
+            return dst;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [strings, buffer-overflow, memory]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/characters-and-strings-str/str31-c

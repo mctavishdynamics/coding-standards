@@ -1,0 +1,54 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoDesigningEffectiveInterfaces:
+    standard: @{GoogleGo}
+    ruleId: best-practices/designing-effective-interfaces
+    title: Keep interfaces small, documented and returned rarely
+    statement:
+        Keep interfaces small, document their contract, edge cases and
+        errors in proportion to their complexity, including unexported ones,
+        and accept interfaces but return concrete types.
+    rationale:
+        Small interfaces are easy to implement and compose, and concrete
+        results give callers full functionality.
+    exceptions:
+        Return an interface for encapsulation that protects integrity, such
+        as error, when the concrete type is chosen at run time as in factory
+        or strategy patterns, or to break an import cycle.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Storage interface {
+            Read(key string) ([]byte, error)
+            Write(key string, v []byte) error
+            Stats() Stats
+            Compact() error
+            Close() error
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // A Reader fetches values by key. Read returns ErrNotFound when the key
+        // is absent. Implementations must be safe for concurrent use.
+        type Reader interface {
+            Read(key string) ([]byte, error)
+        }
+
+        func NewWriter(format string) io.Writer {
+            switch format {
+            case "json":
+                return &jsonWriter{}
+            default:
+                return &textWriter{}
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, interfaces, documentation]
+    source: https://google.github.io/styleguide/go/best-practices#designing-effective-interfaces

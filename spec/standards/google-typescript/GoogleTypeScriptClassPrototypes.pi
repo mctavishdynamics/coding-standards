@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptClassPrototypes:
+    standard: @{GoogleTypeScript}
+    ruleId: class-prototypes
+    title: Do not manipulate prototypes directly
+    statement:
+        Define classes with the class keyword rather than by editing
+        prototypes. Mixins and changes to the prototypes of built-in objects
+        are forbidden.
+    rationale:
+        Class syntax is clearer, and ordinary code has no reason to
+        manipulate prototype objects.
+    exceptions:
+        Framework code such as Polymer or Angular may need prototypes and
+        should not resort to worse workarounds to avoid them.
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function Point(x: number, y: number) {}
+        Point.prototype.norm = function() {
+          return Math.hypot(this.x, this.y);
+        };
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Point {
+          constructor(readonly x: number, readonly y: number) {}
+          norm() {
+            return Math.hypot(this.x, this.y);
+          }
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, prototypes]
+    source: https://google.github.io/styleguide/tsguide.html#class-prototypes

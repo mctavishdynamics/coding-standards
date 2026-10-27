@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptJsdocGeneralForm:
+    standard: @{GoogleTypeScript}
+    ruleId: jsdoc-general-form
+    title: Write well-formed JSDoc
+    statement:
+        Write JSDoc as a block starting with two asterisks, or on one line
+        for short text. If a one-line comment grows past one line, switch to
+        the multi-line form with the opening and closing markers on their
+        own lines.
+    rationale:
+        Tools extract metadata from JSDoc for validation and optimisation,
+        so the comments must be well-formed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        /** Converts a temperature from Celsius to Fahrenheit and rounds
+            it to one decimal place. */
+        function toFahrenheit(celsius: number) {}
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        /**
+         * Converts a temperature from Celsius to Fahrenheit and rounds it to one
+         * decimal place.
+         */
+        function toFahrenheit(celsius: number) {}
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc, formatting]
+    source: https://google.github.io/styleguide/tsguide.html#jsdoc-general-form

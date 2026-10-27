@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptFunctionsAsCallbacks:
+    standard: @{GoogleTypeScript}
+    ruleId: functions-as-callbacks
+    title: Pass arrow functions as callbacks
+    statement:
+        Avoid passing a named function directly to a higher-order function
+        unless both call signatures are known to be stable. Wrap it in an
+        arrow function that forwards the intended arguments.
+    rationale:
+        Callers may pass extra arguments, such as an index, that land in
+        optional parameters and produce wrong results that still type-check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const counts = ['10', '20', '30'].map(parseInt);
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        const counts = ['10', '20', '30'].map((text) => parseInt(text, 10));
+        \\\
+        ```
+    languages: [typescript]
+    tags: [functions, callbacks]
+    source: https://google.github.io/styleguide/tsguide.html#functions-as-callbacks

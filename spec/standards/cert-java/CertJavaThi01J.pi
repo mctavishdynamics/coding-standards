@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaThi01J:
+    standard: @{CertJava}
+    ruleId: THI01-J
+    title: Do not invoke ThreadGroup methods
+    statement:
+        Do not use ThreadGroup methods to manage or inspect threads. Use
+        thread pools and the java.util.concurrent utilities instead.
+    rationale:
+        Many ThreadGroup methods are deprecated, and others such as
+        activeCount() and enumerate() are not thread-safe and can give stale
+        or incomplete results. CERT's risk assessment gives likelihood
+        probable, detectable yes, repairable no, priority P4 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        ThreadGroup group = new ThreadGroup("workers");
+        // ... start threads in the group ...
+        Thread[] threads = new Thread[group.activeCount()];
+        group.enumerate(threads);
+        group.interrupt();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        ExecutorService pool = Executors.newFixedThreadPool(4);
+        // ... submit tasks ...
+        pool.shutdownNow();
+        \\\
+        ```
+    languages: [java]
+    tags: [concurrency, threads, deprecated-api]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/thread-apis-thi/thi01-j/

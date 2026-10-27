@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpGeneralCodingPractices2:
+    standard: @{OwaspScp}
+    ruleId: general-coding-practices-2
+    title: Use built-in APIs instead of operating system commands
+    statement:
+        Use task-specific built-in APIs for operating system tasks. Do not
+        let the application issue commands to the operating system directly,
+        especially through shells.
+    rationale:
+        Shell commands built from data are a direct route to command
+        injection.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import os
+
+        def remove_upload(name):
+            os.system("rm /srv/uploads/" + name)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from pathlib import Path
+
+        def remove_upload(name):
+            (Path("/srv/uploads") / Path(name).name).unlink()
+        \\\
+        ```
+    languages: [any]
+    tags: [general, command-injection]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#general-coding-practices

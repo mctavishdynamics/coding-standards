@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptTypeAnnotationWhitespace:
+    standard: @{GoogleJavaScript}
+    ruleId: 7.10.5
+    title: Put one space after commas and colons in type annotations
+    statement:
+        Inside a type annotation, follow each comma or colon with a single
+        space or line break and use no other whitespace. Extra line breaks
+        for readability follow the normal wrapping and indentation rules.
+    rationale:
+        Uniform spacing makes complex types easy to read and grep.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        /** @type {{id:number,name:string}} */
+        /** @type {number | string} */
+        /** @type {function(string) : boolean} */
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** @type {{id: number, name: string}} */
+        /** @type {number|string} */
+        /** @type {function(string): boolean} */
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, types, whitespace]
+    source: https://google.github.io/styleguide/jsguide.html#7105-whitespace

@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpMemoryManagement3:
+    standard: @{OwaspScp}
+    ruleId: memory-management-3
+    title: Handle null termination with byte-count functions
+    statement:
+        When a function takes a number of bytes to copy, such as strncpy,
+        make sure the result is null terminated, since it may not be when
+        the destination is the same size as the source.
+    rationale:
+        An unterminated string makes later reads run past the buffer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```c
+        \\\
+        char dst[8];
+        strncpy(dst, src, sizeof dst);
+        puts(dst);
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char dst[8];
+        strncpy(dst, src, sizeof dst - 1);
+        dst[sizeof dst - 1] = '\0';
+        puts(dst);
+        \\\
+        ```
+    languages: [any]
+    tags: [memory, strings, buffer-overflow]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#memory-management

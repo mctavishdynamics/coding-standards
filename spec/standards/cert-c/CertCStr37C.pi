@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCStr37C:
+    standard: @{CertC}
+    ruleId: STR37-C
+    title:
+        Pass character-handling functions only values representable as an
+        unsigned char
+    statement:
+        Cast a char argument to unsigned char before passing it to isalpha,
+        isdigit, toupper or the other ctype.h functions. Only unsigned char
+        values and EOF are valid arguments.
+    rationale:
+        On platforms where char is signed, a character above 127 becomes a
+        negative int, and passing it is undefined behavior that can index
+        outside the lookup table. CERT rates likelihood unlikely, detectable
+        yes, repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include <ctype.h>
+
+        int count_digits(const char *s) {
+            int n = 0;
+            for (; *s; s++) {
+                n += isdigit(*s) != 0;
+            }
+            return n;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <ctype.h>
+
+        int count_digits(const char *s) {
+            int n = 0;
+            for (; *s; s++) {
+                n += isdigit((unsigned char)*s) != 0;
+            }
+            return n;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [strings, characters, library]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/characters-and-strings-str/str37-c

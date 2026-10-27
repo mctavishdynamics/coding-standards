@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCBooleanAccessorsAndDotNotation:
+    standard: @{GoogleObjC}
+    ruleId: objective-c-method-names-boolean-accessors
+    title: Use dot notation only with property names
+    statement:
+        A getter for a boolean adjective starts with is, while the property
+        name omits it. Use dot notation only for property names, never for
+        plain methods.
+    rationale:
+        Dot notation signals property access, so using it for other methods
+        or for the is form of a getter misleads the reader.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @property(nonatomic, getter=isHidden) BOOL hidden;
+        BOOL invisible = view.isHidden;
+        NSUInteger total = items.count + list.objectEnumerator.allObjects.count;
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @property(nonatomic, getter=isHidden) BOOL hidden;
+        BOOL invisible = view.hidden;
+        BOOL alsoInvisible = [view isHidden];
+        NSEnumerator *enumerator = [list objectEnumerator];
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [naming, properties]
+    source: https://google.github.io/styleguide/objcguide.html#objective-c-method-names

@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc32C:
+    standard: @{CertC}
+    ruleId: MSC32-C
+    title: Properly seed pseudorandom number generators
+    statement:
+        Seed a pseudorandom number generator with a value that is different
+        on each run and hard to predict, such as one read from the system
+        entropy source, and do not reseed it with the same value.
+    rationale:
+        A generator with a fixed or guessable seed repeats the same
+        sequence, so its output is predictable. CERT rates likelihood
+        likely, detectable yes, repairable yes, priority P18, level L1.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        void init_jitter(void) {
+            srandom(1);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int init_jitter(void) {
+            unsigned int seed;
+            if (getrandom(&seed, sizeof seed, 0) != sizeof seed) {
+                return -1;
+            }
+            srandom(seed);
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [random-numbers, security]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/miscellaneous-msc/msc32-c

@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCMsc33C:
+    standard: @{CertC}
+    ruleId: MSC33-C
+    title: Do not pass invalid data to the asctime() function
+    statement:
+        Do not call asctime with a struct tm whose fields may be outside the
+        ranges its fixed buffer allows. Format times with strftime and a
+        buffer of known size instead.
+    rationale:
+        asctime writes into a 26-byte static buffer, so out-of-range values
+        such as a large year overflow it. CERT rates likelihood likely,
+        detectable no, repairable no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        void print_date(const struct tm *t) {
+            fputs(asctime(t), stdout);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void print_date(const struct tm *t) {
+            char buf[64];
+            if (strftime(buf, sizeof buf, "%a %b %d %H:%M:%S %Y\n", t) != 0) {
+                fputs(buf, stdout);
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [time, buffer-overflow, library]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/miscellaneous-msc/msc33-c

@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCExp36C:
+    standard: @{CertC}
+    ruleId: EXP36-C
+    title:
+        Do not cast pointers into more strictly aligned pointer types
+    statement:
+        Do not convert a pointer to a pointer type whose referenced type
+        needs stricter alignment than the object really has. Copy the bytes
+        into a properly aligned object instead.
+    rationale:
+        A misaligned pointer is undefined behavior. Dereferencing it can
+        trap on some processors, and even the conversion can lose address
+        bits. CERT rates likelihood probable, detectable no, repairable no,
+        priority P2, level L3.
+    exceptions:
+        Some architectures tolerate misaligned access at a performance cost,
+        though compilers may still break such code. A cast is allowed when
+        the pointer is known to be suitably aligned, for example memory from
+        malloc or an object declared with an alignment specifier.
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include <stdint.h>
+
+        uint32_t read_len(const unsigned char *packet) {
+            return *(const uint32_t *)(packet + 1);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <stdint.h>
+        #include <string.h>
+
+        uint32_t read_len(const unsigned char *packet) {
+            uint32_t len;
+            memcpy(&len, packet + 1, sizeof len);
+            return len;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [pointers, alignment, casts]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/expressions-exp/exp36-c

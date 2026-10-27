@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl41C:
+    standard: @{CertC}
+    ruleId: DCL41-C
+    title:
+        Do not declare variables inside a switch statement before the first
+        case label
+    statement:
+        Do not put declarations with initializers, or other statements,
+        between the opening of a switch body and its first case label.
+        Declare and initialize such variables before the switch.
+    rationale:
+        Control jumps straight to a case label, so the initializer never
+        runs and the variable is read with an indeterminate value. CERT
+        rates likelihood unlikely, detectable yes, repairable yes, priority
+        P6, level L2.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        int scale(int mode, int x) {
+            switch (mode) {
+                int factor = 10;
+            case 1:
+                return x * factor;
+            default:
+                return x;
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        int scale(int mode, int x) {
+            int factor = 10;
+            switch (mode) {
+            case 1:
+                return x * factor;
+            default:
+                return x;
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [declarations, control-flow, initialization]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/declarations-and-initialization-dcl/dcl41-c

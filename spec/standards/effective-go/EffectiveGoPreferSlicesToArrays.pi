@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoPreferSlicesToArrays:
+    standard: @{EffectiveGo}
+    ruleId: arrays
+    title: Use slices rather than arrays or array pointers
+    statement:
+        Do not pass arrays, or pointers to arrays, to get C-like behaviour;
+        use slices instead.
+    rationale:
+        Arrays are values whose size is part of the type, so passing one
+        copies it, and array pointers are not idiomatic. Slices are general
+        and cheap to pass.
+    exceptions:
+        Arrays remain useful for detailed memory layout, for items with
+        fixed dimensions such as transformation matrices, and sometimes to
+        avoid allocation.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func sum(a *[64]float64) (s float64) {
+            for _, v := range *a {
+                s += v
+            }
+            return
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func sum(a []float64) (s float64) {
+            for _, v := range a {
+                s += v
+            }
+            return
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [arrays, slices]
+    source: https://go.dev/doc/effective_go#arrays

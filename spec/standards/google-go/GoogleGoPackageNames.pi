@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoPackageNames:
+    standard: @{GoogleGo}
+    ruleId: decisions/package-names
+    title: Give packages short lowercase informative names
+    statement:
+        Use only lowercase letters and digits, keep multi-word names
+        unbroken, avoid names likely to be shadowed by common variables, and
+        avoid vague names like util, common, helper or model. A renamed
+        import must follow the same rules and should use the same local name
+        everywhere.
+    rationale:
+        The package name prefixes every use of its symbols, so it should be
+        short, clear and not tempt callers to rename it.
+    exceptions:
+        Packages imported only by generated code, such as _test packages for
+        black-box or integration tests, may contain underscores.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package tab_writer
+
+        package util
+
+        package count
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package tabwriter
+
+        package usercount
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, naming, packages]
+    source: https://google.github.io/styleguide/go/decisions#package-names

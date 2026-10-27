@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreP5:
+    standard: @{CppCoreGuidelines}
+    ruleId: P.5
+    title: Prefer compile-time checking to run-time checking
+    statement:
+        When a property can be checked by the compiler, check it there
+        instead of testing it while the program runs.
+    rationale:
+        Compile-time checks make code clearer and faster, and no error
+        handler is needed for errors that can never reach run time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void encode(std::uint32_t value) {
+            if (sizeof(int) < 4) {
+                throw std::logic_error("int too small");
+            }
+            // ...
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        static_assert(sizeof(int) >= 4, "int must hold 32 bits");
+
+        void encode(std::uint32_t value) {
+            // ...
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [philosophy, compile-time, error-checking]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rp-compile-time

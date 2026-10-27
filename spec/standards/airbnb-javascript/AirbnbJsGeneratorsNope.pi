@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsGeneratorsNope:
+    standard: @{AirbnbJavaScript}
+    ruleId: 11.2
+    title: Do not use generators for now
+    statement:
+        Avoid generator functions.
+    rationale:
+        Generators do not transpile well to ES5.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function* ids() {
+          let id = 0;
+          while (true) yield id += 1;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const createIdSource = () => {
+          let id = 0;
+          return () => { id += 1; return id; };
+        };
+        \\\
+        ```
+    languages: [javascript]
+    tags: [iteration, generators]
+    source: https://github.com/airbnb/javascript#generators--nope

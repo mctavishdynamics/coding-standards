@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF56:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.56
+    title: Avoid unnecessary condition nesting
+    statement:
+        Keep conditions shallow, for example by returning early from error
+        cases, so the main code sits at the outermost level unless that
+        obscures intent.
+    rationale:
+        Shallow nesting makes code easier to follow and makes its intent
+        clearer.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void send(const Message& m) {
+            if (connected_) {
+                if (!m.empty()) {
+                    transmit(m);
+                }
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void send(const Message& m) {
+            if (!connected_ || m.empty()) return;
+            transmit(m);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, control-flow, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#f-nesting

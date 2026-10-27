@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppExp56Cpp:
+    standard: @{CertCpp}
+    ruleId: EXP56-CPP
+    title: Do not call a function with a mismatched language linkage
+    statement:
+        Call a function only through a function type with the same language
+        linkage as its definition. Do not pass a C++ linkage function where
+        a C linkage function pointer is expected, or the reverse.
+    rationale:
+        Language linkage is part of the function type and may change the
+        calling convention, so a call through a mismatched type is undefined
+        behavior. CERT rates likelihood unlikely, detectable no, repairable
+        yes, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        extern "C" typedef int (*compare_fn)(const void*, const void*);
+        extern "C" void sort_records(void* base, size_t n, compare_fn cmp);
+
+        int by_id(const void* a, const void* b);  // C++ linkage
+
+        void run(void* data, size_t n) {
+            sort_records(data, n, reinterpret_cast<compare_fn>(by_id));
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        extern "C" typedef int (*compare_fn)(const void*, const void*);
+        extern "C" void sort_records(void* base, size_t n, compare_fn cmp);
+
+        extern "C" int by_id(const void* a, const void* b);
+
+        void run(void* data, size_t n) {
+            sort_records(data, n, by_id);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [linkage, functions, interoperability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/expressions-exp/exp56-cpp

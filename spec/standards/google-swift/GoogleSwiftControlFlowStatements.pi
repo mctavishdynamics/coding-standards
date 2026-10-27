@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftControlFlowStatements:
+    standard: @{GoogleSwift}
+    ruleId: control-flow-statements
+    title: Align wrapped control flow conditions after the keyword
+    statement:
+        When an if, guard, while or for statement wraps, indent the first
+        continuation line to the position after the keyword. Indent parallel
+        elements to the same position and nested ones by further steps of
+        two. The opening brace may end the last line or start the next; keep
+        guard else and its brace together.
+    rationale:
+        The conditions line up and remain distinct from the body.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```swift
+        \\\
+        guard let session = currentSession,
+              session.isAuthenticated,
+              !session.isExpired
+        else {
+          return
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, line-wrapping, control-flow]
+    source: https://google.github.io/swift/#control-flow-statements

@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactNoRedundantAlt:
+    standard: @{AirbnbReact}
+    ruleId: props-4
+    title: Do not use words like image or photo in alt text
+    statement:
+        Leave words such as image, photo and picture out of img alt props.
+        Enforced by the ESLint rule jsx-a11y/img-redundant-alt.
+    rationale:
+        Screen readers already announce img elements as images, so these
+        words repeat what the listener hears.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        <img src="/dock.jpg" alt="Photo of boats at the dock" />
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        <img src="/dock.jpg" alt="Boats at the dock" />
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [accessibility, images]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#props

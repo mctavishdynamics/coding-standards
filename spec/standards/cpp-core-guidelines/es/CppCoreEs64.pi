@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs64:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.64
+    title: Use the T\ {e} \ notation for construction
+    statement:
+        Construct a value of type T from an expression e with brace syntax
+        rather than with a functional-style or C-style cast.
+    rationale:
+        Brace construction states that construction is meant and does not
+        allow narrowing. The cast notations T(e) and (T)e are neither safe
+        nor general.
+    exceptions:
+        Standard containers use parentheses for a size and braces for a list
+        of elements, so write std::vector<int>(10) to mean ten elements.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto level = int(3.9);         // silently becomes 3
+        auto user = (UserId)raw_id;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto level = Level{3};
+        auto user = UserId{raw_id};
+        \\\
+        ```
+    languages: [cpp]
+    tags: [initialization, conversions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-construct

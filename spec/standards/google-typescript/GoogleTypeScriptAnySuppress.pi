@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptAnySuppress:
+    standard: @{GoogleTypeScript}
+    ruleId: any-suppress
+    title: Suppress and document legitimate uses of any
+    statement:
+        When any is truly legitimate, such as for a partial mock in a test,
+        add a comment that suppresses the lint warning and explain why it is
+        justified.
+    rationale:
+        The comment makes the unsafe spot visible and tells reviewers it was
+        a deliberate choice.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const mockClock = {now: () => 0} as any as Clock;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        // Only now() is called by the code under test.
+        // tslint:disable-next-line:no-any
+        const mockClock = {now: () => 0} as any as Clock;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, any, testing]
+    source: https://google.github.io/styleguide/tsguide.html#any-suppress

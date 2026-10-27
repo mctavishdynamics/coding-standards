@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptClassLiterals:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.2.3
+    title: Indent class literals as blocks without extra semicolons
+    statement:
+        Indent class bodies as blocks. Do not put semicolons after methods
+        or after the closing brace of a class declaration. Use the extends
+        keyword alone unless the superclass is templatized, in which case
+        also add an @extends annotation with the template type.
+    rationale:
+        Stray semicolons are noise, and the compiler needs the template type
+        spelled out for generic superclasses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Stack extends Collection {
+          push(item) {
+            this.items.push(item);
+          };
+        };
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /** @extends {Collection<string>} */
+        class Stack extends Collection {
+          push(item) {
+            this.items.push(item);
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, classes, jsdoc]
+    source: https://google.github.io/styleguide/jsguide.html#423-class-literals

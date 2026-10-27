@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppErr57Cpp:
+    standard: @{CertCpp}
+    ruleId: ERR57-CPP
+    title: Do not leak resources when handling exceptions
+    statement:
+        Make sure resources are released when an exception propagates.
+        Manage them with RAII objects such as smart pointers and lock guards
+        instead of manual cleanup.
+    rationale:
+        Manual cleanup code is skipped when an exception is thrown, so
+        memory, handles and locks leak. CERT rates likelihood probable,
+        detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        void render() {
+            Canvas* canvas = new Canvas(800, 600);
+            draw_scene(*canvas);  // may throw
+            delete canvas;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void render() {
+            auto canvas = std::make_unique<Canvas>(800, 600);
+            draw_scene(*canvas);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [exceptions, resource-management, raii]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/exceptions-and-error-handling-err/err57-cpp

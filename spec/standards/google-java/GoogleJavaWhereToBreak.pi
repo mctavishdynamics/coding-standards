@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaWhereToBreak:
+    standard: @{GoogleJava}
+    ruleId: 4.5.1
+    title: Break lines at the highest syntactic level
+    statement:
+        Prefer to wrap at a higher syntactic level. Break before a non-
+        assignment operator and before the dot, the method-reference colons,
+        a type-bound ampersand and a multi-catch pipe; break after an
+        assignment operator or a foreach colon, though before is also
+        allowed. Keep a method or constructor name attached to its open
+        parenthesis and a comma attached to the token before it.
+    rationale:
+        Breaking at high-level boundaries and putting operators at the start
+        of lines keeps the structure of a wrapped expression visible. The
+        goal is clear code, not the fewest lines.
+    exceptions:
+        Never break next to the arrow of a lambda or switch rule, except
+        right after the arrow when what follows is a single unbraced
+        expression.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        boolean eligible = customer.isActive() &&
+            customer.balance() > MINIMUM_BALANCE;
+        String label = customer.
+            displayName();
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        boolean eligible = customer.isActive()
+            && customer.balance() > MINIMUM_BALANCE;
+        String label = customer
+            .displayName();
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, line-wrapping]
+    source: https://google.github.io/styleguide/javaguide.html#s4.5.1-line-wrapping-where-to-break

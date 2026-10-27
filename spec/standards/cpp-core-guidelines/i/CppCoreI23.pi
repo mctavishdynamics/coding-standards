@@ -1,0 +1,38 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI23:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.23
+    title: Keep the number of function arguments low
+    statement:
+        Aim for fewer than four parameters. Group related arguments into
+        meaningful objects, or use default arguments or overloads for common
+        calls.
+    rationale:
+        Many arguments invite confusion and can be costly to pass. A long
+        parameter list often signals a missing abstraction or a function
+        doing too much.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void create_account(std::string first, std::string last,
+                            std::string street, std::string city,
+                            std::string zip, int age);
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        struct Name { std::string first, last; };
+        struct Address { std::string street, city, zip; };
+
+        void create_account(const Name& name, const Address& address, int age);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, parameters, design]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-nargs

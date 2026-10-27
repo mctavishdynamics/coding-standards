@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonStrings:
+    standard: @{GooglePython}
+    ruleId: 3.10
+    title: Format strings properly and be consistent with quotes
+    statement:
+        Format with f-strings, the % operator or format, not by joining
+        pieces with +. Do not build a string with + or += in a loop; collect
+        the parts in a list and join them. Use one quote character
+        consistently in a file, switching only to avoid escapes. Prefer
+        triple double quotes for multi-line strings, and use textwrap.dedent
+        or implicit concatenation to avoid stray indentation.
+    rationale:
+        Formatting operators are clearer than concatenation, and repeated
+        string addition can take quadratic time.
+    exceptions:
+        A single join of two strings with + is fine. A project may use
+        triple single quotes for non-docstring multi-line strings only if it
+        also uses single quotes for regular strings.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        message = 'Hello, ' + name + '! You have ' + str(count) + ' messages.'
+        html = ''
+        for row in rows:
+            html += '<li>' + row + '</li>'
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        message = f'Hello, {name}! You have {count} messages.'
+        parts = []
+        for row in rows:
+            parts.append(f'<li>{row}</li>')
+        html = ''.join(parts)
+        \\\
+        ```
+    languages: [python]
+    tags: [strings, formatting]
+    source: https://google.github.io/styleguide/pyguide.html#s3.10-strings

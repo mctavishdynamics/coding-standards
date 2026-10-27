@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptUseStructuralTypes:
+    standard: @{GoogleTypeScript}
+    ruleId: use-structural-types
+    title: Declare the type of structural implementations
+    statement:
+        When an object implements a type structurally, annotate its
+        declaration with that type. Define structural types with interfaces,
+        not classes.
+    rationale:
+        The annotation reports mismatches where the object is declared
+        instead of at some distant call site.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        const origin = {
+          x: 0,
+          y: 0,
+        };
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        interface Point {
+          x: number;
+          y: number;
+        }
+
+        const origin: Point = {
+          x: 0,
+          y: 0,
+        };
+        \\\
+        ```
+    languages: [typescript]
+    tags: [types, interfaces]
+    source: https://google.github.io/styleguide/tsguide.html#use-structural-types

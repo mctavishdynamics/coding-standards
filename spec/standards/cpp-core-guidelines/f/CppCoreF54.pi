@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF54:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.54
+    title: When a lambda captures this or a data member, do not use [=] default capture
+    statement:
+        In member functions, list captures explicitly, writing this when you
+        mean to capture it, instead of relying on the [=] default. To copy
+        the whole object, capture *this.
+    rationale:
+        The [=] default looks like capture by value, but data members are
+        reached through the captured this pointer, so they are in effect
+        captured by reference.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        auto Timer::callback() {
+            return [=] { return elapsed_; };   // really uses this->elapsed_
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        auto Timer::callback() {
+            return [this] { return elapsed_; };
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, lambdas, captures]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-this-capture

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaWhitespaceCharacters:
+    standard: @{GoogleJava}
+    ruleId: 2.3.1
+    title: Use only the ASCII space as whitespace
+    statement:
+        Apart from line terminators, the only whitespace character in a
+        source file is the ASCII space (0x20). Escape any other whitespace
+        inside character literals, string literals and text blocks, and
+        never indent with tabs.
+    rationale:
+        Tabs and invisible Unicode spaces render differently from tool to
+        tool and can hide in literals where nobody can see them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        class Separator {
+          // The literal below holds a raw, invisible no-break space.
+          static final String FIELD_GAP = " ";
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        class Separator {
+          static final String FIELD_GAP = "\u00a0";
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [formatting, whitespace, source-files]
+    source: https://google.github.io/styleguide/javaguide.html#s2.3.1-whitespace-characters

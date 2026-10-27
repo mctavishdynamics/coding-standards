@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCManualReferenceCounting:
+    standard: @{GoogleObjC}
+    ruleId: manual-reference-counting
+    title: Mark non-retained and non-Objective-C pointers
+    statement:
+        NSObject ivars are presumed retained. Mark ivars that are not
+        retained as weak with a comment or the __weak qualifier. Always
+        comment Core Foundation, C++ and other non-Objective-C pointer ivars
+        as strong or weak.
+    rationale:
+        Non-Objective-C pointers need manual memory management even under
+        ARC, so readers must know which pointers own their objects.
+    exceptions:
+        On the Mac, ivars marked as IBOutlet are presumed not to be
+        retained.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @implementation ABCPlayerController {
+          ABCPlayerView *_owner;
+          CGImageRef _artwork;
+        }
+        @end
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        @implementation ABCPlayerController {
+          __weak ABCPlayerView *_owner;  // Owns this controller.
+          CGImageRef _artwork;           // Strong; released in -dealloc.
+        }
+        @end
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [memory, ownership]
+    source: https://google.github.io/styleguide/objcguide.html#manual-reference-counting

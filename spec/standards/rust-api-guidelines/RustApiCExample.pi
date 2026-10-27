@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCExample:
+    standard: @{RustApiGuidelines}
+    ruleId: C-EXAMPLE
+    title: Give every public item a rustdoc example
+    statement:
+        Every public module, trait, struct, enum, function, method, macro
+        and type definition has an example that exercises it, applied within
+        reason. A link to an example on a closely related item can be
+        enough.
+    rationale:
+        A good example shows why someone would use the item, not just how to
+        call it, which prose alone rarely conveys.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        /// Splits a slice into chunks of at most `size` elements.
+        pub fn chunked<T>(items: &[T], size: usize) -> Vec<&[T]> { /* ... */ }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        /// Splits a slice into chunks of at most `size` elements.
+        ///
+        /// ```
+        /// let pages = chunked(&[1, 2, 3, 4, 5], 2);
+        /// assert_eq!(pages, [&[1, 2][..], &[3, 4], &[5]]);
+        /// ```
+        pub fn chunked<T>(items: &[T], size: usize) -> Vec<&[T]> { /* ... */ }
+        \\\
+        ```
+    languages: [rust]
+    tags: [documentation, examples]
+    source: https://rust-lang.github.io/api-guidelines/documentation.html#c-example

@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaJavadocGeneralForm:
+    standard: @{GoogleJava}
+    ruleId: 7.1.1
+    title: Use the standard Markdown or traditional Javadoc form
+    statement:
+        Write Javadoc either in Markdown style, with triple-slash lines, or
+        in traditional slash-star-star style with aligned asterisks. The
+        single-line traditional form may be used when the whole block,
+        markers included, fits on one line and has no block tags.
+    rationale:
+        A small set of fixed layouts keeps documentation readable in source
+        and consistent across a codebase.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        /** Parses the header,
+            returning null if absent.
+        */
+        Header parse(String raw) { ... }
+
+        /** @param raw the input */
+        Header parseStrict(String raw) { ... }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        /**
+         * Parses the header, returning null if it is absent
+         * from the raw request.
+         */
+        Header parse(String raw) { ... }
+
+        /// Parses the header and fails if it is absent.
+        Header parseStrict(String raw) { ... }
+        \\\
+        ```
+    languages: [java]
+    tags: [javadoc, documentation, formatting]
+    source: https://google.github.io/styleguide/javaguide.html#s7.1.1-javadoc-multi-line

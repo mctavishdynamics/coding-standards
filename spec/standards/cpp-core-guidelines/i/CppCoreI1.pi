@@ -1,0 +1,39 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreI1:
+    standard: @{CppCoreGuidelines}
+    ruleId: I.1
+    title: Make interfaces explicit
+    statement:
+        Pass everything a function depends on through its parameters and
+        return value rather than through hidden channels such as global
+        variables.
+    rationale:
+        Assumptions that an interface does not state are easily overlooked
+        and hard to test.
+    exceptions:
+        Non-local controls such as an environment variable selecting verbose
+        output can be acceptable when they only affect implementation
+        details of otherwise fixed behavior.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int rounding_mode;   // set somewhere before calling
+
+        double round_price(double p);   // silently depends on rounding_mode
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        enum class Rounding { up, down, nearest };
+
+        double round_price(double p, Rounding mode);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [interfaces, dependencies]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#ri-explicit

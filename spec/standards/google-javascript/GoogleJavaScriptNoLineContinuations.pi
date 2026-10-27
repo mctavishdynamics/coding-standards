@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoLineContinuations:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.6.3
+    title: Do not use line continuations in strings
+    statement:
+        Do not end a line inside a string or template literal with a
+        backslash to continue it. Concatenate separate literals instead.
+    rationale:
+        Trailing whitespace after the backslash causes subtle errors, and
+        continued lines carry their indentation into the string.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const help = 'Run the command with --verbose to see \
+            every request that is sent.';
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const help = 'Run the command with --verbose to see ' +
+            'every request that is sent.';
+        \\\
+        ```
+    languages: [javascript]
+    tags: [strings, literals, formatting]
+    source: https://google.github.io/styleguide/jsguide.html#563-no-line-continuations

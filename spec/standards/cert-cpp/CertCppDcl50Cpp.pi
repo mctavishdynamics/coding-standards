@@ -1,0 +1,55 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppDcl50Cpp:
+    standard: @{CertCpp}
+    ruleId: DCL50-CPP
+    title: Do not define a C-style variadic function
+    statement:
+        Do not write functions that take a C-style ellipsis parameter. Use a
+        function parameter pack or overloads to accept a varying number of
+        arguments.
+    rationale:
+        A C-style variadic function cannot check the number or types of its
+        arguments, so a mismatched call reads the wrong data and behaves
+        undefinedly. Variadic templates keep full type checking. CERT rates
+        likelihood probable, detectable yes, repairable no, priority P12,
+        level L1.
+    exceptions:
+        A C-style variadic function may be defined when it has C language
+        linkage, for example to implement a C API in C++. Declaring one
+        without defining it is also allowed, such as in unevaluated SFINAE
+        contexts.
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        #include <cstdarg>
+
+        int sum(int count, ...) {
+            va_list args;
+            va_start(args, count);
+            int total = 0;
+            for (int i = 0; i < count; ++i) {
+                total += va_arg(args, int);
+            }
+            va_end(args);
+            return total;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template <typename... Ts>
+        int sum(Ts... values) {
+            return (0 + ... + static_cast<int>(values));
+        }
+
+        int total = sum(1, 2, 3);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [declarations, type-safety, functions]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/declarations-and-initialization-dcl/dcl50-cpp

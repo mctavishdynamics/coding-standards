@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257MultiLineSummaryLine:
+    standard: @{Pep257}
+    ruleId: multi-line-docstrings
+    title: Start a multi-line docstring with a summary line and a blank line
+    statement:
+        Begin a multi-line docstring with a one-line summary, then a blank
+        line, then the longer description. The summary may sit on the
+        opening-quote line or the next line, and the whole docstring is
+        indented like its opening quotes.
+    rationale:
+        Indexing tools use the summary line, so it must fit on one line and
+        stand apart from the rest of the text.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def retry(call, attempts=3):
+            """Call a function and retry it when it raises
+            ConnectionError, waiting a second between attempts.
+            """
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def retry(call, attempts=3):
+            """Call a function, retrying on connection errors.
+
+            Wait one second between attempts and re-raise the last
+            ConnectionError once attempts runs out.
+            """
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, formatting]
+    source: https://peps.python.org/pep-0257/#multi-line-docstrings

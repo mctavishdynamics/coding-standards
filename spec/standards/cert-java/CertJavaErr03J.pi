@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaErr03J:
+    standard: @{CertJava}
+    ruleId: ERR03-J
+    title: Restore prior object state on method failure
+    statement:
+        Keep objects consistent when a method fails. Validate first, do
+        risky work before changing state, work on a copy and commit at the
+        end, or roll back on failure.
+    rationale:
+        An exception halfway through an update leaves the object in an
+        inconsistent state that later code trusts. CERT rates likelihood
+        probable, detectable no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        void transfer(Account to, long amount) {
+            this.balance -= amount;
+            to.deposit(amount);  // may throw
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        void transfer(Account to, long amount) {
+            this.balance -= amount;
+            try {
+                to.deposit(amount);
+            } catch (RuntimeException e) {
+                this.balance += amount;
+                throw e;
+            }
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [exceptions, state, atomicity]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/exceptional-behavior-err/err03-j/

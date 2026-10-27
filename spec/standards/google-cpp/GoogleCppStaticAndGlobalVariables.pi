@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppStaticAndGlobalVariables:
+    standard: @{GoogleCpp}
+    ruleId: Static_and_Global_Variables
+    title: Allow only trivially destructible static variables
+    statement:
+        Objects with static storage duration must be trivially destructible.
+        Prefer constant initialization, marked constexpr or constinit.
+        Dynamic initialization is allowed for function-local statics but is
+        generally forbidden for globals unless nothing depends on its
+        ordering.
+    rationale:
+        Initialization and destruction of statics are not ordered across
+        translation units, so one static can be used before it is built or
+        after it is destroyed, causing bugs that are hard to find.
+    exceptions:
+        When a dynamic container or other complex object is really needed,
+        create it with a function-local static pointer or reference that is
+        never deleted.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // Non-trivial destructors, dynamic initialization at namespace scope.
+        const std::string kGreeting = "hello";
+        std::map<int, std::string> kNames = {{1, "one"}, {2, "two"}};
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr std::string_view kGreeting = "hello";
+        constexpr std::pair<int, const char*> kNames[] = {{1, "one"}, {2, "two"}};
+
+        const Config& DefaultConfig() {
+          static const Config& config = *new Config(LoadDefaults());
+          return config;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [globals, initialization, lifetime]
+    source: https://google.github.io/styleguide/cppguide.html#Static_and_Global_Variables

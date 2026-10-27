@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCMethodNames:
+    standard: @{GoogleObjC}
+    ruleId: objective-c-method-names
+    title: Name methods so calls read like a sentence
+    statement:
+        Start method and parameter names in lowercase and use mixed case,
+        keeping correct capitalization of acronyms. Choose parameter names
+        that flow with the method name, and use words like with, from or to
+        only where they clarify meaning. Name a method that returns an
+        attribute after the attribute, without a get prefix.
+    rationale:
+        Readable method names make calling code read almost like prose and
+        make many comments unnecessary.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        - (CGFloat)getWidth;
+        - (CGFloat)calculateHeight;
+        - (void)addObserver:(id)observer withSelector:(SEL)selector;
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        - (CGFloat)width;
+        - (CGFloat)height;
+        - (void)addObserver:(id)observer selector:(SEL)selector;
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [naming, methods]
+    source: https://google.github.io/styleguide/objcguide.html#objective-c-method-names

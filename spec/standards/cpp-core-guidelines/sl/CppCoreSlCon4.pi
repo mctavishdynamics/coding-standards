@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlCon4:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.con.4
+    title: Don't use memset or memcpy for arguments that are not trivially-copyable
+    statement:
+        Do not apply memset, memcpy, memmove or memcmp, or their wide
+        versions, to objects that are not trivially copyable. Use the type's
+        own initialization, assignment and comparison.
+    rationale:
+        Raw byte operations ignore an object's semantics; they can overwrite
+        a vtable pointer or bypass constructors and invariants.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        struct Session : Connection {        // Connection has virtual functions
+            std::string user;
+        };
+
+        void reset(Session& s) { std::memset(&s, 0, sizeof s); }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void reset(Session& s) { s = Session{}; }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, type-safety, standard-library]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rsl-copy

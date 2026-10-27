@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptWhereToBreak:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.5.1
+    title: Break lines at the highest syntactic level
+    statement:
+        When wrapping, prefer to break at a higher syntactic level. Break
+        after an operator, but before a dot; keep a method name attached to
+        its open parenthesis and a comma attached to the token before it.
+        Never break between return and its value, and break JSDoc type
+        annotations after the opening brace.
+    rationale:
+        Breaking at high levels keeps related parts of an expression
+        together, and the return rule avoids a break that changes the
+        program's meaning.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const average = sum(scores.map((s) => s.value) +
+            bonus) / count;
+        const label = firstName
+            + ' ' + lastName;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const average =
+            sum(scores.map((s) => s.value) + bonus) /
+                count;
+        const label = firstName +
+            ' ' + lastName;
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, line-wrapping]
+    source: https://google.github.io/styleguide/jsguide.html#451-where-to-break

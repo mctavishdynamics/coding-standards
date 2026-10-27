@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCStr30C:
+    standard: @{CertC}
+    ruleId: STR30-C
+    title: Do not attempt to modify string literals
+    statement:
+        Never write to a string literal. Point at literals only with const
+        char pointers, and copy a literal into an array when it needs to
+        change.
+    rationale:
+        Modifying a string literal is undefined behavior. Literals are often
+        stored in read-only memory or shared between uses. CERT rates
+        likelihood likely, detectable no, repairable yes, priority P6, level
+        L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        void capitalize(void) {
+            char *name = "alice";
+            name[0] = 'A';
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void capitalize(void) {
+            char name[] = "alice";
+            name[0] = 'A';
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [strings, const]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/characters-and-strings-str/str30-c

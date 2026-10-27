@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ContinuationLines:
+    standard: @{Pep8}
+    ruleId: indentation-continuation-lines
+    title: Align continuation lines or use a hanging indent
+    statement:
+        Align wrapped elements vertically with the opening delimiter, or use
+        a hanging indent. With a hanging indent, put nothing after the
+        opening delimiter on the first line, and indent further where needed
+        so the continuation stands apart from the code that follows.
+    rationale:
+        Either style shows which lines belong to the bracketed construct,
+        and the extra level keeps parameters from blending into the function
+        body.
+    exceptions:
+        The four-space step is optional for continuation lines; a hanging
+        indent may use another width.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        report = build_report(orders, customers,
+            start_date, end_date)
+
+        def build_report(
+            orders, customers,
+            start_date, end_date):
+            return summarize(orders, customers)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        report = build_report(orders, customers,
+                              start_date, end_date)
+
+        def build_report(
+                orders, customers,
+                start_date, end_date):
+            return summarize(orders, customers)
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, indentation, line-wrapping]
+    source: https://peps.python.org/pep-0008/#indentation

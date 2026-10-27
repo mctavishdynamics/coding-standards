@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT22:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.22
+    title: Specify axioms for concepts
+    statement:
+        Write down the semantic rules a concept assumes, such as
+        commutativity of addition, at least as comments, since the language
+        cannot yet express axioms.
+    rationale:
+        Stating the semantics makes a concept understandable, and the effort
+        to state them often exposes conceptual mistakes.
+    exceptions:
+        An early, experimental concept may list only its required operations
+        while its semantics are still being worked out, but it should not be
+        treated as stable.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename T>
+        concept Group_element = requires(T a, T b) { a * b; inverse(a); };
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // axioms: (a * b) * c == a * (b * c); a * inverse(a) == identity<T>()
+        template<typename T>
+        concept Group_element = requires(T a, T b) {
+            { a * b } -> std::convertible_to<T>;
+            { inverse(a) } -> std::convertible_to<T>;
+        };
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, concepts, semantics]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-axiom

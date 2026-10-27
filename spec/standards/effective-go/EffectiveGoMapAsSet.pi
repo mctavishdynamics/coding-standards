@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoMapAsSet:
+    standard: @{EffectiveGo}
+    ruleId: maps-sets
+    title: Implement a set as a map of bool
+    statement:
+        Represent a set as a map with bool values, store true to add an
+        element and test membership with a plain index.
+    rationale:
+        A missing key yields false, so membership tests need no extra check.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func seen(list []string, s string) bool {
+            for _, v := range list {
+                if v == s {
+                    return true
+                }
+            }
+            return false
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        visited := map[string]bool{}
+        visited[url] = true
+        if visited[next] {
+            return
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [maps, idioms]
+    source: https://go.dev/doc/effective_go#maps

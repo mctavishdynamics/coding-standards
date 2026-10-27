@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoPackageComments:
+    standard: @{GoogleGo}
+    ruleId: decisions/package-comments
+    title: Write one package comment directly above the package clause
+    statement:
+        Place the package comment immediately above the package clause with
+        no blank line, and have exactly one per package. For a main package,
+        start with the binary name as written in the build rule. A long
+        comment may go in a doc.go file.
+    rationale:
+        Godoc shows only a comment attached to the package clause, and
+        several package comments conflict.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Package ratelimit provides token bucket rate limiters.
+
+        package ratelimit
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Package ratelimit provides token bucket rate limiters.
+        package ratelimit
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, comments, documentation, packages]
+    source: https://google.github.io/styleguide/go/decisions#package-comments

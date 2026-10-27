@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaMethodAnnotations:
+    standard: @{GoogleJava}
+    ruleId: 4.8.5.3
+    title: Put method and constructor annotations one per line
+    statement:
+        Annotations on methods and constructors follow the class rule, one
+        per line after the documentation.
+    rationale:
+        Methods and classes then share one predictable annotation layout.
+    exceptions:
+        A single annotation without parameters may share the first line of
+        the signature.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        @Deprecated @Override public String describe() {
+          return name;
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        @Deprecated
+        @Override
+        public String describe() {
+          return name;
+        }
+
+        @Override public int hashCode() {
+          return id;
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [annotations, formatting]
+    source: https://google.github.io/styleguide/javaguide.html#s4.8.5.3-method-annotation-style

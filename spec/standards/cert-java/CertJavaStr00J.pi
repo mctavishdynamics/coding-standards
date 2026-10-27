@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaStr00J:
+    standard: @{CertJava}
+    ruleId: STR00-J
+    title: Do not form strings containing partial characters from variable-width encodings
+    statement:
+        Do not decode chunks of a byte stream into strings separately when
+        the encoding is variable-width, such as UTF-8. Decode the complete
+        data, or read it through a Reader that handles character boundaries.
+    rationale:
+        A buffer boundary can split a multibyte character, and decoding each
+        part separately corrupts it. CERT rates likelihood unlikely,
+        detectable no, repairable no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        StringBuilder sb = new StringBuilder();
+        byte[] buf = new byte[1024];
+        int n;
+        while ((n = in.read(buf)) != -1) {
+            sb.append(new String(buf, 0, n, StandardCharsets.UTF_8));
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
+        StringBuilder sb = new StringBuilder();
+        char[] buf = new char[1024];
+        int n;
+        while ((n = reader.read(buf)) != -1) {
+            sb.append(buf, 0, n);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [strings, encoding, unicode]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/characters-and-strings-str/str00-j/

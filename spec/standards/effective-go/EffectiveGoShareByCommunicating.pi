@@ -1,0 +1,55 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoShareByCommunicating:
+    standard: @{EffectiveGo}
+    ruleId: sharing
+    title: Share memory by communicating
+    statement:
+        Do not communicate by sharing memory; instead pass values over
+        channels so only one goroutine owns a value at a time.
+    rationale:
+        Handing ownership through channels avoids the subtle locking that
+        shared variables require and makes concurrent programs easier to get
+        right.
+    exceptions:
+        The approach can be taken too far; something like a reference count
+        may be best protected by a mutex.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var (
+            mu      sync.Mutex
+            pending []Job
+        )
+
+        func worker() {
+            for {
+                mu.Lock()
+                if len(pending) > 0 {
+                    j := pending[0]
+                    pending = pending[1:]
+                    mu.Unlock()
+                    run(j)
+                    continue
+                }
+                mu.Unlock()
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func worker(jobs <-chan Job) {
+            for j := range jobs {
+                run(j)
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, channels]
+    source: https://go.dev/doc/effective_go#sharing

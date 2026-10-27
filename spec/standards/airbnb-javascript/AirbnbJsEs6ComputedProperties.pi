@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsEs6ComputedProperties:
+    standard: @{AirbnbJavaScript}
+    ruleId: 3.2
+    title: Use computed property names for dynamic keys
+    statement:
+        When an object needs a property whose name is computed, write it as
+        a computed property inside the literal rather than adding it
+        afterwards.
+    rationale:
+        All of the object's properties are then defined in one place.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function makeField(name) {
+          const field = { type: 'text' };
+          field[`${name}Label`] = name.toUpperCase();
+          return field;
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function makeField(name) {
+          return {
+            type: 'text',
+            [`${name}Label`]: name.toUpperCase(),
+          };
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [objects, es6]
+    source: https://github.com/airbnb/javascript#es6-computed-properties

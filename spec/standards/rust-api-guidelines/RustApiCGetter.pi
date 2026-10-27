@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCGetter:
+    standard: @{RustApiGuidelines}
+    ruleId: C-GETTER
+    title: Name getters without a get_ prefix
+    statement:
+        Name a getter after the field it returns, and its mutable form with
+        a _mut suffix. Use plain get only when there is one obvious thing to
+        get, as with Cell::get, and consider unsafe _unchecked variants for
+        getters that validate.
+    rationale:
+        The get_ prefix adds noise without information, and following the
+        standard library keeps APIs predictable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl Order {
+            pub fn get_total(&self) -> Money { self.total }
+            pub fn get_mut_lines(&mut self) -> &mut Vec<Line> { &mut self.lines }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl Order {
+            pub fn total(&self) -> Money { self.total }
+            pub fn lines_mut(&mut self) -> &mut Vec<Line> { &mut self.lines }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [naming, getters]
+    source: https://rust-lang.github.io/api-guidelines/naming.html#c-getter

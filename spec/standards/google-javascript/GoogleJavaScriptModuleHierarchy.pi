@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptModuleHierarchy:
+    standard: @{GoogleJavaScript}
+    ruleId: 3.3.1
+    title: Do not name a module as a direct child of another module
+    statement:
+        A module namespace must never be a direct child of another module's
+        namespace. Mirror the namespace hierarchy in the directory
+        hierarchy.
+    rationale:
+        Child namespaces of a module clash with the parent's exports.
+        Matching directories keep owners of a parent namespace aware of
+        every child.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        goog.module('maps.render');
+        goog.module('maps.render.tiles');
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        goog.module('maps.render.renderer');
+        goog.module('maps.render.tiles');
+        \\\
+        ```
+    languages: [javascript]
+    tags: [modules, closure, naming]
+    source: https://google.github.io/styleguide/jsguide.html#331-hierarchy

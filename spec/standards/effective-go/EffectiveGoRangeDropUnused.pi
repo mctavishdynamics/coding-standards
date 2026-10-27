@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoRangeDropUnused:
+    standard: @{EffectiveGo}
+    ruleId: for-unused-range-values
+    title: Drop or blank out unused range variables
+    statement:
+        If you need only the key or index from a range, omit the second
+        variable. If you need only the value, discard the first with the
+        blank identifier.
+    rationale:
+        Go rejects unused variables, and these forms say exactly which parts
+        of each element the loop uses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        for key, value := range settings {
+            names = append(names, key)
+            _ = value
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        for key := range settings {
+            names = append(names, key)
+        }
+
+        for _, value := range settings {
+            total += len(value)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [loops, blank-identifier]
+    source: https://go.dev/doc/effective_go#for

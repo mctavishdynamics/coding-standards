@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCorePer5:
+    standard: @{CppCoreGuidelines}
+    ruleId: Per.5
+    title: Do not assume low-level code is faster than high-level code
+    statement:
+        Do not drop to low-level constructs such as raw pointers, manual
+        memory handling or byte manipulation just because you expect them to
+        be faster than a standard algorithm or container.
+    rationale:
+        Low-level code can hide intent from the optimizer and block
+        optimizations, while high-level code often gives the compiler more
+        to work with.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int total(const int* data, int n)
+        {
+            int sum = 0;
+            const int* end = data + n;
+            while (data != end) sum += *data++;
+            return sum;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int total(const std::vector<int>& values)
+        {
+            return std::accumulate(values.begin(), values.end(), 0);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [performance, abstraction]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rper-low

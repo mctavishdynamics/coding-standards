@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE16:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.16
+    title: Never let destructors, deallocation, swap or exception copy and move construction fail
+    statement:
+        Write destructors, deallocation functions, swap and the copy and
+        move constructors of exception types so they never throw or fail,
+        and mark them noexcept.
+    rationale:
+        Nobody knows how to write reliable programs if these operations can
+        fail, and the standard library assumes they do not; if they throw,
+        its basic invariants break.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        Connection::~Connection()
+        {
+            if (!close_socket(fd_))
+                throw NetworkError("close failed");
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        Connection::~Connection()
+        {
+            if (!close_socket(fd_))
+                report_close_failure(fd_);   // noexcept logging, no throw
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, noexcept, destructors]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-never-fail

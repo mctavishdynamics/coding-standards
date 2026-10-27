@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsComparisonShortcuts:
+    standard: @{AirbnbJavaScript}
+    ruleId: 15.3
+    title: Use boolean shortcuts but explicit comparisons for strings and numbers
+    statement:
+        Test booleans directly, but compare strings and numbers explicitly
+        against the value you mean.
+    rationale:
+        A truthiness test on a string or number also catches values such as
+        0 or the empty string that may be valid.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        if (isVisible === true) {
+          render();
+        }
+        if (name) {
+          save(name);
+        }
+        if (items.length) {
+          list(items);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        if (isVisible) {
+          render();
+        }
+        if (name !== '') {
+          save(name);
+        }
+        if (items.length > 0) {
+          list(items);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [comparison, readability]
+    source: https://github.com/airbnb/javascript#comparison--shortcuts

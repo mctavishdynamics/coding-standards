@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoModifyingBuiltins:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.11.6
+    title: Do not modify built-in objects
+    statement:
+        Never add methods to built-in constructors or prototypes, and avoid
+        libraries that do. Do not add symbols to the global object unless
+        truly required, for example by a third-party API.
+    rationale:
+        Changes to built-ins and globals affect all code in the page and
+        clash with other libraries and future standards.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        Array.prototype.last = function() {
+          return this[this.length - 1];
+        };
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function last(array) {
+          return array[array.length - 1];
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [disallowed, globals]
+    source: https://google.github.io/styleguide/jsguide.html#5116-modifying-builtin-objects

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpNoLineBreakBeforeElse:
+    standard: @{GoogleCSharp}
+    ruleId: no-line-break-before-else
+    title: Keep else on the closing brace line
+    statement:
+        Do not put a line break between a closing brace and the else that
+        follows it.
+    rationale:
+        It keeps the branches of one statement visually joined.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        if (isValid) {
+          Accept();
+        }
+        else {
+          Reject();
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        if (isValid) {
+          Accept();
+        } else {
+          Reject();
+        }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [formatting, braces]
+    source: https://google.github.io/styleguide/csharpguide.html#whitespace-rules

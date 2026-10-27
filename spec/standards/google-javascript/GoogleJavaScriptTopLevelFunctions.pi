@@ -1,0 +1,29 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptTopLevelFunctions:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.5.1
+    title: Define top-level functions locally or on exports
+    statement:
+        Top-level functions may be defined directly on the exports object,
+        or declared locally and optionally exported.
+    rationale:
+        Both forms make it clear which functions belong to the module's
+        public API.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```javascript
+        \\\
+        /** @param {string} text */
+        const slugify = (text) => text.toLowerCase().replace(/\s+/g, '-');
+
+        exports = {slugify};
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, modules, exports]
+    source: https://google.github.io/styleguide/jsguide.html#551-top-level-functions

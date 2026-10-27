@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptArrayLiteralsBlockLike:
+    standard: @{GoogleJavaScript}
+    ruleId: 4.2.1
+    title: Format array literals as blocks only when it helps
+    statement:
+        An array literal may be formatted like a block, with one indented
+        element per line, or kept inline. Other groupings are allowed to
+        show meaning between elements, but not merely to make a large array
+        shorter.
+    rationale:
+        Layout should reflect the structure of the data, not just save
+        vertical space.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const primes = [2, 3, 5,
+          7, 11, 13, 17, 19, 23,
+          29];
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const primes = [2, 3, 5, 7, 11, 13];
+
+        const matrix = [
+          1, 0, 0,
+          0, 1, 0,
+          0, 0, 1,
+        ];
+        \\\
+        ```
+    languages: [javascript]
+    tags: [formatting, arrays]
+    source: https://google.github.io/styleguide/jsguide.html#421-array-literals-optionally-block-like

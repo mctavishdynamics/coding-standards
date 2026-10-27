@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoDocumentationConventionsErrors:
+    standard: @{GoogleGo}
+    ruleId: best-practices/documentation-conventions-errors
+    title: Document the sentinel errors and error types returned
+    statement:
+        Document significant sentinel errors and error types a function
+        returns, noting whether an error type is returned as a pointer. Put
+        conventions common to most errors in the package documentation.
+    rationale:
+        Callers can then handle conditions correctly with errors.Is and
+        errors.As, which distinguish pointer from value types.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        // Get fetches the record.
+        func (s *Store) Get(id string) (*Record, error)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // Get fetches the record with the given id.
+        //
+        // If no record exists, Get returns an error that wraps ErrNotFound.
+        // Validation failures are returned as *ValidationError.
+        func (s *Store) Get(id string) (*Record, error)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, documentation, errors]
+    source: https://google.github.io/styleguide/go/best-practices#documentation-conventions-errors

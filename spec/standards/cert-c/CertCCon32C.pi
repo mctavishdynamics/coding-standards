@@ -1,0 +1,52 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon32C:
+    standard: @{CertC}
+    ruleId: CON32-C
+    title:
+        Prevent data races when accessing bit-fields from multiple threads
+    statement:
+        When different threads write adjacent bit-fields, protect the whole
+        group with one mutex, or store the values in separate ordinary
+        members instead of bit-fields.
+    rationale:
+        Adjacent bit-fields share a storage unit, so writing one reads and
+        rewrites its neighbours and two threads can silently undo each
+        other's updates. CERT rates likelihood probable, detectable no,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        struct status {
+            unsigned int ready : 1;
+            unsigned int failed : 1;
+        } st;
+
+        int set_ready(void *arg) { st.ready = 1; return 0; }
+        int set_failed(void *arg) { st.failed = 1; return 0; }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct status {
+            unsigned int ready : 1;
+            unsigned int failed : 1;
+        } st;
+        mtx_t st_lock;
+
+        int set_ready(void *arg) {
+            mtx_lock(&st_lock);
+            st.ready = 1;
+            mtx_unlock(&st_lock);
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [concurrency, data-races, bit-fields]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/concurrency-con/con32-c

@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaObj03J:
+    standard: @{CertJava}
+    ruleId: OBJ03-J
+    title: Prevent heap pollution
+    statement:
+        Avoid mixing raw types with generic code, do not ignore unchecked
+        warnings without proving the code type-safe, and use checked
+        collection wrappers when handing collections to legacy code.
+    rationale:
+        Heap pollution lets a variable of a parameterized type refer to an
+        object of the wrong type, causing ClassCastException far from the
+        actual mistake. CERT rates likelihood probable, detectable yes,
+        repairable no, priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        List<String> names = new ArrayList<>();
+        List raw = names;
+        raw.add(42);
+        String first = names.get(0);  // ClassCastException
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        List<String> names = Collections.checkedList(new ArrayList<>(), String.class);
+        List raw = names;
+        raw.add(42);  // fails here with ClassCastException
+        \\\
+        ```
+    languages: [java]
+    tags: [generics, type-safety]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/object-orientation-obj/obj03-j/

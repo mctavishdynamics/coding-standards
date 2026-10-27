@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptExportType:
+    standard: @{GoogleTypeScript}
+    ruleId: export-type
+    title: Use export type when re-exporting a type
+    statement:
+        Write export type when re-exporting a type from another module.
+    rationale:
+        File-by-file transpilation cannot tell that a re-exported name is
+        only a type unless it is marked, so the marker keeps those builds
+        working.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        export {ShippingOptions} from './shipping';
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        export type {ShippingOptions} from './shipping';
+        \\\
+        ```
+    languages: [typescript]
+    tags: [exports, types]
+    source: https://google.github.io/styleguide/tsguide.html#export-type

@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR5:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.5
+    title: Prefer scoped objects and do not heap-allocate unnecessarily
+    statement:
+        Make objects local variables, members or globals when their lifetime
+        matches a scope, instead of allocating them on the free store.
+    rationale:
+        A scoped object costs no separate allocation and its lifetime is
+        managed by the enclosing scope or object, so there is nothing to
+        leak.
+    exceptions:
+        If stack space is limited, a local const unique_ptr may hold a large
+        object on the heap instead of the stack.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void render() {
+            auto* canvas = new Canvas(800, 600);
+            canvas->draw_frame();
+            delete canvas;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void render() {
+            Canvas canvas(800, 600);
+            canvas.draw_frame();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [resource-management, allocation]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-scoped

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptRenamingImports:
+    standard: @{GoogleTypeScript}
+    ruleId: renaming-imports
+    title: Rename imports only when there is a reason
+    statement:
+        Resolve name collisions with a namespace import or by renaming the
+        exports themselves. Rename an import with as only when needed, such
+        as to avoid a collision, for a generated name, or to clarify a name
+        that is unclear on its own.
+    rationale:
+        Arbitrary renames make the same symbol appear under different names
+        across files, which hurts searching and reading.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        import {Order as O} from './order';
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        import {from as observableFrom} from 'rxjs';
+        import {Order} from './order';
+        \\\
+        ```
+    languages: [typescript]
+    tags: [imports, naming]
+    source: https://google.github.io/styleguide/tsguide.html#renaming-imports

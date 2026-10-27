@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsArraysCallbackReturn:
+    standard: @{AirbnbJavaScript}
+    ruleId: 4.7
+    title: Return values from array method callbacks
+    statement:
+        Callbacks passed to array methods such as map, filter and reduce
+        must return a value. The return may be implicit when the body is a
+        single expression without side effects. Enforced by the ESLint rule
+        array-callback-return.
+    rationale:
+        A callback that forgets to return yields undefined, which silently
+        corrupts the result.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const active = users.filter((user) => {
+          if (user.active) {
+            console.log(user.id);
+          }
+        });
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const active = users.filter((user) => {
+          if (user.active) {
+            console.log(user.id);
+          }
+          return user.active;
+        });
+        \\\
+        ```
+    languages: [javascript]
+    tags: [arrays, functions]
+    source: https://github.com/airbnb/javascript#arrays--callback-return

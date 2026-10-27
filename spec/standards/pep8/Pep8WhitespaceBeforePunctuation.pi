@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8WhitespaceBeforePunctuation:
+    standard: @{Pep8}
+    ruleId: pet-peeves-before-punctuation
+    title: No whitespace before a comma, semicolon or colon
+    statement:
+        Do not put a space immediately before a comma, semicolon or colon.
+    rationale:
+        Punctuation attaches to the item before it, as in written prose.
+    exceptions:
+        In a slice the colon acts as an operator and follows the slice
+        spacing rule.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        for key , value in pairs.items() :
+            print(key , value)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        for key, value in pairs.items():
+            print(key, value)
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, whitespace]
+    source: https://peps.python.org/pep-0008/#pet-peeves

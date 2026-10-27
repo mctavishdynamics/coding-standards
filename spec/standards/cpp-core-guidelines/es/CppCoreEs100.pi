@@ -1,0 +1,35 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs100:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.100
+    title: Don't mix signed and unsigned arithmetic
+    statement:
+        Do not combine signed and unsigned operands in arithmetic or
+        comparisons.
+    rationale:
+        The signed operand is converted to unsigned, so negative values turn
+        into huge positive ones and results are wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int offset = -1;
+        unsigned size = 10;
+        if (offset < size) use(offset);   // false: -1 becomes a huge unsigned
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        int offset = -1;
+        int size = 10;
+        if (offset < size) use(offset);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [arithmetic, types]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-mix

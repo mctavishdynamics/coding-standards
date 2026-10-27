@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptFeaturesThis:
+    standard: @{GoogleTypeScript}
+    ruleId: features-this
+    title: Use this only in classes and arrow functions that allow it
+    statement:
+        Use this only in constructors and methods, in functions that declare
+        an explicit this type, or in arrow functions defined where this is
+        valid. Never use it for the global object, an eval context, an event
+        target, or needlessly called or applied functions.
+    rationale:
+        Outside those places the value of this is unclear or accidental,
+        which leads to hard-to-find bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        this.alert('Saved');
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        window.alert('Saved');
+        \\\
+        ```
+    languages: [typescript]
+    tags: [this, functions]
+    source: https://google.github.io/styleguide/tsguide.html#features-this

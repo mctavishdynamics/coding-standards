@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpFieldInitializersEncouraged:
+    standard: @{GoogleCSharp}
+    ruleId: field-initializers-encouraged
+    title: Use field initializers
+    statement:
+        Initialize fields where they are declared when that is practical.
+    rationale:
+        The starting value is visible next to the field.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        private List<string> _tags;
+        public Article() {
+          _tags = new List<string>();
+        }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        private List<string> _tags = new List<string>();
+        \\\
+        ```
+    languages: [csharp]
+    tags: [initialization, fields]
+    source: https://google.github.io/styleguide/csharpguide.html#field-initializers

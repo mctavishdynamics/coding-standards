@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreR13:
+    standard: @{CppCoreGuidelines}
+    ruleId: R.13
+    title:
+        Perform at most one explicit resource allocation in a single
+        expression statement
+    statement:
+        Do not make two explicit allocations in one expression, such as two
+        new calls as arguments to the same function. Split them or use
+        make_unique and make_shared.
+    rationale:
+        The order of evaluating subexpressions such as function arguments is
+        unspecified, so one allocation can succeed while the other throws
+        before ownership is taken, leaking the first.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        connect(std::shared_ptr<Node>(new Node("a")),
+                std::shared_ptr<Node>(new Node("b")));
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        connect(std::make_shared<Node>("a"), std::make_shared<Node>("b"));
+        \\\
+        ```
+    languages: [cpp]
+    tags: [resource-management, exception-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rr-single-alloc

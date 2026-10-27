@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8PackageAndModuleNames:
+    standard: @{Pep8}
+    ruleId: package-and-module-names
+    title: Give modules and packages short lower-case names
+    statement:
+        Use short, all lower-case module names, with underscores only if
+        they help readability. Package names should also be short and lower
+        case, preferably without underscores. A C or C++ extension module
+        behind a Python module gets a leading underscore.
+    rationale:
+        Module names become import statements and often file names, so short
+        lower-case names are portable and easy to type.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import DataLoaders.CSVReader
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import dataloaders.csv_reader
+        import _speedups
+        \\\
+        ```
+    languages: [python]
+    tags: [naming, modules]
+    source: https://peps.python.org/pep-0008/#package-and-module-names

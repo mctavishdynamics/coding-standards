@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppConstantNames:
+    standard: @{GoogleCpp}
+    ruleId: Constant_Names
+    title: Name constants with a leading k and mixed case
+    statement:
+        Name constexpr or const variables whose value is fixed for the whole
+        program with a leading k followed by mixed case. Every such variable
+        with static storage duration must use this form.
+    rationale:
+        The k prefix marks a value as a program-wide constant wherever it
+        appears.
+    exceptions:
+        Underscores may separate parts where capitals cannot. The form is
+        optional for constants with other storage durations, such as locals.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        constexpr int MAX_RETRIES = 5;
+        const int days_in_week = 7;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr int kMaxRetries = 5;
+        const int kDaysInWeek = 7;
+        const int kAndroid8_0_0 = 26;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, constants]
+    source: https://google.github.io/styleguide/cppguide.html#Constant_Names

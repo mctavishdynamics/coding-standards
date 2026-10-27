@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonGettersAndSetters:
+    standard: @{GooglePython}
+    ruleId: 3.15
+    title: Use getters and setters only when they do real work
+    statement:
+        Write getter and setter functions only when access is complex or
+        costly, or when setting a value invalidates or rebuilds state. Make
+        a plain internal attribute public instead of wrapping it. Name them
+        like get_foo and set_foo.
+    rationale:
+        A function call signals that work may happen, while trivial
+        accessors add code without adding behavior.
+    exceptions:
+        If the value used to be reachable through a property, do not bind
+        the new functions to that property; old callers should break
+        visibly.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class User:
+            def __init__(self, name):
+                self._name = name
+
+            def get_name(self):
+                return self._name
+
+            def set_name(self, name):
+                self._name = name
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class User:
+            def __init__(self, name):
+                self.name = name
+
+            def set_password(self, password):
+                self._password_hash = hash_password(password)
+                self._sessions.clear()
+        \\\
+        ```
+    languages: [python]
+    tags: [classes, accessors]
+    source: https://google.github.io/styleguide/pyguide.html#s3.15-accessors

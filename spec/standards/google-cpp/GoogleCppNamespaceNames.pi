@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppNamespaceNames:
+    standard: @{GoogleCpp}
+    ruleId: Namespace_Names
+    title:
+        Name namespaces in snake_case and keep top-level ones unique
+    statement:
+        Name namespaces in snake_case. A top-level namespace must be
+        globally unique and owned by one project or team, named after it.
+        Nested namespaces should avoid the names of well-known top-level
+        namespaces such as std and absl.
+    rationale:
+        Nested namespaces do not protect against collisions with other
+        namespaces, so reusing well-known names causes lookup surprises.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        namespace WebSearch {
+        namespace std {  // Shadows the real std.
+        }  // namespace std
+        }  // namespace WebSearch
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace web_search {
+        namespace index_internal {
+        }  // namespace index_internal
+        }  // namespace web_search
+        \\\
+        ```
+    languages: [cpp]
+    tags: [naming, namespaces]
+    source: https://google.github.io/styleguide/cppguide.html#Namespace_Names

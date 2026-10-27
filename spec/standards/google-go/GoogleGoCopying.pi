@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoCopying:
+    standard: @{GoogleGo}
+    ruleId: decisions/copying
+    title: Do not copy values whose methods use pointer receivers
+    statement:
+        Be careful copying structs from other packages. Never copy
+        synchronisation types such as sync.Mutex, and do not copy a value of
+        type T when its methods are defined on pointer type T. When
+        authoring such a type, take and return pointers.
+    rationale:
+        Copies can alias internal state, as with bytes.Buffer, or break
+        locking, and a value receiver can hide the copy.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        type Registry struct {
+            mu    sync.Mutex
+            items map[string]Item
+        }
+
+        func Snapshot(r Registry) Registry { return r }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        type Registry struct {
+            mu    sync.Mutex
+            items map[string]Item
+        }
+
+        func Snapshot(r *Registry) map[string]Item { return r.copyItems() }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, copying, concurrency]
+    source: https://google.github.io/styleguide/go/decisions#copying

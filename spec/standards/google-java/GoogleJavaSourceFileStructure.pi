@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaSourceFileStructure:
+    standard: @{GoogleJava}
+    ruleId: 3
+    title: Order source file sections and separate them by one blank line
+    statement:
+        A source file contains, in order, any license or copyright notice,
+        the package declaration, the imports and exactly one top-level
+        class. Put exactly one blank line between each section that is
+        present.
+    rationale:
+        A fixed layout lets readers find the package, imports and class in
+        the same place in every file.
+    exceptions:
+        A package-info.java file has no class declaration. A module-
+        info.java file has no package declaration and holds a module
+        declaration instead of a class.
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        /* Copyright 2026 Example Ltd. */
+        package com.example.billing;
+        import java.util.List;
+
+
+        public final class Invoice {}
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        /* Copyright 2026 Example Ltd. */
+
+        package com.example.billing;
+
+        import java.util.List;
+
+        public final class Invoice {}
+        \\\
+        ```
+    languages: [java]
+    tags: [source-files, structure]
+    source: https://google.github.io/styleguide/javaguide.html#s3-source-file-structure

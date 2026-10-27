@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoCompositeLiterals:
+    standard: @{EffectiveGo}
+    ruleId: composite-literals
+    title: Build values in constructors with composite literals
+    statement:
+        When the zero value is not enough, write a constructor that returns
+        the address of a composite literal instead of allocating and then
+        assigning each field.
+    rationale:
+        The literal removes boilerplate, and returning the address of a
+        local is safe in Go because the storage outlives the function.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func NewServer(addr string) *Server {
+            s := new(Server)
+            s.addr = addr
+            s.timeout = 30 * time.Second
+            s.conns = make(map[string]net.Conn)
+            return s
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func NewServer(addr string) *Server {
+            return &Server{
+                addr:    addr,
+                timeout: 30 * time.Second,
+                conns:   make(map[string]net.Conn),
+            }
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [initialization, constructors]
+    source: https://go.dev/doc/effective_go#composite_literals

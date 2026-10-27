@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./EffectiveGo import EffectiveGo
+
+export coding-rule EffectiveGoParallelization:
+    standard: @{EffectiveGo}
+    ruleId: parallel
+    title: Split independent work across CPUs and respect GOMAXPROCS
+    statement:
+        Parallelize a calculation only when it breaks into independent
+        pieces, signalling each piece's completion on a channel. Size the
+        number of pieces with runtime.GOMAXPROCS of zero so the user's
+        setting is honoured. Do not confuse concurrency, the structure of a
+        program, with parallelism.
+    rationale:
+        GOMAXPROCS reflects the cores the program is allowed to use, and not
+        every parallel problem fits Go's concurrent model.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        const numCPU = 8 // hard-coded
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        numCPU := runtime.GOMAXPROCS(0)
+        done := make(chan struct{}, numCPU)
+        for i := 0; i < numCPU; i++ {
+            go func() {
+                processChunk(items, i, numCPU)
+                done <- struct{}{}
+            }()
+        }
+        for i := 0; i < numCPU; i++ {
+            <-done
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [concurrency, parallelism, performance]
+    source: https://go.dev/doc/effective_go#parallel

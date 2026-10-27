@@ -1,0 +1,31 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoErrorPercentW:
+    standard: @{GoogleGo}
+    ruleId: best-practices/error-percent-w
+    title: Put %w at the end of the error string
+    statement:
+        When wrapping with %w, place it at the end of the message, in the
+        form context colon %w.
+    rationale:
+        The printed text then reads from newest to oldest, matching the
+        structure of the error chain.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        return fmt.Errorf("%w: reading manifest", err)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        return fmt.Errorf("reading manifest: %w", err)
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, errors, wrapping]
+    source: https://google.github.io/styleguide/go/best-practices#error-percent-w

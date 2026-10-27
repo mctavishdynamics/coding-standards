@@ -1,0 +1,31 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreNl1:
+    standard: @{CppCoreGuidelines}
+    ruleId: NL.1
+    title: Don't say in comments what can be clearly stated in code
+    statement:
+        Do not write comments that merely restate what the code already says
+        clearly.
+    rationale:
+        Compilers do not read comments, comments are less precise than code,
+        and they are not kept up to date as reliably.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        total = price * qty + shipping;   // multiply price by qty and add shipping
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        total = price * qty + shipping;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [comments, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rl-comments

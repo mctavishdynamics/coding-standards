@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs101:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.101
+    title: Use unsigned types for bit manipulation
+    statement:
+        Use unsigned integer types for values that hold bit patterns, flags
+        and masks.
+    rationale:
+        Unsigned types support shifts and masks without surprises from the
+        sign bit.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int flags = read_flags();
+        int high = flags >> 28;       // sign extension when the top bit is set
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::uint32_t flags = read_flags();
+        std::uint32_t high = flags >> 28;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [arithmetic, bit-manipulation]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-unsigned

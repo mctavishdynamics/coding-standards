@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsConstructorsTostring:
+    standard: @{AirbnbJavaScript}
+    ruleId: 9.4
+    title: Make custom toString methods safe
+    statement:
+        You may write a custom toString method, but make sure it always
+        works and has no side effects.
+    rationale:
+        toString is called implicitly in many places, so a failing or
+        state-changing version causes surprising bugs.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        class Account {
+          toString() {
+            this.viewCount += 1;
+            return `Account ${this.id}`;
+          }
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Account {
+          toString() {
+            return `Account ${this.id}`;
+          }
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, side-effects]
+    source: https://github.com/airbnb/javascript#constructors--tostring

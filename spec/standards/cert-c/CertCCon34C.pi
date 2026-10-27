@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon34C:
+    standard: @{CertC}
+    ruleId: CON34-C
+    title:
+        Declare objects shared between threads with appropriate storage
+        durations
+    statement:
+        Do not let one thread use an automatic or thread-local object that
+        belongs to another thread unless the owner is certain to outlive the
+        access. Share objects with static or allocated storage, or join the
+        thread before the owning function returns.
+    rationale:
+        The owner's stack frame or thread-local storage may be gone when the
+        other thread reads it, giving invalid memory accesses. CERT rates
+        likelihood probable, detectable no, repairable no, priority P4,
+        level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        void start_job(void) {
+            int job_id = 42;
+            thrd_t t;
+            thrd_create(&t, run_job, &job_id);
+            thrd_detach(t);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void start_job(void) {
+            int job_id = 42;
+            thrd_t t;
+            if (thrd_create(&t, run_job, &job_id) == thrd_success) {
+                thrd_join(t, NULL);
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [concurrency, lifetime, memory]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/concurrency-con/con34-c

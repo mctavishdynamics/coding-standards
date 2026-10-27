@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio06J:
+    standard: @{CertJava}
+    ruleId: FIO06-J
+    title: Do not create multiple buffered wrappers on a single byte or character stream
+    statement:
+        Wrap an input or output stream in only one buffered wrapper, such as
+        a BufferedReader or Scanner, and reuse that wrapper wherever the
+        stream is needed.
+    rationale:
+        Each buffered wrapper reads ahead. A second wrapper misses data
+        already held in the first one's buffer, so input is lost or read out
+        of order. CERT's risk assessment gives likelihood unlikely,
+        detectable no, repairable no, priority P1 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        String readLine() throws IOException {
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+            return in.readLine();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        private static final BufferedReader IN =
+                new BufferedReader(new InputStreamReader(System.in));
+
+        String readLine() throws IOException {
+            return IN.readLine();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [io, streams]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio06-j/

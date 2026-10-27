@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoSubtests:
+    standard: @{GoogleGo}
+    ruleId: decisions/subtests
+    title: Keep subtests independent
+    statement:
+        Use subtests where they help, but never make one depend on another
+        having run first, for success or for initial state.
+    rationale:
+        Subtests can be run individually with go test -run or test filters,
+        so hidden ordering dependencies break them.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var id string
+        t.Run("create", func(t *testing.T) { id = mustCreate(t) })
+        t.Run("delete", func(t *testing.T) { mustDelete(t, id) })
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        t.Run("delete", func(t *testing.T) {
+            id := mustCreate(t)
+            mustDelete(t, id)
+        })
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, subtests]
+    source: https://google.github.io/styleguide/go/decisions#subtests

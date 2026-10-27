@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8WithForLocalResources:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-with-statement
+    title: Use with to release local resources
+    statement:
+        When a resource is local to a section of code, use a with statement
+        so it is cleaned up promptly and reliably. A try and finally
+        statement is also acceptable.
+    rationale:
+        Cleanup then happens even when an exception is raised.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        log = open("app.log", "a")
+        log.write(entry)
+        log.close()
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        with open("app.log", "a") as log:
+            log.write(entry)
+        \\\
+        ```
+    languages: [python]
+    tags: [resources, context-managers]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

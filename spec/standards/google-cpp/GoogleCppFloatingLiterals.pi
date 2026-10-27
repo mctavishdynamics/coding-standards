@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppFloatingLiterals:
+    standard: @{GoogleCpp}
+    ruleId: Floating_Literals
+    title:
+        Write floating-point literals with digits on both sides of the point
+    statement:
+        Give every floating-point literal a radix point with digits on both
+        sides, even in exponential notation.
+    rationale:
+        The familiar form keeps floating literals from being mistaken for
+        integers and keeps the exponent letter from looking like a hex
+        digit.
+    exceptions:
+        A floating-point variable may be initialized from an integer literal
+        that it can represent exactly.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        float f = 1.f;
+        long double ld = -.5L;
+        double d = 1248e6;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        float f = 1.0f;
+        float f2 = 1;  // Exactly representable integer is fine.
+        double d = 1248.0e6;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [formatting, floating-point, literals]
+    source: https://google.github.io/styleguide/cppguide.html#Floating_Literals

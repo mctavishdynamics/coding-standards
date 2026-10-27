@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonOverriddenMethodDocstrings:
+    standard: @{GooglePython}
+    ruleId: 3.8.3.1
+    title: Skip docstrings on methods marked with override
+    statement:
+        A method that overrides a base class method and is decorated with
+        override needs no docstring. If it materially refines the base
+        contract or adds side effects, document at least those differences.
+        Without the decorator, a docstring is required.
+    rationale:
+        The decorator points readers to the base class documentation, so
+        repeating it, or writing see base class, adds nothing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        class CsvExporter(Exporter):
+            @override
+            def export(self, rows):
+                """See base class."""
+                ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        class CsvExporter(Exporter):
+            @override
+            def export(self, rows):
+                ...
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, inheritance]
+    source: https://google.github.io/styleguide/pyguide.html#s3.8.3.1-overridden-methods

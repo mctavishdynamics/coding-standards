@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaExp06J:
+    standard: @{CertJava}
+    ruleId: EXP06-J
+    title: Do not use expressions with side effects in assertions
+    statement:
+        Keep the expression in an assert statement free of side effects.
+        Perform any required work in a normal statement and assert on its
+        result.
+    rationale:
+        Assertions can be disabled at run time, and then the expression is
+        not evaluated, so its side effects disappear. CERT rates likelihood
+        unlikely, detectable yes, repairable yes, priority P3, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        assert queue.remove(job);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        boolean removed = queue.remove(job);
+        assert removed;
+        \\\
+        ```
+    languages: [java]
+    tags: [assertions, side-effects]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/expressions-exp/exp06-j/

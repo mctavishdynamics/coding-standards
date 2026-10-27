@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptClassDeclarations:
+    standard: @{GoogleTypeScript}
+    ruleId: class-declarations
+    title: Do not end class declarations with a semicolon
+    statement:
+        A class declaration is not followed by a semicolon. A statement that
+        assigns a class expression is a statement and does end with one.
+    rationale:
+        A semicolon after a declaration is noise, while one after a
+        statement keeps statements uniformly terminated.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Basket {
+        };
+
+        export const Special = class extends Basket {
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Basket {
+        }
+
+        export const Special = class extends Basket {
+        };
+        \\\
+        ```
+    languages: [typescript]
+    tags: [classes, formatting, semicolons]
+    source: https://google.github.io/styleguide/tsguide.html#class-declarations

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaFio10J:
+    standard: @{CertJava}
+    ruleId: FIO10-J
+    title: Ensure the array is filled when using read() to fill an array
+    statement:
+        read(byte[]) may return fewer bytes than requested. Loop until the
+        array is full or the stream ends, or use
+        DataInputStream.readFully().
+    rationale:
+        Assuming one call fills the buffer leaves part of it uninitialized
+        or stale and corrupts the data that is processed. CERT's risk
+        assessment gives likelihood unlikely, detectable no, repairable no,
+        priority P1 and level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        byte[] header = new byte[16];
+        in.read(header);
+        parse(header);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        byte[] header = new byte[16];
+        new DataInputStream(in).readFully(header);
+        parse(header);
+        \\\
+        ```
+    languages: [java]
+    tags: [io, streams]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-output-fio/fio10-j/

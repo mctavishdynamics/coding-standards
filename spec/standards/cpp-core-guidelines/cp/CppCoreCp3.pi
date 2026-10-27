@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp3:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.3
+    title: Minimize explicit sharing of writable data
+    statement:
+        Share as little mutable data between threads as possible. Pass data
+        that tasks only read as const, and prefer copies or message passing
+        to shared writable state.
+    rationale:
+        Data that is not written cannot race, and less sharing means fewer
+        places to forget synchronization and less time waiting on locks.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void analyse(std::vector<Sample>& samples)
+        {
+            auto stats = std::async([&] { return summarize(samples); });
+            auto peaks = std::async([&] { return find_peaks(samples); });
+            // must inspect both functions to know whether they modify samples
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void analyse(const std::vector<Sample>& samples)
+        {
+            auto stats = std::async([&] { return summarize(samples); });
+            auto peaks = std::async([&] { return find_peaks(samples); });
+            // samples is read-only here, so the tasks cannot race on it
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, immutability, shared-state]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-data

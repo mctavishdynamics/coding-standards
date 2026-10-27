@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsNamingSelfThis:
+    standard: @{AirbnbJavaScript}
+    ruleId: 23.5
+    title: Do not save references to this
+    statement:
+        Do not assign this to a variable such as self or that. Use arrow
+        functions or Function.prototype.bind.
+    rationale:
+        Arrow functions keep the surrounding this, so the extra alias is
+        unnecessary.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function Poller() {
+          const self = this;
+          setInterval(function () {
+            self.check();
+          }, 1000);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function Poller() {
+          setInterval(() => {
+            this.check();
+          }, 1000);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [naming, functions, this]
+    source: https://github.com/airbnb/javascript#naming--self-this

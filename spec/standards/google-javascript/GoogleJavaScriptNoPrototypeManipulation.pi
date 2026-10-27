@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptNoPrototypeManipulation:
+    standard: @{GoogleJavaScript}
+    ruleId: 5.4.6
+    title: Do not manipulate prototypes directly
+    statement:
+        Use the class keyword instead of defining prototype properties in
+        ordinary code. Mixins and changes to built-in prototypes are
+        forbidden.
+    rationale:
+        Class syntax is clearer than prototype assignments, and mixins and
+        built-in changes create hidden coupling.
+    exceptions:
+        Framework code such as Polymer or Angular may need prototypes and
+        should not use worse workarounds.
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        Object.assign(Panel.prototype, DraggableMixin);
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        class Panel extends Draggable {}
+        \\\
+        ```
+    languages: [javascript]
+    tags: [classes, prototypes]
+    source: https://google.github.io/styleguide/jsguide.html#546-do-not-manipulate-prototypes-directly

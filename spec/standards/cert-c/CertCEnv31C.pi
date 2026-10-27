@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCEnv31C:
+    standard: @{CertC}
+    ruleId: ENV31-C
+    title:
+        Do not rely on an environment pointer following an operation that
+        may invalidate it
+    statement:
+        Do not keep using the envp argument of main after the environment
+        has been changed, for example by setenv or putenv. Use getenv, or
+        environ on POSIX, after any change.
+    rationale:
+        Changing the environment can reallocate its array, leaving envp
+        pointing at stale memory. CERT rates likelihood probable, detectable
+        yes, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        int main(int argc, char *argv[], char *envp[]) {
+            if (setenv("APP_MODE", "safe", 1) != 0) {
+                return 1;
+            }
+            for (char **e = envp; *e != NULL; e++) {
+                puts(*e);
+            }
+            return 0;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        extern char **environ;
+
+        int main(void) {
+            if (setenv("APP_MODE", "safe", 1) != 0) {
+                return 1;
+            }
+            for (char **e = environ; *e != NULL; e++) {
+                puts(*e);
+            }
+            return 0;
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [environment, memory, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/environment-env/env31-c

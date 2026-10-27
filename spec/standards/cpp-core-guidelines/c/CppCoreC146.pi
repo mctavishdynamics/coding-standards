@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreC146:
+    standard: @{CppCoreGuidelines}
+    ruleId: C.146
+    title: Use dynamic_cast where navigating a hierarchy is unavoidable
+    statement:
+        When you must move down or across a class hierarchy, use
+        dynamic_cast rather than static_cast or other unchecked casts.
+    rationale:
+        dynamic_cast checks the actual type at run time instead of assuming
+        it.
+    exceptions:
+        If dynamic_cast has been measured to be too slow in a critical path
+        and the downcast is guaranteed some other way without virtual
+        inheritance, a carefully commented static_cast may be used. Such
+        code still needs human attention during maintenance.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void on_click(Widget* w) {
+            auto* b = static_cast<Button*>(w);   // wrong if w is not a Button
+            b->press();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void on_click(Widget* w) {
+            if (auto* b = dynamic_cast<Button*>(w))
+                b->press();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [inheritance, casts, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rh-dynamic_cast

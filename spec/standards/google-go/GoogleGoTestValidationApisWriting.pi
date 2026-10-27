@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTestValidationApisWriting:
+    standard: @{GoogleGo}
+    ruleId: best-practices/test-validation-apis-writing
+    title: Write acceptance tests as functions that return errors
+    statement:
+        To let users validate their implementations of your interfaces, put
+        an acceptance check in a package named with a test suffix, taking
+        the implementation as an argument and returning an error describing
+        which invariant broke. Fail fast or aggregate failures, and do not
+        use it to get around the guidance against assertions.
+    rationale:
+        Returning errors keeps the user's test in control and lets the
+        acceptance test itself be tested.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        package chesstest
+
+        func ExercisePlayer(t *testing.T, b *chess.Board, p chess.Player) {
+            if !b.Legal(p.Move()) {
+                t.Fatal("bad move")
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        package chesstest
+
+        // ExercisePlayer returns nil if p makes a legal move on b, or an error
+        // describing the invariant it broke.
+        func ExercisePlayer(b *chess.Board, p chess.Player) error {
+            if m := p.Move(); !b.Legal(m) {
+                return &IllegalMoveError{Move: m}
+            }
+            return nil
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, testing, api-design]
+    source: https://google.github.io/styleguide/go/best-practices#test-validation-apis-writing

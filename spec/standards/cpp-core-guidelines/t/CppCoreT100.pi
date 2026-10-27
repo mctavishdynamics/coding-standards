@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT100:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.100
+    title: Use variadic templates when you need a function that takes a variable number of arguments of a variety of types
+    statement:
+        For a function that accepts any number of arguments of differing
+        types, use a variadic template rather than C varargs.
+    rationale:
+        Variadic templates are the most general mechanism for this and are
+        both efficient and type safe, while va_arg is unchecked.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void log_values(const char* fmt, ...)
+        {
+            va_list args;
+            va_start(args, fmt);
+            int n = va_arg(args, int);   // trusts the caller
+            va_end(args);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename... Args>
+        void log_values(const Args&... args)
+        {
+            ((std::clog << args << ' '), ...);
+            std::clog << '\n';
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, variadic, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-variadic

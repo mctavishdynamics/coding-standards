@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppMem56Cpp:
+    standard: @{CertCpp}
+    ruleId: MEM56-CPP
+    title: Do not store an already-owned pointer value in an unrelated smart pointer
+    statement:
+        Do not give a pointer that is already owned by one smart pointer to
+        another, unrelated smart pointer. Copy the existing smart pointer or
+        use enable_shared_from_this instead.
+    rationale:
+        Two unrelated owners each delete the object, which is a double free
+        and undefined behavior. CERT rates likelihood likely, detectable no,
+        repairable no, priority P9, level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        void share(Task* task) {
+            std::shared_ptr<Task> first(task);
+            std::shared_ptr<Task> second(task);
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void share() {
+            auto first = std::make_shared<Task>();
+            std::shared_ptr<Task> second = first;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [memory, smart-pointers, ownership]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/memory-management-mem/mem56-cpp

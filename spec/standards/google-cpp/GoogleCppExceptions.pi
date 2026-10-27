@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppExceptions:
+    standard: @{GoogleCpp}
+    ruleId: Exceptions
+    title: Do not use C++ exceptions
+    statement:
+        Do not throw or catch C++ exceptions, and do not use related
+        features such as std::exception_ptr and std::nested_exception.
+        Report errors with return values such as status objects.
+    rationale:
+        Most existing Google code is not exception-safe, so adding
+        exceptions would affect all dependent code and make projects hard to
+        integrate. The reason is practical, not philosophical.
+    exceptions:
+        Windows code has a limited exception, covered under Windows Code.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        int ParsePort(std::string_view text) {
+          int port;
+          if (!absl::SimpleAtoi(text, &port)) {
+            throw std::invalid_argument("bad port");
+          }
+          return port;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        absl::StatusOr<int> ParsePort(std::string_view text) {
+          int port;
+          if (!absl::SimpleAtoi(text, &port)) {
+            return absl::InvalidArgumentError("bad port");
+          }
+          return port;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, exceptions]
+    source: https://google.github.io/styleguide/cppguide.html#Exceptions

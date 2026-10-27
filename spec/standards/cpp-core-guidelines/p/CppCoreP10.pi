@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreP10:
+    standard: @{CppCoreGuidelines}
+    ruleId: P.10
+    title: Prefer immutable data to mutable data
+    statement:
+        Make data const or constexpr unless it really needs to change.
+    rationale:
+        Constants are easier to reason about, cannot change unexpectedly,
+        can sometimes be optimized better and cannot take part in a data
+        race.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        double tax_rate = 0.2;
+        double tax(double amount) { return amount * tax_rate; }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        constexpr double tax_rate = 0.2;
+        double tax(double amount) { return amount * tax_rate; }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [philosophy, immutability, const]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rp-mutable

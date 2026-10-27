@@ -1,0 +1,41 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs24:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.24
+    title: Use a unique_ptr to hold pointers
+    statement:
+        Hold the result of an allocation in a std::unique_ptr rather than a
+        raw pointer.
+    rationale:
+        unique_ptr is the simplest way to avoid leaks. The type system
+        checks ownership, readers see who owns the object, and the cost is
+        zero or near zero.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void parse(std::istream& in) {
+            Token* tok = new Token(read_token(in));
+            if (!tok->valid()) throw ParseError{};   // leaks tok
+            consume(*tok);
+            delete tok;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        void parse(std::istream& in) {
+            auto tok = std::make_unique<Token>(read_token(in));
+            if (!tok->valid()) throw ParseError{};
+            consume(*tok);
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [smart-pointers, ownership]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-unique

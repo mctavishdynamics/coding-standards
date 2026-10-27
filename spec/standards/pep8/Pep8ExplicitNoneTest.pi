@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ExplicitNoneTest:
+    standard: @{Pep8}
+    ruleId: programming-recommendations-if-x-is-not-none
+    title: Test for None explicitly when you mean None
+    statement:
+        Do not write if x when you mean if x is not None, for example when
+        checking whether an argument that defaults to None was given.
+    rationale:
+        The value passed may be false in a Boolean context, such as an empty
+        container, and would wrongly be treated as missing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def add_tags(post, tags=None):
+            if tags:
+                post.tags = tags
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def add_tags(post, tags=None):
+            if tags is not None:
+                post.tags = tags
+        \\\
+        ```
+    languages: [python]
+    tags: [comparisons, none, correctness]
+    source: https://peps.python.org/pep-0008/#programming-recommendations

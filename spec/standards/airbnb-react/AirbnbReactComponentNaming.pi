@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactComponentNaming:
+    standard: @{AirbnbReact}
+    ruleId: naming-4
+    title: Name a component after its file
+    statement:
+        Use the file name as the component name. For the root component of a
+        directory, name the file index.jsx and name the component after the
+        directory, then import it by the directory path.
+    rationale:
+        Matching names make imports predictable and keep import paths free
+        of repeated segments.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        import Sidebar from './Sidebar/Sidebar';
+        import Sidebar from './Sidebar/index';
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        // Sidebar/index.jsx exports the Sidebar component
+        import Sidebar from './Sidebar';
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [naming, modules]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#naming

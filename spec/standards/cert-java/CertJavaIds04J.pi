@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaIds04J:
+    standard: @{CertJava}
+    ruleId: IDS04-J
+    title: Safely extract files from ZipInputStream
+    statement:
+        When extracting archive entries, canonicalize each entry's target
+        path and check it stays inside the destination directory, and limit
+        the number of entries and the total size actually extracted.
+    rationale:
+        Entry names can contain path traversal sequences that overwrite
+        files elsewhere, and a small archive can expand to exhaust disk or
+        memory (a zip bomb). Declared entry sizes can be forged, so count
+        bytes as they are read. CERT rates likelihood probable, detectable
+        no, repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        ZipEntry entry;
+        while ((entry = zis.getNextEntry()) != null) {
+            File out = new File(destDir, entry.getName());
+            Files.copy(zis, out.toPath());
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        ZipEntry entry;
+        int count = 0;
+        while ((entry = zis.getNextEntry()) != null) {
+            if (++count > MAX_ENTRIES) throw new IOException("Too many entries");
+            Path out = destDir.resolve(entry.getName()).normalize();
+            if (!out.startsWith(destDir)) throw new IOException("Bad entry path");
+            copyWithLimit(zis, out, MAX_ENTRY_BYTES);
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [file-io, path-traversal, denial-of-service]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/input-validation-and-data-sanitization-ids/ids04-j/

@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoTCommonSetupScope:
+    standard: @{GoogleGo}
+    ruleId: best-practices/t-common-setup-scope
+    title: Scope setup to the tests that need it
+    statement:
+        Call setup helpers explicitly in the tests that need them rather
+        than in package-level initialisation for every test.
+    rationale:
+        Tests that do not need slow or failure-prone setup should not pay
+        for it, especially when run in isolation.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        var dataset = mustLoadDataset()
+
+        func TestParse(t *testing.T) { /* does not use dataset */ }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func TestScore(t *testing.T) {
+            data := mustLoadDataset(t)
+            // ...
+        }
+
+        func TestParse(t *testing.T) { /* no dataset needed */ }
+        \\\
+        ```
+    languages: [go]
+    tags: [best-practices, testing, setup]
+    source: https://google.github.io/styleguide/go/best-practices#t-common-setup-scope

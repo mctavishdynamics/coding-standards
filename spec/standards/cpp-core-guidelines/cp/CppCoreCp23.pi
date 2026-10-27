@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreCp23:
+    standard: @{CppCoreGuidelines}
+    ruleId: CP.23
+    title: Think of a joining thread as a scoped container
+    statement:
+        Treat a thread that is joined at the end of its scope like a local
+        object. It may safely use pointers to objects in its own scope and
+        in enclosing scopes.
+    rationale:
+        A joining thread cannot outlive the scope that created it, so the
+        objects it points to stay alive for as long as it can use them,
+        keeping lifetimes easy to check.
+    exceptions: null
+    severity: null
+    noncompliant: null
+    compliant:
+        ```cpp
+        \\\
+        void render_frame(Frame& frame)
+        {
+            Buffer scratch;
+            std::jthread left([&] { render_half(frame, scratch, Side::left); });
+            std::jthread right([&] { render_half(frame, scratch, Side::right); });
+        }   // both threads join here, before scratch is destroyed
+        \\\
+        ```
+    languages: [cpp]
+    tags: [concurrency, threads, lifetime]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rconc-join

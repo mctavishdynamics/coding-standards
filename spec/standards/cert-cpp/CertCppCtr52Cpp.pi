@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppCtr52Cpp:
+    standard: @{CertCpp}
+    ruleId: CTR52-CPP
+    title: Guarantee that library functions do not overflow
+    statement:
+        Make sure the destination of a library algorithm that writes through
+        an output iterator has room for every element written. Size the
+        container first or use an inserting iterator.
+    rationale:
+        Algorithms such as std::copy and std::fill_n do not grow the
+        destination, so writing past its end overflows the buffer. CERT
+        rates likelihood likely, detectable no, repairable no, priority P9,
+        level L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```cpp
+        \\\
+        std::vector<int> duplicate(const std::vector<int>& src) {
+            std::vector<int> dest;
+            std::copy(src.begin(), src.end(), dest.begin());
+            return dest;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<int> duplicate(const std::vector<int>& src) {
+            std::vector<int> dest;
+            std::copy(src.begin(), src.end(), std::back_inserter(dest));
+            return dest;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [containers, buffer-overflow, algorithms]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/containers-ctr/ctr52-cpp

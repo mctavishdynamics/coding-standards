@@ -1,0 +1,53 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCArr38C:
+    standard: @{CertC}
+    ruleId: ARR38-C
+    title:
+        Guarantee that library functions do not form invalid pointers
+    statement:
+        When passing a pointer and a size or count to a library function
+        such as memcpy, memset or fread, make sure the count fits the object
+        the pointer refers to, measured in that function's units.
+    rationale:
+        A count larger than the object makes the library function read or
+        write out of bounds, which is undefined behavior. CERT rates
+        likelihood likely, detectable no, repairable no, priority P9, level
+        L2.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        #include <string.h>
+
+        void clear(int *values, size_t count) {
+            memset(values, 0, count);
+        }
+
+        void reset(void) {
+            int scores[16];
+            clear(scores, sizeof scores);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <string.h>
+
+        void clear(int *values, size_t count) {
+            memset(values, 0, count * sizeof *values);
+        }
+
+        void reset(void) {
+            int scores[16];
+            clear(scores, sizeof scores / sizeof scores[0]);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [arrays, bounds, library]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/arrays-arr/arr38-c

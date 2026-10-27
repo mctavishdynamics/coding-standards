@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftSpaceAroundOperators:
+    standard: @{GoogleSwift}
+    ruleId: horizontal-whitespace-operators
+    title: Put spaces around binary and ternary operators
+    statement:
+        Put a space on both sides of binary and ternary operators,
+        assignment and default argument equals signs, protocol composition
+        ampersands, operator names in operator declarations, and the return
+        arrow. Do not put spaces around the member dot or the range
+        operators.
+    rationale:
+        Uniform operator spacing shows the structure of expressions, while
+        dots and ranges read as single units.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        func clamp(_ value: Int, limit: Int=100)->Int {
+          let range = 0 ... limit
+          return value>limit ? limit : value
+        }
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        func clamp(_ value: Int, limit: Int = 100) -> Int {
+          let range = 0...limit
+          return value > limit ? limit : value
+        }
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, whitespace, operators]
+    source: https://google.github.io/swift/#horizontal-whitespace

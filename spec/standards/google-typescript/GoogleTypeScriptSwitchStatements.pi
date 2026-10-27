@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptSwitchStatements:
+    standard: @{GoogleTypeScript}
+    ruleId: switch-statements
+    title: Give every switch a final default and no fall-through
+    statement:
+        Every switch has a default group, placed last, even if it is empty.
+        Each non-empty case group ends with break, return or a throw; only
+        empty groups may fall through.
+    rationale:
+        A default shows the other cases were considered, and accidental
+        fall-through is a common bug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        switch (status) {
+          case 'paid':
+            ship();
+          case 'pending':
+            notify();
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        switch (status) {
+          case 'paid':
+            ship();
+            break;
+          case 'pending':
+          case 'review':
+            notify();
+            break;
+          default:
+            // nothing to do.
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [control-flow, switch]
+    source: https://google.github.io/styleguide/tsguide.html#switch-statements

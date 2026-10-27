@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./AirbnbReact import AirbnbReact
+
+export coding-rule AirbnbReactRenderReturnsValue:
+    standard: @{AirbnbReact}
+    ruleId: methods-4
+    title: Return a value from render
+    statement:
+        Make sure every render method returns a value. Enforced by the
+        ESLint rule react/require-render-return.
+    rationale:
+        A render method that builds JSX but does not return it renders
+        nothing, which is an easy bug to miss.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```jsx
+        \\\
+        render() {
+          <section>{this.props.children}</section>;
+        }
+        \\\
+        ```
+    compliant:
+        ```jsx
+        \\\
+        render() {
+          return <section>{this.props.children}</section>;
+        }
+        \\\
+        ```
+    languages: [javascript, jsx]
+    tags: [methods, render]
+    source: https://github.com/airbnb/javascript/blob/master/react/README.md#methods

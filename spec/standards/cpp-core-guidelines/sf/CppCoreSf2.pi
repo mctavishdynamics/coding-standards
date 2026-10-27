@@ -1,0 +1,40 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSf2:
+    standard: @{CppCoreGuidelines}
+    ruleId: SF.2
+    title: A header file must not contain object definitions or non-inline function definitions
+    statement:
+        Keep headers to declarations, templates, class definitions, inline
+        and constexpr functions, const and constexpr definitions, aliases
+        and includes. Put variable definitions and ordinary function bodies
+        in a source file.
+    rationale:
+        A definition in a header is repeated in every file that includes it,
+        which breaks the one-definition rule and causes link errors.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // config.h
+        int retry_limit = 3;
+        int doubled_limit() { return retry_limit * 2; }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // config.h
+        extern int retry_limit;
+        inline int doubled_limit() { return retry_limit * 2; }
+
+        // config.cpp
+        int retry_limit = 3;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, linkage]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rs-inline

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpArgumentWrapping:
+    standard: @{GoogleCSharp}
+    ruleId: argument-wrapping
+    title: Align wrapped arguments with the first argument
+    statement:
+        When arguments of a definition or call do not fit on one line, put
+        them on several lines aligned with the first argument. If that does
+        not fit or reads badly, start all arguments on a new line indented
+        four spaces.
+    rationale:
+        Aligned or uniformly indented arguments keep long signatures and
+        calls readable.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        ScheduleDelivery(customerAddress, preferredDate,
+          courier, includeInsurance);
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        ScheduleDelivery(customerAddress, preferredDate,
+                         courier, includeInsurance);
+        ScheduleDelivery(
+            customerAddress, preferredDate, courier, includeInsurance);
+        \\\
+        ```
+    languages: [csharp]
+    tags: [formatting, line-wrapping, functions]
+    source: https://google.github.io/styleguide/csharpguide.html#whitespace-rules

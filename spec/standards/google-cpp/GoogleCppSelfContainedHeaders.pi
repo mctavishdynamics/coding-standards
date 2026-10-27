@@ -1,0 +1,58 @@
+use ../lib/CodingRule
+
+from ./GoogleCpp import GoogleCpp
+
+export coding-rule GoogleCppSelfContainedHeaders:
+    standard: @{GoogleCpp}
+    ruleId: Self_contained_Headers
+    title: Make header files self-contained
+    statement:
+        Every header should compile on its own, end in .h, have header
+        guards and include everything it needs. Inline functions and
+        templates that clients instantiate must be defined in the header
+        itself, not in a separate -inl.h file.
+    rationale:
+        Users and refactoring tools should be able to include a header
+        without meeting hidden preconditions such as a required include
+        order.
+    exceptions:
+        A file meant to be included at an unusual place, such as the middle
+        of another file, may skip guards and prerequisites. Name it with the
+        .inc extension and use this sparingly. A template whose
+        instantiations all live in one .cc file may be defined in that file.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        // widget.h -- relies on the includer having included <string> first.
+        #ifndef MYAPP_UI_WIDGET_H_
+        #define MYAPP_UI_WIDGET_H_
+
+        class Widget {
+         public:
+          std::string label() const;
+        };
+
+        #endif  // MYAPP_UI_WIDGET_H_
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        // widget.h
+        #ifndef MYAPP_UI_WIDGET_H_
+        #define MYAPP_UI_WIDGET_H_
+
+        #include <string>
+
+        class Widget {
+         public:
+          std::string label() const;
+        };
+
+        #endif  // MYAPP_UI_WIDGET_H_
+        \\\
+        ```
+    languages: [cpp]
+    tags: [headers, includes]
+    source: https://google.github.io/styleguide/cppguide.html#Self_contained_Headers

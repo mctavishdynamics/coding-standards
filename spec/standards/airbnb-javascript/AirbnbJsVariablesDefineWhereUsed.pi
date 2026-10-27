@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsVariablesDefineWhereUsed:
+    standard: @{AirbnbJavaScript}
+    ruleId: 13.4
+    title: Assign variables where they are needed
+    statement:
+        Declare and assign variables close to where they are used, in a
+        sensible place within their block.
+    rationale:
+        let and const are block scoped, so there is no need to hoist
+        declarations to the top of a function, and doing so can run work
+        that is not needed.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function checkName(name) {
+          const existing = fetchAllNames();
+          if (name === '') {
+            return false;
+          }
+          return !existing.includes(name);
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function checkName(name) {
+          if (name === '') {
+            return false;
+          }
+          const existing = fetchAllNames();
+          return !existing.includes(name);
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [variables, scope]
+    source: https://github.com/airbnb/javascript#variables--define-where-used

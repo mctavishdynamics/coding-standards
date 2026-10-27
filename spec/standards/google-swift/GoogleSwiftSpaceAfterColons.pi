@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftSpaceAfterColons:
+    standard: @{GoogleSwift}
+    ruleId: horizontal-whitespace-colons
+    title: Put a space after but not before colons
+    statement:
+        Put a space after, and never before, the colon in conformance lists,
+        generic constraints, argument and tuple labels, type annotations,
+        dictionary types and dictionary literals.
+    rationale:
+        The colon binds to the name on its left, as in natural writing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        struct Cache<Key : Hashable> : Sendable {
+          var storage : [Key:Data] = [:]
+        }
+        let limits = ["free":1, "pro" : 10]
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        struct Cache<Key: Hashable>: Sendable {
+          var storage: [Key: Data] = [:]
+        }
+        let limits = ["free": 1, "pro": 10]
+        \\\
+        ```
+    languages: [swift]
+    tags: [formatting, whitespace]
+    source: https://google.github.io/swift/#horizontal-whitespace

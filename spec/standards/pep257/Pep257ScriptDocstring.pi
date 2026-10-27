@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257ScriptDocstring:
+    standard: @{Pep257}
+    ruleId: multi-line-docstrings-scripts
+    title: Make a script docstring usable as its usage message
+    statement:
+        Write the docstring of a stand-alone script so it can be printed as
+        the usage message. Cover what the script does, its command line
+        syntax, environment variables and files.
+    rationale:
+        A complete usage message helps a new user run the script and serves
+        as a quick reference to every option for an experienced one.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        """Backup tool."""
+        import sys
+
+        if len(sys.argv) != 3:
+            sys.exit(__doc__)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        """Copy a directory tree to a dated backup folder.
+
+        Usage: backup.py SOURCE DEST
+
+        SOURCE is copied to DEST/YYYY-MM-DD. Set BACKUP_KEEP to the
+        number of old backups to keep (default 7).
+        """
+        import sys
+
+        if len(sys.argv) != 3:
+            sys.exit(__doc__)
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, scripts]
+    source: https://peps.python.org/pep-0257/#multi-line-docstrings

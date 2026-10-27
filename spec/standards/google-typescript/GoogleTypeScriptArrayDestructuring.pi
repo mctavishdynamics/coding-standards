@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptArrayDestructuring:
+    standard: @{GoogleTypeScript}
+    ruleId: array-destructuring
+    title: Destructure arrays with defaults on the left-hand side
+    statement:
+        Array destructuring may unpack values and may end with a rest
+        element written without a space after the dots; omit unused
+        elements. For an optional destructured parameter, default it to an
+        empty array and put the element defaults inside the pattern.
+    rationale:
+        Defaults inside the pattern still apply when a caller passes a
+        partial array, and the empty default keeps a missing argument from
+        throwing.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        function resize([width, height] = [640, 480]) {}
+
+        const [first, unused, ... others] = parts;
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        function resize([width = 640, height = 480] = []) {}
+
+        const [first, , ...others] = parts;
+        \\\
+        ```
+    languages: [typescript]
+    tags: [arrays, destructuring, parameters]
+    source: https://google.github.io/styleguide/tsguide.html#array-destructuring

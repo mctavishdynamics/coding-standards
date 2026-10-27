@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonStatements:
+    standard: @{GooglePython}
+    ruleId: 3.14
+    title: Put one statement per line
+    statement:
+        Generally write one statement per line. A test and its result may
+        share a line only if the whole statement fits, never with try and
+        except, and only for an if without an else.
+    rationale:
+        One statement per line makes control flow easy to scan.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        if cached: return cached
+        else: return compute()
+        try: value = int(text)
+        except ValueError: value = 0
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        if cached: return cached
+        try:
+            value = int(text)
+        except ValueError:
+            value = 0
+        \\\
+        ```
+    languages: [python]
+    tags: [formatting, statements]
+    source: https://google.github.io/styleguide/pyguide.html#s3.14-statements

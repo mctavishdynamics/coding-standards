@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCTypeofKeyword:
+    standard: @{GoogleObjC}
+    ruleId: the-__typeof__-keyword
+    title: Use __typeof__ only where the type adds nothing
+    statement:
+        Use __typeof__ only where spelling out the type would not help the
+        reader, and prefer it over typeof because it works in every language
+        variant.
+    rationale:
+        Explicit types are clearer when they carry meaning, and __typeof__
+        is the portable spelling.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        __typeof__(items) snapshot = [items copy];
+        __weak typeof(self) weakSelf = self;
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        NSArray<ABCItem *> *snapshot = [items copy];
+        __weak __typeof__(self) weakSelf = self;
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [types, language-features]
+    source: https://google.github.io/styleguide/objcguide.html#the-__typeof__-keyword

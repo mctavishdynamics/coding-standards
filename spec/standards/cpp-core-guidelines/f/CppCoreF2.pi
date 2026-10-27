@@ -1,0 +1,37 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreF2:
+    standard: @{CppCoreGuidelines}
+    ruleId: F.2
+    title: Make a function perform a single logical operation
+    statement:
+        Give each function one job. A function that reads input, computes
+        and writes output should be split into functions for each step.
+    rationale:
+        A function that does one thing is simpler to understand, test and
+        reuse.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        void read_and_print_sum(std::istream& in) {
+            int sum = 0;
+            for (int x; in >> x;) sum += x;
+            std::cout << "sum: " << sum << '\n';
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::vector<int> read_ints(std::istream& in);
+        int sum(const std::vector<int>& values);
+        void print_sum(std::ostream& out, int sum);
+        \\\
+        ```
+    languages: [cpp]
+    tags: [functions, design, cohesion]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rf-logical

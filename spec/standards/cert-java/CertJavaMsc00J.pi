@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaMsc00J:
+    standard: @{CertJava}
+    ruleId: MSC00-J
+    title: Use SSLSocket rather than Socket for secure data exchange
+    statement:
+        Send sensitive data over untrusted networks with SSLSocket, or
+        another TLS channel, rather than a plain Socket.
+    rationale:
+        A plain socket gives no integrity, authentication or
+        confidentiality, so data can be read or altered in transit. CERT's
+        risk assessment gives likelihood likely, detectable no, repairable
+        no, priority P6 and level L2.
+    exceptions:
+        Plain sockets are fine when the data is not sensitive, when it is
+        already properly encrypted, or when the connection never crosses a
+        trust boundary.
+    severity: medium
+    noncompliant:
+        ```java
+        \\\
+        Socket socket = new Socket(host, 4443);
+        socket.getOutputStream().write(token);
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+        SSLSocket socket = (SSLSocket) factory.createSocket(host, 4443);
+        socket.getOutputStream().write(token);
+        \\\
+        ```
+    languages: [java]
+    tags: [networking, tls, sensitive-data]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/miscellaneous-msc/msc00-j/

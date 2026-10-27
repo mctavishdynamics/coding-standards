@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleObjC import GoogleObjC
+
+export coding-rule GoogleObjCAvoidForwardDeclarations:
+    standard: @{GoogleObjC}
+    ruleId: avoid-forward-declarations
+    title: Avoid forward declarations
+    statement:
+        Import the header that declares a type instead of forward declaring
+        it, unless a forward declaration is needed to break a circular
+        dependency between types in the same module.
+    rationale:
+        Forward declarations cause problems when headers are imported into
+        Swift and can hide errors when a type is renamed.
+    exceptions:
+        A forward declaration is fine to break a circular dependency inside
+        one module.
+    severity: null
+    noncompliant:
+        ```objectivec
+        \\\
+        @class ABCInvoice;
+
+        void ABCPrintInvoice(ABCInvoice *invoice);
+        \\\
+        ```
+    compliant:
+        ```objectivec
+        \\\
+        #import "Billing/ABCInvoice.h"
+
+        void ABCPrintInvoice(ABCInvoice *invoice);
+        \\\
+        ```
+    languages: [objective-c]
+    tags: [declarations, headers]
+    source: https://google.github.io/styleguide/objcguide.html#avoid-forward-declarations

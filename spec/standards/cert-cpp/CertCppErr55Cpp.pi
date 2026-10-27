@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./CertCpp import CertCpp
+
+export coding-rule CertCppErr55Cpp:
+    standard: @{CertCpp}
+    ruleId: ERR55-CPP
+    title: Honor exception specifications
+    statement:
+        Do not let a function throw an exception that its exception
+        specification does not allow. Catch or translate such exceptions, or
+        widen the specification.
+    rationale:
+        Throwing through a noexcept function calls std::terminate, often
+        without unwinding the stack. CERT rates likelihood likely,
+        detectable no, repairable yes, priority P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```cpp
+        \\\
+        std::size_t parse_port(const std::string& text) noexcept {
+            return std::stoul(text);  // may throw invalid_argument
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::optional<std::size_t> parse_port(const std::string& text) noexcept {
+            try {
+                return std::stoul(text);
+            } catch (...) {
+                return std::nullopt;
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [exceptions, noexcept]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/rules/exceptions-and-error-handling-err/err55-cpp

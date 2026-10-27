@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsFunctionsNoteOnBlocks:
+    standard: @{AirbnbJavaScript}
+    ruleId: 7.4
+    title: Remember that a function declaration is not a statement
+    statement:
+        Keep in mind that ECMA-262 defines a block as a list of statements
+        and that a function declaration is not a statement, which is why it
+        does not belong inside a block.
+    rationale:
+        Knowing the grammar explains why declarations in blocks behave
+        inconsistently.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        while (pending) {
+          function step() {
+            pending = advance();
+          }
+          step();
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        const step = () => {
+          pending = advance();
+        };
+        while (pending) {
+          step();
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, scope]
+    source: https://github.com/airbnb/javascript#functions--note-on-blocks

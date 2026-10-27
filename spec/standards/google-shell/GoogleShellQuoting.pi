@@ -1,0 +1,40 @@
+use ../lib/CodingRule
+
+from ./GoogleShell import GoogleShell
+
+export coding-rule GoogleShellQuoting:
+    standard: @{GoogleShell}
+    ruleId: quoting
+    title: Quote strings with variables, substitutions or special characters
+    statement:
+        Always quote strings that contain variables, command substitutions,
+        spaces or shell metacharacters, unless unquoted expansion is
+        deliberately needed. Use arrays to pass lists such as command-line
+        flags, use "$@" rather than $* to pass on arguments, and prefer
+        quoting plain words.
+    rationale:
+        Unquoted expansions are split and globbed, which breaks values with
+        spaces and drops empty strings.
+    exceptions:
+        Shell-internal integer specials such as $?, $#, $$ and $! may be
+        left unquoted, and literal integers are never quoted.
+    severity: null
+    noncompliant:
+        ```bash
+        \\\
+        backup_name=$(hostname)-$(date +%F)
+        cp $1 /backups/$backup_name
+        run_tool $*
+        \\\
+        ```
+    compliant:
+        ```bash
+        \\\
+        backup_name="$(hostname)-$(date +%F)"
+        cp "$1" "/backups/${backup_name}"
+        run_tool "$@"
+        \\\
+        ```
+    languages: [shell]
+    tags: [quoting, variables]
+    source: https://google.github.io/styleguide/shellguide.html#quoting

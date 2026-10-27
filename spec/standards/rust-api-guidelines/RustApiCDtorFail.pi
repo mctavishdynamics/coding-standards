@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCDtorFail:
+    standard: @{RustApiGuidelines}
+    ruleId: C-DTOR-FAIL
+    title: Never let destructors fail
+    statement:
+        Do not panic or otherwise fail in Drop. Offer a separate method,
+        such as close, that returns a Result, and have Drop fall back to a
+        best-effort teardown that ignores or logs errors.
+    rationale:
+        Destructors run during unwinding, and a panic there aborts the
+        program.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        impl Drop for Journal {
+            fn drop(&mut self) {
+                self.file.sync_all().expect("failed to sync journal");
+            }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl Journal {
+            pub fn close(mut self) -> io::Result<()> {
+                self.file.sync_all()
+            }
+        }
+
+        impl Drop for Journal {
+            fn drop(&mut self) {
+                let _ = self.file.sync_all();
+            }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [destructors, error-handling]
+    source: https://rust-lang.github.io/api-guidelines/dependability.html#c-dtor-fail

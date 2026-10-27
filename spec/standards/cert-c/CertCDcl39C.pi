@@ -1,0 +1,58 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCDcl39C:
+    standard: @{CertC}
+    ruleId: DCL39-C
+    title:
+        Avoid information leakage when passing a structure across a trust
+        boundary
+    statement:
+        Before copying a structure to a less trusted domain, such as user
+        space or the network, make sure its padding bytes and bit-field
+        padding hold no stale data. Clear the whole object first or copy the
+        members one by one.
+    rationale:
+        Initializing every member does not initialize padding. Padding left
+        with old stack or heap contents can leak keys, pointers or other
+        sensitive data. CERT rates likelihood unlikely, detectable no,
+        repairable yes, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        struct reply {
+            char status;
+            int value;
+        };
+
+        void send_reply(int fd, int value) {
+            struct reply r;
+            r.status = 'k';
+            r.value = value;
+            write(fd, &r, sizeof r);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        struct reply {
+            char status;
+            int value;
+        };
+
+        void send_reply(int fd, int value) {
+            struct reply r;
+            memset(&r, 0, sizeof r);
+            r.status = 'k';
+            r.value = value;
+            write(fd, &r, sizeof r);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [structures, information-leakage, security]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/declarations-and-initialization-dcl/dcl39-c

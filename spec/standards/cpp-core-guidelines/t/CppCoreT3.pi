@@ -1,0 +1,53 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT3:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.3
+    title: Use templates to express containers and ranges
+    statement:
+        Make the element type of a container or range a template parameter
+        rather than storing untyped void pointers and element sizes.
+    rationale:
+        A typed container is general, reusable and type safe, and it lets
+        the type system and optimizer see the structure of the program.
+        Void-pointer containers hide intent and need casts at every use.
+    exceptions:
+        An ABI-stable interface may need a non-template base implementation
+        with a type-safe template layered over it.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        class Buffer {
+        public:
+            Buffer(int n, int elem_size);
+            void* data;
+            int size;
+        };
+
+        Buffer b(16, sizeof(float));
+        static_cast<float*>(b.data)[3] = 1.5f;
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename T>
+        class Buffer {
+        public:
+            explicit Buffer(int n);
+            T& operator[](int i);
+        private:
+            T* data;
+            int size;
+        };
+
+        Buffer<float> b(16);
+        b[3] = 1.5f;
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, containers, type-safety]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-cont

@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum03J:
+    standard: @{CertJava}
+    ruleId: NUM03-J
+    title: Use integer types that can fully represent the possible range of unsigned data
+    statement:
+        Store unsigned values from native code, files or protocols in a Java
+        type wide enough to hold their full range, such as a long for an
+        unsigned 32-bit value.
+    rationale:
+        Java's integer types other than char are signed, so large unsigned
+        values read into a same-sized type become negative. CERT rates
+        likelihood unlikely, detectable no, repairable no, priority P1,
+        level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        int length = in.readInt();  // unsigned 32-bit field
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        long length = in.readInt() & 0xFFFFFFFFL;
+        \\\
+        ```
+    languages: [java]
+    tags: [integers, unsigned, types]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/numeric-types-and-operations-num/num03-j/

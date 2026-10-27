@@ -1,0 +1,48 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoClarityPurpose:
+    standard: @{GoogleGo}
+    ruleId: guide/clarity-purpose
+    title: Make it clear what the code is doing
+    statement:
+        When a reader might need prior knowledge to follow the code, spend
+        the effort to make its purpose plain: use more descriptive names,
+        add comments, separate steps with whitespace, or split the code into
+        smaller functions.
+    rationale:
+        Readability is judged from the reader's side, and code is read far
+        more often than it is written.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func p(xs []int, k int) []int {
+            var o []int
+            for _, x := range xs {
+                if x%k == 0 { o = append(o, x) }
+            }
+            return o
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        // multiplesOf returns the values in nums that divide evenly by factor.
+        func multiplesOf(nums []int, factor int) []int {
+            var multiples []int
+            for _, n := range nums {
+                if n%factor == 0 {
+                    multiples = append(multiples, n)
+                }
+            }
+            return multiples
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [guide, clarity, readability]
+    source: https://google.github.io/styleguide/go/guide#clarity-purpose

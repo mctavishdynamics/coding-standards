@@ -1,0 +1,46 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoCompareStableResults:
+    standard: @{GoogleGo}
+    ruleId: decisions/compare-stable-results
+    title: Compare semantically stable results
+    statement:
+        Do not compare output whose exact form depends on a package you do
+        not own, such as serialised bytes or formatted strings. Parse it and
+        compare the meaning instead.
+    rationale:
+        Dependencies like encoding/json may change their exact output and
+        break brittle tests.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        b, _ := json.Marshal(order)
+        if string(b) != `{"id":7,"qty":2}` {
+            t.Errorf("Marshal = %s", b)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        b, err := json.Marshal(order)
+        if err != nil {
+            t.Fatalf("json.Marshal(%v) failed: %v", order, err)
+        }
+        var got map[string]any
+        if err := json.Unmarshal(b, &got); err != nil {
+            t.Fatalf("json.Unmarshal failed: %v", err)
+        }
+        want := map[string]any{"id": 7.0, "qty": 2.0}
+        if diff := cmp.Diff(want, got); diff != "" {
+            t.Errorf("Marshal mismatch (-want +got):\n%s", diff)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, testing, comparison]
+    source: https://google.github.io/styleguide/go/decisions#compare-stable-results

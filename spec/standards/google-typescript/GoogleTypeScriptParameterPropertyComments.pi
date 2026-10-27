@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptParameterPropertyComments:
+    standard: @{GoogleTypeScript}
+    ruleId: parameter-property-comments
+    title: Document parameter properties with @param
+    statement:
+        Document a constructor parameter property with an @param tag in the
+        constructor's JSDoc.
+    rationale:
+        Editors show that description both at constructor calls and at
+        property accesses.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        class Uploader {
+          constructor(
+            /** Maximum parallel uploads. */
+            private readonly limit: number) {}
+        }
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        class Uploader {
+          /** @param limit Maximum parallel uploads. */
+          constructor(private readonly limit: number) {}
+        }
+        \\\
+        ```
+    languages: [typescript]
+    tags: [comments, jsdoc, classes]
+    source: https://google.github.io/styleguide/tsguide.html#parameter-property-comments

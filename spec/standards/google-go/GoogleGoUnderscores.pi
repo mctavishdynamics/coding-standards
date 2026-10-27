@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./GoogleGo import GoogleGo
+
+export coding-rule GoogleGoUnderscores:
+    standard: @{GoogleGo}
+    ruleId: decisions/underscores
+    title: Do not use underscores in Go names
+    statement:
+        Keep underscores out of Go identifiers. Source file names are not
+        identifiers and may contain them.
+    rationale:
+        Go uses MixedCaps for multi-word names, so underscores look foreign
+        and inconsistent.
+    exceptions:
+        Package names imported only by generated code; Test, Benchmark and
+        Example functions in _test.go files; and rare low-level code that
+        mirrors operating system or cgo identifiers, as package syscall
+        does.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func parse_header(raw_line string) (header_name string)
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func parseHeader(rawLine string) (headerName string)
+
+        func TestParseHeader_EmptyLine(t *testing.T) { /* ... */ }
+        \\\
+        ```
+    languages: [go]
+    tags: [decisions, naming]
+    source: https://google.github.io/styleguide/go/decisions#underscores

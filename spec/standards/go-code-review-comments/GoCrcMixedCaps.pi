@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcMixedCaps:
+    standard: @{GoCodeReviewComments}
+    ruleId: mixed-caps
+    title: Use MixedCaps even where other languages differ
+    statement:
+        Write multiword names in MixedCaps or mixedCaps, even when another
+        language's convention differs. An unexported constant is maxLength,
+        not MaxLength or MAX_LENGTH.
+    rationale:
+        In Go the case of the first letter controls visibility, so names
+        must follow Go's convention rather than imported habits.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        const MAX_RETRIES = 5
+        const DefaultTimeout = 30 * time.Second // meant to be unexported
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        const maxRetries = 5
+        const defaultTimeout = 30 * time.Second
+        \\\
+        ```
+    languages: [go]
+    tags: [naming]
+    source: https://go.dev/wiki/CodeReviewComments#mixed-caps

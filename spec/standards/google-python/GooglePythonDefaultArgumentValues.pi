@@ -1,0 +1,49 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonDefaultArgumentValues:
+    standard: @{GooglePython}
+    ruleId: 2.12
+    title: Do not use mutable default argument values
+    statement:
+        Default argument values are fine, but never use a mutable object or
+        a value computed at import time as a default. Use None and create
+        the value inside the function.
+    rationale:
+        Defaults are evaluated once, when the module loads. A mutable
+        default is shared between calls, and a computed default captures the
+        state of the world at import time.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def add_tag(tag, tags=[]):
+            tags.append(tag)
+            return tags
+
+
+        def log_event(name, when=time.time()):
+            ...
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def add_tag(tag, tags=None):
+            if tags is None:
+                tags = []
+            tags.append(tag)
+            return tags
+
+
+        def log_event(name, when=None):
+            if when is None:
+                when = time.time()
+            ...
+        \\\
+        ```
+    languages: [python]
+    tags: [functions, defaults]
+    source: https://google.github.io/styleguide/pyguide.html#s2.12-default-argument-values

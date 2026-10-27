@@ -1,0 +1,45 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCFio37C:
+    standard: @{CertC}
+    ruleId: FIO37-C
+    title:
+        Do not assume that fgets() or fgetws() returns a nonempty string
+        when successful
+    statement:
+        After a successful fgets or fgetws call, do not assume the buffer
+        holds at least one character before the terminator. Search for the
+        newline instead of indexing at strlen minus one.
+    rationale:
+        Input that starts with a null byte gives a string of length zero, so
+        indexing at length minus one writes before the buffer and corrupts
+        memory. CERT rates likelihood probable, detectable yes, repairable
+        yes, priority P18, level L1.
+    exceptions: null
+    severity: high
+    noncompliant:
+        ```c
+        \\\
+        char name[64];
+        if (fgets(name, sizeof name, stdin) != NULL) {
+            name[strlen(name) - 1] = '\0';
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        char name[64];
+        if (fgets(name, sizeof name, stdin) != NULL) {
+            char *newline = strchr(name, '\n');
+            if (newline != NULL) {
+                *newline = '\0';
+            }
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [io, strings, input-validation]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/input-output-fio/fio37-c

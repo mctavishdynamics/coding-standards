@@ -1,0 +1,42 @@
+use ../lib/CodingRule
+
+from ./Pep8 import Pep8
+
+export coding-rule Pep8ModuleLevelDunderNames:
+    standard: @{Pep8}
+    ruleId: module-level-dunder-names
+    title: Place module dunder names after the docstring and before imports
+    statement:
+        Put module-level dunders such as __all__ and __version__ after the
+        module docstring and before any imports, except from __future__
+        imports, which come first.
+    rationale:
+        Future imports must precede other code, and keeping metadata near
+        the top makes it easy to find.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        """Geometry helpers."""
+        import math
+
+        __all__ = ["distance"]
+        from __future__ import annotations
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        """Geometry helpers."""
+        from __future__ import annotations
+
+        __all__ = ["distance"]
+        __version__ = "2.1"
+
+        import math
+        \\\
+        ```
+    languages: [python]
+    tags: [modules, imports]
+    source: https://peps.python.org/pep-0008/#module-level-dunder-names

@@ -1,0 +1,35 @@
+use ../lib/CodingRule
+
+from ./GoogleTypeScript import GoogleTypeScript
+
+export coding-rule GoogleTypeScriptArrowFunctionBodies:
+    standard: @{GoogleTypeScript}
+    ruleId: arrow-function-bodies
+    title: Use a concise arrow body only when the result is used
+    statement:
+        Use concise or block bodies as appropriate, but use a concise body
+        only when the return value is actually used. Otherwise use a block
+        body, or the void operator.
+    rationale:
+        A block body makes the return type void and keeps an unintended
+        return value from leaking to the caller.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```typescript
+        \\\
+        saved.then(id => console.log(id));
+        \\\
+        ```
+    compliant:
+        ```typescript
+        \\\
+        saved.then(id => {
+          console.log(id);
+        });
+        const ids = rows.map(row => row.id);
+        \\\
+        ```
+    languages: [typescript]
+    tags: [functions, arrow-functions]
+    source: https://google.github.io/styleguide/tsguide.html#arrow-function-bodies

@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./CertJava import CertJava
+
+export coding-rule CertJavaNum07J:
+    standard: @{CertJava}
+    ruleId: NUM07-J
+    title: Do not attempt comparisons with NaN
+    statement:
+        Do not compare a value to NaN with ==, != or the relational
+        operators. Use Double.isNaN or Float.isNaN.
+    rationale:
+        NaN is unordered, so every comparison with it is false except !=,
+        which is always true, and such checks never work as intended. CERT
+        rates likelihood probable, detectable yes, repairable yes, priority
+        P6, level L2.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```java
+        \\\
+        if (reading == Double.NaN) {
+            discard();
+        }
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        if (Double.isNaN(reading)) {
+            discard();
+        }
+        \\\
+        ```
+    languages: [java]
+    tags: [floating-point, comparison]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/rules/numeric-types-and-operations-num/num07-j/

@@ -1,0 +1,46 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreE15:
+    standard: @{CppCoreGuidelines}
+    ruleId: E.15
+    title: Throw by value and catch exceptions from a hierarchy by reference
+    statement:
+        Throw exception objects by value, never as pointers, and catch class
+        hierarchy exceptions by reference, usually to const. Rethrow with a
+        plain throw statement rather than by throwing the caught object
+        again.
+    rationale:
+        Throwing by value and catching by reference avoids copies and
+        slicing of derived exceptions, and a bare throw rethrows the
+        original object with its real type.
+    exceptions:
+        Catching by value is fine for small value types such as an enum
+        value.
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        try {
+            throw new ParseError("bad header");
+        } catch (std::exception e) {   // slices; and the pointer is never caught here
+            log(e.what());
+            throw e;
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        try {
+            throw ParseError("bad header");
+        } catch (const std::exception& e) {
+            log(e.what());
+            throw;
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [error-handling, exceptions]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#re-exception-ref

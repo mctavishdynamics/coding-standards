@@ -1,0 +1,33 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreEs40:
+    standard: @{CppCoreGuidelines}
+    ruleId: ES.40
+    title: Avoid complicated expressions
+    statement:
+        Break up expressions that combine many operators, side effects or
+        nested conditions into named intermediate steps.
+    rationale:
+        Complicated expressions are hard to read and easy to get wrong.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        if ((a = read()) > 0 && (b = a * 2 + offset[a > 5 ? 1 : 0]) < limit || force) go();
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        const int a = read();
+        const int extra = offset[a > 5 ? 1 : 0];
+        const int b = a * 2 + extra;
+        if (force || (a > 0 && b < limit)) go();
+        \\\
+        ```
+    languages: [cpp]
+    tags: [expressions, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-complicated

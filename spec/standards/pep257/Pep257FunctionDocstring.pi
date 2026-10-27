@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./Pep257 import Pep257
+
+export coding-rule Pep257FunctionDocstring:
+    standard: @{Pep257}
+    ruleId: multi-line-docstrings-functions
+    title: Document behaviour, arguments and results of a function
+    statement:
+        A function or method docstring should summarise its behaviour and
+        document its arguments, return values, side effects, raised
+        exceptions and any limits on when it may be called. Mark optional
+        arguments and say whether keyword arguments are part of the
+        interface.
+    rationale:
+        Callers need this information to use the function correctly without
+        reading its body.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        def send(message, retries=2):
+            """Send stuff."""
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        def send(message, retries=2):
+            """Send a message to the broker and return its delivery id.
+
+            message -- the Message to deliver
+            retries -- optional number of extra attempts (default 2)
+
+            Raise DeliveryError when every attempt fails. Must not be
+            called before connect().
+            """
+        \\\
+        ```
+    languages: [python]
+    tags: [documentation, docstrings, functions]
+    source: https://peps.python.org/pep-0257/#multi-line-docstrings

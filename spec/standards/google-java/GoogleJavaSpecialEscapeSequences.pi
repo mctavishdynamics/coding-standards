@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./GoogleJava import GoogleJava
+
+export coding-rule GoogleJavaSpecialEscapeSequences:
+    standard: @{GoogleJava}
+    ruleId: 2.3.2
+    title: Prefer special escape sequences to octal and Unicode escapes
+    statement:
+        When a character has a dedicated escape sequence, such as
+        backslash-n, backslash-t, backslash-s or an escaped quote or
+        backslash, write that sequence instead of its octal or Unicode
+        escape.
+    rationale:
+        The named escapes are short and widely recognised, while numeric
+        escapes force the reader to look up the code point.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```java
+        \\\
+        String header = "name\011price\u000a";
+        \\\
+        ```
+    compliant:
+        ```java
+        \\\
+        String header = "name\tprice\n";
+        \\\
+        ```
+    languages: [java]
+    tags: [literals, strings]
+    source: https://google.github.io/styleguide/javaguide.html#s2.3.2-special-escape-sequences

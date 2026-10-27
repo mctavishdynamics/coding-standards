@@ -1,0 +1,44 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonImportsFormatting:
+    standard: @{GooglePython}
+    ruleId: 3.13
+    title: Put imports on separate lines, grouped and sorted
+    statement:
+        Put each import on its own line at the top of the file, after the
+        module docstring. Group them as future imports, standard library,
+        third-party, then repository sub-packages, and sort each group
+        lexicographically by full module path, ignoring case.
+    rationale:
+        A fixed order makes it easy to see what a module depends on and
+        avoids merge conflicts.
+    exceptions:
+        Several symbols from typing or collections.abc may be imported on
+        one line.
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import requests
+        import os, sys
+        from myproject.storage import cache
+        import json
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import json
+        import os
+        import sys
+
+        import requests
+
+        from myproject.storage import cache
+        \\\
+        ```
+    languages: [python]
+    tags: [imports, formatting]
+    source: https://google.github.io/styleguide/pyguide.html#s3.13-imports-formatting

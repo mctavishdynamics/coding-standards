@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpSuccessBoolAndOutStruct:
+    standard: @{GoogleCSharp}
+    ruleId: success-bool-and-out-struct
+    title: Return a success flag and an out struct instead of a nullable struct
+    statement:
+        Prefer returning a boolean success value together with the struct as
+        an out parameter.
+    rationale:
+        Nullable structs reinforce the null-means-failure pattern that
+        Google prefers to avoid.
+    exceptions:
+        Nullable structs are acceptable when performance is not a concern
+        and they make the code much more readable, for example with chained
+        null-conditional operators.
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public Color? FindColor(string name) { ... }
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public bool TryFindColor(string name, out Color color) { ... }
+        \\\
+        ```
+    languages: [csharp]
+    tags: [structs, error-handling, null-safety]
+    source: https://google.github.io/styleguide/csharpguide.html#default-valuesnull-returns-for-structs

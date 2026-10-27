@@ -1,0 +1,43 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCCon43C:
+    standard: @{CertC}
+    ruleId: CON43-C
+    title: Do not allow data races in multithreaded code
+    statement:
+        When more than one thread can access the same data and at least one
+        writes it, synchronize every access with a mutex or make the data
+        atomic.
+    rationale:
+        A data race is undefined behavior and can corrupt data, crash the
+        program or open security holes. CERT rates likelihood probable,
+        detectable no, repairable no, priority P4, level L3.
+    exceptions: null
+    severity: medium
+    noncompliant:
+        ```c
+        \\\
+        static long hits;
+
+        int handle_request(void *arg) {
+            hits++;
+            return serve(arg);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        static atomic_long hits;
+
+        int handle_request(void *arg) {
+            atomic_fetch_add(&hits, 1);
+            return serve(arg);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [concurrency, data-races]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/concurrency-con/con43-c

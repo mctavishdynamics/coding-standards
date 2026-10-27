@@ -1,0 +1,45 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT47:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.47
+    title: Avoid highly visible unconstrained templates with common names
+    statement:
+        Do not put unconstrained templates with common names, such as a
+        catch-all operator== or a generic print, in a namespace that also
+        defines concrete types.
+    rationale:
+        An unconstrained template is an exact match for any argument, so
+        argument-dependent lookup can pick it over a better function that
+        needs a small conversion. The result is silently wrong calls.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        namespace geo {
+            struct Point { int x, y; };
+
+            template<typename A, typename B>
+            bool operator==(const A&, const B&) { return false; }  // matches anything
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        namespace geo {
+            struct Point { int x, y; };
+
+            bool operator==(const Point& a, const Point& b)
+            {
+                return a.x == b.x && a.y == b.y;
+            }
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, overloading, namespaces]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-visible

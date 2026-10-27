@@ -1,0 +1,33 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsJqueryFind:
+    standard: @{AirbnbJavaScript}
+    ruleId: 26.4
+    title: Use find on scoped jQuery objects
+    statement:
+        When you already hold a jQuery object, search inside it with find
+        instead of passing it as a context argument or starting a new
+        chained lookup.
+    rationale:
+        Searching from a cached scope avoids extra DOM work and shows
+        clearly where the search happens.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        $('.item', $list).hide();
+        $('.list').find('.item').hide();
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        $list.find('.item').hide();
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jquery, dom]
+    source: https://github.com/airbnb/javascript#jquery--find

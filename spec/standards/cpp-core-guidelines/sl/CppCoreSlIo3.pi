@@ -1,0 +1,36 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreSlIo3:
+    standard: @{CppCoreGuidelines}
+    ruleId: SL.io.3
+    title: Prefer iostreams for I/O
+    statement:
+        Use iostreams for input and output rather than the printf and scanf
+        family.
+    rationale:
+        Streams are type safe, extensible to user-defined types, manage
+        memory implicitly and handle locales. gets and the percent-s
+        conversions of scanf and printf are buffer overflow hazards.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        char name[32];
+        scanf("%s", name);          // overflows on long input
+        printf("%d\n", name);       // wrong format, compiles
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        std::string name;
+        std::cin >> name;
+        std::cout << name << '\n';
+        \\\
+        ```
+    languages: [cpp]
+    tags: [io, type-safety, security]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rio-streams

@@ -1,0 +1,47 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCPos51C:
+    standard: @{CertC}
+    ruleId: POS51-C
+    title:
+        Avoid deadlock with POSIX threads by locking in predefined order
+    statement:
+        When a POSIX thread needs several mutexes at once, lock them in a
+        single order fixed across the program.
+    rationale:
+        Threads that take the same mutexes in different orders can wait on
+        each other forever. CERT rates likelihood probable, detectable no,
+        repairable no, priority P2, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        void link_nodes(struct node *a, struct node *b) {
+            pthread_mutex_lock(&a->lock);
+            pthread_mutex_lock(&b->lock);
+            a->next = b;
+            pthread_mutex_unlock(&b->lock);
+            pthread_mutex_unlock(&a->lock);
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        void link_nodes(struct node *a, struct node *b) {
+            struct node *lo = a->id < b->id ? a : b;
+            struct node *hi = a->id < b->id ? b : a;
+            pthread_mutex_lock(&lo->lock);
+            pthread_mutex_lock(&hi->lock);
+            a->next = b;
+            pthread_mutex_unlock(&hi->lock);
+            pthread_mutex_unlock(&lo->lock);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [posix, concurrency, locking, deadlock]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/posix-pos/pos51-c

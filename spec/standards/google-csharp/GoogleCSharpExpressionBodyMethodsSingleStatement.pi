@@ -1,0 +1,34 @@
+use ../lib/CodingRule
+
+from ./GoogleCSharp import GoogleCSharp
+
+export coding-rule GoogleCSharpExpressionBodyMethodsSingleStatement:
+    standard: @{GoogleCSharp}
+    ruleId: expression-body-methods-single-statement
+    title: Use expression-bodied methods only for single statements
+    statement:
+        Use expression body syntax for a method only when it is a single
+        statement, such as forwarding to a delegate or throwing an
+        exception.
+    rationale:
+        Longer bodies squeezed into an expression are hard to read and
+        debug.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```csharp
+        \\\
+        public bool IsEligible(Customer c) =>
+            c.Age >= 18 && c.Orders.Count > 3 && !c.IsBlocked && c.Region == "eu";
+        \\\
+        ```
+    compliant:
+        ```csharp
+        \\\
+        public void Cancel() => throw new NotSupportedException();
+        public int Count() => _items.Count;
+        \\\
+        ```
+    languages: [csharp]
+    tags: [syntax, methods]
+    source: https://google.github.io/styleguide/csharpguide.html#expression-body-syntax

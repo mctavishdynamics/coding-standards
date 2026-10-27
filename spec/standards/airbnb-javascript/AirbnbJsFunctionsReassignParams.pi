@@ -1,0 +1,37 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsFunctionsReassignParams:
+    standard: @{AirbnbJavaScript}
+    ruleId: 7.13
+    title: Never reassign parameters
+    statement:
+        Do not assign new values to parameters. Use a new local variable
+        instead. Enforced by the ESLint rule no-param-reassign.
+    rationale:
+        Reassigning parameters leads to surprising behaviour, especially
+        together with the arguments object, and can hurt optimisation in V8.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        function normalise(path) {
+          path = path.trim();
+          return path.toLowerCase();
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function normalise(path) {
+          const trimmed = path.trim();
+          return trimmed.toLowerCase();
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, parameters]
+    source: https://github.com/airbnb/javascript#functions--reassign-params

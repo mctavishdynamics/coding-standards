@@ -1,0 +1,32 @@
+use ../lib/CodingRule
+
+from ./GoogleSwift import GoogleSwift
+
+export coding-rule GoogleSwiftPlaygroundLiterals:
+    standard: @{GoogleSwift}
+    ruleId: playground-literals
+    title: Do not use playground literals in production code
+    statement:
+        Do not use color, image or file playground literals outside
+        playground sources.
+    rationale:
+        They are rendered graphically only in playgrounds and are opaque as
+        text.
+    exceptions:
+        They are allowed in playgrounds.
+    severity: null
+    noncompliant:
+        ```swift
+        \\\
+        let brand = #colorLiteral(red: 0.2, green: 0.4, blue: 0.9, alpha: 1)
+        \\\
+        ```
+    compliant:
+        ```swift
+        \\\
+        let brand = UIColor(red: 0.2, green: 0.4, blue: 0.9, alpha: 1)
+        \\\
+        ```
+    languages: [swift]
+    tags: [literals]
+    source: https://google.github.io/swift/#playground-literals

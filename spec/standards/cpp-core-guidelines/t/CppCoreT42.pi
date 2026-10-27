@@ -1,0 +1,42 @@
+use ../../lib/CodingRule
+
+from ../CppCoreGuidelines import CppCoreGuidelines
+
+export coding-rule CppCoreT42:
+    standard: @{CppCoreGuidelines}
+    ruleId: T.42
+    title: Use template aliases to simplify notation and hide implementation details
+    statement:
+        Introduce alias templates for long dependent type names and for
+        wrapping traits, so users write the short name.
+    rationale:
+        Aliases improve readability and hide how a type is computed or where
+        elements are stored. They replace many uses of traits.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```cpp
+        \\\
+        template<typename C>
+        void process(C& c)
+        {
+            typename container_traits<C>::value_type first = c.front();
+        }
+        \\\
+        ```
+    compliant:
+        ```cpp
+        \\\
+        template<typename C>
+        using Value_type = typename container_traits<C>::value_type;
+
+        template<typename C>
+        void process(C& c)
+        {
+            Value_type<C> first = c.front();
+        }
+        \\\
+        ```
+    languages: [cpp]
+    tags: [templates, aliases, readability]
+    source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rt-alias

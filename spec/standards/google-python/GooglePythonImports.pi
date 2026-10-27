@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GooglePython import GooglePython
+
+export coding-rule GooglePythonImports:
+    standard: @{GooglePython}
+    ruleId: 2.2
+    title: Import packages and modules, not individual names
+    statement:
+        Use import x for packages and modules, and from x import y where y
+        is a module. Use an as alias only for name clashes, long or overly
+        generic names, or a standard abbreviation such as np for numpy.
+        Never use relative imports; spell out the full package path.
+    rationale:
+        Referring to every name through its module makes its origin obvious
+        at the call site and avoids collisions. Full package paths stop a
+        module from being imported twice under two names.
+    exceptions:
+        Symbols from typing, collections.abc and typing_extensions may be
+        imported directly (see 2.2.4.1).
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        from .geometry import distance
+        from shapes.geometry.distance import euclidean
+
+        print(euclidean(origin, point))
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        from shapes.geometry import distance
+
+        print(distance.euclidean(origin, point))
+        \\\
+        ```
+    languages: [python]
+    tags: [imports, modules]
+    source: https://google.github.io/styleguide/pyguide.html#s2.2-imports

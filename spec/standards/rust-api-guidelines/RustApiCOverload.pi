@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./RustApiGuidelines import RustApiGuidelines
+
+export coding-rule RustApiCOverload:
+    standard: @{RustApiGuidelines}
+    ruleId: C-OVERLOAD
+    title: Keep operator overloads unsurprising
+    statement:
+        Implement an operator trait from std::ops only for an operation that
+        resembles the operator's usual meaning and shares its expected
+        properties, such as associativity for Mul.
+    rationale:
+        Operators carry strong expectations, and an overload that breaks
+        them makes code read as something it does not do.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```rust
+        \\\
+        // `+` sends the message to the channel.
+        impl Add<Message> for Channel {
+            type Output = Result<(), SendError>;
+            fn add(self, m: Message) -> Self::Output { self.send(m) }
+        }
+        \\\
+        ```
+    compliant:
+        ```rust
+        \\\
+        impl Add for Money {
+            type Output = Money;
+            fn add(self, other: Money) -> Money { Money(self.0 + other.0) }
+        }
+        \\\
+        ```
+    languages: [rust]
+    tags: [operators, traits]
+    source: https://rust-lang.github.io/api-guidelines/predictability.html#c-overload

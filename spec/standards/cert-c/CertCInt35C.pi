@@ -1,0 +1,50 @@
+use ../lib/CodingRule
+
+from ./CertC import CertC
+
+export coding-rule CertCInt35C:
+    standard: @{CertC}
+    ruleId: INT35-C
+    title: Use correct integer precisions
+    statement:
+        Compute an integer type's precision from its maximum value, for
+        example with a popcount of UINT_MAX, not from sizeof times CHAR_BIT.
+    rationale:
+        Integer types may have padding bits, so their size overstates their
+        precision. A wrong precision leads to bad shift counts and range
+        checks. CERT rates likelihood unlikely, detectable no, repairable
+        no, priority P1, level L3.
+    exceptions: null
+    severity: low
+    noncompliant:
+        ```c
+        \\\
+        #include <limits.h>
+
+        int fits_shift(unsigned int n) {
+            return n < sizeof(unsigned int) * CHAR_BIT;
+        }
+        \\\
+        ```
+    compliant:
+        ```c
+        \\\
+        #include <limits.h>
+
+        static unsigned int popcount(unsigned int v) {
+            unsigned int bits = 0;
+            while (v) {
+                bits += v & 1u;
+                v >>= 1;
+            }
+            return bits;
+        }
+
+        int fits_shift(unsigned int n) {
+            return n < popcount(UINT_MAX);
+        }
+        \\\
+        ```
+    languages: [c]
+    tags: [integers, portability]
+    source: https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/rules/integers-int/int35-c

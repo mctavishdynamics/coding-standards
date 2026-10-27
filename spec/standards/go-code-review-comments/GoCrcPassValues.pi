@@ -1,0 +1,39 @@
+use ../lib/CodingRule
+
+from ./GoCodeReviewComments import GoCodeReviewComments
+
+export coding-rule GoCrcPassValues:
+    standard: @{GoCodeReviewComments}
+    ruleId: pass-values
+    title: Do not pass pointers just to save a few bytes
+    statement:
+        Pass small values directly. If a function only ever uses its
+        argument as the dereferenced value, the parameter should not be a
+        pointer; pointers to strings and to interface values are common
+        mistakes.
+    rationale:
+        Strings and interface values are already small fixed-size values, so
+        a pointer adds indirection and nil cases without saving anything.
+    exceptions:
+        The advice does not apply to large structs, or to small structs that
+        might grow.
+    severity: null
+    noncompliant:
+        ```go
+        \\\
+        func greet(name *string, out *io.Writer) {
+            fmt.Fprintf(*out, "hello, %s\n", *name)
+        }
+        \\\
+        ```
+    compliant:
+        ```go
+        \\\
+        func greet(name string, out io.Writer) {
+            fmt.Fprintf(out, "hello, %s\n", name)
+        }
+        \\\
+        ```
+    languages: [go]
+    tags: [performance, pointers, api-design]
+    source: https://go.dev/wiki/CodeReviewComments#pass-values

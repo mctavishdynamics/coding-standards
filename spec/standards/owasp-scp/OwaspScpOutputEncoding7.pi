@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./OwaspScp import OwaspScp
+
+export coding-rule OwaspScpOutputEncoding7:
+    standard: @{OwaspScp}
+    ruleId: output-encoding-7
+    title: Sanitize untrusted data sent to operating system commands
+    statement:
+        Sanitize all untrusted data before it becomes part of an operating
+        system command, and prefer passing arguments separately so no shell
+        interprets them.
+    rationale:
+        Shell metacharacters in untrusted data allow command injection,
+        which can hand the attacker control of the host.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```python
+        \\\
+        import subprocess
+
+        def ping(host):
+            return subprocess.run(f"ping -c 1 {host}", shell=True)
+        \\\
+        ```
+    compliant:
+        ```python
+        \\\
+        import subprocess
+
+        def ping(host):
+            return subprocess.run(["ping", "-c", "1", "--", host])
+        \\\
+        ```
+    languages: [any]
+    tags: [output-encoding, command-injection]
+    source: https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/02-checklist/05-checklist#output-encoding

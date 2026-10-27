@@ -1,0 +1,36 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsFunctionsDefaultSideEffects:
+    standard: @{AirbnbJavaScript}
+    ruleId: 7.8
+    title: Avoid side effects in default parameters
+    statement:
+        Do not write default parameter values that change state when they
+        are evaluated.
+    rationale:
+        A default that mutates something each time it is used is confusing
+        to reason about.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        let nextId = 1;
+        function createTicket(id = nextId++) {
+          return { id };
+        }
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        function createTicket(id) {
+          return { id };
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [functions, parameters, side-effects]
+    source: https://github.com/airbnb/javascript#functions--default-side-effects

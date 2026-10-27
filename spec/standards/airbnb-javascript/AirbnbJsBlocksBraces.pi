@@ -1,0 +1,38 @@
+use ../lib/CodingRule
+
+from ./AirbnbJavaScript import AirbnbJavaScript
+
+export coding-rule AirbnbJsBlocksBraces:
+    standard: @{AirbnbJavaScript}
+    ruleId: 16.1
+    title: Use braces with multiline blocks
+    statement:
+        Always use braces around a block that spans more than one line. A
+        body may only go without braces when it sits on the same line as its
+        statement. Enforced by the ESLint rule
+        nonblock-statement-body-position.
+    rationale:
+        A braceless body on a separate line is easy to extend by mistake
+        with a line that is not part of it.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        if (expired)
+          return null;
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        if (expired) return null;
+
+        if (expired) {
+          return null;
+        }
+        \\\
+        ```
+    languages: [javascript]
+    tags: [blocks, formatting]
+    source: https://github.com/airbnb/javascript#blocks--braces

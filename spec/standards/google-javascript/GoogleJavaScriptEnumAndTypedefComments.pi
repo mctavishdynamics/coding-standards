@@ -1,0 +1,41 @@
+use ../lib/CodingRule
+
+from ./GoogleJavaScript import GoogleJavaScript
+
+export coding-rule GoogleJavaScriptEnumAndTypedefComments:
+    standard: @{GoogleJavaScript}
+    ruleId: 7.7
+    title: Document enums and typedefs with their tags
+    statement:
+        Annotate every enum and typedef with @enum or @typedef on the line
+        before it, and give public ones a description. Enum items may have
+        their own JSDoc. Avoid typedefs for record types with many fields;
+        prefer @record.
+    rationale:
+        Typedefs cannot document individual fields or use templates, so
+        large shapes are clearer as records.
+    exceptions: null
+    severity: null
+    noncompliant:
+        ```javascript
+        \\\
+        const Status = {OPEN: 0, CLOSED: 1};
+        \\\
+        ```
+    compliant:
+        ```javascript
+        \\\
+        /**
+         * Lifecycle states of a support ticket.
+         * @enum {number}
+         */
+        const Status = {
+          /** Waiting for an agent. */
+          OPEN: 0,
+          CLOSED: 1,
+        };
+        \\\
+        ```
+    languages: [javascript]
+    tags: [jsdoc, enums, types]
+    source: https://google.github.io/styleguide/jsguide.html#77-enum-and-typedef-comments
