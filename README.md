@@ -4,7 +4,7 @@ Rules from <!-- stat:standards -->76<!-- /stat --> published coding standards, s
 
 There are <!-- stat:rules -->6,456<!-- /stat --> rules in all. Each one is a short file: what to do, why, when it doesn't apply, a bad and a good code example, and the source link.
 
-The rules are written in [Piton](https://github.com/piton-lang) and compile to the Markdown files agents read. You don't need to know Piton to use them.
+The rules are written in [Piton](https://piton-lang.org) and compile to the Markdown files agents read. You don't need to know Piton to use them.
 
 ## Install
 
