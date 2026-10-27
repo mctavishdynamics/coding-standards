@@ -1,0 +1,9 @@
+#!/bin/sh
+# Refresh README.md's generated counts and standards table, and include the
+# result in this commit. Enable with: git config core.hooksPath .githooks
+cd "$(git rev-parse --show-toplevel)" || exit 1
+python3 -I tools/readme_stats.py >/dev/null || exit 1
+if ! git diff --quiet -- README.md; then
+    git add README.md
+    echo "pre-commit: refreshed README.md stats"
+fi

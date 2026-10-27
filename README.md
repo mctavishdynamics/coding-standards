@@ -1,8 +1,8 @@
 # Coding Standards
 
-Rules from 76 published coding standards, style guides and programming books, ready for AI coding agents. Ask your agent to audit code against PEP 8, CERT C, the OWASP ASVS or any of the others, and it reports each problem with the rule it breaks and a link to the original.
+Rules from <!-- stat:standards -->76<!-- /stat --> published coding standards, style guides and programming books, ready for AI coding agents. Ask your agent to audit code against PEP 8, CERT C, the OWASP ASVS or any of the others, and it reports each problem with the rule it breaks and a link to the original.
 
-There are 6,456 rules in all. Each one is a short file: what to do, why, when it doesn't apply, a bad and a good code example, and the source link.
+There are <!-- stat:rules -->6,456<!-- /stat --> rules in all. Each one is a short file: what to do, why, when it doesn't apply, a bad and a good code example, and the source link.
 
 The rules are written in [Piton](https://github.com/piton-lang) and compile to the Markdown files agents read. You don't need to know Piton to use them.
 
@@ -22,9 +22,48 @@ from coding-standards export CodingStandardsAudit
 
 Then run `piton build`.
 
-### In a project without Piton
+### In a project that doesn't use Piton
 
-The quickest way is to copy the prebuilt files. This repository already contains the compiled skill and rules for Claude Code, in two folders:
+You don't have to adopt Piton. Install the `piton` CLI and add two small files at the top of your project. Nothing else in the project changes.
+
+`piton.config.pi`:
+
+```piton
+use @piton/belay
+use @piton/config
+
+from @piton/belay import ClaudeCodeAdapter
+
+export piton-config Project:
+    root: ./spec
+    entry: ./spec/index.pi
+
+    frameworks:
+        - {Belay}
+
+belay-config Belay:
+    codeRoot: .
+
+    adapters:
+        - {ClaudeCodeAdapter}
+```
+
+`spec/index.pi`:
+
+```piton
+from coding-standards export CodingStandardsAudit
+```
+
+Then install the package and build:
+
+```sh
+piton tether https://github.com/mctavishdynamics/coding-standards.git
+piton build
+```
+
+The build writes the skill to `.claude/skills/coding-standards-audit/` and the rules to `.claude/reference/`. It records every file it writes in `.piton/manifest.json` and only ever updates or removes those, so your own skills, agents, settings and `CLAUDE.md` are left alone. Run `piton update coding-standards` and `piton build` to get a newer version. For Codex or OpenCode, use `CodexAdapter` or `OpenCodeAdapter` in place of `ClaudeCodeAdapter`.
+
+If you'd rather not install anything, copy the prebuilt Claude Code files from this repository instead:
 
 ```sh
 git clone https://github.com/mctavishdynamics/coding-standards.git
@@ -33,15 +72,7 @@ cp -r coding-standards/.claude/skills/coding-standards-audit your-project/.claud
 cp -r coding-standards/.claude/reference/standards your-project/.claude/reference/
 ```
 
-Keep that layout: the skill links to the rules at `../../reference/standards/`. The rules take about 26 MB. To update, copy them again.
-
-To use another agent, or to pick only some of the rules, add Piton to the project instead. Install the `piton` CLI and run this in the project folder:
-
-```sh
-piton init . --template belay/minimal --adapter claude-code
-```
-
-It writes two files, `piton.config.pi` and `spec/index.pi`, and changes nothing else. The entry file holds a sample `Explain` skill that you can delete. Use `--adapter codex` or `--adapter opencode` for those agents. Then follow the steps for a Piton project above.
+Keep that layout, because the skill links to the rules at `../../reference/standards/`. The rules take about <!-- stat:library-mb -->6<!-- /stat --> MB.
 
 ## Use
 
@@ -81,7 +112,7 @@ export skill CReview:
         - every rule listed in @{PowerOfTen}
 ```
 
-Each `@{...}` becomes a link the agent opens only when it needs that rule, and your build includes only what you link to. The audit skill links to every standard, so exporting it writes the whole library (about 6,500 files) into your reference folder.
+Each `@{...}` becomes a link the agent opens only when it needs that rule, and your build includes only what you link to. The audit skill links to every standard, so exporting it writes the whole library (about <!-- stat:library-files -->6,500<!-- /stat --> files) into your reference folder.
 
 Rule names start with their standard's prefix. Find them in `tethers/coding-standards/<standard>/` or in the table below.
 
@@ -89,6 +120,7 @@ Rule names start with their standard's prefix. Find them in `tethers/coding-stan
 
 ### Standards
 
+<!-- table:standards -->
 | Standard | Anchor | Folder | Rules | License |
 |---|---|---|---|---|
 | [.NET Framework Design Guidelines](https://learn.microsoft.com/dotnet/standard/design-guidelines/) | `DotnetDesignGuidelines` | `dotnet-design-guidelines` | 369 | CC BY 4.0 for the dotnet/docs repository text (code samples MIT) |
@@ -167,6 +199,7 @@ Rule names start with their standard's prefix. Find them in `tethers/coding-stan
 | [Uber Go Style Guide](https://github.com/uber-go/guide/blob/master/style.md) | `UberGo` | `uber-go` | 65 | Apache License 2.0 |
 | [Web Content Accessibility Guidelines (WCAG) 2.2](https://www.w3.org/TR/WCAG22/) | `Wcag22` | `wcag` | 86 | Copyright 2020-2024 World Wide Web Consortium, W3C Document License |
 | [Zalando RESTful API and Event Guidelines](https://opensource.zalando.com/restful-api-guidelines/) | `ZalandoApi` | `zalando-api` | 146 | CC BY 4.0 |
+<!-- /table -->
 
 ### What a rule contains
 
@@ -215,6 +248,7 @@ The `.pi` files are the source. Everything under `.claude/` is generated.
 piton format spec/standards/<standard>   # per folder: project-wide format stops at 5,000 files
 piton check
 piton build
+python3 -I tools/readme_stats.py      # refresh the counts and the table below
 ```
 
 | Path | Contents |
@@ -226,6 +260,8 @@ piton build
 | `tools/gen_index.py` | Writes each standard's `index.pi` and its `rules:` list. |
 | `tools/orders/` | The source order of each standard's rules. |
 | `tools/overlap.py` | The copyright overlap check. |
+| `tools/readme_stats.py` | Refreshes this README's counts and standards table. `--check` fails if they are stale. |
+| `.githooks/pre-commit` | Runs `tools/readme_stats.py` before every commit and stages the refreshed README. Enable it once per clone with `git config core.hooksPath .githooks`. |
 | `tethers/crux/` | The crux skills used to develop this specification. |
 
 To add a standard:
@@ -236,4 +272,4 @@ To add a standard:
 4. Run `python3 -I tools/gen_index.py spec/standards tools/orders <folder>` and add `from ./<folder> export *` to `spec/standards/index.pi`.
 5. Run the overlap check against the saved sources and rewrite any matches.
 6. If the audit skill should use the standard, add it to `standardsByLanguage` in the skill.
-7. Run `piton format`, `piton check` and `piton build`.
+7. Run `piton format`, `piton check`, `piton build` and `python3 -I tools/readme_stats.py`.
