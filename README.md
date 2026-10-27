@@ -236,10 +236,6 @@ For books, the list of rules comes from the book's published contents or rule su
 
 Before a standard is accepted, `tools/overlap.py` compares its rules against the saved source pages, looking for runs of 7 or more words and long code lines. Anything that matches is rewritten. What remains is CERT titles and short technical terms such as API names.
 
-BARR-C, *The Art of Unix Programming* and *97 Things Every Programmer Should Know* are left out because their licenses forbid derivative works or commercial use. MISRA is left out because it is paid. Still open is whether to keep the share-alike and copyleft sources: the OWASP standards (CC BY-SA), the GNU Coding Standards (GFDL) and the Linux kernel style (GPL-2.0).
-
-This is careful practice, not legal advice. If a license matters for your use, check it yourself.
-
 ## Working on this repository
 
 The `.pi` files are the source. Everything under `.claude/` is generated.
