@@ -2,7 +2,7 @@
 
 Rules from 76 published coding standards, style guides and programming books, ready for AI coding agents. Ask your agent to audit code against PEP 8, CERT C, the OWASP ASVS or any of the others, and it reports each problem with the rule it breaks and a link to the original.
 
-There are 6,456 rules in all. Each one is a short file: what to do, why, when it doesn't apply, a bad and a good code example, and the source link. The text is our own wording and the examples are new code, with nothing copied from the sources.
+There are 6,456 rules in all. Each one is a short file: what to do, why, when it doesn't apply, a bad and a good code example, and the source link.
 
 The rules are written in [Piton](https://github.com/piton-lang) and compile to the Markdown files agents read. You don't need to know Piton to use them.
 
